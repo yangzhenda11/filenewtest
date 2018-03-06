@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="renderer" content="webkit">
+        
+        <link rel="stylesheet" type="text/css" href="../../static/plugins/bootstrap/css/bootstrap.min.css"/>
+      	<link rel="stylesheet" type="text/css" href="../../static/plugins/font-awesome/css/font-awesome.min.css"/>
+      	<link rel="stylesheet" type="text/css" href="../../static/plugins/simple-line-icons/simple-line-icons.min.css"/>
+      	<link rel="stylesheet" type="text/css" href="../../static/plugins/select2/css/select2.min.css"/>
+      	<link rel="stylesheet" type="text/css" href="../../static/plugins/select2/css/select2-bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../static/css/adminui.min.css"/>
+	</head>
+	<body>
+		<div class="page-content">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="portlet">
+                        <div class="portlet-title">
+                            <div class="caption font-dark">
+                                <span class="caption-subject bold uppercase"> 固定格式文本 <a target="_blank" href="https://github.com/RobinHerbots/Inputmask">API</a></span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <h3>基于inputmask.js</h3>
+		                	<div class="row">
+		                		<div class="col-xs-6">
+		                			<h5>Options:</h5>
+			                		<table class="table table-bordered">
+			                			<tr>
+			                				<td>name</td>
+			                				<td>type</td>
+			                				<td>default</td>
+			                				<td>描述</td>
+			                			</tr>
+			                			<tr>
+			                				<td>mask</td>
+			                				<td>string</td>
+			                				<td>''</td>
+			                				<td>格式化字符串，可比对的字符见Format表</td>
+			                			</tr>
+			                			<tr>
+			                				<td>placeholder</td>
+			                				<td>string</td>
+			                				<td>'_'</td>
+			                				<td>输入框中显示的字符</td>
+			                			</tr>
+			                		</table>
+			                		<pre>
+$('.inputmask').inputmask({
+  mask: '999-99-999-9999-9'
+})</pre>
+		                		</div>
+			                	<div class="col-xs-6">
+			                		<h5>Format:匹对类型</h5>
+			                		<table class="table table-bordered">
+			                			<tr>
+			                				<td>Character</td>
+			                				<td>Description</td>
+			                			</tr>
+			                			<tr>
+			                				<td>9</td>
+			                				<td>Number</td>
+			                			</tr>
+			                			<tr>
+			                				<td>a</td>
+			                				<td>Letter</td>
+			                			</tr>
+			                			<tr>
+			                				<td>w</td>
+			                				<td>Alphanumeric</td>
+			                			</tr>
+			                			<tr>
+			                				<td>*</td>
+			                				<td>任何字符</td>
+			                			</tr>
+			                			<tr>
+			                				<td>?</td>
+			                				<td>0~1个可选字符</td>
+			                			</tr>
+			                		</table>
+			                	</div>
+			                	<div class="col-sm-12">
+			                		<h5>method:调用方法</h5>
+			                		<table class="table table-bordered">
+			                			<tr>
+			                				<td>$(selector).inputmask({ mask: "99-999-99"});</td>
+			                				<td>创建inputmask</td>
+			                			</tr>
+			                			<tr>
+			                				<td>$(selector).inputmask('unmaskedvalue');</td>
+			                				<td>获取不带标记的值，即用户输入的值</td>
+			                			</tr>
+			                			<tr>
+			                				<td>$(selector).inputmask('setvalue',value);</td>
+			                				<td>赋值</td>
+			                			</tr>
+			                			<tr>
+			                				<td>$(selector).inputmask('remove');</td>
+			                				<td>去除inputmask</td>
+			                			</tr>
+			                			<tr>
+			                				<td>$("#test").inputmask("getemptymask")</td>
+			                				<td>获取空标记</td>
+			                			</tr>
+			                			<tr>
+			                				<td>$("#test").inputmask("hasMaskedValue")</td>
+			                				<td>是否有符合校验的值</td>
+			                			</tr>
+			                			<tr>
+			                				<td>$(selector).inputmask("isComplete")</td>
+			                				<td>验证当前值是否已完成</td>
+			                			</tr>
+		                			</table>
+			                	</div>
+		                	</div>
+		                	<div class="form-fieldset">
+	                   			<div class="form-fieldset-title">
+	                   				<span><i class="icon-layers"></i> 数字格式</span>
+	                   				<div class="form-fieldset-tools pull-right">
+	                   					<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+	                   				</div>
+	                   			</div>
+	                   			<div class="form-fieldset-body">
+	                   				<div class="row">
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">日期-y/m/d</label>
+												<input type="text" id="mask_date" class="form-control" placeholder="y/m/d">
+												<span class="help-block"></span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">日期-逐字变更</label>
+												<input type="text" id="mask_date1" class="form-control" placeholder="yyyy/mm/dd">
+												<span class="help-block"></span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">手机</label>
+												<input type="text" id="mask_mobile" class="form-control" placeholder="(0) 999-9999-9999">
+												<span class="help-block"></span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">电话</label>
+												<input type="text" id="mask_phone" class="form-control" placeholder="(999) 999-99999">
+												<span class="help-block"></span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">数字</label>
+												<input type="text" id="mask_number" class="form-control" value="789">
+												<span class="help-block">mask "9" or mask "99" or ... mask "9999999999"</span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">货币金额</label>
+												<input type="text" id="mask_currency" class="form-control">
+												<span class="help-block">123456 => ￥ ___,__1,234.56</span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">固定格式的数字</label>
+												<input type="text" id="mask_float" class="form-control">
+												<span class="help-block">只能数字，且小数点后最多两位</span>
+											</div>
+				                        </div>
+				                    </div>
+                   				</div>
+               				</div>
+               				<div class="form-fieldset">
+	                   			<div class="form-fieldset-title">
+	                   				<span><i class="icon-layers"></i> IP地址</span>
+	                   				<div class="form-fieldset-tools pull-right">
+	                   					<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+	                   				</div>
+	                   			</div>
+	                   			<div class="form-fieldset-body">
+	                   				<div class="row">
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">IPV4</label>
+												<input type="text" id="input_ipv4" class="form-control" placeholder="y/m/d">
+												<span class="help-block">192.168.120.150</span>
+											</div>
+				                        </div>
+				                        <div class="col-sm-6">
+				                            <div class="form-group">
+												<label for="proCode">IPV6</label>
+												<input type="text" id="input_ipv6" class="form-control" placeholder="yyyy/mm/dd">
+												<span class="help-block">3ffe:1900:4545:3:200:f8ff:fe21:67cf</span>
+											</div>
+				                        </div>
+				                        
+				                    </div>
+                   				</div>
+                   			</div>
+                    	</div>
+               	    </div>
+				</div>
+			</div>
+		</div>
+		<!--[if lt IE 9]>
+		  <script src="../../static/plugins/html5shiv.min.js"></script>
+		  <script src="../../static/plugins/respond.min.js"></script>
+		  <script src="../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+		<!--插件引入-->
+		<script type="text/javascript">
+			//数据初始化
+		</script>
+		<!--基础依赖-->
+        <script src="../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/js.cookie.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/jquery.blockui.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/select2/js/select2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+        <!--业务依赖-->
+        <script src="../../static/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/plugins/jquery.input-ip-address-control-1.0.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+        <!--当前页面依赖-->
+        <script src="inputMsk.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" type="text/css" href="../../static/plugins/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../static/plugins/datatables/datatables.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
+		<link rel="stylesheet" type="text/css" href="css/contractManage.css" />
+	</head>
+
+	<body>
+		<div class="page-content">
+			<div class="portlet">
+				<div class="portlet-title  ">
+					<div class="caption font-dark">
+						<span class="caption-subject bold uppercase"> 待办事项</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="page-search">
+						<form class="form-horizontal" action="">
+							<div class="row page-search-form">
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon">签约主体名称</span>
+										<input type="text" class="form-control" placeholder="">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon">是否我方签约主体</span>
+										<select name="" class="form-control select2me">
+											<option value="0">全部</option>
+											<option value="1">是</option>
+											<option value="2">否</option>
+										</select>
+									</div>
+								</div>
+								<div class="search-action">
+									<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="searchContract();"><i class="ace-icon fa fa-search"></i> 查询</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<table id="searchContractTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				</div>
+			</div>
+		</div>
+		<!--modal-->
+		<div class="modal fade" id="contractEditModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">签约主体管理</h4>
+					</div>
+					<div class="modal-body">
+						<div id="contractModalDefault">
+							加载中...
+						</div>
+						<div id="mainContent" class="hide">
+							<form class="form-horizontal" role="form">
+								<div class="form-group">
+									<label for="uname" class="col-sm-3 control-label">签约主体名称：</label>
+									<div class="col-sm-6 padding-tb-8">
+										山东联合通信有限公司山东省分公司
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="isunicom" class="col-sm-3 control-label">是否联通方：</label>
+									<div class="col-sm-6">
+										<select id="isunicom" class="form-control">
+											<option value="1">否</option>
+											<option value="2">是</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="isunicom" class="col-sm-3 control-label">关联编码：</label>
+									<div class="col-sm-6">
+										<select id="isunicom" class="form-control">
+											<option value="1">否</option>
+											<option value="2">是</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="organisation" class="col-sm-3 control-label">所属组织：</label>
+									<div class="col-sm-6 input-group paddLR10">
+										<input id="organisation" onclick="showTree('organisation')" readonly name="organisationTree" type="text" class="form-control" />
+										<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
+										<div id="organisationContent" class="zTreeContent selectZTreeCount">
+											<ul id="organisationTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="legal" class="col-sm-3 control-label">法人代表：</label>
+									<div class="col-sm-6 input-group paddLR10">
+										<input id="legal" onclick="showTree('legal')" readonly name="legalTree" type="text" class="form-control" />
+										<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
+										<div id="legalContent" class="zTreeContent selectZTreeCount">
+											<ul id="legalTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="legal" class="col-sm-3 control-label">其他映射组织：</label>
+									<div class="col-sm-6 input-group paddLR10">
+										<input id="other" onclick="showTree('other')" readonly name="otherTree" type="text" class="form-control" />
+										<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
+										<div id="otherContent" class="zTreeContent selectZTreeCount">
+											<ul id="otherTree" class="ztree"></ul>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary">保存</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--[if lt IE 9]>
+		  <script src="../../static/plugins/html5shiv.min.js"></script>
+		  <script src="../../static/plugins/respond.min.js"></script>
+		  <script src="../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="../../static/plugins/selectivizr-min.js"></script>
+		<![endif]-->
+		<!--基础依赖-->
+		<script src="../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="../../static/plugins/jquery.blockui.min.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/plugins/datatables/ellipsis.js"></script>
+		<script src="../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/contractManage.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

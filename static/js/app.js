@@ -2,7 +2,6 @@
 Core script to handle the entire theme and core functions
 **/
 var App = function() {
-
 	// IE mode
 	var isRTL = false;
 	var isIE8 = false;
@@ -658,27 +657,6 @@ var App = function() {
 		});
 	}
 
-	
-	/*
-	 * zander
-	 * button点击或者提交后台时显示提交中的禁用选项
-	 * button中设置：data-loading-text  属性
-	 * 1.fn不传时没有调用时间1s后恢复可点击状态
-	 * 2.fn传递时执行，fn内要设置button的关闭
-	 */
-	var buttonLoading = function(el,fn){
-		$(""+el+"").button('loading');
-//		if(fn == "" || fn == undefined){
-//			setTimeout(function () {
-//	    		$(""+el+"").button('reset');
-//	    	},1000);
-//		}else{
-//			fn();
-//		}
-    	if(fn){
-    		fn();
-    	}
-	}
 	//* END:CORE HANDLERS *//
 	
 	/*
@@ -768,7 +746,6 @@ var App = function() {
 				};
 				var loadEnd = function(){
 					layer.closeAll('loading');
-	//				setTimeout("loadingNone()",300);
 				};
 			}else{
 				var loadStart = function(){};
@@ -784,7 +761,7 @@ var App = function() {
 				contentType: "application/json",
 				success: function(result){
 					var result = result;
-					if (result.code == 200) {
+					if (result.status == 1) {
 						successCallback(result);
 					} else {				
 						improperCallback(result);
@@ -800,14 +777,12 @@ var App = function() {
 			});
 		},
 		//button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
-		buttonLoading: function(el,fn){
-			buttonLoading(el,fn);
+		buttonLoading: function(el){
+			$(el).button('loading');
 		},
 		//button点击或者提交后台时显示提交中的取消禁用选项
 		buttonCloseLoading: function(el){
-			setTimeout(function () {
-	    		$(""+el+"").button('reset');
-	    	},1000);
+    		$(el).button('reset');
 		},
 		//init main components 
 		initComponents: function() {
@@ -1204,7 +1179,7 @@ var App = function() {
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
 					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
-					"sZeroRecords": "没有匹配结果",
+					"sZeroRecords": "查询不到数据",
 					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
 					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
 					"sInfoFiltered": "(由 _MAX_ 条记录结果过滤)",
@@ -1756,3 +1731,35 @@ var App = function() {
 jQuery(document).ready(function() {
 	App.init();
 });
+
+/*
+ * datatable加载事件
+ */
+function startLoading(el){
+	App.buttonLoading(el);
+	layer.load();
+}
+/*
+ * datatable结束事件
+ */
+function stopLoading(el){
+	App.buttonCloseLoading(el);
+	layer.closeAll('loading');
+}
+/*
+ * datatable事件
+ * code如果返回的值不是默认为data时的参数
+ */
+function resolveResult(result,code){
+	if(result.status == 1){
+		if(code){
+			return result.code;
+		}else{
+			return result.data;
+		}
+	}else{
+		return [];
+		var ms = result.message;
+		layer.msg(ms, {icon: 2});
+	}
+}

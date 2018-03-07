@@ -142,37 +142,61 @@ function onCheck(event, treeId, treeNode){
 	$("input[name=" + treeId + "]").val(nameAll.join(","));
 }
 /*
- * datatable加载事件
+ * 请求到结果后的回调事件
  */
+function judge(result){
+	stopLoading("#submitBtn");
+	return resolveResult(result);
+}
 var searchContractTable = App.initDataTables('#searchContractTable', {
-	"ajax": "../../static/data/contracTest.json",
+	"serverSide": true,
+	ajax: {
+        "type": "GET",
+        "url": '/orgPartner',
+        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
+        "dataType":'json',
+        "beforeSend": startLoading("#submitBtn"),
+        "data":function(d){
+        	d.partnerName = $("#partnerName").val();
+        	d.isPartner = $("#isPartner").val();
+        	return d;
+        },
+        "dataSrc": judge
+	},
 	"columns": [{
-			"data": "proId",
+			"data": "partnerMdmCode",
 			"title": "编码",
 			"className": "text-center"
 		},
 		{
-			"data": "proName",
+			"data": "partnerName",
 			"className": "text-center",
 			"title": "签约主体名称"
 		},
 		{
-			"data": "isUn",
+			"data": "isPartner",
 			"className": "text-center",
-			"title": "是否联通方"
+			"title": "是否联通方",
+			"render": function(data, type, full, meta) {
+				if(data == 0) {
+					return '是';
+				} else {
+					return '否';
+				}
+			}
 		},
 		{
-			"data": "ena",
+			"data": "partnerCode",
 			"className": "text-center",
 			"title": "关联编码"
 		},
 		{
-			"data": "pro",
+			"data": "orgId",
 			"className": "text-center",
 			"title": "所属组织"
 		},
 		{
-			"data": "proId",
+			"data": "partnerId",
 			"className": "text-center",
 			"title": "编辑",
 			"render": function(data, type, full, meta) {
@@ -183,32 +207,30 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
 				}
 			}
 		}
-	],
-	"infoCallback": function(settings) {
-		//      alert( '表格重绘了' );
-	}
+	]
 });
 /*
  * 搜索点击事件
  */
 function searchContract() {
-	App.buttonLoading("#submitBtn");
-	layer.load()
-	searchContractTable.ajax.reload();
+	startLoading("#submitBtn")
+	var table = $('#searchContractTable').DataTable();
+	table.ajax.reload();
 }
 /*
  * 表格内编辑按钮点击事件
  */
 function editContract(data) {
 	$('#contractEditModal').modal('show');
-	App.formAjaxJson("../../static/data/treeDataDemo.json", "get", "", successCallback)
-
+	var url = "/orgPartner/"+data;
+	App.formAjaxJson(url, "get", "", successCallback);
 	function successCallback(result) {
+		console.log(result);
 		$("#contractModalDefault").addClass("hide");
 		$("#mainContent").removeClass("hide");
-		var result = result.data;
-		$.fn.zTree.init($("#organisationTree"), setting, result);
-		$.fn.zTree.init($("#legalTree"), setting, result);
-		$.fn.zTree.init($("#otherTree"), selectSetting);
+//		var result = result.data;
+//		$.fn.zTree.init($("#organisationTree"), setting, result);
+//		$.fn.zTree.init($("#legalTree"), setting, result);
+//		$.fn.zTree.init($("#otherTree"), selectSetting);
 	}
 }

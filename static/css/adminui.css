@@ -8888,6 +8888,9 @@ AngularJS UI-select
 .padding-tb-8{
 	padding-top: 8px;
 }
+button:focus{
+	outline: none !important;
+}
 /*
  * layer样式
  */

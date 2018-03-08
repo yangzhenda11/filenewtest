@@ -773,7 +773,7 @@ var App = function() {
 					layer.msg("接口错误", {icon: 2});
 					errorCallback(result);
 				},
-				complete: loadEnd		
+				complete: loadEnd
 			});
 		},
 		//button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
@@ -1169,12 +1169,6 @@ var App = function() {
 				"sScrollX": "100%",
 				"sScrollXInner": "100%",
 				"bAutoWidth": true,
-				//              "serverSide":true,
-				//              "ajax":{
-				//                  "type":"POST",
-				//                  "contentType":'application/x-www-form-urlencoded; charset=UTF-8',
-				//                  "dataType":'json'
-				//              },
 				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
@@ -1218,10 +1212,7 @@ var App = function() {
 				"processing": true,
 				//"bProcessing":true,
 				"paging": true,
-				"lengthMenu": [
-					[5, 10, 15, 20, -1],
-					[5, 10, 15, 20, 50, 100]
-				],
+				"lengthMenu": [ 10, 15, 20, 50, 100 ],
 				"pageLength": 10,
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
@@ -1249,6 +1240,7 @@ var App = function() {
 				drawCallback();
 			}
 			var oTable = $(el).dataTable(options);
+			$.fn.dataTable.ext.errMode = 'throw';
 			return oTable;
 		},
 		/**
@@ -1736,6 +1728,7 @@ jQuery(document).ready(function() {
  * datatable加载事件
  */
 function startLoading(el){
+	$("table").css("width","100%");
 	App.buttonLoading(el);
 	layer.load();
 }
@@ -1758,8 +1751,8 @@ function resolveResult(result,code){
 			return result.data;
 		}
 	}else{
-		return [];
 		var ms = result.message;
 		layer.msg(ms, {icon: 2});
+		return [];
 	}
 }

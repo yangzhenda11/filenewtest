@@ -1,3 +1,9 @@
+var organisationTree = null;
+var otherTree = null;
+var legalTree = null;
+//角色全局变量
+var curOrgStaffRole = 1;
+var curOrgStaffNode = null;
 /*
  * 显示所属组织树
  */
@@ -7,7 +13,7 @@ function showTree(dom) {
 	$("#" + dom + "Content").css({
 		left: "10px",
 		top: selectObj.outerHeight() + "px",
-		width: selectObj.outerWidth() + 40
+		width: selectObj.outerWidth() + 80
 	}).slideDown("fast");
 	onBodyDown(dom);
 }
@@ -29,77 +35,150 @@ function onBodyDown(dom) {
 	});
 }
 /*
- * ztree单选配置
+ * 所属组织树配置单选
+ * "/orgs/" + treeNode.orgId + "/children"
  */
-var setting = {
-	view: {
-		dblClickExpand: false
+var orgsSetting = {
+	async : {
+		enable : true,
+		url : "",
+		type : "get",
+		dataType : 'json',
+		dataFilter : orgsfilter
 	},
 	data: {
 		simpleData: {
-			enable: true
+			enable: true,
+			idKey: "orgId",
+			pIdKey: "parent_id"
+		},		
+		key: {
+			name: "orgName"
 		}
+	},
+	view: {
+		dblClickExpand: false
 	},
 	callback: {
 		beforeClick: beforeClick,
-		onClick: onClick
+		onClick: onClick,
+		beforeAsync:zTreeBeforeAsync
 	}
 };
+function orgsfilter(treeId, parentNode, responseData) {
+	var responseData = responseData.data;
+	if(responseData){
+		return responseData;
+	}else{
+		return null;
+	}
+}
+
 /*
- * ztree多选（搭配异步加载）
+ * 所属人员树配置单选
+ * curOrgStaffRole = 1
+ * "/roles/" + curOrgStaffRole + "/orgStaffsTreeChildren"
  */
-var selectSetting = {
+var legalSetting = {
 	async : {
 		enable : true,
-		url : "../../static/data/treeDataDemo.json",
-		autoParam: ["id=zId"],
-		otherParam : {
-			"staffOrgId" : 123,
-			"staffId" : 123
-		},
+		url : "/roles/" + curOrgStaffRole + "/orgStaffsTreeChildren",
 		type : "get",
 		dataType : 'json',
-		dataFilter : filter
+		dataFilter : orgsFilter,
+		otherParam : {
+			"orgId" : function() {
+				return curOrgStaffNode.id
+			}
+		},
+	},
+	data: {
+		simpleData: {
+			enable: true,
+		}
+	},
+	view: {
+		dblClickExpand: false
+	},
+	callback: {
+		beforeClick: beforeClick,
+		onClick: onClick,
+		beforeAsync:zTreeBeforeAsync
+	}
+};
+function orgsFilter(treeId, parentNode, responseData) {
+	var responseData = responseData.children;
+	if(responseData){
+		return responseData;
+	}else{
+		return null;
+	}
+}
+/*
+ * 所属组织树多选配置
+ * orgs/{orgId}/orgTree
+ */
+var otherSetting = {
+	async : {
+		enable : true,
+		url : "",
+		type : "get",
+		dataType : 'json',
+		dataFilter : otherFilter
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "orgId",
+			pIdKey: "parent_id"
+		},		
+		key: {
+			name: "orgName"
+		}
 	},
 	check: {
 		enable: true
 	},
-	data: {
-		simpleData: {
-			enable: true
-		}
-	},
 	callback: {
 		onCheck: onCheck,
 		onAsyncError: onAsyncError,
-		onAsyncSuccess: onAsyncSuccess
+		onAsyncSuccess: onAsyncSuccess,
+		beforeAsync:zTreeBeforeAsync
 	}
 }
-/*
- * 如果结果一次性返回加过滤条件
- */
-function filter(treeId, parentNode, responseData) {
+function otherFilter(treeId, parentNode, responseData) {
 	var responseData = responseData.data;
 	if(responseData.length > 0) {
-		var id;
 		for(var i = 0; i < responseData.length; i++) {
-			id = responseData[i].id;
-			for(var j = 0; j < responseData.length; j++) {
-				if(id == responseData[j].pId) {
-					responseData[i].nocheck = true;
-				}
+			if("true" == responseData[i].isParent) {
+				responseData[i].nocheck = true;
 			}
 		}
 	}
 	return responseData;
 }
+function zTreeBeforeAsync(treeId, treeNode) {
+	if(treeId == "organisationTree"){
+		organisationTree.setting.async.url = "/orgs/" + treeNode.orgId + "/children";
+	}else if(treeId == "otherTree"){
+		otherTree.setting.async.url = "/orgs/" + treeNode.orgId + "/children";
+	}else if(treeId == "legalTree"){
+		curOrgStaffNode = treeNode;
+	}
+	return true;
+}
 /*
  * ztree异步加载成功事件
  */
 function onAsyncSuccess(event, treeId, treeNode, msg){
+	console.log(treeNode);
 	var treeObj = $.fn.zTree.getZTreeObj(treeId);
-	var nodes = treeObj.getNodesByParam("id", "43", null);
-	treeObj.checkNode(nodes[0], true, false);
+	var nodes = treeObj.getNodesByParam("orgId", "43", null);
+	if(false){
+		treeObj.checkNode(nodes[0], true, false);
+	}
+	console.log(nodes);
+	
 }
 /*
  * ztree异步加载失败事件
@@ -120,8 +199,8 @@ function beforeClick(treeId, treeNode) {
  */
 function onClick(event, treeId, treeNode) {
 	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
-	var selectName = nodes[0].name;
-	var selectId = nodes[0].id;
+	var selectName = nodes[0].orgName;
+	var selectId = nodes[0].orgId;
 	$("input[name=" + treeId + "]").data("name", selectName);
 	$("input[name=" + treeId + "]").data("id", selectId);
 	$("input[name=" + treeId + "]").val(selectName);
@@ -134,13 +213,16 @@ function onCheck(event, treeId, treeNode){
 	var nodes = treeObj.getCheckedNodes(true);
 	var idAll = [],nameAll = [];
 	for(var i = 0; i < nodes.length; i++){
-		idAll.push(nodes[i].id);
-		nameAll.push(nodes[i].name)
+		idAll.push(nodes[i].orgId);
+		nameAll.push(nodes[i].orgName)
 	}
 	$("input[name=" + treeId + "]").data("name", nameAll.join(","));
 	$("input[name=" + treeId + "]").data("id", idAll.join(","));
+	$("input[name=" + treeId + "]").attr("title",nameAll.join(","));
 	$("input[name=" + treeId + "]").val(nameAll.join(","));
 }
+
+
 /*
  * 请求到结果后的回调事件
  */
@@ -160,6 +242,10 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
         	d.partnerName = $("#partnerName").val();
         	d.isPartner = $("#isPartner").val();
         	return d;
+        },
+         error: function (xhr, error, thrown) {  
+            stopLoading("#submitBtn");
+            layer.msg("接口错误", {icon: 2});
         },
         "dataSrc": judge
 	},
@@ -226,11 +312,65 @@ function editContract(data) {
 	App.formAjaxJson(url, "get", "", successCallback);
 	function successCallback(result) {
 		console.log(result);
+		var data = result.data;
 		$("#contractModalDefault").addClass("hide");
 		$("#mainContent").removeClass("hide");
-//		var result = result.data;
-//		$.fn.zTree.init($("#organisationTree"), setting, result);
-//		$.fn.zTree.init($("#legalTree"), setting, result);
-//		$.fn.zTree.init($("#otherTree"), selectSetting);
+		$("#partnerNameM").text(data.partnerName);
+		if(result.isPartner == 0){
+			$("#isPartnerM").val(0);
+			$("#isunicom").removeClass("hide");
+			organisationTree = $.fn.zTree.init($("#organisationTree"), orgsSetting);
+			
+			
+		}else{
+			$("#isPartnerM").val(1);
+		}
+
+//		
 	}
 }
+function changeIsunicom(){
+	var isPartnerValue = $("#isPartnerM").val();
+	if(isPartnerValue == 0){
+		$("#isunicom").removeClass("hide");
+		/*
+		 * 所属组织树配置
+		 *  orgs/{orgId}/orgTree
+		 */
+		App.formAjaxJson("/orgs/56665/orgTree", "get", "", successCallback);
+		function successCallback(result){
+			var data = result.data;
+			if(null == data){
+				layer.msg("没有相关组织和人员信息",{icon: 2});
+			}else{
+				var otherTreeResult = otherFilter("","",result);
+				organisationTree = $.fn.zTree.init($("#organisationTree"), orgsSetting, data);
+				otherTree = $.fn.zTree.init($("#otherTree"), otherSetting, otherTreeResult);
+			}
+		}
+		/*
+		 * 所属人员树配置
+		 *  roles/orgStaffsTreeRoot
+		 * get  data:{"curOrgId":curOrgId}
+		 */
+		$.get("/roles/orgStaffsTreeRoot", {"curOrgId":56665} ,function(result) {
+			if(null == result){
+				layer.msg("没有相关组织和人员信息",{icon: 2});
+			}else{
+				legalTree = $.fn.zTree.init($("#legalTree"), legalSetting, result);
+				curOrgStaffNode = legalTree.getNodes()[0];
+//				legalTree.selectNode(curOrgStaffNode);
+//				legalTree.expandNode(curOrgStaffNode, true, false, true);
+			}
+		});
+	}else{
+		$("#isunicom").addClass("hide");
+	}
+}
+$('#contractEditModal').on('hide.bs.modal', function () {
+	$("#contractModalDefault").removeClass("hide");
+	$("#mainContent").addClass("hide");
+	$("#isunicom").addClass("hide");
+	$("#isPartnerM").val(1);
+	$("#partnerNameM").text("");
+});

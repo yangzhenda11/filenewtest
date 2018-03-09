@@ -784,46 +784,227 @@ var App = function() {
 		buttonCloseLoading: function(el){
     		$(el).button('reset');
 		},
-		//init main components 
-		initComponents: function() {
-			this.initAjax();
+		/**
+		 * 表单元素序列化
+		 * 根据name值取值
+		 */
+		form2json: function($form) {
+		    var o = {};
+		    var a = $form.serializeArray();
+		    $.each(a, function(index, value) {
+		        if (o[value.name]) {
+		            if (!o[value.name].push) {
+		                o[value.name] = [o[value.name]];
+		            }
+		            o[value.name].push(value.value || '');
+		        } else {
+		            o[value.name] = value.value || '';
+		        }
+		    });
+		    return o;
 		},
-
-		//public function to remember last opened popover that needs to be closed on click
-		setLastPopedPopover: function(el) {
-			lastPopedPopover = el;
+		/**
+		 * 生成时间戳
+		 */
+		timestamp: function(){
+			var getTimestamp=new Date().getTime();
+			getTimestamp = "&t="+getTimestamp;
+		    return getTimestamp;
 		},
-
-		//public function to add callback a function which will be called on window resize
-		addResizeHandler: function(func) {
-			resizeHandlers.push(func);
-		},
-
-		//public functon to call _runresizeHandlers
-		runResizeHandlers: function() {
-			_runResizeHandlers();
-		},
-
-		// wrApper function to scroll(focus) to an element
-		scrollTo: function(el, offeset) {
-			var pos = (el && el.size() > 0) ? el.offset().top : 0;
-
-			if(el) {
-				if($('body').hasClass('page-header-fixed')) {
-					pos = pos - $('.page-header').height();
-				} else if($('body').hasClass('page-header-top-fixed')) {
-					pos = pos - $('.page-header-top').height();
-				} else if($('body').hasClass('page-header-menu-fixed')) {
-					pos = pos - $('.page-header-menu').height();
-				}
-				pos = pos + (offeset ? offeset : -1 * el.height());
+		/**
+		 * 下载文件（接收下载地址）
+		 */
+		download_file: function(url) {
+			if(typeof(download_file.iframe) == "undefined") {
+				var iframe = document.createElement("iframe");
+				download_file.iframe = iframe;
+				document.body.appendChild(download_file.iframe);
 			}
-
-			$('html,body').animate({
-				scrollTop: pos
-			}, 'slow');
+			download_file.iframe.src = url;
+			download_file.iframe.style.display = "none";
 		},
+		initDataTables: function(el, options) {
+			if(!$().dataTable) {
+				return;
+			}
+			var drawCallback = function() {};
+			if(options.drawCallback) {
+				drawCallback = options.drawCallback
+			};
+			options = $.extend(true, {
+				"ordering": false,
+				"scrollX": true,
+				"scrollCollapse": true,
+				"sScrollX": "100%",
+				"sScrollXInner": "100%",
+				"bAutoWidth": true,
+				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
+				"oLanguage": {
+					"sProcessing": "正在加载数据，请稍候...",
+					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
+					"sZeroRecords": "查询不到数据",
+					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
+					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
+					"sInfoFiltered": "(由 _MAX_ 条记录结果过滤)",
+					"sInfoPostFix": "",
+					"sSearch": "",
+					"sSearchPlaceholder": "输入关键字筛选表格",
+					"sUrl": "",
+					"sDecimal": "",
+					"sThousands": ",",
+					"sEmptyTable": "表中数据为空",
+					"sLoadingRecords": "载入中...",
+					"sInfoThousands": ",",
+					"oPaginate": {
+						"sFirst": "首页",
+						"sPrevious": "上页",
+						"sNext": "下页",
+						"sLast": "末页"
+					},
+					"oAria": {
+						"sSortAscending": ": 以升序排列此列",
+						"sSortDescending": ": 以降序排列此列"
+					},
+					"buttons": {
+						"copy": "<i title='复制到剪切板' class='fa fa-copy'></i>",
+						"excel": "<i title='导出表格' class='fa fa-table'></i>",
+						"pdf": "<i title='导出PDF' class='fa fa-file-pdf-o'></i>",
+						"colvis": "<i title='选择列' class='glyphicon glyphicon-th'></i>",
+						"copyTitle": "复制到剪切板",
+						"copySuccess": {
+							1: "已经复制当前记录到剪贴板",
+							_: "已经复制 %d 条记录到剪切板"
+						}
+					}
+				},
+				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>', //生成样式
+				"processing": true,
+				//"bProcessing":true,
+				"paging": true,
+				"lengthMenu": [ 10, 15, 20, 50, 100 ],
+				"pageLength": 10,
+				"language": {
+					"emptyTable": "没有关联的需求信息!",
+					"thousands": ","
+				},
+				//              "fixedColumns": {
+				//                  'leftColumns': 2
+				//              },
+				"columnDefs": [{ // 所有列默认值
+					"targets": "_all",
+					"defaultContent": ''
+				}],
+				"buttons": [], //'pdf','copy', 'excel', 'colvis'
 
+				"drawCallback": function() {
+					// 取消全选  
+					$(":checkbox[name='td-checkbox']").prop('checked', false);
+				}
+			}, options);
+			options.drawCallback = function() {
+				if(options.toolbars) {
+					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
+					$(options.toolbars).remove();
+				}
+				drawCallback();
+			}
+			var oTable = $(el).dataTable(options);
+			$.fn.dataTable.ext.errMode = 'throw';
+			return oTable;
+		},
+		/*
+		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
+		 * @param {String} el 表单容器选择器
+		 * @param {JSON} formData 表单项的值
+		 * @param {object} valueCallback 需要做重定义的项
+		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
+		 */
+		setFormValues:function(formId, formData, valueCallback){
+            if(formData != undefined && formData != null){
+                var obj = null,sel = null,objType = null;
+				$(el).find(".form-control-static[name]").text('');	//将有name的.form-control-static设置为空
+				if(valueCallback != undefined && valueCallback != null) {
+					for(var b in valueCallback) {
+						var value = formData[b];
+						var tvalue = valueCallback[b](value);
+						formData[b] = tvalue;
+					}
+				}
+                for( var a in formData){
+                    sel = ":input[name='" + a + "']";
+                    obj = $(formId).find(sel);
+                    if(obj.length > 0){
+                        objType = obj[0].type;
+                        if(objType == "text" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
+                            obj.val(formData[a]);
+                            if(objType == "select-one" && obj.hasClass('select2me')){
+                                obj.trigger('change');
+                            }
+                        }else if(objType == "radio" || objType == "checkbox"){
+                            App.setChecked(a,formData[a]);
+                        }
+                    }else if('object' == typeof formData[a]){
+                        App.setFormValues(formId,formData[a]);
+                    }
+                }
+            }
+        },
+        /*
+         * 设置checkbox或者radio选中
+         */
+        setChecked: function(name, value) {
+			var cks = document.getElementsByName(name);
+			var arr = value.split(',');
+
+			for(var i = 0; i < cks.length; i++) {	
+				if(isInArray(arr, cks[i].value)) {			//判断是否在数组内
+					cks[i].checked = true;
+				}
+			}
+		},
+		/*
+		 * 重置form表单
+		 */
+		resetForm:function(obj){
+            var form = $(obj).closest('form');
+            form[0].reset();
+            form.find('.select2me').trigger('change');
+        },
+		/**
+		 * setFindValue 为查看页面自动赋值不包含checkbox的赋值
+		 * @param {String} el 表单容器选择器
+		 * @param {JSON} formData 表单项的值
+		 * @param {object} valueCallback 需要做重定义的项
+		 * */
+		setFindValue: function(el, formData, valueCallback) {
+			if(formData != undefined && formData != null) {
+				var obj = null,
+					sel = null;
+				//将有name的.form-control-static设置为空
+				$(el).find(".form-control-static[name]").text('');
+				if(valueCallback != undefined && valueCallback != null) {
+					for(var b in valueCallback) {
+						var value = formData[b];
+						var tvalue = valueCallback[b](value);
+						formData[b] = tvalue;
+					}
+				}
+				$(el).find(".form-control-static[name]").each(function(index, item) {
+					var key = $(item).attr('name');
+					var valueObj = formData[key];
+					if(valueObj) {
+						if(valueObj.callback) {
+							$(item).text(valueObj.callback(valueObj.value));
+						} else {
+							$(item).text(valueObj);
+						}
+					} else {
+						//如果没有值用空格填充，解决为空导致的高度错乱问题
+						$(item).html('&nbsp;');
+					}
+				})
+			}
+		},
 		initSlimScroll: function(el) {
 			if(!$().slimScroll) {
 				return;
@@ -903,7 +1084,45 @@ var App = function() {
 				}
 			});
 		},
+		//init main components 
+		initComponents: function() {
+			this.initAjax();
+		},
 
+		//public function to remember last opened popover that needs to be closed on click
+		setLastPopedPopover: function(el) {
+			lastPopedPopover = el;
+		},
+
+		//public function to add callback a function which will be called on window resize
+		addResizeHandler: function(func) {
+			resizeHandlers.push(func);
+		},
+
+		//public functon to call _runresizeHandlers
+		runResizeHandlers: function() {
+			_runResizeHandlers();
+		},
+
+		// wrApper function to scroll(focus) to an element
+		scrollTo: function(el, offeset) {
+			var pos = (el && el.size() > 0) ? el.offset().top : 0;
+
+			if(el) {
+				if($('body').hasClass('page-header-fixed')) {
+					pos = pos - $('.page-header').height();
+				} else if($('body').hasClass('page-header-top-fixed')) {
+					pos = pos - $('.page-header-top').height();
+				} else if($('body').hasClass('page-header-menu-fixed')) {
+					pos = pos - $('.page-header-menu').height();
+				}
+				pos = pos + (offeset ? offeset : -1 * el.height());
+			}
+
+			$('html,body').animate({
+				scrollTop: pos
+			}, 'slow');
+		},
 		// function to scroll to the top
 		scrollTop: function() {
 			App.scrollTo();
@@ -1154,95 +1373,6 @@ var App = function() {
 
 			return _getResponsiveBreakpoint(size);
 		},
-		initDataTables: function(el, options) {
-			if(!$().dataTable) {
-				return;
-			}
-			var drawCallback = function() {};
-			if(options.drawCallback) {
-				drawCallback = options.drawCallback
-			};
-			options = $.extend(true, {
-				"ordering": false,
-				"scrollX": true,
-				"scrollCollapse": true,
-				"sScrollX": "100%",
-				"sScrollXInner": "100%",
-				"bAutoWidth": true,
-				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
-				"oLanguage": {
-					"sProcessing": "正在加载数据，请稍候...",
-					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
-					"sZeroRecords": "查询不到数据",
-					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
-					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
-					"sInfoFiltered": "(由 _MAX_ 条记录结果过滤)",
-					"sInfoPostFix": "",
-					"sSearch": "",
-					"sSearchPlaceholder": "输入关键字筛选表格",
-					"sUrl": "",
-					"sDecimal": "",
-					"sThousands": ",",
-					"sEmptyTable": "表中数据为空",
-					"sLoadingRecords": "载入中...",
-					"sInfoThousands": ",",
-					"oPaginate": {
-						"sFirst": "首页",
-						"sPrevious": "上页",
-						"sNext": "下页",
-						"sLast": "末页"
-					},
-					"oAria": {
-						"sSortAscending": ": 以升序排列此列",
-						"sSortDescending": ": 以降序排列此列"
-					},
-					"buttons": {
-						"copy": "<i title='复制到剪切板' class='fa fa-copy'></i>",
-						"excel": "<i title='导出表格' class='fa fa-table'></i>",
-						"pdf": "<i title='导出PDF' class='fa fa-file-pdf-o'></i>",
-						"colvis": "<i title='选择列' class='glyphicon glyphicon-th'></i>",
-						"copyTitle": "复制到剪切板",
-						"copySuccess": {
-							1: "已经复制当前记录到剪贴板",
-							_: "已经复制 %d 条记录到剪切板"
-						}
-					}
-				},
-				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>', //生成样式
-				"processing": true,
-				//"bProcessing":true,
-				"paging": true,
-				"lengthMenu": [ 10, 15, 20, 50, 100 ],
-				"pageLength": 10,
-				"language": {
-					"emptyTable": "没有关联的需求信息!",
-					"thousands": ","
-				},
-				//              "fixedColumns": {
-				//                  'leftColumns': 2
-				//              },
-				"columnDefs": [{ // 所有列默认值
-					"targets": "_all",
-					"defaultContent": ''
-				}],
-				"buttons": [], //'pdf','copy', 'excel', 'colvis'
-
-				"drawCallback": function() {
-					// 取消全选  
-					$(":checkbox[name='td-checkbox']").prop('checked', false);
-				}
-			}, options);
-			options.drawCallback = function() {
-				if(options.toolbars) {
-					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
-					$(options.toolbars).remove();
-				}
-				drawCallback();
-			}
-			var oTable = $(el).dataTable(options);
-			$.fn.dataTable.ext.errMode = 'throw';
-			return oTable;
-		},
 		/**
 		 * initEditableDatatables 基于initDataTables 实现表格的可编辑
 		 * options 新增 addRowBtn String 触发新增按钮的id或calss选择器
@@ -1474,99 +1604,6 @@ var App = function() {
 					skin: 'layer-ext-moon'
 				}, function() {
 					callback(checkedItem);
-				})
-			}
-		},
-		/*
-		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
-		 * @param {String} el 表单容器选择器
-		 * @param {JSON} formData 表单项的值
-		 * @param {object} valueCallback 需要做重定义的项
-		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
-		 */
-		setFormValues:function(formId, formData, valueCallback){
-            if(formData != undefined && formData != null){
-                var obj = null,sel = null,objType = null;
-				$(el).find(".form-control-static[name]").text('');	//将有name的.form-control-static设置为空
-				if(valueCallback != undefined && valueCallback != null) {
-					for(var b in valueCallback) {
-						var value = formData[b];
-						var tvalue = valueCallback[b](value);
-						formData[b] = tvalue;
-					}
-				}
-                for( var a in formData){
-                    sel = ":input[name='" + a + "']";
-                    obj = $(formId).find(sel);
-                    if(obj.length > 0){
-                        objType = obj[0].type;
-                        if(objType == "text" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
-                            obj.val(formData[a]);
-                            if(objType == "select-one" && obj.hasClass('select2me')){
-                                obj.trigger('change');
-                            }
-                        }else if(objType == "radio" || objType == "checkbox"){
-                            App.setChecked(a,formData[a]);
-                        }
-                    }else if('object' == typeof formData[a]){
-                        App.setFormValues(formId,formData[a]);
-                    }
-                }
-            }
-        },
-        /*
-         * 设置checkbox或者radio选中
-         */
-        setChecked: function(name, value) {
-			var cks = document.getElementsByName(name);
-			var arr = value.split(',');
-
-			for(var i = 0; i < cks.length; i++) {	
-				if(isInArray(arr, cks[i].value)) {			//判断是否在数组内
-					cks[i].checked = true;
-				}
-			}
-		},
-		/*
-		 * 重置form表单
-		 */
-		resetForm:function(obj){
-            var form = $(obj).closest('form');
-            form[0].reset();
-            form.find('.select2me').trigger('change');
-        },
-		/**
-		 * setFindValue 为查看页面自动赋值不包含checkbox的赋值
-		 * @param {String} el 表单容器选择器
-		 * @param {JSON} formData 表单项的值
-		 * @param {object} valueCallback 需要做重定义的项
-		 * */
-		setFindValue: function(el, formData, valueCallback) {
-			if(formData != undefined && formData != null) {
-				var obj = null,
-					sel = null;
-				//将有name的.form-control-static设置为空
-				$(el).find(".form-control-static[name]").text('');
-				if(valueCallback != undefined && valueCallback != null) {
-					for(var b in valueCallback) {
-						var value = formData[b];
-						var tvalue = valueCallback[b](value);
-						formData[b] = tvalue;
-					}
-				}
-				$(el).find(".form-control-static[name]").each(function(index, item) {
-					var key = $(item).attr('name');
-					var valueObj = formData[key];
-					if(valueObj) {
-						if(valueObj.callback) {
-							$(item).text(valueObj.callback(valueObj.value));
-						} else {
-							$(item).text(valueObj);
-						}
-					} else {
-						//如果没有值用空格填充，解决为空导致的高度错乱问题
-						$(item).html('&nbsp;');
-					}
 				})
 			}
 		},

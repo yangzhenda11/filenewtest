@@ -450,27 +450,27 @@ $('#contractEditModal').on('hide.bs.modal', function () {
  * 修改提交
  */
 function saveContract(){
+	var formObj = App.form2json($("#contractEditForm"));
 	var obj = new Object();
-	var isPartner = $("#isPartnerM").val();
-	obj.isPartner = isPartner;
+	obj.isPartner = formObj.isPartner;
+	obj.partnerId = formObj.partnerId;
 	obj.partnerName = $("#partnerNameM").text();
-	obj.partnerId = $("#partnerId").val();
-	if(isPartner == 0){
-		if($("#ouOrgId").val() == ""){
-			layer.msg("OU组织名称不能为空",{icon:2});
-			return false;
-		}else if($("#organisation").data("id") == ""){
+	if(formObj.isPartner == 0){
+		if(formObj.organisationTree == ""){
 			layer.msg("所属组织不能为空",{icon:2});
 			return false;
-		}else if($("#legal").data("id") == ""){
+		}else if(formObj.ouOrgId == ""){
+			layer.msg("OU组织名称不能为空",{icon:2});
+			return false;
+		}else if(formObj.legalTree == ""){
 			layer.msg("法人代表不能为空",{icon:2});
 			return false;
-		}else if($("#other").data("id") == ""){
-			layer.msg("其他映射组织",{icon:2});
+		}else if(formObj.otherTree == ""){
+			layer.msg("其他映射组织不能为空",{icon:2});
 			return false;
 		}else{
-			obj.ouOrgId = $("#ouOrgId").val();
-			obj.partnerCode = $("#partnerCode").val();
+			obj.ouOrgId = formObj.ouOrgId;
+			obj.partnerCode = formObj.partnerCode;
 			obj.orgId = $("#organisation").data("id");
 			obj.legalPersonName = $("#legal").data("id");
 			obj.otherOrgId = $("#other").data("id");

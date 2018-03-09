@@ -74,12 +74,13 @@
 						<div id="mainContent" class="hide">
 							<form class="form-horizontal" role="form">
 								<div class="form-group">
+									<input type="hidden" name="partnerId" id="partnerId" value="" />
 									<label for="partnerNameM" class="col-sm-3 control-label">签约主体名称：</label>
-									<div class="col-sm-6 padding-tb-8" id="partnerNameM"></div>
+									<div class="col-sm-8 padding-tb-8" id="partnerNameM"></div>
 								</div>
 								<div class="form-group">
 									<label for="isPartner" class="col-sm-3 control-label">是否联通方：</label>
-									<div class="col-sm-6">
+									<div class="col-sm-8">
 										<select id="isPartnerM" onchange="changeIsunicom()" class="form-control">
 											<option value="0">是</option>
 											<option value="1">否</option>
@@ -89,7 +90,7 @@
 								<div id="isunicom" class="hide">
 									<div class="form-group">
 										<label for="partnerCode" class="col-sm-3 control-label">关联编码：</label>
-										<div class="col-sm-6">
+										<div class="col-sm-8">
 											<select id="partnerCode" class="form-control">
 												<option value="0">待确认</option>
 												<option value="1">1</option>
@@ -100,7 +101,7 @@
 									</div>
 									<div class="form-group">
 										<label for="organisation" class="col-sm-3 control-label">所属组织：</label>
-										<div class="col-sm-6 input-group paddLR10">
+										<div class="col-sm-8 input-group paddLR10">
 											<input id="organisation" onclick="showTree('organisation')" readonly name="organisationTree" type="text" class="form-control" />
 											<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
 											<div id="organisationContent" class="zTreeContent selectZTreeCount">
@@ -110,13 +111,13 @@
 									</div>
 									<div class="form-group">
 										<label for="ouOrgId" class="col-sm-3 control-label">OU组织名称：</label>
-										<div class="col-sm-6">
+										<div class="col-sm-8">
 											<input type="text"  class="form-control" name="ouOrgId" id="ouOrgId" value="" />
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="legal" class="col-sm-3 control-label">法人代表：</label>
-										<div class="col-sm-6 input-group paddLR10">
+										<div class="col-sm-8 input-group paddLR10">
 											<input id="legal" onclick="showTree('legal')" readonly name="legalTree" type="text" class="form-control" />
 											<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
 											<div id="legalContent" class="zTreeContent selectZTreeCount">
@@ -125,8 +126,8 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="legal" class="col-sm-3 control-label">其他映射组织：</label>
-										<div class="col-sm-6 input-group paddLR10">
+										<label for="other" class="col-sm-3 control-label">其他映射组织：</label>
+										<div class="col-sm-8 input-group paddLR10">
 											<input id="other" onclick="showTree('other')" readonly name="otherTree" type="text" class="form-control" />
 											<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
 											<div id="otherContent" class="zTreeContent selectZTreeCount">
@@ -140,7 +141,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-primary">保存</button>
+						<button type="button" onclick="saveContract()" class="btn btn-primary">保存</button>
 					</div>
 				</div>
 			</div>

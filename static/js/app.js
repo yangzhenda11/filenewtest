@@ -763,7 +763,7 @@ var App = function() {
 					var result = result;
 					if (result.status == 1) {
 						successCallback(result);
-					} else {				
+					} else {
 						improperCallback(result);
 						var ms = result.message;
 						layer.msg(ms, {icon: 2});

@@ -1,87 +1,105 @@
+/**
+ * 全局变量的配置
+ * staticPath:静态资源路径
+ * serverPath:服务端请求路径前缀
+ * curStaffOrgId: 当前登录人的岗位id
+ */
+var globalConfig = {
+    staticPath: "/",
+    serverPath: "http://localhost:9090/",
+    curStaffOrgId: 10001,
+    curStaffId: 10002,
+    curOrgId: 34869,
+    curStaff: {},
+    curOrg: {},
+    curStaffOrg: {},
+    curStaffName: ""
+};
 /*
  * 菜单隐藏实现
  */
 var $hidemenu = $('#hidemenu');
 $hidemenu.click(function() {
-	$('body').removeClass('hideNavbar');
-	$(this).hide();
+    $('body').removeClass('hideNavbar');
+    $(this).hide();
 })
 
 function hideNavbar() {
-	$('body').addClass('hideNavbar');
-	$hidemenu.show();
+    $('body').addClass('hideNavbar');
+    $hidemenu.show();
 }
 /*
  * 全屏实现
  */
 $("#fullScreen").on("click", function() {
-	var fullscreenEnabled = document.fullscreenEnabled || 
-	    document.webkitFullscreenEnabled || 
-	    document.mozFullScreenEnabled ||
-	    document.msFullscreenEnabled
-	if (!fullscreenEnabled){
-		layer.msg("当前浏览器暂不支持全屏操作",{icon: 2});
-		return false;
-	};
-	var fullscreenElement =
-		document.fullscreenElement ||
-		document.webkitFullscreenElement ||
-		document.mozFullScreenElement || 
-		document.msFullscreenElement;
-	if(fullscreenElement) {
-		exitFullscreen();
-	} else {
-		launchFullscreen(document.documentElement);
-	}
-})
-//全屏事件
+        var fullscreenEnabled = document.fullscreenEnabled ||
+            document.webkitFullscreenEnabled ||
+            document.mozFullScreenEnabled ||
+            document.msFullscreenEnabled
+        if (!fullscreenEnabled) {
+            layer.msg("当前浏览器暂不支持全屏操作", { icon: 2 });
+            return false;
+        };
+        var fullscreenElement =
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement;
+        if (fullscreenElement) {
+            exitFullscreen();
+        } else {
+            launchFullscreen(document.documentElement);
+        }
+    })
+    //全屏事件
 function launchFullscreen(element) {
-	if(element.requestFullscreen) {
-		element.requestFullscreen();
-	} else if(element.mozRequestFullScreen) {
-		element.mozRequestFullScreen();
-	} else if(element.msRequestFullscreen) {
-		element.msRequestFullscreen();
-	} else if(element.webkitRequestFullscreen) {
-		element.webkitRequestFullscreen();
-	}
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    }
 }
 //退出全屏事件
 function exitFullscreen() {
-	if(document.exitFullscreen) {
-		document.exitFullscreen();
-	} else if(document.msExitFullscreen) {
-		document.msExitFullscreen();
-	} else if(document.mozCancelFullScreen) {
-		document.mozCancelFullScreen();
-	} else if(document.webkitExitFullscreen) {
-		document.webkitExitFullscreen();
-	}
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
 }
 //全屏相关事件监听事件
 document.addEventListener("fullscreenchange", function(e) {
-	checkFullscreen();
+    checkFullscreen();
 });
 document.addEventListener("mozfullscreenchange", function(e) {
-	checkFullscreen();
+    checkFullscreen();
 });
 document.addEventListener("webkitfullscreenchange", function(e) {
-	checkFullscreen();
+    checkFullscreen();
 });
 document.addEventListener("MSFullscreenChange", function(e) {
-	checkFullscreen();
+    checkFullscreen();
 });
+
 function checkFullscreen() {
-	var fullscreenElement =
-		document.fullscreenElement ||
-		document.webkitFullscreenElement ||
-		document.mozFullScreenElement || 
-		document.msFullscreenElement;
-	if(fullscreenElement) {
-		$("#fullScreen").removeClass("fa-expand").addClass("fa-compress");
-		$("#fullScreen").parent().attr("title","点击退出全屏");
-	} else {
-		$("#fullScreen").removeClass("fa-compress").addClass("fa-expand");
-		$("#fullScreen").parent().attr("title","点击全屏")
-	}
+    var fullscreenElement =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+    if (fullscreenElement) {
+        $("#fullScreen").removeClass("fa-expand").addClass("fa-compress");
+        $("#fullScreen").parent().attr("title", "点击退出全屏");
+    } else {
+        $("#fullScreen").removeClass("fa-compress").addClass("fa-expand");
+        $("#fullScreen").parent().attr("title", "点击全屏")
+    }
 }

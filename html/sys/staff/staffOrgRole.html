@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="../../resource/js/multiselect/multiselect.min.js"></script>
+</head>
+<body>
+	<div id="staffOrgRoleManage" class="roleSetting" tabindex="-1" role="dialog" aria-labelledby="rolesModal_label" width: 100%; height: 100%;">
+		<div class="ordercheck-border mt35">
+			<div class="ordercheck-title">岗位角色管理 </div>
+			<div class="ordercheck-table">
+				<div class="padding20">
+					<div class="col-xs-5">
+						<h5>待选角色</h5>
+						<select name="from[]" id="notHavingRoles" class="form-control" size="9" style="height: 200px;" multiple="multiple"></select>
+					</div>
+					<div class="col-xs-2">
+						<h5>&nbsp;</h5>
+						<button type="button" id="rightAll" class="btn btn-info btn-block">
+							<i class="glyphicon glyphicon-forward"></i>
+						</button>
+						<button type="button" id="rightSelected" class="btn btn-info btn-block">
+							<i class="glyphicon glyphicon-chevron-right"></i>
+						</button>
+						<button type="button" id="leftSelected" class="btn btn-info btn-block">
+							<i class="glyphicon glyphicon-chevron-left"></i>
+						</button>
+						<button type="button" id="leftAll" class="btn btn-info btn-block">
+							<i class="glyphicon glyphicon-backward"></i>
+						</button>
+						<button type="button" id="notHavingRoles_undo"
+							class="btn btn-block">撤销</button>
+						</div>
+					<div class="col-xs-5">
+						<h5>已有角色</h5>
+						<select name="to[]" id="havingRoles" class="form-control" size="9" style="height: 200px;" multiple="multiple"></select>
+					</div>
+					<div class="clear"></div>
+					<div align="center" class="mt25">
+						<button type="button" class="btn btn-primary"  onclick="javascript:saveStaffOrgRoles();">保存设置</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="javascript:returnStaffOrgList()">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../staff/staffOrgRole.js"></script>
+</html>

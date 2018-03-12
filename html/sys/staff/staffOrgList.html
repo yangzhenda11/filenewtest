@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>人员岗位管理</title>
+</head>
+<body>
+	<div class="container-fluid padding20" id="staffOrgList">
+		<div class="clearFix">
+			<div class="head-title2" id="staffManageTitle"></div>
+			<div class="pull-right">
+				<button type="button" class="btn btn-success" onclick="goStaffOrgAdd();">
+					<i class="ace-icon glyphicon glyphicon-plus align-top bigger-125"></i>新增
+				</button>
+				<a type="button" class="btn btn-info" onclick="returnStaffList();">返回</a> 
+			</div>
+		</div>
+		<div class="clear"></div>
+		<hr />
+		<!-- 列表 -->
+		<table id="searchStaffOrgTable" class="display table table-bordered" width="100%"></table>
+	</div>
+	<div id="staffOrgLoadPart"></div>
+	<input type="hidden" id="selectedStaffOrgId">
+</body>
+<script type="text/javascript" src="../staff/staffOrgList.js"></script>
+</html>

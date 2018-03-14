@@ -284,7 +284,7 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
 			"title": "关联编码"
 		},
 		{
-			"data": "orgId",
+			"data": "orgName",
 			"className": "text-center",
 			"title": "所属组织"
 		},

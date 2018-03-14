@@ -88,7 +88,10 @@ var table = App.initDataTables('#searchRoleTable', {
     },
     "scrollX": true
 });
-
+/**
+ * 删除某个角色
+ * @param {角色id} roleId 
+ */
 function deleteDetail(roleId) {
     layer.confirm('确定要将其删除吗', {
         btn: ['删除', '取消'],
@@ -109,7 +112,9 @@ function deleteDetail(roleId) {
         });
     })
 }
-
+/**
+ * 执行查询
+ */
 function searchRole() {
     startLoading("#submitBtn");
     var table = $('#searchRoleTable').DataTable();
@@ -122,30 +127,13 @@ function judge(result) {
     stopLoading("#submitBtn");
     return resolveResult(result);
 }
-
-function splitTable(arrayList) {
-    var domStr = '';
-    if (typeof arrayList == 'object' && arrayList.length > 0) {
-        var tdArray = [];
-        var preDom = '<table class="table no-space">';
-        tdArray.push(preDom);
-        $.each(arrayList, function(index, tdVal) {
-            tdArray.push('<tr><td>' + tdVal + '</td></tr>');
-        });
-        var lastDom = '</table>';
-        tdArray.push(lastDom);
-        domStr = tdArray.join('');
-    } else if (typeof arrayList == 'string') {
-        domStr = arrayList;
-    } else {
-        domStr = '';
-    }
-    return domStr;
-}
-
+/**
+ * 查看角色详情
+ * @param {角色id} itemId 
+ */
 function findDetail(itemId) {
     App.formAjaxJson(parent.globalConfig.serverPath + "roles/" + itemId, "GET", null, ajaxSuccess, null, ajaxError);
-
+    /**成功回调函数 */
     function ajaxSuccess(result) {
         App.setFindValue($("#roleDetail"), result.data, { createDate: valueCallback });
 
@@ -153,7 +141,7 @@ function findDetail(itemId) {
             return getFormatDate(new Date(data), "yyyy-MM-dd")
         }
     }
-
+    /**错误回调函数 */
     function ajaxError() {
         layer.msg("详情查询接口错误", { icon: 2 });
     }
@@ -161,30 +149,106 @@ function findDetail(itemId) {
     $('#findDetailModal').modal('show');
 }
 
+/**
+ * 表单验证规则、提交事件监听配置
+ */
+var checkValidator = {
+    message: 'This value is not valid',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        roleName: {
+            validators: {
+                notEmpty: {
+                    message: '请输入角色名称'
+                }
+            }
+        },
+        orgId: {
+            selector: '#orgName',
+            validators: {
+                notEmpty: {
+                    message: '请单击选择所属组织'
+                }
+            }
+        },
+        roleDesc: {
+            validators: {
+                stringLength: { min: 0, max: 100, message: '请输入不超过100个字符' }
+            }
+        }
+    },
+    submitHandler: function(validator, form, submitButton) {
+        alert("表单提交");
+        if (!$("input[name='roleId']").val()) {
+            addRole();
+        } else {
+            updateRole();
+        }
+    }
+};
+/**
+ * 打开新增窗口
+ */
+function addItem() {
+    //是否合作方角色，默认设置为否
+    //$("input[type='radio'][name='isPartnerRole'][value='0'").attr("checked", "checked");
+    $(".role-form.modal-title").text("添加角色");
+    //加载权限树
+    $.get(parent.globalConfig.serverPath + "pers/permAll", { "staffOrgId": parent.globalConfig.curStaffOrgId, "staffId": parent.globalConfig.curStaffId }, function(data) {
+        rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
+    });
+    //重置表单
+    App.resetForm($("#roleForm"));
+    if (null == $('#roleForm').data('bootstrapValidator')) {
+        $('#roleForm').bootstrapValidator(checkValidator);
+    }
+    resetValidator();
+    $('#orgId').on('change', function(e) {
+        $('#roleForm')
+            .data('bootstrapValidator')
+            .updateStatus('orgId', 'NOT_VALIDATED', null)
+            .validateField('orgId');
+    });
+}
+
+/**
+ * 重置表单验证
+ */
+function resetValidator() {
+    if ($('#roleForm').data('bootstrapValidator')) {
+        $('#roleForm').data('bootstrapValidator').resetForm(true);
+    }
+}
+/**
+ * 打开编辑窗口
+ * @param {角色id} itemId 
+ */
 function editDetail(itemId) {
     $(".role-form.modal-title").text("编辑角色");
     $('#editDetailModal').modal('show');
 }
-
-function addItem() {
-    $("input[type='radio'][name='isPartnerRole'][value='0'").attr("checked", "checked");
-    $(".role-form.modal-title").text("添加角色");
-    $.get(parent.globalConfig.serverPath + "pers/permAll", { "staffOrgId": parent.globalConfig.curStaffOrgId, "staffId": parent.globalConfig.curStaffId }, function(data) {
-        rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
-        permForPermManageTree = $.fn.zTree.init($("#permForPermManageTree"), permForPermManageSetting, data);
-    });
-}
-
+/**
+ * 实现所属组织的点击方法，显示下拉树
+ * @param {加载树的对象} obj 
+ */
 function roleAdd_OrgTree(obj) {
     selectOrgTree('staffAdd_OrgTree', obj, parent.globalConfig.curOrgId, roleAdd_OrgTreeCallback, '', '1', '', '');
 }
-
+/**
+ * 下拉树的回调方法
+ * @param {组织id} orgId 
+ * @param {组织名称} orgName 
+ * @param {组织Code} orgCode 
+ */
 function roleAdd_OrgTreeCallback(orgId, orgName, orgCode) {
-    alert(orgid + ":" + orgCode);
-    $("input[name='orgName']").val(orgName);
-    $("input[name='orgId']").val(orgCode);
+    $("#orgName").val(orgName);
+    $("#orgId").val(orgCode);
 }
-//角色管理页面的权限树
+/** 角色管理页面的权限树 */
 var rolePermissionSetting = {
     check: {
         enable: true,
@@ -213,61 +277,8 @@ var rolePermissionSetting = {
 
     }
 };
-//人员所属角色下的组织树
-var orgSetting = {
-    check: {
-        enable: true,
-        chkboxType: {
-            "Y": "ps",
-            "N": "ps"
-        },
-        chkStyle: "checkbox"
-    },
-    view: {
-        selectedMulti: true
-    },
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "oId",
-            pIdKey: "pId"
-        },
-        key: {
-            name: "name"
-        }
-    },
-    callback: {
-        beforeClick: function(treeId, treeNode) {},
 
-    }
-};
-var permForPermManageSetting = {
-    check: {
-        enable: true,
-        chkboxType: {
-            "Y": "ps",
-            "N": "ps"
-        },
-        chkStyle: "checkbox"
-    },
-    view: {
-        selectedMulti: true
-    },
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "permId",
-            pIdKey: "parentId"
-        },
-        key: {
-            name: "permName"
-        }
-    },
-    callback: {
-        beforeClick: function(treeId, treeNode) {}
-
-    }
-};
+/** 查看权限的树 */
 var permissionViewSetting = {
     view: {
         selectedMulti: false
@@ -286,32 +297,7 @@ var permissionViewSetting = {
         beforeClick: function(treeId, treeNode) {}
     }
 };
-//组织树设置
-var roleorgSetting = {
-    view: {
-        selectedMulti: false
-    },
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "oCode",
-            pIdKey: "pCode"
-        }
-    },
-    callback: {
-        beforeClick: function(treeId, treeNode) {
-            $('#orgId').val(treeNode.id);
-            $('#orgName').val(treeNode.name);
-            $('#orgId').change();
-            $('#orgCloseModal').click();
-        }
-    },
-    async: {
-        enable: true,
-        url: "../sysOrgController/disOrgTree",
-        autoParam: ["oCode", "has_bm", "orgKind"]
-    }
-};
+
 //添加角色下人员时的人员选择树配置
 //20170524
 var roleStaffsetting = {
@@ -387,51 +373,51 @@ function btnFun(c) {
 }
 
 //显示添加角色
-function addRoleShow() {
-    //	$('#roleManage').hide();
-    $("input[name='isPartnerRole'][value='1']").prop("checked", true);
-    debugger;
-    $('#searchRoleContent').hide();
-    $('#roleName').val('');
-    $('#roleDesc').val('');
-    $('#roleModal').show();
-    $('#roleModalTitle').text("新增角色");
-    $('#updateBtn').hide();
-    /**
-     * 根据岗位ID获取当前登录人可操作的权限树信息
-     */
-    $.get(serverPath + "pers/permAll", { "staffOrgId": curStaffOrgId, "staffId": curStaffId }, function(data) {
-        rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
-        permForPermManageTree = $.fn.zTree.init($("#permForPermManageTree"), permForPermManageSetting, data);
+// function addRoleShow() {
+//     //	$('#roleManage').hide();
+//     $("input[name='isPartnerRole'][value='1']").prop("checked", true);
+//     debugger;
+//     $('#searchRoleContent').hide();
+//     $('#roleName').val('');
+//     $('#roleDesc').val('');
+//     $('#roleModal').show();
+//     $('#roleModalTitle').text("新增角色");
+//     $('#updateBtn').hide();
+//     /**
+//      * 根据岗位ID获取当前登录人可操作的权限树信息
+//      */
+//     $.get(serverPath + "pers/permAll", { "staffOrgId": curStaffOrgId, "staffId": curStaffId }, function(data) {
+//         rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
+//         permForPermManageTree = $.fn.zTree.init($("#permForPermManageTree"), permForPermManageSetting, data);
 
-    });
-    /**
-     * 根据岗位ID获取当前登录人可操作的角色信息
-     */
-    $.get(serverPath + "roles/" + curStaffOrgId + "/role", { "staffId": curStaffId }, function(data) {
-        $html = "<button type=\"button\" class=\"user-button btn-sm\" onclick=\"chooseAll()\">全选</button>" +
-            "<button type=\"button\" class=\"user-button user-btn-n btn-sm\" onclick=\"clearAll()\">清除</button>"
-        $("#roleList").append($html);
-        for (var i = 0; i < data.roles.length; i++) {
-            $html = "<label class=\"roleChoose\">" + "<input type=\"checkbox\" name=\"roleList\" value=\"" + data.roles[i].roleId + "\"/>" +
-                "<span>" + data.roles[i].roleName + "</span></label>";
-            $("#roleList").append($html);
-        }
-    });
+//     });
+//     /**
+//      * 根据岗位ID获取当前登录人可操作的角色信息
+//      */
+//     $.get(serverPath + "roles/" + curStaffOrgId + "/role", { "staffId": curStaffId }, function(data) {
+//         $html = "<button type=\"button\" class=\"user-button btn-sm\" onclick=\"chooseAll()\">全选</button>" +
+//             "<button type=\"button\" class=\"user-button user-btn-n btn-sm\" onclick=\"clearAll()\">清除</button>"
+//         $("#roleList").append($html);
+//         for (var i = 0; i < data.roles.length; i++) {
+//             $html = "<label class=\"roleChoose\">" + "<input type=\"checkbox\" name=\"roleList\" value=\"" + data.roles[i].roleId + "\"/>" +
+//                 "<span>" + data.roles[i].roleName + "</span></label>";
+//             $("#roleList").append($html);
+//         }
+//     });
 
-    $('#addBtn').show();
-    if (null == $('#roleForm').data('bootstrapValidator')) {
-        $('#roleForm').bootstrapValidator(checkValidator);
-    }
-    resetValidator();
-    $('#orgId').on('change', function(e) {
-        $('#roleForm')
-            .data('bootstrapValidator')
-            .updateStatus('orgId', 'NOT_VALIDATED', null)
-            .validateField('orgId');
-    });
+//     $('#addBtn').show();
+//     if (null == $('#roleForm').data('bootstrapValidator')) {
+//         $('#roleForm').bootstrapValidator(checkValidator);
+//     }
+//     resetValidator();
+//     $('#orgId').on('change', function(e) {
+//         $('#roleForm')
+//             .data('bootstrapValidator')
+//             .updateStatus('orgId', 'NOT_VALIDATED', null)
+//             .validateField('orgId');
+//     });
 
-}
+// }
 //设置添加角色时拥有权限管理或角色管理的数据范围
 function setPermData() {
     var treeObj = $.fn.zTree.getZTreeObj("rolePermissionTree");
@@ -837,56 +823,6 @@ function deleteSysRole(roleId) {
         }
     });
 }
-var checkValidator = {
-    message: 'This value is not valid',
-    feedbackIcons: {
-        valid: 'glyphicon glyphicon-ok',
-        invalid: 'glyphicon glyphicon-remove',
-        validating: 'glyphicon glyphicon-refresh'
-    },
-    fields: {
-        roleName: {
-            validators: {
-                notEmpty: {
-                    message: '请输入角色名称'
-                }
-            }
-        },
-        orgId: {
-            selector: '#orgName',
-
-            validators: {
-                notEmpty: {
-                    message: '请单击选择所属部门'
-                }
-            }
-        },
-        roleDesc: {
-            validators: {
-                notEmpty: { message: '请输入角色描述' },
-                stringLength: { min: 0, max: 100, message: '请输入不超过100个字符' }
-            }
-        }
-    },
-    submitHandler: function(validator, form, submitButton) {
-        // Use Ajax to submit form data
-        if ($(submitButton).attr('id') == 'addBtn') {
-            addRole();
-        }
-        if ($(submitButton).attr('id') == 'updateBtn') {
-            updateRole();
-        }
-
-
-    }
-
-};
-
-function resetValidator() {
-    if ($('#roleForm').data('bootstrapValidator')) {
-        $('#roleForm').data('bootstrapValidator').resetForm(false);
-    }
-}
 
 /**
  * 根据角色ID查询角色拥有的权限，以树的形式在模态框中展示
@@ -1047,3 +983,87 @@ function staffDetails(staffId) {
         $("#staffDetail").attr("id", "staffDetail" + $("#mark").val());
     });
 }
+
+
+
+//人员所属角色下的组织树
+// var orgSetting = {
+//     check: {
+//         enable: true,
+//         chkboxType: {
+//             "Y": "ps",
+//             "N": "ps"
+//         },
+//         chkStyle: "checkbox"
+//     },
+//     view: {
+//         selectedMulti: true
+//     },
+//     data: {
+//         simpleData: {
+//             enable: true,
+//             idKey: "oId",
+//             pIdKey: "pId"
+//         },
+//         key: {
+//             name: "name"
+//         }
+//     },
+//     callback: {
+//         beforeClick: function(treeId, treeNode) {},
+
+//     }
+// };
+//var permForPermManageSetting = {
+//     check: {
+//         enable: true,
+//         chkboxType: {
+//             "Y": "ps",
+//             "N": "ps"
+//         },
+//         chkStyle: "checkbox"
+//     },
+//     view: {
+//         selectedMulti: true
+//     },
+//     data: {
+//         simpleData: {
+//             enable: true,
+//             idKey: "permId",
+//             pIdKey: "parentId"
+//         },
+//         key: {
+//             name: "permName"
+//         }
+//     },
+//     callback: {
+//         beforeClick: function(treeId, treeNode) {}
+
+//     }
+// };
+//组织树设置
+// var roleorgSetting = {
+//     view: {
+//         selectedMulti: false
+//     },
+//     data: {
+//         simpleData: {
+//             enable: true,
+//             idKey: "oCode",
+//             pIdKey: "pCode"
+//         }
+//     },
+//     callback: {
+//         beforeClick: function(treeId, treeNode) {
+//             $('#orgId').val(treeNode.id);
+//             $('#orgName').val(treeNode.name);
+//             $('#orgId').change();
+//             $('#orgCloseModal').click();
+//         }
+//     },
+//     async: {
+//         enable: true,
+//         url: "../sysOrgController/disOrgTree",
+//         autoParam: ["oCode", "has_bm", "orgKind"]
+//     }
+// };

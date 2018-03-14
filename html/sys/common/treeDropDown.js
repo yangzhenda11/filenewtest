@@ -77,7 +77,7 @@ function newselectOrg() {
         },
         callback: {
             beforeAsync: function(treeId, treeNode) {
-                debugger;
+                // debugger;
                 orgTrees.setting.async.url = serverPath + "orgs/" +
                     treeNode.orgId + "/children";
                 return true;
@@ -87,7 +87,7 @@ function newselectOrg() {
 
     //查看异步加载返回数据
     function ajaxDataFilter(treeId, parentNode, childNodes) {
-        debugger;
+        // debugger;
         if (!childNodes) {
             return null;
         } else {
@@ -118,7 +118,7 @@ function newselectOrg() {
                             orgSetting.async.otherParam = {
                                 "showType": showType,
                             };
-                            debugger;
+                            // debugger;
                             if (initVal.getIfradio() == "1") {
                                 orgSetting.check.enable = false;
                                 orgSetting.callback.onClick = function(event, treeId, treeNode) {
@@ -257,7 +257,7 @@ function newselectStaff() {
     };
     //查看异步加载返回数据
     function ajaxDataFilter2(treeId, parentNode, childNodes) {
-        debugger;
+        // debugger;
         if (!childNodes) {
             return null;
         } else {
@@ -388,12 +388,12 @@ function checkedParam(ifRadio, width, height) {
             height = 200;
         }
     }
-    debugger;
+    // debugger;
     return ifr;
 }
 
 function appendAlert(modalId, serial, message) {
-    debugger;
+    // debugger;
     if ($('#' + modalId + serial).size() == 0) {
         $('#' + modalId + serial).empty();
         $('body').append("<div class='modal fade' id='" + modalId + serial + "' tabindex='-1' role='dialog' aria-labelledby='" + modalId + serial + "'>" +

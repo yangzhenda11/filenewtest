@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>待办任务列表</title>
+<link href="../../resource/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="../../resource/js/datatables.min.js"></script>
+<script src="../../resource/js/date-format.js"></script>
+</head>
+<body>
+	<div class="container-fluid" id="searchContentForToDo">
+		<div class="head-title">
+			<span>待办列表demo</span>
+		</div>
+		<div class="row">
+			<form class="form-inline" method="post">
+				<div class="input-group col-md-3 free-3">
+					<span class="input-group-addon">待办标题:</span>
+					<input type="text" class="form-control" id="processTitle" name="processTitle" size="30px" />
+				</div>
+				<div class= "input-group col-md-3 free-3">
+					 <span class="input-group-addon">审批开始时间:</span> 
+					 <input type="text" name="startDate" id="startDate" size="30px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly"/>
+				</div>
+				<div class="input-group col-md-3 free-3">
+					<span class="input-group-addon">审批结束时间:</span> 
+				     <input type="text" name="endDate" id="endDate" size="30px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly"/>
+				</div>			
+				<div class="input-group col-md-3 free-3">
+					<span class="input-group-addon">环节名称:</span>
+					<input type="text" class="form-control" id="linkName" name="linkName" size="30px"/>
+				</div>			
+				<div class="div-button col-md-pull-3">
+					<a type="button" class="btn btn-info" onclick="serarchForToDo();"><i
+						class="ace-icon glyphicon glyphicon-search"></i>查询</a>
+					<a type="button" class="btn btn-info" onclick="resetConditionForToDo();"><i
+						class="ace-icon glyphicon glyphicon-search"></i>重置</a>
+				</div>			   
+			</form>
+			<div style="display:none;">
+				<input type="hidden" id="currentId" name="currentId"/>
+				<form id="taskToDoDetail">
+					<!-- 是否为会签节点 -->
+					<input type="hidden" id="isCounterSign" name="isCounterSign"/>
+					<!-- 任务相关属性 -->
+					<input type="text" id="taskId" name="taskId" />
+					<input type="text" id="taskDefinitionKey" name="taskDefinitionKey" />
+					<input type="text" id="name" name="name" />
+					<input type="text" id="processInstanceId" name="processInstanceId" />
+					<input type="text" id="processDefinitionId" name="processDefinitionId" />
+					<input type="text" id="title" name="title" />
+					<input type="text" id="processDefinitionKey" name="processDefinitionKey" />
+					<input type="text" id="executionId" name="executionId" />
+					<!-- 任务所属登录人岗位ID -->
+					<input type="text" id="assigneeId" name="assigneeId"/>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<table id="searchTableTodo" class="display table table-bordered" cellspacing="0" width="100%">
+			</table>
+		</div>
+	</div>
+	<div id= "goTaskToDoDetailForToDo"></div>
+</body> 
+<script type="text/javascript" src="../workflow/tasklist/task-todo.js"></script>
+</html>

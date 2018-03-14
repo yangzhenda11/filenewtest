@@ -6,52 +6,80 @@ var menus = [{
         "uri": "",
         "childrens": [{
             "id": "100101",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "角色管理",
             "uri": "html/sys/role/role.html",
             "childrens": []
         }, {
             "id": "100102",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "内部组织管理",
             "uri": "html/sys/org/orgList.html",
             "childrens": []
         }, {
             "id": "100103",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "内部人员管理",
             "uri": "html/sys/staff/staffList.html",
             "childrens": []
         }, {
             "id": "100104",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "权限管理",
             "uri": "html/sys/permission/permission.html",
             "childrens": []
         }, {
             "id": "100105",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "字典管理",
             "uri": "html/sys/dict/dict.html",
             "childrens": []
         }, {
             "id": "100106",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "系统参数管理",
             "uri": "html/sys/config/config.html",
             "childrens": []
         }, {
             "id": "100107",
-            "pid": "1",
+            "pid": "1001",
             "icon": "",
             "name": "系统日志查询",
             "uri": "html/sys/log/log.html",
+            "childrens": []
+        }]
+    }, {
+        "id": "2001",
+        "pid": "1",
+        "icon": "glyphicon-th-large",
+        "name": "流程功能",
+        "uri": "",
+        "childrens": [{
+            "id": "200101",
+            "pid": "2001",
+            "icon": "",
+            "name": "发起流程demo",
+            "uri": "html/workflow/sample/common-detail.html",
+            "childrens": []
+        }, {
+            "id": "200102",
+            "pid": "2001",
+            "icon": "",
+            "name": "待办列表demo",
+            "uri": "html/workflow/tasklist/task-todo.html",
+            "childrens": []
+        }, {
+            "id": "200103",
+            "pid": "2001",
+            "icon": "",
+            "name": "已办列表demo",
+            "uri": "html/workflow/tasklist/task-hasdone.html",
             "childrens": []
         }]
     }, {

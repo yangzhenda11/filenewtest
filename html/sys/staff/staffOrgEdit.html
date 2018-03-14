@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container-fluid ">
+		<form class="form-horizontal" role="form" id="staffOrgEditForm">
+			<div class="ordercheck-border">
+				<div class="ordercheck-title">修改人员岗位</div>
+				<div class="ordercheck-table">
+					<div class="padding20" id="staffOrgEditField">
+						<input type="hidden" name="staffOrgId">
+ 						<input type="hidden" name="staffId"> 
+ 						<input type="hidden" name="updateBy">  
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<span class="input-group-addon">岗位类型<span class="notNull">*</span></span> 
+									<select class="form-control" name="staffOrgType" data-placeholder="岗位类型">
+										<option value="F" >主岗</option>
+										<option value="T" >兼职</option>
+										<option value="J" >借调</option>
+									</select> 
+								</div>
+							</div>
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<span class="input-group-addon">组织名称<span class="notNull">*</span></span> 
+									<input type="text" name="orgName" class="form-control"
+									onclick="getStaffOrgEdit_OrgTree(this);" onfocus="javascript:this.blur();">
+									<input type="hidden" name="orgId" val="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<span class="input-group-addon">入职日期</span> 
+									<input type="text" name="hireDate" placeholder="入职日期" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<span class="input-group-addon">生效日期</span> 
+									<input type="text" name="effectStartDate" placeholder="生效日期" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<span class="input-group-addon">结束日期</span> 
+									<input type="text" name="effectEndDate" placeholder="结束日期" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group col-sm-6">
+								<div class="input-group">
+									<span class="input-group-addon">在职状态<span class="notNull">*</span></span> 
+									<select class="form-control" name="staffOrgStatus" data-placeholder="在职状态">
+										<option value="1" >有效</option>
+										<option value="0" >无效</option>
+									</select> 
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-sm-12">
+								<div class="input-group">
+									<span class="input-group-addon">职责</span> 
+									<input type="text" name="duty" placeholder="职责" class="form-control">
+								</div>
+							</div>
+						</div>
+						<div align="center" class="mt10">
+							<button type="submit" class="btn btn-primary">修改</button>
+							<button type="button" class="btn btn-primary" onclick="returnStaffOrgList();">返回</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript" src="../staff/staffOrgEdit.js"></script>
+</html>

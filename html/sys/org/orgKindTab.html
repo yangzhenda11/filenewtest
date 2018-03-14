@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../org/orgKindTab.js"></script>
+</head>
+<body>
+	
+	<div class="headerDiv"></div>
+	<div class="container-fluid mid-body">
+		<div class="row-fluid">
+			<div class="span12">
+				<form role="form" id="orgSearchForm">
+					<div class="row">
+						<div class="input-group col-sm-3 free-3">
+							<span class="input-group-addon">组织名称</span> <input type="text"
+								class="form-control" name="orgName" 
+								placeholder="组织名称" maxlength="20"><!-- onclick="selectOrg('orgtreeMark','','',yourFunction2,'','2');" -->
+						</div>
+						<div class="input-group col-sm-3 free-3">
+							<span class="input-group-addon">组织编码</span> <input type="text"
+								class="form-control"  name="orgCode"
+								placeholder="组织编码" maxlength="20">
+						</div>
+						<div class="input-group col-sm-3 free-3">
+							<span class="input-group-addon">组织类型</span> 
+							<select class="form-control" name="orgType">
+								<option value="">--请选择--</option>
+								<option value="1">&nbsp;&nbsp;&nbsp;公司</option>
+								<option value="2">&nbsp;&nbsp;&nbsp;部门</option>
+								<option value="3">&nbsp;&nbsp;&nbsp;处室</option>
+								<option value="4">&nbsp;&nbsp;&nbsp;虚拟组织</option>
+							</select>
+						</div>
+						<div class="input-group col-sm-3 free-3">
+							<span class="input-group-addon">状态</span> 
+							<select class="form-control" name="orgStatus">
+								<option value="">--请选择--</option>
+								<option value="1">&nbsp;&nbsp;&nbsp;有效</option>
+								<option value="0">&nbsp;&nbsp;&nbsp;无效</option>
+							</select>
+						</div>
+						<div class="div-button col-md-pull-3">
+							<a class="btn btn-info" style="" onclick="orgSearchOrg()">
+								<i class="ace-icon glyphicon glyphicon-search"></i>查询
+							</a>
+							<button type="button" class="btn btn-info" onclick="orgReset()">
+								<i class="ace-icon glyphicon glyphicon-refresh"></i>重置
+							</button>
+							<button type="button" class="btn btn-success" onclick="orgAddOrg()">
+								<i class="ace-icon glyphicon glyphicon-plus"></i>新增
+							</button>
+						</div>
+					</div>
+				</form>
+				<div class="hr"></div>
+			</div>
+			<div class = "row" id ="orgSearchTableDiv">
+				<!-- load table  -->
+			</div>
+		</div>
+	</div>
+	<div id="orgDetailModalPart"></div>
+</body>
+
+</html>

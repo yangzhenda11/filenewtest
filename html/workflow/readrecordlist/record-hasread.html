@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>已阅任务列表</title>
+<link href="../../resource/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="../../resource/js/datatables.min.js"></script>
+<script src="../../resource/js/date-format.js"></script>
+</head>
+	<body>
+	<div class="container-fluid" id="searchContentHasread">
+		<div class="head-title">
+			<span>已阅列表demo</span>
+		</div>
+		<div class="row">
+			<form class="form-inline" method="post">
+				<div class="input-group col-md-3 free-3">
+					<span class="input-group-addon">待办标题:</span>
+					<input type="text" class="form-control" id="processTitleHasread" name="processTitle" size="30px" />
+				</div>
+				<div class= "input-group col-md-3 free-3">
+					 <span class="input-group-addon">已阅开始时间:</span> 
+					 <input type="text" name="startDate" id="startDateHasread" size="30px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly"/>
+				</div>
+				<div class="input-group col-md-3 free-3">
+					<span class="input-group-addon">已阅结束时间:</span> 
+				     <input type="text" name="endDate" id="endDateHasread" size="30px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly"/>
+				</div>			
+				<div class="input-group col-md-3 free-3">
+					<span class="input-group-addon">环节名称:</span>
+					<input type="text" class="form-control" id="linkNameHasread" name="linkName" size="30px"/>
+				</div>			
+				<div class="div-button col-md-pull-3">
+					<a type="button" class="btn btn-info" onclick="serarchHasread();"><i
+						class="ace-icon glyphicon glyphicon-search"></i>查询</a>
+					<a type="button" class="btn btn-info" onclick="resetCondition();"><i
+						class="ace-icon glyphicon glyphicon-search"></i>重置</a>
+				</div>			   
+			</form>
+		</div>
+		<div style="display:none;">
+			<!-- 当前登录人岗位ID -->
+			<input type="hidden" id="currentIdHasread" name="currentId"/>
+			<form id="recordHasReadDetail">
+				<input type="text" id="recordIdHasread" name="recordId"/>
+				<input type="text" id="idHasread" name="id"/>
+				<input type="text" id="taskDefinitionKeyHasread" name="taskDefinitionKey"/>
+				<input type="text" id="nameHasread" name="name"/>
+				<input type="text" id="processInstanceIdHasread" name="processInstanceId"/>
+				<input type="text" id="titleHasread" name="title"/>
+				<input type="text" id="processDefinitionIdHasread" name="processDefinitionId"/>
+				<input type="text" id="processDefinitionKeyHasread" name="processDefinitionKey"/>
+				<input type="text" id="executionIdHasread" name="executionId"/>
+				<input type="text" id="assigneeIdHasread" name="assigneeId"/>
+			</form>
+		</div>
+ 		<hr/>
+		<div class="row">
+			<table id="searchTableHasread" class="display table table-bordered" cellspacing="0" width="100%">
+			</table>
+		</div>
+	</div>
+	<div id= "goRecordHasReadDetailHasread"></div>
+</body>
+<script type="text/javascript" src="../workflow/readrecordlist/record-hasread.js"></script>
+</html>

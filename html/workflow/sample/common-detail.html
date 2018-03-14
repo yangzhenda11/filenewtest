@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>公用业务发起页面</title>
+<script type="text/javascript" src="../workflow/sample/common-detail.js"></script>
+</head>
+<body>
+	<div id="startProcess"></div>
+	<div>
+		<p>业务页面</p>
+		<!-- 业务页面所必须的流程Key定义 -->
+		<select id="processDefinitionKeyForStart" name="processDefinitionKey">
+			<option value="ReleasePoint">普通审批</option>
+			<option value="Vote">投票会签</option>
+			<option value="M_main">主子流程_分离</option>
+			<option value="Main_Sub">主子流程</option>  
+		</select>
+	</div>
+	<div style="text-align:right">
+		<button id="showPanel" type="button" class="btn btn-success" onclick="showStartPanel();">发起</button>
+	</div>	
+</body>
+</html>

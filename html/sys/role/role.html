@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html>
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>角色管理</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" type="text/css" href="../../sys/common/treeDropDown.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
+
+</head>
+
+<body>
+    <div class="page-content">
+        <div class="portlet">
+            <div class="portlet-title  ">
+                <div class="caption font-dark">
+                    <span class="caption-subject bold uppercase">角色管理</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="page-search">
+                    <form class="form-horizontal" action="">
+                        <div class="row page-search-form">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">角色名称</span>
+                                    <input type="text" class="form-control" id="sysRoleName" name="sysRoleName" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">组织名称</span>
+                                    <input type="text" class="form-control" id="sysOrgName" name="sysOrgName" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="page-search-action">
+                            <button type="button" id="searchBtn" class="btn btn-block red" onclick="searchRole()"><i class="ace-icon fa fa-search"></i> 查询</button>
+                            <button type="reset" class="btn btn-block yellow hidden"><i class="ace-icon fa fa-repeat"></i> 重置</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="toolbars">
+                    <!--href="addForm.html"-->
+                    <a data-toggle="modal" data-target="#editDetailModal" onclick="addItem()" class="btn red btn-outline" data-title="添加角色"><i class="fa fa-plus-circle"></i> 新增</a>
+                    <!-- <button onclick="delItem()" type="button" class="btn yellow btn-outline"><i class="fa fa-times"></i> 删除</button> -->
+                </div>
+                <table id="searchRoleTable" class="table table-striped table-bordered table-hover table-header-fixed">
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--弹出查看-->
+    <div class="modal fade" id="findDetailModal" tabindex="-1" data-backdrop="static" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">角色详情</h4>
+                </div>
+                <div class="modal-body form">
+                    <div id="roleDetail" class="form-body form-horizontal form-row-seperated">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">角色名称:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="roleName"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">所属组织:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="orgName"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">角色描述:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static" name="roleDesc"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">添加时间:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="createDate"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--弹出编辑-->
+    <div class="modal fade" id="editDetailModal" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title role-form">编辑角色</h4>
+                </div>
+                <div class="modal-body form">
+                    <div class="form-body">
+                        <form id="roleForm" action="" class="form-horizontal">
+                            <input type="hidden" name="roleId" id="roleId">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="roleName">角色名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="roleName" name="roleName" placeholder="角色名称">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="orgName">所属组织</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="orgName" onclick="roleAdd_OrgTree(this)" readonly="readonly" autocomplete="false" placeholder="所属组织">
+                                        <input type="hidden" name="orgId">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="selectID">合作方角色</label>
+                                <div class="col-sm-10">
+                                    <div class="ui-radio-list ui-radio-inline">
+                                        <label class="ui-radio">
+                                            否
+                                            <input type="radio" value="0" name="isPartnerRole" checked>
+                                            <span></span>
+                                        </label>
+                                        <label class="ui-radio">
+                                            是
+                                            <input type="radio" value="1" name="isPartnerRole">
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="roleDesc">角色描述</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="roleDesc" placeholder="角色描述">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="roleDesc">角色权限</label>
+                                <div class="col-sm-10">
+                                    <ul id="rolePermissionTree" class="ztree" style="width: 560px; overflow: auto;"></ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="submitBtn" data-type="edit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i> 提交</button>
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--[if lt IE 9]>
+      <script src="../../../static/plugins/html5shiv.min.js"></script>
+      <script src="../../../static/plugins/respond.min.js"></script>
+      <script src="../../../static/plugins/ie8.fix.min.js"></script>
+    <![endif]-->
+    <!--[if lte IE 8]>
+        <script src="../../../static/plugins/selectivizr-min.js"></script>
+    <![endif]-->
+    <!--插件引入-->
+    <script type="text/javascript">
+        //数据初始化
+    </script>
+    <!--基础依赖-->
+    <script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/js.cookie.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/jquery.blockui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/select2/js/select2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <!--业务依赖-->
+    <script src="../../../static/plugins/datatables-plugin/datatables.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/datatables-plugin/plugins/datatables.bootstrap.js"></script>
+    <script src="../../../static/plugins/datatables-plugin/ellipsis.js"></script>
+    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.extend.js" type="text/javascript" charset="utf-8"></script>
+    <!--表格-结束-->
+    <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/js/date-format.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
+    <script src="../../sys/common/treeDropDown.js"></script>
+    <!--当前页面依赖-->
+    <script src="role.js" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+	<!-- 
+	注意：此页面为页面发起流程的公共引入页面
+	1.引入的父页面需要注意contentType等属性配置
+	2.页面中必要两个元素processDefinitionKey（流程编码）与taskDefinitionKey（首环节编码）——均参考流程定义文件即可
+	3.业务页面均需要实现方法JavaScript方法modal_start()调用java代码发起流程
+	4.showStartPanel()用于弹出环节及人员选择窗口
+	5.提交成功后如需要，modal_start()可获取页面元素（link环节、assignee下环节处理人）以用于流程发布
+	6.closeModal()用于关闭页面弹出窗口，需要时在流程发起后的回调函数中使用
+	7.业务页面均需要实现方法JavaScript方法， 如果没有节点流程需要的数据 直接return false 如果存在流程数据则返回 {"a":a,"b":"b"}json格式数据 function setRelativeData(){return false / {"a":"a","b","b"}}
+	 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>流程发起待办页面-各流程发起嵌入页面</title>
+<script type="text/javascript" src="../workflow/startpanel/process-start.js"></script>
+</head>
+<body>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myProcessStartModal" role="dialog" aria-labelledby="processTite" data-backdrop="static">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="processTite">流程审批</h4>
+				</div>
+				<div class="modal-body">
+			      	<div>
+				      	<div class="col-sm-2">
+				      		<label for="link" style="text-align:center;">下一环节名称</label>
+				      	</div>
+				      	<div class="col-sm-10" style="padding-bottom:20px;">
+				      		<select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
+				      	</div>
+				      	<div class="clearfix"></div>
+			      	</div>
+			      	<div>
+				      	<div class="col-sm-2">
+				      		<label for="assignee" style="text-align:center;">下环节处理人</label>
+				      	</div>
+				      	<!-- <div class="col-sm-10" style="padding-bottom:20px;">
+				      		<select class="form-control" id="assignee" name="assignee">
+				      		</select>
+				      	</div> -->
+				      	<div class="col-sm-10" style="padding-bottom:20px;">
+				      		<input type="text" name="assigneeName" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left:10px"/>
+				      		<input type="hidden" name="assignee" class="form-control" id="assigneeForStart"/>
+				      		<span style="font-size:16px; position:absolute;top:9px;right:25px;z-index:999;cursor:pointer;" class="glyphicon glyphicon-zoom-in" onclick="selectAssigneeForStart($('#linkForStart').val().split(',')[2]);"></span>
+				      	</div>
+				      	<div class="clearfix"></div>
+			      	</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-success" data-loading-text="Loading..."  onclick="startProcess($('#processDefinitionKeyForStart').val(), $('#assigneeForStart').val(), $('#linkForStart').val().split(',')[0]);">提交</button>
+					<button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">返回</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

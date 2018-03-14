@@ -8870,7 +8870,6 @@ AngularJS UI-select
   
 /*
  * zander 
- * 18.3.1
  */
 .search-action{
 		width: 100px;
@@ -8890,6 +8889,15 @@ AngularJS UI-select
 }
 button:focus{
 	outline: none !important;
+}
+#ip11{
+	font-size: 40px;
+}
+.page-edit{
+	position: absolute;
+}
+.editBtn{
+	width: 80px;
 }
 /*
  * layer样式

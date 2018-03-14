@@ -60,6 +60,7 @@ var orgsSetting = {
 		dblClickExpand: false
 	},
 	callback: {
+		onAsyncError: onAsyncError,
 		beforeClick: beforeClick,
 		onClick: onClick,
 		beforeAsync:zTreeBeforeAsync
@@ -101,6 +102,7 @@ var legalSetting = {
 		dblClickExpand: false
 	},
 	callback: {
+		onAsyncError: onAsyncError,
 		beforeClick: beforeClick,
 		onClick: onClick,
 		beforeAsync:zTreeBeforeAsync
@@ -427,9 +429,10 @@ function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
 			var otherIdsArrLen = otherIdsArr.length;
 			var k = 0;
 			function othernSuccessCallback(result){
-				name += result.data.orgName+",";
+				name += result.data.orgName+"，";
 				k++;
 				if(k == otherIdsArrLen){
+					name = name.slice(0,name.length-1);
 					$("#other").val(name);
 					$("#other").attr("title",name);
 				}

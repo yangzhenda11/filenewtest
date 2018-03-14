@@ -890,7 +890,7 @@ var App = function() {
 				//              "fixedColumns": {
 				//                  'leftColumns': 2
 				//              },
-				"columnDefs": [{ // 所有列默认值
+				"columnDefs": [{
 					"targets": "_all",
 					"defaultContent": ''
 				}],

@@ -724,6 +724,7 @@ var App = function() {
 		 * @param type 请求方式
 		 * @param data  传输的数据
 		 * @param succCallback  正确回调函数
+		 * @param improperCallbacks 异常回调方法
 		 * @param errorCallback  错误回调函数
 		 * @param animation 动画
 		 * @param async 同步异步
@@ -822,6 +823,21 @@ var App = function() {
 			}
 			download_file.iframe.src = url;
 			download_file.iframe.style.display = "none";
+		},
+		/*
+		 * 修改对象的key值
+		 * para为对象，obj为要替换值的对象
+		 */
+		changeObjKey: function(para,obj){
+			for(var key in para){
+				if(obj.key == null){
+					obj[para[key]] = "";
+				}else{
+					obj[para[key]] = obj.key;
+				}
+				delete obj[key];
+			};
+			return obj;
 		},
 		initDataTables: function(el, options) {
 			if(!$().dataTable) {

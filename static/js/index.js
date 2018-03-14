@@ -6,10 +6,12 @@
  */
 var globalConfig = {
     staticPath: "/",
-    serverPath: "http://localhost:9090/",
+    serverPath: "",
     curStaffOrgId: 10001,
     curStaffId: 10002,
     curOrgId: 34869,
+    curOrgStaffRole: 1,
+    orgId:56665,
     curStaff: {},
     curOrg: {},
     curStaffOrg: {},

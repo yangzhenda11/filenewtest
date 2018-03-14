@@ -26,7 +26,7 @@
 			<div class="portlet">
 				<div class="portlet-title">
 					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase"> 待办事项</span>
+						<span class="caption-subject bold uppercase"> 签约主体管理</span>
 					</div>
 				</div>
 				<div class="portlet-body">
@@ -79,6 +79,17 @@
 									<div class="col-sm-8 padding-tb-8" id="partnerNameM"></div>
 								</div>
 								<div class="form-group">
+									<label for="partnerCode" class="col-sm-3 control-label">关联编码：</label>
+									<div class="col-sm-8">
+										<select id="partnerCode" name="partnerCode" class="form-control">
+											<option value="0">待确认</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
 									<label for="isPartner" class="col-sm-3 control-label">是否联通方：</label>
 									<div class="col-sm-8">
 										<select id="isPartnerM" name="isPartner" onchange="changeIsunicom()" class="form-control">
@@ -88,17 +99,6 @@
 									</div>
 								</div>
 								<div id="isunicom" class="hide">
-									<div class="form-group">
-										<label for="partnerCode" class="col-sm-3 control-label">关联编码：</label>
-										<div class="col-sm-8">
-											<select id="partnerCode" name="partnerCode" class="form-control">
-												<option value="0">待确认</option>
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-											</select>
-										</div>
-									</div>
 									<div class="form-group">
 										<label for="organisation" class="col-sm-3 control-label">所属组织：</label>
 										<div class="col-sm-8 input-group paddLR10">

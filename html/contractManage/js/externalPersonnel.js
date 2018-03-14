@@ -3,6 +3,10 @@ var organisationTree = null;
 var curOrgId = 56665;
 $(function(){
 	getTreeInfo();
+	$("#modalContent").load("./html/externalPersonnelModal.html?" + App.timestamp());
+	$('#modalContent').on('hidden.bs.modal', function() {
+		$("#detailsModal").load("./html/externalPersonnelModal.html?" + App.timestamp());
+	});
 })
 /*
  * 显示所属组织树
@@ -164,7 +168,7 @@ var personnelTable = App.initDataTables('#personnelTable', {
 				if(data) {
 					var html = "";
 					var para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + '&&' + data.STAFF_STATUS;
-					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "editPersonnel(\'' + data.STAFF_ID + '\')">修改</button>'+
+					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "personnelModal(\'' + data.STAFF_ID + "edit" +'\')">修改</button>'+
 					'<button class="btn primary btn-outline btn-xs dt-edit" onclick = "resetPasswd(\'' + para +'\')">密码重置</button>';
 					if(data.STAFF_STATUS == '1'){
 						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para +'\')">禁用</button>';
@@ -182,7 +186,7 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			"className": "text-center",
 			"title": "人员姓名",
 			render:function(a,b,c,d){
-	        	return "<a href=\"javascript:showStaffDetail('"+c.STAFF_ID+"')\">"+a+"</a>";
+	        	return "<a href=\"javascript:void(0)\" onclick=''>"+a+"</a>";
 			}
 		},
 		{
@@ -277,7 +281,12 @@ function doChangeStaffStatus(staffId,staffStatus,index){
 			searchPersonnel(true);
 		}
 }
-
+/*
+ * 判断modal类型
+ */
+function personnelModal(code){
+	
+}
 
 
 

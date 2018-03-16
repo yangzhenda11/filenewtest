@@ -1,3 +1,6 @@
+/*
+ * 外部人员组织JS
+ */
 var organisationTree = null;
 var orgNameTree = null;
 //系统的全局变量获取
@@ -6,9 +9,9 @@ var serverPath = config.serverPath;
 //页面初始化事件
 $(function() {
 	getTreeInfo();
-	$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp());
+	$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit");
 	$('#modalEditContent').on('hidden.bs.modal', function() {
-		$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp());
+		$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit");
 	});
 })
 /*
@@ -203,7 +206,7 @@ var personnelTable = App.initDataTables('#personnelTable', {
 		{
 			"data": "ORG_NAME",
 			"className": "text-center",
-			"title": "岗位"
+			"title": "组织"
 		},
 		{
 			"data": "SEX",
@@ -362,7 +365,7 @@ function getEditForm(code){
 	}
 }
 /*
- * 提交
+ * 新增||修改提交
  */
 function updateExternalPersonnel(editType) {
 	var formObj = App.getFormValues($("#externalPersonnelForm"));
@@ -379,7 +382,7 @@ function updateExternalPersonnel(editType) {
 		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
 		ms = "修改成功";
-		url = serverPath + "staffs/"+formObj.staffId;
+		url = serverPath + "staffs/"+formObj.staffId;		//staffPartner
 		pushType = "PUT";
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);

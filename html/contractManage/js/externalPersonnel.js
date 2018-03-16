@@ -366,8 +366,9 @@ function getEditForm(code){
  */
 function updateExternalPersonnel(editType) {
 	var formObj = App.getFormValues($("#externalPersonnelForm"));
-	var ms = "修改成功";
-	var url = "staffs/";		//staffPartner
+	var ms = "新增成功";
+	var url = serverPath + "staffs/";		//staffPartner
+	var pushType = "POST";
 	if(editType == "add"){
 		formObj.createBy = config.curStaffId;
 		formObj.updateBy = config.curStaffId;
@@ -377,8 +378,11 @@ function updateExternalPersonnel(editType) {
 	}else{
 		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
+		ms = "修改成功";
+		url = serverPath + "staffs/"+formObj.staffId;
+		pushType = "PUT";
 	}
-	App.formAjaxJson(serverPath + "/orgPartner", "PUT", JSON.stringify(obj), successCallback,improperCallbacks);
+	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
 		searchPersonnel(true);

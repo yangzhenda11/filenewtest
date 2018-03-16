@@ -317,13 +317,18 @@ function editContract(data) {
 		$("#partnerNameM").text(data.partnerName);
 		$("#partnerCode").val(data.partnerCode)
 		$("#isPartnerM").val(data.isPartner);
-		$("#ouOrgId").val(data.ouOrgId);
-		$("#organisation").data("id",data.orgId);
-		$("#legal").data("id",data.legalPersonName);
-		$("#other").data("id",data.otherOrgId);
 		if(data.isPartner == 0){
 			$("#isunicom").removeClass("hide");
-			getTreeValueInfor(data.orgId,data.legalPersonName,data.otherOrgId);
+			$("#ouOrgId").val(data.ouOrgId);
+			$("#organisation").data("id",data.orgId);
+			$("#legal").data("id",data.legalPersonName);
+			$("#other").data("id",data.otherOrgId);
+			$("#organisation").val(data.orgName);
+			$("#organisation").attr("title",data.orgName);
+			$("#legal").val(data.staffName);
+			$("#legal").attr("title",data.staffName);
+			$("#other").val(data.otherOrgName);
+			$("#other").attr("title",data.otherOrgName);
 			getTreeInfo();
 		}else{
 			$("#isunicom").addClass("hide");
@@ -396,7 +401,8 @@ function getTreeInfo(){
  * 获取三个树的信息
  * 所属组织，法人代表，其他组织
  */
-function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
+function getTreeValueInfor(data){
+	/*
 	var key = 0;
 	App.formAjaxJson(serverPath + "orgs/"+orgId, "get", "", orgIdSuccessCallback);
 	function orgIdSuccessCallback(result){
@@ -435,7 +441,7 @@ function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
 				}
 			}
 		}
-	}
+	}*/
 }
 $('#contractEditModal').on('hide.bs.modal', function () {
 	$("#contractModalDefault").removeClass("hide");

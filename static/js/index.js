@@ -5,18 +5,29 @@
  * curStaffOrgId: 当前登录人的岗位id
  */
 var globalConfig = {
+    /**静态服务地址 */
     staticPath: "/",
-    serverPath: "",
+    /**后台服务地址 */
+   	serverPath: "/",
+//  serverPath: "http://localhost:9090/",
+    /** 当前用户的岗位id （sys_staff_org表主键） */
     curStaffOrgId: 10001,
+    /** 当前用户的id （sys_staff主键） */
     curStaffId: 10002,
-    curOrgId: 34869,
+    /** 当前用户所在组织的id（sys_org表主键） */
+    curOrgId: 56665,
+    /** 当前用户对象 */
+    curStaff: {},
+    /** 当前用户所在组织对象 */
+    curOrg: {},
+    /** 当前岗位信息对象 */
+    curStaffOrg: {},
+    /** 当前用户的用户名 */
+    curStaffName: "",
     curOrgStaffRole: 1,
     orgId:56665,
-    curStaff: {},
-    curOrg: {},
-    curStaffOrg: {},
-    curStaffName: ""
 };
+
 /*
  * 菜单隐藏实现
  */

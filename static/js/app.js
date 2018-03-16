@@ -789,7 +789,7 @@ var App = function() {
 		 * 表单元素序列化
 		 * 根据name值取值
 		 */
-		form2json: function($form) {
+		getFormValues: function($form) {
 		    var o = {};
 		    var a = $form.serializeArray();
 		    $.each(a, function(index, value) {
@@ -1808,4 +1808,12 @@ function resolveResult(result,code){
 		layer.msg(ms, {icon: 2});
 		return [];
 	}
+}
+/*
+ * ztree异步加载失败事件
+ */
+function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+	layer.msg("接口错误", {
+		icon: 2
+	});
 }

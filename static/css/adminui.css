@@ -8880,6 +8880,9 @@ AngularJS UI-select
 .modal-body{
 	display: block;
 }
+.overflow-hidden{
+	overflow: hidden;
+}
 .zTreeContent{
 	max-height: 200px;
 	margin-bottom: 20px;
@@ -8901,6 +8904,12 @@ button:focus{
 }
 .editBtn{
 	width: 80px;
+}
+.notNull{
+	color: #E43A45;
+	position: relative;
+	top: 2px;
+	left: 3px;
 }
 /*
  * layer样式

@@ -1,11 +1,14 @@
 var organisationTree = null;
-//当前登录角色ID
-var curOrgId = 56665;
-$(function(){
+var orgNameTree = null;
+//系统的全局变量获取
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
+//页面初始化事件
+$(function() {
 	getTreeInfo();
-	$("#modalContent").load("./html/externalPersonnelModal.html?" + App.timestamp());
-	$('#modalContent').on('hidden.bs.modal', function() {
-		$("#detailsModal").load("./html/externalPersonnelModal.html?" + App.timestamp());
+	$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp());
+	$('#modalEditContent').on('hidden.bs.modal', function() {
+		$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp());
 	});
 })
 /*
@@ -17,7 +20,7 @@ function showTree(dom) {
 	$("#" + dom + "Content").css({
 		left: "0",
 		top: selectObj.outerHeight() + "px",
-		width: selectObj.outerWidth() + 120
+		width: selectObj.outerWidth() + (dom == "orgNameIn" ? 40 : 120)
 	}).slideDown("fast");
 	onBodyDown(dom);
 }
@@ -39,23 +42,22 @@ function onBodyDown(dom) {
 	});
 }
 /*
- * 所属组织树配置单选
- * "/orgs/" + treeNode.orgId + "/children"
+ * 所属组织树配置单选配置
  */
 var orgsSetting = {
-	async : {
-		enable : true,
-		url : "",
-		type : "get",
-		dataType : 'json',
-		dataFilter : orgsfilter
+	async: {
+		enable: true,
+		url: "",
+		type: "get",
+		dataType: 'json',
+		dataFilter: orgsfilter
 	},
 	data: {
 		simpleData: {
 			enable: true,
 			idKey: "orgId",
 			pIdKey: "parent_id"
-		},		
+		},
 		key: {
 			name: "orgName"
 		}
@@ -66,30 +68,28 @@ var orgsSetting = {
 	callback: {
 		onAsyncError: onAsyncError,
 		onClick: onClick,
-		beforeAsync:zTreeBeforeAsync
+		beforeAsync: zTreeBeforeAsync
 	}
 };
+
 function orgsfilter(treeId, parentNode, responseData) {
 	var responseData = responseData.data;
-	if(responseData){
+	if(responseData) {
 		return responseData;
-	}else{
+	} else {
 		return null;
 	}
 }
-
+/*
+ * ztree异步加载之前
+ */
 function zTreeBeforeAsync(treeId, treeNode) {
-	if(treeId == "organisationTree"){
-		organisationTree.setting.async.url = "/orgs/" + treeNode.orgId + "/children";
+	if(treeId == "organisationTree") {
+		organisationTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
+	}else if(treeId == "orgName"){
+		orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
 	}
 	return true;
-}
-
-/*
- * ztree异步加载失败事件
- */
-function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown){
-	layer.msg("接口错误", {icon: 2});
 }
 
 /*
@@ -97,31 +97,34 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
  */
 function onClick(event, treeId, treeNode) {
 	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
-	if(treeId == "organisationTree"){
-		var selectName = nodes[0].orgName;
-		var selectId = nodes[0].orgId;
-	}
+	var selectName = nodes[0].orgName;
+	var selectId = nodes[0].orgId;
 	$("input[name=" + treeId + "]").data("id", selectId);
 	$("input[name=" + treeId + "]").val(selectName);
-	$("input[name=" + treeId + "]").attr("title",selectName);
+	$("input[name=" + treeId + "]").attr("title", selectName);
+	if(treeId == "orgName"){
+		$("#externalPersonnelForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
+		$("#externalPersonnelForm").data("bootstrapValidator").validateField('orgName');
+	}
 }
 /*
  * 获取组织
  * 所属组织树配置
- *  orgs/{orgId}/orgTree
  */
-function getTreeInfo(){
-	App.formAjaxJson("/orgs/"+curOrgId+"/orgTree", "get", "", successCallback);
-	function successCallback(result){
+function getTreeInfo(code) {
+	App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
+	function successCallback(result) {
 		var data = result.data;
 		var allObj = {
-			isParent:"false",
-			orgId:"",
-			orgName:"全部"
+			isParent: "false",
+			orgId: "",
+			orgName: "全部"
 		}
-		if(null == data){
-			layer.msg("没有相关组织和人员信息",{icon: 2});
-		}else{
+		if(null == data) {
+			layer.msg("没有相关组织和人员信息", {
+				icon: 2
+			});
+		} else {
 			data.unshift(allObj);
 			organisationTree = $.fn.zTree.init($("#organisationTree"), orgsSetting, data);
 		}
@@ -130,35 +133,40 @@ function getTreeInfo(){
 /*
  * 请求到结果后的回调事件
  */
-function judge(result){
+function judge(result) {
 	stopLoading("#submitBtn");
 	return resolveResult(result);
 }
+/*
+ * 表格初始化
+ */
 var personnelTable = App.initDataTables('#personnelTable', {
 	"serverSide": true,
-	fixedColumns:{
-        leftColumns: 2
-    },
-    buttons: ['copy', 'colvis'],
+	fixedColumns: {
+		leftColumns: 2
+	},
+	buttons: ['copy', 'colvis'],
 	ajax: {
-        "type": "GET",
-        "url": '/staffs/',
-        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-        "dataType":'json',
-        "beforeSend": startLoading("#submitBtn"),
-        "data":function(d){
-        	d.sysOrgId = curOrgId;
-        	d.staffName = $("input[name='staffName']").val();
-        	d.loginName = $("input[name='loginName']").val();
-        	d.staffStatus =  $("select[name='staffStatus']").val();
-        	d.orgId = $("#organisation").data("id");
-        	return d;
-        },
-         error: function (xhr, error, thrown) {  
-            stopLoading("#submitBtn");
-            layer.msg("接口错误", {icon: 2});
-        },
-        "dataSrc": judge
+		"type": "GET",
+		"url": serverPath + 'staffs/',
+		"contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
+		"dataType": 'json',
+		"beforeSend": startLoading("#submitBtn"),
+		"data": function(d) {
+			d.sysOrgId = config.curOrgId;
+			d.staffName = $("input[name='staffName']").val();
+			d.loginName = $("input[name='loginName']").val();
+			d.staffStatus = $("select[name='staffStatus']").val();
+			d.orgId = $("#organisation").data("id");
+			return d;
+		},
+		error: function(xhr, error, thrown) {
+			stopLoading("#submitBtn");
+			layer.msg("接口错误", {
+				icon: 2
+			});
+		},
+		"dataSrc": judge
 	},
 	"columns": [{
 			"data": null,
@@ -168,12 +176,12 @@ var personnelTable = App.initDataTables('#personnelTable', {
 				if(data) {
 					var html = "";
 					var para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + '&&' + data.STAFF_STATUS;
-					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "personnelModal(\'' + data.STAFF_ID + "edit" +'\')">修改</button>'+
-					'<button class="btn primary btn-outline btn-xs dt-edit" onclick = "resetPasswd(\'' + para +'\')">密码重置</button>';
-					if(data.STAFF_STATUS == '1'){
-						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para +'\')">禁用</button>';
-					}else{
-						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para +'\')">启用</button>';
+					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "personnelModal(\'edit&&' + data.STAFF_ID + '\')">修改</button>' +
+						'<button class="btn primary btn-outline btn-xs dt-edit" onclick = "resetPasswd(\'' + para + '\')">密码重置</button>';
+					if(data.STAFF_STATUS == '1') {
+						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para + '\')">禁用</button>';
+					} else {
+						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para + '\')">启用</button>';
 					}
 					return html;
 				} else {
@@ -182,11 +190,11 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			}
 		},
 		{
-			"data": "STAFF_NAME",
+			"data": null,
 			"className": "text-center",
 			"title": "人员姓名",
-			render:function(a,b,c,d){
-	        	return "<a href=\"javascript:void(0)\" onclick=''>"+a+"</a>";
+			render: function(data, type, full, meta) {
+				return '<a href=\"javascript:void(0)\" onclick = "personnelModal(\'detail&&' + data.STAFF_ID + '\')">' + data.STAFF_NAME + '</a>';
 			}
 		},
 		{
@@ -203,9 +211,9 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			"data": "SEX",
 			"className": "text-center",
 			"title": "性别",
-			render: function (data, type, full, meta) {
-	            return data=='M'?'男':'女';
-	        }
+			render: function(data, type, full, meta) {
+				return data == 'M' ? '男' : '女';
+			}
 		},
 		{
 			"data": "EMAIL",
@@ -221,9 +229,9 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			"data": "STAFF_STATUS",
 			"className": "text-center",
 			"title": "岗位状态",
-			render: function (data, type, full, meta) {
-	            return data=='1'?'有效':'无效';
-	        }
+			render: function(data, type, full, meta) {
+				return data == '1' ? '有效' : '无效';
+			}
 		},
 	]
 });
@@ -231,11 +239,11 @@ var personnelTable = App.initDataTables('#personnelTable', {
  * 搜索点击事件
  */
 function searchPersonnel(resetPaging) {
-	startLoading("#submitBtn")
+	startLoading("#submitBtn");
 	var table = $('#personnelTable').DataTable();
-	if(resetPaging){
+	if(resetPaging) {
 		table.ajax.reload(null, false);
-	}else{
+	} else {
 		table.ajax.reload();
 	}
 }
@@ -244,199 +252,265 @@ function searchPersonnel(resetPaging) {
  * 密码重置
  * para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + data.STAFF_STATUS;
  */
-function resetPasswd(para){
+function resetPasswd(para) {
 	para = para.split("&&");
-	layer.confirm('确定重置<span style="color:red;margin:0 5px;">'+ para[1] +'</span>的密码?', {icon: 3, title:'密码重置'}, function(index){
-		App.formAjaxJson('/staffs/'+ para[0] +"/passwd/"+ para[2] , "PUT", "", successCallback);
-		function successCallback(result){
+	layer.confirm('确定重置<span style="color:red;margin:0 5px;">' + para[1] + '</span>的密码?', {
+		icon: 3,
+		title: '密码重置'
+	}, function(index) {
+		App.formAjaxJson(serverPath + 'staffs/' + para[0] + "/passwd/" + para[2], "PUT", "", successCallback);
+
+		function successCallback(result) {
 			layer.close(index);
-			layer.alert("用户<span style='color:red;margin:0 5px;'>"+ para[1] +"</span>的密码重置成功，</br>新密码为<span style='color:red;margin:0 5px;'>" + result.data +"</span>。",{icon: 1});
+			layer.alert("用户<span style='color:red;margin:0 5px;'>" + para[1] + "</span>的密码重置成功，</br>新密码为<span style='color:red;margin:0 5px;'>" + result.data + "</span>。", {
+				icon: 1
+			});
 		}
 	});
 }
 /*
  * 用户启用禁用
- * status 1已经启用    0禁用
+ * STAFF_STATUS 1已经启用    0禁用
  * para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + data.STAFF_STATUS;
  */
-function changeStaffStatus(para){
+function changeStaffStatus(para) {
 	para = para.split("&&");
-	if(para[3] == "1"){
-		layer.confirm('确定禁用<span style="color:red;margin:0 5px;">'+ para[1] +'</span>的账号?', {icon: 3, title:'账号禁用'}, function(index){
-			doChangeStaffStatus(para[0],0,index);
-		});
-	}else{
-		layer.confirm('确定启用<span style="color:red;margin:0 5px;">'+ para[1] +'</span>的账号?', {icon: 3, title:'账号启用'}, function(index){
-			doChangeStaffStatus(para[0],1,index);
-		});
-	}
+	var statusMsg = "启用";
+	var status = 1;
+	if(para[3] == "1") {
+		statusMsg = "禁用";
+		status = 0;
+	};
+	layer.confirm('确定' + statusMsg + '<span style="color:red;margin:0 5px;">' + para[1] + '</span>的账号?', {
+		icon: 3,
+		title: '账号' + statusMsg
+	}, function(index) {
+		doChangeStaffStatus(para[0], status, index);
+	});
 }
-
-function doChangeStaffStatus(staffId,staffStatus,index){
-	App.formAjaxJson("/staffs/"+staffId+"/status/"+staffStatus , "PUT", "", successCallback);
-		function successCallback(result){
-			layer.close(index);
-			var ms = staffStatus == "1" ? "启用成功" : "禁用成功";
-			layer.msg(ms,{icon: 1});
-			searchPersonnel(true);
-		}
+/*
+ * 启用禁用提交
+ */
+function doChangeStaffStatus(staffId, staffStatus, index) {
+	App.formAjaxJson(serverPath + "staffs/" + staffId + "/status/" + staffStatus, "PUT", "", successCallback);
+	function successCallback(result) {
+		layer.close(index);
+		var ms = staffStatus == "1" ? "启用成功" : "禁用成功";
+		layer.msg(ms, {
+			icon: 1
+		});
+		searchPersonnel(true);
+	}
 }
 /*
  * 判断modal类型
  */
-function personnelModal(code){
-	
+function personnelModal(code) {
+	var code = code.split("&");
+	var editType = code[0];
+	if(editType == "add") {
+		$("#modalTitle").text("新增外部人员");
+		$("#modalDefault").addClass("hide");
+		$("#mainContent").removeClass("hide");
+		dateRegNameChose();
+		validate(editType);
+	} else if(editType == "edit") {
+		$("#modalTitle").text("外部人员信息编辑");
+		$("#modalDefault").addClass("hide");
+		$("#mainContent").removeClass("hide");
+		validate(editType);
+	} else {
+		$("#modalTitle").text("外部人员信息详情");
+	}
+	$('#modalEditContent').modal('show');
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- * 表格内编辑按钮点击事件
- */
-function editContract(data) {
-	$('#contractEditModal').modal('show');
-	var url = "/orgPartner/"+data;
-	App.formAjaxJson(url, "get", "", successCallback);
+//日期和组织树选择触发
+function dateRegNameChose(){
+	if($.fn.datepicker) {
+		$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+		$.fn.datepicker.defaults.language = 'zh-CN';
+		$.fn.datepicker.defaults.autoclose = true;
+		$('.date-picker').datepicker({
+			format: "yyyy-mm-dd"
+		});
+	};
+	$("#orgNameIn").on("click",function(){
+		showTree('orgNameIn');
+	});
+	App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		$("#contractModalDefault").addClass("hide");
-		$("#mainContent").removeClass("hide");
-		$("#partnerNameM").text(data.partnerName);
-		$("#partnerId").val(data.partnerId);
-		if(data.isPartner == 0){
-			$("#isPartnerM").val(0);
-			$("#isunicom").removeClass("hide");
-			$("#partnerCode").val(data.partnerCode)
-			$("#ouOrgId").val(data.ouOrgId);
-			$("#organisation").data("id",data.orgId);
-			$("#legal").data("id",data.legalPersonName);
-			$("#other").data("id",data.otherOrgId);
-			getTreeValueInfor(data.orgId,data.legalPersonName,data.otherOrgId);
-			getTreeInfo();
-		}else{
-			$("#isPartnerM").val(1);
-			$("#isunicom").addClass("hide");
-			$("#organisation,#legal,#other").data("id","");
-			$("#organisation,#legal,#other").attr("title","");
-			$("#organisation,#legal,#other,#ouOrgId").val("");
-			$("#partnerCode").val(0);
+		if(null == data) {
+			layer.msg("没有相关组织和人员信息", {icon: 2});
+		} else {
+			orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
 		}
 	}
 }
-function changeIsunicom(){
-	var isPartnerValue = $("#isPartnerM").val();
-	if(isPartnerValue == 0){
-		$("#isunicom").removeClass("hide");
-		getTreeInfo();
-	}else{
-		$("#isunicom").addClass("hide");
-	}
-}
+/*
+ * 提交
+ */
+function updateExternalPersonnel(editType) {
+	var formObj = App.getFormValues($("#externalPersonnelForm"));
+	console.log(formObj);
+	
+	//App.formAjaxJson("/orgPartner", "PUT", JSON.stringify(obj), successCallback);
 
-/*
- * 获取三个树的信息
- * 所属组织，法人代表，其他组织
- */
-function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
-	var key = 0;
-	App.formAjaxJson("/orgs/"+orgId, "get", "", orgIdSuccessCallback);
-	function orgIdSuccessCallback(result){
-		var name = result.data.orgName;
-		$("#organisation").val(name);
-		$("#organisation").attr("title",name);
-		key++;
-		loadOther();
-	}
-	App.formAjaxJson("/staffs/"+legalPersonName, "get", "", legalPersonSuccessCallback);
-	function legalPersonSuccessCallback(result){
-		var name = result.data.staffInfo.staffName;
-		$("#legal").val(name);
-		$("#legal").attr("title",name);
-		key++;
-		loadOther();
-	};
-	function loadOther(){
-		if(key == 2){
-			var name = "";
-			var otherIdsArr = otherOrgId.split(",");
-			var otherIdsArrLen = otherIdsArr.length;
-			var k = 0;
-			function othernSuccessCallback(result){
-				name += result.data.orgName+",";
-				k++;
-				if(k == otherIdsArrLen){
-					$("#other").val(name);
-					$("#other").attr("title",name);
-				}
-			}
-			if(otherIdsArrLen > 0){
-				for(var i = 0; i < otherIdsArrLen; i++){
-					App.formAjaxJson("/orgs/"+otherIdsArr[i], "get", "", othernSuccessCallback);
-				}
-			}
-		}
+	function successCallback(result) {
+		layer.msg("修改成功", {icon: 1});
+		searchPersonnel(true);
+		$('#modalEditContent').modal('hide');
+		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
 	}
 }
-$('#contractEditModal').on('hide.bs.modal', function () {
-	$("#contractModalDefault").removeClass("hide");
-	$("#mainContent").addClass("hide");
-});
 /*
- * 修改提交
+ * 表单验证
  */
-function saveContract(){
-	var formObj = App.form2json($("#contractEditForm"));
-	var obj = new Object();
-	obj.isPartner = formObj.isPartner;
-	obj.partnerId = formObj.partnerId;
-	obj.partnerName = $("#partnerNameM").text();
-	if(formObj.isPartner == 0){
-		if(formObj.organisationTree == ""){
-			layer.msg("所属组织不能为空",{icon:2});
-			return false;
-		}else if(formObj.ouOrgId == ""){
-			layer.msg("OU组织名称不能为空",{icon:2});
-			return false;
-		}else if(formObj.legalTree == ""){
-			layer.msg("法人代表不能为空",{icon:2});
-			return false;
-		}else if(formObj.otherTree == ""){
-			layer.msg("其他映射组织不能为空",{icon:2});
-			return false;
-		}else{
-			obj.ouOrgId = formObj.ouOrgId;
-			obj.partnerCode = formObj.partnerCode;
-			obj.orgId = $("#organisation").data("id");
-			obj.legalPersonName = $("#legal").data("id");
-			obj.otherOrgId = $("#other").data("id");
+function validate(editType) {
+	$('#externalPersonnelForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+			loginName : {
+				validators : {
+					notEmpty : {
+						message : '请输入账号'
+					},
+					stringLength : {
+						min : 0,
+						max : 20,
+						message : '请输入不超过20个字符'
+					},
+					regexp : {
+						regexp : /^[a-zA-Z0-9_\-\.]+$/,
+						message : '用户名由数字字母-_和.组成'
+					}
+				}
+			},
+			passwd : {
+				validators : {
+					notEmpty : {
+						message : '请输入密码'
+					},
+					stringLength : {
+						min : 5,
+						max : 30,
+						message : '请输入5或30位密码'
+					}
+				}
+			},
+			staffName : {
+				validators : {
+					notEmpty : {
+						message : '请输入人员姓名'
+					},
+					stringLength : {
+						min : 0,
+						max : 15,
+						message : '请输入不超过15个字'
+					}
+				}
+			},
+			orgName : {
+				validators : {
+					notEmpty : {
+						message : '请选择所属组织'
+					}
+				},
+				trigger: "focus blur keyup change",
+			},
+			empCode : {
+				validators : {
+					regexp : {
+						regexp : /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+						message : '请输入15或18位身份证号'
+					}
+				}
+			},
+			sex : {
+				validators : {
+					notEmpty : {
+						message : '请选择性别'
+					}
+				},
+				trigger: "focus blur keyup change",
+			},
+			postcode : {
+				validators : {
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '请检查邮政编码'
+					},
+					stringLength : {
+						min : 0,
+						max : 6,
+						message : '请输入不超过6位数字'
+					}
+				}
+			},
+			mailAddr : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 30,
+						message : '请输入不超过30个字符'
+					}
+				}
+			},
+			phone : {
+				validators : {
+					regexp : {
+						regexp : /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
+						message : '请检查电话是否正确'
+					}
+				}
+			},
+			mobilPhone : {
+				validators : {
+					notEmpty : {
+						message : '请输入手机号'
+					},
+					stringLength : {
+						min : 11,
+						max : 11,
+						message : '请输入11位手机号码'
+					},
+					regexp : {
+						regexp : /^1[3|5|7|8]{1}[0-9]{9}$/,
+						message : '请输入正确的手机号码'
+					}
+				}
+			},
+			email : {
+				validators : {
+					emailAddress : {
+						message : '请检查Email拼写'
+					},
+					stringLength : {
+						min : 0,
+						max : 50,
+						message : '请输入不超过50个字符'
+					}
+				}
+			},
+			staffSort : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 8,
+						message : '请输入不超过8位数字'
+					},
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '排序只能输入数字'
+					}
+				}
+			}
 		}
-	}
-	App.formAjaxJson("/orgPartner", "PUT", JSON.stringify(obj), successCallback);
-	function successCallback(result){
-		layer.msg("修改成功",{icon:1});
-		searchContract();
-		$('#contractEditModal').modal('hide');
-	}
+	}).on('success.form.bv', function(e) {
+		e.preventDefault();
+		updateExternalPersonnel(editType);
+	});
 }

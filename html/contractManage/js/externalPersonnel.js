@@ -141,18 +141,18 @@ function judge(result) {
  * 表格初始化
  */
 var personnelTable = App.initDataTables('#personnelTable', {
-	"serverSide": true,
+	"serverSide": true,					//开启服务器请求模式
 	fixedColumns: {
-		leftColumns: 2
+		leftColumns: 2					//固定左侧两列
 	},
-	buttons: ['copy', 'colvis'],
+	buttons: ['copy', 'colvis'],		//显示的工具按钮
 	ajax: {
-		"type": "GET",
-		"url": serverPath + 'staffs/',
+		"type": "GET",					//请求方式
+		"url": serverPath + 'staffs/',	//请求地址
 		"contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
 		"dataType": 'json',
-		"beforeSend": startLoading("#submitBtn"),
-		"data": function(d) {
+		"beforeSend": startLoading("#submitBtn"),		//第一次请求时loading效果开启
+		"data": function(d) {							//自定义传入参数
 			d.sysOrgId = config.curOrgId;
 			d.staffName = $("input[name='staffName']").val();
 			d.loginName = $("input[name='loginName']").val();
@@ -160,13 +160,11 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			d.orgId = $("#organisation").data("id");
 			return d;
 		},
-		error: function(xhr, error, thrown) {
+		"error": function(xhr, error, thrown) {			//服务器端失败时停止效果，返回错误
 			stopLoading("#submitBtn");
-			layer.msg("接口错误", {
-				icon: 2
-			});
+			layer.msg("接口错误", {icon: 2});
 		},
-		"dataSrc": judge
+		"dataSrc": judge								//请求到结果后的回调
 	},
 	"columns": [{
 			"data": null,
@@ -306,7 +304,7 @@ function doChangeStaffStatus(staffId, staffStatus, index) {
  * 判断modal类型
  */
 function personnelModal(code) {
-	var code = code.split("&");
+	var code = code.split("&&");
 	var editType = code[0];
 	if(editType == "add") {
 		$("#modalTitle").text("新增外部人员");
@@ -314,15 +312,13 @@ function personnelModal(code) {
 		$("#mainContent").removeClass("hide");
 		dateRegNameChose();
 		validate(editType);
+		$('#modalEditContent').modal('show');
 	} else if(editType == "edit") {
 		$("#modalTitle").text("外部人员信息编辑");
-		$("#modalDefault").addClass("hide");
-		$("#mainContent").removeClass("hide");
-		validate(editType);
+		getEditForm(code[1]);
 	} else {
 		$("#modalTitle").text("外部人员信息详情");
 	}
-	$('#modalEditContent').modal('show');
 }
 //日期和组织树选择触发
 function dateRegNameChose(){
@@ -348,18 +344,47 @@ function dateRegNameChose(){
 	}
 }
 /*
+ * 获取内容填充修改表单
+ */
+function getEditForm(code){
+	App.formAjaxJson(serverPath + "staffs/"+code, "get", "", successCallback);
+	function successCallback(result){
+		var data = result.data.staffInfo;
+		$("#modalDefault").addClass("hide");
+		$("#mainContent").removeClass("hide");
+		$('#modalEditContent').modal('show');
+		App.setFormValues("#externalPersonnelForm",data);
+		$("#hireDate").val(App.formatDateTime(data.hireDate,"yyyy-mm-dd"));
+		$("#orgNameIn").attr("title",data.orgName);
+		$("#orgNameIn").data("id",data.orgId);
+		dateRegNameChose();
+		validate("edit");
+	}
+}
+/*
  * 提交
  */
 function updateExternalPersonnel(editType) {
 	var formObj = App.getFormValues($("#externalPersonnelForm"));
-	console.log(formObj);
-	
-	//App.formAjaxJson("/orgPartner", "PUT", JSON.stringify(obj), successCallback);
-
+	var ms = "修改成功";
+	var url = "staffs/";		//staffPartner
+	if(editType == "add"){
+		formObj.createBy = config.curStaffId;
+		formObj.updateBy = config.curStaffId;
+		formObj.orgId = $("#orgNameIn").data("id");
+		formObj.staffKind = 1;
+		delete formObj.staffId;
+	}else{
+		formObj.updateBy = config.curStaffId;
+		formObj.orgId = $("#orgNameIn").data("id");
+	}
+	App.formAjaxJson(serverPath + "/orgPartner", "PUT", JSON.stringify(obj), successCallback,improperCallbacks);
 	function successCallback(result) {
-		layer.msg("修改成功", {icon: 1});
+		layer.msg(ms, {icon: 1});
 		searchPersonnel(true);
 		$('#modalEditContent').modal('hide');
+	}
+	function improperCallbacks(result){
 		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
 	}
 }
@@ -396,8 +421,7 @@ function validate(editType) {
 					},
 					stringLength : {
 						min : 5,
-						max : 30,
-						message : '请输入5或30位密码'
+						message : '密码至少5位'
 					}
 				}
 			},

@@ -251,7 +251,7 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
 	"columns": [{
 			"data": "partnerId",
 			"className": "text-center",
-			"title": "编辑",
+			"title": "操作",
 			"render": function(data, type, full, meta) {
 				if(data) {
 					return '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "editContract(\'' + data + '\')">编辑</button>';
@@ -298,7 +298,7 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
  * 搜索点击事件
  */
 function searchContract() {
-	startLoading("#submitBtn"),
+	startLoading("#submitBtn");
 	var table = $('#searchContractTable').DataTable();
 	table.ajax.reload();
 }

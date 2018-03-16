@@ -8896,10 +8896,10 @@ button:focus{
 #ip11{
 	font-size: 40px;
 }
-.page-edit{
+.toolbars{
 	position: relative;
 }
-.page-edit-content{
+.toolbars-content{
 	position: absolute;
 }
 .editBtn{

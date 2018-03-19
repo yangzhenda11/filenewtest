@@ -16,6 +16,7 @@ var globalConfig = {
     curStaffId: 10002,
     /** 当前用户所在组织的id（sys_org表主键） */
     curOrgId: 56665,
+    orgId:56665,
     /** 当前用户对象 */
     curStaff: {},
     /** 当前用户所在组织对象 */
@@ -24,8 +25,7 @@ var globalConfig = {
     curStaffOrg: {},
     /** 当前用户的用户名 */
     curStaffName: "",
-    curOrgStaffRole: 1,
-    orgId:56665,
+    curOrgStaffRole: 1
 };
 
 /*

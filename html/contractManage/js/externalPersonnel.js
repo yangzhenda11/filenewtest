@@ -9,7 +9,6 @@ var serverPath = config.serverPath;
 //页面初始化事件
 $(function() {
 	getTreeInfo();
-	
 	$("#modalDetailContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail");
 	$('#modalDetailContent').on('hidden.bs.modal', function() {
 		$("#modalDetailContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail");
@@ -358,8 +357,8 @@ function setDetailForm(data){
 function setEditForm(data){
 	console.log(data)
 	$('#modalEditContent').modal('show');
-	App.setFormValues("#externalPersonnelForm",data);
-	$("#hireDate").val(App.formatDateTime(data.hireDate,"yyyy-mm-dd"));
+	var valueCallback = {'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+	App.setFormValues("#externalPersonnelForm",data,valueCallback);
 	$("#orgNameIn").attr("title",data.orgName);
 	$("#orgNameIn").data("id",data.orgId);
 	dateRegNameChose();
@@ -395,19 +394,19 @@ function dateRegNameChose(){
 function updateExternalPersonnel(editType) {
 	var formObj = App.getFormValues($("#externalPersonnelForm"));
 	var ms = "新增成功";
-	var url = serverPath + "staffPartner/addStaffPartner";		//staffPartner
+	var url = serverPath + "staffPartner/addStaffPartner";
 	var pushType = "POST";
 	if(editType == "add"){
 		formObj.createBy = config.curStaffId;
 		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
-		formObj.staffKind = 1;
+		formObj.staffKind = 2;
 		delete formObj.staffId;
 	}else{
 		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
 		ms = "修改成功";
-		url = serverPath + "staffPartner/updateStaffPartner";		//staffPartner
+		url = serverPath + "staffPartner/updateStaffPartner";
 		pushType = "PUT";
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);

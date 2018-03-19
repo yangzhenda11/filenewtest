@@ -156,7 +156,7 @@ var personnelTable = App.initDataTables('#personnelTable', {
 	buttons: ['copy', 'colvis'],		//显示的工具按钮
 	ajax: {
 		"type": "GET",					//请求方式
-		"url": serverPath + 'staffs/',	//请求地址
+		"url": serverPath + 'staffPartner/getStaffPartnerList',	//请求地址
 		"contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
 		"dataType": 'json',
 		"beforeSend": startLoading("#submitBtn"),		//第一次请求时loading效果开启
@@ -181,10 +181,10 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var html = "";
-					var para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + '&&' + data.STAFF_STATUS;
-					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "personnelModal(\'edit&&' + data.STAFF_ID + '\')">修改</button>' +
+					var para = data.staffId + '&&' + data.staffName + '&&' + data.loginName + '&&' + data.staffStatus;
+					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "personnelModal(\'edit&&' + data.staffId + '\')">修改</button>' +
 						'<button class="btn primary btn-outline btn-xs dt-edit" onclick = "resetPasswd(\'' + para + '\')">密码重置</button>';
-					if(data.STAFF_STATUS == '1') {
+					if(data.staffStatus == '1') {
 						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para + '\')">禁用</button>';
 					} else {
 						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para + '\')">启用</button>';
@@ -200,21 +200,21 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			"className": "text-center",
 			"title": "人员姓名",
 			render: function(data, type, full, meta) {
-				return '<a href=\"javascript:void(0)\" onclick = "personnelModal(\'detail&&' + data.STAFF_ID + '\')">' + data.STAFF_NAME + '</a>';
+				return '<a href=\"javascript:void(0)\" onclick = "personnelModal(\'detail&&' + data.staffId + '\')">' + data.staffName + '</a>';
 			}
 		},
 		{
-			"data": "LOGIN_NAME",
+			"data": "loginName",
 			"className": "text-center",
 			"title": "账号"
 		},
 		{
-			"data": "ORG_NAME",
+			"data": "orgName",
 			"className": "text-center",
 			"title": "组织"
 		},
 		{
-			"data": "SEX",
+			"data": "sex",
 			"className": "text-center",
 			"title": "性别",
 			render: function(data, type, full, meta) {
@@ -222,17 +222,17 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			}
 		},
 		{
-			"data": "EMAIL",
+			"data": "email",
 			"className": "text-center",
 			"title": "邮箱"
 		},
 		{
-			"data": "MOBIL_PHONE",
+			"data": "mobilPhone",
 			"className": "text-center",
 			"title": "手机"
 		},
 		{
-			"data": "STAFF_STATUS",
+			"data": "staffStatus",
 			"className": "text-center",
 			"title": "岗位状态",
 			render: function(data, type, full, meta) {
@@ -264,7 +264,7 @@ function resetPasswd(para) {
 		icon: 3,
 		title: '密码重置'
 	}, function(index) {
-		App.formAjaxJson(serverPath + 'staffs/' + para[0] + "/passwd/" + para[2], "PUT", "", successCallback);
+		App.formAjaxJson(serverPath + 'staffPartner/updatePassword/' + para[0] + "/" + para[2], "PUT", "", successCallback);
 
 		function successCallback(result) {
 			layer.close(index);
@@ -298,7 +298,7 @@ function changeStaffStatus(para) {
  * 启用禁用提交
  */
 function doChangeStaffStatus(staffId, staffStatus, index) {
-	App.formAjaxJson(serverPath + "staffs/" + staffId + "/status/" + staffStatus, "PUT", "", successCallback);
+	App.formAjaxJson(serverPath + "staffPartner/updateStaffPartnerStatus/" + staffId + "/" + staffStatus, "PUT", "", successCallback);
 	function successCallback(result) {
 		layer.close(index);
 		var ms = staffStatus == "1" ? "启用成功" : "禁用成功";
@@ -330,9 +330,9 @@ function personnelModal(code) {
  * 获取人员信息详情
  */
 function getInfor(id,type){
-	App.formAjaxJson(serverPath + "staffs/"+id, "get", "", successCallback);
+	App.formAjaxJson(serverPath + "staffPartner/getStaffPartner/" + id, "get", "", successCallback);
 	function successCallback(result){
-		var data = result.data.staffInfo;
+		var data = result.data;
 		if(type == "edit"){
 			setEditForm(data);
 		}else{
@@ -356,6 +356,7 @@ function setDetailForm(data){
  * 填充修改表单
  */
 function setEditForm(data){
+	console.log(data)
 	$('#modalEditContent').modal('show');
 	App.setFormValues("#externalPersonnelForm",data);
 	$("#hireDate").val(App.formatDateTime(data.hireDate,"yyyy-mm-dd"));
@@ -394,7 +395,7 @@ function dateRegNameChose(){
 function updateExternalPersonnel(editType) {
 	var formObj = App.getFormValues($("#externalPersonnelForm"));
 	var ms = "新增成功";
-	var url = serverPath + "staffs/";		//staffPartner
+	var url = serverPath + "staffPartner/addStaffPartner";		//staffPartner
 	var pushType = "POST";
 	if(editType == "add"){
 		formObj.createBy = config.curStaffId;
@@ -406,7 +407,7 @@ function updateExternalPersonnel(editType) {
 		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
 		ms = "修改成功";
-		url = serverPath + "staffs/"+formObj.staffId;		//staffPartner
+		url = serverPath + "staffPartner/updateStaffPartner";		//staffPartner
 		pushType = "PUT";
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);

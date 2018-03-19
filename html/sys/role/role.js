@@ -8,6 +8,7 @@ var serverPath = parent.globalConfig.serverPath;
 //角色下人员表
 var roleSearchStaffTable;
 var table = App.initDataTables('#searchRoleTable', {
+	"serverSide": true,					//开启服务器请求模式
     "ajax": {
         "type": "GET",
         "url": parent.globalConfig.serverPath + 'roles/', //请求路径

@@ -148,7 +148,6 @@ function judge(result) {
  * 表格初始化
  */
 var personnelTable = App.initDataTables('#personnelTable', {
-	"serverSide": true,					//开启服务器请求模式
 	fixedColumns: {
 		leftColumns: 2					//固定左侧两列
 	},

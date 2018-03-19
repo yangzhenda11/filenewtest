@@ -1840,3 +1840,10 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
 		icon: 2
 	});
 }
+/*
+ * Handlebars引擎模板   按钮生成
+ */
+var btnModel = '    \
+	{{#each func}}\
+    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
+    {{/each}}';

@@ -254,7 +254,7 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
 			"title": "操作",
 			"render": function(data, type, full, meta) {
 				if(data) {
-					return '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "editContract(\'' + data + '\')">编辑</button>';
+					return '<button class="btn primary btn-outline btn-xs" onclick = "editContract(\'' + data + '\')">编辑</button>';
 				} else {
 					return '';
 				}

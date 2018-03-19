@@ -1,9 +1,9 @@
 var organisationTree = null;
 var otherTree = null;
 var legalTree = null;
-//角色全局变量
-var curOrgStaffRole = 1;
 var curOrgStaffNode = null;
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
 /*
  * 显示所属组织树
  */
@@ -36,7 +36,6 @@ function onBodyDown(dom) {
 }
 /*
  * 所属组织树配置单选
- * "/orgs/" + treeNode.orgId + "/children"
  */
 var orgsSetting = {
 	async : {
@@ -60,6 +59,7 @@ var orgsSetting = {
 		dblClickExpand: false
 	},
 	callback: {
+		onAsyncError: onAsyncError,
 		beforeClick: beforeClick,
 		onClick: onClick,
 		beforeAsync:zTreeBeforeAsync
@@ -76,13 +76,11 @@ function orgsfilter(treeId, parentNode, responseData) {
 
 /*
  * 所属人员树配置单选
- * curOrgStaffRole = 1
- * "/roles/" + curOrgStaffRole + "/orgStaffsTreeChildren"
  */
 var legalSetting = {
 	async : {
 		enable : true,
-		url : "/roles/" + curOrgStaffRole + "/orgStaffsTreeChildren",
+		url : serverPath + "roles/" + config.curOrgStaffRole + "/orgStaffsTreeChildren",
 		type : "get",
 		dataType : 'json',
 		dataFilter : orgsFilter,
@@ -101,6 +99,7 @@ var legalSetting = {
 		dblClickExpand: false
 	},
 	callback: {
+		onAsyncError: onAsyncError,
 		beforeClick: beforeClick,
 		onClick: onClick,
 		beforeAsync:zTreeBeforeAsync
@@ -116,7 +115,6 @@ function orgsFilter(treeId, parentNode, responseData) {
 }
 /*
  * 所属组织树多选配置
- * orgs/{orgId}/orgTree
  */
 var otherSetting = {
 	async : {
@@ -159,9 +157,9 @@ function otherFilter(treeId, parentNode, responseData) {
 }
 function zTreeBeforeAsync(treeId, treeNode) {
 	if(treeId == "organisationTree"){
-		organisationTree.setting.async.url = "/orgs/" + treeNode.orgId + "/children";
+		organisationTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
 	}else if(treeId == "otherTree"){
-		otherTree.setting.async.url = "/orgs/" + treeNode.orgId + "/children";
+		otherTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
 	}else if(treeId == "legalTree"){
 		curOrgStaffNode = treeNode;
 	}
@@ -182,12 +180,6 @@ function onAsyncSuccess(event, treeId, treeNode, msg){
 			}
 		}
 	}
-}
-/*
- * ztree异步加载失败事件
- */
-function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown){
-	layer.msg("接口错误", {icon: 2});
 }
 
 /*
@@ -241,7 +233,7 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
 	"serverSide": true,
 	ajax: {
         "type": "GET",
-        "url": '/orgPartner',
+        "url": serverPath + 'orgPartner',
         "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
         "dataType":'json',
         "beforeSend": startLoading("#submitBtn"),
@@ -257,6 +249,18 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
         "dataSrc": judge
 	},
 	"columns": [{
+			"data": "partnerId",
+			"className": "text-center",
+			"title": "操作",
+			"render": function(data, type, full, meta) {
+				if(data) {
+					return '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "editContract(\'' + data + '\')">编辑</button>';
+				} else {
+					return '';
+				}
+			}
+		},
+		{
 			"data": "partnerMdmCode",
 			"title": "编码",
 			"className": "text-center"
@@ -284,21 +288,9 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
 			"title": "关联编码"
 		},
 		{
-			"data": "orgId",
+			"data": "orgName",
 			"className": "text-center",
 			"title": "所属组织"
-		},
-		{
-			"data": "partnerId",
-			"className": "text-center",
-			"title": "编辑",
-			"render": function(data, type, full, meta) {
-				if(data) {
-					return '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "editContract(\'' + data + '\')">编辑</button>';
-				} else {
-					return '';
-				}
-			}
 		}
 	]
 });
@@ -306,43 +298,49 @@ var searchContractTable = App.initDataTables('#searchContractTable', {
  * 搜索点击事件
  */
 function searchContract() {
-	startLoading("#submitBtn")
+	startLoading("#submitBtn");
 	var table = $('#searchContractTable').DataTable();
 	table.ajax.reload();
 }
 /*
- * 表格内编辑按钮点击事件
+ * 表格内编辑按钮点击获取结果事件
  */
 function editContract(data) {
 	$('#contractEditModal').modal('show');
-	var url = "/orgPartner/"+data;
+	var url = serverPath + "orgPartner/" + data;
 	App.formAjaxJson(url, "get", "", successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		$("#contractModalDefault").addClass("hide");
 		$("#mainContent").removeClass("hide");
-		$("#partnerNameM").text(data.partnerName);
 		$("#partnerId").val(data.partnerId);
+		$("#partnerNameM").text(data.partnerName);
+		$("#partnerCode").val(data.partnerCode)
+		$("#isPartnerM").val(data.isPartner);
 		if(data.isPartner == 0){
-			$("#isPartnerM").val(0);
 			$("#isunicom").removeClass("hide");
-			$("#partnerCode").val(data.partnerCode)
 			$("#ouOrgId").val(data.ouOrgId);
 			$("#organisation").data("id",data.orgId);
 			$("#legal").data("id",data.legalPersonName);
 			$("#other").data("id",data.otherOrgId);
-			getTreeValueInfor(data.orgId,data.legalPersonName,data.otherOrgId);
+			$("#organisation").val(data.orgName);
+			$("#organisation").attr("title",data.orgName);
+			$("#legal").val(data.staffName);
+			$("#legal").attr("title",data.staffName);
+			$("#other").val(data.otherOrgName);
+			$("#other").attr("title",data.otherOrgName);
 			getTreeInfo();
 		}else{
-			$("#isPartnerM").val(1);
 			$("#isunicom").addClass("hide");
 			$("#organisation,#legal,#other").data("id","");
 			$("#organisation,#legal,#other").attr("title","");
 			$("#organisation,#legal,#other,#ouOrgId").val("");
-			$("#partnerCode").val(0);
 		}
 	}
 }
+/*
+ * 是否联通方切换
+ */
 function changeIsunicom(){
 	var isPartnerValue = $("#isPartnerM").val();
 	if(isPartnerValue == 0){
@@ -350,17 +348,20 @@ function changeIsunicom(){
 		getTreeInfo();
 	}else{
 		$("#isunicom").addClass("hide");
+		$("#organisation,#legal,#other").data("id","");
+		$("#organisation,#legal,#other").attr("title","");
+		$("#organisation,#legal,#other,#ouOrgId").val("");
 	}
 }
 /*
- * 获取三个树
+ * 获取树信息
  */
 function getTreeInfo(){
 	/*
 	 * 所属组织树配置
 	 *  orgs/{orgId}/orgTree
 	 */
-	App.formAjaxJson("/orgs/56665/orgTree", "get", "", successCallback);
+	App.formAjaxJson(serverPath + "orgs/"+ config.orgId +"/orgTree", "get", "", successCallback);
 	function successCallback(result){
 		var data = result.data;
 		if(null == data){
@@ -387,14 +388,12 @@ function getTreeInfo(){
 	 *  roles/orgStaffsTreeRoot
 	 * get  data:{"curOrgId":curOrgId}
 	 */
-	$.get("/roles/orgStaffsTreeRoot", {"curOrgId":56665} ,function(result) {
+	$.get(serverPath + "roles/orgStaffsTreeRoot", {"curOrgId":config.orgId} ,function(result) {
 		if(null == result){
 			layer.msg("没有相关组织和人员信息",{icon: 2});
 		}else{
 			legalTree = $.fn.zTree.init($("#legalTree"), legalSetting, result);
 			curOrgStaffNode = legalTree.getNodes()[0];
-//				legalTree.selectNode(curOrgStaffNode);
-//				legalTree.expandNode(curOrgStaffNode, true, false, true);
 		}
 	});
 }
@@ -402,9 +401,10 @@ function getTreeInfo(){
  * 获取三个树的信息
  * 所属组织，法人代表，其他组织
  */
-function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
+function getTreeValueInfor(data){
+	/*
 	var key = 0;
-	App.formAjaxJson("/orgs/"+orgId, "get", "", orgIdSuccessCallback);
+	App.formAjaxJson(serverPath + "orgs/"+orgId, "get", "", orgIdSuccessCallback);
 	function orgIdSuccessCallback(result){
 		var name = result.data.orgName;
 		$("#organisation").val(name);
@@ -412,7 +412,7 @@ function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
 		key++;
 		loadOther();
 	}
-	App.formAjaxJson("/staffs/"+legalPersonName, "get", "", legalPersonSuccessCallback);
+	App.formAjaxJson(serverPath + "staffs/"+legalPersonName, "get", "", legalPersonSuccessCallback);
 	function legalPersonSuccessCallback(result){
 		var name = result.data.staffInfo.staffName;
 		$("#legal").val(name);
@@ -427,20 +427,21 @@ function getTreeValueInfor(orgId,legalPersonName,otherOrgId){
 			var otherIdsArrLen = otherIdsArr.length;
 			var k = 0;
 			function othernSuccessCallback(result){
-				name += result.data.orgName+",";
+				name += result.data.orgName+"，";
 				k++;
 				if(k == otherIdsArrLen){
+					name = name.slice(0,name.length-1);
 					$("#other").val(name);
 					$("#other").attr("title",name);
 				}
 			}
 			if(otherIdsArrLen > 0){
 				for(var i = 0; i < otherIdsArrLen; i++){
-					App.formAjaxJson("/orgs/"+otherIdsArr[i], "get", "", othernSuccessCallback);
+					App.formAjaxJson(serverPath + "orgs/"+otherIdsArr[i], "get", "", othernSuccessCallback);
 				}
 			}
 		}
-	}
+	}*/
 }
 $('#contractEditModal').on('hide.bs.modal', function () {
 	$("#contractModalDefault").removeClass("hide");
@@ -450,33 +451,29 @@ $('#contractEditModal').on('hide.bs.modal', function () {
  * 修改提交
  */
 function saveContract(){
-	var formObj = App.form2json($("#contractEditForm"));
-	var obj = new Object();
-	obj.isPartner = formObj.isPartner;
-	obj.partnerId = formObj.partnerId;
-	obj.partnerName = $("#partnerNameM").text();
+	var formObj = App.getFormValues($("#contractEditForm"));
+	formObj.partnerName = $("#partnerNameM").text();
+	App.changeObjKey({"legalTree":"legalPersonName","organisationTree":"orgId","otherTree":"otherOrgId"},formObj)
+	formObj.orgId = $("#organisation").data("id");
+	formObj.legalPersonName = $("#legal").data("id");
+	formObj.otherOrgId = $("#other").data("id");
+	console.log(formObj);
 	if(formObj.isPartner == 0){
-		if(formObj.organisationTree == ""){
+		if(formObj.orgId == ""){
 			layer.msg("所属组织不能为空",{icon:2});
 			return false;
 		}else if(formObj.ouOrgId == ""){
 			layer.msg("OU组织名称不能为空",{icon:2});
 			return false;
-		}else if(formObj.legalTree == ""){
+		}else if(formObj.legalPersonName == ""){
 			layer.msg("法人代表不能为空",{icon:2});
 			return false;
-		}else if(formObj.otherTree == ""){
+		}else if(formObj.otherOrgId == ""){
 			layer.msg("其他映射组织不能为空",{icon:2});
 			return false;
-		}else{
-			obj.ouOrgId = formObj.ouOrgId;
-			obj.partnerCode = formObj.partnerCode;
-			obj.orgId = $("#organisation").data("id");
-			obj.legalPersonName = $("#legal").data("id");
-			obj.otherOrgId = $("#other").data("id");
 		}
-	}
-	App.formAjaxJson("/orgPartner", "PUT", JSON.stringify(obj), successCallback);
+	};
+	App.formAjaxJson(serverPath + "orgPartner", "PUT", JSON.stringify(formObj), successCallback);
 	function successCallback(result){
 		layer.msg("修改成功",{icon:1});
 		searchContract();

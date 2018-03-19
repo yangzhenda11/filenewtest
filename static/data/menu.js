@@ -130,6 +130,13 @@ var menus = [{
             "name": "签约主体管理",
             "uri": "html/contractManage/contractManage.html",
             "childrens": []
+        },{
+            "id": "102",
+            "pid": "1",
+            "icon": "",
+            "name": "外部人员管理",
+            "uri": "html/contractManage/externalPersonnel.html",
+            "childrens": []
         }]
     },
     {

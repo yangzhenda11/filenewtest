@@ -2694,7 +2694,7 @@ select[multiple].input-lg,
   color: #d62a1e; }
 
 .has-feedback label ~ .form-control-feedback {
-  top: 25px; }
+  top: 34px; }
 
 .has-feedback label.sr-only ~ .form-control-feedback {
   top: 0; }
@@ -2756,9 +2756,9 @@ select[multiple].input-lg,
 .form-horizontal .checkbox {
   min-height: 27px; }
 
-.form-horizontal .form-group {
-  margin-left: -10px;
-  margin-right: -10px; }
+/*.form-horizontal .form-group {*/
+  /*margin-left: -10px;
+  margin-right: -10px; }*/
   .form-horizontal .form-group:before, .form-horizontal .form-group:after {
     content: " ";
     display: table; }
@@ -3584,10 +3584,11 @@ tbody.collapse.in {
     float: left;
     margin-bottom: -1px; }
     .nav-tabs > li > a {
-      margin-right: 2px;
+      /*margin-right: 2px;*/
       line-height: 1.42857;
       border: 1px solid transparent;
-      border-radius: 4px 4px 0 0; }
+      border-radius: 0; 
+      border-top: 0}
       .nav-tabs > li > a:hover {
         border-color: #eeeeee #eeeeee #ddd; }
     .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
@@ -3595,8 +3596,14 @@ tbody.collapse.in {
       background-color: #fff;
       border: 1px solid #ddd;
       border-bottom-color: transparent;
-      cursor: default; }
-
+      border-top: none;
+      cursor: default;
+      border-radius: 0; 
+      margin-top: 0;
+      }
+	.nav-tabs > li.active {
+      border-top: 3px solid #d11718;
+      }
 .nav-pills > li {
   float: left; }
   .nav-pills > li > a {

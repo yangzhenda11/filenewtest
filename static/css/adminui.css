@@ -5032,6 +5032,7 @@ Customized Bootstrap Tabs
   .nav-tabs > li > a,
   .nav-pills > li > a {
     font-size: 14px;
+    margin-top: 3px;
     -webkit-border-radius: 4px 4px 0 0;
     -moz-border-radius: 4px 4px 0 0;
     -ms-border-radius: 4px 4px 0 0;
@@ -8870,7 +8871,6 @@ AngularJS UI-select
   
 /*
  * zander 
- * 18.3.1
  */
 .search-action{
 		width: 100px;
@@ -8881,6 +8881,9 @@ AngularJS UI-select
 .modal-body{
 	display: block;
 }
+.overflow-hidden{
+	overflow: hidden;
+}
 .zTreeContent{
 	max-height: 200px;
 	margin-bottom: 20px;
@@ -8890,6 +8893,41 @@ AngularJS UI-select
 }
 button:focus{
 	outline: none !important;
+}
+#ip11{
+	font-size: 40px;
+}
+.toolbars{
+	position: relative;
+}
+.toolbars-content{
+	position: absolute;
+}
+.editBtn{
+	width: 80px;
+}
+/*必填*号*/
+.notNull{
+	color: #E43A45;
+	position: relative;
+	top: 2px;
+	left: 3px;
+}
+/*验证时提示信息会盖住*/
+.modalForm{
+	margin-top: 10px;
+}
+/*modal-body内为浮动元素时,清除浮动*/
+.modal-body::after {
+    content:"";
+    clear:both;/*清除浮动*/
+    display:block;/*确保该元素是一个块级元素*/
+}
+.align-right{
+    text-align: right;
+}
+.align-left{
+    text-align: left;
 }
 /*
  * layer样式

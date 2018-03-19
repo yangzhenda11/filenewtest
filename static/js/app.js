@@ -719,11 +719,11 @@ var App = function() {
 			handleBootstrapConfirmation(); // handle bootstrap confirmations
 		},
 		/*
-		 * zander
 		 * @param url  地址
 		 * @param type 请求方式
 		 * @param data  传输的数据
 		 * @param succCallback  正确回调函数
+		 * @param improperCallbacks 异常回调方法
 		 * @param errorCallback  错误回调函数
 		 * @param animation 动画
 		 * @param async 同步异步
@@ -763,7 +763,7 @@ var App = function() {
 					var result = result;
 					if (result.status == 1) {
 						successCallback(result);
-					} else {				
+					} else {
 						improperCallback(result);
 						var ms = result.message;
 						layer.msg(ms, {icon: 2});
@@ -788,7 +788,7 @@ var App = function() {
 		 * 表单元素序列化
 		 * 根据name值取值
 		 */
-		form2json: function($form) {
+		getFormValues: function($form) {
 		    var o = {};
 		    var a = $form.serializeArray();
 		    $.each(a, function(index, value) {
@@ -822,6 +822,21 @@ var App = function() {
 			}
 			download_file.iframe.src = url;
 			download_file.iframe.style.display = "none";
+		},
+		/*
+		 * 修改对象的key值
+		 * para为对象，obj为要替换值的对象
+		 */
+		changeObjKey: function(para,obj){
+			for(var key in para){
+				if(obj.key == null){
+					obj[para[key]] = "";
+				}else{
+					obj[para[key]] = obj.key;
+				}
+				delete obj[key];
+			};
+			return obj;
 		},
 		initDataTables: function(el, options) {
 			if(!$().dataTable) {
@@ -890,7 +905,7 @@ var App = function() {
 				//              "fixedColumns": {
 				//                  'leftColumns': 2
 				//              },
-				"columnDefs": [{ // 所有列默认值
+				"columnDefs": [{
 					"targets": "_all",
 					"defaultContent": ''
 				}],
@@ -919,10 +934,10 @@ var App = function() {
 		 * @param {object} valueCallback 需要做重定义的项
 		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
 		 */
-		setFormValues:function(formId, formData, valueCallback){
+		setFormValues:function(el, formData, valueCallback){
             if(formData != undefined && formData != null){
                 var obj = null,sel = null,objType = null;
-				$(el).find(".form-control-static[name]").text('');	//将有name的.form-control-static设置为空
+				$(el).find(".form-control[name]").val('');	//将有name的.form-control设置为空
 				if(valueCallback != undefined && valueCallback != null) {
 					for(var b in valueCallback) {
 						var value = formData[b];
@@ -932,10 +947,10 @@ var App = function() {
 				}
                 for( var a in formData){
                     sel = ":input[name='" + a + "']";
-                    obj = $(formId).find(sel);
+                    obj = $(el).find(sel);
                     if(obj.length > 0){
                         objType = obj[0].type;
-                        if(objType == "text" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
+                        if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
                             obj.val(formData[a]);
                             if(objType == "select-one" && obj.hasClass('select2me')){
                                 obj.trigger('change');
@@ -944,7 +959,7 @@ var App = function() {
                             App.setChecked(a,formData[a]);
                         }
                     }else if('object' == typeof formData[a]){
-                        App.setFormValues(formId,formData[a]);
+                        App.setFormValues(el,formData[a]);
                     }
                 }
             }
@@ -955,7 +970,6 @@ var App = function() {
         setChecked: function(name, value) {
 			var cks = document.getElementsByName(name);
 			var arr = value.split(',');
-
 			for(var i = 0; i < cks.length; i++) {	
 				if(isInArray(arr, cks[i].value)) {			//判断是否在数组内
 					cks[i].checked = true;
@@ -975,6 +989,7 @@ var App = function() {
 		 * @param {String} el 表单容器选择器
 		 * @param {JSON} formData 表单项的值
 		 * @param {object} valueCallback 需要做重定义的项
+		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
 		 * */
 		setFindValue: function(el, formData, valueCallback) {
 			if(formData != undefined && formData != null) {
@@ -993,17 +1008,37 @@ var App = function() {
 					var key = $(item).attr('name');
 					var valueObj = formData[key];
 					if(valueObj) {
-						if(valueObj.callback) {
-							$(item).text(valueObj.callback(valueObj.value));
-						} else {
-							$(item).text(valueObj);
-						}
+						$(item).text(valueObj);
 					} else {
 						//如果没有值用空格填充，解决为空导致的高度错乱问题
 						$(item).html('&nbsp;');
 					}
 				})
 			}
+		},
+		/*
+		 * 时间戳转时间
+		 * type 不传默认返回 yyyy-MM-dd HH:mm:ss
+		 * 传yyyy-MM-dd返回 yyyy-MM-dd;
+		 */
+		formatDateTime: function(inputTime,type) {
+		    var date = new Date(inputTime);
+		    var y = date.getFullYear();
+		    var m = date.getMonth() + 1;
+		    m = m < 10 ? ('0' + m) : m;
+		    var d = date.getDate();
+		    d = d < 10 ? ('0' + d) : d;
+		    if(type == "yyyy-MM-dd" || type == "yyyy-mm-dd"){
+		    	return y + '-' + m + '-' + d;
+		    }else{
+		    	var h = date.getHours();
+		    	h = h < 10 ? ('0' + h) : h;
+		    	var minute = date.getMinutes();
+			    var second = date.getSeconds();
+			    minute = minute < 10 ? ('0' + minute) : minute;
+			    second = second < 10 ? ('0' + second) : second;
+		    	return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+		    } 
 		},
 		initSlimScroll: function(el) {
 			if(!$().slimScroll) {
@@ -1760,7 +1795,10 @@ var App = function() {
 jQuery(document).ready(function() {
 	App.init();
 });
-
+function isInArray(arr,val) { 
+	var testStr="," + arr.join(",") + ","; 
+	return testStr.indexOf("," + val + ",") != -1; 
+} 
 /*
  * datatable加载事件
  */
@@ -1792,4 +1830,12 @@ function resolveResult(result,code){
 		layer.msg(ms, {icon: 2});
 		return [];
 	}
+}
+/*
+ * ztree异步加载失败事件
+ */
+function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+	layer.msg("接口错误", {
+		icon: 2
+	});
 }

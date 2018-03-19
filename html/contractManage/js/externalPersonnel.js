@@ -9,6 +9,11 @@ var serverPath = config.serverPath;
 //页面初始化事件
 $(function() {
 	getTreeInfo();
+	
+	$("#modalDetailContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail");
+	$('#modalDetailContent').on('hidden.bs.modal', function() {
+		$("#modalDetailContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail");
+	});
 	$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit");
 	$('#modalEditContent').on('hidden.bs.modal', function() {
 		$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit");
@@ -311,17 +316,53 @@ function personnelModal(code) {
 	var editType = code[0];
 	if(editType == "add") {
 		$("#modalTitle").text("新增外部人员");
-		$("#modalDefault").addClass("hide");
-		$("#mainContent").removeClass("hide");
 		dateRegNameChose();
 		validate(editType);
 		$('#modalEditContent').modal('show');
 	} else if(editType == "edit") {
 		$("#modalTitle").text("外部人员信息编辑");
-		getEditForm(code[1]);
+		getInfor(code[1],editType)
 	} else {
-		$("#modalTitle").text("外部人员信息详情");
+		getInfor(code[1],editType)
 	}
+}
+/*
+ * 获取人员信息详情
+ */
+function getInfor(id,type){
+	App.formAjaxJson(serverPath + "staffs/"+id, "get", "", successCallback);
+	function successCallback(result){
+		var data = result.data.staffInfo;
+		if(type == "edit"){
+			setEditForm(data);
+		}else{
+			setDetailForm(data);
+		}
+		
+	}
+}
+/*
+ * 填充详情表单
+ */
+function setDetailForm(data){
+	$("#modalDetailContent").modal("show");
+	$("#staffNameDetail").text(data.staffName);
+	var valueCallback = {'sex':function(value){return value == "W" ? "女" : "男"},
+						'staffStatus':function(value){return value == "1" ? "有效" : "无效"},
+						'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+	App.setFindValue("#baseInfo",data,valueCallback);
+}
+/*
+ * 填充修改表单
+ */
+function setEditForm(data){
+	$('#modalEditContent').modal('show');
+	App.setFormValues("#externalPersonnelForm",data);
+	$("#hireDate").val(App.formatDateTime(data.hireDate,"yyyy-mm-dd"));
+	$("#orgNameIn").attr("title",data.orgName);
+	$("#orgNameIn").data("id",data.orgId);
+	dateRegNameChose();
+	validate("edit");
 }
 //日期和组织树选择触发
 function dateRegNameChose(){
@@ -346,24 +387,7 @@ function dateRegNameChose(){
 		}
 	}
 }
-/*
- * 获取内容填充修改表单
- */
-function getEditForm(code){
-	App.formAjaxJson(serverPath + "staffs/"+code, "get", "", successCallback);
-	function successCallback(result){
-		var data = result.data.staffInfo;
-		$("#modalDefault").addClass("hide");
-		$("#mainContent").removeClass("hide");
-		$('#modalEditContent').modal('show');
-		App.setFormValues("#externalPersonnelForm",data);
-		$("#hireDate").val(App.formatDateTime(data.hireDate,"yyyy-mm-dd"));
-		$("#orgNameIn").attr("title",data.orgName);
-		$("#orgNameIn").data("id",data.orgId);
-		dateRegNameChose();
-		validate("edit");
-	}
-}
+
 /*
  * 新增||修改提交
  */

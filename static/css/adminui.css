@@ -8905,11 +8905,28 @@ button:focus{
 .editBtn{
 	width: 80px;
 }
+/*必填*号*/
 .notNull{
 	color: #E43A45;
 	position: relative;
 	top: 2px;
 	left: 3px;
+}
+/*验证时提示信息会盖住*/
+.modalForm{
+	margin-top: 10px;
+}
+/*modal-body内为浮动元素时,清除浮动*/
+.modal-body::after {
+    content:"";
+    clear:both;/*清除浮动*/
+    display:block;/*确保该元素是一个块级元素*/
+}
+.align-right{
+    text-align: right;
+}
+.align-left{
+    text-align: left;
 }
 /*
  * layer样式

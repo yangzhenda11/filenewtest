@@ -457,7 +457,6 @@ function saveContract(){
 	formObj.orgId = $("#organisation").data("id");
 	formObj.legalPersonName = $("#legal").data("id");
 	formObj.otherOrgId = $("#other").data("id");
-	console.log(formObj);
 	if(formObj.isPartner == 0){
 		if(formObj.orgId == ""){
 			layer.msg("所属组织不能为空",{icon:2});

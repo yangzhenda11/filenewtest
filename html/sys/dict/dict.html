@@ -39,7 +39,6 @@
 								<div class="row page-search-form">
 									<div class="col-sm-4">
 										<div class="input-group">
-											<input type="hidden" name="dictParentId" id="dictParentId" value="" />
 											<span class="input-group-addon">字典名称</span>
 											<input type="text" class="form-control" id="dictName" name="dictLabel" placeholder="字典名称" maxlength="20">
 										</div>
@@ -51,14 +50,15 @@
 							</form>
 						</div>
 						<div class="page-toolbars">
-							<button type="button" class="btn btn-block red editBtn" onclick="personnelModal('add');"><i class="ace-icon fa fa-plus"></i>  新增</button>
+							<button type="button" class="btn btn-block red editBtn" onclick="dictModal('add');"><i class="ace-icon fa fa-plus"></i>  新增</button>
 						</div>
 						<table id="dictTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 					</div>
 				</div>
 			</div>
 		</div>
-	
+	<!--modal-->
+		<div class="modal fade" id="modalEditContent" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 	
     <!--<div class="head-title"><span>字典管理</span></div>
     <div class="row top-row" id="dictManage">
@@ -109,6 +109,7 @@
     <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables-plugin/datatables.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables-plugin/ellipsis.js"></script>
+    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
     <!--当前页面依赖-->

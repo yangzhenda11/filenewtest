@@ -178,16 +178,21 @@ var personnelTable = App.initDataTables('#personnelTable', {
 			"title": "操作",
 			"render": function(data, type, full, meta) {
 				if(data) {
-					var html = "";
 					var para = data.staffId + '&&' + data.staffName + '&&' + data.loginName + '&&' + data.staffStatus;
-					html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "personnelModal(\'edit&&' + data.staffId + '\')">修改</button>' +
-						'<button class="btn primary btn-outline btn-xs dt-edit" onclick = "resetPasswd(\'' + para + '\')">密码重置</button>';
-					if(data.staffStatus == '1') {
-						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para + '\')">禁用</button>';
-					} else {
-						html += '<button class="btn primary btn-outline btn-xs dt-edit" onclick = "changeStaffStatus(\'' + para + '\')">启用</button>';
-					}
-					return html;
+					var btnArray = new Array();
+                    btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.staffId + "\')" });
+                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + para + "\')" });
+                    if ('1' == data.staffStatus) {
+                        btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + para + "\')"});
+                    } else {
+                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')"});
+                    }
+                    context = {
+                        func: btnArray
+                    }
+                    var template = Handlebars.compile(btnModel);
+                    var html = template(context);
+                    return html;
 				} else {
 					return '';
 				}

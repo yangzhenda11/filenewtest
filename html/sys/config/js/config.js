@@ -182,144 +182,31 @@ function validate(editType) {
 		message: '校验未通过',
 		container: 'popover',
 		fields: {
-			loginName : {
+			code: {
+	            validators: {
+	                notEmpty: {
+	                    message: '请输入参数名称'
+	                }
+	            }
+	        },
+	        val: {
+	            validators: {
+	                notEmpty: {
+	                    message: '请输入参数值'
+	                }
+	            }
+	        }
+			attra : {
 				validators : {
-					notEmpty : {
-						message : '请输入账号'
-					},
-					stringLength : {
-						min : 0,
-						max : 20,
-						message : '请输入不超过20个字符'
-					},
-					regexp : {
-						regexp : /^[a-zA-Z0-9_\-\.]+$/,
-						message : '用户名由数字字母-_和.组成'
-					}
-				}
-			},
-			passwd : {
-				validators : {
-					notEmpty : {
-						message : '请输入密码'
-					},
-					stringLength : {
-						min : 5,
-						message : '密码至少5位'
-					}
-				}
-			},
-			staffName : {
-				validators : {
-					notEmpty : {
-						message : '请输入人员姓名'
-					},
-					stringLength : {
-						min : 0,
-						max : 15,
-						message : '请输入不超过15个字'
-					}
-				}
-			},
-			orgName : {
-				validators : {
-					notEmpty : {
-						message : '请选择所属组织'
-					}
-				},
-				trigger: "focus blur keyup change",
-			},
-			empCode : {
-				validators : {
-					regexp : {
-						regexp : /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
-						message : '请输入15或18位身份证号'
-					}
-				}
-			},
-			sex : {
-				validators : {
-					notEmpty : {
-						message : '请选择性别'
-					}
-				},
-				trigger: "focus blur keyup change",
-			},
-			postcode : {
-				validators : {
-					regexp : {
-						regexp : /^[0-9]+$/,
-						message : '请检查邮政编码'
-					},
-					stringLength : {
-						min : 0,
-						max : 6,
-						message : '请输入不超过6位数字'
-					}
-				}
-			},
-			mailAddr : {
-				validators : {
-					stringLength : {
-						min : 0,
-						max : 30,
-						message : '请输入不超过30个字符'
-					}
-				}
-			},
-			phone : {
-				validators : {
-					regexp : {
-						regexp : /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
-						message : '请检查电话是否正确'
-					}
-				}
-			},
-			mobilPhone : {
-				validators : {
-					notEmpty : {
-						message : '请输入手机号'
-					},
-					stringLength : {
-						min : 11,
-						max : 11,
-						message : '请输入11位手机号码'
-					},
-					regexp : {
-						regexp : /^1[3|5|7|8]{1}[0-9]{9}$/,
-						message : '请输入正确的手机号码'
-					}
-				}
-			},
-			email : {
-				validators : {
-					emailAddress : {
-						message : '请检查Email拼写'
-					},
-					stringLength : {
-						min : 0,
-						max : 50,
-						message : '请输入不超过50个字符'
-					}
-				}
-			},
-			staffSort : {
-				validators : {
-					stringLength : {
-						min : 0,
-						max : 8,
-						message : '请输入不超过8位数字'
-					},
-					regexp : {
-						regexp : /^[0-9]+$/,
-						message : '排序只能输入数字'
-					}
+					notEmpty: {
+	                    message: '请选择允许用户更改'
+	                }
 				}
 			}
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
-		updateExternalPersonnel(editType);
+		updateConfig(editType);
 	});
 }
 
@@ -330,52 +217,6 @@ function validate(editType) {
 
 
 
-
-
-
-
-
-
-
-var checkConfigValidator = {
-    message: 'This value is not valid',
-    feedbackIcons: {
-        valid: 'glyphicon glyphicon-ok',
-        invalid: 'glyphicon glyphicon-remove',
-        validating: 'glyphicon glyphicon-refresh',
-        errorClass: "invalid"
-    },
-    fields: {
-        code: {
-            validators: {
-                notEmpty: {
-                    message: '请输入参数名称'
-                }
-            }
-        },
-        val: {
-            validators: {
-                notEmpty: {
-                    message: '请输入参数值'
-                }
-            }
-        }
-    },
-    submitHandler: function(validator, form, submitButton) {
-        var name = submitButton.attr("name");
-        if (name == "addBtnName") {
-            addConfig();
-        }
-        if (name == "updateBtnName") {
-            updateConfig();
-        }
-    }
-
-};
-
-function selectConfig() {
-    searchConfigTable.ajax.reload();
-}
 
 function resetSearchConfigform() {
     $("#searchConfigForm input").val("");

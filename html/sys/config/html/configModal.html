@@ -19,55 +19,33 @@
 						</div>
 
 						<div class="modal-body modalForm">
-							<input type="hidden" name="staffKind" id="staffKind" value="" />
-							<div class="col-sm-4">
+							<input type="hidden" name="id" id="id" value="" />
+							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="loginName">账号<span class="notNull">*</span></label>
-									<input type="text" id="loginName" name="loginName" class="form-control" placeholder="账号">
+									<label for="code">参数名称<span class="notNull">*</span></label>
+									<input type="text" id="code" name="code" class="form-control" placeholder="参数名称">
 								</div>
 							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="passwd">密码<span class="notNull">*</span></label>
-									<input type="password" id="passwd" name="passwd" class="form-control" placeholder="密码">
+									<label for="val">参数值<span class="notNull">*</span></label>
+									<input type="text" id="val" name="val" class="form-control" placeholder="参数值">
 								</div>
 							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="staffName">人员姓名<span class="notNull">*</span></label>
-									<input type="text" id="staffName" name="staffName" class="form-control" placeholder="人员姓名">
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="sex">性别<span class="notNull">*</span></label>
-									<select class="form-control" name="sex" id="sex">
+									<label for="attra">允许用户更改<span class="notNull">*</span></label>
+									<select class="form-control" name="attra" id="attra">
 										<option value="">请选择</option>
-										<option value="M">男</option>
-										<option value="W">女</option>
+										<option value="0">否</option>
+										<option value="1">是</option>
 									</select>
 								</div>
 							</div>
-							
 							<div class="col-sm-4">
 								<div class="form-group">
-									<label for="staffStatus">岗位状态<span class="notNull">*</span></label>
-									<!--<select class="form-control" name="staffStatus" id="staffStatus">
-									<option value="1">有效</option>
-									<option value="0">无效</option>
-								</select>-->
-									<div class="ui-radio-list ui-radio-inline">
-										<label class="ui-radio">
-										有效
-										<input type="radio" value="1" checked="" name="staffStatus">
-										<span></span>
-									</label>
-										<label class="ui-radio">
-										无效
-										<input type="radio" value="0" name="staffStatus">
-										<span></span>
-									</label>
-									</div>
+									<label for="attrb">可更改枚举值</label>
+									<input type="text" id="attrb" name="attrb" class="form-control" placeholder="可更改枚举值">
 								</div>
 							</div>
 						</div>
@@ -84,75 +62,33 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">外部人员信息详情</h4>
+						<h4 class="modal-title">系统参数详情</h4>
 					</div>
 					<div class="modal-body">
-						<div class="detailTitle">人员姓名：<span id="staffNameDetail"></span></div>
+						<div class="detailTitle">系统参数名称：<span id="staffNameDetail"></span></div>
 						<ul class="nav nav-tabs modalNavTab">
-							<li>
-								<a href="#positionInfo" data-toggle="tab">岗位信息</a>
-							</li>
 							<li class="active">
-								<a href="#baseInfo" data-toggle="tab">基本信息</a>
+								<a href="#configInfo" data-toggle="tab">参数信息</a>
 							</li>
 						</ul>
 						<div class="tab-content">
-							<div class="tab-pane fade in active" id="baseInfo">
+							<div class="tab-pane fade in active" id="configInfo">
 								<div class="col-sm-6">
-									<div class="col-sm-4 form-control-static align-right">账号：</div>
-									<div class="col-sm-8 form-control-static" name="loginName"></div>
+									<div class="col-sm-4 form-control-static align-right">参数名称：</div>
+									<div class="col-sm-8 form-control-static" name="code"></div>
 								</div>
 								<div class="col-sm-6">
-									<div class="col-sm-4 form-control-static align-right">人员姓名：</div>
-									<div class="col-sm-8 form-control-static" name="staffName"></div>
+									<div class="col-sm-4 form-control-static align-right">参数值：</div>
+									<div class="col-sm-8 form-control-static" name="val"></div>
 								</div>
 								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">所属组织：</div>
-									<div class="col-sm-8 form-control-static" name="orgName"></div>
+									<div class="col-sm-4 align-right form-control-static">允许用户更改：</div>
+									<div class="col-sm-8 form-control-static" name="attra"></div>
 								</div>
 								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">手机号码：</div>
-									<div class="col-sm-8 form-control-static" name="mobilPhone"></div>
+									<div class="col-sm-4 align-right form-control-static">可更改枚举值：</div>
+									<div class="col-sm-8 form-control-static" name="attrb"></div>
 								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">性别：</div>
-									<div class="col-sm-8 form-control-static" name="sex"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">身份证号：</div>
-									<div class="col-sm-8 form-control-static" name="empCode"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">入职日期：</div>
-									<div class="col-sm-8 form-control-static" name="hireDate"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">显示顺序：</div>
-									<div class="col-sm-8 form-control-static" name="staffSort"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">邮政编码：</div>
-									<div class="col-sm-8 form-control-static" name="postcode"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">通讯地址：</div>
-									<div class="col-sm-8 form-control-static" name="mailAddr"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">电话号码：</div>
-									<div class="col-sm-8 form-control-static" name="phone"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">邮箱号码：</div>
-									<div class="col-sm-8 form-control-static" name="email"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">岗位状态：</div>
-									<div class="col-sm-8 form-control-static" name="staffStatus"></div>
-								</div>
-							</div>
-							<div class="tab-pane fade" id="positionInfo">
-								岗位信息
 							</div>
 						</div>
 					</div>

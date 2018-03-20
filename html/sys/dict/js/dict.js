@@ -5,9 +5,9 @@ var config = parent.globalConfig;
 var serverPath = config.serverPath;
 $(function() {
     getDictTree();
-    $("#modalEditContent").load("./dictModal.html?" + App.timestamp()+" #modalEdit");
+    $("#modalEditContent").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit");
 	$('#modalEditContent').on('hidden.bs.modal', function() {
-		$("#modalEditContent").load("./dictModal.html?" + App.timestamp()+" #modalEdit");
+		$("#modalEditContent").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit");
 	});
 })
 /*

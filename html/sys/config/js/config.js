@@ -1,60 +1,84 @@
-var searchConfigTable;
-var btnModel = '    \
-	{{#each func}}\
-    <button type="button" class="{{this.type}} btn-sm" onclick="{{this.fn}}">{{this.name}}</button>\
-    {{/each}}';
-var template = Handlebars.compile(btnModel);
-var configTableSetting = {
-    "ordering": false, // 排序
-    "serverSide": true, // 开启服务器模式
-    "scrollX": true, // 横向滚动
-    ajax: {
-        "type": "GET",
-        "url": parent.globalConfig.serverPath + 'configs/', // 请求路径
-        "data": function(d) { // 查询参数
-            d.code = $('#configCode').val();
-            return d;
-        }
-    },
-    columns: [ // 对应列
-        {
-            "data": null,
-            "title": "操作",
-            className: "text-center",
-            render: function(data, type, full, meta) {
-                var btnArray = new Array();
-                btnArray.push({ "name": "修改", "fn": "toConfigUpdate(\'" + full.id + "\')", "type": "user-button" });
-                btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')", "type": "user-button user-btn-n" })
-                context = {
-                    func: btnArray
-                }
-                var html = template(context);
-                return html;
-            }
-        },
-        { "data": "code", "title": "参数名称", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-        { "data": "val", "title": "参数值", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-        {
-            "data": "attra",
-            "title": "允许用户更改",
-            className: "text-center",
-            render: function(data, type, full, meta) {
-                if (data == 0) { return "否"; } else { return "是"; }
-            }
-        },
-        { "data": "attrb", "title": "可更改枚举值", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) }
-    ],
-    "columnDefs": [{ // 所有列默认值
-        "targets": "_all",
-        "defaultContent": ''
-    }],
-    // lengthMenu: [
-    //     menuLength,
-    //     menuLength
-    // ],
-    "dom": 'rt<"floatl mt5"l><"floatl mt5"i><"floatr mt5"p><"clear">', // 生成样式
-    //	"lengthMenu" : [ menuLength, menuLength ]
-};
+//系统的全局变量获取
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
+$(function(){
+	getConfigTable();
+})
+/*
+ * 获取系统参数列表
+ */
+function getConfigTable(){
+	var searchContractTable = App.initDataTables('#configTable', {
+		ajax: {
+	        "type": "GET",
+	        "url": serverPath + 'dicconfigsts/',
+	        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
+	        "dataType":'json',
+	        "beforeSend": startLoading("#submitBtn"),
+	        "data":function(d){
+	        	d.code = $('#configCode').val();
+	            return d;
+	        },
+	        error: function (xhr, error, thrown) {  
+	            stopLoading("#submitBtn");
+	            layer.msg("接口错误", {icon: 2});
+	        },
+	        "dataSrc": judge
+		},
+		"columns": [{
+                "data": null,
+                title: "操作",
+                className: "text-center",
+                render: function(data, type, full, meta) {
+	                var btnArray = new Array();
+	                btnArray.push({ "name": "修改", "fn": "toConfigUpdate(\'" + full.id + "\')", "type": "user-button" });
+	                btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')", "type": "user-button user-btn-n" })
+	                context = {
+	                    func: btnArray
+	                }
+	                var html = template(context);
+	                return html;
+	            }
+            },
+			{ "data": "code", "title": "参数名称", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
+        	{ "data": "val", "title": "参数值", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
+            {"data": "attra",
+            	"title": "允许用户更改",
+            	className: "text-center",
+            	render: function(data, type, full, meta) {
+            		return  data == 0 ? "否" : "是";
+            	}
+        	},
+        	{ "data": "attrb", "title": "可更改枚举值", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) }
+		]
+	});
+}
+/*
+ * dataTable请求到结果后的回调事件
+ */
+function judge(result){
+	stopLoading("#submitBtn");
+	return resolveResult(result);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var checkConfigValidator = {
     message: 'This value is not valid',
@@ -91,9 +115,6 @@ var checkConfigValidator = {
     }
 
 };
-$(function() {
-    searchConfigTable = $("#searchConfigTable").DataTable(configTableSetting);
-})
 
 function selectConfig() {
     searchConfigTable.ajax.reload();

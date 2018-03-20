@@ -359,7 +359,6 @@ function setDetailForm(data){
  * 填充修改表单
  */
 function setEditForm(data){
-	console.log(data)
 	$('#modalEditContent').modal('show');
 	var valueCallback = {'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
 	App.setFormValues("#externalPersonnelForm",data,valueCallback);

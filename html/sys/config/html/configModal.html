@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<div id="modalEdit">
+			<div class="modal-dialog" role="document" style="width: 90%;">
+				<div class="modal-content">
+					<form class="form-horizontal" role="form" id="externalPersonnelForm">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="modalTitle"></h4>
+						</div>
+
+						<div class="modal-body modalForm">
+							<input type="hidden" name="id" id="id" value="" />
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="code">参数名称<span class="notNull">*</span></label>
+									<input type="text" id="code" name="code" class="form-control" placeholder="参数名称">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="val">参数值<span class="notNull">*</span></label>
+									<input type="text" id="val" name="val" class="form-control" placeholder="参数值">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="attra">允许用户更改<span class="notNull">*</span></label>
+									<select class="form-control" name="attra" id="attra">
+										<option value="">请选择</option>
+										<option value="0">否</option>
+										<option value="1">是</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group">
+									<label for="attrb">可更改枚举值</label>
+									<input type="text" id="attrb" name="attrb" class="form-control" placeholder="可更改枚举值">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i> 保存</button>
+							<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="modalDetail">
+			<div class="modal-dialog" role="document" style="width: 90%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">系统参数详情</h4>
+					</div>
+					<div class="modal-body">
+						<div class="detailTitle">系统参数名称：<span id="staffNameDetail"></span></div>
+						<ul class="nav nav-tabs modalNavTab">
+							<li class="active">
+								<a href="#configInfo" data-toggle="tab">参数信息</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="configInfo">
+								<div class="col-sm-6">
+									<div class="col-sm-4 form-control-static align-right">参数名称：</div>
+									<div class="col-sm-8 form-control-static" name="code"></div>
+								</div>
+								<div class="col-sm-6">
+									<div class="col-sm-4 form-control-static align-right">参数值：</div>
+									<div class="col-sm-8 form-control-static" name="val"></div>
+								</div>
+								<div class="col-sm-6">
+									<div class="col-sm-4 align-right form-control-static">允许用户更改：</div>
+									<div class="col-sm-8 form-control-static" name="attra"></div>
+								</div>
+								<div class="col-sm-6">
+									<div class="col-sm-4 align-right form-control-static">可更改枚举值：</div>
+									<div class="col-sm-8 form-control-static" name="attrb"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

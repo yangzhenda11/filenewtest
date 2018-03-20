@@ -3,46 +3,180 @@
 
 <head>
     <meta charset="UTF-8">
-
+    <title>内部组织管理</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
-
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-    <link rel="stylesheet" href="../org/orgList.css" />
-    <link rel="stylesheet" type="text/css" href="../common/treeDropDown.css">
-    <link rel="stylesheet" type="text/css" href="../common/treeCommon.css">
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" href="orgList.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="../common/treeDropDown.css">
+    <link rel="stylesheet" type="text/css" href="../common/treeCommon.css"> -->
 </head>
 
 <body>
-    <div id="main">
-        <div class="head-title">
-            <span>组织管理</span>
+    <!-- <div class="page-content">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <span class="caption-subject bold uppercase"> 组织管理</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="page-search">
+                    <form class="form-horizontal" action="">
+                        <div class="row page-search-form">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">组织名称</span>
+                                    <input type="text" id="partnerName" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="search-action">
+                                <button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="searchContract();"><i class="ace-icon fa fa-search"></i> 查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <table id="searchOrgTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+            </div>
         </div>
-        <div id="orgMyTabContent">
-            <!-- Nav tabs -->
-            <div class="tab-top nav nav-tabs" id="orgMyTop">
-                <ul id="orgMyTab" class="nav tab-ul">
-                    <!--append all li标签  -->
-                </ul>
+    </div> -->
+    <!-- -->
+    <div class="page-content">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <span class="caption-subject bold uppercase">组织管理</span>
+                </div>
             </div>
-            <!-- Tab panes -->
-            <div class="tab-content" id="orgKindTab">
-                <!-- load all tab-panel  -->
+            <div class="portlet-body">
+                <div class="page-search">
+                    <form class="form-horizontal" action="" id="orgSearchForm">
+                        <input type="hidden" id="orgCurOrgId" value="">
+                        <div class="row page-search-form">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">组织名称</span>
+                                    <input type="text" id="orgName" name="orgName" autocomplete="off" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">组织编码</span>
+                                    <input type="text" id="orgCode" name="orgCode" autocomplete="off" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">组织类型</span>
+                                    <select class="form-control" name="orgType">
+                                        <option value="">--请选择--</option>
+                                        <option value="1">&nbsp;公司</option>
+                                        <option value="2">&nbsp;部门</option>
+                                        <option value="3">&nbsp;处室</option>
+                                        <option value="4">&nbsp;虚拟组织</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">状态</span>
+                                    <select class="form-control" name="orgStatus">
+                                        <option value="">--请选择--</option>
+                                        <option value="1">&nbsp;有效</option>
+                                        <option value="0">&nbsp;无效</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="page-search-action">
+                                <button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="orgSearchOrg(true);"><i class="ace-icon fa fa-search"></i> 查询</button>
+                                <button type="reset" class="btn btn-block yellow margin-top-10"><i class="ace-icon fa fa-repeat"></i> 重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <table id="orgSearchTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
             </div>
-            <!-- 定义curTaborgKind的值 -->
-            <input type="hidden" id="curTaborgKind" value="" />
-            <!-- 定义当前登录人的组织id  -->
-            <input type="hidden" id="orgCurOrgId" value="">
+            <!-- <div id="orgMyTabContent">
+                <div class="tab-top nav nav-tabs" id="orgMyTop">
+                    <ul id="orgMyTab" class="nav tab-ul">
+                    </ul>
+                </div>
+                <div class="tab-content" id="orgKindTab">
+                </div>
+                <input type="hidden" id="curTaborgKind" value="" />
+            </div> -->
         </div>
     </div>
+    <!--弹出查看-->
+    <div class="modal fade" id="findDetailModal" tabindex="-1" data-backdrop="static" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">组织详细信息</h4>
+                </div>
+                <div class="modal-body form">
+                    <div id="orgDetail" class="form-body form-horizontal form-row-seperated">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">组织名称:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static" name="orgName"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">父级组织:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static" name="parentName"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">组织编码:</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static" name="orgCode"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">组织类型:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="orgType"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">状态:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="orgStatus"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--弹出编辑-->
+    <div class="modal fade" id="editDetailModal" data-backdrop="static" tabindex="-1" role="dialog"></div>
 
     <!--[if lt IE 9]>
 	  <script src="../../../static/plugins/html5shiv.min.js"></script>
@@ -72,12 +206,11 @@
     <script src="../../../static/plugins/datatables-plugin/ellipsis.js"></script>
     <!--表格-结束-->
     <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
     <!--当前页面依赖-->
     <script src="../common/treeDropDown.js"></script>
     <script src="../common/treeCommon.js"></script>
     <script src="../common/orgTreeCommon.js"></script>
-    <script src="../org/orgList.js"></script>
+    <script src="orgList.js"></script>
 </body>
 
 </html>

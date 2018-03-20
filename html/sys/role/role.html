@@ -132,68 +132,7 @@
     </div>
     <!--弹出编辑-->
     <div class="modal fade" id="editDetailModal" data-backdrop="static" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form id="roleForm" action="" class="form-horizontal">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title role-form">编辑角色</h4>
-                    </div>
-                    <div class="modal-body form">
-                        <div class="form-body">
-                            <input type="hidden" name="roleId" id="roleId">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="roleName">角色名称</label>
-                                <div class="col-sm-10">
-                                    <input type="text" autocomplete="off" class="form-control" id="roleName" name="roleName" placeholder="角色名称" maxlength="32">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="orgName">所属组织</label>
-                                <div class="col-sm-10">
-                                    <input type="text" autocomplete="off" class="form-control" style="width:80%" id="orgName" name="orgName" onclick="roleAdd_OrgTree(this)" readonly="readonly" autocomplete="off" placeholder="所属组织">
-                                    <input type="hidden" name="orgId" id="orgId">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="selectID">合作方角色</label>
-                                <div class="col-sm-10">
-                                    <div class="ui-radio-list ui-radio-inline">
-                                        <label class="ui-radio">
-                                            否
-                                            <input type="radio" value="0" name="isPartnerRole" checked>
-                                            <span></span>
-                                        </label>
-                                        <label class="ui-radio">
-                                            是
-                                            <input type="radio" value="1" name="isPartnerRole">
-                                            <span></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="roleDesc">角色描述</label>
-                                <div class="col-sm-10">
-                                    <input type="text" autocomplete="off" class="form-control" id="roleDesc" name="roleDesc" placeholder="角色描述" maxlength="100">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="roleDesc">角色权限</label>
-                                <input type="hidden" name="permId" id="permId">
-                                <div class="col-sm-10">
-                                    <ul id="rolePermissionTree" class="ztree" style="width: 560px; overflow: auto;"></ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="submitBtn" data-type="edit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i> 提交</button>
-                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+
     </div>
     <!--[if lt IE 9]>
       <script src="../../../static/plugins/html5shiv.min.js"></script>

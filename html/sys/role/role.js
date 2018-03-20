@@ -8,7 +8,7 @@ var serverPath = parent.globalConfig.serverPath;
 //角色下人员表
 var roleSearchStaffTable;
 var table = App.initDataTables('#searchRoleTable', {
-	"serverSide": true,					//开启服务器请求模式
+    "serverSide": true, //开启服务器请求模式
     "ajax": {
         "type": "GET",
         "url": parent.globalConfig.serverPath + 'roles/', //请求路径
@@ -116,10 +116,14 @@ function deleteDetail(roleId) {
 /**
  * 执行查询
  */
-function searchRole() {
+function searchRole(resetPaging) {
     startLoading("#submitBtn");
     var table = $('#searchRoleTable').DataTable();
-    table.ajax.reload();
+    if (resetPaging) {
+        table.ajax.reload(null, false);
+    } else {
+        table.ajax.reload();
+    }
 }
 /*
  * 请求到结果后的回调事件
@@ -136,10 +140,23 @@ function findDetail(itemId) {
     App.formAjaxJson(parent.globalConfig.serverPath + "roles/" + itemId, "GET", null, ajaxSuccess, null, ajaxError);
     /**成功回调函数 */
     function ajaxSuccess(result) {
+        /**根据返回结果给表单赋值 */
         App.setFindValue($("#roleDetail"), result.data, { createDate: valueCallback });
-
+        /**表单赋值时的回调函数 */
         function valueCallback(data) {
             return getFormatDate(new Date(data), "yyyy-MM-dd")
+        }
+        /**查询角色拥有的权限集合 */
+        App.formAjaxJson(parent.globalConfig.serverPath + "roles/" + itemId + "/perms", "GET", null, permsSuccess);
+
+        /**权限查询结束后的回调函数 */
+        function permsSuccess(result) {
+            if (null != result.data) {
+                var permTree = $.fn.zTree.init($("#rolePermissionTree1"), permissionViewSetting, result.data);
+                permTree.expandAll(false);
+            } else {
+                layer.msg("该角色无相关权限", { icon: 2 });
+            }
         }
     }
     /**错误回调函数 */
@@ -149,6 +166,207 @@ function findDetail(itemId) {
 
     $('#findDetailModal').modal('show');
 }
+
+/**
+ * 打开新增窗口，同时向表单增加验证等，待改进
+ */
+function openAddModal() {
+    //是否合作方角色，默认设置为否
+    //$("input[type='radio'][name='isPartnerRole'][value='0'").attr("checked", "checked");
+    $(".role-form.modal-title").text("添加角色");
+    //加载权限树
+    $.get(parent.globalConfig.serverPath + "pers/permAll", { "staffOrgId": parent.globalConfig.curStaffOrgId, "staffId": parent.globalConfig.curStaffId }, function(data) {
+        rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
+    });
+    //重置表单
+    App.resetForm($("#roleForm"));
+    debugger;
+    if ($("#roleForm").data('bootstrapValidator')) {
+        $("#roleForm").data('bootstrapValidator').destroy();
+        $('#roleForm').data('bootstrapValidator', null);
+    }
+    if (null == $('#roleForm').data('bootstrapValidator')) {
+        $('#roleForm').bootstrapValidator(roleFormValidator).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var $form = $(e.target);
+            var bv = $form.data('bootstrapValidator');
+            var url = serverPath + "roles/?t=" + App.timestamp(); //staffPartner
+            var pushType = "POST";
+            var formObj = App.getFormValues($("#roleForm"));
+            var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
+            var permId = '';
+            for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
+                permId += rolePermissionTreeNodes[i].permId;
+                permId += ",";
+            }
+            formObj.permId = permId.substring(0, permId.length - 1);
+            App.formAjaxJson(url, "POST", JSON.stringify(formObj), successCallback, improperCallbacks);
+
+            function successCallback(result) {
+                layer.msg(result.message, { icon: 1 });
+                searchRole();
+                $('#editDetailModal').modal('hide');
+            }
+
+            function improperCallbacks(result) {
+                $('#roleForm').data('bootstrapValidator').resetForm();
+            }
+        });
+    }
+    resetValidator();
+    $('#orgId').on('change', function(e) {
+        $('#roleForm')
+            .data('bootstrapValidator')
+            .updateStatus('orgId', 'NOT_VALIDATED', null)
+            .validateField('orgId');
+    });
+}
+
+/**
+ * 重置表单验证
+ */
+function resetValidator() {
+    if ($('#roleForm').data('bootstrapValidator')) {
+        $('#roleForm').data('bootstrapValidator').resetForm();
+    }
+}
+/**
+ * 打开编辑窗口
+ * @param {角色id} itemId 
+ */
+function editDetail(itemId) {
+    $(".role-form.modal-title").text("编辑角色");
+    App.formAjaxJson(serverPath + "roles/" + itemId, "GET", null, successCallback);
+
+    function successCallback(result) {
+        App.setFormValues($("#roleForm"), result.data);
+
+        //加载权限树
+        $.get(parent.globalConfig.serverPath + "pers/permAll", { "staffOrgId": parent.globalConfig.curStaffOrgId, "staffId": parent.globalConfig.curStaffId }, function(data) {
+            rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
+
+            /**查询角色拥有的权限集合 */
+            App.formAjaxJson(parent.globalConfig.serverPath + "roles/" + itemId + "/perms", "GET", null, permsSuccess);
+
+            /**权限查询结束后的回调函数 */
+            function permsSuccess(result) {
+                if (null != result.data) {
+                    var perms = result.data;
+                    for (p in perms) {
+                        var perm = perms[p];
+                        var node = rolePermissionTree.getNodeByParam("permId", perm.PERM_ID);
+                        console.log(node);
+                        rolePermissionTree.checkNode(node, true);
+                    }
+                }
+            }
+        });
+        debugger;
+        if ($("#roleForm").data('bootstrapValidator')) {
+            $("#roleForm").data('bootstrapValidator').destroy();
+            $('#roleForm').data('bootstrapValidator', null);
+        }
+        if (null == $('#roleForm').data('bootstrapValidator')) {
+            $('#roleForm').bootstrapValidator(roleFormValidator).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);
+                var bv = $form.data('bootstrapValidator');
+                var url = serverPath + "roles/?t=" + App.timestamp(); //staffPartner
+                var pushType = "PUT";
+                var formObj = App.getFormValues($("#roleForm"));
+                var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
+                var permId = '';
+                for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
+                    permId += rolePermissionTreeNodes[i].permId;
+                    permId += ",";
+                }
+                formObj.permId = permId.substring(0, permId.length - 1);
+                App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
+
+                function successCallback(result) {
+                    layer.msg(result.message, { icon: 1 });
+                    searchRole();
+                    $('#editDetailModal').modal('hide');
+                }
+
+                function improperCallbacks(result) {
+                    $('#roleForm').data('bootstrapValidator').resetForm();
+                }
+            });
+        }
+        $('#editDetailModal').modal('show');
+    }
+}
+/**
+ * 实现所属组织的点击方法，显示下拉树
+ * @param {加载树的对象} obj 
+ */
+function roleAdd_OrgTree(obj) {
+    selectOrgTree('staffAdd_OrgTree', obj, parent.globalConfig.curOrgId, roleAdd_OrgTreeCallback, '', '1', '720', '');
+}
+/**
+ * 下拉树的回调方法
+ * @param {组织id} orgId 
+ * @param {组织名称} orgName 
+ * @param {组织Code} orgCode 
+ */
+function roleAdd_OrgTreeCallback(orgId, orgName, orgCode) {
+    $("#orgName").val(orgName);
+    $("#orgId").val(orgCode);
+    $("#roleForm").data('bootstrapValidator')
+        .updateStatus('orgName', 'NOT_VALIDATED', null)
+        .validateField('orgName');
+}
+
+var roleFormValidator = {
+    /**
+     * 生效规则（三选一）
+     * enabled 字段值有变化就触发验证
+     * disabled,submitted 当点击提交时验证并展示错误信息
+     */
+    live: 'enabled',
+    /**
+     * 为每个字段设置统一触发验证方式（也可在fields中为每个字段单独定义），默认是live配置的方式，数据改变就改变
+     * 也可以指定一个或多个（多个空格隔开） 'focus blur keyup'
+     */
+    trigger: 'live focus blur keyup',
+    message: '校验未通过',
+    container: 'popover',
+    excluded: [':disabled'], //[':disabled', ':hidden', ':not(:visible)']
+    fields: {
+        roleName: {
+            validators: {
+                notEmpty: {
+                    message: '您输入的字段不能为空'
+                }
+            }
+        },
+        orgName: {
+            validators: {
+                notEmpty: {
+                    message: '请选择所属组织'
+                }
+            }
+        },
+        roleDesc: {
+            validators: {
+                stringLength: {
+                    max: 100,
+                    message: '请输入不超过100个字符'
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 
 /**
  * 表单验证规则、提交事件监听配置
@@ -191,64 +409,7 @@ var checkValidator = {
         }
     }
 };
-/**
- * 打开新增窗口
- */
-function addItem() {
-    //是否合作方角色，默认设置为否
-    //$("input[type='radio'][name='isPartnerRole'][value='0'").attr("checked", "checked");
-    $(".role-form.modal-title").text("添加角色");
-    //加载权限树
-    $.get(parent.globalConfig.serverPath + "pers/permAll", { "staffOrgId": parent.globalConfig.curStaffOrgId, "staffId": parent.globalConfig.curStaffId }, function(data) {
-        rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
-    });
-    //重置表单
-    App.resetForm($("#roleForm"));
-    if (null == $('#roleForm').data('bootstrapValidator')) {
-        $('#roleForm').bootstrapValidator(checkValidator);
-    }
-    resetValidator();
-    $('#orgId').on('change', function(e) {
-        $('#roleForm')
-            .data('bootstrapValidator')
-            .updateStatus('orgId', 'NOT_VALIDATED', null)
-            .validateField('orgId');
-    });
-}
 
-/**
- * 重置表单验证
- */
-function resetValidator() {
-    if ($('#roleForm').data('bootstrapValidator')) {
-        $('#roleForm').data('bootstrapValidator').resetForm(true);
-    }
-}
-/**
- * 打开编辑窗口
- * @param {角色id} itemId 
- */
-function editDetail(itemId) {
-    $(".role-form.modal-title").text("编辑角色");
-    $('#editDetailModal').modal('show');
-}
-/**
- * 实现所属组织的点击方法，显示下拉树
- * @param {加载树的对象} obj 
- */
-function roleAdd_OrgTree(obj) {
-    selectOrgTree('staffAdd_OrgTree', obj, parent.globalConfig.curOrgId, roleAdd_OrgTreeCallback, '', '1', '', '');
-}
-/**
- * 下拉树的回调方法
- * @param {组织id} orgId 
- * @param {组织名称} orgName 
- * @param {组织Code} orgCode 
- */
-function roleAdd_OrgTreeCallback(orgId, orgName, orgCode) {
-    $("#orgName").val(orgName);
-    $("#orgId").val(orgCode);
-}
 /** 角色管理页面的权限树 */
 var rolePermissionSetting = {
     check: {

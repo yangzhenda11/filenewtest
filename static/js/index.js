@@ -9,7 +9,7 @@ var globalConfig = {
     staticPath: "/",
     /**后台服务地址 */
     serverPath: "/",
-    //  serverPath: "http://localhost:9090/",
+    // serverPath: "http://localhost:9090/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
     curStaffOrgId: 10001,
     /** 当前用户的id （sys_staff主键） */

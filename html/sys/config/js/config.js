@@ -73,7 +73,7 @@ function judge(result){
 /*
  * 搜索点击事件
  */
-function searchDict(resetPaging) {
+function searchConfig(resetPaging) {
 	startLoading("#submitBtn");
 	var table = $('#configTable').DataTable();
 	if(resetPaging) {
@@ -86,97 +86,94 @@ function searchDict(resetPaging) {
  * 新增系统参数点击事件
  */
 function addConfigModal(){
+	$("#modalTitle").text("新增系统参数");
+	$("#modalEditContent").modal("show");
+	validate("add");
 	
 }
 /*
  * 修改系统参数点击事件
  */
-function editConfigModal(){
-	
+function editConfigModal(id){
+	$("#modalTitle").text("系统参数修改");
+	getConfig(id,"edit");
 }
 
 /*
  * 系统参数详情点击事件
  */
-function detailConfigModal(){
-	
+function detailConfigModal(id){
+	getConfig(id,"detail");
 }
 
-
 /*
- * 获取人员信息详情
+ * 系统参数删除点击事件，提交删除
  */
-function getInfor(id,type){
-	App.formAjaxJson(serverPath + "staffPartner/getStaffPartner/" + id, "get", "", successCallback);
-	function successCallback(result){
-		var data = result.data;
-		if(type == "edit"){
-			setEditForm(data);
-		}else{
-			setDetailForm(data);
+function delConfig(id, code) {
+	layer.confirm('确定删除系统参数<span style="color:red;margin:0 5px;">' + code + '</span>?', {
+		icon: 3,
+		title: '删除系统参数'
+	}, function(index) {
+		App.formAjaxJson(serverPath + 'configs/' + id, "DELETE", "", successCallback);
+		function successCallback(result) {
+			layer.close(index);					
+			layer.msg("删除成功", {
+				icon: 1
+			});
+			searchConfig(true);
 		}
-		
+	})
+}
+/*
+ * 获取参数信息
+ */
+function getConfig(id,type){
+	App.formAjaxJson(serverPath + 'configs/' + id, "get", "", successCallback);
+	function successCallback(result){
+		var data = result.sysConfig;
+		if(type == "edit"){
+			$('#modalEditContent').modal('show');
+			App.setFormValues("#configForm",data);
+			validate("edit");
+		}else{
+			$("#modalDetailContent").modal("show");
+			$("#codeDetail").text(data.code);
+			var valueCallback = {'attra':function(value){return value == "0" ? "否" : "是"}}
+			App.setFindValue("#configInfo",data,valueCallback);
+		}	
 	}
 }
-/*
- * 填充详情表单
- */
-function setDetailForm(data){
-	$("#modalDetailContent").modal("show");
-	$("#staffNameDetail").text(data.staffName);
-	var valueCallback = {'sex':function(value){return value == "W" ? "女" : "男"},
-						'staffStatus':function(value){return value == "1" ? "有效" : "无效"},
-						'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
-	App.setFindValue("#baseInfo",data,valueCallback);
-}
-/*
- * 填充修改表单
- */
-function setEditForm(data){
-	$('#modalEditContent').modal('show');
-	var valueCallback = {'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
-	App.setFormValues("#externalPersonnelForm",data,valueCallback);
-	$("#orgNameIn").attr("title",data.orgName);
-	$("#orgNameIn").data("id",data.orgId);
-	dateRegNameChose();
-	validate("edit");
-}
+
 /*
  * 新增||修改提交
  */
-function updateExternalPersonnel(editType) {
-	var formObj = App.getFormValues($("#externalPersonnelForm"));
+function updateConfig(editType) {
+	var formObj = App.getFormValues($("#configForm"));
 	var ms = "新增成功";
-	var url = serverPath + "staffPartner/addStaffPartner";
+	var url = serverPath + 'configs/';
 	var pushType = "POST";
 	if(editType == "add"){
-		formObj.createBy = config.curStaffId;
-		formObj.updateBy = config.curStaffId;
-		formObj.orgId = $("#orgNameIn").data("id");
-		formObj.staffKind = 2;
-		delete formObj.staffId;
+		delete formObj.id;
 	}else{
-		formObj.updateBy = config.curStaffId;
-		formObj.orgId = $("#orgNameIn").data("id");
 		ms = "修改成功";
-		url = serverPath + "staffPartner/updateStaffPartner";
+		url = serverPath + 'configs/' + id;
 		pushType = "PUT";
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
-		searchPersonnel(true);
+		searchConfig(true);
 		$('#modalEditContent').modal('hide');
 	}
 	function improperCallbacks(result){
-		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
+		$('#configForm').data('bootstrapValidator').resetForm();
 	}
 }
 /*
  * 表单验证
  */
 function validate(editType) {
-	$('#externalPersonnelForm').bootstrapValidator({
+	$('#configForm').bootstrapValidator({
 		live: 'enabled',
 		trigger: 'live focus blur keyup',
 		message: '校验未通过',
@@ -195,127 +192,18 @@ function validate(editType) {
 	                    message: '请输入参数值'
 	                }
 	            }
-	        }
+	        },
 			attra : {
 				validators : {
 					notEmpty: {
 	                    message: '请选择允许用户更改'
 	                }
-				}
+				},
+				trigger: "change"
 			}
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
 		updateConfig(editType);
-	});
-}
-
-
-
-
-
-
-
-
-
-function resetSearchConfigform() {
-    $("#searchConfigForm input").val("");
-}
-
-function toConfigAdd() {
-    $('#configForm').bootstrapValidator(checkConfigValidator);
-    $("#configForm").show();
-    $("#orgOperationTitle").html("新增系统参数");
-    $("#configForm button[name = 'addBtnName']").show();
-    $("#configList").hide();
-}
-
-function addConfig() {
-    var data = $("#configForm").serializeArray();
-    var obj = {};
-    $.each(data, function(i, v) {
-        obj[v.name] = v.value;
-    })
-    $.ajax({
-        "type": "POST",
-        "url": serverPath + 'configs/',
-        "contentType": "application/json",
-        "data": JSON.stringify(obj),
-        success: function(data) {
-            returnConfigList();
-            alert("添加成功！");
-        },
-        error: function(e) {
-            alert("添加失败o_o请重试...");
-        }
-    })
-}
-
-function toConfigUpdate(id) {
-    $("#configId").val(id);
-    $('#configForm').bootstrapValidator(checkConfigValidator);
-    $("#configForm").show();
-    $("#orgOperationTitle").html("修改系统参数");
-    $("#configForm button[name = 'updateBtnName']").show();
-    $("#configList").hide();
-    $.get(serverPath + 'configs/' + id, {}, function(data) {
-        var sysConfig = data.sysConfig;
-        for (var col in sysConfig) {
-            if (col == 'attra') {
-                $("#configForm select[name='attra'] option[value='" + sysConfig[col] + "']").attr("selected", "selected");
-            } else {
-                $("#configForm input[name='" + col + "']").val(sysConfig[col]);
-            }
-        }
-    })
-}
-
-function updateConfig() {
-    debugger;
-    var id = $("#configId").val();
-    var data = $("#configForm").serializeArray();
-    var obj = {};
-    $.each(data, function(i, v) {
-        obj[v.name] = v.value;
-    })
-    $.ajax({
-        "type": "PUT",
-        "url": serverPath + 'configs/' + id,
-        "contentType": "application/json",
-        "data": JSON.stringify(obj),
-        success: function(data) {
-            returnConfigList();
-            alert("修改成功！");
-        },
-        error: function(e) {
-            alert("修改失败o_o请重试...");
-        }
-    })
-}
-
-function delConfig(id, code) {
-    debugger;
-    if (confirm('确认删除系统参数“' + code + '”么？')) {
-        $.ajax({
-            "type": "DELETE",
-            "url": serverPath + 'configs/' + id,
-            success: function(data) {
-                selectConfig();
-                alert("删除成功！");
-            },
-            error: function(e) {
-                alert("删除失败o_o请重试...");
-            }
-        })
-    }
-}
-
-function returnConfigList() {
-    $("#configForm").hide();
-    $('#configForm input').val("");
-    $('#configForm').bootstrapValidator('resetForm', true);
-    $("#configForm button[name = 'addBtnName']").hide();
-    $("#configForm button[name = 'updateBtnName']").hide();
-    $("#configList").show();
-    selectConfig();
+	})
 }

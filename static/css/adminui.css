@@ -7246,8 +7246,8 @@ Color library demo
     color: #333; }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px; }
+  width: 6px;
+  height: 6px; }
 
 ::-webkit-scrollbar-track {
   border: 1px #f5f5f5 solid;

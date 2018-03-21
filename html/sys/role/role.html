@@ -60,10 +60,12 @@
                         </div>
                     </form>
                 </div>
-                <div id="toolbars">
-                    <!--href="addForm.html"-->
-                    <a data-toggle="modal" data-target="#editDetailModal" onclick="openAddModal()" class="btn red btn-outline" data-title="添加角色"><i class="ace-icon fa fa-plus"></i> 新增</a>
-                    <!-- <button onclick="delItem()" type="button" class="btn yellow btn-outline"><i class="fa fa-times"></i> 删除</button> -->
+                <div class="toolbars">
+                    <div class="toolbars-content">
+                        <!--href="addForm.html"-->
+                        <a data-toggle="modal" data-target="#editDetailModal" onclick="openAddModal()" class="btn btn-block red editBtn" data-title="添加角色"><i class="ace-icon fa fa-plus"></i> 新增</a>
+                        <!-- <button onclick="delItem()" type="button" class="btn yellow btn-outline"><i class="fa fa-times"></i> 删除</button> -->
+                    </div>
                 </div>
                 <table id="searchRoleTable" class="table table-striped table-bordered table-hover table-header-fixed">
                 </table>
@@ -131,9 +133,7 @@
         </div>
     </div>
     <!--弹出编辑-->
-    <div class="modal fade" id="editDetailModal" data-backdrop="static" tabindex="-1" role="dialog">
-
-    </div>
+    <div class="modal fade" id="editDetailModal" data-backdrop="static" tabindex="-1" role="dialog"></div>
     <!--[if lt IE 9]>
       <script src="../../../static/plugins/html5shiv.min.js"></script>
       <script src="../../../static/plugins/respond.min.js"></script>

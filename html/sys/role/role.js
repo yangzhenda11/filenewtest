@@ -9,6 +9,7 @@ var serverPath = parent.globalConfig.serverPath;
 var roleSearchStaffTable;
 var table = App.initDataTables('#searchRoleTable', {
     "serverSide": true, //开启服务器请求模式
+    buttons: ['copy', 'colvis'], //显示的工具按钮
     "ajax": {
         "type": "GET",
         "url": parent.globalConfig.serverPath + 'roles/', //请求路径
@@ -111,7 +112,7 @@ function deleteDetail(roleId) {
                 searchRole();
             }
         });
-    })
+    });
 }
 /**
  * 执行查询
@@ -359,11 +360,9 @@ var roleFormValidator = {
 
 
 
-
-
-
-
-
+/** **************************** */
+/**下面的是之前的代码，尚有参考价值 */
+/** **************************** */
 
 /**
  * 表单验证规则、提交事件监听配置
@@ -680,113 +679,6 @@ function backSearch1() {
 }
 
 
-//展示修改页面
-function showEditPage(roleId) {
-    $('#searchRoleContent').hide();
-    $('#updateBtn').show();
-    $('#roleModal').show();
-    $('#roleModalTitle').text("修改角色");
-    $('#addBtn').hide();
-    debugger;
-    $.get(serverPath + "orgs/selectAllOrgId", { "staffId": curStaffId }, function(data) {
-        for (var i = 0; i < data.length; i++) {
-            $.get(serverPath + "orgs/selectOrg", { "orgId": data[i] }, function(orgInfo) {
-                orgTree = $.fn.zTree.init($("#orgTree"), orgSetting, orgInfo);
-            });
-        }
-    });
-
-    /**
-     * 根据岗位ID获取当前登录人可操作的权限树信息
-     */
-    $.get(serverPath + "pers/permAll", { "staffOrgId": curStaffOrgId, "staffId": curStaffId }, function(data) {
-        //角色所拥有的权限树
-        rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
-        //权限管理可操作的权限树
-        permForPermManageTree = $.fn.zTree.init($("#permForPermManageTree"), permForPermManageSetting, data);
-
-        /**
-         * 根据岗位ID获取当前登录人可操作的角色信息
-         */
-        $.get(serverPath + "roles/" + curStaffOrgId + "/role", { "staffId": curStaffId }, function(data) {
-            $html = "<button type=\"button\" class=\"user-button btn-sm\" onclick=\"chooseAll()\">全选</button>" +
-                "<button type=\"button\" class=\"user-button user-btn-n btn-sm\" onclick=\"clearAll()\">清除</button>"
-            $("#roleList").append($html);
-            for (var i = 0; i < data.roles.length; i++) {
-                $html = "<label class=\"roleChoose\">" +
-                    "<input type=\"checkbox\" name=\"roleList\" value=\"" + data.roles[i].roleId + "\"/>" +
-                    "<span>" + data.roles[i].roleName + "</span></label>";
-                $("#roleList").append($html);
-            }
-        });
-
-        /**
-         * 根据角色ID获取要修改的角色信息
-         */
-        $.get(serverPath + 'roles/' + roleId + '/roleInfo', function(data) {
-            var sysRole = data.sysRole;
-            $('#roleId').val(sysRole.roleId);
-            $('#roleName').val(sysRole.roleName); //角色名称
-            $('#roleDesc').val(sysRole.roleDesc); //角色描述
-            debugger;
-            $("input[name='isPartnerRole'][value='" + sysRole.isPartnerRole + "']").prop("checked", true);
-            $('#orgName').val(data.orgName); //所属部门
-            //			$('#orgId').val(sysRole.orgId);
-            $('.upfpanel-title').text("角色修改");
-            //			var sysRolePermission = data.sysRolePermission;
-            var rolePermissionTreeObj = $.fn.zTree.getZTreeObj("rolePermissionTree");
-            var permForPermManageTreeObj = $.fn.zTree.getZTreeObj("permForPermManageTree");
-
-            var permId = data.permId;
-            var permForPermManageId = data.permForPermManageId;
-            var roleForRoleManageId = data.roleForRoleManageId;
-            //debugger;
-            if (permId == null || permId.length == 0) {
-                $('#permForPermManage').show();
-            } else {
-                for (var i = 0; i < permId.length; i++) {
-                    if (permId[i] == 100) {
-                        $('#permForPermManage').show();
-                    }
-                    if (permId[i] == 201) {
-                        $('#roleForRoleManage').show();
-                    }
-                    if (rolePermissionTreeObj.getNodeByParam("permId", permId[i]))
-                        rolePermissionTreeObj.checkNode(rolePermissionTreeObj.getNodeByParam("permId", permId[i]), true);
-                }
-            }
-            if (permForPermManageId == null || permForPermManageId.length == 0) {
-                $('#permForPermManage').hide();
-            } else {
-                $('#permForPermManage').show();
-                for (var i = 0; i < permForPermManageId.length; i++) {
-                    if (permForPermManageTreeObj.getNodeByParam("permId", permForPermManageId[i]))
-                        permForPermManageTreeObj.checkNode(permForPermManageTreeObj.getNodeByParam("permId", permForPermManageId[i]), true);
-                }
-            }
-            if (roleForRoleManageId == null || roleForRoleManageId.length == 0) { //&&roleForRoleManageId!=roleId)
-                $('#roleForRoleManage').hide();
-            } else {
-                $('#roleForRoleManage').show();
-                var checkBoxAll = $("input[name='roleList']");
-                for (var i = 0; i < roleForRoleManageId.length; i++) {
-                    //获取所有复选框对象的value属性，然后，用roleForRoleManageId[i]和他们匹配，如果有，则说明他应被选中
-                    $.each(checkBoxAll, function(j, checkbox) {
-                        //获取复选框的value属性
-                        var checkValue = $(checkbox).val();
-                        if (roleForRoleManageId[i] == checkValue) {
-                            $(checkbox).prop("checked", true);
-                        }
-                    })
-                }
-            }
-            if (null == $('#roleForm').data('bootstrapValidator')) {
-                $('#roleForm').bootstrapValidator(checkValidator);
-            }
-        });
-    });
-
-}
 //全选
 function chooseAll() {
     var checkBoxAll = $("input[name='roleList']");

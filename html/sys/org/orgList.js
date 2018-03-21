@@ -210,7 +210,7 @@ function orgRe(orgId) {
         skin: 'layer-ext-moon'
     }, function() {
         $.ajax({ //提交服务端
-            url: parent.globalConfig.serverPath + 'orgs/orgStatus/' + orgId + "?" + App.timestamp(),
+            url: parent.globalConfig.serverPath + 'orgs/' + orgId + "/orgStatus/?" + App.timestamp(),
             type: "PUT",
             contentType: "application/json",
             success: function(data) {

@@ -192,37 +192,47 @@ function changeDictStatus(dictId, dictParentId, dictLabel, dictStatus) {
 	});
 }
 /*
- * 启用禁用提交
+ * 启用禁用验证是否为根节点
  */
 function doChangeDictStatus(dictId, dictParentId, dictStatus, index) {
 	if(dictParentId == 0){
 		layer.msg("根节点禁止“启用禁用”操作", {icon: 2});
 		return false;
-	}else if(dictTree.getNodeByParam("dictId", dictId).level == 0){
-		layer.confirm("树的根节点将消失无法恢复，确认禁用？", {icon: 3},function(){
-			var obj = { "dictId": dictId, "dictStatus": dictStatus };
-			App.formAjaxJson(serverPath + 'dicts/' + dictId, "PUT", JSON.stringify(obj), successCallback);
-			function successCallback(result) {
-				var ms = dictStatus == "1" ? "启用成功" : "禁用成功";
-				var checkTree = dictTree.getSelectedNodes()[0];
-				layer.msg(ms, {
-					icon: 1
-				});
-				if(checkTree.dictId == dictId){
-					if(checkTree.level == 0){
-						curNodeId = dictTree.getNodes()[0].dictId;
-					}else{
-						curNodeId = checkTree.dictParentId;
-					}
-				}else{
-					curNodeId = checkTree.dictId;
-				};
-				getDictTree();
-			}
-		})
+	}else if(dictStatus == 0){
+		var checkTreeLevel = dictTree.getNodeByParam("dictId", dictId).level;
+		if(checkTreeLevel == 0){
+			layer.confirm("树的根节点将消失无法恢复，确认禁用？", {icon: 3},function(){
+				postDictChangeStatus(dictId,dictStatus);
+			});
+		}else{
+			postDictChangeStatus(dictId,dictStatus);
+		}
+	}else{
+		postDictChangeStatus(dictId,dictStatus);
 	}
 }
 
+function postDictChangeStatus(dictId,dictStatus){
+	var obj = { "dictId": dictId, "dictStatus": dictStatus };
+	App.formAjaxJson(serverPath + 'dicts/' + dictId, "PUT", JSON.stringify(obj), successCallback);
+	function successCallback(result) {
+		var ms = dictStatus == "1" ? "启用成功" : "禁用成功";
+		var checkTree = dictTree.getSelectedNodes()[0];
+		layer.msg(ms, {
+			icon: 1
+		});
+		if(checkTree.dictId == dictId){
+			if(checkTree.level == 0){
+				curNodeId = dictTree.getNodes()[0].dictId;
+			}else{
+				curNodeId = checkTree.dictParentId;
+			}
+		}else{
+			curNodeId = checkTree.dictId;
+		};
+		getDictTree();
+	}
+}
 /*
  * 字典新增修改弹出框
  */

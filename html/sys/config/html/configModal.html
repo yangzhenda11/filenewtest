@@ -10,9 +10,9 @@
 
 	<body>
 		<div id="modalEdit">
-			<div class="modal-dialog" role="document" style="width: 90%;">
+			<div class="modal-dialog" role="document" style="width: 60%;">
 				<div class="modal-content">
-					<form class="form-horizontal" role="form" id="externalPersonnelForm">
+					<form class="form-horizontal" role="form" id="configForm">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h4 class="modal-title" id="modalTitle"></h4>
@@ -42,7 +42,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-6">
 								<div class="form-group">
 									<label for="attrb">可更改枚举值</label>
 									<input type="text" id="attrb" name="attrb" class="form-control" placeholder="可更改枚举值">
@@ -58,14 +58,14 @@
 			</div>
 		</div>
 		<div id="modalDetail">
-			<div class="modal-dialog" role="document" style="width: 90%;">
+			<div class="modal-dialog" role="document" style="width: 60%;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title">系统参数详情</h4>
 					</div>
 					<div class="modal-body">
-						<div class="detailTitle">系统参数名称：<span id="staffNameDetail"></span></div>
+						<div class="detailTitle">系统参数名称：<span id="codeDetail"></span></div>
 						<ul class="nav nav-tabs modalNavTab">
 							<li class="active">
 								<a href="#configInfo" data-toggle="tab">参数信息</a>

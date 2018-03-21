@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
     <link href="../common/treeDropDown.css" rel="stylesheet">
 </head>
 
@@ -115,11 +116,14 @@
             </form>
         </div>
     </div> -->
-    <div id="staffBody">
+    <!--  <div id="staffBody">
         <table id="searchStaffTable" class="display table table-bordered" cellspacing="0" width="100%"></table>
-        <!-- 人员信息模态框 开始 -->
+        人员信息模态框 开始 
+    </div>-->
+    <div id="staffModalPart">
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal_label">
+        </div>
     </div>
-    <div id="staffModalPart"></div>
     <div id="staffLoadPart"></div>
     <!--[if lt IE 9]>
 	  <script src="../../../static/plugins/html5shiv.min.js"></script>
@@ -143,10 +147,12 @@
     <script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
     <!--业务依赖-->
     <script src="../../../static/plugins/datatables-plugin/datatables.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables-plugin/plugins/datatables.bootstrap.js"></script>
     <script src="../../../static/plugins/datatables-plugin/ellipsis.js"></script>
+    <script src="../../../static/js/date-format.js" type="text/javascript" charset="utf-8"></script>
     <!--表格-结束-->
     <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>

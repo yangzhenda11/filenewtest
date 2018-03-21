@@ -1,30 +1,135 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal_label">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title">人员基本信息</h4>
-					<input type="hidden" id="staffDetailId">
-					<input type="hidden" id="mark">
-				</div>
-				<div id="staffDetail">
-					
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
-				</div>
-			</div>
-		</div>
-	</div>	
-</body>
-<script type="text/javascript" src="../staff/staffDetailModal.js"></script>
-</html>
+            <h4 class="modal-title">人员基本信息</h4>
+        </div>
+        <div class="modal-body">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a id="infoAnchor" href="#info" aria-controls="info" data-toggle="tab">人员信息</a></li>
+                <li role="presentation"><a id="positionAnchor" href="#position" aria-controls="position" data-toggle="tab">岗位信息</a></li>
+                <li role="presentation"><a id="roleAnchor" href="#role" aria-controls="role" data-toggle="tab">角色信息</a></li>
+                <li role="presentation"><a id="permissionAnchor" href="#permission" aria-controls="permission" data-toggle="tab">权限信息</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="info">
+                    <div id="infoDiv" class="form-body form-horizontal form-row-seperated">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">账号:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="loginName"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">排序:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="staffSort"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">人员姓名:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="staffName"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">人员状态:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="staffStatus"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">身份证号:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="empCode"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">性别:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="sex"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">入职日期:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="hireDate"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">邮政编码:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="postcode"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">通信地址:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="mailAddr"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">电话号码:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="phone"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">邮箱:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="email"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">手机号码:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static" name="mobilPhone"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="position">
+                    <div id="staffOrgInfos" class="form-body form-horizontal form-row-seperated"></div>
+                </div>
+
+                <div class="tab-pane fade" id="role">
+                    <div id="roleDiv" class="form-body form-horizontal form-row-seperated"></div>
+                </div>
+                <div class="tab-pane fade" id="permission">
+                    <ul id="staffDetailPermtree" class="ztree container-fluid"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+        </div>
+    </div>
+</div>

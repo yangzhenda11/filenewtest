@@ -244,11 +244,11 @@ function dictModal(editType,dictId,dictParentId){
 			if(null == data) {
 				layer.msg("没有相关组织和人员信息", {icon: 2});
 			} else {
-				orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
+				orgNameTree = $.fn.zTree.init($("#provinceName"), orgsSetting, data);
 			}
 		};
-		$("#orgNameTree").on("click",function(){
-			showTree('orgNameTree');
+		$("#provinceCodeTree").on("click",function(){
+			showTree('provinceCodeTree');
 		});
 		if(editType == "add") {
 			$("#modalTitle").text("新增字典");
@@ -277,6 +277,8 @@ function getDictInfor(editType,dictId){
 	function successCallback(result){
 		$('#modal').modal('show');
 		App.setFormValues("#dictForm",result.sysDict);
+		$("#provinceCodeTree").data("id",result.sysDict.provinceCode);
+		$("#provinceCodeTree").attr("title",result.sysDict.provinceName);
 		validate(editType,dictId);
 	}
 }
@@ -300,6 +302,7 @@ function updateDict(editType,dictId){
 		url = serverPath + 'dicts/'+dictId;
 		pushType = "PUT";
 	}
+	formObj.provinceCode = $("#provinceCodeTree").data("id");
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
@@ -392,7 +395,7 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			orgName : {
+			provinceName : {
 				validators : {
 					notEmpty : {
 						message : '请选择所属组织'
@@ -493,8 +496,8 @@ function onClick(event, treeId, treeNode) {
 	$("input[name=" + treeId + "]").data("id", selectId);
 	$("input[name=" + treeId + "]").val(selectName);
 	$("input[name=" + treeId + "]").attr("title", selectName);
-	if(treeId == "orgName"){
-		$("#dictForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
-		$("#dictForm").data("bootstrapValidator").validateField('orgName');
+	if(treeId == "provinceName"){
+		$("#dictForm").data("bootstrapValidator").updateStatus("provinceName",  "NOT_VALIDATED",  null );
+		$("#dictForm").data("bootstrapValidator").validateField('provinceName');
 	}
 }

@@ -9,14 +9,6 @@ var serverPath = config.serverPath;
 //页面初始化事件
 $(function() {
 	getTreeInfo();
-	$("#modalDetailContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail");
-	$('#modalDetailContent').on('hidden.bs.modal', function() {
-		$("#modalDetailContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail");
-	});
-	$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit");
-	$('#modalEditContent').on('hidden.bs.modal', function() {
-		$("#modalEditContent").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit");
-	});
 })
 /*
  * 显示所属组织树
@@ -317,16 +309,22 @@ function doChangeStaffStatus(staffId, staffStatus, index) {
 function personnelModal(code) {
 	var code = code.split("&&");
 	var editType = code[0];
-	if(editType == "add") {
-		$("#modalTitle").text("新增外部人员");
-		dateRegNameChose();
-		validate(editType);
-		$('#modalEditContent').modal('show');
-	} else if(editType == "edit") {
-		$("#modalTitle").text("外部人员信息编辑");
-		getInfor(code[1],editType)
+	if(editType == "add" || editType == "edit") {
+		$("#modal").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit",function(){
+			if(editType == "add"){
+				$("#modalTitle").text("新增外部人员");
+				dateRegNameChose();
+				validate(editType);
+				$('#modal').modal('show');
+			}else{
+				$("#modalTitle").text("外部人员信息编辑");
+				getInfor(code[1],editType)
+			}
+		});
 	} else {
-		getInfor(code[1],editType)
+		$("#modal").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail",function(){
+			getInfor(code[1],editType);
+		});
 	}
 }
 /*
@@ -348,7 +346,7 @@ function getInfor(id,type){
  * 填充详情表单
  */
 function setDetailForm(data){
-	$("#modalDetailContent").modal("show");
+	$("#modal").modal("show");
 	$("#staffNameDetail").text(data.staffName);
 	var valueCallback = {'sex':function(value){return value == "W" ? "女" : "男"},
 						'staffStatus':function(value){return value == "1" ? "有效" : "无效"},
@@ -359,7 +357,7 @@ function setDetailForm(data){
  * 填充修改表单
  */
 function setEditForm(data){
-	$('#modalEditContent').modal('show');
+	$('#modal').modal('show');
 	var valueCallback = {'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
 	App.setFormValues("#externalPersonnelForm",data,valueCallback);
 	$("#orgNameIn").attr("title",data.orgName);
@@ -416,7 +414,7 @@ function updateExternalPersonnel(editType) {
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
 		searchPersonnel(true);
-		$('#modalEditContent').modal('hide');
+		$('#modal').modal('hide');
 	}
 	function improperCallbacks(result){
 		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();

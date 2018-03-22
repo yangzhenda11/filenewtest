@@ -40,11 +40,7 @@ function getLog(){
 	            "title": "操作时间",
 	            className: "text-center",
 	            render: function(data, type, full, meta) {
-	                if (data) {
-	                    return App.formatDateTime(data);
-	                } else {
-	                    return "";
-	                }
+	                return App.formatDateTime(data);
 	            }
 	        },
 	        { "data": "operTotalTime", "title": "操作耗时", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },

@@ -18,14 +18,11 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
-    <link rel="stylesheet" type="text/css" href="../../sys/common/treeDropDown.css">
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
+    <link rel="stylesheet" type="text/css" href="../common/modalDetailCommon.css" />
 
 </head>
 
@@ -53,18 +50,16 @@
                                     <input type="text" class="form-control" id="sysOrgName" name="sysOrgName" placeholder="" autocomplete="off">
                                 </div>
                             </div>
+                            <div class="search-action">
+								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="searchRole();"><i class="ace-icon fa fa-search"></i> 查询</button>
+							</div>
                         </div>
-                        <div class="page-search-action">
-                            <button type="button" id="searchBtn" class="btn btn-block red" onclick="searchRole()"><i class="ace-icon fa fa-search"></i> 查询</button>
-                            <button type="reset" class="btn btn-block yellow hidden"><i class="ace-icon fa fa-repeat"></i> 重置</button>
-                        </div>
+                        
                     </form>
                 </div>
                 <div class="toolbars">
                     <div class="toolbars-content">
-                        <!--href="addForm.html"-->
-                        <a data-toggle="modal" data-target="#editDetailModal" onclick="openAddModal()" class="btn btn-block red editBtn" data-title="添加角色"><i class="ace-icon fa fa-plus"></i> 新增</a>
-                        <!-- <button onclick="delItem()" type="button" class="btn yellow btn-outline"><i class="fa fa-times"></i> 删除</button> -->
+                        <button type="button" class="btn btn-block red editBtn" onclick="openAddModal();"><i class="ace-icon fa fa-plus"></i>  新增</button>
                     </div>
                 </div>
                 <table id="searchRoleTable" class="table table-striped table-bordered table-hover table-header-fixed">
@@ -72,68 +67,8 @@
             </div>
         </div>
     </div>
-    <!--弹出查看-->
-    <div class="modal fade" id="findDetailModal" tabindex="-1" data-backdrop="static" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">角色详情</h4>
-                </div>
-                <div class="modal-body form">
-                    <div id="roleDetail" class="form-body form-horizontal form-row-seperated">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">角色名称:</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static" name="roleName"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">所属组织:</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static" name="orgName"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">角色描述:</label>
-                                    <div class="col-sm-10">
-                                        <p class="form-control-static" name="roleDesc"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">添加时间:</label>
-                                    <div class="col-sm-8">
-                                        <p class="form-control-static" name="createDate"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">该角色拥有的权限:</label>
-                                    <div class="col-sm-10">
-                                        <ul id="rolePermissionTree1" class="ztree"></ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--弹出编辑-->
-    <div class="modal fade" id="editDetailModal" data-backdrop="static" tabindex="-1" role="dialog"></div>
+    <!--modal框-->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     <!--[if lt IE 9]>
       <script src="../../../static/plugins/html5shiv.min.js"></script>
       <script src="../../../static/plugins/respond.min.js"></script>
@@ -142,31 +77,19 @@
     <!--[if lte IE 8]>
         <script src="../../../static/plugins/selectivizr-min.js"></script>
     <![endif]-->
-    <!--插件引入-->
-    <script type="text/javascript">
-        //数据初始化
-    </script>
     <!--基础依赖-->
     <script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/js.cookie.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/jquery.blockui.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/select2/js/select2.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
     <!--业务依赖-->
     <script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables/ellipsis.js"></script>
     <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.extend.js" type="text/javascript" charset="utf-8"></script>
-    <!--表格-结束-->
     <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/js/date-format.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
-    <script src="../../sys/common/treeDropDown.js"></script>
     <!--当前页面依赖-->
     <script src="role.js" type="text/javascript" charset="utf-8"></script>
 </body>

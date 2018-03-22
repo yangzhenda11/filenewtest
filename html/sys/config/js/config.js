@@ -3,14 +3,6 @@ var config = parent.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
 	getConfigTable();
-	$("#modalDetailContent").load("./html/configModal.html?" + App.timestamp()+" #modalDetail");
-	$('#modalDetailContent').on('hidden.bs.modal', function() {
-		$("#modalDetailContent").load("./html/configModal.html?" + App.timestamp()+" #modalDetail");
-	});
-	$("#modalEditContent").load("./html/configModal.html?" + App.timestamp()+" #modalEdit");
-	$('#modalEditContent').on('hidden.bs.modal', function() {
-		$("#modalEditContent").load("./html/configModal.html?" + App.timestamp()+" #modalEdit");
-	});
 })
 /*
  * 获取系统参数列表
@@ -86,24 +78,29 @@ function searchConfig(resetPaging) {
  * 新增系统参数点击事件
  */
 function addConfigModal(){
-	$("#modalTitle").text("新增系统参数");
-	$("#modalEditContent").modal("show");
-	validate("add");
-	
+	$("#modal").load("./html/configModal.html?" + App.timestamp()+" #modalEdit",function(){
+		$("#modalTitle").text("新增系统参数");
+		$("#modal").modal("show");
+		validate("add");
+	});
 }
 /*
  * 修改系统参数点击事件
  */
 function editConfigModal(id){
-	$("#modalTitle").text("系统参数修改");
-	getConfig(id,"edit");
+	$("#modal").load("./html/configModal.html?" + App.timestamp()+" #modalEdit",function(){
+		$("#modalTitle").text("系统参数修改");
+		getConfig(id,"edit");
+	});
 }
 
 /*
  * 系统参数详情点击事件
  */
 function detailConfigModal(id){
-	getConfig(id,"detail");
+	$("#modal").load("./html/configModal.html?" + App.timestamp()+" #modalDetail",function(){
+		getConfig(id,"detail");
+	});
 }
 
 /*
@@ -132,11 +129,11 @@ function getConfig(id,type){
 	function successCallback(result){
 		var data = result.sysConfig;
 		if(type == "edit"){
-			$('#modalEditContent').modal('show');
+			$('#modal').modal('show');
 			App.setFormValues("#configForm",data);
 			validate("edit");
 		}else{
-			$("#modalDetailContent").modal("show");
+			$("#modal").modal("show");
 			$("#codeDetail").text(data.code);
 			var valueCallback = {'attra':function(value){return value == "0" ? "否" : "是"}}
 			App.setFindValue("#configInfo",data,valueCallback);
@@ -163,7 +160,7 @@ function updateConfig(editType) {
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
 		searchConfig(true);
-		$('#modalEditContent').modal('hide');
+		$('#modal').modal('hide');
 	}
 	function improperCallbacks(result){
 		$('#configForm').data('bootstrapValidator').resetForm();

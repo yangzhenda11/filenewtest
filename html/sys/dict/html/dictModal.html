@@ -48,6 +48,16 @@
 								</div>
 							</div>
 							<div class="col-sm-6">
+								<label for="organisation" >所属组织：<span class="notNull">*</span></label>
+								<div class="input-group form-group">
+									<input id="orgNameTree" readonly name="orgName" type="text" class="form-control" />
+									<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
+									<div id="orgNameTreeContent" class="zTreeContent selectZTreeCount">
+										<ul id="orgName" class="ztree"></ul>
+										</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
 								<div class="form-group">
 									<label for="dictSort">顺序<span class="notNull">*</span></label>
 									<input type="text" id="dictSort" class="form-control" name="dictSort" placeholder="顺序" maxlength="6">
@@ -55,8 +65,14 @@
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
+									<label for="dictRange">适用范围<span class="notNull">*</span></label>
+									<input type="text" id="dictRange" class="form-control" name="dictRange"  placeholder="使用范围" maxlength="50">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
 									<label for="dictDesc">描述</label>
-									<input type="text" id="dictDesc" class="form-control" name="dictDesc" placeholder="字典描述" maxlength="50">
+									<input type="text" id="dictDesc" class="form-control" name="dictDesc"  placeholder="字典描述" maxlength="50">
 								</div>
 							</div>
 						</div>

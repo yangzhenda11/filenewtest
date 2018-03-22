@@ -5,10 +5,6 @@ var config = parent.globalConfig;
 var serverPath = config.serverPath;
 $(function() {
     getDictTree();
-    $("#modalEditContent").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit");
-	$('#modalEditContent').on('hidden.bs.modal', function() {
-		$("#modalEditContent").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit");
-	});
 })
 /*
  * 获取字典树
@@ -120,7 +116,8 @@ function createDictTable() {
             { "data": "dictLabel", title: "字典名称", className: "text-center" },
             { "data": "dictValue", title: "值", className: "text-center" },
             { "data": "dictType", title: "类型", className: "text-center" },
-            { "data": "dictSort", title: "顺序", className: "text-center" }
+            { "data": "dictSort", title: "顺序", className: "text-center" },
+            { "data": "dictRange", title: "适用范围", className: "text-center" }
 		]
 	});
 }
@@ -233,25 +230,42 @@ function postDictChangeStatus(dictId,dictStatus){
 		getDictTree();
 	}
 }
+
+
 /*
  * 字典新增修改弹出框
  */
 function dictModal(editType,dictId,dictParentId){
-	if(editType == "add") {
-		$("#modalTitle").text("新增字典");
-		var checkTree = dictTree.getSelectedNodes()[0];
-		$("#dictParentName").val(checkTree.dictLabel);
-		$("#dictParentId").val(checkTree.dictId);
-		validate(editType);
-		$('#modalEditContent').modal('show');
-	} else if(editType == "edit") {
-		if(dictParentId == 0){
-			layer.msg("根节点禁止“编辑”操作", {icon: 2});
-			return false;
+	$("#modal").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit",function(){
+		//加载组织树
+		App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			if(null == data) {
+				layer.msg("没有相关组织和人员信息", {icon: 2});
+			} else {
+				orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
+			}
+		};
+		$("#orgNameTree").on("click",function(){
+			showTree('orgNameTree');
+		});
+		if(editType == "add") {
+			$("#modalTitle").text("新增字典");
+			var checkTree = dictTree.getSelectedNodes()[0];
+			$("#dictParentName").val(checkTree.dictLabel);
+			$("#dictParentId").val(checkTree.dictId);
+			validate(editType);
+			$('#modal').modal('show');
+		} else if(editType == "edit") {
+			if(dictParentId == 0){
+				layer.msg("根节点禁止“编辑”操作", {icon: 2});
+				return false;
+			}
+			$("#modalTitle").text("外部人员信息编辑");
+			getDictInfor(editType,dictId)
 		}
-		$("#modalTitle").text("外部人员信息编辑");
-		getDictInfor(editType,dictId)
-	}
+	});
 }
 
 
@@ -261,7 +275,7 @@ function dictModal(editType,dictId,dictParentId){
 function getDictInfor(editType,dictId){
 	App.formAjaxJson(serverPath + "dicts/"+dictId, "get", "", successCallback);
 	function successCallback(result){
-		$('#modalEditContent').modal('show');
+		$('#modal').modal('show');
 		App.setFormValues("#dictForm",result.sysDict);
 		validate(editType,dictId);
 	}
@@ -290,7 +304,7 @@ function updateDict(editType,dictId){
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
 		getDictTree();
-		$('#modalEditContent').modal('hide');
+		$('#modal').modal('hide');
 	}
 	function improperCallbacks(result){
 		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
@@ -366,9 +380,121 @@ function validate(editType,dictId) {
 					}
 				}
 			},
+			dictRange : {
+				validators : {
+					notEmpty : {
+						message : '请输入适用范围'
+					},
+					stringLength : {
+						min : 0,
+						max : 50,
+						message : '请输入不超过50个字符'
+					}
+				}
+			},
+			orgName : {
+				validators : {
+					notEmpty : {
+						message : '请选择所属组织'
+					}
+				}
+			}
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
 		updateDict(editType,dictId);
 	});
+}
+
+/*
+ * 显示所属组织树
+ */
+function showTree(dom) {
+	var selectObj = $("#" + dom + "");
+	var selectOffset = selectObj.offset();
+	$("#" + dom + "Content").css({
+		left: "0",
+		top: selectObj.outerHeight() + "px",
+		width: selectObj.outerWidth() + 50
+	}).slideDown("fast");
+	onBodyDown(dom);
+}
+/*
+ * 隐藏所属组织树
+ */
+function hideMenu(dom) {
+	$("#" + dom + "Content").fadeOut("fast");
+	$("body").unbind("mousedown", onBodyDown);
+}
+/*
+ * 组织树点击事件
+ */
+function onBodyDown(dom) {
+	$("body").on("mousedown", function(event) {
+		if(!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
+			hideMenu(dom);
+		}
+	});
+}
+/*
+ * 所属组织树配置单选配置
+ */
+var orgsSetting = {
+	async: {
+		enable: true,
+		url: "",
+		type: "get",
+		dataType: 'json',
+		dataFilter: orgsfilter
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "orgId",
+			pIdKey: "parent_id"
+		},
+		key: {
+			name: "orgName"
+		}
+	},
+	view: {
+		dblClickExpand: false
+	},
+	callback: {
+		onAsyncError: onAsyncError,
+		onClick: onClick,
+		beforeAsync: zTreeBeforeAsync
+	}
+};
+
+function orgsfilter(treeId, parentNode, responseData) {
+	var responseData = responseData.data;
+	if(responseData) {
+		return responseData;
+	} else {
+		return null;
+	}
+}
+/*
+ * ztree异步加载之前
+ */
+function zTreeBeforeAsync(treeId, treeNode) {
+	orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
+	return true;
+}
+
+/*
+ * ztree点击事件
+ */
+function onClick(event, treeId, treeNode) {
+	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
+	var selectName = nodes[0].orgName;
+	var selectId = nodes[0].orgId;
+	$("input[name=" + treeId + "]").data("id", selectId);
+	$("input[name=" + treeId + "]").val(selectName);
+	$("input[name=" + treeId + "]").attr("title", selectName);
+	if(treeId == "orgName"){
+		$("#dictForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
+		$("#dictForm").data("bootstrapValidator").validateField('orgName');
+	}
 }

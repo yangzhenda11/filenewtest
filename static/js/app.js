@@ -1023,7 +1023,11 @@ var App = function() {
 		 * 传yyyy-MM-dd返回 yyyy-MM-dd;
 		 */
 		formatDateTime: function(inputTime,type) {
-		    var date = new Date(inputTime);
+			if(inputTime){
+				var date = new Date(inputTime);
+			}else{
+				return "";
+			}
 		    var y = date.getFullYear();
 		    var m = date.getMonth() + 1;
 		    m = m < 10 ? ('0' + m) : m;

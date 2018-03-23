@@ -8,7 +8,7 @@ $(function(){
  * 获取系统参数列表
  */
 function getConfigTable(){
-	var searchContractTable = App.initDataTables('#configTable', {
+	App.initDataTables('#configTable', {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'configs/',

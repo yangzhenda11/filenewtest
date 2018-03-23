@@ -10,7 +10,7 @@ $(function(){
  * 查询到角色列表
  */
 function getRoleTable(){
-	var table = App.initDataTables('#searchRoleTable', {
+	App.initDataTables('#searchRoleTable', {
 	    buttons: ['copy', 'colvis'],
 	    "ajax": {
 	        "type": "GET",

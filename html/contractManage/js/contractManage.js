@@ -229,7 +229,7 @@ function judge(result){
 	stopLoading("#submitBtn");
 	return resolveResult(result);
 }
-var searchContractTable = App.initDataTables('#searchContractTable', {
+App.initDataTables('#searchContractTable', {
 	"serverSide": true,
 	ajax: {
         "type": "GET",

@@ -8,7 +8,7 @@ $(function(){
  * 获取系统日志生成table
  */
 function getLog(){
-	var logTable = App.initDataTables('#logTable', {
+	App.initDataTables('#logTable', {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'operateLog/',

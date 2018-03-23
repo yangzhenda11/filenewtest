@@ -139,7 +139,7 @@ function judge(result) {
 /*
  * 表格初始化
  */
-var personnelTable = App.initDataTables('#personnelTable', {
+App.initDataTables('#personnelTable', {
 	fixedColumns: {
 		leftColumns: 2					//固定左侧两列
 	},

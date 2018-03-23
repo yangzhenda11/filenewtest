@@ -67,7 +67,7 @@ function judge(result){
 	return resolveResult(result);
 }
 function createDictTable() {
-	var searchContractTable = App.initDataTables('#dictTable', {
+	App.initDataTables('#dictTable', {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'dicts/dictList',

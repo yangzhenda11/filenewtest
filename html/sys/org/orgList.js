@@ -214,9 +214,9 @@ function orgRe(orgId) {
     	}
     });
 }
-
-
-
+/*
+ * 之前代码
+ */
 // $(function() {
 //     //根据当前登录人的岗位id查询其组织id
 //     var curStaffOrgId1 = parent.globalConfig.curStaffOrgId;

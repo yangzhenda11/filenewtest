@@ -23,7 +23,7 @@
 
 <body>
 
-    <div class="page-content">
+    <div id="divStaffList" class="page-content">
         <div class="portlet">
             <div class="portlet-title">
                 <div class="caption font-dark">
@@ -73,58 +73,15 @@
             </div>
         </div>
     </div>
-    <!-- <div id="header">
-        <div class="padding20">
-            <input type="hidden" id="selectedStaffId" value="">
-            <form id="searchStaffForm" autocomplete="off">
-                <div class="row">
-                    <div class="input-group col-sm-3 free-3">
-                        <span class="input-group-addon">人员姓名</span>
-                        <input type="text" class="form-control" name="staffName" placeholder="人员姓名" maxlength="20">
-                    </div>
-                    <div class="input-group col-sm-3 free-3">
-                        <span class="input-group-addon">人员账号</span>
-                        <input type="text" class="form-control" name="loginName" placeholder="人员账号" maxlength="20">
-                    </div>
-                    <div class="input-group col-sm-3 free-3">
-                        <span class="input-group-addon">人员状态</span>
-                        <select class="form-control" name="staffStatus" data-placeholder="人员状态">
-							<option value="" selected="selected">--请选择--</option>
-							<option value="1">有效</option>
-							<option value="0">无效</option>
-						</select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group col-sm-3 free-3">
-                        <span class="input-group-addon">所属组织</span>
-                        <input type="text" class="form-control" name="orgName" onclick="getStaff_OrgTree(this)" placeholder="所属组织" onfocus="javascript:this.blur();">
-                        <input type="hidden" name="orgId">
-                    </div>
-                    <div class="div-button col-sm-pull-3">
-                        <button type="button" id="searchBtn" class="btn btn-info" onclick="searchStaff();">
-							<i class="ace-icon glyphicon glyphicon-search"></i>查询
-						</button>
-                        <button type="reset" class="btn btn-info" onclick="reset();">
-							<i class="ace-icon glyphicon glyphicon-refresh"></i>重置
-						</button>
-                        <button id="staffAddBtn" type="button" class="btn btn-success" onclick="goStaffAdd();">
-							<i class="ace-icon glyphicon glyphicon-plus align-top bigger-125"></i>新增
-						</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div> -->
-    <!--  <div id="staffBody">
-        <table id="searchStaffTable" class="display table table-bordered" cellspacing="0" width="100%"></table>
-        人员信息模态框 开始 
-    </div>-->
     <div id="staffModalPart">
         <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal_label">
         </div>
     </div>
-    <div id="staffLoadPart"></div>
+    <div id="staffLoadPart" class="page-content"></div>
+    <div id="roleModalPart">
+        <div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="roleModal_label">
+        </div>
+    </div>
     <!--[if lt IE 9]>
 	  <script src="../../../static/plugins/html5shiv.min.js"></script>
 	  <script src="../../../static/plugins/respond.min.js"></script>
@@ -159,6 +116,7 @@
     <!--当前页面依赖-->
     <script type="text/javascript" src="staffList.js"></script>
     <script type="text/javascript" src="../common/treeDropDown.js"></script>
+    <script type="text/javascript " src="../../../static/plugins/selectL2R.min.js "></script>
 </body>
 
 </html>

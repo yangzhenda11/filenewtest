@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>人员岗位管理</title>
-</head>
-<body>
-	<div class="container-fluid padding20" id="staffOrgList">
-		<div class="clearFix">
-			<div class="head-title2" id="staffManageTitle"></div>
-			<div class="pull-right">
-				<button type="button" class="btn btn-success" onclick="goStaffOrgAdd();">
-					<i class="ace-icon glyphicon glyphicon-plus align-top bigger-125"></i>新增
-				</button>
-				<a type="button" class="btn btn-info" onclick="returnStaffList();">返回</a> 
-			</div>
-		</div>
-		<div class="clear"></div>
-		<hr />
-		<!-- 列表 -->
-		<table id="searchStaffOrgTable" class="display table table-bordered" width="100%"></table>
-	</div>
-	<div id="staffOrgLoadPart"></div>
-	<input type="hidden" id="selectedStaffOrgId">
-</body>
-<script type="text/javascript" src="../staff/staffOrgList.js"></script>
-</html>
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="caption font-dark">
+            <span class="caption-subject bold uppercase" id="staffManageTitle"><!--显示xxx的岗位管理--></span>
+        </div>
+        <div class="actions">
+            <a href="javascript:;" onclick="returnStaffList();" class="btn btn-default btn-circle btn-sm"><i class="fa fa-list"> 返回列表</i></a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <table id="searchStaffOrgTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+    </div>
+</div>
+<input type="hidden" id="selectedStaffId" value="">
+<input type="hidden" id="selectedStaffOrgId" value="">

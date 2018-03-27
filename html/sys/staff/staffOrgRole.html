@@ -1,50 +1,102 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript" src="../../resource/js/multiselect/multiselect.min.js"></script>
-</head>
-<body>
-	<div id="staffOrgRoleManage" class="roleSetting" tabindex="-1" role="dialog" aria-labelledby="rolesModal_label" width: 100%; height: 100%;">
-		<div class="ordercheck-border mt35">
-			<div class="ordercheck-title">岗位角色管理 </div>
-			<div class="ordercheck-table">
-				<div class="padding20">
-					<div class="col-xs-5">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+            <h4 class="modal-title">角色分配</h4>
+        </div>
+        <div class="modal-body">
+            <div id="selectL2R-ul" class="row selectL2R">
+                <div class="col-sm-4 col-sm-offset-1">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">请选择想分配的角色</div>
+                        <div class="panel-body selectL" style="height: 200px;overflow: auto;">
+                            <ul class="list-group" id="notHavingRoles">
+                                <!-- <li data-id="a1" class="list-group-item list-group-item-success">苹果</li>
+                                <li data-id="a2" class="list-group-item">火龙果</li>
+                                <li data-id="a3" class="list-group-item">榴莲</li>
+                                <li data-id="a4" class="list-group-item">香蕉</li>
+                                <li data-id="a5" class="list-group-item">芒果</li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 text-center selectL2R-actions">
+                    <button title="选择" class="selectL2R-select btn btn-danger btn-outline btn-block"><i class="fa fa-angle-right"></i></button>
+                    <button title="选择全部" class="selectL2R-selectAll btn btn-danger btn-outline btn-block"><i class="fa fa-angle-double-right"></i></button>
+                    <button title="取消" class="selectL2R-delete btn btn-warning btn-outline btn-block"><i class="fa fa-angle-left"></i></button>
+                    <button title="取消全部" class="selectL2R-deleteAll btn btn-warning btn-outline btn-block"><i class="fa fa-angle-double-left"></i></button>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">已选列表</div>
+                        <div class="panel-body selectR" style="height: 200px;overflow: auto;">
+                            <ul class="list-unstyled" id="havingRoles">
+                                <!-- <li data-id="a1" class="list-group-item">苹果</li>
+                                <li data-id="a5" class="list-group-item">芒果</li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-2">
+                    <button class="btn btn-danger" type="button" id="getSelectL2R-ul">获取结果</button>
+                    <div id="selectL2RResult-ul"></div>
+                </div> -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button " class="btn btn-primary " onclick="javascript:saveStaffOrgRoles(); ">保存设置</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+        </div>
+    </div>
+</div>
+<!-- <div class="portlet">
+    <div class="portlet-title ">
+        <div class="caption font-dark">
+            <span class="caption-subject bold uppercase"> 左右选择-ul</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+    </div>
+</div> -->
+<!-- <div id="staffOrgRoleManage" class="roleSetting" tabindex="-1" role="dialog" aria-labelledby="rolesModal_label" width: 100%; height: 100%; ">
+		<div class="ordercheck-border mt35 ">
+			<div class="ordercheck-title ">岗位角色管理 </div>
+			<div class="ordercheck-table ">
+				<div class="padding20 ">
+					<div class="col-xs-5 ">
 						<h5>待选角色</h5>
-						<select name="from[]" id="notHavingRoles" class="form-control" size="9" style="height: 200px;" multiple="multiple"></select>
+						<select name="from[] " id="notHavingRoles " class="form-control " size="9 " style="height: 200px; " multiple="multiple "></select>
 					</div>
-					<div class="col-xs-2">
+					<div class="col-xs-2 ">
 						<h5>&nbsp;</h5>
-						<button type="button" id="rightAll" class="btn btn-info btn-block">
-							<i class="glyphicon glyphicon-forward"></i>
+						<button type="button " id="rightAll " class="btn btn-info btn-block ">
+							<i class="glyphicon glyphicon-forward "></i>
 						</button>
-						<button type="button" id="rightSelected" class="btn btn-info btn-block">
-							<i class="glyphicon glyphicon-chevron-right"></i>
+						<button type="button " id="rightSelected " class="btn btn-info btn-block ">
+							<i class="glyphicon glyphicon-chevron-right "></i>
 						</button>
-						<button type="button" id="leftSelected" class="btn btn-info btn-block">
-							<i class="glyphicon glyphicon-chevron-left"></i>
+						<button type="button " id="leftSelected " class="btn btn-info btn-block ">
+							<i class="glyphicon glyphicon-chevron-left "></i>
 						</button>
-						<button type="button" id="leftAll" class="btn btn-info btn-block">
-							<i class="glyphicon glyphicon-backward"></i>
+						<button type="button " id="leftAll " class="btn btn-info btn-block ">
+							<i class="glyphicon glyphicon-backward "></i>
 						</button>
-						<button type="button" id="notHavingRoles_undo"
-							class="btn btn-block">撤销</button>
+						<button type="button " id="notHavingRoles_undo "
+							class="btn btn-block ">撤销</button>
 						</div>
-					<div class="col-xs-5">
+					<div class="col-xs-5 ">
 						<h5>已有角色</h5>
-						<select name="to[]" id="havingRoles" class="form-control" size="9" style="height: 200px;" multiple="multiple"></select>
+						<select name="to[] " id="havingRoles " class="form-control " size="9 " style="height: 200px; " multiple="multiple "></select>
 					</div>
-					<div class="clear"></div>
-					<div align="center" class="mt25">
-						<button type="button" class="btn btn-primary"  onclick="javascript:saveStaffOrgRoles();">保存设置</button>
-						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="javascript:returnStaffOrgList()">取消</button>
+					<div class="clear "></div>
+					<div align="center " class="mt25 ">
+						<button type="button " class="btn btn-primary "  onclick="javascript:saveStaffOrgRoles(); ">保存设置</button>
+						<button type="button " class="btn btn-primary " data-dismiss="modal " onclick="javascript:returnStaffOrgList() ">取消</button>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</body>
-<script type="text/javascript" src="../staff/staffOrgRole.js"></script>
-</html>
+	</div> -->
+<!-- <script type="text/javascript " src="../staff/staffOrgRole.js "></script> -->

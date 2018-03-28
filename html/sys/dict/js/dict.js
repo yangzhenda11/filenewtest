@@ -117,7 +117,9 @@ function createDictTable() {
             { "data": "dictValue", title: "值", className: "text-center" },
             { "data": "dictType", title: "类型", className: "text-center" },
             { "data": "dictSort", title: "顺序", className: "text-center" },
-            { "data": "dictRange", title: "适用范围", className: "text-center" }
+            { "data": "orgName", title: "适用范围", className: "text-center" }/*,
+            { "data": "dictRange", title: "适用范围", className: "text-center" }*/
+            
 		]
 	});
 }
@@ -262,7 +264,7 @@ function dictModal(editType,dictId,dictParentId){
 				layer.msg("根节点禁止“编辑”操作", {icon: 2});
 				return false;
 			}
-			$("#modalTitle").text("外部人员信息编辑");
+			$("#modalTitle").text("字典修改");
 			getDictInfor(editType,dictId)
 		}
 	});
@@ -383,7 +385,7 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			dictRange : {
+			/*dictRange : {
 				validators : {
 					notEmpty : {
 						message : '请输入适用范围'
@@ -394,11 +396,11 @@ function validate(editType,dictId) {
 						message : '请输入不超过50个字符'
 					}
 				}
-			},
+			},*/
 			provinceName : {
 				validators : {
 					notEmpty : {
-						message : '请选择所属组织'
+						message : '请选择省分编码'
 					}
 				}
 			}

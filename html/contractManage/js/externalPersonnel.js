@@ -338,8 +338,7 @@ function getInfor(id,type){
 			setEditForm(data);
 		}else{
 			setDetailForm(data);
-		}
-		
+		}	
 	}
 }
 /*

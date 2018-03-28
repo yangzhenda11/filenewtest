@@ -1,0 +1,61 @@
+<html>
+
+	<head>
+		<title>pdf.js展示1，上一页，下一页</title>
+	</head>
+	<h1>PDF.js</h1>
+
+	<div id="next" style="width: 200px;height: 300px;overflow: auto;">
+		<canvas id="the-canvas"></canvas>
+	</div>
+
+	<script src="../build/pdf.js"></script>
+	<script src="../build/pdf.worker.js"></script>
+	<script>
+		var url = '/static/data/test.pdf';
+
+		var pdfDoc = null,
+			pageNum = 1,
+			pageRendering = false,
+			pageNumPending = null,
+			scale = 1, //缩放比例
+			canvas = document.getElementById('the-canvas'),
+			ctx = canvas.getContext('2d');
+		PDFJS.cMapUrl = 'cmaps/';
+    	PDFJS.cMapPacked = true;
+		// Asynchronous download of PDF
+		var loadingTask = PDFJS.getDocument(url);
+		loadingTask.promise.then(function(pdf) {
+			console.log('PDF loaded');
+
+			// Fetch the first page
+			var pageNumber = 1;
+			pdf.getPage(pageNumber).then(function(page) {
+				console.log('Page loaded');
+
+				var scale = 1.5;
+				var viewport = page.getViewport(scale);
+
+				// Prepare canvas using PDF page dimensions
+				var CSS_UNITS = 96.0 / 72.0;
+				canvas.height = Math.floor(viewport.height * CSS_UNITS);
+				canvas.width = Math.floor(viewport.width * CSS_UNITS);
+
+				// Render PDF page into canvas context
+				var renderContext = {
+					transform: [CSS_UNITS, 0, 0, CSS_UNITS, 0, 0],
+					canvasContext: ctx,
+					viewport: viewport
+				};
+				var renderTask = page.render(renderContext);
+				renderTask.then(function() {
+					console.log('Page rendered');
+				});
+			});
+		}, function(reason) {
+			// PDF loading error
+			console.error(reason);
+		});
+	</script>
+
+</html>

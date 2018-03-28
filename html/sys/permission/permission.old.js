@@ -14,7 +14,6 @@ var validator = {
     message: '校验未通过',
     container: 'popover',
     submitHandler: function(validator, form, submitButton) {
-        debugger;
         if ($(submitButton).attr('id') == 'dealPermission') {
             savePermission();
         }
@@ -87,10 +86,49 @@ var validator = {
 
     }
 };
+/*
+ * 验证提交
+ */
+function validate(type) {
+    $('#roleForm').bootstrapValidator({
+        live: 'enabled',
+        trigger: 'live focus blur keyup',
+        message: '校验未通过',
+        container: 'popover',
+        fields: {
+            roleName: {
+                validators: {
+                    notEmpty: {
+                        message: '您输入的字段不能为空'
+                    }
+                }
+            },
+            orgName: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择所属组织'
+                    }
+                },
+                trigger: "focus blur keyup change",
+            },
+            roleDesc: {
+                validators: {
+                    stringLength: {
+                        max: 100,
+                        message: '请输入不超过100个字符'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+        updateRoleValue(type);
+    });
+}
 
 $(function() {
     // 初始化树
-    $("#permTree").height($(window).height() - 300);
+    $("#permTree").height($(window).height() - 100);
     $.get(parent.globalConfig.serverPath + "pers/root", function(data) {
         zNodes = data.sysPerm;
         perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
@@ -100,14 +138,7 @@ $(function() {
         showPermission(curNode.permId);
     });
     //getDpType();
-    $('#permissionObj').bootstrapValidator(validator).on('success.form.bv', function(e) {
-        debugger;
-        if ($("input[name='permId']", $("#permissionObj")).val()) {
-            updatePermission();
-        } else {
-            savePermission();
-        }
-    });
+    $('#permissionObj').bootstrapValidator(validator);
 });
 
 // 基础设置
@@ -159,6 +190,27 @@ function filter(treeId, parentNode, childNodes) {
     return childNodes;
 }
 
+// 获取数据权限定义的种类，赋给下拉框。
+var DpType
+
+function getDpType() {
+    $('#DpType').empty();
+    $.ajax({
+        url: parent.globalConfig.serverPath + "pers/dpType",
+        dataType: "json",
+        type: "GET",
+        success: function(data) {
+            DpType = data;
+            $('#DpType').append('<option value=""></option> ');
+            for (var i = 0; i < data.length; i++) {
+                $('#DpType').append(
+                    "<option value='" + data[i].dpId + "'>" + data[i].label +
+                    "</option>")
+            }
+
+        }
+    });
+}
 // 刷新站点树
 function refreshTree() {
     $.get(parent.globalConfig.serverPath + "pers/root", function(data) {
@@ -234,6 +286,88 @@ function sortOrder(curId, newArray, oldArray) {
     }
 }
 
+// 初始化treetable
+function inittreeTable() {
+    $('#permissionTreeTable').empty();
+
+}
+
+// 展示列表
+function showlist() {
+    inittreeTable();
+    $.get(parent.globalConfig.serverPath + "pers/permAll", {
+        "staffOrgId": curStaffOrgId,
+        "staffId": curStaffId
+    }, function(data) {
+        var rootNodes = findRootNodes(data);
+        var newArray = new Array();
+        for (var i = 0; i < rootNodes.length; i++) {
+            newArray.push(rootNodes[i]);
+            sortOrder(rootNodes[i].permId, newArray, data);
+        }
+        for (var i = 0; i < newArray.length; i++) {
+            var tmpStr = newArray[i].uri;
+            var permIcon = newArray[i].permIcon;
+            var permType = newArray[i].permType;
+            var permCheck = newArray[i].permCheck;
+
+            if (typeof(tmpStr) == "undefined") {
+                tmpStr = "";
+            } else if (newArray[i].uri.length > 20) {
+                tmpStr = newArray[i].uri.substring(0, 20) + '&#8230;';
+            }
+            if (typeof(permIcon) == "undefined") {
+                permIcon = "";
+            }
+            if (typeof(permCheck) == "undefined") {
+                permCheck = "";
+            }
+            if ("1" == permType) {
+                permType = "菜单";
+            } else if ("2" == permType) {
+                permType = "标签";
+            } else if ("3" == permType) {
+                permType = "请求";
+            } else if ("4" == permType) {
+                permType = "新窗口";
+            } else {
+                permType = "";
+            }
+            $('#permissionTreeTable').append(
+                '<tr id="' + newArray[i].permId + '" pId="' +
+                newArray[i].parentId + '"><td>' +
+                newArray[i].permCode + '</td><td>' +
+                newArray[i].permName + '</td><td>' + tmpStr +
+                '</td>' + '<td id="perm' + newArray[i].permId +
+                '" >' + permType + '</td><td>' + permIcon +
+                '</td><td>' + permCheck + '</td><td>' +
+                newArray[i].permSort + '</td></tr>');
+            var permType = newArray[i].permType;
+            if ("1" == permType) {
+                $("#perm" + newArray[i].permId).html("菜单");
+            } else if ("2" == permType) {
+                $("#perm" + newArray[i].permId).html("标签");
+            } else if ("3" == permType) {
+                $("#perm" + newArray[i].permId).html("请求");
+            } else if ("4" == permType) {
+                $("#perm" + newArray[i].permId).html("新窗口");
+            } else {
+                $("#perm" + newArray[i].permId).html("");
+            }
+        }
+        $('#permissionTreeTable').treeTable({
+            expandLevel: 1,
+            column: 0,
+            expandable: true
+        }).show();
+    });
+    $('#PermissionHeader').hide();
+    $('#PermissionContainer').hide();
+    $('#PermissionContainer2').show();
+    $('#saveBtn').show();
+    $('#updateBtn').show();
+}
+
 // 初始化页面
 function initFrame() {
     $('#permissionObj input').val('');
@@ -264,20 +398,21 @@ function addPermission() {
     $('#parentIdVal').val(curNode.permId);
     $('#parentName').html(curNode.permName);
     $('#dealPermission').html('保存');
+
     /*
      * $('#dealPermission').unbind('click').bind('click',function(){savePermission();});
      */
+
 }
 
 // 保存权限信息
 function savePermission() {
-    $("input[name='staffOrgId']").val(parent.globalConfig.curStaffOrgId);
+    $("input[name='staffOrgId']").val(curStaffOrgId);
     var sysPermission = $('#permissionObj').serializeArray();
     var obj = {};
     $.each(sysPermission, function(i, v) {
         obj[v.name] = v.value;
-    });
-    // debugger;
+    })
     $.ajax({
         url: parent.globalConfig.serverPath + 'pers/',
         type: 'POST',
@@ -326,9 +461,8 @@ function delPermission1() {
             var ptId = curNode.parentTId;
             perPermissionTree.removeNode(curNode);
             curNode = perPermissionTree.getNodeByTId(ptId);
-            if (curNode) {
+            if (curNode)
                 showPermission(curNode.permId);
-            }
             permSearchTable.ajax.reload();
         }
     });
@@ -346,6 +480,7 @@ function showPermission(permId) {
         $("#sysPermissionSort").html(sysPerm.permSort);
         $("#sysPermissionDP").html(data.dataPermissionTypeLabel);
         $("#sysPermissionCheck").html(sysPerm.permCheck);
+
     });
 }
 
@@ -385,7 +520,6 @@ function showUpdate() {
 var permSearchTable;
 // 查看用户
 function showStaff() {
-    debugger;
     if (!curNode) {
         alertModel('请选择需查询的节点');
         return;
@@ -502,6 +636,7 @@ function initFrame1() {
     /*
      * if(searchTable!=''){ searchTable.destroy(); }
      */
+
 }
 
 // 返回
@@ -590,6 +725,7 @@ function showData(data) {
             }
             $('#sysPermissionDP').html(type);
         }
+
     }
 }
 

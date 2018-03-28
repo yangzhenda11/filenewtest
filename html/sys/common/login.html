@@ -106,9 +106,7 @@
                 contentType: "application/x-www-form-urlencoded",
                 dataType: "json",
                 success: function(data) {
-                    console.log(data);
                     if (data.status == 1) {
-                        // window.open("../../../index.html", "", "_self");
                         window.location.href = "/index.html";
                     } else {
                         alert(data.message);

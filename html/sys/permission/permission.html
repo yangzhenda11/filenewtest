@@ -11,18 +11,13 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
-
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-    <link href="../../../static/plugins/treeTable/themes/vsStyle/treeTable.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+
 </head>
 
 <body>
-
     <div class="page-content">
         <div class="portlet">
             <div class="portlet-title">
@@ -31,213 +26,228 @@
                 </div>
             </div>
             <div class="portlet-body">
-                <!-- 机构树面板 -->
+
                 <div class="row">
-                    <div class="col-sm-4" id="daiban">
-                        <!-- Default panel contents -->
-                        <div class="action-tools">
-                            <a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
-                                <span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
-                            </a>
-                            <a href="#" class="my-icon-a" title="全部折叠" onclick="collapseAll();">
-                                <span class="glyphicon glyphicon-minus my-icon" aria-hidden="true"></span>
-                            </a>
-                            <a href="#" class="my-icon-a" title="刷新" onclick="refreshTree();">
-                                <span class="glyphicon glyphicon-refresh my-icon" aria-hidden="true"></span>
-                            </a>
-                            <a href="#" class="my-icon-a" title="列表" onclick="showlist();">
-                                <span class="glyphicon glyphicon-th-list my-icon" aria-hidden="true"></span>
-                            </a>
+                    <div class="col-sm-4">
+                        <div class="">
+                            <div class="portlet-title">
+                                <!-- <div class="caption font-dark">
+                                    <span class="caption-subject bold uppercase"> 网格列表</span>
+                                </div> -->
+                                <div class="action-tools">
+                                    <a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
+                                        <span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="#" class="my-icon-a" title="全部折叠" onclick="collapseAll();">
+                                        <span class="glyphicon glyphicon-minus my-icon" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="#" class="my-icon-a" title="刷新" onclick="refreshTree();">
+                                        <span class="glyphicon glyphicon-refresh my-icon" aria-hidden="true"></span>
+                                    </a>
+                                    <!-- <a href="#" class="my-icon-a" title="列表" onclick="showlist();">
+                                        <span class="glyphicon glyphicon-th-list my-icon" aria-hidden="true"></span>
+                                    </a> -->
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="menuTreeCan">
+                                    <ul id="permTree" class="ztree" style="overflow:none;"></ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="menuTreeCan">
-                            <ul id="permTree" class="ztree" style="overflow:none;"></ul>
-                        </div>
-                        <!-- List group -->
                     </div>
-                    <div class="col-sm-1">
-                        <div style="width:1px; border-left:1px solid #ccc"></div>
-                    </div>
-                    <div class="col-sm-7">
-                        <!-- Default panel contents -->
-                        <div class="action-btnbox">
-                            <button class="btn btn-info" id="addDom" onclick="addPermission();">
-                                   <span class="glyphicon glyphicon-plus"></span> 插入节点
-                               </button>
-                            <button class="btn btn-danger" onclick="delPermission();">
-                                   <span class="glyphicon glyphicon-minus"></span> 删除节点
-                               </button>
-                            <button class="btn btn-info" onclick="showUpdate();">
-                                   <span class="glyphicon glyphicon-pencil"></span> 修改节点
-                               </button>
-                            <button type="button" class="btn btn-info" onclick="showStaff();">
-                                   <span class="glyphicon glyphicon-user"></span> 查看人岗
-                               </button>
-                            <!-- <button class="btn btn-warning btn-block"><span class="glyphicon glyphicon-arrow-up"></span> 向上移动</button>
-                                <button class="btn btn-warning btn-block"><span class="glyphicon glyphicon-arrow-down"></span> 向下移动</button>
-                                <button class="btn btn-danger btn-block"><span class="glyphicon glyphicon-export"></span> 提高层级</button>
-                                <button class="btn btn-danger btn-block"><span class="glyphicon glyphicon-import"></span> 降低层级</button> -->
-                        </div>
-                        <!-- List group -->
-                        <!-- end of upfpanel-header -->
-                        <div id="permissionShow" name="permissionShow">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" for="sysPermissionCode" basic-addon1="">权限编码</span>
-                                        <div class="form-control"><span id="sysPermissionCode"></span></div>
-                                    </div>
+                    <div class="col-sm-8">
+                        <div class="">
+                            <div class="portlet-title">
+                                <!-- <div class="caption font-dark">
+                                    <span class="caption-subject bold uppercase"> 网格管理 </span>
+                                </div> -->
+                                <div class="action-btnbox">
+                                    <!-- <a href="#" class="btn btn-default btn-circle btn-sm tooltips" title="编辑网格"><i class="fa fa-pencil"></i> 编辑</a>
+                                    <a href="#" class="btn btn-default btn-circle btn-sm tooltips" title="删除网格"><i class="fa fa-remove"></i> 删除</a>
+                                    <a href="#" class="btn btn-default btn-circle btn-icon-only fullscreen"></a>-->
+                                    <button type="button" class="btn btn-info" id="addDom" onclick="addPermission();">
+                                    <i class="ace-icon fa fa-plus"></i> 插入节点
+                                   </button>
+                                    <button type="button" class="btn btn-info red" onclick="delPermission();">
+                                    <i class="ace-icon fa fa-minus"></i> 删除节点
+                                   </button>
+                                    <button type="button" class="btn btn-info" onclick="showUpdate();">
+                                    <i class="ace-icon fa fa-pencil"></i> 修改节点
+                                   </button>
+                                    <!-- <button type="button" class="btn btn-info" onclick="showStaff();">
+                                    <i class="ace-icon fa fa-user"></i> 查看人岗
+                                   </button> -->
                                 </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label for="sysPermissionName" class="input-group-addon">权限名称</label>
-                                        <div class="form-control" id="sysPermissionName"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label for="sysPermissionUri" class="input-group-addon">权限URI</label>
-                                        <div class="form-control" id="sysPermissionUri"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label for="sysPermissionType" class="input-group-addon">权限类型</label>
-                                        <div class="form-control" id="sysPermissionType"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label for="sysPermissionIcon" class="input-group-addon">菜单图标</label>
-                                        <div class="form-control" id="sysPermissionIcon"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label for="sysPermissionCheck" class="input-group-addon">校验字符</label>
-                                        <div class="form-control" id="sysPermissionCheck"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label for="sysPermissionSort" class="input-group-addon">展示顺序</label>
-                                        <div class="form-control" id="sysPermissionSort"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">数据权限</label>
-                                        <div class="form-control" id="sysPermissionDP"></div>
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group">
-                                        <label for="sysPermissionGrade" class="col-sm-3 control-label" >组织级别:</label>
-                                        <div class="col-sm-7">
-                                            <div id="sysPermissionGrade">组织级别</div>
-            
-                                        </div>
-                                    </div> -->
-                                <input type="hidden" id="FirstNode" name="FirstNode" value="${map.PERM_ID}">
-                            </form>
-                        </div>
-                        <div id="menuInfoWell" class="content" style="display:none">
-                            <form class="form-horizontal" id="permissionObj">
-                                <input type="hidden" name="staffOrgId" value="10001">
-                                <input type="hidden" name="permId">
-                                <input type="hidden" id="parentIdVal" name="parentId">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">父节点名称</label>
-                                        <span class="form-control" id="parentName"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">权限编码<span class="notNull">*</span></label>
-                                        <input type="text" class="form-control" name="permCode" maxlength="20" ; placeholder="权限编码">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">权限名称<span class="notNull">*</span></label>
-                                        <input type="text" class="form-control" name="permName" maxlength="20" ; placeholder="权限名称">
+                            </div>
+                            <div class="portlet-body">
+                                <div class="form">
+                                    <div class="form-body">
 
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">权限地址</label>
-                                        <input type="text" class="form-control" name="uri" maxlength="200" ; placeholder="权限地址">
-                                        <!-- <span class="ma_mark">*</span> -->
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">权限类型</label>
-                                        <!-- 1 菜单 2 标签 3 请求 4 新窗口-->
-                                        <select class="form-control" name="permType">
-                                                    <option value="1">菜单</option>
-                                                    <option value="2">标签</option>
-                                                    <option value="3">请求</option>
-                                                    <option value="4">新窗口</option>
-                                                </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">菜单图标</label>
-                                        <input type="text" class="form-control" name="permIcon" maxlength="100" placeholder="菜单图标">
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">校验字符</label>
-                                        <input type="text" class="form-control" name="permCheck" maxlength="60" placeholder="校验字符">
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">展示顺序</label>
-                                        <input type="text" class="form-control" name="permSort" maxlength="10" placeholder="展示顺序">
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <label class="input-group-addon">数据权限</label>
-                                        <select class="form-control" name="dataPermissionType" id="DpType"> </select>
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group">
-                                                 <label class="col-sm-4 control-label" >组织级别:</label>
-                                                 <div class="col-sm-7">
-                                                     <select class="form-control" name="controlLevel" id="controlLevelPermissionObj" data-placeholder="选择组织级别">
-                                                        <option value="-1">无限制</option>
-                                                        <option value="100">集团公司</option>
-                                                        <option value="200">省公司</option>
-                                                        <option value="300">地市公司</option>
-                                                        <option value="400">区县公司</option>
-                                                    </select>
+                                        <div id="permissionShow" name="permissionShow">
+                                            <form class="form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" for="sysPermissionCode" basic-addon1="">权限编码</span>
+                                                        <div class="form-control"><span id="sysPermissionCode"></span></div>
+                                                    </div>
                                                 </div>
-                                            </div> -->
-                                <div class="form-group">
-                                    <center>
-                                        <!--   <a type="button" class="btn btn-default" id="dealPermission">保存</a> -->
-                                        <div class="col-sm-5 col-sm-offset-3">
-                                            <button type="submit" class="btn btn-primary" name="savebutton" id="dealPermission">保&nbsp&nbsp存</button>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="sysPermissionName" class="input-group-addon">权限名称</label>
+                                                        <div class="form-control" id="sysPermissionName"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="sysPermissionUri" class="input-group-addon">权限URI</label>
+                                                        <div class="form-control" id="sysPermissionUri"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="sysPermissionType" class="input-group-addon">权限类型</label>
+                                                        <div class="form-control" id="sysPermissionType"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="sysPermissionIcon" class="input-group-addon">菜单图标</label>
+                                                        <div class="form-control" id="sysPermissionIcon"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="sysPermissionCheck" class="input-group-addon">校验字符</label>
+                                                        <div class="form-control" id="sysPermissionCheck"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label for="sysPermissionSort" class="input-group-addon">展示顺序</label>
+                                                        <div class="form-control" id="sysPermissionSort"></div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">数据权限</label>
+                                                        <div class="form-control" id="sysPermissionDP"></div>
+                                                    </div>
+                                                </div> -->
+                                                <!-- <div class="form-group">
+                                            <label for="sysPermissionGrade" class="col-sm-3 control-label" >组织级别:</label>
+                                            <div class="col-sm-7">
+                                                <div id="sysPermissionGrade">组织级别</div>
+                
+                                            </div>
+                                        </div> -->
+                                                <input type="hidden" id="FirstNode" name="FirstNode" value="${map.PERM_ID}">
+                                            </form>
                                         </div>
-                                    </center>
-                                </div>
-                                <div class="form-group">
-                                    <center>
-                                        <div class="col-sm-5 col-sm-offset-3">
-                                            <button type="submit" class="btn btn-primary" name="updatebutton" id="updatePermissionbtn">修&nbsp&nbsp改</button>
+
+                                        <div id="menuInfoWell" class="content" style="display:none">
+                                            <form class="form-horizontal" id="permissionObj">
+                                                <input type="hidden" name="staffOrgId" value="10001">
+                                                <input type="hidden" name="permId">
+                                                <input type="hidden" id="parentIdVal" name="parentId">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">父节点名称</label>
+                                                        <span class="form-control" id="parentName"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">权限编码<span class="notNull">*</span></label>
+                                                        <input type="text" class="form-control" name="permCode" maxlength="20" autocomplete="off" placeholder="权限编码">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">权限名称<span class="notNull">*</span></label>
+                                                        <input type="text" class="form-control" name="permName" maxlength="20" autocomplete="off" placeholder="权限名称">
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">权限地址</label>
+                                                        <input type="text" class="form-control" name="uri" maxlength="200" autocomplete="off" placeholder="权限地址">
+                                                        <!-- <span class="ma_mark">*</span> -->
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">权限类型</label>
+                                                        <!-- 1 菜单 2 标签 3 请求 4 新窗口-->
+                                                        <select class="form-control" name="permType">
+                                                                        <option value="1">菜单</option>
+                                                                        <option value="2">标签</option>
+                                                                        <option value="3">请求</option>
+                                                                        <option value="4">新窗口</option>
+                                                                    </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">菜单图标</label>
+                                                        <input type="text" class="form-control" name="permIcon" maxlength="100" autocomplete="off" placeholder="菜单图标">
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">校验字符</label>
+                                                        <input type="text" class="form-control" name="permCheck" maxlength="60" autocomplete="off" placeholder="校验字符">
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <label class="input-group-addon">展示顺序</label>
+                                                        <input type="text" class="form-control" name="permSort" maxlength="10" autocomplete="off" placeholder="展示顺序">
+
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                        <div class="input-group">
+                                                            <label class="input-group-addon">数据权限</label>
+                                                            <select class="form-control" name="dataPermissionType" id="DpType"> </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                                     <label class="col-sm-4 control-label" >组织级别:</label>
+                                                                     <div class="col-sm-7">
+                                                                         <select class="form-control" name="controlLevel" id="controlLevelPermissionObj" data-placeholder="选择组织级别">
+                                                                            <option value="-1">无限制</option>
+                                                                            <option value="100">集团公司</option>
+                                                                            <option value="200">省公司</option>
+                                                                            <option value="300">地市公司</option>
+                                                                            <option value="400">区县公司</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div> -->
+                                                <div class="form-group">
+                                                    <center>
+                                                        <!--   <a type="button" class="btn btn-default" id="dealPermission">保存</a> -->
+                                                        <div class="col-sm-5 col-sm-offset-3">
+                                                            <button type="submit" class="btn btn-primary" name="savebutton" id="dealPermission">保&nbsp&nbsp存</button>
+                                                        </div>
+                                                    </center>
+                                                </div>
+                                                <div class="form-group">
+                                                    <center>
+                                                        <div class="col-sm-5 col-sm-offset-3">
+                                                            <button type="submit" class="btn btn-primary" name="updatebutton" id="updatePermissionbtn">修&nbsp&nbsp改</button>
+                                                        </div>
+                                                    </center>
+                                                </div>
+                                            </form>
                                         </div>
-                                    </center>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -333,12 +343,15 @@
     <script src="../../../static/plugins/datatables-plugin/datatables.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables-plugin/plugins/datatables.bootstrap.js"></script>
     <script src="../../../static/plugins/datatables-plugin/ellipsis.js"></script>
-    <script src="../../../static/plugins/bootstrapValidator\js\bootstrapValidator.js"></script>
+    <!-- <script src="../../../static/plugins/bootstrapValidator\js\bootstrapValidator.js"></script> -->
+    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.extend.js" type="text/javascript" charset="utf-8"></script>
+
     <!--表格-结束-->
     <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
     <!--当前页面依赖-->
-    <script src="../../../static/plugins/treeTable/jquery.treeTable.js"></script>
+    <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
     <script src="../permission/permission.js"></script>
 </body>
 

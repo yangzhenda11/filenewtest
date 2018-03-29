@@ -95,7 +95,7 @@ function createDictTable() {
                 		return "";
                 	}else{
                 		var btnArray = new Array();
-	                    btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId +"\')" });
+	                    btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
 	                    btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
 	                    if ('1' == c.dictStatus) {
 	                        btnArray.push({ "name": "禁用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'0\')"});
@@ -116,10 +116,8 @@ function createDictTable() {
             { "data": "dictLabel", title: "字典名称", className: "text-center" },
             { "data": "dictValue", title: "值", className: "text-center" },
             { "data": "dictType", title: "类型", className: "text-center" },
-            { "data": "dictSort", title: "顺序", className: "text-center" },
-            { "data": "orgName", title: "适用范围", className: "text-center" }/*,
-            { "data": "dictRange", title: "适用范围", className: "text-center" }*/
-            
+            { "data": "orgName", title: "适用范围", className: "text-center" },
+            { "data": "dictSort", title: "顺序", className: "text-center" }
 		]
 	});
 }
@@ -237,7 +235,7 @@ function postDictChangeStatus(dictId,dictStatus){
 /*
  * 字典新增修改弹出框
  */
-function dictModal(editType,dictId,dictParentId){
+function dictModal(editType,dictId,dictParentId,provinceName){
 	$("#modal").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit",function(){
 		//加载组织树
 		App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
@@ -265,7 +263,7 @@ function dictModal(editType,dictId,dictParentId){
 				return false;
 			}
 			$("#modalTitle").text("字典修改");
-			getDictInfor(editType,dictId)
+			getDictInfor(editType,dictId,provinceName)
 		}
 	});
 }
@@ -274,13 +272,14 @@ function dictModal(editType,dictId,dictParentId){
 /*
  * 获取字典信息详情填充表单
  */
-function getDictInfor(editType,dictId){
+function getDictInfor(editType,dictId,provinceName){
 	App.formAjaxJson(serverPath + "dicts/"+dictId, "get", "", successCallback);
 	function successCallback(result){
 		$('#modal').modal('show');
 		App.setFormValues("#dictForm",result.sysDict);
+		$("#provinceCodeTree").val(provinceName);
+		$("#provinceCodeTree").attr("title",provinceName);
 		$("#provinceCodeTree").data("id",result.sysDict.provinceCode);
-		$("#provinceCodeTree").attr("title",result.sysDict.provinceName);
 		validate(editType,dictId);
 	}
 }

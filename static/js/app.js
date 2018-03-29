@@ -770,7 +770,7 @@ var App = function() {
 					};
 				},
 				error: function(result) {
-					layer.msg("接口错误", {icon: 2});
+					layer.alert("接口错误", {icon: 2,title:"错误"});
 					errorCallback(result);
 				},
 				complete: loadEnd

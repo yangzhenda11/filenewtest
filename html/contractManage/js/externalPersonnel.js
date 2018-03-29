@@ -129,17 +129,11 @@ function getTreeInfo(code) {
 		}
 	}
 }
-/*
- * 请求到结果后的回调事件
- */
-function judge(result) {
-	stopLoading("#submitBtn");
-	return resolveResult(result);
-}
+
 /*
  * 表格初始化
  */
-App.initDataTables('#personnelTable', {
+App.initDataTables('#personnelTable', "#submitBtn", {
 	fixedColumns: {
 		leftColumns: 2					//固定左侧两列
 	},
@@ -147,9 +141,6 @@ App.initDataTables('#personnelTable', {
 	ajax: {
 		"type": "GET",					//请求方式
 		"url": serverPath + 'staffPartner/getStaffPartnerList',	//请求地址
-		"contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-		"dataType": 'json',
-		"beforeSend": startLoading("#submitBtn"),		//第一次请求时loading效果开启
 		"data": function(d) {							//自定义传入参数
 			d.sysOrgId = config.curOrgId;
 			d.staffName = $("input[name='staffName']").val();
@@ -157,12 +148,7 @@ App.initDataTables('#personnelTable', {
 			d.staffStatus = $("select[name='staffStatus']").val();
 			d.orgId = $("#organisation").data("id");
 			return d;
-		},
-		"error": function(xhr, error, thrown) {			//服务器端失败时停止效果，返回错误
-			stopLoading("#submitBtn");
-			layer.msg("接口错误", {icon: 2});
-		},
-		"dataSrc": judge								//请求到结果后的回调
+		}
 	},
 	"columns": [{
 			"data": null,
@@ -240,7 +226,6 @@ App.initDataTables('#personnelTable', {
  * 搜索点击事件
  */
 function searchPersonnel(resetPaging) {
-	startLoading("#submitBtn");
 	var table = $('#personnelTable').DataTable();
 	if(resetPaging) {
 		table.ajax.reload(null, false);

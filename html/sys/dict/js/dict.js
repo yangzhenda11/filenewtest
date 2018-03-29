@@ -60,34 +60,22 @@ function getDictChildInfo(event, treeId, treeNode) {
     searchDict();
 }
 /*
- * dataTable请求到结果后的回调事件
+ * dataTable初始化事件
  */
-function judge(result){
-	stopLoading("#submitBtn");
-	return resolveResult(result);
-}
 function createDictTable() {
-	App.initDataTables('#dictTable', {
+	App.initDataTables('#dictTable', "#submitBtn", {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'dicts/dictList',
-	        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-	        "dataType":'json',
-	        "beforeSend": startLoading("#submitBtn"),
 	        "data":function(d){
 	        	d.dictParentId = curNodeId;
 	            d.dictLabel = $('#dictName').val();
 	            d.dictCode = $('#dictCode').val();
 	            return d;
-	        },
-	         error: function (xhr, error, thrown) {  
-	            stopLoading("#submitBtn");
-	            layer.msg("接口错误", {icon: 2});
-	        },
-	        "dataSrc": judge
+	        }
 		},
 		"columns": [{
-                "data": null,
+                data: null,
                 title: "操作",
                 className: "text-center",
                 render: function(a, b, c, d) {
@@ -95,7 +83,7 @@ function createDictTable() {
                 		return "";
                 	}else{
                 		var btnArray = new Array();
-	                    btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId +"\')" });
+	                    btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
 	                    btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
 	                    if ('1' == c.dictStatus) {
 	                        btnArray.push({ "name": "禁用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'0\')"});
@@ -112,23 +100,20 @@ function createDictTable() {
                 }
             },
 			{ "data": "dictId", title: "编号", className: "text-center" },
-            { "data": "dictParentId", title: "父节点编号", className: "text-center" },
+            { "data": "dictParentId",width:"70%", title: "父节点编号", className: "text-center" },
             { "data": "dictLabel", title: "字典名称", className: "text-center" },
             { "data": "dictValue", title: "值", className: "text-center" },
             { "data": "dictType", title: "类型", className: "text-center" },
-            { "data": "dictSort", title: "顺序", className: "text-center" },
-            { "data": "orgName", title: "适用范围", className: "text-center" }/*,
-            { "data": "dictRange", title: "适用范围", className: "text-center" }*/
-            
+            { "data": "orgName", title: "适用范围", className: "text-center" },
+            { "data": "dictSort", title: "顺序", className: "text-center" }
 		]
-	});
+	})
 }
 
 /*
  * 搜索点击事件
  */
 function searchDict(resetPaging) {
-	startLoading("#submitBtn");
 	var table = $('#dictTable').DataTable();
 	if(resetPaging) {
 		table.ajax.reload(null, false);
@@ -237,7 +222,7 @@ function postDictChangeStatus(dictId,dictStatus){
 /*
  * 字典新增修改弹出框
  */
-function dictModal(editType,dictId,dictParentId){
+function dictModal(editType,dictId,dictParentId,provinceName){
 	$("#modal").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit",function(){
 		//加载组织树
 		App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
@@ -265,7 +250,7 @@ function dictModal(editType,dictId,dictParentId){
 				return false;
 			}
 			$("#modalTitle").text("字典修改");
-			getDictInfor(editType,dictId)
+			getDictInfor(editType,dictId,provinceName)
 		}
 	});
 }
@@ -274,13 +259,14 @@ function dictModal(editType,dictId,dictParentId){
 /*
  * 获取字典信息详情填充表单
  */
-function getDictInfor(editType,dictId){
+function getDictInfor(editType,dictId,provinceName){
 	App.formAjaxJson(serverPath + "dicts/"+dictId, "get", "", successCallback);
 	function successCallback(result){
 		$('#modal').modal('show');
 		App.setFormValues("#dictForm",result.sysDict);
+		$("#provinceCodeTree").val(provinceName);
+		$("#provinceCodeTree").attr("title",provinceName);
 		$("#provinceCodeTree").data("id",result.sysDict.provinceCode);
-		$("#provinceCodeTree").attr("title",result.sysDict.provinceName);
 		validate(editType,dictId);
 	}
 }

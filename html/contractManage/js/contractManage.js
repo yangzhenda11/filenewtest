@@ -223,30 +223,17 @@ function onCheck(event, treeId, treeNode){
 
 
 /*
- * 请求到结果后的回调事件
+ * 初始化表格
  */
-function judge(result){
-	stopLoading("#submitBtn");
-	return resolveResult(result);
-}
-App.initDataTables('#searchContractTable', {
-	"serverSide": true,
+App.initDataTables('#searchContractTable', "#submitBtn", {
 	ajax: {
         "type": "GET",
         "url": serverPath + 'orgPartner',
-        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-        "dataType":'json',
-        "beforeSend": startLoading("#submitBtn"),
         "data":function(d){
         	d.partnerName = $("#partnerName").val();
         	d.isPartner = $("#isPartner").val();
         	return d;
-        },
-         error: function (xhr, error, thrown) {  
-            stopLoading("#submitBtn");
-            layer.msg("接口错误", {icon: 2});
-        },
-        "dataSrc": judge
+        }
 	},
 	"columns": [{
 			"data": "partnerId",
@@ -298,7 +285,6 @@ App.initDataTables('#searchContractTable', {
  * 搜索点击事件
  */
 function searchContract() {
-	startLoading("#submitBtn");
 	var table = $('#searchContractTable').DataTable();
 	table.ajax.reload();
 }

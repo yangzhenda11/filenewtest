@@ -8,13 +8,10 @@ $(function(){
  * 获取系统日志生成table
  */
 function getLog(){
-	App.initDataTables('#logTable', {
+	App.initDataTables('#logTable',"#submitBtn", {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'operateLog/',
-	        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-	        "dataType":'json',
-	        "beforeSend": startLoading("#submitBtn"),
 	        "data":function(d){
 	            d.operAccount = $("#operAccountObj").val();
 	            d.operIp = $("#operIpObj").val();
@@ -22,12 +19,7 @@ function getLog(){
 	            d.operUrl = $("#operUrlObj").val();
 	            d.operStatus = $("#operStatusObj").val();
 	            return d;
-	        },
-	         error: function (xhr, error, thrown) {  
-	            stopLoading("#submitBtn");
-	            layer.msg("接口错误", {icon: 2});
-	        },
-	        "dataSrc": judge
+	        }
 		},
 		"columns": [
 			{ "data": "operAccount", "title": "操作者账户", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
@@ -56,19 +48,11 @@ function getLog(){
 		]
 	});
 }
-/*
- * dataTable请求到结果后的回调事件
- */
-function judge(result){
-	stopLoading("#submitBtn");
-	return resolveResult(result);
-}
 
 /*
  * 查询点击
  */
 function selectLog() {
-	startLoading("#submitBtn");
 	var table = $('#logTable').DataTable();
 	table.ajax.reload();
 }

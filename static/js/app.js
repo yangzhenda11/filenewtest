@@ -770,7 +770,7 @@ var App = function() {
 					};
 				},
 				error: function(result) {
-					layer.msg("接口错误", {icon: 2});
+					layer.alert("接口错误", {icon: 2,title:"错误"});
 					errorCallback(result);
 				},
 				complete: loadEnd
@@ -838,9 +838,19 @@ var App = function() {
 			};
 			return obj;
 		},
-		initDataTables: function(el, options) {
+		/*
+		 * datatable初始化
+		 * el : table ID
+		 * btn : 搜索按钮 ID
+		 * options : 初始化事件
+		 */
+		initDataTables: function(el, btn, options) {
 			if(!$().dataTable) {
 				return;
+			}
+			if(typeof arguments[1] != "string"){
+				options = arguments[1];
+				btn = "";
 			}
 			var drawCallback = function() {};
 			if(options.drawCallback) {
@@ -903,28 +913,41 @@ var App = function() {
 					"emptyTable": "没有关联的需求信息!",
 					"thousands": ","
 				},
-				//              "fixedColumns": {
-				//                  'leftColumns': 2
-				//              },
 				"columnDefs": [{
 					"targets": "_all",
 					"defaultContent": ''
 				}],
+	            //"fixedColumns": {
+	            //    'leftColumns': 2
+	            //},
 				"buttons": [], //'pdf','copy', 'excel', 'colvis'
-
 				"drawCallback": function() {
 					// 取消全选  
 					$(":checkbox[name='td-checkbox']").prop('checked', false);
+				},
+				"ajax":{
+					beforSend:startLoading(btn)
 				}
 			}, options);
-			options.drawCallback = function() {
-				if(options.toolbars) {
-					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
-					$(options.toolbars).remove();
-				}
-				drawCallback();
-			}
-			var oTable = $(el).dataTable(options);
+//			options.drawCallback = function() {
+//				if(options.toolbars) {
+//					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
+//					$(options.toolbars).remove();
+//				}
+//				drawCallback();
+//			}
+			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
+	        	startLoading(btn);
+		   	}).on('xhr.dt', function ( e, settings, json, xhr ) {
+	        	stopLoading(btn);
+		        if(xhr.status == 200){
+		        	if(xhr.responseJSON.status != 1){
+		        		layer.alert(xhr.responseJSON.message, {icon: 2,title:"错误"});
+		        	}
+		        }else{
+		        	layer.alert("接口错误", {icon: 2,title:"错误"});
+		        }
+		    });
 			$.fn.dataTable.ext.errMode = 'throw';
 			return oTable;
 		},
@@ -1809,14 +1832,14 @@ function isInArray(arr,val) {
  */
 function startLoading(el){
 	$("table").css("width","100%");
-	App.buttonLoading(el);
+	$(el).button('loading');
 	layer.load();
 }
 /*
  * datatable结束事件
  */
 function stopLoading(el){
-	App.buttonCloseLoading(el);
+	$(el).button('reset');
 	layer.closeAll('loading');
 }
 /*
@@ -1831,8 +1854,6 @@ function resolveResult(result,code){
 			return result.data;
 		}
 	}else{
-		var ms = result.message;
-		layer.msg(ms, {icon: 2});
 		return [];
 	}
 }

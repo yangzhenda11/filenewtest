@@ -8,22 +8,14 @@ $(function(){
  * 获取系统参数列表
  */
 function getConfigTable(){
-	App.initDataTables('#configTable', {
+	App.initDataTables('#configTable', "#submitBtn", {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'configs/',
-	        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-	        "dataType":'json',
-	        "beforeSend": startLoading("#submitBtn"),
 	        "data":function(d){
 	        	d.code = $('#configCode').val();
 	            return d;
-	        },
-	        error: function (xhr, error, thrown) {  
-	            stopLoading("#submitBtn");
-	            layer.msg("接口错误", {icon: 2});
-	        },
-	        "dataSrc": judge
+	        }
 		},
 		"columns": [{
                 "data": null,
@@ -55,18 +47,11 @@ function getConfigTable(){
 		]
 	});
 }
-/*
- * dataTable请求到结果后的回调事件
- */
-function judge(result){
-	stopLoading("#submitBtn");
-	return resolveResult(result);
-}
+
 /*
  * 搜索点击事件
  */
 function searchConfig(resetPaging) {
-	startLoading("#submitBtn");
 	var table = $('#configTable').DataTable();
 	if(resetPaging) {
 		table.ajax.reload(null, false);

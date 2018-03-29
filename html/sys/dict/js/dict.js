@@ -60,34 +60,22 @@ function getDictChildInfo(event, treeId, treeNode) {
     searchDict();
 }
 /*
- * dataTable请求到结果后的回调事件
+ * dataTable初始化事件
  */
-function judge(result){
-	stopLoading("#submitBtn");
-	return resolveResult(result);
-}
 function createDictTable() {
-	App.initDataTables('#dictTable', {
+	App.initDataTables('#dictTable', "#submitBtn", {
 		ajax: {
 	        "type": "GET",
 	        "url": serverPath + 'dicts/dictList',
-	        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-	        "dataType":'json',
-	        "beforeSend": startLoading("#submitBtn"),
 	        "data":function(d){
 	        	d.dictParentId = curNodeId;
 	            d.dictLabel = $('#dictName').val();
 	            d.dictCode = $('#dictCode').val();
 	            return d;
-	        },
-	         error: function (xhr, error, thrown) {  
-	            stopLoading("#submitBtn");
-	            layer.msg("接口错误", {icon: 2});
-	        },
-	        "dataSrc": judge
+	        }
 		},
 		"columns": [{
-                "data": null,
+                data: null,
                 title: "操作",
                 className: "text-center",
                 render: function(a, b, c, d) {
@@ -112,21 +100,20 @@ function createDictTable() {
                 }
             },
 			{ "data": "dictId", title: "编号", className: "text-center" },
-            { "data": "dictParentId", title: "父节点编号", className: "text-center" },
+            { "data": "dictParentId",width:"70%", title: "父节点编号", className: "text-center" },
             { "data": "dictLabel", title: "字典名称", className: "text-center" },
             { "data": "dictValue", title: "值", className: "text-center" },
             { "data": "dictType", title: "类型", className: "text-center" },
             { "data": "orgName", title: "适用范围", className: "text-center" },
             { "data": "dictSort", title: "顺序", className: "text-center" }
 		]
-	});
+	})
 }
 
 /*
  * 搜索点击事件
  */
 function searchDict(resetPaging) {
-	startLoading("#submitBtn");
 	var table = $('#dictTable').DataTable();
 	if(resetPaging) {
 		table.ajax.reload(null, false);

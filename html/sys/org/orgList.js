@@ -26,14 +26,11 @@ function gerOrgIdByStaffOrgId() {
  * orgId
  */
 function getOrgTable(orgId){
-	App.initDataTables('#orgSearchTable', {
+	App.initDataTables('#orgSearchTable', "#searchBtn", {
         buttons: ['copy', 'colvis'], //显示的工具按钮
         ajax: {
             "type": "GET",
             "url": serverPath + 'orgs/', //请求路径
-            "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-            "dataType": "json",
-            "beforeSend": startLoading("#searchBtn"),
             "data": function(d) { // 查询参数
                 d.orgKind = "1";
                 d.orgName = $("input[name='orgName']", $("#orgSearchForm")).val();
@@ -42,12 +39,7 @@ function getOrgTable(orgId){
                 d.orgStatus = $("select[name='orgStatus']", $("#orgSearchForm")).val();
                 d.orgId = orgId;
                 return d;
-            },
-            error: function(xhr, error, thrown) {
-                stopLoading("#searchBtn");
-                layer.msg("接口错误", { icon: 2 });
-            },
-            "dataSrc": judge
+            }
         },
         "columns": [ // 对应列
             {
@@ -128,20 +120,13 @@ function getOrgTable(orgId){
 //          },
     });
 }
-/*
- * 请求到结果后的回调事件
- */
-function judge(result) {
-    stopLoading("#searchBtn");
-    return resolveResult(result);
-}
+
 /**
  * 根据查询条件，查询组织列表
  * @returns 
  * @author cuiy 2017/7/14
  */
 function orgSearchOrg(resetPaging) {
-    startLoading("#searchBtn");
     var table = $('#orgSearchTable').DataTable();
     if (resetPaging) {
         table.ajax.reload(null, false);

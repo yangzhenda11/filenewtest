@@ -10,26 +10,18 @@ $(function(){
  * 查询到角色列表
  */
 function getRoleTable(){
-	App.initDataTables('#searchRoleTable', {
+	App.initDataTables('#searchRoleTable', "#submitBtn", {
 	    buttons: ['copy', 'colvis'],
 	    "ajax": {
 	        "type": "GET",
 	        "url": serverPath + 'roles/',
-	        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-	        "dataType": 'json',
-	        "beforeSend": startLoading("#submitBtn"),
 	        "data": function(d) {					// 查询参数
 	            d.roleName = $('#sysRoleName').val();
 	            d.orgName = $("#sysOrgName").val();
 	            d.staffOrgId = config.curStaffOrgId;
 	            d.roleStatus = 1;
 	            return d;
-	        },
-	        error: function(xhr, error, thrown) {
-	            stopLoading("#submitBtn");
-	            layer.msg("接口错误", { icon: 2 });
-	        },
-	        "dataSrc": judge
+	        }
 	    },
 	    "columns": [
 	        {
@@ -70,13 +62,7 @@ function getRoleTable(){
 //	    }
 	})
 }
-/*
- * 请求到结果后的回调事件
- */
-function judge(result) {
-    stopLoading("#submitBtn");
-    return resolveResult(result);
-}
+
 /**
  * 删除某个角色
  * @param {角色id} roleId 
@@ -98,7 +84,6 @@ function deleteDetail(roleId) {
  * 执行查询
  */
 function searchRole(resetPaging) {
-    startLoading("#submitBtn");
     var table = $('#searchRoleTable').DataTable();
     if (resetPaging) {
         table.ajax.reload(null, false);

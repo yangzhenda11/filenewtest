@@ -11,13 +11,17 @@ var globalConfig = {
     serverPath: "/",
     // serverPath: "http://localhost:9090/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
-    curStaffOrgId: 10001,
+    curStaffOrgId: null, //10001,
     /** 当前用户的id （sys_staff主键） */
-    curStaffId: 10002,
+    curStaffId: null, //10002,
     /** 当前用户所在组织的id（sys_org表主键） */
-    curOrgId: 56665,
-    orgId:56665,
+    curOrgId: null, //56665,
+    //orgId: null, //56665,
     /** 当前用户对象 */
+    /**staffCode : "001"
+    staffId : 10002
+    staffKind : "1"
+    staffName : "管理员" */
     curStaff: {},
     /** 当前用户所在组织对象 */
     curOrg: {},
@@ -25,8 +29,33 @@ var globalConfig = {
     curStaffOrg: {},
     /** 当前用户的用户名 */
     curStaffName: "",
-    curOrgStaffRole: 1
+    // curOrgStaffRole: 1 // 后期将删除！！
+    perm: []
 };
+var ace_menus = null;
+$(document).ready(function() {
+    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
+
+    function successCallback(result) {
+
+        var data = result.data;
+        globalConfig.curStaffId = data.staff.staffId;
+        globalConfig.curStaffName = data.staff.staffName;
+        globalConfig.curStaffOrgId = data.mainStaffOrg.staffOrgId;
+        globalConfig.curOrgId = data.org.orgId;
+        globalConfig.curStaff = data.staff;
+        globalConfig.curOrg = data.org;
+        globalConfig.curStaffOrg = data.mainStaffOrg;
+        globalConfig.perm = data.perm;
+        $(".user-info").html("<small>欢迎,</small>" + data.staff.staffName);
+        $(".user-menu").prepend("<li> <a href=\"javascript:;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.org.orgName + "</a> </li>");
+        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + "&" + App.timestamp(), "GET", null, menuCallback, null, null, null, false);
+
+        function menuCallback(result) {
+            ace_menus = result.data;
+        }
+    }
+});
 
 /*
  * 菜单隐藏实现
@@ -45,26 +74,26 @@ function hideNavbar() {
  * 全屏实现
  */
 $("#fullScreen").on("click", function() {
-        var fullscreenEnabled = document.fullscreenEnabled ||
-            document.webkitFullscreenEnabled ||
-            document.mozFullScreenEnabled ||
-            document.msFullscreenEnabled
-        if (!fullscreenEnabled) {
-            layer.msg("当前浏览器暂不支持全屏操作", { icon: 2 });
-            return false;
-        };
-        var fullscreenElement =
-            document.fullscreenElement ||
-            document.webkitFullscreenElement ||
-            document.mozFullScreenElement ||
-            document.msFullscreenElement;
-        if (fullscreenElement) {
-            exitFullscreen();
-        } else {
-            launchFullscreen(document.documentElement);
-        }
-    })
-    //全屏事件
+    var fullscreenEnabled = document.fullscreenEnabled ||
+        document.webkitFullscreenEnabled ||
+        document.mozFullScreenEnabled ||
+        document.msFullscreenEnabled
+    if (!fullscreenEnabled) {
+        layer.msg("当前浏览器暂不支持全屏操作", { icon: 2 });
+        return false;
+    };
+    var fullscreenElement =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+    if (fullscreenElement) {
+        exitFullscreen();
+    } else {
+        launchFullscreen(document.documentElement);
+    }
+});
+//全屏事件
 function launchFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -114,5 +143,29 @@ function checkFullscreen() {
     } else {
         $("#fullScreen").removeClass("fa-compress").addClass("fa-expand");
         $("#fullScreen").parent().attr("title", "点击全屏")
+    }
+}
+
+// 页面过滤
+function permFilter(obj) {
+    var e = obj.querySelectorAll('[permcheck]');
+    var perm = globalConfig.perm;
+    for (var i = 0; i < e.length; i++) {
+        if (null != e[i].getAttribute('permcheck')) {
+            if (jQuery.inArray(e[i].getAttribute('permcheck'), perm) < 0) {
+                e[i].remove();
+            } else {
+                $(e[i]).show();
+            }
+        }
+    }
+}
+// 表中过滤
+function tPFilter(permCheck) {
+    var perm = globalConfig.perm;
+    if (jQuery.inArray(permCheck, perm) >= 0) {
+        return true;
+    } else {
+        return false;
     }
 }

@@ -1,5 +1,4 @@
 var table = App.initDataTables('#dataTable',{
-//	"serverSide": true,
 	"ajax":"../../static/data/backlog.json",
 	"columns": [{
 			"data": "proName",

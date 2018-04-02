@@ -5,6 +5,10 @@ var curOrgStaffNode = null;
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
 /*
+ * 角色ID的获取，目前写死，待协调
+ */
+var curOrgStaffRole = 1;
+/*
  * 显示所属组织树
  */
 function showTree(dom) {
@@ -81,7 +85,7 @@ function orgsfilter(treeId, parentNode, responseData) {
 var legalSetting = {
     async: {
         enable: true,
-        url: serverPath + "roles/" + config.curOrgStaffRole + "/orgStaffsTreeChildren",
+        url: serverPath + "roles/" + curOrgStaffRole + "/orgStaffsTreeChildren",
         type: "get",
         dataType: 'json',
         dataFilter: orgsFilter,

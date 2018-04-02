@@ -139,7 +139,7 @@ function conTabC() {
 		l = $.trim($(this).text()),
 		k = true;
 	if(o == undefined || $.trim(o).length == 0) {
-		return false
+		return false;
 	}
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == o) {
@@ -169,7 +169,6 @@ function conTabC() {
 }
 
 function showSubpageTab(link,title){
-	console.log(11)
 	var o = link?link:'',
 		l = title?title:'',
 		m = '',

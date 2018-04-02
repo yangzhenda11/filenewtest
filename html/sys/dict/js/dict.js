@@ -22,10 +22,13 @@ function getDictTree() {
 	        	curNodeId = rootNode.dictId;
 	            createDictTable();
 	        }
+	        var checkNodes = dictTree.getNodeByParam("dictId", 90273);
+			console.log(checkNodes);
 		}else{
 			dictTree.destroy();
 			dictTree = $.fn.zTree.init($("#dictTree"), dictTreeSetting, data);
 			var checkNodes = dictTree.getNodeByParam("dictId", curNodeId);
+			console.log(checkNodes);
 			dictTree.expandNode(checkNodes);
 			dictTree.selectNode(checkNodes, false, false);
 			searchDict(true);

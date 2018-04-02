@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>权限弹出框</title>
+	</head>
+
+	<body>
+		<div id="modalEdit">
+			<div class="modal-dialog modal-lg" role="document" style="">
+				<div class="modal-content">
+					<form class="form-horizontal" role="form" id="permissionForm">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="modalTitle"></h4>
+						</div>
+						<div class="modal-body modalForm">
+							<input type="hidden" name="permId" value="">
+							<input type="hidden" id="parentId" name="parentId" value="">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="parentName">父节点名称<span class="notNull">*</span></label>
+									<input type="text" id="parentName" disabled="disabled" name="parentName" class="form-control" placeholder="父节点名称">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="permCode">权限编码<span class="notNull">*</span></label>
+									<input type="text" id="permCode" class="form-control" name="permCode" maxlength="20" placeholder="权限编码">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="permName">权限名称<span class="notNull">*</span></label>
+									<input type="text" id="permName" class="form-control" name="permName" placeholder="权限名称" maxlength="20">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="uri">权限地址</label>
+									<input type="text" id="uri" class="form-control" name="uri" placeholder="权限地址" maxlength="200">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="permType">权限类型<span class="notNull">*</span></label>
+									<select class="form-control" name="permType" id="permType">
+										<option value="">请选择</option>
+										<option value="1">菜单</option>
+										<option value="2">标签</option>
+										<option value="3">请求</option>
+										<option value="4">新窗口</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="permIcon">菜单图标</label>
+									<input type="text" id="permIcon" class="form-control" name="permIcon"  placeholder="菜单图标" maxlength="50">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="permCheck">校验字符</label>
+									<input type="text" id="permCheck" class="form-control" name="permCheck"  placeholder="校验字符" maxlength="60">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label for="permSort">展示顺序</label>
+									<input type="text" id="permSort" class="form-control" name="permSort"  placeholder="展示顺序" maxlength="50">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+                    		<button type="submit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i>保存</button>
+							<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i>关闭</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

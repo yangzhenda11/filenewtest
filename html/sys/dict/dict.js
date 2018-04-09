@@ -21,8 +21,8 @@ function getDictTree() {
 	        if (rootNode) {
 	        	curNodeId = rootNode.dictId;
 	            createDictTable();
+	            $("#toolbars").removeClass("hide");
 	        }
-	        var checkNodes = dictTree.getNodeByParam("dictId", 90273);
 		}else{
 			dictTree.destroy();
 			dictTree = $.fn.zTree.init($("#dictTree"), dictTreeSetting, data);
@@ -30,7 +30,7 @@ function getDictTree() {
 			dictTree.expandNode(checkNodes);
 			dictTree.selectNode(checkNodes, false, false);
 			searchDict(true);
-		}
+		}	
 	}
 }
 /*
@@ -58,6 +58,11 @@ var dictTreeSetting = {
 //获取给节点及其子节点的列表信息
 function getDictChildInfo(event, treeId, treeNode) {
 	curNodeId = treeNode.dictId;
+	if(treeNode.level < 2){
+		$("#toolbars").removeClass("hide");
+	}else{
+		$("#toolbars").addClass("hide");
+	}
     searchDict();
 }
 /*
@@ -85,7 +90,7 @@ function createDictTable() {
                 	}else{
                 		var btnArray = new Array();
 	                    btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
-	                    btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
+	                    //btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
 	                    if ('1' == c.dictStatus) {
 	                        btnArray.push({ "name": "禁用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'0\')"});
 	                    } else {
@@ -104,7 +109,7 @@ function createDictTable() {
             { "data": "dictParentId",width:"70%", title: "父节点编号"},
             { "data": "dictLabel", title: "字典名称"},
             { "data": "dictValue", title: "值"},
-            { "data": "dictType", title: "类型"},
+            //{ "data": "dictType", title: "类型"},
             { "data": "orgName", title: "适用范围"},
             { "data": "dictSort", title: "顺序"}
 		]
@@ -126,7 +131,7 @@ function searchDict(resetPaging) {
 /*
  * 删除字典
  */
-function delDict(dictId,dictLabel,dictParentId) {
+/*function delDict(dictId,dictLabel,dictParentId) {
 	if(dictParentId == 0){
 		layer.msg("当前字典为根节点，不能删除！", {icon: 2});
 		return false;
@@ -162,7 +167,7 @@ function delDict(dictId,dictLabel,dictParentId) {
 			}
 		}
 	})
-}
+}*/
 /*
  * 字典启用禁用
  */
@@ -225,7 +230,7 @@ function postDictChangeStatus(dictId,dictStatus){
  */
 function dictModal(editType,dictId,dictParentId,provinceName){
 	$("#modal").load("_dictModal.html?" + App.timestamp()+" #modalEdit",function(){
-		//加载组织树
+		/*//加载组织树
 		App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
 		function successCallback(result) {
 			var data = result.data;
@@ -237,12 +242,12 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 		};
 		$("#provinceCodeTree").on("click",function(){
 			showTree('provinceCodeTree');
-		});
+		});*/
 		if(editType == "add") {
 			$("#modalTitle").text("新增字典");
 			var checkTree = dictTree.getSelectedNodes()[0];
-			$("#dictParentName").val(checkTree.dictLabel);
-			$("#dictParentId").val(checkTree.dictId);
+			//$("#dictParentName").val(checkTree.dictLabel);
+			//$("#dictParentId").val(checkTree.dictId);
 			validate(editType);
 			$('#modal').modal('show');
 		} else if(editType == "edit") {
@@ -265,9 +270,9 @@ function getDictInfor(editType,dictId,provinceName){
 	function successCallback(result){
 		$('#modal').modal('show');
 		App.setFormValues("#dictForm",result.sysDict);
-		$("#provinceCodeTree").val(provinceName);
-		$("#provinceCodeTree").attr("title",provinceName);
-		$("#provinceCodeTree").data("id",result.sysDict.provinceCode);
+		//$("#provinceCodeTree").val(provinceName);
+		//$("#provinceCodeTree").attr("title",provinceName);
+		//$("#provinceCodeTree").data("id",result.sysDict.provinceCode);
 		validate(editType,dictId);
 	}
 }
@@ -291,7 +296,7 @@ function updateDict(editType,dictId){
 		url = serverPath + 'dicts/'+dictId;
 		pushType = "PUT";
 	}
-	formObj.provinceCode = $("#provinceCodeTree").data("id");
+	//formObj.provinceCode = $("#provinceCodeTree").data("id");
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
@@ -336,7 +341,7 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			dictType : {
+			/*dictType : {
 				validators : {
 					notEmpty : {
 						message : '请输入字典类型'
@@ -347,7 +352,7 @@ function validate(editType,dictId) {
 						message : '请输入不超过20个字符'
 					}
 				}
-			},
+			},*/
 			dictSort : {
 				validators : {
 					notEmpty : {
@@ -372,18 +377,6 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			/*dictRange : {
-				validators : {
-					notEmpty : {
-						message : '请输入适用范围'
-					},
-					stringLength : {
-						min : 0,
-						max : 50,
-						message : '请输入不超过50个字符'
-					}
-				}
-			},*/
 			provinceName : {
 				validators : {
 					notEmpty : {
@@ -401,7 +394,7 @@ function validate(editType,dictId) {
 /*
  * 显示所属组织树
  */
-function showTree(dom) {
+/*function showTree(dom) {
 	var selectObj = $("#" + dom + "");
 	var selectOffset = selectObj.offset();
 	$("#" + dom + "Content").css({
@@ -410,28 +403,28 @@ function showTree(dom) {
 		width: selectObj.outerWidth() + 50
 	}).slideDown("fast");
 	onBodyDown(dom);
-}
+}*/
 /*
  * 隐藏所属组织树
  */
-function hideMenu(dom) {
+/*function hideMenu(dom) {
 	$("#" + dom + "Content").fadeOut("fast");
 	$("body").unbind("mousedown", onBodyDown);
-}
+}*/
 /*
  * 组织树点击事件
  */
-function onBodyDown(dom) {
+/*function onBodyDown(dom) {
 	$("body").on("mousedown", function(event) {
 		if(!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
 			hideMenu(dom);
 		}
 	});
-}
+}*/
 /*
  * 所属组织树配置单选配置
  */
-var orgsSetting = {
+/*var orgsSetting = {
 	async: {
 		enable: true,
 		url: "",
@@ -467,17 +460,17 @@ function orgsfilter(treeId, parentNode, responseData) {
 		return null;
 	}
 }
-/*
+
  * ztree异步加载之前
- */
+ 
 function zTreeBeforeAsync(treeId, treeNode) {
 	orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
 	return true;
 }
 
-/*
+
  * ztree点击事件
- */
+ 
 function onClick(event, treeId, treeNode) {
 	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
 	var selectName = nodes[0].orgName;
@@ -489,4 +482,4 @@ function onClick(event, treeId, treeNode) {
 		$("#dictForm").data("bootstrapValidator").updateStatus("provinceName",  "NOT_VALIDATED",  null );
 		$("#dictForm").data("bootstrapValidator").validateField('provinceName');
 	}
-}
+}*/

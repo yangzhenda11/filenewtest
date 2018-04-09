@@ -10,7 +10,7 @@
 
 	<body>
 		<div id="modalEdit">
-			<div class="modal-dialog" role="document" style="width: 90%">
+			<div class="modal-dialog defaultModalWidth" role="document">
 				<div class="modal-content">
 					<form class="form-horizontal" role="form" id="externalPersonnelForm">
 						<div class="modal-header">
@@ -23,27 +23,33 @@
 							<input type="hidden" name="createBy" id="createBy" value="" />
 							<input type="hidden" name="updateBy" id="updateBy" value="" />
 							<input type="hidden" name="staffKind" id="staffKind" value="" />
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="loginName">账号<span class="notNull">*</span></label>
-									<input type="text" id="loginName" name="loginName" class="form-control" placeholder="账号">
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="passwd">密码<span class="notNull">*</span></label>
-									<input type="password" id="passwd" name="passwd" class="form-control" placeholder="密码">
-								</div>
-							</div>
-							<div class="col-sm-4">
+							<!--<div class="col-sm-4">
 								<div class="form-group">
 									<label for="staffName">人员姓名<span class="notNull">*</span></label>
 									<input type="text" id="staffName" name="staffName" class="form-control" placeholder="人员姓名">
 								</div>
+							</div>-->
+							<div class="col-sm-6 form-group">
+								<label for="loginName" class="col-sm-3 control-label">账号<span class="notNull">*</span></label>
+								<div class="col-sm-9">
+									<input type="text" id="loginName" name="loginName" class="form-control" placeholder="账号">
+								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="orgNameIn">所属组织<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="passwd" class="col-sm-3 control-label">密码<span class="notNull">*</span></label>
+								<div class="col-sm-9">
+									<input type="password" id="passwd" name="passwd" class="form-control" placeholder="密码">
+								</div>
+							</div>
+							<div class="col-sm-6 form-group">
+								<label for="staffName" class="col-sm-3 control-label">人员姓名<span class="notNull">*</span></label>
+								<div class="col-sm-9">
+									<input type="text" id="staffName" name="staffName" class="form-control" placeholder="人员姓名">
+								</div>
+							</div>
+							<div class="col-sm-6 form-group">
+								<label for="orgNameIn" class="col-sm-3 control-label">所属组织<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<div class="input-group">
 										<input id="orgNameIn" readonly name="orgName" type="text" class="form-control" />
 										<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
@@ -53,15 +59,15 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="mobilPhone">手机号码<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="mobilPhone" class="col-sm-3 control-label">手机号码<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<input type="text" id="mobilPhone" name="mobilPhone" class="form-control" placeholder="手机号码">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="sex">性别<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="sex" class="col-sm-3 control-label">性别<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<select class="form-control" name="sex" id="sex">
 										<option value="">请选择</option>
 										<option value="M">男</option>
@@ -69,58 +75,54 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="empCode">身份证号</label>
+							<div class="col-sm-6 form-group">
+								<label for="empCode" class="col-sm-3 control-label">身份证号</label>
+								<div class="col-sm-9">
 									<input type="text" id="empCode" name="empCode" class="form-control" placeholder="身份证号">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="hireDate">入职日期</label>
+							<div class="col-sm-6 form-group">
+								<label for="hireDate" class="col-sm-3 control-label">入职日期</label>
+								<div class="col-sm-9">
 									<div class="input-group date date-picker">
 										<input id="hireDate" type="text" class="form-control" readonly name="hireDate">
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="staffSort">显示顺序</label>
+							<div class="col-sm-6 form-group">
+								<label for="staffSort" class="col-sm-3 control-label">显示顺序</label>
+								<div class="col-sm-9">
 									<input type="text" id="staffSort" name="staffSort" class="form-control" placeholder="显示顺序（只能为数字）">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="postcode">邮政编码</label>
+							<div class="col-sm-6 form-group">
+								<label for="postcode" class="col-sm-3 control-label">邮政编码</label>
+								<div class="col-sm-9">
 									<input type="text" id="postcode" name="postcode" class="form-control" placeholder="邮政编码">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="mailAddr">通信地址</label>
+							<div class="col-sm-6 form-group">
+								<label for="mailAddr" class="col-sm-3 control-label">通信地址</label>
+								<div class="col-sm-9">
 									<input type="text" id="mailAddr" name="mailAddr" class="form-control" placeholder="通信地址">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="phone">电话号码</label>
+							<div class="col-sm-6 form-group">
+								<label for="phone" class="col-sm-3 control-label">电话号码</label>
+								<div class="col-sm-9">
 									<input type="text" id="phone" name="phone" class="form-control" placeholder="电话号码">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="email">邮箱号码</label>
+							<div class="col-sm-6 form-group">
+								<label for="email" class="col-sm-3 control-label">邮箱号码</label>
+								<div class="col-sm-9">
 									<input type="text" id="email" name="email" class="form-control" placeholder="邮箱号码">
 								</div>
 							</div>
-							<div class="col-sm-4">
-								<div class="form-group">
-									<label for="staffStatus">岗位状态<span class="notNull">*</span></label>
-									<!--<select class="form-control" name="staffStatus" id="staffStatus">
-									<option value="1">有效</option>
-									<option value="0">无效</option>
-								</select>-->
+							<div class="col-sm-6 form-group">
+								<label for="staffStatus" class="col-sm-3 control-label">岗位状态<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<div class="ui-radio-list ui-radio-inline">
 										<label class="ui-radio">
 										有效
@@ -145,15 +147,15 @@
 			</div>
 		</div>
 		<div id="modalDetail">
-			<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-dialog defaultModalWidth" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title">外部人员信息详情</h4>
 					</div>
 					<div class="modal-body">
-						<div class="detailTitle">人员姓名：<span id="staffNameDetail"></span></div>
-						<ul class="nav nav-tabs modalNavTab">
+						<div class="modalDetailTit">人员姓名：<span id="staffNameDetail"></span></div>
+						<ul class="nav nav-tabs modalDetailTab">
 							<li>
 								<a href="#positionInfo" data-toggle="tab">岗位信息</a>
 							</li>
@@ -161,7 +163,7 @@
 								<a href="#baseInfo" data-toggle="tab">基本信息</a>
 							</li>
 						</ul>
-						<div class="tab-content">
+						<div class="tab-content modalDetailCon">
 							<div class="tab-pane fade in active" id="baseInfo">
 								<div class="col-sm-6">
 									<div class="col-sm-4 form-control-static align-right">账号：</div>
@@ -217,7 +219,7 @@
 								</div>
 							</div>
 							<div class="tab-pane fade" id="positionInfo">
-								岗位信息
+								岗位状态
 							</div>
 						</div>
 					</div>

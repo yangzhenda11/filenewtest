@@ -258,17 +258,14 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         },
         {
             "data": "partnerMdmCode",
-            "title": "编码",
-            "className": "text-center"
+            "title": "编码"
         },
         {
             "data": "partnerName",
-            "className": "text-center",
             "title": "签约主体名称"
         },
         {
             "data": "isPartner",
-            "className": "text-center",
             "title": "是否联通方",
             "render": function(data, type, full, meta) {
                 if (data == 0) {
@@ -280,12 +277,10 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         },
         {
             "data": "partnerCode",
-            "className": "text-center",
             "title": "关联编码"
         },
         {
             "data": "orgName",
-            "className": "text-center",
             "title": "所属组织"
         }
     ]

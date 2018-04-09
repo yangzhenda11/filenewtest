@@ -76,7 +76,7 @@ function addPermission() {
     	layer.alert("请选择父节点", {icon: 2,title:"添加节点"});
         return;
     }else{
-    	$("#modal").load("./html/permissionModal.html?" + App.timestamp()+" #modalEdit",function(){
+    	$("#modal").load("_permissionModal.html?" + App.timestamp()+" #modalEdit",function(){
 			$("#modalTitle").text("新增权限");
 			$("#parentId").val(curNode.permId);
 			$("#parentName").val(curNode.permName);
@@ -95,7 +95,7 @@ function showUpdate() {
     	layer.alert("父节点不能修改", {icon: 2,title:"修改节点"});
         return;
     }
-	$("#modal").load("./html/permissionModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_permissionModal.html?" + App.timestamp()+" #modalEdit",function(){
 		$("#modalTitle").text("修改权限");
 		$('#modal').modal('show');
 		var data = {'permId': curNode.permId};
@@ -127,6 +127,7 @@ function updatePermisson(type){
 	function successCallback(result) {
 		layer.msg(ms, {icon: 1});
 		$('#modal').modal('hide');
+		showPermission(curNode.permId);
 		if(type == "add"){
 			var updateNodes = {
 				permName : result.sysPerm.permName,

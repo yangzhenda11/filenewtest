@@ -22,25 +22,23 @@ function getLog(){
 	        }
 		},
 		"columns": [
-			{ "data": "operAccount", "title": "操作者账户", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operIp", "title": "操作者IP", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operHostIp", "title": "项目主机IP", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operPermissionName", "title": "操作功能模块", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operUrl", "title": "模块URL", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
+			{ "data": "operAccount", "title": "操作者账户", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operIp", "title": "操作者IP", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operHostIp", "title": "项目主机IP", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operPermissionName", "title": "操作功能模块", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operUrl", "title": "模块URL", render: $.fn.dataTable.render.ellipsis(22, true) },
 	        {
 	            "data": "operTime",
 	            "title": "操作时间",
-	            className: "text-center",
 	            render: function(data, type, full, meta) {
 	                return App.formatDateTime(data);
 	            }
 	        },
-	        { "data": "operTotalTime", "title": "操作耗时", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operParameter", "title": "参数值", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operTotalTime", "title": "操作耗时", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operParameter", "title": "参数值", render: $.fn.dataTable.render.ellipsis(22, true) },
 	        {
 	            "data": "operStatus",
 	            "title": "操作结果",
-	            className: "text-center",
 	            render: function(data, type, full, meta) {
 	                return data == "1" ? "成功" : "失败";
 	            }

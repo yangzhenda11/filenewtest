@@ -656,7 +656,15 @@ var App = function() {
 			}
 		});
 	}
-
+	//检查缓存，刷新
+//	var checkCache = function(){
+//		if (self == top) { 
+//			var timestamp = new Date().getTime();
+//			
+//		}else{
+//			
+//		}
+//	};
 	//* END:CORE HANDLERS *//
 	
 	/*
@@ -667,12 +675,10 @@ var App = function() {
 
 		//main function to initiate the theme
 		init: function() {
-			//IMPORTANT!!!: Do not modify the core handlers call order.
-
+			//IMPORTANT!!!: Do not modify the core handlers call order.			
 			//Core handlers
 			handleInit(); // initialize core variables
 			handleSubpageTab();
-
 			//UI Component handlers     
 			handleiCheck(); // handles custom icheck radio and checkboxes
 			handleBootstrapSwitch(); // handle bootstrap switch plugin
@@ -843,8 +849,9 @@ var App = function() {
 		 * el : table ID
 		 * btn : 搜索按钮 ID
 		 * options : 初始化事件
+		 * isWrapping : 是否折行，默认折行，如何要设置为有横向滚动条、固定列请设置为true
 		 */
-		initDataTables: function(el, btn, options) {
+		initDataTables: function(el, btn, options,isWrapping) {
 			if(!$().dataTable) {
 				return;
 			}
@@ -904,8 +911,8 @@ var App = function() {
 					}
 				},
 				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>', //生成样式
+				"paginationType": "full_numbers",
 				"processing": true,
-				//"bProcessing":true,
 				"paging": true,
 				"lengthMenu": [ 10, 15, 20, 50, 100 ],
 				"pageLength": 10,

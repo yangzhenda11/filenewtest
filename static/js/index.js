@@ -9,11 +9,11 @@ var globalConfig = {
 	/** 当前岗位信息对象 */
     curStaffOrg: {},
     /** 当前用户的岗位id （sys_staff_org表主键） */
-    curStaffOrgId: null, //10001,
+    curStaffOrgId: null, //10001
     /** 当前用户所在组织对象 */
     curOrg: {},
     /** 当前用户所在组织的id（sys_org表主键） */
-    curOrgId: null, //56665,orgId
+    curOrgId: null, //56665
     /** 当前用户对象 */
    	curStaff: {},
 	/*
@@ -26,7 +26,7 @@ var globalConfig = {
 	/** 当前用户的用户名 */
     curStaffName: "",
     /** 当前用户的id （sys_staff主键） */
-    curStaffId: null, //10002,
+    curStaffId: null, //10002
     /** 当前用户的权限集合 */
     perm: []
 };
@@ -35,7 +35,6 @@ $(document).ready(function() {
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
 
     function successCallback(result) {
-
         var data = result.data;
         globalConfig.curStaffId = data.staff.staffId;
         globalConfig.curStaffName = data.staff.staffName;
@@ -47,7 +46,13 @@ $(document).ready(function() {
         globalConfig.perm = data.perm;
         $(".user-info").html("<small>欢迎,</small>" + data.staff.staffName);
         $(".user-menu").prepend("<li> <a href=\"javascript:;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.org.orgName + "</a> </li>");
-        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + "&" + App.timestamp(), "GET", null, menuCallback, null, null, null, false);
+        App.formAjaxJson(globalConfig.serverPath + "configs/getVal?staffOrgId=" + globalConfig.curStaffOrgId+"&code=config_page_size", "GET", null, configs);
+
+        function configs(result) {
+           console.log(result);
+        }
+        
+        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + App.timestamp(), "GET", null, menuCallback, null, null, null, false);
 
         function menuCallback(result) {
             ace_menus = result.data;

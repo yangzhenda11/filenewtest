@@ -23,12 +23,10 @@ function getDictTree() {
 	            createDictTable();
 	        }
 	        var checkNodes = dictTree.getNodeByParam("dictId", 90273);
-			console.log(checkNodes);
 		}else{
 			dictTree.destroy();
 			dictTree = $.fn.zTree.init($("#dictTree"), dictTreeSetting, data);
 			var checkNodes = dictTree.getNodeByParam("dictId", curNodeId);
-			console.log(checkNodes);
 			dictTree.expandNode(checkNodes);
 			dictTree.selectNode(checkNodes, false, false);
 			searchDict(true);
@@ -102,13 +100,13 @@ function createDictTable() {
                 	}
                 }
             },
-			{ "data": "dictId", title: "编号", className: "text-center" },
-            { "data": "dictParentId",width:"70%", title: "父节点编号", className: "text-center" },
-            { "data": "dictLabel", title: "字典名称", className: "text-center" },
-            { "data": "dictValue", title: "值", className: "text-center" },
-            { "data": "dictType", title: "类型", className: "text-center" },
-            { "data": "orgName", title: "适用范围", className: "text-center" },
-            { "data": "dictSort", title: "顺序", className: "text-center" }
+			{ "data": "dictId", title: "编号"},
+            { "data": "dictParentId",width:"70%", title: "父节点编号"},
+            { "data": "dictLabel", title: "字典名称"},
+            { "data": "dictValue", title: "值"},
+            { "data": "dictType", title: "类型"},
+            { "data": "orgName", title: "适用范围"},
+            { "data": "dictSort", title: "顺序"}
 		]
 	})
 }
@@ -226,7 +224,7 @@ function postDictChangeStatus(dictId,dictStatus){
  * 字典新增修改弹出框
  */
 function dictModal(editType,dictId,dictParentId,provinceName){
-	$("#modal").load("./html/dictModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_dictModal.html?" + App.timestamp()+" #modalEdit",function(){
 		//加载组织树
 		App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
 		function successCallback(result) {

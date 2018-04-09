@@ -27,7 +27,6 @@ function gerOrgIdByStaffOrgId() {
  */
 function getOrgTable(orgId){
 	App.initDataTables('#orgSearchTable', "#searchBtn", {
-        buttons: ['copy', 'colvis'], //显示的工具按钮
         ajax: {
             "type": "GET",
             "url": serverPath + 'orgs/', //请求路径
@@ -78,14 +77,12 @@ function getOrgTable(orgId){
             },
             {
                 "data": "ORG_NAME",
-                title: "组织名称",
-                className: "text-center"
+                title: "组织名称"
             },
             { "data": "ORG_CODE", title: "组织编码", className: "text-center" },
             {
                 "data": "ORG_TYPE",
                 "title": "组织类型",
-                className: "text-center",
                 render: function(data, type, full) {
                     var value = "";
                     if (data == 1) {
@@ -103,16 +100,13 @@ function getOrgTable(orgId){
             {
                 "data": "ORG_STATUS",
                 "title": "状态",
-                className: "text-center",
                 render: function(data, type, full) {
                     return value = data == 1 ? "有效" : "无效";
                 }
             }
         ],
         "columnDefs": [{ // 所有列默认值
-                render: $.fn.dataTable.render.ellipsis(25, true),
-                "targets": "_all",
-                "defaultContent": ''
+                render: $.fn.dataTable.render.ellipsis(25, true)
             }
         ]
 //          "fixedColumns": {
@@ -137,7 +131,7 @@ function orgSearchOrg(resetPaging) {
 
 
 function orgShowOrgDetail(itemId) {
-	$("#modal").load("./orgModal.html?" + App.timestamp() + " #modalDetail",function(){
+	$("#modal").load("_orgModal.html?" + App.timestamp() + " #modalDetail",function(){
 		$("#modal").modal("show");
 		App.formAjaxJson(serverPath + "orgs/" + itemId, "GET", null, ajaxSuccess);
 	    /**成功回调函数 */

@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-    <link rel="stylesheet" type="text/css" href="../common/modalDetailCommon.css" />
+    <link rel="stylesheet" type="text/css" href="../css/sys.css" />
 
 </head>
 
@@ -41,14 +41,14 @@
                         <div class="row page-search-form">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">角色名称</span>
-                                    <input type="text" class="form-control" id="sysRoleName" name="sysRoleName" placeholder="" autocomplete="off">
+                                    <span class="input-group-addon searchLableText">角色名称</span>
+                                    <input type="text" class="form-control" id="sysRoleName" name="sysRoleName">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">组织名称</span>
-                                    <input type="text" class="form-control" id="sysOrgName" name="sysOrgName" placeholder="" autocomplete="off">
+                                    <span class="input-group-addon searchLableText">组织名称</span>
+                                    <input type="text" class="form-control" id="sysOrgName" name="sysOrgName">
                                 </div>
                             </div>
                             <div class="search-action">
@@ -59,9 +59,7 @@
                     </form>
                 </div>
                 <div class="toolbars">
-                    <div class="toolbars-content">
-                        <button type="button" class="btn btn-block red editBtn" onclick="openAddModal();"><i class="ace-icon fa fa-plus"></i>  新增</button>
-                    </div>
+                    <button type="button" class="btn btn-block red editBtn" onclick="openAddModal();"><i class="ace-icon fa fa-plus"></i>  新增</button>
                 </div>
                 <table id="searchRoleTable" class="table table-striped table-bordered table-hover table-header-fixed">
                 </table>

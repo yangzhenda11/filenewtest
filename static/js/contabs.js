@@ -32,7 +32,8 @@ $(function() {
 	});
 	$('.J_tabRefresh').click(function() {
 		var $targetFrame = $('.J_iframe:visible');
-		$targetFrame.attr('src', $targetFrame.attr('src'))
+		document.getElementById($targetFrame.attr('id')).contentWindow.location.reload(true);
+//		$targetFrame.attr('src', $targetFrame.attr('src'))
 	})
 	$(".J_tabCloseOther").on("click", conTabI);
 //	$(".J_tabShowActive").on("click", conTabJ);
@@ -160,7 +161,7 @@ function conTabC() {
 	if(k) {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + o + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
-		var n = '<iframe scrolling="no" class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
+		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
 		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))

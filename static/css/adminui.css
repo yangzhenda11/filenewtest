@@ -8303,14 +8303,14 @@ Bootstrap Wizard
 Datatables general customization
 ***/
 .dataTables_wrapper .table tr td, .dataTables_wrapper .table tr th {
-  white-space: nowrap; }
+  /*white-space: nowrap;*/ }
 
 .dataTables_wrapper .table > thead > tr {
   color: #707070;
   background: repeat-x #F5F5F5; }
 
 .dataTables_wrapper .table > thead > tr > th {
-  font-weight: normal; }
+  /*font-weight: normal;*/ }
 
 .dt-footer-wrapper {
   padding-top: 4px; }
@@ -8870,7 +8870,10 @@ AngularJS UI-select
   font-family: "Microsoft YaHei", "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
   
 /*
- * zander 
+ * contract2.0
+ */
+/*
+ * 搜索样式
  */
 .search-action{
 		width: 100px;
@@ -8878,34 +8881,68 @@ AngularJS UI-select
     text-align: center;
     float: left;
 }
-.modal-body{
-	display: block;
+.editBtn{
+	width: 80px;
 }
-.overflow-hidden{
-	overflow: hidden;
-}
-.zTreeContent{
-	max-height: 200px;
-	margin-bottom: 20px;
-}
-.padding-tb-8{
-	padding-top: 8px;
-}
-button:focus{
-	outline: none !important;
-}
-#ip11{
-	font-size: 40px;
-}
-.toolbars{
+/*
+ * 右侧若加工具栏样式，两层DIV  .toolbars-position>.toolbars-content
+ * 浮动布局
+ */
+.toolbars-position{
 	position: relative;
 }
 .toolbars-content{
 	position: absolute;
 }
-.editBtn{
-	width: 80px;
+/*
+ * 预定义字段
+ */
+.overflow-hidden{
+		overflow: hidden;
 }
+.align-right{
+    text-align: right;
+}
+.align-left{
+    text-align: left;
+}
+.padding-tb-8{
+		padding-top: 8px;
+}
+button:focus{
+		outline: none !important;
+}
+#ip11{
+		font-size: 40px;
+}
+/*
+ * ztree最大高度
+ */
+.zTreeContent{
+	max-height: 200px;
+	margin-bottom: 20px;
+}
+/*
+ * modal详情样式
+ */
+.modalDetailTit{
+    float: left;
+    margin-top: 15px;
+}
+.modalDetailTab{
+    margin-bottom:0;
+}
+.modalDetailTab>li{
+    float: right;
+}
+.modalDetailCon{
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
 /*必填*号*/
 .notNull{
 	color: #E43A45;
@@ -8917,17 +8954,27 @@ button:focus{
 .modalForm{
 	margin-top: 10px;
 }
+.modal-body{
+	display: block;
+}
 /*modal-body内为浮动元素时,清除浮动*/
 .modal-body::after {
     content:"";
     clear:both;/*清除浮动*/
     display:block;/*确保该元素是一个块级元素*/
 }
-.align-right{
-    text-align: right;
+/*
+ * 搜索条件标题预留class
+ */
+.searchLableText{
+	/*width: 150px;
+	text-align: left;*/
 }
-.align-left{
-    text-align: left;
+/*
+ * 默认弹出框宽度
+ */
+.defaultModalWidth{
+	width: 90%;
 }
 /*
  * layer样式

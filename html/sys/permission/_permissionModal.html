@@ -10,7 +10,7 @@
 
 	<body>
 		<div id="modalEdit">
-			<div class="modal-dialog modal-lg" role="document" style="">
+			<div class="modal-dialog defaultModalWidth" role="document">
 				<div class="modal-content">
 					<form class="form-horizontal" role="form" id="permissionForm">
 						<div class="modal-header">
@@ -20,33 +20,33 @@
 						<div class="modal-body modalForm">
 							<input type="hidden" name="permId" value="">
 							<input type="hidden" id="parentId" name="parentId" value="">
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="parentName">父节点名称<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="parentName" class="col-sm-3 control-label">父节点名称<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<input type="text" id="parentName" disabled="disabled" name="parentName" class="form-control" placeholder="父节点名称">
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="permCode">权限编码<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="permCode" class="col-sm-3 control-label">权限编码<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<input type="text" id="permCode" class="form-control" name="permCode" maxlength="20" placeholder="权限编码">
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="permName">权限名称<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="permName" class="col-sm-3 control-label">权限名称<span class="notNull">*</span></label>
+								<div class="col-sm-9">
 									<input type="text" id="permName" class="form-control" name="permName" placeholder="权限名称" maxlength="20">
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="uri">权限地址</label>
+							<div class="col-sm-6 form-group">
+								<label for="uri" class="col-sm-3 control-label">权限地址</label>
+								<div class="col-sm-9">
 									<input type="text" id="uri" class="form-control" name="uri" placeholder="权限地址" maxlength="200">
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="permType">权限类型<span class="notNull">*</span></label>
+							<div class="col-sm-6 form-group">
+								<label for="permType" class="col-sm-3 control-label">权限类型</label>
+								<div class="col-sm-9">
 									<select class="form-control" name="permType" id="permType">
 										<option value="">请选择</option>
 										<option value="1">菜单</option>
@@ -56,21 +56,21 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="permIcon">菜单图标</label>
+							<div class="col-sm-6 form-group">
+								<label for="permIcon" class="col-sm-3 control-label">菜单图标</label>
+								<div class="col-sm-9">
 									<input type="text" id="permIcon" class="form-control" name="permIcon"  placeholder="菜单图标" maxlength="50">
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="permCheck">校验字符</label>
+							<div class="col-sm-6 form-group">
+								<label for="permCheck" class="col-sm-3 control-label">校验字符</label>
+								<div class="col-sm-9">
 									<input type="text" id="permCheck" class="form-control" name="permCheck"  placeholder="校验字符" maxlength="60">
 								</div>
 							</div>
-							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="permSort">展示顺序</label>
+							<div class="col-sm-6 form-group">
+								<label for="permSort" class="col-sm-3 control-label">展示顺序</label>
+								<div class="col-sm-9">
 									<input type="text" id="permSort" class="form-control" name="permSort"  placeholder="展示顺序" maxlength="50">
 								</div>
 							</div>

@@ -34,8 +34,8 @@ function getConfigTable(){
 	                return html;
 	            }
             },
-			{ "data": "code", "title": "参数名称", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
-        	{ "data": "val", "title": "参数值", className: "text-center", render: $.fn.dataTable.render.ellipsis(22, true) },
+			{ "data": "code", "title": "参数名称", render: $.fn.dataTable.render.ellipsis(22, true) },
+        	{ "data": "val", "title": "参数值", render: $.fn.dataTable.render.ellipsis(22, true) },
             {"data": "attra",
             	"title": "允许用户更改",
             	className: "text-center",
@@ -43,7 +43,7 @@ function getConfigTable(){
             		return  data == 0 ? "否" : "是";
             	}
         	},
-        	{ "data": "attrb", "title": "可更改枚举值", className: "text-center", render: $.fn.dataTable.render.ellipsis(32, true) }
+        	{ "data": "attrb", "title": "可更改枚举值", render: $.fn.dataTable.render.ellipsis(32, true) }
 		]
 	});
 }
@@ -63,7 +63,7 @@ function searchConfig(resetPaging) {
  * 新增系统参数点击事件
  */
 function addConfigModal(){
-	$("#modal").load("./html/configModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalEdit",function(){
 		$("#modalTitle").text("新增系统参数");
 		$("#modal").modal("show");
 		validate("add");
@@ -73,7 +73,7 @@ function addConfigModal(){
  * 修改系统参数点击事件
  */
 function editConfigModal(id){
-	$("#modal").load("./html/configModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalEdit",function(){
 		$("#modalTitle").text("系统参数修改");
 		getConfig(id,"edit");
 	});
@@ -83,7 +83,7 @@ function editConfigModal(id){
  * 系统参数详情点击事件
  */
 function detailConfigModal(id){
-	$("#modal").load("./html/configModal.html?" + App.timestamp()+" #modalDetail",function(){
+	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalDetail",function(){
 		getConfig(id,"detail");
 	});
 }

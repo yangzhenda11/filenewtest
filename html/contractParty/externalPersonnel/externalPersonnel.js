@@ -134,10 +134,9 @@ function getTreeInfo(code) {
  * 表格初始化
  */
 App.initDataTables('#personnelTable', "#submitBtn", {
-	fixedColumns: {
-		leftColumns: 2					//固定左侧两列
-	},
-	buttons: ['copy', 'colvis'],		//显示的工具按钮
+//	fixedColumns: {
+//		leftColumns: 2					//固定左侧两列
+//	},
 	ajax: {
 		"type": "GET",					//请求方式
 		"url": serverPath + 'staffPartner/getStaffPartnerList',	//请求地址
@@ -178,7 +177,6 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 		},
 		{
 			"data": null,
-			"className": "text-center",
 			"title": "人员姓名",
 			render: function(data, type, full, meta) {
 				return '<a href=\"javascript:void(0)\" onclick = "personnelModal(\'detail&&' + data.staffId + '\')">' + data.staffName + '</a>';
@@ -186,17 +184,14 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 		},
 		{
 			"data": "loginName",
-			"className": "text-center",
 			"title": "账号"
 		},
 		{
 			"data": "orgName",
-			"className": "text-center",
 			"title": "组织"
 		},
 		{
 			"data": "sex",
-			"className": "text-center",
 			"title": "性别",
 			render: function(data, type, full, meta) {
 				return data == 'M' ? '男' : '女';
@@ -204,24 +199,21 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 		},
 		{
 			"data": "email",
-			"className": "text-center",
 			"title": "邮箱"
 		},
 		{
 			"data": "mobilPhone",
-			"className": "text-center",
 			"title": "手机"
 		},
 		{
 			"data": "staffStatus",
-			"className": "text-center",
 			"title": "岗位状态",
 			render: function(data, type, full, meta) {
 				return data == '1' ? '有效' : '无效';
 			}
 		},
 	]
-});
+},true);
 /*
  * 搜索点击事件
  */
@@ -295,7 +287,7 @@ function personnelModal(code) {
 	var code = code.split("&&");
 	var editType = code[0];
 	if(editType == "add" || editType == "edit") {
-		$("#modal").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalEdit",function(){
+		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalEdit",function(){
 			if(editType == "add"){
 				$("#modalTitle").text("新增外部人员");
 				dateRegNameChose();
@@ -307,7 +299,7 @@ function personnelModal(code) {
 			}
 		});
 	} else {
-		$("#modal").load("./html/externalPersonnelModal.html?" + App.timestamp()+" #modalDetail",function(){
+		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalDetail",function(){
 			getInfor(code[1],editType);
 		});
 	}

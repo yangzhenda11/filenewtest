@@ -1,0 +1,11 @@
+.paddLR10 {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+/*若表格具有横向滚动条,或者固定列需加此项*/
+.dataTables_wrapper .table tr th {
+  white-space: nowrap;
+}
+.dataTables_wrapper .table tr td {
+  white-space: nowrap;
+}

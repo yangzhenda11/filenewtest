@@ -4,7 +4,7 @@ html {
     overflow: hidden;
 }
 #sidebar{
-	overflow-x: hidden;
+	overflow: inherit;
 }
 #hidemenu{
 	display: none;

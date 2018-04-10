@@ -1,29 +1,15 @@
-var organisationTree = null;
-var otherTree = null;
-var legalTree = null;
-var curOrgStaffNode = null;
+
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
-/*
- * 请求到结果后的回调事件
- */
-function judge(result){
-	return resolveResult(result);
-}
+
 var uploadTable = App.initDataTables('#uploadTable', {
 	ajax: {
         "type": "GET",
         "url": serverPath + 'fileload/getAllBucketObject',
-        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-        "dataType":'json',
         "data":function(d){
         	d.bucketName = "my-new-bucket";
         	return d;
-        },
-         error: function (xhr, error, thrown) {  
-            layer.msg("接口错误", {icon: 2});
-        },
-        "dataSrc": judge
+        }
 	},
 	"columns": [{
 			"data": "key",
@@ -114,3 +100,32 @@ function deleteFile(data){
         }
     });
 }
+/*
+ * 文件上传
+ */
+(function (_, $) {
+    $("#fileName").fileinput({
+        language: 'zh', 
+        uploadUrl: serverPath + 'fileload/uploadFileS3', //用于文件上传的服务器端请求地址
+        uploadAsync: true,
+//   	allowedFileExtensions: ['ini'],
+        maxFileSize: 51200,
+        // maxFileCount: 10,
+        //showPreview:false,
+        slugCallback: function (filename) {
+        	console.log(filename)
+            return filename;
+        },
+        uploadExtraData: function(previewId, index) {	
+			//添加额外参数
+			var obj = {
+				
+			};
+			return obj;
+		}
+    });
+    $("#fileName").on("fileuploaded", function (event, data) {
+        var res=data.response;
+        console.log(res);
+    });
+})(window, jQuery);

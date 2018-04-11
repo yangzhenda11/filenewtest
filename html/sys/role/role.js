@@ -56,9 +56,6 @@ function getRoleTable(){
 	            }
 	        }
 	    ]
-//	    "fixedColumns": {
-	        //'leftColumns': 2
-//	    }
 	})
 }
 
@@ -82,9 +79,9 @@ function deleteDetail(roleId) {
 /**
  * 执行查询
  */
-function searchRole(resetPaging) {
+function searchRole(retainPaging) {
     var table = $('#searchRoleTable').DataTable();
-    if (resetPaging) {
+    if (retainPaging) {
         table.ajax.reload(null, false);
     } else {
         table.ajax.reload();
@@ -154,7 +151,7 @@ function getRoleInfo(id,type){
  * 打开新增窗口，同时向表单增加验证
  */
 function openAddModal() {
-    $("#modal").load("./subpage/roleform.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
         $("#editModalTitle").text("添加角色");
         $("#modal").modal("show");
         loadPerTree();

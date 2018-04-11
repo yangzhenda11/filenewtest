@@ -30,6 +30,17 @@
 				</div>
 				<div class="portlet-body">
 					<div class="col-sm-3 dictTreeContent">
+						<div class="action-tools">
+							<a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
+								<span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
+							</a>
+							<a href="#" class="my-icon-a" title="全部折叠" onclick="collapseAll();">
+								<span class="glyphicon glyphicon-minus my-icon" aria-hidden="true"></span>
+							</a>
+							<a href="#" class="my-icon-a" title="刷新" onclick="refreshTree();">
+								<span class="glyphicon glyphicon-refresh my-icon" aria-hidden="true"></span>
+							</a>
+						</div>
 						<ul id="dictTree" class="ztree"></ul>
 					</div>
 					<div class="dictHeightBorder"></div>
@@ -43,14 +54,14 @@
 											<input type="text" class="form-control" id="dictName" name="dictLabel"  maxlength="20">
 										</div>
 									</div>
-									<div class="search-action">
-										<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="searchDict();"><i class="ace-icon fa fa-search"></i> 查询</button>
+									<div class="input-group">
+										<button type="button" id="submitBtn" class="btn btn-info red" data-loading-text="加载中..." onclick="searchDict();"><i class="ace-icon fa fa-search"></i> 查询</button>
 									</div>
 								</div>
 							</form>
 						</div>
 						<div class="toolbars hide" id="toolbars">
-							<button type="button" class="btn btn-block red editBtn" onclick="dictModal('add');"><i class="ace-icon fa fa-plus"></i>  新增</button>
+							<button type="button" class="btn btn-info red" onclick="dictModal('add');"><i class="ace-icon fa fa-plus"></i>  新增</button>
 						</div>
 						<table id="dictTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 					</div>
@@ -61,12 +72,12 @@
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 
 		<!--[if lt IE 9]>
-	  	<script src="../../../static/plugins/html5shiv.min.js"></script>
-	  	<script src="../../../static/plugins/respond.min.js"></script>
-	  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
+	  		<script src="../../../static/plugins/html5shiv.min.js"></script>
+	  		<script src="../../../static/plugins/respond.min.js"></script>
+	  		<script src="../../../static/plugins/ie8.fix.min.js"></script>
 		<![endif]-->
 		<!--[if lte IE 8]>
-		<script src="../../../static/plugins/selectivizr-min.js"></script>
+			<script src="../../../static/plugins/selectivizr-min.js"></script>
 		<![endif]-->
 
 		<!--基础依赖-->

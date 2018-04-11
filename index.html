@@ -22,12 +22,6 @@
 		<link href="static/img/favicon.png" rel="bookmark" type="image/x-icon" />
 		<link href="static/img/favicon.png" rel="icon" type="image/x-icon" />
 		<link href="static/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
-		<!--数据初始化 菜单改为index.js中的动态获取-->
-		<!--
-    <script src="static/data/menu.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript">
-        var ace_menus = menus;
-    </script> -->
 	</head>
 
 	<body class="no-skin">
@@ -92,8 +86,9 @@
 				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
 					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
 				</div>
-				<ul class="nav nav-list" id="actionUl">
-				</ul>
+				<div id="sidebarScroller">
+					<ul class="nav nav-list" id="actionUl"></ul>
+				</div>
 			</div>
 			<div class="main-content">
 				<div class="row content-tabs">

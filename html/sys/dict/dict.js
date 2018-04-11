@@ -106,13 +106,22 @@ function createDictTable() {
                 }
             },
 			{ "data": "dictId", title: "编号"},
-            { "data": "dictParentId",width:"70%", title: "父节点编号"},
+            { "data": "dictParentId", title: "父节点编号"},
             { "data": "dictLabel", title: "字典名称"},
             { "data": "dictValue", title: "值"},
             //{ "data": "dictType", title: "类型"},
             { "data": "orgName", title: "适用范围"},
             { "data": "dictSort", title: "顺序"}
-		]
+		],
+		drawCallbackFn:function(){
+			var windowHeigth = $(window).height();
+			var documentHeight = $(".portlet").outerHeight();
+			if(windowHeigth > documentHeight){
+				$("#dictTree").css("max-height",windowHeigth - 110);
+			}else{
+				$("#dictTree").css("max-height",documentHeight - 110);
+			}
+		}
 	})
 }
 
@@ -245,7 +254,7 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 		});*/
 		if(editType == "add") {
 			$("#modalTitle").text("新增字典");
-			var checkTree = dictTree.getSelectedNodes()[0];
+			//var checkTree = dictTree.getSelectedNodes()[0];
 			//$("#dictParentName").val(checkTree.dictLabel);
 			//$("#dictParentId").val(checkTree.dictId);
 			validate(editType);
@@ -390,7 +399,44 @@ function validate(editType,dictId) {
 		updateDict(editType,dictId);
 	});
 }
+// 刷新站点树
+function refreshTree() {
+	App.formAjaxJson(serverPath + "dicts/", "get", "", successCallback);
+	function successCallback(result) {
+		dictTree.destroy();
+		var data = result.dicts;
+		dictTree = $.fn.zTree.init($("#dictTree"), dictTreeSetting, data);
+        var rootNode = dictTree.getNodes()[0];
+        dictTree.expandNode(rootNode);
+        dictTree.selectNode(rootNode, false, false);
+        if (rootNode) {
+        	$("#toolbars").removeClass("hide");
+        	curNodeId = rootNode.dictId;
+			searchDict(true);
+        }
+	}
+}
+// 展开所有
+function expandAll() {
+    var nodes = dictTree.getNodes();
+    expandNodes(nodes);
+}
 
+//展开所有节点及其子节点
+function expandNodes(nodes) {
+    if (!nodes)
+        return;
+    for (var i = 0, l = nodes.length; i < l; i++) {
+        dictTree.expandNode(nodes[i], true, false, false);
+        if (nodes[i].isParent) {
+            expandNodes(nodes[i].children);
+        }
+    }
+}
+// 关闭所有
+function collapseAll() {
+    dictTree.expandAll(false);
+}
 /*
  * 显示所属组织树
  */

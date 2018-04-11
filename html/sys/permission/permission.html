@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="col-sm-4 premissionTreeContent">
+					<div class="col-sm-4">
 						<div class="action-tools">
 							<a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
 								<span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
@@ -43,10 +43,10 @@
 					<div class="permHeightBorder"></div>
 					<div class="col-sm-7">
 						<div class="portlet-title-per">
-							<button type="button" class="btn btn-info" id="addDom" onclick="addPermission();">
+							<button type="button" class="btn btn-info red" onclick="addPermission();">
                                 <i class="ace-icon fa fa-plus"></i> 插入节点
                             </button>
-							<button type="button" class="btn btn-info" onclick="showUpdate();">
+							<button type="button" class="btn btn-info red" onclick="showUpdate();">
                                 <i class="ace-icon fa fa-pencil"></i> 修改节点
                            </button>
                             <button type="button" class="btn btn-info red" onclick="delPermission();">
@@ -54,50 +54,50 @@
                            </button>
 						</div>
 						<div class="form-body">
-								<form class="form-horizontal" id="permissionShow">
-									<div class="form-group">
-										<div class="input-group">
-											<span class="input-group-addon" for="permCode">权限编码</span>
-											<div class="form-control-static form-control" id="permCode" name="permCode"></div>
-										</div>
+							<form class="form-horizontal" id="permissionShow">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon" for="permCode">权限编码</span>
+										<div class="form-control-static form-control" id="permCode" name="permCode"></div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="permName" class="input-group-addon">权限名称</label>
-											<div class="form-control form-control-static" id="permName" name="permName"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permName" class="input-group-addon">权限名称</label>
+										<div class="form-control form-control-static" id="permName" name="permName"></div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="sysPermissionUri" class="input-group-addon">权限URI</label>
-											<div class="form-control form-control-static" id="sysPermissionUri" name="uri"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="sysPermissionUri" class="input-group-addon">权限URI</label>
+										<div class="form-control form-control-static" id="sysPermissionUri" name="uri"></div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="permType" class="input-group-addon">权限类型</label>
-											<div class="form-control form-control-static" id="permType" name="permType"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permType" class="input-group-addon">权限类型</label>
+										<div class="form-control form-control-static" id="permType" name="permType"></div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="permIcon" class="input-group-addon">菜单图标</label>
-											<div class="form-control form-control-static" id="permIcon" name="permIcon"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permIcon" class="input-group-addon">菜单图标</label>
+										<div class="form-control form-control-static" id="permIcon" name="permIcon"></div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="permCheck" class="input-group-addon">校验字符</label>
-											<div class="form-control form-control-static" id="permCheck" name="permCheck"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permCheck" class="input-group-addon">校验字符</label>
+										<div class="form-control form-control-static" id="permCheck" name="permCheck"></div>
 									</div>
-									<div class="form-group">
-										<div class="input-group">
-											<label for="permSort" class="input-group-addon">展示顺序</label>
-											<div class="form-control form-control-static" id="permSort" name="permSort"></div>
-										</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permSort" class="input-group-addon">展示顺序</label>
+										<div class="form-control form-control-static" id="permSort" name="permSort"></div>
 									</div>
-								</form>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -106,12 +106,12 @@
 		<!--modal-->
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
-		<script src="../../../static/plugins/html5shiv.min.js"></script>
-		<script src="../../../static/plugins/respond.min.js"></script>
-		<script src="../../../static/plugins/ie8.fix.min.js"></script>
+			<script src="../../../static/plugins/html5shiv.min.js"></script>
+			<script src="../../../static/plugins/respond.min.js"></script>
+			<script src="../../../static/plugins/ie8.fix.min.js"></script>
   		<![endif]-->
 		<!--[if lte IE 8]>
-	  	<script src="../../../static/plugins/selectivizr-min.js"></script>
+	  		<script src="../../../static/plugins/selectivizr-min.js"></script>
   		<![endif]-->
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>

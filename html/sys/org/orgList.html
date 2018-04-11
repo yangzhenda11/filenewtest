@@ -24,7 +24,7 @@
             </div>
             <div class="portlet-body">
                 <div class="page-search">
-                    <form class="form-horizontal" action="" id="orgSearchForm">
+                    <form class="form-horizontal" action="">
                         <input type="hidden" id="orgCurOrgId" value="">
                         <div class="row page-search-form">
                             <div class="col-sm-4">
@@ -42,7 +42,7 @@
                             <div class="col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon searchLableText">组织类型</span>
-                                    <select class="form-control" name="orgType">
+                                    <select class="form-control" name="orgType" id="orgType">
                                         <option value="">全部</option>
                                         <option value="1">&nbsp;公司</option>
                                         <option value="2">&nbsp;部门</option>
@@ -54,7 +54,7 @@
                             <div class="col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon searchLableText">状态</span>
-                                    <select class="form-control" name="orgStatus">
+                                    <select class="form-control" name="orgStatus" id="orgStatus">
                                         <option value="">全部</option>
                                         <option value="1">&nbsp;有效</option>
                                         <option value="0">&nbsp;无效</option>
@@ -62,8 +62,8 @@
                                 </div>
                             </div>
                             <div class="page-search-action">
-                                <button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="orgSearchOrg();"><i class="ace-icon fa fa-search"></i> 查询</button>
-                                <button type="reset" class="btn btn-block yellow margin-top-10"><i class="ace-icon fa fa-repeat"></i> 清空</button>
+                                <button type="button" id="searchBtn" class="btn btn-info red" data-loading-text="加载中..." onclick="orgSearchOrg();"><i class="ace-icon fa fa-search"></i> 查询</button>
+                                <button type="reset" class="btn btn-info yellow margin-top-10"><i class="ace-icon fa fa-repeat"></i> 清空</button>
                             </div>
                         </div>
                     </form>
@@ -85,9 +85,9 @@
     <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog"></div>
 
     <!--[if lt IE 9]>
-	  <script src="../../../static/plugins/html5shiv.min.js"></script>
-	  <script src="../../../static/plugins/respond.min.js"></script>
-	  <script src="../../../static/plugins/ie8.fix.min.js"></script>
+	  	<script src="../../../static/plugins/html5shiv.min.js"></script>
+	  	<script src="../../../static/plugins/respond.min.js"></script>
+	  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
 	<![endif]-->
     <!--[if lte IE 8]>
 		<script src="../../../static/plugins/selectivizr-min.js"></script>

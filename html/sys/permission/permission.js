@@ -8,6 +8,13 @@ var serverPath = config.serverPath;
 var perPermissionTree = null;
 var curNode = null;
 $(function() {
+	var windowHeigth = $(window).height();
+	var documentHeight = $(".portlet").outerHeight();
+	if(windowHeigth > documentHeight){
+		$("#permTree").css("max-height",windowHeigth - 110);
+	}else{
+		$("#permTree").css("max-height",documentHeight - 110);
+	}
     // 初始化树
     App.formAjaxJson(serverPath + "pers/root","get", null, successCallback)
 	function successCallback(result){
@@ -19,7 +26,7 @@ $(function() {
         showPermission(curNode.permId);
 	}
 });
-// 点击展示权限信息
+// 展示右侧权限信息
 function showPermission(permId) {
 	App.formAjaxJson(serverPath + "pers/" + permId,"get", null, successCallback)
 	function successCallback(result){
@@ -204,16 +211,16 @@ function validate(editType) {
 }
 // 刷新站点树
 function refreshTree() {
-    $.get(parent.globalConfig.serverPath + "pers/root", function(data) {
+	App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback);
+    function successCallback(data){
         perPermissionTree.destroy('permTree');
         zNodes = data.sysPerm;
-        perPermissionTree = $.fn.zTree
-            .init($("#permTree"), permSetting, zNodes);
+        perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
         curNode = perPermissionTree.getNodes()[0];
         perPermissionTree.selectNode(curNode);
         perPermissionTree.expandNode(curNode, true, false, true);
         showPermission(curNode.permId);
-    });
+    };
 }
 // 展开所有
 function expandAll() {
@@ -226,9 +233,9 @@ function expandNodes(nodes) {
     if (!nodes)
         return;
     for (var i = 0, l = nodes.length; i < l; i++) {
-        perPermissionTree.expandNode(nodes[i], true, false, false); //展开节点就会调用后台查询子节点  
+        perPermissionTree.expandNode(nodes[i], true, false, false);
         if (nodes[i].isParent) {
-            expandNodes(nodes[i].children); //递归  
+            expandNodes(nodes[i].children);
         }
     }
 }

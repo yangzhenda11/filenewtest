@@ -28,11 +28,13 @@ var globalConfig = {
     /** 当前用户的id （sys_staff主键） */
     curStaffId: null, //10002
     /** 当前用户的权限集合 */
-    perm: []
+    perm: [],
+     /** 当前用户的系统设置 */
+    curConfigs:{}
 };
 var ace_menus = null;
 $(document).ready(function() {
-    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
+    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
 
     function successCallback(result) {
         var data = result.data;
@@ -46,17 +48,36 @@ $(document).ready(function() {
         globalConfig.perm = data.perm;
         $(".user-info").html("<small>欢迎,</small>" + data.staff.staffName);
         $(".user-menu").prepend("<li> <a href=\"javascript:;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.org.orgName + "</a> </li>");
-        App.formAjaxJson(globalConfig.serverPath + "configs/getVal?staffOrgId=" + globalConfig.curStaffOrgId+"&code=config_page_size", "GET", null, configs);
+        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + App.timestamp(), "GET", null, menuSuccess, null, null, null, false);
 
-        function configs(result) {
-           console.log(result);
-        }
-        
-        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + App.timestamp(), "GET", null, menuCallback, null, null, null, false);
-
-        function menuCallback(result) {
+        function menuSuccess(result) {
             ace_menus = result.data;
         }
+        
+        App.formAjaxJson(globalConfig.serverPath + "configs/getVal?staffOrgId=" + globalConfig.curStaffOrgId+"&code=config_page_size", "GET", null, configSuccess,configImproper,configError,null,false);
+	    function configSuccess(result) {
+	       	if(result.data != ""){
+	       		globalConfig.curConfigs.configPagelengthMenu = result.data;
+	       	}else{
+	       		globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	       	}
+	    }
+	    function configImproper(result){
+	    	globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	    }
+	    function configError(result){
+	    	globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	    }
+    }
+    function improperCallback(result) {
+    	layer.alert("用户信息获取失败", {icon: 2,title:"错误",closeBtn:0}, function(index){
+			window.location.href = "login.html";
+		});
+    }
+    function errorCallback(result) {
+        layer.alert("用户信息获取失败", {icon: 2,title:"错误",closeBtn:0},function(index){
+        	window.location.href = "login.html";
+        });
     }
 });
 
@@ -172,3 +193,19 @@ function tPFilter(permCheck) {
         return false;
     }
 }
+ /**
+ * 初始化左侧菜单滚动条
+ * 
+ * */    
+//$('#sidebarScroller').slimScroll({
+//  allowPageScroll: true, // allow page scroll when the element scroll is ended
+//  size: '4px',
+//  color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : '#4B6A8B'),
+//  wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
+//  railColor: ($(this).attr("data-rail-color") ? $(this).attr("data-rail-color") : '#eaeaea'),
+//  position: 'right',
+//  height: '100%',
+//  alwaysVisible: false,
+//  railVisible: false,
+//  disableFadeOut: false
+//});

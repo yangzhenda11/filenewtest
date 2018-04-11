@@ -10,46 +10,46 @@
 
 	<body>
 		<div id="modalEdit">
-			<div class="modal-dialog modal-lg" role="document" style="width: 90%;">
+			<div class="modal-dialog defaultModalWidth" role="document">
 				<div class="modal-content">
 					<form class="form-horizontal" role="form" id="dictForm">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h4 class="modal-title" id="modalTitle"></h4>
 						</div>
-						<div class="modal-body modalForm">
+						<div class="modal-body defaultModalForm">
 							<input type="hidden" name="createBy" value="">
 							<input type="hidden" name="dictId" value="">
 							<input type="hidden" name="updateBy" value="">
 							<input type="hidden" name="dictStatus" value="">
 							<div class="col-sm-6 form-group">
-								<label for="dictParentName" class="col-sm-3 control-label">父字典名称<span class="notNull">*</span></label>
-								<div class="col-sm-9">
+								<label for="dictParentName" class="control-label">父字典名称<span class="notNull">*</span></label>
+								<div class="valiParent">
 									<input type="text" id="dictParentName" disabled="disabled" name="parentName" class="form-control" placeholder="父字典名称">
 									<input type="hidden" id="dictParentId" name="dictParentId" value="">
 								</div>
 							</div>
 							<div class="col-sm-6 form-group">
-								<label for="dictLabel" class="col-sm-3 control-label">字典名称<span class="notNull">*</span></label>
-								<div class="col-sm-9">
+								<label for="dictLabel" class="control-label">字典名称<span class="notNull">*</span></label>
+								<div class="valiParent">
 									<input type="text" id="dictLabel" class="form-control" name="dictLabel" maxlength="20" placeholder="字典名称">
 								</div>
 							</div>
 							<div class="col-sm-6 form-group">
-								<label for="dictValue" class="col-sm-3 control-label">字典值<span class="notNull">*</span></label>
-								<div class="col-sm-9">
+								<label for="dictValue" class="control-label">字典值<span class="notNull">*</span></label>
+								<div class="valiParent">
 									<input type="text" id="dictValue" class="form-control" name="dictValue" placeholder="字典值" maxlength="20">
 								</div>
 							</div>
 							<!-- <div class="col-sm-6 form-group">
-								<label for="dictType" class="col-sm-3 control-label">类型<span class="notNull">*</span></label>
-								<div class="col-sm-9">
+								<label for="dictType" class="control-label">类型<span class="notNull">*</span></label>
+								<div class="valiParent">
 									<input type="text" id="dictType" class="form-control" name="dictType" placeholder="类型" maxlength="20">
 								</div>
 							</div>
 							<div class="col-sm-6 form-group">
-								<label for="provinceCodeTree" class="col-sm-3 control-label">省分编码<span class="notNull">*</span></label>
-								<div class="col-sm-9">
+								<label for="provinceCodeTree" class="control-label">省分编码<span class="notNull">*</span></label>
+								<div class="valiParent">
 									<div class="input-group">
 										<input id="provinceCodeTree" readonly name="provinceName" placeholder="省分编码" type="text" class="form-control" />
 										<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
@@ -60,14 +60,14 @@
 								</div>
 							</div> -->
 							<div class="col-sm-6 form-group">
-								<label for="dictSort" class="col-sm-3 control-label">顺序<span class="notNull">*</span></label>
-								<div class="col-sm-9">
+								<label for="dictSort" class="control-label">顺序<span class="notNull">*</span></label>
+								<div class="valiParent">
 									<input type="text" id="dictSort" class="form-control" name="dictSort" placeholder="顺序" maxlength="6">
 								</div>
 							</div>
 							<div class="col-sm-6 form-group">
-								<label for="dictDesc" class="col-sm-3 control-label">描述</label>
-								<div class="col-sm-9">
+								<label for="dictDesc" class="control-label">描述</label>
+								<div class="valiParent">
 									<input type="text" id="dictDesc" class="form-control" name="dictDesc"  placeholder="字典描述" maxlength="50">
 								</div>
 							</div>

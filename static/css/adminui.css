@@ -7282,8 +7282,7 @@ html, body, .page-content {
   margin-top: -5px; }
 
 .page-search .page-search-form {
-  padding-right: 110px;
-  overflow: hidden; }
+  padding-right: 110px; }
 
 .page-search .page-search-form .input-group {
   margin-bottom: 5px;
@@ -8303,7 +8302,7 @@ Bootstrap Wizard
 Datatables general customization
 ***/
 .dataTables_wrapper .table tr td, .dataTables_wrapper .table tr th {
-  /*white-space: nowrap;*/ }
+  white-space: nowrap; }
 
 .dataTables_wrapper .table > thead > tr {
   color: #707070;
@@ -8795,6 +8794,9 @@ Jstree
 /***
 iCheck
 ***/
+#ip11{
+		font-size: 40px;
+}
 .icheck-list > label {
   display: block;
   margin-bottom: 8px; }
@@ -8872,18 +8874,7 @@ AngularJS UI-select
 /*
  * contract2.0
  */
-/*
- * 搜索样式
- */
-.search-action{
-		width: 100px;
-    padding: 5px 10px;
-    text-align: center;
-    float: left;
-}
-.editBtn{
-	width: 80px;
-}
+
 /*
  * 右侧若加工具栏样式，两层DIV  .toolbars-position>.toolbars-content
  * 浮动布局
@@ -8912,9 +8903,7 @@ AngularJS UI-select
 button:focus{
 		outline: none !important;
 }
-#ip11{
-		font-size: 40px;
-}
+
 /*
  * ztree最大高度
  */
@@ -8942,17 +8931,39 @@ button:focus{
     padding: 20px 0;
     margin-bottom: 30px;
 }
+/*
+ * modal编辑框样式
+ */
 
+/*默认弹出框宽度*/
+.defaultModalWidth{
+	width: 90%;
+}
+.defaultModalForm > .form-group{
+		display:table;
+}
+.defaultModalForm > .form-group > label{
+		width: 30%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+}
+.defaultModalForm > .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  position: relative;
+    min-height: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 /*必填*号*/
 .notNull{
 	color: #E43A45;
 	position: relative;
 	top: 2px;
 	left: 3px;
-}
-/*验证时提示信息会盖住*/
-.modalForm{
-	margin-top: 10px;
 }
 .modal-body{
 	display: block;
@@ -8970,11 +8981,12 @@ button:focus{
 	/*width: 150px;
 	text-align: left;*/
 }
+
 /*
- * 默认弹出框宽度
+ * 表格内文本不折行时添加此元素
  */
-.defaultModalWidth{
-	width: 90%;
+.whiteSpaceNormal{
+	white-space:normal !important;
 }
 /*
  * layer样式
@@ -8983,3 +8995,5 @@ body .layer-red .layui-layer-title{background:#d11718; color:#fff; border: none;
 /*body .layer-red .layui-layer-btn{border-top:1px solid #E9E7E7}*/
 body .layer-red .layui-layer-btn a{background:#d11718;border:none}
 body .layer-red .layui-layer-btn .layui-layer-btn1{background:#fff;border:1px solid #dedede;}
+
+

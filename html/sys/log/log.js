@@ -1,6 +1,9 @@
 //系统的全局变量获取
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
+/*
+ * 页面初始化操作
+ */
 $(function(){
 	getLog();
 })
@@ -22,11 +25,11 @@ function getLog(){
 	        }
 		},
 		"columns": [
-			{ "data": "operAccount", "title": "操作者账户", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operIp", "title": "操作者IP", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operHostIp", "title": "项目主机IP", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operPermissionName", "title": "操作功能模块", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operUrl", "title": "模块URL", render: $.fn.dataTable.render.ellipsis(22, true) },
+			{ "data": "operAccount", "title": "操作者账户"},
+	        { "data": "operIp", "title": "操作者IP"},
+	        { "data": "operHostIp", "title": "项目主机IP"},
+	        { "data": "operPermissionName", "title": "操作功能模块"},
+	        { "data": "operUrl", "title": "模块URL"},
 	        {
 	            "data": "operTime",
 	            "title": "操作时间",
@@ -34,8 +37,8 @@ function getLog(){
 	                return App.formatDateTime(data);
 	            }
 	        },
-	        { "data": "operTotalTime", "title": "操作耗时", render: $.fn.dataTable.render.ellipsis(22, true) },
-	        { "data": "operParameter", "title": "参数值", render: $.fn.dataTable.render.ellipsis(22, true) },
+	        { "data": "operTotalTime", "title": "操作耗时"},
+	        { "data": "operParameter", "title": "参数值"},
 	        {
 	            "data": "operStatus",
 	            "title": "操作结果",
@@ -43,7 +46,11 @@ function getLog(){
 	                return data == "1" ? "成功" : "失败";
 	            }
 	        }
-		]
+		],
+		"columnDefs": [{
+                render: $.fn.dataTable.render.ellipsis(22, true)
+            }
+        ]
 	});
 }
 

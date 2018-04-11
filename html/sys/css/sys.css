@@ -4,8 +4,7 @@
   position: relative;
   padding-bottom: 8px;
 }
-.dictTreeContent,
-.premissionTreeContent {
+.ztree {
   overflow: auto;
 }
 .dictHeightBorder {
@@ -22,7 +21,7 @@
   background: #EEF1F5;
   top: 8px;
   bottom: 0px;
-  left: 32%;
+  left: 33%;
 }
 #permissionShow {
   margin-top: 20px;
@@ -33,10 +32,9 @@
 .portlet-title-per {
   margin-top: 10px;
 }
-/*若表格具有横向滚动条,或者固定列需加此项*/
-.dataTables_wrapper .table tr th {
-  white-space: nowrap;
+.portlet-title-per button {
+  margin-right: 10px;
 }
-.dataTables_wrapper .table tr td {
-  white-space: nowrap;
+.action-tools {
+  margin-left: 10px;
 }

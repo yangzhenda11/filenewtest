@@ -1,6 +1,7 @@
 /*
  * 外部人员组织JS
  */
+//树生成的全局变量
 var organisationTree = null;
 var orgNameTree = null;
 //系统的全局变量获取
@@ -11,107 +12,11 @@ $(function() {
 	getTreeInfo();
 })
 /*
- * 显示所属组织树
- */
-function showTree(dom) {
-	var selectObj = $("#" + dom + "");
-	var selectOffset = selectObj.offset();
-	$("#" + dom + "Content").css({
-		left: "0",
-		top: selectObj.outerHeight() + "px",
-		width: selectObj.outerWidth() + (dom == "orgNameIn" ? 40 : 120)
-	}).slideDown("fast");
-	onBodyDown(dom);
-}
-/*
- * 隐藏所属组织树
- */
-function hideMenu(dom) {
-	$("#" + dom + "Content").fadeOut("fast");
-	$("body").unbind("mousedown", onBodyDown);
-}
-/*
- * 组织树点击事件
- */
-function onBodyDown(dom) {
-	$("body").on("mousedown", function(event) {
-		if(!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
-			hideMenu(dom);
-		}
-	});
-}
-/*
- * 所属组织树配置单选配置
- */
-var orgsSetting = {
-	async: {
-		enable: true,
-		url: "",
-		type: "get",
-		dataType: 'json',
-		dataFilter: orgsfilter
-	},
-	data: {
-		simpleData: {
-			enable: true,
-			idKey: "orgId",
-			pIdKey: "parent_id"
-		},
-		key: {
-			name: "orgName"
-		}
-	},
-	view: {
-		dblClickExpand: false
-	},
-	callback: {
-		onAsyncError: onAsyncError,
-		onClick: onClick,
-		beforeAsync: zTreeBeforeAsync
-	}
-};
-
-function orgsfilter(treeId, parentNode, responseData) {
-	var responseData = responseData.data;
-	if(responseData) {
-		return responseData;
-	} else {
-		return null;
-	}
-}
-/*
- * ztree异步加载之前
- */
-function zTreeBeforeAsync(treeId, treeNode) {
-	if(treeId == "organisationTree") {
-		organisationTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
-	}else if(treeId == "orgName"){
-		orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
-	}
-	return true;
-}
-
-/*
- * ztree点击事件
- */
-function onClick(event, treeId, treeNode) {
-	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
-	var selectName = nodes[0].orgName;
-	var selectId = nodes[0].orgId;
-	$("input[name=" + treeId + "]").data("id", selectId);
-	$("input[name=" + treeId + "]").val(selectName);
-	$("input[name=" + treeId + "]").attr("title", selectName);
-	if(treeId == "orgName"){
-		$("#externalPersonnelForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
-		$("#externalPersonnelForm").data("bootstrapValidator").validateField('orgName');
-	}
-}
-/*
  * 获取组织
  * 所属组织树配置
  */
 function getTreeInfo(code) {
-	App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
+	App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		var allObj = {
@@ -213,7 +118,7 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 			}
 		},
 	]
-},true);
+});
 /*
  * 搜索点击事件
  */
@@ -394,6 +299,102 @@ function updateExternalPersonnel(editType) {
 	}
 	function improperCallbacks(result){
 		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
+	}
+}
+/*
+ * 显示所属组织树
+ */
+function showTree(dom) {
+	var selectObj = $("#" + dom + "");
+	var selectOffset = selectObj.offset();
+	$("#" + dom + "Content").css({
+		left: "0",
+		top: selectObj.outerHeight() + "px",
+		width: selectObj.outerWidth() + (dom == "orgNameIn" ? 40 : 120)
+	}).slideDown("fast");
+	onBodyDown(dom);
+}
+/*
+ * 隐藏所属组织树
+ */
+function hideMenu(dom) {
+	$("#" + dom + "Content").fadeOut("fast");
+	$("body").unbind("mousedown", onBodyDown);
+}
+/*
+ * 组织树点击事件
+ */
+function onBodyDown(dom) {
+	$("body").on("mousedown", function(event) {
+		if(!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
+			hideMenu(dom);
+		}
+	});
+}
+/*
+ * 所属组织树配置单选配置
+ */
+var orgsSetting = {
+	async: {
+		enable: true,
+		url: "",
+		type: "get",
+		dataType: 'json',
+		dataFilter: orgsfilter
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "orgId",
+			pIdKey: "parent_id"
+		},
+		key: {
+			name: "orgName"
+		}
+	},
+	view: {
+		dblClickExpand: false
+	},
+	callback: {
+		onAsyncError: onAsyncError,
+		onClick: onClick,
+		beforeAsync: zTreeBeforeAsync
+	}
+};
+
+function orgsfilter(treeId, parentNode, responseData) {
+	var responseData = responseData.data;
+	if(responseData) {
+		return responseData;
+	} else {
+		return null;
+	}
+}
+/*
+ * ztree异步加载之前
+ */
+function zTreeBeforeAsync(treeId, treeNode) {
+	if(treeId == "organisationTree") {
+		organisationTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
+	}else if(treeId == "orgName"){
+		orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
+	}
+	return true;
+}
+
+/*
+ * ztree点击事件
+ */
+function onClick(event, treeId, treeNode) {
+	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
+	var selectName = nodes[0].orgName;
+	var selectId = nodes[0].orgId;
+	$("input[name=" + treeId + "]").data("id", selectId);
+	$("input[name=" + treeId + "]").val(selectName);
+	$("input[name=" + treeId + "]").attr("title", selectName);
+	if(treeId == "orgName"){
+		$("#externalPersonnelForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
+		$("#externalPersonnelForm").data("bootstrapValidator").validateField('orgName');
 	}
 }
 /*

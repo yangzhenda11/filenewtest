@@ -13,13 +13,12 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
     <link href="../common/treeDropDown.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/sys.css"/>
 </head>
 
 <body>
@@ -51,7 +50,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon">人员状态</span>
                                     <select class="form-control" name="staffStatus" data-placeholder="人员状态">
-                                        <option value="" selected="selected">--请选择--</option>
+                                        <option value="" selected="selected">全部</option>
                                         <option value="1">有效</option>
                                         <option value="0">无效</option>
                                     </select>
@@ -64,8 +63,8 @@
                                 </div>
                             </div>
                             <div class="page-search-action">
-                                <button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="searchStaff(true);"><i class="ace-icon fa fa-search"></i> 查询</button>
-                                <button type="reset" class="btn btn-block yellow margin-top-10"><i class="ace-icon fa fa-repeat"></i> 清空</button>
+                                <button type="button" id="searchBtn" class="btn btn-info red" data-loading-text="加载中..." onclick="searchStaff();"><i class="ace-icon fa fa-search"></i> 查询</button>
+                                <button type="reset" class="btn btn-info yellow margin-top-10"><i class="ace-icon fa fa-repeat"></i> 清空</button>
                             </div>
                         </div>
                     </form>

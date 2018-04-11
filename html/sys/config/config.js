@@ -38,7 +38,6 @@ function getConfigTable(){
         	{ "data": "val", "title": "参数值", render: $.fn.dataTable.render.ellipsis(22, true) },
             {"data": "attra",
             	"title": "允许用户更改",
-            	className: "text-center",
             	render: function(data, type, full, meta) {
             		return  data == 0 ? "否" : "是";
             	}
@@ -51,9 +50,9 @@ function getConfigTable(){
 /*
  * 搜索点击事件
  */
-function searchConfig(resetPaging) {
+function searchConfig(retainPaging) {
 	var table = $('#configTable').DataTable();
-	if(resetPaging) {
+	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();

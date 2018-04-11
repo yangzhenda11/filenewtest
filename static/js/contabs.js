@@ -5,6 +5,7 @@ $(function() {
 		}
 	});
 	$('#actionUl').on('click','.J_menuItem',conTabC);
+	$("#messageTip").on('click',conTabC);
 //	$(".J_menuItem").on("click", conTabC);
 	$(".J_menuTabs").on("click", ".J_menuTab i", conTabH);
 	$(".J_menuTabs").on("click", ".J_menuTab", conTabE);

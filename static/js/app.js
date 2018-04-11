@@ -757,9 +757,9 @@ var App = function() {
 					if (result.status == 1) {
 						successCallback(result);
 					} else {
-						improperCallback(result);
 						var ms = result.message;
 						layer.msg(ms, {icon: 2});
+						improperCallback(result);
 					};
 				},
 				error: function(result) {
@@ -819,6 +819,7 @@ var App = function() {
 		/*
 		 * 修改对象的key值
 		 * para为对象，obj为要替换值的对象
+		 * para{"原有的key","新key"}
 		 */
 		changeObjKey: function(para,obj){
 			for(var key in para){

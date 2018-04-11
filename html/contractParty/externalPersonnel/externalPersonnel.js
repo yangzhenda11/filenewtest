@@ -122,9 +122,9 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 /*
  * 搜索点击事件
  */
-function searchPersonnel(resetPaging) {
+function searchPersonnel(retainPaging) {
 	var table = $('#personnelTable').DataTable();
-	if(resetPaging) {
+	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();

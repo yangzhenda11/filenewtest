@@ -18,6 +18,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../css/contractParty.css" />
 	</head>
@@ -61,93 +62,8 @@
 			</div>
 		</div>
 		<!--modal-->
-		<div class="modal fade" id="contractEditModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">签约主体管理</h4>
-					</div>
-					<div class="modal-body">
-						<div id="contractModalDefault">
-							加载中...
-						</div>
-						<div id="mainContent" class="hide">
-							<form class="form-horizontal" role="form" id="contractEditForm">
-								<div class="form-group">
-									<input type="hidden" name="partnerId" id="partnerId" value="" />
-									<label for="partnerNameM" class="col-sm-3 control-label">签约主体名称：</label>
-									<div class="col-sm-8 padding-tb-8" id="partnerNameM"></div>
-								</div>
-								<div class="form-group">
-									<label for="partnerCode" class="col-sm-3 control-label">关联编码：</label>
-									<div class="col-sm-8">
-										<select id="partnerCode" name="partnerCode" class="form-control">
-											<option value="0">待确认</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="isPartner" class="col-sm-3 control-label">是否联通方：</label>
-									<div class="col-sm-8">
-										<select id="isPartnerM" name="isPartner" onchange="changeIsunicom()" class="form-control">
-											<option value="0">是</option>
-											<option value="1">否</option>
-										</select>
-									</div>
-								</div>
-								<div id="isunicom" class="hide">
-									<div class="form-group">
-										<label for="organisation" class="col-sm-3 control-label">所属组织：</label>
-										<div class="col-sm-8 input-group paddLR10">
-											<input id="organisation" onclick="showTree('organisation')" readonly name="organisationTree" type="text" class="form-control" />
-											<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
-											<div id="organisationContent" class="zTreeContent selectZTreeCount">
-												<ul id="organisationTree" class="ztree"></ul>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="ouOrgId" class="col-sm-3 control-label">OU组织名称：</label>
-										<div class="col-sm-8">
-											<input type="text"  class="form-control" name="ouOrgId" id="ouOrgId" value="" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="legal" class="col-sm-3 control-label">法人代表：</label>
-										<div class="col-sm-8 input-group paddLR10">
-											<input id="legal" onclick="showTree('legal')" readonly name="legalTree" type="text" class="form-control" />
-											<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
-											<div id="legalContent" class="zTreeContent selectZTreeCount">
-												<ul id="legalTree" class="ztree"></ul>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="other" class="col-sm-3 control-label">其他映射组织：</label>
-										<div class="col-sm-8 input-group paddLR10">
-											<input id="other" onclick="showTree('other')" readonly name="otherTree" type="text" class="form-control" />
-											<span class="input-group-addon"><i class="fa fa-th-list"></i></span>
-											<div id="otherContent" class="zTreeContent selectZTreeCount">
-												<ul id="otherTree" class="ztree"></ul>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" onclick="saveContract()"  class="btn btn-danger btn-circle"><i class="fa fa-check"></i> 保存</button>
-						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
+		<!--modal-->
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
 		  	<script src="../../static/plugins/html5shiv.min.js"></script>
 		  	<script src="../../static/plugins/respond.min.js"></script>
@@ -162,9 +78,11 @@
 		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
+		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="contractParty.js" type="text/javascript" charset="utf-8"></script>
 	</body>

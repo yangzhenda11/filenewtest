@@ -70,12 +70,12 @@ $(document).ready(function() {
 	    }
     }
     function improperCallback(result) {
-    	layer.alert("用户信息获取失败", {icon: 2,title:"错误",closeBtn:0}, function(index){
+    	layer.alert("用户信息获取失败，请重新登录或联系管理员", {icon: 2,title:"错误",closeBtn:0}, function(index){
 			window.location.href = "login.html";
 		});
     }
     function errorCallback(result) {
-        layer.alert("用户信息获取失败", {icon: 2,title:"错误",closeBtn:0},function(index){
+        layer.alert("用户信息获取失败，请重新登录或联系管理员", {icon: 2,title:"错误",closeBtn:0},function(index){
         	window.location.href = "login.html";
         });
     }

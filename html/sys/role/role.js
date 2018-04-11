@@ -11,6 +11,7 @@ $(function(){
  */
 function getRoleTable(){
 	App.initDataTables('#searchRoleTable', "#submitBtn", {
+	    buttons: ['copy', 'colvis'],
 	    "ajax": {
 	        "type": "GET",
 	        "url": serverPath + 'roles/',
@@ -47,15 +48,18 @@ function getRoleTable(){
 //	                html += '<button title="删除" onclick="deleteDetail(' + data + ')" class="btn btn-success btn-link btn-xs"><i class="fa fa-minus"></i></button>';
 	            }
 	        },
-	        { "data": "roleName", title: "角色名称"},
-	        { "data": "orgName", title: "所属组织"},
-	        { "data": "roleDesc", title: "角色描述"},
-	        {"data": "createDate",title: "添加时间",
+	        { "data": "roleName", title: "角色名称", className: "text-center" },
+	        { "data": "orgName", title: "所属组织", className: "text-center" },
+	        { "data": "roleDesc", title: "角色描述", className: "text-center" },
+	        {"data": "createDate",title: "添加时间",className: "text-center",
 	            render: function(data, type, row, meta) {
 	                 return App.formatDateTime(data.time,"yyyy-mm-dd");
 	            }
 	        }
 	    ]
+//	    "fixedColumns": {
+	        //'leftColumns': 2
+//	    }
 	})
 }
 
@@ -79,9 +83,9 @@ function deleteDetail(roleId) {
 /**
  * 执行查询
  */
-function searchRole(retainPaging) {
+function searchRole(resetPaging) {
     var table = $('#searchRoleTable').DataTable();
-    if (retainPaging) {
+    if (resetPaging) {
         table.ajax.reload(null, false);
     } else {
         table.ajax.reload();
@@ -93,7 +97,7 @@ function searchRole(retainPaging) {
  * @param {角色id} itemId 
  */
 function findDetail(itemId) {
-	$("#modal").load("_roleModal.html?" + App.timestamp() + " #modalDetail",function(){
+	$("#modal").load("./subpage/roleform.html?" + App.timestamp() + " #modalDetail",function(){
 		$("#modal").modal("show");
 		getRoleInfo(itemId,"detail");
 	});
@@ -103,7 +107,7 @@ function findDetail(itemId) {
  * @param {角色id} itemId 
  */
 function editDetail(itemId) {
-    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("./subpage/roleform.html?" + App.timestamp() + " #modalEdit", function() {
         $("#editModalTitle").text("编辑角色信息");
         $("#modal").modal("show");
         getRoleInfo(itemId,"edit");
@@ -151,7 +155,7 @@ function getRoleInfo(id,type){
  * 打开新增窗口，同时向表单增加验证
  */
 function openAddModal() {
-    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("./subpage/roleform.html?" + App.timestamp() + " #modalEdit", function() {
         $("#editModalTitle").text("添加角色");
         $("#modal").modal("show");
         loadPerTree();

@@ -1,15 +1,22 @@
+//@ sourceURL=process-start.js
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
+var curStaffOrgId=config.curStaffOrgId;
+var curStaffId=config.curStaffId;
 // 环节下拉列表
 function refreshLinkForSart(){
 	
 	// 当前流程定义Key
 	var processDefinitionKey = $("#processDefinitionKeyForStart").val();
+	if(processDefinitionKey.length == 0){
+		alert("请选择流程模板！");
+	}
 	
 	//去开始页面上去添加 的数据   如果没有直接 return false   
 	var processData = setRelativeData();
 	if(!processData){ 
 		processData=null;
 	}
-	debugger;
 	$.get(serverPath + "workflowrest/tasklinkforstart/" + processDefinitionKey+"/0",processData,
 		function(data) {
 			var success = data.retCode;
@@ -58,20 +65,24 @@ function refreshAssigneeForStart(serverPath, processDefinitionKey, taskDefinitio
 // 点击【提交】按钮，弹出模态窗口
 function startProcess(processDefinitionKey, assignee, taskDefinitionKey){
 	
-	if(processDefinitionKey.length == 0) {
-		alert('请选择环节！');
-		return;
-	}
-	if(assignee == null || assignee == '') {
-		alert('请选择处理人！');
-		return;
-	}
-	
-	var r = confirm("是否确认提交？")
-	if (r == true) {
-		// 调用发起方法
-		modal_start(processDefinitionKey, assignee, taskDefinitionKey);
-	}
+    if(processDefinitionKey.length == 0){
+        layer.msg('请选择办理环节！',{time:2000});
+        return;
+    }
+    if(assignee == null || assignee.length == 0){
+        layer.msg('请选择处理人！',{time:2000});
+        return;
+    }
+    var comment = $("#comment").val();
+    if(comment == null || comment.length == 0){
+        layer.msg('请填写处理意见！',{time:2000});
+        return;
+    }
+	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
+			// 调用发起方法
+			modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment);
+			layer.close(index);
+		})
 }
 
 //显示流程发起框，选择环节及处理人
@@ -86,11 +97,36 @@ function clearAssigneeForStart(){
 }
 // 发起方法modal_start()执行成功后，调用此方法关闭弹出窗口
 function closeModalForStart(){
-$("#myProcessStartModal").modal("hide");
+	$("#myProcessStartModal").modal("hide");
 }
 
+function selectstaff(){
+	var flowKey = $("#processDefinitionKey").val();
+    var linkcode = $("#linkForStart").val().toString().split(",")[0];
+    var prov=$("#wprov").val();
+    
+    jandyStaffSearch(flowKey,linkcode,prov,'getassignee');
+}
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
 
-
+	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
+    $("#PandJstaffiframetask").load(frameSrc,function() {
+    	$("#wfflowKey").val(flowKey);
+    	$("#wflinkCode").val(linkcode);
+    	$("#wfprov").val(prov);
+    	$("#wfcallbackFun").val(callbackFun);
+    });
+    $("#PandJstaffiframetask").modal('show');
+}
+function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
+    // console.log(orgId,orgName,staffId,staffOrgId);
+    $("#assigneeForStart").val(STAFF_ORG_ID);
+    $("#assigneeNameForStart").val(STAFF_NAME);
+    $("#PandJstaffiframetask").modal('hide');
+}
+function setAssigneeParam(assigneeParam){
+	$("#wprov").val(assigneeParam.prov);
+}
 
 
 

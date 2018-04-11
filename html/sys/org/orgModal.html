@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>内部组织管理表单</title>
+	</head>
+
+	<body>
+		<div id="modalDetail">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">内部组织详细信息</h4>
+					</div>
+					<div class="modal-body">
+						<ul class="nav nav-tabs modalNavTab">
+							<li class="active">
+								<a href="#orgDetail" data-toggle="tab">组织信息</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="orgDetail">
+								<div class="col-sm-12">
+									<div class="col-sm-3 form-control-static align-right">组织名称：</div>
+									<div class="col-sm-9 form-control-static" name="orgName"></div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-3 form-control-static align-right">父级组织：</div>
+									<div class="col-sm-9 form-control-static" id="orgName" name="parentName"></div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-3 align-right form-control-static">组织编码：</div>
+									<div class="col-sm-9 form-control-static" name="orgCode"></div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-3 align-right form-control-static">组织类型：</div>
+									<div class="col-sm-9 form-control-static" name="orgType"></div>
+								</div>
+								<div class="col-sm-12">
+									<div class="col-sm-3 align-right form-control-static">状态：</div>
+									<div class="col-sm-9 form-control-static" name="orgStatus"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="fa fa-close"></i> 关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

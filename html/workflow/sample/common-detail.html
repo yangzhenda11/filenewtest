@@ -1,24 +1,81 @@
 <!DOCTYPE html>
-<html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
 <head>
-<meta charset="UTF-8">
-<title>公用业务发起页面</title>
-<script type="text/javascript" src="../workflow/sample/common-detail.js"></script>
+    <meta charset="UTF-8">
+    <title>公用业务发起页面</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/plugins/simple-line-icons/simple-line-icons.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
+    <link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
+    <link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" type="text/css" href="/static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 </head>
 <body>
-	<div id="startProcess"></div>
-	<div>
-		<p>业务页面</p>
-		<!-- 业务页面所必须的流程Key定义 -->
-		<select id="processDefinitionKeyForStart" name="processDefinitionKey">
-			<option value="ReleasePoint">普通审批</option>
-			<option value="Vote">投票会签</option>
-			<option value="M_main">主子流程_分离</option>
-			<option value="Main_Sub">主子流程</option>  
-		</select>
-	</div>
-	<div style="text-align:right">
-		<button id="showPanel" type="button" class="btn btn-success" onclick="showStartPanel();">发起</button>
-	</div>	
+    <div class="page-content">
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <span class="caption-subject bold uppercase">流程发起页面 </span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="startProcess"></div>
+                <div>
+                    <p>业务页面</p>
+                </div>
+                <form class="form-horizontal" action="">
+                    <div class="row page-search-form" style="overflow: visible;">
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">请选择流程模板<span class="notNull">*</span></span>
+                                <!-- 业务页面所必须的流程Key定义 -->
+                                <select class="form-control" id="processDefinitionKeyForStart" name="processDefinitionKey" data-placeholder="选择流程模板"
+                                onchange="setFlowKey();">
+                                    <option value="" selected="selected">--请选择--</option>
+                                    <option value="ReleasePoint">普通审批</option>
+                                    <option value="Vote">投票会签</option>
+                                    <option value="M_main">主子流程_分离</option>
+                                    <option value="Main_Sub">主子流程</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div style="text-align: right">
+                                <button id="showPanel" type="button" class="btn btn-block red editBtn" onclick="flowStart();">发起</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--基础依赖-->
+        <script src="/static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+        <!--业务依赖-->
+        <script src="/static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/datatables/ellipsis.js"></script>
+        <script src="/static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/date-format.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/js/app.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="./common-detail.js"></script>
 </body>
 </html>

@@ -53,7 +53,8 @@ $(document).ready(function() {
         function menuSuccess(result) {
             ace_menus = result.data;
         }
-        App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", {staffOrgId:globalConfig.curStaffOrgId,code:"config_page_size"}, configSuccess,configImproper,configError,null,false);
+        
+        App.formAjaxJson(globalConfig.serverPath + "configs/getVal?staffOrgId=" + globalConfig.curStaffOrgId+"&code=config_page_size", "GET", null, configSuccess,configImproper,configError,null,false);
 	    function configSuccess(result) {
 	       	if(result.data != ""){
 	       		globalConfig.curConfigs.configPagelengthMenu = result.data;

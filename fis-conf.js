@@ -1,7 +1,3 @@
-//构建命令
-//fis3 release -d ../output
-//|egrep -v layer.css
-
 // 加 md5
 fis.match('*.{js,css,png}', {
   useHash: true

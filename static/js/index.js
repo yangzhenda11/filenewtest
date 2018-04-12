@@ -1,42 +1,43 @@
 /**
  * 全局变量的配置
+ * staticPath:静态资源路径
+ * serverPath:服务端请求路径前缀
+ * curStaffOrgId: 当前登录人的岗位id
  */
 var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
     /**后台服务地址 */
     serverPath: "/",
-	/** 当前岗位信息对象 */
-    curStaffOrg: {},
+    // serverPath: "http://localhost:9090/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
-    curStaffOrgId: null, //10001
+    curStaffOrgId: null, //10001,
+    /** 当前用户的id （sys_staff主键） */
+    curStaffId: null, //10002,
+    /** 当前用户所在组织的id（sys_org表主键） */
+    curOrgId: null, //56665,
+    /** 当前用户对象 */
+    /**staffCode : "001"
+    staffId : 10002
+    staffKind : "1"
+    staffName : "管理员" */
+    curStaff: {},
     /** 当前用户所在组织对象 */
     curOrg: {},
-    /** 当前用户所在组织的id（sys_org表主键） */
-    curOrgId: null, //56665
-    /** 当前用户对象 */
-   	curStaff: {},
-	/*
-	 * 包括
-	 * staffCode : "001"
-	 * staffId : 10002
-	 * staffKind : "1"
-	 * staffName : "管理员"
-	 */
-	/** 当前用户的用户名 */
+    /** 当前岗位信息对象 */
+    curStaffOrg: {},
+    /** 当前用户的用户名 */
     curStaffName: "",
-    /** 当前用户的id （sys_staff主键） */
-    curStaffId: null, //10002
-    /** 当前用户的权限集合 */
     perm: [],
-     /** 当前用户的系统设置 */
+    //全局系统变量
     curConfigs:{}
 };
 var ace_menus = null;
 $(document).ready(function() {
-    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
+    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
 
     function successCallback(result) {
+
         var data = result.data;
         globalConfig.curStaffId = data.staff.staffId;
         globalConfig.curStaffName = data.staff.staffName;
@@ -48,9 +49,9 @@ $(document).ready(function() {
         globalConfig.perm = data.perm;
         $(".user-info").html("<small>欢迎,</small>" + data.staff.staffName);
         $(".user-menu").prepend("<li> <a href=\"javascript:;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.org.orgName + "</a> </li>");
-        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + App.timestamp(), "GET", null, menuSuccess, null, null, null, false);
+        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + "&" + App.timestamp(), "GET", null, menuCallback, null, null, null, false);
 
-        function menuSuccess(result) {
+        function menuCallback(result) {
             ace_menus = result.data;
         }
         App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", {staffOrgId:globalConfig.curStaffOrgId,code:"config_page_size"}, configSuccess,configImproper,configError,null,false);
@@ -192,19 +193,3 @@ function tPFilter(permCheck) {
         return false;
     }
 }
- /**
- * 初始化左侧菜单滚动条
- * 
- * */    
-//$('#sidebarScroller').slimScroll({
-//  allowPageScroll: true, // allow page scroll when the element scroll is ended
-//  size: '4px',
-//  color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : '#4B6A8B'),
-//  wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
-//  railColor: ($(this).attr("data-rail-color") ? $(this).attr("data-rail-color") : '#eaeaea'),
-//  position: 'right',
-//  height: '100%',
-//  alwaysVisible: false,
-//  railVisible: false,
-//  disableFadeOut: false
-//});

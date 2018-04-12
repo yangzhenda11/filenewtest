@@ -5,7 +5,6 @@ $(function() {
 		}
 	});
 	$('#actionUl').on('click','.J_menuItem',conTabC);
-	$("#messageTip").on('click',conTabC);
 //	$(".J_menuItem").on("click", conTabC);
 	$(".J_menuTabs").on("click", ".J_menuTab i", conTabH);
 	$(".J_menuTabs").on("click", ".J_menuTab", conTabE);
@@ -33,8 +32,7 @@ $(function() {
 	});
 	$('.J_tabRefresh').click(function() {
 		var $targetFrame = $('.J_iframe:visible');
-		document.getElementById($targetFrame.attr('id')).contentWindow.location.reload(true);
-//		$targetFrame.attr('src', $targetFrame.attr('src'))
+		$targetFrame.attr('src', $targetFrame.attr('src'))
 	})
 	$(".J_tabCloseOther").on("click", conTabI);
 //	$(".J_tabShowActive").on("click", conTabJ);
@@ -141,7 +139,7 @@ function conTabC() {
 		l = $.trim($(this).text()),
 		k = true;
 	if(o == undefined || $.trim(o).length == 0) {
-		return false;
+		return false
 	}
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == o) {
@@ -162,7 +160,7 @@ function conTabC() {
 	if(k) {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + o + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
-		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
+		var n = '<iframe scrolling="no" class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
 		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))
@@ -171,6 +169,7 @@ function conTabC() {
 }
 
 function showSubpageTab(link,title){
+	console.log(11)
 	var o = link?link:'',
 		l = title?title:'',
 		m = '',

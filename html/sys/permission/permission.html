@@ -14,7 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
-		<link rel="stylesheet" type="text/css" href="../css/sys.css" />
+		<link rel="stylesheet" type="text/css" href="css/permission.css" />
 	</head>
 
 	<body>
@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="col-sm-4">
+					<div class="col-sm-4 premissionTreeContent">
 						<div class="action-tools">
 							<a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
 								<span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
@@ -40,13 +40,13 @@
 						</div>
 						<ul id="permTree" class="ztree"></ul>
 					</div>
-					<div class="permHeightBorder"></div>
+					<div class="heightBorder"></div>
 					<div class="col-sm-7">
-						<div class="portlet-title-per">
-							<button type="button" class="btn btn-info red" onclick="addPermission();">
+						<div class="portlet-title">
+							<button type="button" class="btn btn-info" id="addDom" onclick="addPermission();">
                                 <i class="ace-icon fa fa-plus"></i> 插入节点
                             </button>
-							<button type="button" class="btn btn-info red" onclick="showUpdate();">
+							<button type="button" class="btn btn-info" onclick="showUpdate();">
                                 <i class="ace-icon fa fa-pencil"></i> 修改节点
                            </button>
                             <button type="button" class="btn btn-info red" onclick="delPermission();">
@@ -54,50 +54,132 @@
                            </button>
 						</div>
 						<div class="form-body">
-							<form class="form-horizontal" id="permissionShow">
-								<div class="form-group">
-									<div class="input-group">
-										<span class="input-group-addon" for="permCode">权限编码</span>
-										<div class="form-control-static form-control" id="permCode" name="permCode"></div>
+								<form class="form-horizontal" id="permissionShow">
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon" for="permCode">权限编码</span>
+											<div class="form-control-static form-control" id="permCode" name="permCode"></div>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<label for="permName" class="input-group-addon">权限名称</label>
-										<div class="form-control form-control-static" id="permName" name="permName"></div>
+									<div class="form-group">
+										<div class="input-group">
+											<label for="permName" class="input-group-addon">权限名称</label>
+											<div class="form-control form-control-static" id="permName" name="permName"></div>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<label for="sysPermissionUri" class="input-group-addon">权限URI</label>
-										<div class="form-control form-control-static" id="sysPermissionUri" name="uri"></div>
+									<div class="form-group">
+										<div class="input-group">
+											<label for="sysPermissionUri" class="input-group-addon">权限URI</label>
+											<div class="form-control form-control-static" id="sysPermissionUri" name="uri"></div>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<label for="permType" class="input-group-addon">权限类型</label>
-										<div class="form-control form-control-static" id="permType" name="permType"></div>
+									<div class="form-group">
+										<div class="input-group">
+											<label for="permType" class="input-group-addon">权限类型</label>
+											<div class="form-control form-control-static" id="permType" name="permType"></div>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<label for="permIcon" class="input-group-addon">菜单图标</label>
-										<div class="form-control form-control-static" id="permIcon" name="permIcon"></div>
+									<div class="form-group">
+										<div class="input-group">
+											<label for="permIcon" class="input-group-addon">菜单图标</label>
+											<div class="form-control form-control-static" id="permIcon" name="permIcon"></div>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<label for="permCheck" class="input-group-addon">校验字符</label>
-										<div class="form-control form-control-static" id="permCheck" name="permCheck"></div>
+									<div class="form-group">
+										<div class="input-group">
+											<label for="permCheck" class="input-group-addon">校验字符</label>
+											<div class="form-control form-control-static" id="permCheck" name="permCheck"></div>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<label for="permSort" class="input-group-addon">展示顺序</label>
-										<div class="form-control form-control-static" id="permSort" name="permSort"></div>
+									<div class="form-group">
+										<div class="input-group">
+											<label for="permSort" class="input-group-addon">展示顺序</label>
+											<div class="form-control form-control-static" id="permSort" name="permSort"></div>
+										</div>
 									</div>
-								</div>
-							</form>
+								</form>
+
+							<!--<div id="menuInfoWell" class="content" style="display:none">
+								<form class="form-horizontal" id="permissionObj">
+									<input type="hidden" name="staffOrgId" value="10001">
+									<input type="hidden" name="permId">
+									<input type="hidden" id="parentIdVal" name="parentId">
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">父节点名称</label>
+											<span class="form-control" id="parentName"></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">权限编码<span class="notNull">*</span></label>
+											<input type="text" class="form-control" name="permCode" maxlength="20" autocomplete="off" placeholder="权限编码">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">权限名称<span class="notNull">*</span></label>
+											<input type="text" class="form-control" name="permName" maxlength="20" autocomplete="off" placeholder="权限名称">
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">权限地址</label>
+											<input type="text" class="form-control" name="uri" maxlength="200" autocomplete="off" placeholder="权限地址">
+											<!-- <span class="ma_mark">*</span> -->
+
+										<!--</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">权限类型</label>
+											<!-- 1 菜单 2 标签 3 请求 4 新窗口-->
+											<!--<select class="form-control" name="permType">
+												<option value="1">菜单</option>
+												<option value="2">标签</option>
+												<option value="3">请求</option>
+												<option value="4">新窗口</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">菜单图标</label>
+											<input type="text" class="form-control" name="permIcon" maxlength="100" autocomplete="off" placeholder="菜单图标">
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">校验字符</label>
+											<input type="text" class="form-control" name="permCheck" maxlength="60" autocomplete="off" placeholder="校验字符">
+
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-group">
+											<label class="input-group-addon">展示顺序</label>
+											<input type="text" class="form-control" name="permSort" maxlength="10" autocomplete="off" placeholder="展示顺序">
+
+										</div>
+									</div>
+									<div class="form-group">
+										<center>
+											<div class="col-sm-5 col-sm-offset-3">
+												<button type="submit" class="btn btn-primary" name="savebutton" id="dealPermission">保&nbsp&nbsp存</button>
+											</div>
+										</center>
+									</div>
+									<div class="form-group">
+										<center>
+											<div class="col-sm-5 col-sm-offset-3">
+												<button type="submit" class="btn btn-primary" name="updatebutton" id="updatePermissionbtn">修&nbsp&nbsp改</button>
+											</div>
+										</center>
+									</div>
+								</form>
+							</div>-->
 						</div>
 					</div>
 				</div>
@@ -106,13 +188,13 @@
 		<!--modal-->
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
-			<script src="../../../static/plugins/html5shiv.min.js"></script>
-			<script src="../../../static/plugins/respond.min.js"></script>
-			<script src="../../../static/plugins/ie8.fix.min.js"></script>
-  		<![endif]-->
+	<script src="../../../static/plugins/html5shiv.min.js"></script>
+	<script src="../../../static/plugins/respond.min.js"></script>
+	<script src="../../../static/plugins/ie8.fix.min.js"></script>
+  <![endif]-->
 		<!--[if lte IE 8]>
-	  		<script src="../../../static/plugins/selectivizr-min.js"></script>
-  		<![endif]-->
+	  <script src="../../../static/plugins/selectivizr-min.js"></script>
+  <![endif]-->
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
@@ -122,7 +204,8 @@
 		<!--业务依赖-->
 		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-		<script src="permission.js"></script>
+		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
+		<script src="js/permission.js"></script>
 	</body>
 
 </html>

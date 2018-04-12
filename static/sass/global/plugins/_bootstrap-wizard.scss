@@ -1,0 +1,220 @@
+/***
+Bootstrap Wizard
+***/
+
+.form-wizard {
+	
+	.progress {
+  		margin-bottom: 30px;
+  		height: 10px;
+	}
+
+	.steps {
+		padding: 10px 0;
+	  	margin-bottom: 0;
+	  	background-color: #fff ;
+	 	background-image: none ;
+	  	filter:none ;
+	  	border: 0px;
+	  	box-shadow: none ;
+
+	  	> li {
+	  		> a.step {
+		  		background-color: #fff ;
+		  		background-image: none ;
+		  		filter:none;
+		  		border: 0px;
+		  		box-shadow: none ;
+
+		  		&:hover {
+  					background: none;
+				}			
+
+				> .number {
+					  background-color: #eee;
+					  display: inline-block;
+					  text-align: center !important;
+					  font-size: 16px;
+					  font-weight: 300;
+					  padding: 11px 15px 13px 15px;
+					  margin-right: 10px;
+					  height: 45px;
+					  width: 45px;
+					  -webkit-border-radius: 50% !important;
+					     -moz-border-radius: 50% !important;
+					          border-radius: 50% !important;
+				}
+
+				> .desc {
+				  	display: inline-block;
+				  	font-size: 16px; 
+				  	font-weight: 300;
+
+				  	> i {
+  						display: none;
+					}
+				}
+
+			}
+
+			&.active {
+				> a.step {
+					.number {
+						background-color: $brand-danger;
+	  					color: #fff;
+	  				}
+
+	  				.desc {
+	  					color: #333;
+	  				}
+				}
+			}
+
+			&.done {
+				> a.step {
+					.number {
+						background-color: $brand-success;
+  						color: #fff;
+  					}
+
+  					.desc {
+  						color: #333; 					
+
+	  					i {
+	  						font-size: 12px;
+							font-weight: normal;
+							color: #999;
+							display: inline-block;  
+	  					}
+	  				}
+				}
+			}
+		}
+	}
+	&.form-wizard-line{
+	    .steps{
+	        > li {
+                > a.step {
+                    position: relative;
+                    > .number{
+                        position: relative;
+                        color: #333;
+                        border:3px solid #e5e5e5;
+                        background-color: #FFF;
+                        margin:auto auto 5px;
+                        font-size: 18px;
+                        line-height: 18px;
+                        z-index: 5 !important;
+                    }
+                    > .desc {
+                        display: block;
+                        color: #95A5A6!important;
+                        
+                        &:before{
+                            content: '';
+                            position: absolute;
+                            left: 0;
+                            top: 32px;
+                            width: 50%;
+                            height: 3px;
+                            margin-top: -1px;
+                            background-color: #e5e5e5;
+                            z-index: 4 !important;;
+                        }
+                        &:after{
+                            content: '';
+                            position: absolute;
+                            left: 50%;
+                            top: 32px;
+                            width: 50%;
+                            height: 3px;
+                            margin-top: -1px;
+                            background-color: #e5e5e5;
+                            z-index: 4 !important;;
+                        }
+                    }
+                }
+                
+                &.done{
+                    > a.step {
+                        
+                        > .number{
+                            border-color: #26C281!important;
+                            color: #26C281!important;
+                            
+                        }
+                        
+                        > .desc {
+                            color: #26C281!important;
+                            > .fa{color: #26C281!important;}
+                            
+                            &:before{
+                                background-color: #26C281!important;
+                            }
+                            &:after{
+                                background-color: #26C281!important;
+                            }
+                        }
+                    }
+                }
+                
+                
+                &.active{
+                    > a.step {
+                        > .number{
+                            border-color: #E7505A!important;
+                            color: #E7505A!important;
+                        }
+                        
+                        > .desc {
+                            color: #E7505A!important;
+                            > .fa{color: #E7505A!important;}
+                            
+                            &:before{
+                                background-color: #E7505A!important;
+                            }
+                            &:after{
+                                background-color: #E7505A!important;
+                            }
+                        }
+                    }
+                }
+                
+                &:first-child {
+                    > a.step {
+                        > .desc{
+                            &:before{
+                                display: none;
+                            }
+                        }
+                    }
+                }
+        
+                &:last-child {
+                    > a.step {
+                        > .desc{
+                            &:after{
+                                display: none;
+                            }
+                        }
+                    }
+                }
+                
+            }
+	    }
+	    .desc{display: block;}
+	}
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-lg-min) { /* 768px & 1200px */
+  .form-wizard .step .desc {
+    margin-top: 10px;
+    display: block;
+  }
+} 
+
+@media (max-width: $screen-sm-min) { /* 768px */
+  .form-wizard .steps > li > a {
+    text-align: left;
+  }
+}

@@ -848,7 +848,7 @@ var App = function() {
 				btn = "";
 			}
 			options = $.extend(true, {
-				"serverSide": true,					//开启服务器请求模式
+				"serverSide": true,
 				"ordering": false,
 				"scrollX": true,
 				"scrollCollapse": true,
@@ -908,7 +908,7 @@ var App = function() {
 					"targets": "_all",
 					"defaultContent": ''
 				}],
-	            //"fixedColumns": {
+				//"fixedColumns": {
 	            //    'leftColumns': 2
 	            //},
 				"buttons": [], //'pdf','copy', 'excel', 'colvis'

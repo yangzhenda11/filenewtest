@@ -530,7 +530,7 @@ if (typeof jQuery === 'undefined') {
             cssClasses = cssClasses.split(' ');
             var n = cssClasses.length;
             for (var i = 0; i < n; i++) {
-                if (/^col-(xs|sm|md|lg)-\d+$/.test(cssClasses[i]) || /^col-(xs|sm|md|lg)-offset-\d+$/.test(cssClasses[i])) {
+                if (/^col-(xs|sm|md|lg)-\d+$/.test(cssClasses[i]) || /^col-(xs|sm|md|lg)-offset-\d+$/.test(cssClasses[i]) || "valiParent") {
                     return $parent;
                 }
             }
@@ -1145,7 +1145,7 @@ if (typeof jQuery === 'undefined') {
                                 : $field.css('cursor', '').popover('destroy');
                         break;
                     default:
-                        (status === this.STATUS_INVALID) ? $errors.show() : $errors.hide();
+                        (status === this.STATUS_INVALID) ? $errors.show().css("position","absolute") : $errors.hide();
                         break;
                 }
 

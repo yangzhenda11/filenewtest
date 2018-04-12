@@ -1,38 +1,37 @@
-var config = parent.globalConfig;
-var serverPath = config.serverPath;
-var curStaffOrgId=config.curStaffOrgId;
-var curStaffId=config.curStaffId;
 $(function(){
 	$("#currentIdForDone").val(curStaffOrgId);
+	// 加载表格
+	searchTableForDone = $("#searchTableForDone").DataTable(dataTableConfig);
+	//searchTable.ajax.reload();
 });
-//后面构建btn 代码
-var btnModel =  '    \
+// 后面构建btn 代码
+var btnModel = '    \
 	{{#each func}}\
-    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{this.title}} {{this.fn}}>{{this.name}}</button>\
+    <button type="button" class="user-button btn-sm {{this.type}}" {{this.title}} {{this.fn}}>{{this.name}}</button>\
     {{/each}}';
 var template = Handlebars.compile(btnModel);
-/*
- * 表格初始化
- */
-App.initDataTables('#searchTableForDone', "#submitBtn", {
-	fixedColumns: {
-		leftColumns: 0					//固定左侧两列
-	},
-	buttons: ['copy', 'colvis'],		//显示的工具按钮
+var searchTableForDone;
+// 表格配置信息
+var dataTableConfig = {
+	"ordering": false,// 排序
+	"serverSide": true,// 开启服务器模式
+	"scrollX": true,// 横向滚动
 	ajax: {
-		"type": "GET",					//请求方式
-		"url": serverPath + 'workflowrest/taskHasDone',	//请求地址
-		"data": function(d) {							//自定义传入参数
+        "type": "POST",
+        "url":serverPath + 'workflowrest/taskHasDone',//请求路径
+        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
+        "dataType":'json',
+        "data":function(d){// 查询参数
         	d.title = $('#processTitleForDone').val();
         	d.linkName = $('#linkNameForDone').val();
         	d.completeTimeStart = $('#startDateForDone').val();
         	d.completeTimeEnd = $('#endDateForDone').val();
         	d.staffId = curStaffId; 
         	return d;
-		}
-	},
+        }
+	},            
 	columns: [// 对应列
-		{"data": "title","title":"已办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(20, true)},
+		{"data": "title","title":"已办标题",className: "text-center"},
         {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
         {"data": "name","title":"环节名称",className: "text-center"},
         {"data": "startTime","title":"接收时间",className: "text-center",
@@ -78,17 +77,12 @@ App.initDataTables('#searchTableForDone', "#submitBtn", {
             return html;
         }
     }]
-});	
+	,"dom": 'rt<"pull-left mt5"i><"pull-right mt5"p><"clear">'//'rt<"bottom"ip><"clear">' //生成样式
+};
 // 查询
-function serarchForDone(resetPaging){
-	var table = $('#searchTableForDone').DataTable();
-	if(resetPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
-	}
+function serarchForDone(){
+	searchTableForDone.ajax.reload();
 }
-
 
 //重置查询条件
 function resetConditionForDone(){
@@ -112,7 +106,7 @@ function handleTaskForDone(id, taskDefinitionKey, name, processInstanceId, title
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
-	$("#goTaskToDoDetailForDone").load("/html/workflow/taskdetail/task-hasdone.html");
+	$("#goTaskToDoDetailForDone").load("../workflow/taskdetail/task-hasdone.html");
 	
 	$("#goTaskToDoDetailForDone").show();
 	$("#searchContentForDone").hide();

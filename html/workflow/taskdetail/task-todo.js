@@ -1,4 +1,3 @@
-//@ sourceURL=task-todo.js
 $(function(){
 	initData();
 	var processDefinitionId = $('#processDefinitionId').val();
@@ -230,26 +229,16 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 
 // 普通环节点击“通过”或“回退”按钮，添加评论
 function addComment(pass){
-    if(typeof(beforePushProcess)=="function") {
-        if (!beforePushProcess(pass)) {
-            //alertModel("系统异常，请联系管理员");
-            return;
-        }
-    }else{
-    	layer.msg('数据校验异常，请联系管理员！');
-        return;
-    }
-	
 	// 确认按钮仅绑定推进事件
 	$("#confirmButton").unbind();
 	$('#confirmButton').click(function(){
 		pushProcess();
 	});
-//	// 处理人选择按钮方法重置
-//	$("#selectAssignee").unbind();
-//	$('#selectAssignee').click(function(){
-//		selectAssignee(false, $('#link').val().split(',')[2]);
-//	});
+	// 处理人选择按钮方法重置
+	$("#selectAssignee").unbind();
+	$('#selectAssignee').click(function(){
+		selectAssignee(false, $('#link').val().split(',')[2]);
+	});
 	
 	$("#linkDiv").show();
 	$("#assigneeDiv").show();
@@ -264,8 +253,8 @@ function addComment(pass){
 	refreshLink();
 	
 //	$("#out-footer").hide();
-	//$("#in-footer").show();
-	$("#in-footer").modal("show");
+	$("#in-footer").show();
+//	$("#in-footer").modal("show");
 	// 刷新环节及处理人并展现	
 }
 // 会签环节点击“通过”或“拒绝”按钮，添加评论
@@ -288,8 +277,8 @@ function addCommentForVote(pass){
 	}
 	
 //	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
+	$("#in-footer").show();
+//	$("#in-footer").modal("show");
 }
 //点击“中止”按钮，仅弹出意见填写窗口
 function addCommentForStop(){
@@ -303,8 +292,8 @@ function addCommentForStop(){
 	$("#assigneeDiv").hide();
 	$("#comment").val("中止流程");
 //	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
+	$("#in-footer").show();
+//	$("#in-footer").modal("show");
 }
 // 点击“简退”按钮，仅弹出意见填写窗口
 function addCommentForQuick(){
@@ -318,8 +307,8 @@ function addCommentForQuick(){
 	$("#assigneeDiv").hide();
 	$("#comment").val("不同意");
 //	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal('show');
+	$("#in-footer").show();
+//	$("#in-footer").modal("show");
 }
 //简退环节后的首环节“推进”按钮，仅弹出意见填写窗口
 function addCommentForStart(){
@@ -353,8 +342,8 @@ function addCommentForTurn(){
 	$("#assigneeDiv").show();
 	$("#comment").val("请代处理");
 //	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
+	$("#in-footer").show();
+//	$("#in-footer").modal("show");
 }
 
 //环节下拉列表
@@ -430,8 +419,7 @@ function refreshAssignee(serverPath, processDefinitionKey, taskDefinitionKey){
 //点击返回按钮，回到默认按钮并情况处理人信息
 function selectButton(){
 //	$("#out-footer").hide();
-//	$("#in-footer").hide();
-	$("#in-footer").modal("hide");
+	$("#in-footer").hide();
 	
 	clearAssignee();
 }
@@ -471,7 +459,7 @@ function pushProcess(){
 		withdraw = linkAndWithdraw[1];
 		
 		if(taskDefinitionKey.length == 0) {
-			layer.msg('请选择环节！');
+			alert('请选择环节！');
 			return;
 		}
 	} else {
@@ -481,22 +469,22 @@ function pushProcess(){
 		assignee = $("#assignee").val();
 		
 		if(assignee == null || assignee == '') {
-			layer.msg('请选择处理人！');
+			alert('请选择处理人！');
 			return;
 		}
 	}
 	
 	var comment = $("#comment").val();
 	if(comment.length == 0) {
-		layer.msg('请填写审批意见！');
+		alert('请填写审批意见！');
 		return;
 	}
 	
-	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
+	var r = confirm("是否确认提交？");
+	if (r == true) {
 		// 调用推进方法，通过及回退均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ） 
 		modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
-		layer.close(index);
-	})
+	}
 }
 // 会签环节专用流程推动
 function pushProcessForVote(){
@@ -677,10 +665,9 @@ function initData(){
 	});
 }
 function returnList(){
-	$("#in-footer").modal("show");
+	serarchForToDo();
 	$("#goTaskToDoDetailForToDo").hide();
 	$("#searchContentForToDo").show();
-	serarchForToDo();
 }
 
 
@@ -850,30 +837,3 @@ function getTables(data){
 	return html;
 }
 
-function selectstaff(){
-	var flowKey = $("#processDefinitionKey").val();
-    var linkcode = $("#link").val().toString().split(",")[0];
-    var prov=$("#wprov").val();
-    
-    jandyStaffSearch(flowKey,linkcode,prov,'getassignee');
-}
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
-
-	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
-    $("#PandJstaffiframetask").load(frameSrc,function() {
-    	$("#wfflowKey").val(flowKey);
-    	$("#wflinkCode").val(linkcode);
-    	$("#wfprov").val(prov);
-    	$("#wfcallbackFun").val(callbackFun);
-    });
-    $("#PandJstaffiframetask").modal('show');
-}
-function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
-    // console.log(orgId,orgName,staffId,staffOrgId);
-    $("#assignee").val(STAFF_ORG_ID);
-    $("#assigneeName").val(STAFF_NAME);
-    $("#PandJstaffiframetask").modal('hide');
-}
-function setAssigneeParam(assigneeParam){
-	$("#wprov").val(assigneeParam.prov);
-}

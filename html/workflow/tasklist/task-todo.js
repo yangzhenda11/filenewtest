@@ -1,83 +1,34 @@
-var config = parent.globalConfig;
-var serverPath = config.serverPath;
-var curStaffOrgId=config.curStaffOrgId;
-var curStaffId=config.curStaffId;
 $(function(){
 	// 加载表格
-	$("#currentId").val(curStaffOrgId);
+$("#currentId").val(curStaffOrgId);
+searchTableTodo = $("#searchTableTodo").DataTable(dataTableConfig); 
 });
 // 后面构建btn 代码
 var btnModel =  '    \
 	{{#each func}}\
-    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{this.title}} {{this.fn}}>{{this.name}}</button>\
+    <button type="button" class="user-button btn-sm {{this.type}}" {{this.title}} {{this.fn}}>{{this.name}}</button>\
     {{/each}}';
 var template = Handlebars.compile(btnModel);
-
-// 初始化页面信息
-function initFrame(){
-	$('#searchContent').show();
-}
-// 查询
-function serarchForToDo(resetPaging){
-	var table = $('#searchTableTodo').DataTable();
-	if(resetPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
-	}
-}
-
-//重置查询条件
-function resetConditionForToDo(){
-	$('#processTitle').val('');
-	$('#linkName').val('');
-	
-	$("input[name='startDate']").val('');
-	$("input[name='endDate']").val('');
-}
- 
-// “处理”按钮触发事件
-function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	$('#taskId').val(id);
-	$('#taskDefinitionKey').val(taskDefinitionKey);
-	// 环节名称
-	$('#name').val(name);
-	$('#processInstanceId').val(processInstanceId);
-	// 流程实例名称
-	$('#title').val(title);
-	$('#processDefinitionId').val(processDefinitionId);
-	$('#processDefinitionKey').val(processDefinitionKey);
-	$('#executionId').val(executionId);
-	$('#assigneeId').val(assignee);
-	$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
-	
-	$("#goTaskToDoDetailForToDo").show();
-	$("#searchContentForToDo").hide();
-}
-
-/*
- * 表格初始化
- */
-App.initDataTables('#searchTableTodo', "#submitBtn", {
-	fixedColumns: {
-		leftColumns: 0					//固定左侧两列
-	},
-	buttons: ['copy', 'colvis'],		//显示的工具按钮
-	ajax: {
-		"type": "GET",					//请求方式
-		"url": serverPath + 'workflowrest/taskToDo',	//请求地址
-		"data": function(d) {							//自定义传入参数
+var searchTableTodo;
+// 表格配置信息
+var dataTableConfig = {
+	"ordering": false,// 排序
+	"serverSide": true,// 开启服务器模式
+	"scrollX": true,// 横向滚动
+	"ajax": {
+        "type": 'POST',
+        "url":serverPath + 'workflowrest/taskToDo',
+        "data":function(d){// 查询参数
         	d.title = $('#processTitle').val();
         	d.linkName = $('#linkName').val();
         	d.createTimeStart = $('#startDate').val();
         	d.createTimeEnd = $('#endDate').val();
         	d.staffId = curStaffId;
         	return d;
-		}
-	},
+        }
+	},            
 	columns: [// 对应列
-		{"data": "title","title":"待办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(20, true)},
+		{"data": "title","title":"待办标题",className: "text-center"},
         {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
         {"data": "name","title":"环节名称",className: "text-center"},
         {"data": "createTime","title":"接收时间",className: "text-center", 
@@ -118,4 +69,42 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
             return html;
         }
     }]
-});
+	,"dom":'rt<"pull-left mt5"i><"pull-right mt5"p><"clear">'//'rt<"bottom"ip><"clear">' //生成样式
+};
+// 初始化页面信息
+function initFrame(){
+	$('#searchContent').show();
+}
+// 查询
+function serarchForToDo(){
+	searchTableTodo.ajax.reload();
+}
+
+//重置查询条件
+function resetConditionForToDo(){
+	$('#processTitle').val('');
+	$('#linkName').val('');
+	
+	$("input[name='startDate']").val('');
+	$("input[name='endDate']").val('');
+}
+ 
+// “处理”按钮触发事件
+function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
+		processDefinitionId, processDefinitionKey, executionId, assignee) {
+	$('#taskId').val(id);
+	$('#taskDefinitionKey').val(taskDefinitionKey);
+	// 环节名称
+	$('#name').val(name);
+	$('#processInstanceId').val(processInstanceId);
+	// 流程实例名称
+	$('#title').val(title);
+	$('#processDefinitionId').val(processDefinitionId);
+	$('#processDefinitionKey').val(processDefinitionKey);
+	$('#executionId').val(executionId);
+	$('#assigneeId').val(assignee);
+	$("#goTaskToDoDetailForToDo").load("../workflow/taskdetail/task-todo.html");
+	
+	$("#goTaskToDoDetailForToDo").show();
+	$("#searchContentForToDo").hide();
+}

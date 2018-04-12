@@ -656,7 +656,15 @@ var App = function() {
 			}
 		});
 	}
-
+	//检查缓存，刷新
+//	var checkCache = function(){
+//		if (self == top) { 
+//			var timestamp = new Date().getTime();
+//			
+//		}else{
+//			
+//		}
+//	};
 	//* END:CORE HANDLERS *//
 	
 	/*
@@ -667,12 +675,10 @@ var App = function() {
 
 		//main function to initiate the theme
 		init: function() {
-			//IMPORTANT!!!: Do not modify the core handlers call order.
-
+			//IMPORTANT!!!: Do not modify the core handlers call order.			
 			//Core handlers
 			handleInit(); // initialize core variables
 			handleSubpageTab();
-
 			//UI Component handlers     
 			handleiCheck(); // handles custom icheck radio and checkboxes
 			handleBootstrapSwitch(); // handle bootstrap switch plugin
@@ -735,53 +741,40 @@ var App = function() {
 			var data = data || "";
 			var dataType = dataType || "json";
 			var async = asyncs == null ? true : asyncs;
-			var animation = animations == null ? true : animations;
+			//var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
 			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
 			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? emptyFn : errorCallbacks;
-			if(animation == true){
-				var loadStart= function(){
-	//				NProgress.start();
-					layer.load();
-				};
-				var loadEnd = function(){
-					layer.closeAll('loading');
-				};
-			}else{
-				var loadStart = function(){};
-				var loadEnd = function(){};
-			}
 			$.ajax({
 				type: type,
 				url: url,
 				data: data,
 				dataType: dataType,
 				async: async,
-				beforeSend: loadStart,
 				contentType: "application/json",
 				success: function(result){
 					var result = result;
 					if (result.status == 1) {
 						successCallback(result);
 					} else {
-						improperCallback(result);
 						var ms = result.message;
 						layer.msg(ms, {icon: 2});
+						improperCallback(result);
 					};
 				},
 				error: function(result) {
 					layer.alert("接口错误", {icon: 2,title:"错误"});
 					errorCallback(result);
-				},
-				complete: loadEnd
+				}
 			});
 		},
-		//button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
-		buttonLoading: function(el){
+		//datatable中button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
+		startLoading: function(el){
+			$("table").css("width","100%");
 			$(el).button('loading');
 		},
 		//button点击或者提交后台时显示提交中的取消禁用选项
-		buttonCloseLoading: function(el){
+		stopLoading: function(el){
     		$(el).button('reset');
 		},
 		/**
@@ -826,6 +819,7 @@ var App = function() {
 		/*
 		 * 修改对象的key值
 		 * para为对象，obj为要替换值的对象
+		 * para{"原有的key","新key"}
 		 */
 		changeObjKey: function(para,obj){
 			for(var key in para){
@@ -847,15 +841,12 @@ var App = function() {
 		initDataTables: function(el, btn, options) {
 			if(!$().dataTable) {
 				return;
-			}
+			};
+			var pagelengthMenu = parent.globalConfig.curConfigs.configPagelengthMenu.split(",")
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];
 				btn = "";
 			}
-			var drawCallback = function() {};
-			if(options.drawCallback) {
-				drawCallback = options.drawCallback
-			};
 			options = $.extend(true, {
 				"serverSide": true,
 				"ordering": false,
@@ -904,10 +895,10 @@ var App = function() {
 					}
 				},
 				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>', //生成样式
+				"paginationType": "full_numbers",
 				"processing": true,
-				//"bProcessing":true,
 				"paging": true,
-				"lengthMenu": [ 10, 15, 20, 50, 100 ],
+				"lengthMenu": pagelengthMenu,
 				"pageLength": 10,
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
@@ -924,27 +915,24 @@ var App = function() {
 				"drawCallback": function() {
 					// 取消全选  
 					$(":checkbox[name='td-checkbox']").prop('checked', false);
+					if(options.drawCallbackFn != undefined){
+						options.drawCallbackFn();
+					}
 				},
 				"ajax":{
-					beforSend:startLoading(btn)
+					beforSend:App.startLoading(btn)
 				}
 			}, options);
-//			options.drawCallback = function() {
-//				if(options.toolbars) {
-//					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
-//					$(options.toolbars).remove();
-//				}
-//				drawCallback();
-//			}
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
-	        	startLoading(btn);
+	        	App.startLoading(btn);
 		   	}).on('xhr.dt', function ( e, settings, json, xhr ) {
-	        	stopLoading(btn);
+	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
 		        		layer.alert(xhr.responseJSON.message, {icon: 2,title:"错误"});
 		        	}
 		        }else{
+		        	loadEnd();
 		        	layer.alert("接口错误", {icon: 2,title:"错误"});
 		        }
 		    });
@@ -1828,22 +1816,7 @@ function isInArray(arr,val) {
 	return testStr.indexOf("," + val + ",") != -1; 
 } 
 /*
- * datatable加载事件
- */
-function startLoading(el){
-	$("table").css("width","100%");
-	$(el).button('loading');
-	layer.load();
-}
-/*
- * datatable结束事件
- */
-function stopLoading(el){
-	$(el).button('reset');
-	layer.closeAll('loading');
-}
-/*
- * datatable事件
+ * datatable事件  以后不用
  * code如果返回的值不是默认为data时的参数
  */
 function resolveResult(result,code){
@@ -1865,6 +1838,25 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
 		icon: 2
 	});
 }
+/*
+ * 全局ajax事件
+ */
+function loadStart(){
+//	NProgress.start();
+	layer.load();
+}
+function loadEnd(){
+	layer.closeAll('loading');
+}
+$(document).ajaxStart(function(){
+	loadStart();
+})
+$(document).ajaxStop(function(){
+    loadEnd();
+});
+$(document).ajaxError(function(){
+    loadEnd();
+});
 /*
  * Handlebars引擎模板   按钮生成
  */

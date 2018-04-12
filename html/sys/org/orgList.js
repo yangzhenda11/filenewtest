@@ -27,16 +27,15 @@ function gerOrgIdByStaffOrgId() {
  */
 function getOrgTable(orgId){
 	App.initDataTables('#orgSearchTable', "#searchBtn", {
-        buttons: ['copy', 'colvis'], //显示的工具按钮
         ajax: {
             "type": "GET",
             "url": serverPath + 'orgs/', //请求路径
             "data": function(d) { // 查询参数
                 d.orgKind = "1";
-                d.orgName = $("input[name='orgName']", $("#orgSearchForm")).val();
-                d.orgCode = $("input[name='orgCode']", $("#orgSearchForm")).val();
-                d.orgType = $("select[name='orgType']", $("#orgSearchForm")).val();
-                d.orgStatus = $("select[name='orgStatus']", $("#orgSearchForm")).val();
+                d.orgName = $("#orgName").val();
+                d.orgCode = $("#orgCode").val();
+                d.orgType = $("#orgType").val();
+                d.orgStatus = $("#orgStatus").val();
                 d.orgId = orgId;
                 return d;
             }
@@ -64,28 +63,13 @@ function getOrgTable(orgId){
 					} else {
 						return '';
 					}
-//                  var context;
-//                  var html = '';
-//                  html += "<button title=\"查看\" onclick=\"orgShowOrgDetail('" + c.ORG_ID + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-search-plus\"></i></button>";
-//                  // html += "<button title=\"修改\" onclick=\"orgUpdate('" + c.ORG_ID + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-edit\"></i></button>";
-//                  if ("1" == c.ORG_STATUS) {
-//                      html += '<button title="禁用" onclick="orgDel(' + c.ORG_ID + ')" class="btn btn-success btn-link btn-xs"><i class="fa fa-close"></i></button>';
-//                  } else {
-//                      html += '<button title="启用" onclick="orgRe(' + c.ORG_ID + ')" class="btn btn-success btn-link btn-xs"><i class="fa fa-check"></i></button>';
-//                  }
-//                  return html;
                 }
             },
-            {
-                "data": "ORG_NAME",
-                title: "组织名称",
-                className: "text-center"
-            },
-            { "data": "ORG_CODE", title: "组织编码", className: "text-center" },
+            {"data": "ORG_NAME",title: "组织名称",render: $.fn.dataTable.render.ellipsis(22, true)},
+            { "data": "ORG_CODE", title: "组织编码"},
             {
                 "data": "ORG_TYPE",
                 "title": "组织类型",
-                className: "text-center",
                 render: function(data, type, full) {
                     var value = "";
                     if (data == 1) {
@@ -103,21 +87,11 @@ function getOrgTable(orgId){
             {
                 "data": "ORG_STATUS",
                 "title": "状态",
-                className: "text-center",
                 render: function(data, type, full) {
                     return value = data == 1 ? "有效" : "无效";
                 }
             }
-        ],
-        "columnDefs": [{ // 所有列默认值
-                render: $.fn.dataTable.render.ellipsis(25, true),
-                "targets": "_all",
-                "defaultContent": ''
-            }
         ]
-//          "fixedColumns": {
-//              'leftColumns': 2
-//          },
     });
 }
 
@@ -137,7 +111,7 @@ function orgSearchOrg(resetPaging) {
 
 
 function orgShowOrgDetail(itemId) {
-	$("#modal").load("./orgModal.html?" + App.timestamp() + " #modalDetail",function(){
+	$("#modal").load("_orgModal.html?" + App.timestamp() + " #modalDetail",function(){
 		$("#modal").modal("show");
 		App.formAjaxJson(serverPath + "orgs/" + itemId, "GET", null, ajaxSuccess);
 	    /**成功回调函数 */

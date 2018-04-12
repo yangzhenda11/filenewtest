@@ -1,6 +1,9 @@
 
 $(function(){ 
-	$("#startProcess").load("/html/workflow/startpanel/process-start.html");
+	$("#startProcess").load("/html/workflow/startpanel/process-start.html",function() {
+		// 根据业务标识选择流程模板。
+		getProcessDefinitionKey("contract_ReleasePoint");
+    });
 });
 
 /*
@@ -37,12 +40,9 @@ function setRelativeData(){
 	return false;
 }
 function setFlowKey(){
-	var processDefinitionKey = $("#processDefinitionKeyForStart").val();
-	if(processDefinitionKey.length == 0){
-		alert("请选择流程模板！");
-	}else{
-		$("#processDefinitionKey").val(processDefinitionKey);
-	}
+	var processDefinitionKeyForStart = $("#processDefinitionKeyForStart").val();
+	var processDefinitionKey = $("#processDefinitionKey").val();
+	$("#processDefinitionKey").val(processDefinitionKeyForStart);
 }
 function flowStart(){
 	//1,业务侧表单校验
@@ -55,7 +55,7 @@ function flowStart(){
 			}
 	setAssigneeParam(assigneeParam);
 	
-	//3,调用以下方法打开下一步公共界面。
+	//3,调用以下方法打开下一步公共界面。传递参数为业务类型，比如合同类型，后台获取与之匹配的流程模板。
 	showStartPanel();
 }
 

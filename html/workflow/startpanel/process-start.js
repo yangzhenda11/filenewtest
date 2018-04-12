@@ -7,9 +7,10 @@ var curStaffId=config.curStaffId;
 function refreshLinkForSart(){
 	
 	// 当前流程定义Key
-	var processDefinitionKey = $("#processDefinitionKeyForStart").val();
+	var processDefinitionKey = $("#processDefinitionKey").val();
 	if(processDefinitionKey.length == 0){
-		alert("请选择流程模板！");
+		layer.alert("请选择流程模板！");
+		return;
 	}
 	
 	//去开始页面上去添加 的数据   如果没有直接 return false   
@@ -115,6 +116,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
     	$("#wflinkCode").val(linkcode);
     	$("#wfprov").val(prov);
     	$("#wfcallbackFun").val(callbackFun);
+    	selectStaffList();
     });
     $("#PandJstaffiframetask").modal('show');
 }
@@ -127,7 +129,19 @@ function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
 function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);
 }
-
+//根据业务标识选择流程模板。参数：businesscode:PRO,PDM,ACC
+function getProcessDefinitionKey(businesscode){
+    $.post(serverPath + "workflowrest/getprocessDefinitionKey/" + businesscode,function(data){
+        var success = data.retCode;
+        // 返回成功即继续处理，不成功报原因
+        if(success == 1){
+            var processDefinitionKey = data.dataRows[0].processDefinitionKey;
+            $('#processDefinitionKey').val(processDefinitionKey);
+        }else if(success == 0){
+            layer.msg(data.retVal,{time:3000});
+        }
+    });
+}
 
 
 

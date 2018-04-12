@@ -29,7 +29,9 @@
                 </div>
             </div>
             <div class="portlet-body">
+                <!--引入流程启动公共界面  -->
                 <div id="startProcess"></div>
+                
                 <div>
                     <p>业务页面</p>
                 </div>
@@ -39,7 +41,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon">请选择流程模板<span class="notNull">*</span></span>
                                 <!-- 业务页面所必须的流程Key定义 -->
-                                <select class="form-control" id="processDefinitionKeyForStart" name="processDefinitionKey" data-placeholder="选择流程模板"
+                                <select class="form-control" id="processDefinitionKeyForStart" name="processDefinitionKeyForStart" data-placeholder="选择流程模板"
                                 onchange="setFlowKey();">
                                     <option value="" selected="selected">--请选择--</option>
                                     <option value="ReleasePoint">普通审批</option>

@@ -229,7 +229,6 @@ function getInfor(id,type){
 function setDetailForm(data){
 	$("#modal").modal("show");
 	$("#staffNameDetail").text(data.staffName);
-	
 	var valueCallback = {'sex':function(value){return value == "W" ? "女" : "男"},
 						'staffStatus':function(value){return value == "1" ? "有效" : "无效"},
 						'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}

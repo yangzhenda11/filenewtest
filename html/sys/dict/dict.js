@@ -279,9 +279,9 @@ function getDictInfor(editType,dictId,provinceName){
 	function successCallback(result){
 		$('#modal').modal('show');
 		App.setFormValues("#dictForm",result.sysDict);
-		/*$("#provinceCodeTree").val(provinceName);
-		$("#provinceCodeTree").attr("title",provinceName);
-		$("#provinceCodeTree").data("id",result.sysDict.provinceCode);*/
+		//$("#provinceCodeTree").val(provinceName);
+		//$("#provinceCodeTree").attr("title",provinceName);
+		//$("#provinceCodeTree").data("id",result.sysDict.provinceCode);
 		validate(editType,dictId);
 	}
 }
@@ -508,8 +508,8 @@ function orgsfilter(treeId, parentNode, responseData) {
 }*/
 
  /* ztree异步加载之前
- */
-/*function zTreeBeforeAsync(treeId, treeNode) {
+ 
+function zTreeBeforeAsync(treeId, treeNode) {
 	orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
 	return true;
 }*/
@@ -518,6 +518,7 @@ function orgsfilter(treeId, parentNode, responseData) {
  /* ztree点击事件
  */
 /*function onClick(event, treeId, treeNode) {
+
 	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
 	var selectName = nodes[0].orgName;
 	var selectId = nodes[0].orgId;

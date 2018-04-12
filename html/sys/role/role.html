@@ -19,10 +19,10 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
-    <link rel="stylesheet" type="text/css" href="../common/modalDetailCommon.css" />
+    <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 
 </head>
 
@@ -40,27 +40,25 @@
                         <div class="row page-search-form">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">角色名称</span>
-                                    <input type="text" class="form-control" id="sysRoleName" name="sysRoleName" placeholder="" autocomplete="off">
+                                    <span class="input-group-addon searchLableText">角色名称</span>
+                                    <input type="text" class="form-control" id="sysRoleName" name="sysRoleName">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">组织名称</span>
-                                    <input type="text" class="form-control" id="sysOrgName" name="sysOrgName" placeholder="" autocomplete="off">
+                                    <span class="input-group-addon searchLableText">组织名称</span>
+                                    <input type="text" class="form-control" id="sysOrgName" name="sysOrgName">
                                 </div>
                             </div>
-                            <div class="search-action">
-								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="searchRole();"><i class="ace-icon fa fa-search"></i> 查询</button>
+                            <div class="input-group">
+								<button type="button" id="submitBtn" class="btn btn-info red" data-loading-text="加载中..." onclick="searchRole();"><i class="ace-icon fa fa-search"></i> 查询</button>
 							</div>
                         </div>
                         
                     </form>
                 </div>
                 <div class="toolbars">
-                    <div class="toolbars-content">
-                        <button type="button" class="btn btn-block red editBtn" onclick="openAddModal();"><i class="ace-icon fa fa-plus"></i>  新增</button>
-                    </div>
+                    <button type="button" class="btn btn-info red" onclick="openAddModal();"><i class="ace-icon fa fa-plus"></i>  新增</button>
                 </div>
                 <table id="searchRoleTable" class="table table-striped table-bordered table-hover table-header-fixed">
                 </table>
@@ -70,9 +68,9 @@
     <!--modal框-->
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     <!--[if lt IE 9]>
-      <script src="../../../static/plugins/html5shiv.min.js"></script>
-      <script src="../../../static/plugins/respond.min.js"></script>
-      <script src="../../../static/plugins/ie8.fix.min.js"></script>
+      	<script src="../../../static/plugins/html5shiv.min.js"></script>
+      	<script src="../../../static/plugins/respond.min.js"></script>
+      	<script src="../../../static/plugins/ie8.fix.min.js"></script>
     <![endif]-->
     <!--[if lte IE 8]>
         <script src="../../../static/plugins/selectivizr-min.js"></script>
@@ -86,10 +84,9 @@
     <script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables/ellipsis.js"></script>
     <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.extend.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/js/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
+    <script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
     <!--当前页面依赖-->
     <script src="role.js" type="text/javascript" charset="utf-8"></script>
 </body>

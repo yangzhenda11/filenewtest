@@ -79,3 +79,9 @@ function editContract(data) {
 	});
 }
 
+$('#contractEditModal').on('hide.bs.modal', function() {
+    $("#contractModalDefault").removeClass("hide");
+    $("#mainContent").addClass("hide");
+});
+
+

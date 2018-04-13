@@ -62,19 +62,15 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 				if(data) {
 					var para = data.staffId + '&&' + data.staffName + '&&' + data.loginName + '&&' + data.staffStatus;
 					var btnArray = new Array();
-                    btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.staffId + "\')" });
-                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + para + "\')" });
+                    btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.staffId + "\')" ,"icon":"iconfont icon-chakan"});
+                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + para + "\')" ,"icon":"iconfont icon-chakan"});
                     if ('1' == data.staffStatus) {
-                        btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + para + "\')"});
+                        btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + para + "\')","icon":"iconfont icon-chakan"});
                     } else {
-                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')"});
+                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')","icon":"iconfont icon-chakan"});
                     }
-                    context = {
-                        func: btnArray
-                    }
-                    var template = Handlebars.compile(btnModel);
-                    var html = template(context);
-                    return html;
+                    
+                    return App.getDataTableBtn(btnArray);;
 				} else {
 					return '';
 				}
@@ -179,9 +175,7 @@ function doChangeStaffStatus(staffId, staffStatus, index) {
 	function successCallback(result) {
 		layer.close(index);
 		var ms = staffStatus == "1" ? "启用成功" : "禁用成功";
-		layer.msg(ms, {
-			icon: 1
-		});
+		layer.msg(ms);
 		searchPersonnel(true);
 	}
 }

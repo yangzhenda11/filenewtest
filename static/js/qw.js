@@ -1,59 +1,62 @@
-var layerIndex = null;
 /**
-Core script to handle the entire theme and core functions
-**/
-var App = function() {
-	// IE mode
-	var isRTL = false;
-	var isIE8 = false;
-	var isIE9 = false;
-	var isIE10 = false;
-
-	var resizeHandlers = [];
-
-	var assetsPath = '../../';
-
-	var globalImgPath = 'static/img/';
-
-	var globalPluginsPath = 'static/plugins/';
-
-	var globalCssPath = 'static/css/';
-	
-	var _getResponsiveBreakpoint = function(size) {
-			// bootstrap responsive breakpoints
-			var sizes = {
-				'xs': 480, // extra small
-				'sm': 768, // small
-				'md': 992, // medium
-				'lg': 1200 // large
-			};
-
-			return sizes[size] ? sizes[size] : 0;
-	};
-	
-	var resBreakpointMd = _getResponsiveBreakpoint('md');
-	
-	// initializes main settings
-	var handleInit = function() {
-
-		if($('body').css('direction') === 'rtl') {
-			isRTL = true;
-		}
-
-		isIE8 = !!navigator.userAgent.match(/MSIE 8.0/);
-		isIE9 = !!navigator.userAgent.match(/MSIE 9.0/);
-		isIE10 = !!navigator.userAgent.match(/MSIE 10.0/);
-
-		if(isIE10) {
-			$('html').addClass('ie10'); // detect IE10 version
-		}
-
-		if(isIE10 || isIE9 || isIE8) {
-			$('html').addClass('ie'); // detect IE10 version
-		}
-	};
-
-	// runs callback functions set by App.addResponsiveHandler().
+ * Core script to handle the entire theme and core functions
+ */
+var App = function(){
+    
+    // IE mode
+    var isRTL = false;
+    var isIE8 = false;
+    var isIE9 = false;
+    var isIE10 = false;
+    
+    var resizeHandlers = [];
+    
+    var assetsPath = 'undefined' == typeof prcs ? '../../../':prcs;
+    
+    var globalImgPath = '/static/img/';
+    
+    var globalPluginsPath = '/static/plugins/';
+    
+    var globalCssPath = '/static/css/';
+    
+    var _getResponsiveBreakpoint = function(size){
+        // bootstrap responsive breakpoints
+        var sizes = {
+            'xs':480, // extra small
+            'sm':768, // small
+            'md':992, // medium
+            'lg':1200
+        // large
+        };
+        
+        return sizes[size] ? sizes[size] : 0;
+    };
+    
+    var resBreakpointMd = _getResponsiveBreakpoint('md');
+    
+    
+    
+    // initializes main settings
+    var handleInit = function(){
+        
+        if($('body').css('direction') === 'rtl'){
+            isRTL = true;
+        }
+        
+        isIE8 = ! !navigator.userAgent.match(/MSIE 8.0/);
+        isIE9 = ! !navigator.userAgent.match(/MSIE 9.0/);
+        isIE10 = ! !navigator.userAgent.match(/MSIE 10.0/);
+        
+        if(isIE10){
+            $('html').addClass('ie10'); // detect IE10 version
+        }
+        
+        if(isIE10 || isIE9 || isIE8){
+            $('html').addClass('ie'); // detect IE10 version
+        }
+    };
+    
+    // runs callback functions set by App.addResponsiveHandler().
     var _runResizeHandlers = function(){
         // reinitialize other subscribed elements
         for(var i = 0;i < resizeHandlers.length;i++){
@@ -181,375 +184,397 @@ var App = function() {
             });
         }
     };
+    
+    // Handles portlet tools & actions
+    var handlePortletTools = function(){
+        // handle portlet remove
+        $('body').on('click','.portlet > .portlet-title > .tools > a.remove',function(e){
+            e.preventDefault();
+            var portlet = $(this).closest(".portlet");
+            
+            if($('body').hasClass('page-portlet-fullscreen')){
+                $('body').removeClass('page-portlet-fullscreen');
+            }
+            
+            portlet.find('.portlet-title .fullscreen').tooltip('destroy');
+            portlet.find('.portlet-title .reload').tooltip('destroy');
+            portlet.find('.portlet-title .remove').tooltip('destroy');
+            portlet.find('.portlet-title .config').tooltip('destroy');
+            portlet.find('.portlet-title .more').tooltip('destroy');
+            portlet.find('.portlet-title .collapse, .portlet > .portlet-title .expand').tooltip('destroy');
+            
+            portlet.remove();
+        });
+        
+        // handle portlet fullscreen
+        $('body').on(
+        'click',
+        '.portlet > .portlet-title .fullscreen',
+        function(e){
+            e.preventDefault();
+            var portlet = $(this).closest(".portlet");
+            if(portlet.hasClass('portlet-fullscreen')){
+                $(this).removeClass('on');
+                portlet.removeClass('portlet-fullscreen');
+                $('body').removeClass('page-portlet-fullscreen');
+                portlet.children('.portlet-body').css('height','auto');
+            }else{
+                var height = App.getViewPort().height - portlet.children('.portlet-title').outerHeight() - parseInt(portlet.children('.portlet-body').css('padding-top'))
+                - parseInt(portlet.children('.portlet-body').css('padding-bottom'));
+                
+                $(this).addClass('on');
+                portlet.addClass('portlet-fullscreen');
+                $('body').addClass('page-portlet-fullscreen');
+                portlet.children('.portlet-body').css('height',height);
+            }
+        });
+        
+        $('body').on('click','.portlet > .portlet-title > .tools > a.reload',function(e){
+            e.preventDefault();
+            var el = $(this).closest(".portlet").children(".portlet-body");
+            var url = $(this).attr("data-url");
+            var error = $(this).attr("data-error-display");
+            if(url){
+                App.blockUI({
+                    target:el,
+                    animate:true,
+                    overlayColor:'none'
+                });
+                $.ajax({
+                    type:"GET",
+                    cache:false,
+                    url:url,
+                    dataType:"html",
+                    success:function(res){
+                        App.unblockUI(el);
+                        el.html(res);
+                        App.initAjax() // reinitialize elements & plugins for
+                        // newly loaded content
+                    },
+                    error:function(xhr,ajaxOptions,thrownError){
+                        App.unblockUI(el);
+                        var msg = 'Error on reloading the content. Please check your connection and try again.';
+                        if(error == "toastr" && toastr){
+                            toastr.error(msg);
+                        }else if(error == "notific8" && $.notific8){
+                            $.notific8('zindex',11500);
+                            $.notific8(msg,{
+                                theme:'ruby',
+                                life:3000
+                            });
+                        }else{
+                            alert(msg);
+                        }
+                    }
+                });
+            }else{
+                // for demo purpose
+                App.blockUI({
+                    target:el,
+                    animate:true,
+                    overlayColor:'none'
+                });
+                window.setTimeout(function(){
+                    App.unblockUI(el);
+                },1000);
+            }
+        });
+        
+        // load ajax data on page init
+        $('.portlet .portlet-title a.reload[data-load="true"]').click();
+        
+        $('body').on('click','.portlet > .portlet-title > .tools > .collapse, .portlet .portlet-title > .tools > .expand',function(e){
+            e.preventDefault();
+            var el = $(this).closest(".portlet").children(".portlet-body");
+            if($(this).hasClass("collapse")){
+                $(this).removeClass("collapse").addClass("expand");
+                el.slideUp(200);
+            }else{
+                $(this).removeClass("expand").addClass("collapse");
+                el.slideDown(200);
+            }
+        });
+    };
+    
+    // Handles custom checkboxes & radios using jQuery iCheck plugin
+    var handleiCheck = function(){
+        if( !$().iCheck){
+            return;
+        }
+        
+        $('.icheck').each(function(){
+            var checkboxClass = $(this).attr('data-checkbox') ? $(this).attr('data-checkbox') : 'icheckbox_minimal-grey';
+            var radioClass = $(this).attr('data-radio') ? $(this).attr('data-radio') : 'iradio_minimal-grey';
+            
+            if(checkboxClass.indexOf('_line') > -1 || radioClass.indexOf('_line') > -1){
+                $(this).iCheck({
+                    checkboxClass:checkboxClass,
+                    radioClass:radioClass,
+                    insert:'<div class="icheck_line-icon"></div>' + $(this).attr("data-label")
+                });
+            }else{
+                $(this).iCheck({
+                    checkboxClass:checkboxClass,
+                    radioClass:radioClass
+                });
+            }
+        });
+    };
+    
+    // Handles Bootstrap switches
+    var handleBootstrapSwitch = function(){
+        if( !$().bootstrapSwitch){
+            return;
+        }
+        $('.make-switch').bootstrapSwitch();
+    };
+    
+    // Handles Bootstrap confirmations
+    var handleBootstrapConfirmation = function(){
+        if( !$().confirmation){
+            return;
+        }
+        $('[data-toggle=confirmation]').confirmation({
+            btnOkClass:'btn btn-sm btn-success',
+            btnCancelClass:'btn btn-sm btn-danger'
+        });
+    }
 
-	// Handles portlet tools & actions
-	var handlePortletTools = function() {
-		// handle portlet remove
-		$('body').on('click', '.portlet > .portlet-title .remove', function(e) {
-			e.preventDefault();
-			var portlet = $(this).closest(".portlet");
+    // Handles Bootstrap Accordions.
+    var handleAccordions = function(){
+        $('body').on('shown.bs.collapse','.accordion.scrollable',function(e){
+            App.scrollTo($(e.target || e.srcElement));
+        });
+    };
+    
+    // Handles Bootstrap Tabs.
+    var handleTabs = function(){
+        // activate tab if tab id provided in the URL
+        if(encodeURI(location.hash)){
+            var tabid = encodeURI(location.hash.substr(1));
+            $('a[href="#' + tabid + '"]').parents('.tab-pane:hidden').each(function(){
+                var tabid = $(this).attr("id");
+                $('a[href="#' + tabid + '"]').click();
+            });
+            $('a[href="#' + tabid + '"]').click();
+        }
+        
+        if($().tabdrop){
+            $('.tabbable-tabdrop .nav-pills, .tabbable-tabdrop .nav-tabs').tabdrop({
+                text:'<i class="fa fa-ellipsis-v"></i>&nbsp;<i class="fa fa-angle-down"></i>'
+            });
+        }
+    };
+    
+    // Handles Bootstrap Modals.
+    var handleModals = function(){
+        // fix stackable modal issue: when 2 or more modals opened, closing one
+        // of modal will remove .modal-open class.
+        $('body').on('hide.bs.modal',function(){
+            if($('.modal:visible').length > 1 && $('html').hasClass('modal-open') === false){
+                $('html').addClass('modal-open');
+            }else if($('.modal:visible').length <= 1){
+                $('html').removeClass('modal-open');
+            }
+        });
+        
+        // fix page scrollbars issue
+        $('body').on('show.bs.modal','.modal',function(){
+            if($(this).hasClass("modal-scroll")){
+                $('body').addClass("modal-open-noscroll");
+            }
+        });
+        
+        // fix page scrollbars issue
+        $('body').on('hidden.bs.modal','.modal',function(){
+            $('body').removeClass("modal-open-noscroll");
+        });
+        
+        // remove ajax content and remove cache on modal closed
+        $('body').on('hidden.bs.modal','.modal:not(.modal-cached)',function(){
+            $(this).removeData('bs.modal');
+        });
+    };
+    
+    // Handles Bootstrap Tooltips.
+    var handleTooltips = function(){
+        // global tooltips
+        $('.tooltips').tooltip();
+        
+        // portlet tooltips
+        $('.portlet > .portlet-title .fullscreen').tooltip({
+            trigger:'hover',
+            container:'body',
+            placement:'bottom',
+            title:'全屏浏览'
+        });
+        $('.portlet > .portlet-title .reload').tooltip({
+            trigger:'hover',
+            container:'body',
+            placement:'bottom',
+            title:'刷新'
+        });
+        $('.portlet > .portlet-title .remove').tooltip({
+            trigger:'hover',
+            container:'body',
+            placement:'bottom',
+            title:'移除'
+        });
+        $('.portlet > .portlet-title .config').tooltip({
+            trigger:'hover',
+            container:'body',
+            placement:'bottom',
+            title:'设置'
+        });
+        $('.portlet > .portlet-title .more').tooltip({
+            trigger:'hover',
+            container:'body',
+            placement:'bottom',
+            title:'查看更多'
+        });
+        $('.portlet > .portlet-title .collapse, .portlet > .portlet-title .expand').tooltip({
+            trigger:'hover',
+            container:'body',
+            placement:'bottom',
+            title:'折叠/展开'
+        });
+    };
+    
+    // Handles Bootstrap Dropdowns
+    var handleDropdowns = function(){
+        /*
+         * Hold dropdown on click
+         */
+        $('body').on('click','.dropdown-menu.hold-on-click',function(e){
+            e.stopPropagation();
+        });
+    };
+    
+    var handleAlerts = function(){
+        $('body').on('click','[data-close="alert"]',function(e){
+            $(this).parent('.alert').hide();
+            $(this).closest('.note').hide();
+            e.preventDefault();
+        });
+        
+        $('body').on('click','[data-close="note"]',function(e){
+            $(this).closest('.note').hide();
+            e.preventDefault();
+        });
+        
+        $('body').on('click','[data-remove="note"]',function(e){
+            $(this).closest('.note').remove();
+            e.preventDefault();
+        });
+    };
+    
+    // Handle textarea autosize
+    var handleTextareaAutosize = function(){
+        if( typeof (autosize) == "function"){
+            autosize(document.querySelector('textarea.autosizeme'));
+        }
+    }
 
-			if($('body').hasClass('page-portlet-fullscreen')) {
-				$('body').removeClass('page-portlet-fullscreen');
-			}
-
-			portlet.find('.portlet-title .fullscreen').tooltip('destroy');
-			portlet.find('.portlet-title .reload').tooltip('destroy');
-			portlet.find('.portlet-title .remove').tooltip('destroy');
-			portlet.find('.portlet-title .config').tooltip('destroy');
-			portlet.find('.portlet-title .more').tooltip('destroy');
-			portlet.find('.portlet-title .collapse, .portlet-title .expand').tooltip('destroy');
-
-			portlet.remove();
-		});
-
-		$('body').on('click', '.portlet > .portlet-title  .reload', function(e) {
-			e.preventDefault();
-			var el = $(this).closest(".portlet").children(".portlet-body");
-			var url = $(this).attr("data-url");
-			var error = $(this).attr("data-error-display");
-			if(url) {
-				App.blockUI({
-					target: el,
-					animate: true,
-					overlayColor: 'none'
-				});
-				$.ajax({
-					type: "GET",
-					cache: false,
-					url: url,
-					dataType: "html",
-					success: function(res) {
-						App.unblockUI(el);
-						el.html(res);
-						App.initAjax() // reinitialize elements & plugins for newly loaded content
-					},
-					error: function(xhr, ajaxOptions, thrownError) {
-						App.unblockUI(el);
-						var msg = 'Error on reloading the content. Please check your connection and try again.';
-						if(error == "toastr" && toastr) {
-							toastr.error(msg);
-						} else if(error == "notific8" && $.notific8) {
-							$.notific8('zindex', 11500);
-							$.notific8(msg, {
-								theme: 'ruby',
-								life: 3000
-							});
-						} else {
-							alert(msg);
-						}
-					}
-				});
-			} else {
-				// for demo purpose
-				App.blockUI({
-					target: el,
-					animate: true,
-					overlayColor: 'none'
-				});
-				window.setTimeout(function() {
-					App.unblockUI(el);
-				}, 1000);
-			}
-		});
-
-		// load ajax data on page init
-		$('.portlet .portlet-title a.reload[data-load="true"]').click();
-
-		$('body').on('click', '.portlet > .portlet-title .collapse, .portlet .portlet-title .expand', function(e) {
-			e.preventDefault();
-			var el = $(this).closest(".portlet").children(".portlet-body");
-			if($(this).hasClass("collapse")) {
-				$(this).removeClass("collapse").addClass("expand");
-				el.slideUp(200);
-			} else {
-				$(this).removeClass("expand").addClass("collapse");
-				el.slideDown(200);
-			}
-		});
-	};
-
-	// Handles custom checkboxes & radios using jQuery iCheck plugin
-	var handleiCheck = function() {
-		if(!$().iCheck) {
-			return;
-		}
-
-		$('.icheck').each(function() {
-			var checkboxClass = $(this).attr('data-checkbox') ? $(this).attr('data-checkbox') : 'icheckbox_minimal-grey';
-			var radioClass = $(this).attr('data-radio') ? $(this).attr('data-radio') : 'iradio_minimal-grey';
-
-			if(checkboxClass.indexOf('_line') > -1 || radioClass.indexOf('_line') > -1) {
-				$(this).iCheck({
-					checkboxClass: checkboxClass,
-					radioClass: radioClass,
-					insert: '<div class="icheck_line-icon"></div>' + $(this).attr("data-label")
-				});
-			} else {
-				$(this).iCheck({
-					checkboxClass: checkboxClass,
-					radioClass: radioClass
-				});
-			}
-		});
-	};
-
-	// Handles Bootstrap switches
-	var handleBootstrapSwitch = function() {
-		if(!$().bootstrapSwitch) {
-			return;
-		}
-		$('.make-switch').bootstrapSwitch();
-	};
-
-	// Handles Bootstrap confirmations
-	var handleBootstrapConfirmation = function() {
-		if(!$().confirmation) {
-			return;
-		}
-		$('[data-toggle=confirmation]').confirmation({
-			btnOkClass: 'btn btn-sm btn-success',
-			btnCancelClass: 'btn btn-sm btn-danger'
-		});
-	}
-
-	// Handles Bootstrap Accordions.
-	var handleAccordions = function() {
-		$('body').on('shown.bs.collapse', '.accordion.scrollable', function(e) {
-			App.scrollTo($(e.target));
-		});
-	};
-
-	// Handles Bootstrap Tabs.
-	var handleTabs = function() {
-		//activate tab if tab id provided in the URL
-		if(encodeURI(location.hash)) {
-			var tabid = encodeURI(location.hash.substr(1));
-			$('a[href="#' + tabid + '"]').parents('.tab-pane:hidden').each(function() {
-				var tabid = $(this).attr("id");
-				$('a[href="#' + tabid + '"]').click();
-			});
-			$('a[href="#' + tabid + '"]').click();
-		}
-
-		if($().tabdrop) {
-			$('.tabbable-tabdrop .nav-pills, .tabbable-tabdrop .nav-tabs').tabdrop({
-				text: '<i class="fa fa-ellipsis-v"></i>&nbsp;<i class="fa fa-angle-down"></i>'
-			});
-		}
-	};
-
-	// Handles Bootstrap Modals.
-	var handleModals = function() {
-		// fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
-		$('body').on('hide.bs.modal', function() {
-			if($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') === false) {
-				$('html').addClass('modal-open');
-			} else if($('.modal:visible').size() <= 1) {
-				$('html').removeClass('modal-open');
-			}
-		});
-
-		// fix page scrollbars issue
-		$('body').on('show.bs.modal', '.modal', function() {
-			if($(this).hasClass("modal-scroll")) {
-				$('body').addClass("modal-open-noscroll");
-			}
-		});
-
-		// fix page scrollbars issue
-		$('body').on('hidden.bs.modal', '.modal', function() {
-			$('body').removeClass("modal-open-noscroll");
-		});
-
-		// remove ajax content and remove cache on modal closed 
-		$('body').on('hidden.bs.modal', '.modal:not(.modal-cached)', function() {
-			$(this).removeData('bs.modal');
-		});
-	};
-
-	// Handles Bootstrap Tooltips.
-	var handleTooltips = function() {
-		// global tooltips
-		$('.tooltips').tooltip();
-
-		// portlet tooltips
-		$('.portlet > .portlet-title .fullscreen').tooltip({
-			trigger: 'hover',
-			container: 'body',
-			placement:'bottom',
-			title: '全屏浏览'
-		});
-		$('.portlet > .portlet-title .reload').tooltip({
-			trigger: 'hover',
-			placement:'bottom',
-			container: 'body',
-			title: '刷新'
-		});
-		$('.portlet > .portlet-title .remove').tooltip({
-			trigger: 'hover',
-			placement:'bottom',
-			container: 'body',
-			title: '移除'
-		});
-		$('.portlet > .portlet-title .config').tooltip({
-			trigger: 'hover',
-			placement:'bottom',
-			container: 'body',
-			title: '设置'
-		});
-		$('.portlet > .portlet-title .more').tooltip({
-			trigger: 'hover',
-			placement:'bottom',
-			container: 'body',
-			title: '查看更多>'
-		});
-		$('.portlet > .portlet-title .collapse, .portlet > .portlet-title .expand').tooltip({
-			trigger: 'hover',
-			placement:'bottom',
-			container: 'body',
-			title: '折叠/展开'
-		});
-	};
-
-	// Handles Bootstrap Dropdowns
-	var handleDropdowns = function() {
-		/*
-		  Hold dropdown on click  
-		*/
-		$('body').on('click', '.dropdown-menu.hold-on-click', function(e) {
-			e.stopPropagation();
-		});
-	};
-
-	var handleAlerts = function() {
-		$('body').on('click', '[data-close="alert"]', function(e) {
-			$(this).parent('.alert').hide();
-			$(this).closest('.note').hide();
-			e.preventDefault();
-		});
-
-		$('body').on('click', '[data-close="note"]', function(e) {
-			$(this).closest('.note').hide();
-			e.preventDefault();
-		});
-
-		$('body').on('click', '[data-remove="note"]', function(e) {
-			$(this).closest('.note').remove();
-			e.preventDefault();
-		});
-	};
-
-	// Handle textarea autosize 
-	var handleTextareaAutosize = function() {
-		if(typeof(autosize) == "function") {
-			autosize(document.querySelector('textarea.autosizeme'));
-		}
-	}
-
-	// Handles Bootstrap Popovers
-
-	// last popep popover
-	var lastPopedPopover;
-
-	var handlePopovers = function() {
-		$('.popovers').popover();
-
-		// close last displayed popover
-
-		$(document).on('click.bs.popover.data-api', function(e) {
-			if(lastPopedPopover) {
-				lastPopedPopover.popover('hide');
-			}
-		});
-	};
-
-	// Handles scrollable contents using jQuery SlimScroll plugin.
-	var handleScrollers = function() {
-		App.initSlimScroll('.scroller');
-	};
-
-	// Handles Image Preview using jQuery Fancybox plugin
-	var handleFancybox = function() {
-		if(!jQuery.fancybox) {
-			return;
-		}
-
-		if($(".fancybox-button").size() > 0) {
-			$(".fancybox-button").fancybox({
-				groupAttr: 'data-rel',
-				prevEffect: 'none',
-				nextEffect: 'none',
-				closeBtn: true,
-				helpers: {
-					title: {
-						type: 'inside'
-					}
-				}
-			});
-		}
-	};
-
-	// Handles counterup plugin wrapper
-	var handleCounterup = function() {
-		if(!$().counterUp) {
-			return;
-		}
-
-		$("[data-counter='counterup']").counterUp({
-			delay: 10,
-			time: 1000
-		});
-	};
-
-	// Fix input placeholder issue for IE8 and IE9
-	var handleFixInputPlaceholderForIE = function() {
-		//fix html5 placeholder attribute for ie7 & ie8
-		if(isIE8 || isIE9) { // ie8 & ie9
-			// this is html5 placeholder fix for inputs, inputs with placeholder-no-fix class will be skipped(e.g: we need this for password fields)
-			$('input[placeholder]:not(.placeholder-no-fix), textarea[placeholder]:not(.placeholder-no-fix)').each(function() {
-				var input = $(this);
-
-				if(input.val() === '' && input.attr("placeholder") !== '') {
-					input.addClass("placeholder").val(input.attr('placeholder'));
-				}
-
-				input.focus(function() {
-					if(input.val() == input.attr('placeholder')) {
-						input.val('');
-					}
-				});
-
-				input.blur(function() {
-					if(input.val() === '' || input.val() == input.attr('placeholder')) {
-						input.val(input.attr('placeholder'));
-					}
-				});
-			});
-		}
-	};
-
-	// Handle Select2 Dropdowns
+    // Handles Bootstrap Popovers
+    
+    // last popep popover
+    var lastPopedPopover;
+    
+    var handlePopovers = function(){
+        $('.popovers').popover();
+        
+        // close last displayed popover
+        
+        $(document).on('click.bs.popover.data-api',function(e){
+            if(lastPopedPopover){
+                lastPopedPopover.popover('hide');
+            }
+        });
+    };
+    
+    // Handles scrollable contents using jQuery SlimScroll plugin.
+    var handleScrollers = function(){
+        App.initSlimScroll('.scroller');
+    };
+    
+    // Handles Image Preview using jQuery Fancybox plugin
+    var handleFancybox = function(){
+        if( !jQuery.fancybox){
+            return;
+        }
+        
+        if($(".fancybox-button").length > 0){
+            $(".fancybox-button").fancybox({
+                groupAttr:'data-rel',
+                prevEffect:'none',
+                nextEffect:'none',
+                closeBtn:true,
+                helpers:{
+                    title:{
+                        type:'inside'
+                    }
+                }
+            });
+        }
+    };
+    
+    // Handles counterup plugin wrapper
+    var handleCounterup = function(){
+        if( !$().counterUp){
+            return;
+        }
+        
+        $("[data-counter='counterup']").counterUp({
+            delay:10,
+            time:1000
+        });
+    };
+    
+    // Fix input placeholder issue for IE8 and IE9
+    var handleFixInputPlaceholderForIE = function(){
+        // fix html5 placeholder attribute for ie7 & ie8
+        if(isIE8 || isIE9){ // ie8 & ie9
+            // this is html5 placeholder fix for inputs, inputs with
+            // placeholder-no-fix class will be skipped(e.g: we need this for
+            // password fields)
+            $('input[placeholder]:not(.placeholder-no-fix), textarea[placeholder]:not(.placeholder-no-fix)').each(function(){
+                var input = $(this);
+                
+                if(input.val() === '' && input.attr("placeholder") !== ''){
+                    input.addClass("placeholder").val(input.attr('placeholder'));
+                }
+                
+                input.focus(function(){
+                    if(input.val() == input.attr('placeholder')){
+                        input.val('');
+                    }
+                });
+                
+                input.blur(function(){
+                    if(input.val() === '' || input.val() == input.attr('placeholder')){
+                        input.val(input.attr('placeholder'));
+                    }
+                });
+            });
+        }
+    };
+    
+    // Handle Select2 Dropdowns
     var handleSelect2 = function(){
         if($().select2){
             $.fn.select2.defaults.set("theme","bootstrap");
             $('.select2me').each(function(){
-            	var maximumSelectionLength = $(this).attr('data-maximumSelectionLength');
                 var allowClearFlag = $(this).attr('data-allowClear');
                 var allowSearch = $(this).attr('data-allowSearch');
-                if(allowClearFlag != false){
-                	allowClearFlag = true;
-                }
                 options = {
                     placeholder:"请选择",
                     language:'zh-CN',
                     width:'100%',
-                    allowClear:allowClearFlag
+                    allowClear:allowClearFlag ? true : false
                 };
                 if(allowSearch == undefined)
                     options.minimumResultsForSearch = -1;
                 $(this).select2(options);
-                $(this).val(null).trigger("change");
             })
         }
     };
@@ -565,126 +590,114 @@ var App = function() {
             });
         }
     };
-	
+    
     // Handle datetimePicker
     var handleDateTimePicker = function(){
         if($.fn.datetimepicker){
             $.fn.datetimepicker.defaults.format = 'yyyy-mm-dd hh:ii:ss';
             $.fn.datetimepicker.defaults.language = 'zh-CN';
             $.fn.datetimepicker.defaults.autoclose = true;
-            $.fn.datetimepicker.defaults.pickerPosition="bottom-left";
-            $('.datetime-picker').datetimepicker({
+            $('.datetime-picker').datepicker({
                 format:"yyyy-mm-dd hh:ii:ss"
             });
         }
     };
+    
+    var panelAction = function(el,parentEl,bodyEl,icon1,icon2,times){
+        $(el).off('click').on('click',function(){
+            var me = $(this);
+            var pnode = me.closest(parentEl);
+            var pbody = pnode.nextAll(bodyEl).first();
+            var meicon = me.find('.fa');
+            if(times != 0){
+                times = times ? times : 200;
+            }
+            pbody.slideToggle(times);
+            meicon.toggleClass(icon1).toggleClass(icon2);
+            if(el == '.page-search-more a'){
+                var panelSearch = me.closest('.page-search');
+                var resetBtn = panelSearch.find('.page-search-action').find('button[type=reset]');
+                resetBtn.toggleClass('hidden');
+            }
+        })
+    }
 
-	var panelAction = function(el, parentEl, bodyEl, icon1, icon2, times) {
-		$(el).on('click',function() {
-			var me = $(this);
-			var pnode = me.closest(parentEl);
-			var pbody = pnode.nextAll(bodyEl).first();
-			var meicon = me.find('.fa');
-			if(times != 0) {
-				times = times ? times : 200;
-			}
-			pbody.slideToggle(times);
-			meicon.toggleClass(icon1).toggleClass(icon2);
-			if(el == '.page-search-more a') {
-				var panelSearch = me.closest('.page-search');
-				var resetBtn = panelSearch.find('.page-search-action').find('button[type=reset]');
-				resetBtn.toggleClass('hidden');
-			}
-		})
-	}
+    var handlePagesearch = function(){
+        if($('.page-search-more').length){
+            panelAction('.page-search-more a','.page-search-more','.page-search-moreBody','fa-angle-double-right','fa-angle-double-up',0);
+        }
+    }
 
-	var handlePagesearch = function() {
-		if($('.page-search-more').length) {
-			panelAction('.page-search-more a', '.page-search-more', '.page-search-moreBody', 'fa-angle-double-right', 'fa-angle-double-up', 0);
-		}
-	}
+    var handleFileInput = function(){
+//        $('.form-group-file .input-group').unbind('click').bind('click',function(){
+//            var pnode = $(this).closest('.form-group-file');
+//            var fileNode = pnode.find('input[type=file]');
+//            fileNode.trigger('click');
+//        });
+        $('.form-group-file input[type=file]').change(function(){
+            var pnode = $(this).parent('.form-group-file');
+            var fileNode = pnode.find('.input-group input[type=text]');
+            fileNode.val($(this).val());
+        })
+    }
+    // Handle formFieldset
+    var handleFormFieldset = function(){
+        if($('.form-fieldset .form-collapse').length){
+            panelAction('.form-fieldset .form-collapse','.form-fieldset-title','.form-fieldset-body','fa-angle-up','fa-angle-down');
+        }
+    }
 
-	var handleFileInput = function() {
-		$('.form-group-file .input-group').click(function() {
-			var pnode = $(this).closest('.form-group-file');
-			var fileNode = pnode.find('input[type=file]');
-			fileNode.trigger('click');
-		});
-		$('.form-group-file input[type=file]').change(function() {
-			var pnode = $(this).parent('.form-group-file');
-			var fileNode = pnode.find('.input-group input[type=text]');
-			fileNode.val($(this).val());
-		})
-	}
-	// Handle formFieldset
-	var handleFormFieldset = function() {
-		if($('.form-fieldset .form-collapse').length) {
-			panelAction('.form-fieldset .form-collapse', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
-		}
-	}
+    // handle group element heights
+    var handleHeight = function(){
+        $('[data-auto-height]').each(function(){
+            var parent = $(this);
+            var items = $('[data-height]',parent);
+            var height = 0;
+            var mode = parent.attr('data-mode');
+            var offset = parseInt(parent.attr('data-offset') ? parent.attr('data-offset') : 0);
+            
+            items.each(function(){
+                if($(this).attr('data-height') == "height"){
+                    $(this).css('height','');
+                }else{
+                    $(this).css('min-height','');
+                }
+                
+                var height_ = (mode == 'base-height' ? $(this).outerHeight() : $(this).outerHeight(true));
+                if(height_ > height){
+                    height = height_;
+                }
+            });
+            
+            height = height + offset;
+            
+            items.each(function(){
+                if($(this).attr('data-height') == "height"){
+                    $(this).css('height',height);
+                }else{
+                    $(this).css('min-height',height);
+                }
+            });
+            
+            if(parent.attr('data-related')){
+                $(parent.attr('data-related')).css('height',parent.height());
+            }
+        });
+    }
 
-	// handle group element heights
-	var handleHeight = function() {
-		$('[data-auto-height]').each(function() {
-			var parent = $(this);
-			var items = $('[data-height]', parent);
-			var height = 0;
-			var mode = parent.attr('data-mode');
-			var offset = parseInt(parent.attr('data-offset') ? parent.attr('data-offset') : 0);
-
-			items.each(function() {
-				if($(this).attr('data-height') == "height") {
-					$(this).css('height', '');
-				} else {
-					$(this).css('min-height', '');
-				}
-
-				var height_ = (mode == 'base-height' ? $(this).outerHeight() : $(this).outerHeight(true));
-				if(height_ > height) {
-					height = height_;
-				}
-			});
-
-			height = height + offset;
-
-			items.each(function() {
-				if($(this).attr('data-height') == "height") {
-					$(this).css('height', height);
-				} else {
-					$(this).css('min-height', height);
-				}
-			});
-
-			if(parent.attr('data-related')) {
-				$(parent.attr('data-related')).css('height', parent.height());
-			}
-		});
-	}
-	//检查缓存，刷新
-//	var checkCache = function(){
-//		if (self == top) { 
-//			var timestamp = new Date().getTime();
-//			
-//		}else{
-//			
-//		}
-//	};
-	//* END:CORE HANDLERS *//
-	
-	/*
-	 * 页面上调用要return出来
-	 * init为页面初始项
-	 */
-	return {
-
-		//main function to initiate the theme
-		init: function() {
-			// IMPORTANT!!!: Do not modify the core handlers call order.
+    // * END:CORE HANDLERS *//
+    
+    return {
+        
+        // main function to initiate the theme
+        init:function(){
+            // IMPORTANT!!!: Do not modify the core handlers call order.
         	handelCheckbox();
         	handelRadio();
             // Core handlers
             handleInit(); // initialize core variables
             handleSubpageTab();// 子页面打开tab页控制
+            handleOnResize(); // set and handle responsive
             
             // UI Component handlers
             // handleiCheck(); // handles custom icheck radio and checkboxes
@@ -711,12 +724,16 @@ var App = function() {
             // handleCounterup(); // handle counterup instances
             handle100HeightContent(); //handle content fullHeight
             this.addResizeHandler(handle100HeightContent);
-			// Hacks
-			//handleFixInputPlaceholderForIE(); //IE8 & IE9 input placeholder issue fix
-			handleOnResize(); // set and handle responsive    
-		},
-
-		// main function to initiate core javascript after ajax complete
+            // Handle group element heights
+            // this.addResizeHandler(handleHeight); // handle auto calculating
+            // height on window resize
+            
+            // Hacks
+            // handleFixInputPlaceholderForIE(); //IE8 & IE9 input placeholder
+            // issue fix
+        },
+        
+        // main function to initiate core javascript after ajax complete
         initAjax:function(){
             // handleiCheck(); // handles custom icheck radio and checkboxes
             // handleBootstrapSwitch(); // handle bootstrap switch plugin
@@ -732,377 +749,8 @@ var App = function() {
             // handleAccordions(); //handles accordions
             handleBootstrapConfirmation(); // handle bootstrap confirmations
         },
-		/*
-		 * @param url  地址
-		 * @param type 请求方式
-		 * @param data  传输的数据
-		 * @param succCallback  正确回调函数
-		 * @param improperCallbacks 异常回调方法
-		 * @param errorCallback  错误回调函数
-		 * @param animation 动画
-		 * @param async 同步异步
-		 * @param dataType 数据类型
-		 */
-		formAjaxJson : function (url, type, data, successCallbacks, improperCallbacks, errorCallbacks, animations, asyncs, dataType){
-			var emptyFn = function(){};
-			var type = type || "get";
-			var data = data || "";
-			var dataType = dataType || "json";
-			var async = asyncs == null ? true : asyncs;
-			//var animation = animations == null ? true : animations;
-			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
-			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
-			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? emptyFn : errorCallbacks;
-			$.ajax({
-				type: type,
-				url: url,
-				data: data,
-				dataType: dataType,
-				async: async,
-				contentType: "application/json",
-				success: function(result){
-					var result = result;
-					if (result.status == 1) {
-						successCallback(result);
-					} else {
-						var ms = result.message;
-						layer.msg(ms, {icon: 2});
-						improperCallback(result);
-					};
-				},
-				error: function(result) {
-					layer.alert("接口错误", {icon: 2,title:"错误"});
-					errorCallback(result);
-				}
-			});
-		},
-		//datatable中button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
-		startLoading: function(el){
-			$("table").css("width","100%");
-			$(el).button('loading');
-		},
-		//button点击或者提交后台时显示提交中的取消禁用选项
-		stopLoading: function(el){
-    		$(el).button('reset');
-		},
-		/**
-		 * 表单元素序列化
-		 * 根据name值取值
-		 */
-		getFormValues: function($form) {
-		    var o = {};
-		    var a = $form.serializeArray();
-		    $.each(a, function(index, value) {
-		        if (o[value.name]) {
-		            if (!o[value.name].push) {
-		                o[value.name] = [o[value.name]];
-		            }
-		            o[value.name].push(value.value || '');
-		        } else {
-		            o[value.name] = value.value || '';
-		        }
-		    });
-		    return o;
-		},
-		/**
-		 * 生成时间戳
-		 */
-		timestamp: function(){
-			var getTimestamp=new Date().getTime();
-			getTimestamp = "&t="+getTimestamp;
-		    return getTimestamp;
-		},
-		/**
-		 * 下载文件（接收下载地址）
-		 */
-		download_file: function(url) {
-			if(typeof(download_file.iframe) == "undefined") {
-				var iframe = document.createElement("iframe");
-				download_file.iframe = iframe;
-				document.body.appendChild(download_file.iframe);
-			}
-			download_file.iframe.src = url;
-			download_file.iframe.style.display = "none";
-		},
-		/*
-		 * 修改对象的key值
-		 * para为对象，obj为要替换值的对象
-		 * para{"原有的key","新key"}
-		 */
-		changeObjKey: function(para,obj){
-			for(var key in para){
-				if(obj.key == null){
-					obj[para[key]] = "";
-				}else{
-					obj[para[key]] = obj.key;
-				}
-				delete obj[key];
-			};
-			return obj;
-		},
-		/*
-		 * datatable初始化
-		 * el : table ID
-		 * btn : 搜索按钮 ID
-		 * options : 初始化事件
-		 */
-		initDataTables: function(el, btn, options) {
-			if(!$().dataTable) {
-				return;
-			};
-			var pagelengthMenu = parent.globalConfig.curConfigs.configPagelengthMenu.split(",")
-			if(typeof arguments[1] != "string"){
-				options = arguments[1];
-				btn = "";
-			};
-			options = $.extend(true, {
-				"serverSide": true,					//开启服务器请求模式
-				"ordering": false,
-				"scrollX": true,
-				"scrollCollapse": true,
-				"sScrollX": "100%",
-				"sScrollXInner": "100%",
-				"bAutoWidth": true,
-				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
-				"oLanguage": {
-					"sProcessing": "正在加载数据，请稍候...",
-					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
-					"sZeroRecords": "查询不到数据",
-					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
-					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
-					"sInfoFiltered": "(由 _MAX_ 条记录结果过滤)",
-					"sInfoPostFix": "",
-					"sSearch": "",
-					"sSearchPlaceholder": "输入关键字筛选表格",
-					"sUrl": "",
-					"sDecimal": "",
-					"sThousands": ",",
-					"sEmptyTable": "表中数据为空",
-					"sLoadingRecords": "载入中...",
-					"sInfoThousands": ",",
-					"oPaginate": {
-						"sFirst": "首页",
-						"sPrevious": "上页",
-						"sNext": "下页",
-						"sLast": "末页"
-					},
-					"oAria": {
-						"sSortAscending": ": 以升序排列此列",
-						"sSortDescending": ": 以降序排列此列"
-					},
-					"buttons": {
-						"copy": "<i title='复制到剪切板' class='fa fa-copy'></i>",
-						"excel": "<i title='导出表格' class='fa fa-table'></i>",
-						"pdf": "<i title='导出PDF' class='fa fa-file-pdf-o'></i>",
-						"colvis": "<i title='选择列' class='glyphicon glyphicon-th'></i>",
-						"copyTitle": "复制到剪切板",
-						"copySuccess": {
-							1: "已经复制当前记录到剪贴板",
-							_: "已经复制 %d 条记录到剪切板"
-						}
-					}
-				},
-				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>', //生成样式
-				"paginationType": "full_numbers",
-				"processing": true,
-				"paging": true,
-				"lengthMenu": pagelengthMenu,
-				"pageLength": 10,
-				"language": {
-					"emptyTable": "没有关联的需求信息!",
-					"thousands": ","
-				},
-				"columnDefs": [{
-					"targets": "_all",
-					"defaultContent": ''
-				}],
-	            //"fixedColumns": {
-	            //    'leftColumns': 2
-	            //},
-				"buttons": [], //'pdf','copy', 'excel', 'colvis'
-				"drawCallback": function() {
-					//若有气泡提示气泡
-					$("[data-toggle='tooltip']").tooltip();
-					if(options.drawCallbackFn != undefined){
-						options.drawCallbackFn();
-					}
-				},
-				"ajax":{
-					beforSend:App.startLoading(btn)
-				}
-			}, options);
-			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
-	        	App.startLoading(btn);
-		   	}).on('xhr.dt', function ( e, settings, json, xhr ) {
-	        	App.stopLoading(btn);
-		        if(xhr.status == 200){
-		        	if(xhr.responseJSON.status != 1){
-		        		layer.alert(xhr.responseJSON.message, {icon: 2,title:"错误"});
-		        	}
-		        }else{
-		        	loadEnd();
-		        	layer.alert("接口错误", {icon: 2,title:"错误"});
-		        }
-		    });
-			$.fn.dataTable.ext.errMode = 'throw';
-			return oTable;
-		},
-		/*
-		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
-		 * @param {String} el 表单容器选择器
-		 * @param {JSON} formData 表单项的值
-		 * @param {object} valueCallback 需要做重定义的项
-		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
-		 */
-		setFormValues:function(el, formData, valueCallback){
-            if(formData != undefined && formData != null){
-                var obj = null,sel = null,objType = null;
-				$(el).find(".form-control[name]").val('');	//将有name的.form-control设置为空
-				if(valueCallback != undefined && valueCallback != null) {
-					for(var b in valueCallback) {
-						var value = formData[b];
-						var tvalue = valueCallback[b](value);
-						formData[b] = tvalue;
-					}
-				}
-                for( var a in formData){
-                    sel = ":input[name='" + a + "']";
-                    obj = $(el).find(sel);
-                    if(obj.length > 0){
-                        objType = obj[0].type;
-                        if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
-                            obj.val(formData[a]);
-                            if(objType == "select-one" && obj.hasClass('select2me')){
-                                obj.trigger('change');
-                            }
-                        }else if(objType == "radio" || objType == "checkbox"){
-                            App.setChecked(a,formData[a]);
-                        }
-                    }else if('object' == typeof formData[a]){
-                        App.setFormValues(el,formData[a]);
-                    }
-                }
-            }
-        },
-        /*
-         * 设置checkbox或者radio选中
-         */
-        setChecked: function(name, value) {
-			var cks = document.getElementsByName(name);
-			var arr = value.split(',');
-			for(var i = 0; i < cks.length; i++) {	
-				if(isInArray(arr, cks[i].value)) {			//判断是否在数组内
-					cks[i].checked = true;
-				}
-			}
-		},
-		/*
-		 * 重置form表单
-		 */
-		resetForm:function(obj){
-            var form = $(obj).closest('form');
-            form[0].reset();
-            form.find('.select2me').trigger('change');
-            form.find('input[data-initData]').each(function(){
-                var initEl = $(this);
-                var initVal = initEl.attr('data-initData');
-                if('undefined' !== typeof initVal )initEl.attr("value",initVal);
-            })
-        },
-		/**
-		 * setFindValue 为查看页面自动赋值不包含checkbox的赋值
-		 * @param {String} el 表单容器选择器
-		 * @param {JSON} formData 表单项的值
-		 * @param {object} valueCallback 需要做重定义的项
-		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
-		 * */
-		setFindValue: function(el, formData, valueCallback) {
-			if(formData != undefined && formData != null) {
-				var obj = null,
-					sel = null;
-				//将有name的.form-control-static设置为空
-				$(el).find(".form-control-static[name]").text('');
-				if(valueCallback != undefined && valueCallback != null) {
-					for(var b in valueCallback) {
-						var value = formData[b];
-						var tvalue = valueCallback[b](value);
-						formData[b] = tvalue;
-					}
-				}
-				$(el).find(".form-control-static[name]").each(function(index, item) {
-					var key = $(item).attr('name');
-					var valueObj = formData[key];
-					if(valueObj) {
-						$(item).text(valueObj);
-					} else {
-						//如果没有值用空格填充，解决为空导致的高度错乱问题
-						$(item).html('&nbsp;');
-					}
-				})
-			}
-		},
-		/*
-		 * 时间戳转时间
-		 * type 不传默认返回 yyyy-MM-dd HH:mm:ss
-		 * 传yyyy-MM-dd返回 yyyy-MM-dd;
-		 */
-		formatDateTime: function(inputTime,type) {
-			if(inputTime){
-				var date = new Date(inputTime);
-			}else{
-				return "";
-			}
-		    var y = date.getFullYear();
-		    var m = date.getMonth() + 1;
-		    m = m < 10 ? ('0' + m) : m;
-		    var d = date.getDate();
-		    d = d < 10 ? ('0' + d) : d;
-		    if(type == "yyyy-MM-dd" || type == "yyyy-mm-dd"){
-		    	return y + '-' + m + '-' + d;
-		    }else{
-		    	var h = date.getHours();
-		    	h = h < 10 ? ('0' + h) : h;
-		    	var minute = date.getMinutes();
-			    var second = date.getSeconds();
-			    minute = minute < 10 ? ('0' + minute) : minute;
-			    second = second < 10 ? ('0' + second) : second;
-		    	return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
-		    } 
-		},
-		/**
-         * datatable render 文本信息 btnArray 内容：
-         * 
-         * @param name string 显示的名称
-         * @param function fn 点击链接要进行的事件
-         */
         
-         getDataTableBtn:function(btnArray){
-            var btnModel = '    \
-                {{#each btnArray}}\
-                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs tooltips" data-delay="100" data-trigger="hover" data-toggle="tooltip"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
-                {{/each}}';
-            var template = Handlebars.compile(btnModel);
-            return template({
-                btnArray:btnArray
-            });
-        },
-        getDataTableLink:function(btnArray){
-            var btnModel = '    \
-                {{#each btnArray}}\
-                <button type="button" {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}}  class="btn btn-link btn-xs"  onclick="{{this.fn}}">{{this.name}}</button>\
-                {{/each}}';
-            var template = Handlebars.compile(btnModel);
-            return template({
-                btnArray:btnArray
-            });
-        },
-        getDataTableCheckbox:function(itemObj){
-            var content = '<label class="ui-checkbox">';
-            content += '<input type="checkbox" data-id="' + itemObj.id + '"  data-name="' + itemObj.name + '" value="' + itemObj.id + '" name="td-checkbox">';
-            content += '<span></span></label>';
-            return content;
-        },
-		// init main components
+        // init main components
         initComponents:function(){
             this.initAjax();
         },
@@ -1486,7 +1134,151 @@ var App = function() {
         getResponsiveBreakpoint:function(size){
             return _getResponsiveBreakpoint(size);
         },
-		/**
+        /**
+         * 初始化datatable表格
+         * 
+         * @params el string 表格的id
+         * @params options JSON 表格设置
+         * @params isOldDT boolean
+         * 非必填，是否使用老数据表构造，为true时，可以使用fnfilter,fndeleteRow等方法，但使用默认api方法时，需使用.api()方法调用
+         * 如：dataTable().api().row(0).remove 关于toolbars的设置请注意：
+         * 加入toolbars是为了自定义按钮能够与右侧的操作按钮同行显示，如果设置options.buttons为空（右侧没有工具按钮显示），则可不必通过toolbars的形式显示按钮
+         * 加入toolbars后，toolbars内的按钮不能通过id的方式设定事件（因为此时页面上会有两个相同id的按钮）
+         * 
+         * 不分页的表格，增加设置
+         * "paging":false,
+         * "dom":'<"clearfix">t<"clearfix">'
+         * 
+         */
+        initDataTables:function(el,options,isNewDT){
+            // 添加遮罩
+            App.blockUI({
+                message:'<div class="spinner"></div>'
+            });
+            if( !$().dataTable){
+                return;
+            }
+            var drawCallback = function(){
+            };
+            if(options.drawCallback){
+                drawCallback = options.drawCallback
+            };
+            var tdom = '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>';
+            if('undefined' == typeof options.toolbars && 'undefined' == typeof options.buttons){
+                tdom = 't<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>';
+            }
+            options = $.extend(true,{
+                "ordering":false,
+                "scrollX":true,
+                "scrollCollapse":true,
+                "sScrollX":true,
+                "sScrollXInner":"100%",
+                "sScrollY":"100%",//解决ie9下新增空行的问题; 设定数值，可以固定表格的高度
+                "bScrollCollapse":false,//解决ie9下新增空行的问题
+                "bAutoWidth":true,
+                "serverSide":true,
+                "ajax":{
+                    "type":"POST",
+                    "contentType":"application/x-www-form-urlencoded; charset=UTF-8",
+                    "dataType":"json",
+                    "complete":function(){
+                        // 结束遮罩
+                        App.unblockUI();
+                    },
+                    "error":function (XMLHttpRequest, textStatus, errorThrown) {
+                       ajaxErrorDeal(XMLHttpRequest, textStatus, errorThrown)
+                    }
+                },
+                "order":[], // 默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头
+                "oLanguage":{
+                    "sProcessing":"正在加载数据，请稍候...",
+                    "sLengthMenu":"&emsp;每页显示  _MENU_ 项",
+                    "sZeroRecords":"没有匹配结果",
+                    "sInfo":"第 _START_至 _END_项，共 _TOTAL_项",
+                    "sInfoEmpty":"第 0至0项，共0项",
+                    "sInfoFiltered":"(由 _MAX_项结果过滤)",
+                    "sInfoPostFix":"",
+                    "sSearch":"",
+                    "sSearchPlaceholder":"输入关键字筛选表格",
+                    "sUrl":"",
+                    "sDecimal":"",
+                    "sThousands":",",
+                    "sEmptyTable":"没有匹配结果",
+                    "sLoadingRecords":"载入中...",
+                    "sInfoThousands":",",
+                    "oPaginate":{
+                        "sFirst":"首页",
+                        "sPrevious":"上页",
+                        "sNext":"下页",
+                        "sLast":"末页"
+                    },
+                    "oAria":{
+                        "sSortAscending":": 以升序排列此列",
+                        "sSortDescending":": 以降序排列此列"
+                    },
+                    "buttons":{
+                        "copy":"<i title='复制到剪切板' class='fa fa-copy'></i>",
+                        "excel":"<i title='导出表格' class='fa fa-table'></i>",
+                        "pdf":"<i title='导出PDF' class='fa fa-file-pdf-o'></i>",
+                        "colvis":"<i title='选择列' class='glyphicon glyphicon-th'></i>",
+                        "copyTitle":"复制到剪切板",
+                        "copySuccess":{
+                            1:"已经复制当前记录到剪贴板",
+                            _:"已经复制 %d 条记录到剪切板"
+                        }
+                    }
+                },
+                "dom":'<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block" i><"inline-block"l>><"pull-right" p>>', // 生成样式
+                "processing":false,
+                // "bProcessing":true,
+                "paging":true,
+                "lengthMenu":[
+                    [
+                        5,10,15,20, 50,100
+                    ],[
+                        5,10,15,20,50,100
+                    ]
+                ],
+                "pageLength":10,
+                "language":{
+                    "emptyTable":"没有数据!",
+                    "thousands":","
+                },
+                // "fixedColumns": {
+                // 'leftColumns': 2
+                // },
+                "columnDefs":[
+                    { // 所有列默认值
+                        "targets":"_all",
+                        "defaultContent":''
+                    }
+                ],
+                "buttons":[], // 'pdf','copy', 'excel', 'colvis'
+                
+                drawCallback:function(){
+                    
+                }
+            },options);
+            options.drawCallback = function(){
+                // 加载工具栏
+                if(options.toolbars){
+                    $(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
+                    // $(options.toolbars).remove();
+                }
+                // 取消全选
+                // $(":checkbox[name='td-checkbox']").prop('checked', false);
+                App.initAjax();
+                // 加载自定义drawCallback();
+                drawCallback();
+                
+            }
+            if(isNewDT)
+                $table = $(el).dataTable(options);
+            else
+                $table = $(el).DataTable(options);
+            return $table;
+        },
+        /**
          * initEditableDatatables 基于initDataTables 实现表格的可编辑 options 新增 addRowBtn
          * String 触发新增按钮的id或calss选择器 options.columns 新增 isEditable Booleans
          * 标识当前列是否可编辑 options 新增fnDeleteEditRow Function 为删除一行之后的回调函数 options
@@ -1761,8 +1553,123 @@ var App = function() {
                     callback(checkedItem);
                 })
             }
-        },        		
+        },
+        isInArray:function(arr,value){
+            for(var i = 0;i < arr.length;i++){
+                if(arr[i] == value){
+                    return true;
+                }
+            }
+            return false;
+        },
+        setChecked:function(name,value){
+            var cks = document.getElementsByName(name);
+            var arr = value.split(',');
+            
+            for(var i = 0;i < cks.length;i++){
+                if(App.isInArray(arr,cks[i].value)){
+                    cks[i].checked = true;
+                }
+            }
+        },
         
+        /**
+         * setFormValues 为表单自动赋值
+         * 
+         * @params {String} formId 表单id
+         * @params {JSON} formData 表单值
+         */
+        setFormValues:function(formId,formData){
+            if(formData != undefined && formData != null){
+                var obj = null,sel = null,objType = null;
+                for( var a in formData){
+                    sel = ":input[name='" + a + "']";
+                    obj = $(formId).find(sel);
+                    if(obj.length > 0){
+                        objType = obj[0].type;
+                        if(objType == "text" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
+                            obj.val(formData[a]);
+                            if(objType == "select-one" && obj.hasClass('select2me')){
+                                obj.trigger('change');
+                            }
+                        }else if(objType == "radio" || objType == "checkbox"){
+                            App.setChecked(a,formData[a]);
+                        }
+                    }else if('object' == typeof formData[a]){
+                        App.setFormValues(formId,formData[a]);
+                    }
+                }
+            }
+        },
+        
+        /**
+         * setFindValue 为查看页面自动赋值
+         * 
+         * @param {String} el 表单容器选择器
+         * @param {JSON} formData 表单项的值
+         * @param {Array} valueCallback 需要做重定义的项
+         */
+        setFindValue:function(el,formData,valueCallback){
+            if(formData != undefined && formData != null){
+                var obj = null,sel = null;
+                // 将有name的.form-control-static设置为空
+                $(el).find(".form-control-static[name]").text('');
+                if(valueCallback != undefined && valueCallback != null){
+                    for( var b in valueCallback){
+                        var value = formData[b];
+                        var tvalue = valueCallback[b](value);
+                        formData[b] = tvalue;
+                    }
+                }
+                $(el).find(".form-control-static[name]").each(function(index,item){
+                    var key = $(item).attr('name');
+                    var valueObj = formData[key];
+                    if(valueObj){
+                        if(valueObj.callback){
+                            $(item).html(valueObj.callback(valueObj.value));
+                        }else{
+                            $(item).html(valueObj);
+                        }
+                    }else{
+                        // 如果没有值用空格填充，解决为空导致的高度错乱问题
+                        $(item).html('&nbsp;');
+                    }
+                })
+            }
+        },
+        /* 获取表格操作列的DOM */
+        getDataTableBtn:function(btnArray){
+            var btnModel = '    \
+                {{#each btnArray}}\
+                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs tooltips" data-delay="100" data-trigger="hover"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
+                {{/each}}';
+            var template = Handlebars.compile(btnModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        /**
+         * datatable render 文本信息 btnArray 内容：
+         * 
+         * @param name string 显示的名称
+         * @param function fn 点击链接要进行的事件
+         */
+        getDataTableLink:function(btnArray){
+            var btnModel = '    \
+                {{#each btnArray}}\
+                <button type="button" {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}}  class="btn btn-link btn-xs"  onclick="{{this.fn}}">{{this.name}}</button>\
+                {{/each}}';
+            var template = Handlebars.compile(btnModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        getDataTableCheckbox:function(itemObj){
+            var content = '<label class="ui-checkbox">';
+            content += '<input type="checkbox" data-id="' + itemObj.id + '"  data-name="' + itemObj.name + '" value="' + itemObj.id + '" name="td-checkbox">';
+            content += '<span></span></label>';
+            return content;
+        },
         getDateTimeStamp:function(dateStr){
             return Date.parse(dateStr.replace(/-/gi,"/"));
         },
@@ -1770,7 +1677,7 @@ var App = function() {
         formatStringDate:function(dateStr,formatStr){
             return new Date(App.getDateTimeStamp(dateStr)).Format(formatStr)
         },
-        getDateDiff :function(dateTimeStamp){
+        getDateDiff:function(dateTimeStamp){
             var minute = 1000 * 60;
             var hour = minute * 60;
             var day = hour * 24;
@@ -1778,31 +1685,89 @@ var App = function() {
             var month = day * 30;
             var now = new Date().getTime();
             var diffValue = now - dateTimeStamp;
-            if(diffValue < 0){return;}
-            var monthC =diffValue/month;
-            var weekC =diffValue/(7*day);
-            var dayC =diffValue/day;
-            var hourC =diffValue/hour;
-            var minC =diffValue/minute;
-            if(monthC>=1){
-                result="" + parseInt(monthC) + "月前";
+            if(diffValue < 0){
+                return;
             }
-            else if(weekC>=1){
-                result="" + parseInt(weekC) + "周前";
-            }
-            else if(dayC>=1){
-                result=""+ parseInt(dayC) +"天前";
-            }
-            else if(hourC>=1){
-                result=""+ parseInt(hourC) +"小时前";
-            }
-            else if(minC>=1){
-                result=""+ parseInt(minC) +"分钟前";
+            var monthC = diffValue / month;
+            var weekC = diffValue / (7 * day);
+            var dayC = diffValue / day;
+            var hourC = diffValue / hour;
+            var minC = diffValue / minute;
+            if(monthC >= 1){
+                result = "" + parseInt(monthC) + "月前";
+            }else if(weekC >= 1){
+                result = "" + parseInt(weekC) + "周前";
+            }else if(dayC >= 1){
+                result = "" + parseInt(dayC) + "天前";
+            }else if(hourC >= 1){
+                result = "" + parseInt(hourC) + "小时前";
+            }else if(minC >= 1){
+                result = "" + parseInt(minC) + "分钟前";
             }else
-            result="刚刚";
+                result = "刚刚";
             return result;
         },
-        
+        resetForm:function(obj){
+            var form = $(obj).closest('form');
+            form[0].reset();
+            form.find('.select2me').trigger('change');
+            form.find('input[data-initData]').each(function(){
+                var initEl = $(this);
+                var initVal = initEl.attr('data-initData');
+                if('undefined' !== typeof initVal )initEl.attr("value",initVal);
+            })
+        },
+        getFormToken:function(tokenId){
+            $.ajax({
+                type:"POST",
+                url:prc + "/commonController/getToken?T=" + new Date().getTime(),
+                async:false,
+                cache:false,
+                dataType:"json",
+                success:function(result){
+                    if(result){
+                        // 给token赋值
+                        $(tokenId).val(result.token);
+                    }
+                }
+            });
+        },
+        getUUID:function(primaryKeyId){
+            $.ajax({
+                type:"POST",
+                url:prc + "/commonController/getUUID?T=" + new Date().getTime(),
+                async:false,
+                cache:false,
+                dataType:"json",
+                success:function(result){
+                    if(result){
+                        // 给token赋值
+                        $(primaryKeyId).val(result.uuid);
+                    }
+                }
+            });
+        },
+        setWorkFlowTab:function(businessKey,processInstanceId,taskDefinitionKey,taskId,startLink,endLink,taskflag){
+            var paras = "?businessKey="+businessKey+"&processInstanceId="+processInstanceId+"&taskDefinitionKey="+taskDefinitionKey+
+                        "&taskId="+taskId+"&startLink="+startLink+"&endLink="+endLink+"&taskflag="+taskflag;
+            $.ajax({
+                type:"POST",
+                url:prc + "/commonController/getWorkFlowTab?T=" + new Date().getTime(),
+                data:{businessKey:businessKey,
+                    taskDefinitionKey:taskDefinitionKey,
+                    taskflag:taskflag},
+                async:false,
+                cache:false,
+                dataType:"json",
+                success:function(result){
+                    if(result){
+                        $.each(result, function(i, item) {
+                            addCustomTab({"title":item.TAB_NAME,"url":item.TAB_URL+paras});
+                        });
+                    }
+                }
+            });
+        },
         /**
          * 配置全选 全选checkbox 配置 data-checkAll="chkFlag",chkFlag可以是全选checkbox的value
          * data-fullChecked 默认配置上即认为需要子checkbox全部选中以后触发全选，也可以配置成true or false
@@ -1854,6 +1819,110 @@ var App = function() {
             window.top.closeSubpageTab(url);
         },
         /**
+         * 评价星星
+         * options.el string  显示星星的容器
+         * options.counts number 星星的数量 ,须为正整数
+         * options.onChange(target) 当评价修改时执行的回调
+         * 
+         * 初始化赋值，为el添加data-value属性，其职为0~counts的值，默认0~5
+         * 
+         * 方法：
+         * getValue,调用方式App.evalStar(el,'getValue');
+         * */
+        evalStar:function(options,methodName){
+            //判断是调用方法还是初始化
+            if('string' == typeof options){
+                if(methodName == 'getValue'){
+                    return getValue(options);
+                }
+            }
+            var el = options.el;
+            //初始化星星的数量
+            if('undefined' == typeof options.counts || 'number' != typeof options.counts){
+                options.counts = 5;
+            }else if(options.counts < 0){
+                options.counts = 5;
+            }
+            
+            if(el == undefined) return false;
+            //初始化星星
+            var $ul = $('<ul class="evalStar-list list-inline list-unstyled"></ul>');
+            for (var i=0;i<options.counts;i++) {
+                $ul.append('<li class="font-default" title="'+(i+1)+'星"><i class="iconfont icon-xing"></i></li>');
+            };
+            var hiddenClass= el.substr(1)+'Value';
+            $(el).each(function(index,elObj){
+                $(elObj).append($ul.clone());
+                var $hiddenText = $('<input type="hidden" name="evalStarValue'+index+'" value="0" class="'+hiddenClass+'">');
+                $(elObj).append($hiddenText);
+                var initValue = $(elObj).data('value');
+                if('undefined' != typeof initValue){
+                    initValue = parseInt(initValue);
+                    if(initValue >= 0 && initValue <= options.counts){
+                        $(elObj).find('li:not(:gt('+(initValue-1)+'))').removeClass('font-default').addClass('font-yellow');
+                        $(elObj).find('input').val(initValue);
+                    }
+                }
+            });
+            $(el).off('click','.icon-xing').on('click','.icon-xing',function(){
+                var iconObj = $(this).parent('li');
+                var iconIndex = iconObj.index();
+                var plist = $(this).closest('.evalStar-list');
+                var pwrapper = $(this).closest(el);
+                plist.find('li:not(:gt('+iconIndex+'))').removeClass('font-default').addClass('font-yellow');
+                plist.find('li:gt('+iconIndex+')').removeClass('font-yellow').addClass('font-default');
+                pwrapper.find('.'+hiddenClass).val(iconIndex+1);
+                //执行改变回调
+                if('function' == typeof options.onChange){
+                    options.onChange(iconIndex,iconObj);
+                }
+            })
+            
+            function getValue(el){
+                var getValue;
+                if($(el).length > 1){
+                    getValue = new Array();
+                    $(el).each(function(){
+                        getValue.push($(this).find(el+'Value').val());
+                    })
+                }else{
+                    getValue = $(el).find(el+'Value').val()
+                }
+                return getValue;
+            }
+        },
+        focusInvalidForm:function(e){
+            var validator = $(e.target || e.srcElement).data('bootstrapValidator');
+            var inValidForms = validator.getInvalidFields();
+            if(inValidForms.length > 0){
+                var firstForm = inValidForms[0];
+                var firstForm_top = $(firstForm).offset().top;
+                var scrollLength = 40 - firstForm_top;
+                var fieldsetWrapper = $(firstForm).closest('.form-fieldset');
+                var domWrapper = $(firstForm).closest('.modal');
+                var pageContentWrapper = $(firstForm).closest('.page-content');
+                var fieldSetFlag = false;
+                if(fieldsetWrapper.length > 0){
+                    var $parFieldsetBody = fieldsetWrapper.find('.form-fieldset-body');
+                    if($parFieldsetBody.is(':hidden')){
+                        fieldSetFlag = true;
+                        fieldsetWrapper.find('.form-collapse').trigger('click');
+                    }
+                }
+                //如果有表单面板的折叠，需要延迟200ms，当面板展开以后处理滚动
+                setTimeout(function(){
+                    if(domWrapper.length > 0){
+                        domWrapper.scrollTop(scrollLength);
+                    }else if(pageContentWrapper.length > 0){
+                        pageContentWrapper.scrollTop(scrollLength);
+                    }else{
+                        $(body).scrollTop(scrollLength);
+                    }
+                    $(firstForm).focus();
+                },fieldSetFlag?200:0);
+            }
+        },
+        /**
          * options.alertType 1:成功,2:失败,:警告
          * options.title 提示的标题，不建议自定义；
          * options.content 提示的内容
@@ -1900,64 +1969,19 @@ var App = function() {
                 layer.close(layerIndex);
             });
         }
-	};
+    };
+    
 }();
 
-<!-- END THEME LAYOUT SCRIPTS -->
-
-jQuery(document).ready(function() {
-	App.init();
+jQuery(document).ready(function(){
+    $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+    //监听input框的enter键，禁止默认的提交表单
+    $('body').on('keypress',':text',function(e){
+        if(e.keyCode == 13){
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
+        }
+    })
+    App.init();
 });
-function isInArray(arr,val) { 
-	var testStr="," + arr.join(",") + ","; 
-	return testStr.indexOf("," + val + ",") != -1; 
-} 
-/*
- * datatable事件  以后不用
- * code如果返回的值不是默认为data时的参数
- */
-function resolveResult(result,code){
-	if(result.status == 1){
-		if(code){
-			return result.code;
-		}else{
-			return result.data;
-		}
-	}else{
-		return [];
-	}
-}
-/*
- * ztree异步加载失败事件
- */
-function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-	layer.msg("接口错误", {
-		icon: 2
-	});
-}
-/*
- * 全局ajax事件
- */
-function loadStart(){
-//	NProgress.start();
-	layerIndex = layer.msg('加载中', {icon: 16,shade: 0.01,time:false});
-}
-function loadEnd(){
-	layer.close(layerIndex);
-}
-$(document).ajaxStart(function(){
-	loadStart();
-})
-$(document).ajaxStop(function(){
-    loadEnd();
-});
-$(document).ajaxError(function(){
-    loadEnd();
-});
-/*
- * Handlebars引擎模板   按钮生成
- */
-var btnModel = '    \
-	{{#each func}}\
-    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
-    {{/each}}';

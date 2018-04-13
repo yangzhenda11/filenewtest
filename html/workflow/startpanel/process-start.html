@@ -11,52 +11,57 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>流程发起待办页面-各流程发起嵌入页面</title>
-<script type="text/javascript" src="../workflow/startpanel/process-start.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>流程发起待办页面-各流程发起嵌入页面</title>
+    <script type="text/javascript" src="/html/workflow/startpanel/process-start.js"></script>
 </head>
 <body>
-	
-	<!-- Modal -->
-	<div class="modal fade" id="myProcessStartModal" role="dialog" aria-labelledby="processTite" data-backdrop="static">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="processTite">流程审批</h4>
-				</div>
-				<div class="modal-body">
-			      	<div>
-				      	<div class="col-sm-2">
-				      		<label for="link" style="text-align:center;">下一环节名称</label>
-				      	</div>
-				      	<div class="col-sm-10" style="padding-bottom:20px;">
-				      		<select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
-				      	</div>
-				      	<div class="clearfix"></div>
-			      	</div>
-			      	<div>
-				      	<div class="col-sm-2">
-				      		<label for="assignee" style="text-align:center;">下环节处理人</label>
-				      	</div>
-				      	<!-- <div class="col-sm-10" style="padding-bottom:20px;">
-				      		<select class="form-control" id="assignee" name="assignee">
-				      		</select>
-				      	</div> -->
-				      	<div class="col-sm-10" style="padding-bottom:20px;">
-				      		<input type="text" name="assigneeName" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left:10px"/>
-				      		<input type="hidden" name="assignee" class="form-control" id="assigneeForStart"/>
-				      		<span style="font-size:16px; position:absolute;top:9px;right:25px;z-index:999;cursor:pointer;" class="glyphicon glyphicon-zoom-in" onclick="selectAssigneeForStart($('#linkForStart').val().split(',')[2]);"></span>
-				      	</div>
-				      	<div class="clearfix"></div>
-			      	</div>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-success" data-loading-text="Loading..."  onclick="startProcess($('#processDefinitionKeyForStart').val(), $('#assigneeForStart').val(), $('#linkForStart').val().split(',')[0]);">提交</button>
-					<button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">返回</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <input type="hidden" id="processDefinitionKey" name="processDefinitionKey"/>
+    <input type="hidden" id="wprov" name="prov" /> 
+    <!-- Modal -->
+    <div class="modal fade" id="myProcessStartModal" data-backdrop="static" role="dialog" aria-labelledby="流程启动弹窗">
+        <div class="modal-dialog" role="document" aria-hidden="true">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">流程启动</h4>
+                </div>
+                <div class="modal-body form">
+                    <div class="form-body">
+                        <div class="form-group" id="nextlink">
+                            <label for="linkForStart">办理步骤<span class="notNull">*</span></label> <select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
+                        </div>
+                        <div class="form-group" id="nextassignee" style="position: relative;">
+                            <label for="assigneeNameForStart">办理人员 <span class="notNull">*</span></label>
+                            <div class="input-group">
+                                <input type="text" name="assigneeName" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" /> 
+                                <input type="hidden"name="assignee" class="form-control" id="assigneeForStart" /> 
+                                <span class="input-group-btn">
+                                    <button id="selectstaff" onclick="selectstaff();" type="button" class="btn primary">选择人员</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">处理意见 <span class="notNull">*</span></label>
+                            <textarea name="comment" id="comment" class="form-control" rows="3" required autofocus maxlength="125"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn primary"
+                            onclick="startProcess($('#processDefinitionKeyForStart').val(), $('#assigneeForStart').val(), $('#linkForStart').val().toString().split(',')[0]);">
+                            <i class="iconfont icon-tijiao"></i>提交
+                        </button>
+                        <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">
+                            <i class="iconfont icon-guanbi"></i>关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!--modal-->
+     <div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 </body>
 </html>

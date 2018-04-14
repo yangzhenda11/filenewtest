@@ -333,10 +333,10 @@ button:focus{
 .defaultModalWidth{
 	width: 90%;
 }
-.defaultModalForm > .form-group{
+.defaultModalForm .form-group{
 		display:table;
 }
-.defaultModalForm > .form-group > label{
+.defaultModalForm .form-group > label{
 		width: 30%;
     min-height: 1px;
     line-height: 16px;
@@ -344,7 +344,7 @@ button:focus{
     vertical-align:middle;    
     display:table-cell;
 }
-.defaultModalForm > .form-group > .valiParent{
+.defaultModalForm .form-group > .valiParent{
 		width: 100%;
 		float: left;
 	  position: relative;

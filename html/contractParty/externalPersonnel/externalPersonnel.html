@@ -53,6 +53,7 @@
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">人员状态</span>
 										<select class="form-control select2me" name="staffStatus">
+											<option value="">全部</option>
 											<option value="1">有效</option>
 											<option value="0">无效</option>
 										</select>
@@ -70,7 +71,7 @@
 								</div>
 							</div>
 							<div class="page-search-action">
-								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchPersonnel();"><i class="ace-icon iconfont icon-search"></i> 查询</button>
+								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchPersonnel();"><i class="iconfont icon-search"></i> 查询</button>
 								<button type="button" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="ace-icon iconfont icon-reset"></i> 清空</button>
 							</div>
 						</form>
@@ -85,12 +86,12 @@
 		<!--modal-->
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
-		  	<script src="../../../static/plugins/html5shiv.min.js"></script>
-		  	<script src="../../../static/plugins/respond.min.js"></script>
-		  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
+		  	<script src="../../static/plugins/html5shiv.min.js"></script>
+		  	<script src="../../static/plugins/respond.min.js"></script>
+		  	<script src="../../static/plugins/ie8.fix.min.js"></script>
 		<![endif]-->
 		<!--[if lte IE 8]>
-			<script src="../../../static/plugins/selectivizr-min.js"></script>
+			<script src="../../static/plugins/selectivizr-min.js"></script>
 		<![endif]-->
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>

@@ -26,12 +26,7 @@ function getConfigTable(){
 	                btnArray.push({ "name": "详情", "fn": "detailConfigModal(\'" + full.id + "\')" });
 	                btnArray.push({ "name": "修改", "fn": "editConfigModal(\'" + full.id + "\')" });
 	                btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')" })
-	                context = {
-	                 	func: btnArray
-	                }
-	                var template = Handlebars.compile(btnModel);
-                    var html = template(context);
-	                return html;
+	                return App.getDataTableBtn(btnArray);
 	            }
             },
 			{ "data": "code", "title": "参数名称", render: $.fn.dataTable.render.ellipsis(22, true) },
@@ -65,6 +60,7 @@ function addConfigModal(){
 	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalEdit",function(){
 		$("#modalTitle").text("新增系统参数");
 		$("#modal").modal("show");
+		App.initFormSelect2("#configForm");
 		validate("add");
 	});
 }
@@ -74,6 +70,7 @@ function addConfigModal(){
 function editConfigModal(id){
 	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalEdit",function(){
 		$("#modalTitle").text("系统参数修改");
+		App.initFormSelect2("#configForm");
 		getConfig(id,"edit");
 	});
 }

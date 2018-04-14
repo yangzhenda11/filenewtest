@@ -1,76 +1,133 @@
 $(function() {
-    //根据当前登录人的岗位id查询其组织id
-    //var curStaffOrgId1 = parent.globalConfig.curStaffOrgId;
-    //	debugger;
-    App.initDataTables('#staffSearchTable', "#searchBtn", {
-        ajax: {
-            "type": "GET",
-            "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
-            "data": function(d) { // 查询参数
-                d.sysOrgId = parent.globalConfig.curOrgId;
-                d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
-                d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
-                //d.orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
-                d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
-                d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
-                d.staffKind = "1"; //$("#curTabstaffKind").val();
-                return d;
-            },
-        },
-        "columns": [ // 对应列
-            {
-                "data": null,
-                className: "text-center",
-                title: "操作",
-                render: function(a, b, c, d) {
-                	if(c) {
-						var btnArray = new Array();
-	                    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
-                       	btnArray.push({ "name": "岗位管理", "fn": "orgManage(\'" + c.STAFF_ID + "','" + c.STAFF_NAME + "\')" });
-                        btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "','" + c.STAFF_NAME + "\')" });
-                        if ("1" == c.STAFF_STATUS) {
-                        	btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.ORG_NAME + "',0)" });
-	                        
-	                    } else {
-	                    	btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.ORG_NAME + "',1)" });
-	                    }
-	                    context = {
-	                        func: btnArray
-	                    }
-	                    var template = Handlebars.compile(btnModel);
-	                    var html = template(context);
-	                    return html;
-					} else {
-						return '';
-					}
-                    return html;
-                }
-            },
-            { "data": "STAFF_NAME", "title": "人员姓名", },
-            { "data": "LOGIN_NAME", "title": "账号",  },
-            { "data": "ORG_NAME", "title": "岗位",},
-            {
-                "data": "SEX",
-                "title": "性别",
-                render: function(a, b, c, d) {
-                    return (c.SEX == 'M') ? '男' : '女';
-                }
-            },
-            // { "data": "PHONE", "title": "电话号码", className: "text-center" },
-            { "data": "EMAIL", "title": "邮箱账号",},
-            { "data": "MOBIL_PHONE", "title": "手机号码",},
-            {
-                "data": "STAFF_STATUS",
-                "title": "状态",
-                render: function(a, b, c, d) {
-                    return ('1' == c.STAFF_STATUS) ? '有效' : '无效';
-                }
-            }
-        ],
-        "fixedColumns": {
-            'leftColumns': 2
-        },
-    });
+    var cloudSwitch;
+	//查询云门户开关参数
+	debugger
+	App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
+    function ajaxSuccess(result) {
+    	cloudSwitch=result.sysConfig.val;
+    	 if(cloudSwitch==1){
+    		 $('#addBtn').show();
+    	 }
+    	    //根据当前登录人的岗位id查询其组织id
+    	    //var curStaffOrgId1 = parent.globalConfig.curStaffOrgId;
+    	    App.initDataTables('#staffSearchTable', {
+    	        "serverSide": true, //开启服务器请求模式
+    	        //buttons: ['copy', 'colvis'], //显示的工具按钮
+    	        ajax: {
+    	            "type": "GET",
+    	            "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
+    	            "data": function(d) { // 查询参数
+    	                d.sysOrgId = parent.globalConfig.curOrgId;
+    	                d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
+    	                d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
+    	                //d.orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+    	                d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
+    	                d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
+    	                d.staffKind = "1"; //$("#curTabstaffKind").val();
+    	                return d;
+    	            },
+    	            "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
+    	            "dataType": "json",
+    	            error: function(xhr, error, thrown) {
+    	                stopLoading("#searchBtn");
+    	                layer.msg("接口错误", { icon: 2 });
+    	            },
+    	            "dataSrc": judge
+    	        },
+    	        // "ordering": true,
+    	        // "order": [
+    	        //     [3, "asc"]
+    	        // ],
+    	        "columns": [ // 对应列
+    	            {
+    	                "data": null,
+    	                className: "text-center",
+    	                title: "操作",
+    	                render: function(a, b, c, d) {
+    	                	if(c) {
+    							var btnArray = new Array();
+    		                    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
+    		                    if(cloudSwitch==1){
+    		                    	btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
+    		                    }
+    		                    btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
+    		                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
+    		                    if ("1" == c.STAFF_ORG_STATUS) {
+    		                       	btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0)" });
+    		                    } else {
+    		                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',1)" });
+    		                    }
+    		                    context = {
+    		                        func: btnArray
+    		                    }
+    		                    var template = Handlebars.compile(btnModel);
+    		                    var html = template(context);
+    		                    return html;
+    						} else {
+    							return '';
+    						}
+    	                    /*var context;
+    	                    var html = '';
+    	                    html += "<button title=\"查看\" onclick=\"showStaffDetail('" + c.STAFF_ID + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-search-plus\"></i></button>";
+    	                    // html += "<button title=\"修改\" onclick=\"goStaffEdit('" + c.STAFF_ID + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-edit\"></i></button>";
+    	                    html += "<button title=\"岗位管理\" onclick=\"orgManage('" + c.STAFF_ID + "','" + c.STAFF_NAME + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-cubes\"></i></button>";
+    	                    html += "<button title=\"密码重置\" onclick=\"resetPasswd('" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.LOGIN_NAME + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-key\"></i></button>";
+    	                    if ("1" == c.STAFF_STATUS) {
+    	                        html += "<button title=\"禁用\" onclick=\"changeStaffStatus('" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.ORG_NAME + "',0)\" class=\"btn btn-success btn-link btn-xs\"><i class=\"fa fa-close\"></i></button>";
+    	                    } else {
+    	                        html += "<button title=\"启用\" onclick=\"changeStaffStatus('" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.ORG_NAME + "',1)\" class=\"btn btn-success btn-link btn-xs\"><i class=\"fa fa-check\"></i></button>";
+    	                    }
+    	                    return html;*/
+    	                }
+    	            },
+    	            { "data": "STAFF_NAME", "title": "人员姓名", className: "text-center" },
+    	            { "data": "LOGIN_NAME", "title": "账号", className: "text-center" },
+    	            { "data": "ORG_NAME", "title": "部门名称", className: "text-center" },
+    	            {
+    	                "data": "SEX",
+    	                "title": "性别",
+    	                className: "text-center",
+    	                render: function(a, b, c, d) {
+    	                    return (c.SEX == 'M') ? '男' : '女';
+    	                }
+    	            },
+    	            // { "data": "PHONE", "title": "电话号码", className: "text-center" },
+    	            { "data": "EMAIL", "title": "邮箱账号", className: "text-center" },
+    	            { "data": "MOBIL_PHONE", "title": "手机号码", className: "text-center" },
+    	            {
+    	                "data": "STAFF_STATUS",
+    	                "title": "状态",
+    	                className: "text-center",
+    	                render: function(a, b, c, d) {
+    	                    return ('1' == c.STAFF_STATUS) ? '有效' : '无效';
+    	                }
+    	            }
+    	        ],
+    	        "columnDefs": [{ // 所有列默认值
+    	                render: $.fn.dataTable.render.ellipsis(22, true),
+    	                "targets": "_all",
+    	                "defaultContent": ''
+    	            },
+    	            { // 添加按钮
+    	                targets: 0,
+    	                render: function(a, b, c, d) {
+    	                    var context = btnFun(c);
+    	                    var html = roletemplate(context);
+    	                    return html;
+    	                }
+    	            }
+    	        ],
+    	        "fixedColumns": {
+    	            'leftColumns': 2
+    	        },
+    	        "scrollX": true
+    	    });
+    	    
+    	    
+    	    
+    	    
+    }
+
    
 });
 
@@ -119,8 +176,8 @@ function resetPasswd(staffId, staffName, loginName) {
  * @param {组织名} orgName 
  * @param {状态值} staffStatus 
  */
-function changeStaffStatus(staffId, staffName, orgName, staffStatus) {
-    if (1 === staffStatus) {
+function changeStaffStatus(staffOrgId, staffName,staffOrgStatus) {
+    if (1 === staffOrgStatus) {
         layer.confirm("确认启用" + staffName + "吗？", {
             btn: ['启用', '取消'],
             icon: 0,
@@ -128,7 +185,7 @@ function changeStaffStatus(staffId, staffName, orgName, staffStatus) {
         }, function() {
             $.ajax({ //提交服务端
                 "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'staffs/' + staffId + "/status/" + staffStatus,
+                "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
                 success: function(data) {
                     layer.alert("启用成功", {
                         icon: 0,
@@ -146,7 +203,7 @@ function changeStaffStatus(staffId, staffName, orgName, staffStatus) {
         }, function() {
             $.ajax({ //提交服务端
                 "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'staffs/' + staffId + "/status/" + staffStatus,
+                "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId +  "/status/" + staffOrgStatus,
                 success: function(data) {
                     layer.alert("禁用成功", {
                         icon: 0,
@@ -246,7 +303,9 @@ function showStaffDetail(staffId) {
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
-                return getFormatDate(new Date(data), "yyyy-MM-dd");
+                return App.formatDateTime(new Date(data),"yyyy-mm-dd")
+              //  return getFormatDate(new Date(data), "yyyy-MM-dd");
+
             }
 
             function statusCallback(data) {
@@ -271,106 +330,106 @@ function returnStaffList() {
     // searchStaff(true);
 }
 /**显示岗位管理列表 */
-function orgManage(staffId, staffName) {
-    // var curTabstaffKind = $('#curTabstaffKind').val();
-    $("#divStaffList").hide();
-    //debugger;
-    $('#staffLoadPart').load("staffOrgList.html", function() {
-        // $('#staffOrgList').attr("id", "staffOrgList" + curTabstaffKind);
-        // $('#searchStaffOrgTable').attr("id", "searchStaffOrgTable" + curTabstaffKind);
-        // $('#selectedStaffOrgId').attr("id", "selectedStaffOrgId" + curTabstaffKind);
-        // $('#staffOrgLoadPart').attr("id", "staffOrgLoadPart" + curTabstaffKind);
-        // $('#staffManageTitle').attr("id", "staffManageTitle" + curTabstaffKind);
-        $('#staffManageTitle').text(staffName + "的岗位操作");
-        $('#staffLoadPart').show();
-        App.initDataTables('#searchStaffOrgTable',  {
-	        ajax: {
-	            "type": "GET",
-	            "url": parent.globalConfig.serverPath + 'staffs/' + staffId + '/staffOrgs'
-	        },
-	        "columns": [ // 对应列
-	            {
-	                "data": null,
-	                className: "text-center",
-	                title: "操作",
-	                render: function(a, b, c, d) {
-	                	if(c) {
-							var btnArray = new Array();
-		                    btnArray.push({ "name": "角色管理", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "','" + c.ORG_NAME + "\')" });
-		                    if ("1" == c.STAFF_ORG_STATUS) {
-		                       	btnArray.push({ "name": "禁用", "fn": "changeStaffOrgStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\',\'0\')" });
-		                    } else {
-		                        btnArray.push({ "name": "启用", "fn": "changeStaffOrgStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\',\'1\')" });
-		                    }
-		                    context = {
-		                        func: btnArray
-		                    }
-		                    var template = Handlebars.compile(btnModel);
-		                    var html = template(context);
-		                    return html;
-						} else {
-							return '';
-						} 
-	                }
-	            }, {
-	                "data": "STAFF_ORG_TYPE",
-	                "title": "岗位类型",
-	                className: "text-center",
-	                render: function(a, b, c, d) {
-	                    if ('F' == c.STAFF_ORG_TYPE) {
-	                        return '主岗';
-	                    } else if ('T' == c.STAFF_ORG_TYPE) {
-	                        return '兼职';
-	                    } else {
-	                        return '借调';
-	                    }
-	                }
-	            },
-	            { "data": "ORG_NAME", "title": "组织名称", className: "text-center" },
-	            {
-	                "data": "STAFF_ORG_STATUS",
-	                "title": "岗位状态",
-	                className: "text-center",
-	                render: function(a, b, c, d) {
-	                    if ('1' == c.STAFF_ORG_STATUS) {
-	                        return '有效';
-	                    } else {
-	                        return '无效';
-	                    }
-	                }
-	            },
-	            {
-	                "data": "HIRE_DATE",
-	                "title": "录用时间",
-	                className: "text-center",
-	                render: function(a, b, c, d) {
-	                    return c.HIRE_DATE ? new Date(c.HIRE_DATE).format("yyyy-MM-dd") : '';
-	                }
-	            },
-	            {
-	                "data": "EFFECT_START_DATE",
-	                "title": "生效时间",
-	                className: "text-center",
-	                render: function(a, b, c, d) {
-	                    return c.EFFECT_START_DATE ? new Date(c.EFFECT_START_DATE).format("yyyy-MM-dd") : '';
-	                }
-	            },
-	            {
-	                "data": "EFFECT_END_DATE",
-	                "title": "失效时间",
-	                className: "text-center",
-	                render: function(a, b, c, d) {
-	                    return c.EFFECT_END_DATE ? new Date(c.EFFECT_END_DATE).format("yyyy-MM-dd") : '';
-	                }
-	            },
-	            { "data": "DUTY", "title": "职责", className: "text-center" }
-	        ],
-	        "fixedColumns": {
-                'leftColumns': 2
-            }
-		});
-	})
-}
+//function orgManage(staffId, staffName) {
+//  // var curTabstaffKind = $('#curTabstaffKind').val();
+//  $("#divStaffList").hide();
+//  //debugger;
+//  $('#staffLoadPart').load("staffOrgList.html", function() {
+//      // $('#staffOrgList').attr("id", "staffOrgList" + curTabstaffKind);
+//      // $('#searchStaffOrgTable').attr("id", "searchStaffOrgTable" + curTabstaffKind);
+//      // $('#selectedStaffOrgId').attr("id", "selectedStaffOrgId" + curTabstaffKind);
+//      // $('#staffOrgLoadPart').attr("id", "staffOrgLoadPart" + curTabstaffKind);
+//      // $('#staffManageTitle').attr("id", "staffManageTitle" + curTabstaffKind);
+//      $('#staffManageTitle').text(staffName + "的岗位操作");
+//      $('#staffLoadPart').show();
+//      App.initDataTables('#searchStaffOrgTable',  {
+//	        ajax: {
+//	            "type": "GET",
+//	            "url": parent.globalConfig.serverPath + 'staffs/' + staffId + '/staffOrgs'
+//	        },
+//	        "columns": [ // 对应列
+//	            {
+//	                "data": null,
+//	                className: "text-center",
+//	                title: "操作",
+//	                render: function(a, b, c, d) {
+//	                	if(c) {
+//							var btnArray = new Array();
+//		                    btnArray.push({ "name": "角色管理", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "','" + c.ORG_NAME + "\')" });
+//		                    if ("1" == c.STAFF_ORG_STATUS) {
+//		                       	btnArray.push({ "name": "禁用", "fn": "changeStaffOrgStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\',\'0\')" });
+//		                    } else {
+//		                        btnArray.push({ "name": "启用", "fn": "changeStaffOrgStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\',\'1\')" });
+//		                    }
+//		                    context = {
+//		                        func: btnArray
+//		                    }
+//		                    var template = Handlebars.compile(btnModel);
+//		                    var html = template(context);
+//		                    return html;
+//						} else {
+//							return '';
+//						} 
+//	                }
+//	            }, {
+//	                "data": "STAFF_ORG_TYPE",
+//	                "title": "岗位类型",
+//	                className: "text-center",
+//	                render: function(a, b, c, d) {
+//	                    if ('F' == c.STAFF_ORG_TYPE) {
+//	                        return '主岗';
+//	                    } else if ('T' == c.STAFF_ORG_TYPE) {
+//	                        return '兼职';
+//	                    } else {
+//	                        return '借调';
+//	                    }
+//	                }
+//	            },
+//	            { "data": "ORG_NAME", "title": "组织名称", className: "text-center" },
+//	            {
+//	                "data": "STAFF_ORG_STATUS",
+//	                "title": "岗位状态",
+//	                className: "text-center",
+//	                render: function(a, b, c, d) {
+//	                    if ('1' == c.STAFF_ORG_STATUS) {
+//	                        return '有效';
+//	                    } else {
+//	                        return '无效';
+//	                    }
+//	                }
+//	            },
+//	            {
+//	                "data": "HIRE_DATE",
+//	                "title": "录用时间",
+//	                className: "text-center",
+//	                render: function(a, b, c, d) {
+//	                    return c.HIRE_DATE ? new Date(c.HIRE_DATE).format("yyyy-MM-dd") : '';
+//	                }
+//	            },
+//	            {
+//	                "data": "EFFECT_START_DATE",
+//	                "title": "生效时间",
+//	                className: "text-center",
+//	                render: function(a, b, c, d) {
+//	                    return c.EFFECT_START_DATE ? new Date(c.EFFECT_START_DATE).format("yyyy-MM-dd") : '';
+//	                }
+//	            },
+//	            {
+//	                "data": "EFFECT_END_DATE",
+//	                "title": "失效时间",
+//	                className: "text-center",
+//	                render: function(a, b, c, d) {
+//	                    return c.EFFECT_END_DATE ? new Date(c.EFFECT_END_DATE).format("yyyy-MM-dd") : '';
+//	                }
+//	            },
+//	            { "data": "DUTY", "title": "职责", className: "text-center" }
+//	        ],
+//	        "fixedColumns": {
+//              'leftColumns': 2
+//          }
+//		});
+//	})
+//}
 /**
  * 角色分配
  * @param {岗位id} staffOrgId 
@@ -556,4 +615,358 @@ function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
             });
         });
     }
+}
+/*
+ * 新增人员点击事件
+ */
+function addStaffModal(){
+	$("#modal").load("staffInfoModal.html?" + App.timestamp()+" #modalEdit",function(){
+		$("#modalTitle").text("新增人员");
+		$("#modal").modal("show");
+		dateRegNameChose();
+		validate("add");
+	});
+}
+/*
+ * 修改人员点击事件
+ */
+function goStaffEdit(staffId){
+	$("#modal").load("staffInfoModal.html?" + App.timestamp()+" #modalEdit",function(){
+		$("#modalTitle").text("修改人员");
+		$("#modal").modal("show");
+		getInfor(staffId)
+	});
+}
+/*
+ * 获取人员信息详情
+ */
+function getInfor(staffId){
+	App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId, "get", "", successCallback);
+	function successCallback(result){
+		var data = result.data;
+		setEditForm(data);
+	}
+}
+/*
+ * 填充修改表单
+ */
+function setEditForm(data){
+	$('#modal').modal('show');
+	var valueCallback = {'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+	App.setFormValues("#staffForm",data,valueCallback);
+	$("#orgNameIn").attr("title",data.orgName);
+	$("#orgNameIn").data("id",data.orgId);
+	dateRegNameChose();
+	validate("edit");
+}
+
+/*
+ * 表单验证
+ */
+function validate(editType) {
+	$('#staffForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+			loginName : {
+				validators : {
+					notEmpty : {
+						message : '请输入账号'
+					},
+					stringLength : {
+						min : 0,
+						max : 20,
+						message : '请输入不超过20个字符'
+					},
+					regexp : {
+						regexp : /^[a-zA-Z0-9_\-\.]+$/,
+						message : '用户名由数字字母-_和.组成'
+					}
+				}
+			},
+			passwd : {
+				validators : {
+					notEmpty : {
+						message : '请输入密码'
+					},
+					stringLength : {
+						min : 5,
+						message : '密码至少5位'
+					}
+				}
+			},
+			staffName : {
+				validators : {
+					notEmpty : {
+						message : '请输入人员姓名'
+					},
+					stringLength : {
+						min : 0,
+						max : 15,
+						message : '请输入不超过15个字'
+					}
+				}
+			},
+			orgName : {
+				validators : {
+					notEmpty : {
+						message : '请选择所属组织'
+					}
+				},
+				trigger: "focus blur keyup change",
+			},
+			empCode : {
+				validators : {
+					regexp : {
+						regexp : /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+						message : '请输入15或18位身份证号'
+					}
+				}
+			},
+			sex : {
+				validators : {
+					notEmpty : {
+						message : '请选择性别'
+					}
+				},
+				trigger: "focus blur keyup change",
+			},
+			postcode : {
+				validators : {
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '请检查邮政编码'
+					},
+					stringLength : {
+						min : 0,
+						max : 6,
+						message : '请输入不超过6位数字'
+					}
+				}
+			},
+			mailAddr : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 30,
+						message : '请输入不超过30个字符'
+					}
+				}
+			},
+			phone : {
+				validators : {
+					regexp : {
+						regexp : /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
+						message : '请检查电话是否正确'
+					}
+				}
+			},
+			mobilPhone : {
+				validators : {
+					notEmpty : {
+						message : '请输入手机号'
+					},
+					stringLength : {
+						min : 11,
+						max : 11,
+						message : '请输入11位手机号码'
+					},
+					regexp : {
+						regexp : /^1[3|5|7|8]{1}[0-9]{9}$/,
+						message : '请输入正确的手机号码'
+					}
+				}
+			},
+			email : {
+				validators : {
+					emailAddress : {
+						message : '请检查Email拼写'
+					},
+					stringLength : {
+						min : 0,
+						max : 50,
+						message : '请输入不超过50个字符'
+					}
+				}
+			},
+			staffSort : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 8,
+						message : '请输入不超过8位数字'
+					},
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '排序只能输入数字'
+					}
+				}
+			}
+		}
+	}).on('success.form.bv', function(e) {
+		e.preventDefault();
+		updateInnalPersonnel(editType);
+	});
+}
+
+//日期和组织树选择触发
+function dateRegNameChose(){
+	if($.fn.datepicker) {
+		$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+		$.fn.datepicker.defaults.language = 'zh-CN';
+		$.fn.datepicker.defaults.autoclose = true;
+		$('.date-picker').datepicker({
+			format: "yyyy-mm-dd"
+		});
+	};
+	$("#orgNameIn").on("click",function(){
+		showTree('orgNameIn');
+	});
+	App.formAjaxJson(parent.globalConfig.serverPath + "orgs/" + parent.globalConfig.curOrgId + "/orgTree", "get", "", successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(null == data) {
+			layer.msg("没有相关组织和人员信息", {icon: 2});
+		} else {
+			orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
+		}
+	}
+}
+/*
+ * 显示所属组织树
+ */
+function showTree(dom) {
+	var selectObj = $("#" + dom + "");
+	var selectOffset = selectObj.offset();
+	$("#" + dom + "Content").css({
+		left: "0",
+		top: selectObj.outerHeight() + "px",
+		width: selectObj.outerWidth() + (dom == "orgNameIn" ? 40 : 120)
+	}).slideDown("fast");
+	onBodyDown(dom);
+}
+/*
+ * 所属组织树配置单选配置
+ */
+var orgsSetting = {
+	async: {
+		enable: true,
+		url: "",
+		type: "get",
+		dataType: 'json',
+		dataFilter: orgsfilter
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "orgId",
+			pIdKey: "parent_id"
+		},
+		key: {
+			name: "orgName"
+		}
+	},
+	view: {
+		dblClickExpand: false
+	},
+	callback: {
+		onAsyncError: onAsyncError,
+		onClick: onClick,
+		beforeAsync: zTreeBeforeAsync
+	}
+};
+function orgsfilter(treeId, parentNode, responseData) {
+	var responseData = responseData.data;
+	if(responseData) {
+		return responseData;
+	} else {
+		return null;
+	}
+}
+/*
+ * ztree点击事件
+ */
+function onClick(event, treeId, treeNode) {
+	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
+	var selectName = nodes[0].orgName;
+	var selectId = nodes[0].orgId;
+	$("input[name=" + treeId + "]").data("id", selectId);
+	$("input[name=" + treeId + "]").val(selectName);
+	$("input[name=" + treeId + "]").attr("title", selectName);
+	if(treeId == "orgName"){
+		$("#staffForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
+		$("#staffForm").data("bootstrapValidator").validateField('orgName');
+	}
+}
+/*
+ * ztree异步加载之前
+ */
+function zTreeBeforeAsync(treeId, treeNode) {
+	if(treeId == "organisationTree") {
+		organisationTree.setting.async.url = parent.globalConfig.serverPath + "orgs/" + treeNode.orgId + "/children";
+	}else if(treeId == "orgName"){
+		orgNameTree.setting.async.url = parent.globalConfig.serverPath + "orgs/" + treeNode.orgId + "/children";
+	}
+	return true;
+}
+/*
+ * 组织树点击事件
+ */
+function onBodyDown(dom) {
+	$("body").on("mousedown", function(event) {
+		if(!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
+			hideMenu(dom);
+		}
+	});
+}
+/*
+ * 隐藏所属组织树
+ */
+function hideMenu(dom) {
+	$("#" + dom + "Content").fadeOut("fast");
+	$("body").unbind("mousedown", onBodyDown);
+}
+/*
+ * 新增||修改提交
+ */
+function updateInnalPersonnel(editType) {
+	var formObj = App.getFormValues($("#staffForm"));
+	var ms = "新增成功";
+	var url = parent.globalConfig.serverPath + "staffs/addStaff";
+	var pushType = "POST";
+	if(editType == "add"){
+		formObj.createBy = parent.globalConfig.curStaffId;
+		formObj.updateBy = parent.globalConfig.curStaffId;
+		formObj.orgId = $("#orgNameIn").data("id");
+		formObj.staffKind = 1;
+		delete formObj.staffId;
+	}else{
+		formObj.updateBy = parent.globalConfig.curStaffId;
+		formObj.orgId = $("#orgNameIn").data("id");
+		ms = "修改成功";
+		url = parent.globalConfig.serverPath + "staffs/updateStaff";
+		pushType = "PUT";
+	}
+	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
+	function successCallback(result) {
+		layer.msg(ms, {icon: 1});
+		searchPersonnel(true);
+		$('#modal').modal('hide');
+	}
+	function improperCallbacks(result){
+		$('#staffForm').data('bootstrapValidator').resetForm();
+	}
+}
+/*
+ * 搜索点击事件
+ */
+function searchPersonnel(resetPaging) {
+	var table = $('#staffSearchTable').DataTable();
+	if(resetPaging) {
+		table.ajax.reload(null, false);
+	} else {
+		table.ajax.reload();
+	}
 }

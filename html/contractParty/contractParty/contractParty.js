@@ -72,10 +72,8 @@ function searchContract(retainPaging) {
  * 表格内编辑按钮点击获取结果事件
  */
 function editContract(data) {
-	$("#modal").load("_contractPartyModal.html?" + App.timestamp()+" #modalEdit",function(){
-		$.getScript("_contractPartyModal.js",function(){
+	$("#modal").load("_contractPartyModal.html?" + App.timestamp(),function(){
 			getContractInfo(data);
-		})
 	});
 }
 

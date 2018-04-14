@@ -69,7 +69,7 @@ App.initDataTables('#personnelTable', "#submitBtn", {
                     } else {
                         btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')"});
                     }
-                    return App.getDataTableBtn(btnArray);;
+                    return App.getDataTableBtn(btnArray);
 				} else {
 					return '';
 				}

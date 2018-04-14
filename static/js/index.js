@@ -47,7 +47,13 @@ $(document).ready(function() {
         globalConfig.curStaffOrg = data.mainStaffOrg;
         globalConfig.perm = data.perm;
         $(".user-info").html("<small>欢迎,</small>" + data.staff.staffName);
-        $(".user-menu").prepend("<li> <a href=\"javascript:;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.org.orgName + "</a> </li>");
+        if(data.otherStaffOrg.length>0){
+        	for(var i = 0; i < data.otherStaffOrg.length; i++){
+        		$(".user-menu").prepend("<li> <a href=\"javascript:changeStaffOrg("+ data.otherStaffOrg[i] +");\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.otherStaffOrg[i].attra + "</a> </li>");
+        	}
+        }
+        $(".user-menu").prepend("<li> <a href=\"javascript:changeStaffOrg("+ data.mainStaffOrg +");\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.mainStaffOrg.attra + "</a> </li>");
+
         App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + App.timestamp(), "GET", null, menuSuccess, null, null, null, false);
 
         function menuSuccess(result) {
@@ -192,6 +198,77 @@ function tPFilter(permCheck) {
     } else {
         return false;
     }
+}
+//hurx
+function changeStaffOrg(staffOrg){
+//	globalConfig.curStaffOrg = staffOrg;
+//	App.formAjaxJson(globalConfig.serverPath + "pers/permAll?" + App.timestamp(), "GET", {"staffOrgId":staffOrg.staffOrgId,"staffId":globalConfig.curStaffId}, menuCallback, null, null, null, false);
+//
+//     function menuCallback(result) {
+//    	 globalConfig.perm = result;
+//    	 window.location.href = "/index.html";
+//     }
+}
+var passwdValidator = {
+		message : 'This value is not valid',
+		feedbackIcons : {
+			valid : 'glyphicon glyphicon-ok',
+			invalid : 'glyphicon glyphicon-remove',
+			validating : 'glyphicon glyphicon-refresh',
+			errorClass : "invalid"
+		},
+		submitButtons: 'button[type="submit"]',
+		fields : {
+			passwd : {
+				validators : {
+					notEmpty : {
+						message : '请输入新密码'
+					},
+					regexp : {
+						regexp : /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
+						message : "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
+					}
+				}
+			},
+			passConfirm : {
+				validators : {
+					notEmpty : {
+						message : '请再次输入密码确认'
+					},
+					identical : {
+						field : 'passwd',
+						message : '两次输入的密码不一致。'
+					}
+				}
+			}
+		},
+//		submitHandler : function(validator, form, submitButton) {
+//			alert(321);
+//			changePasswd();
+//		}
+	};
+function updatePasswd(){
+	$('#editPasswd').modal({
+		backdrop:'static'
+	});
+	if($('#passwdForm').data('bootstrapValidator')){
+		$('#passwdForm').data('bootstrapValidator').resetForm(false);
+	}
+	if(null == $('#passwdForm').data('bootstrapValidator')) {
+		$('#passwdForm').bootstrapValidator(passwdValidator).on("success.form.bv",function(e){
+			changePasswd();
+			});
+	}
+}
+function changePasswd(){
+	var passwd = $("#passwdForm input[name='passwd']").val();	
+	App.formAjaxJson(globalConfig.serverPath + "staffs/"+globalConfig.curStaffId+"/main/passwd?passwd="+passwd+ App.timestamp(), "PUT", null, passwdCallback, null, null, null, false);
+	function passwdCallback(result){
+		if(result.data) {
+			alert("修改成功");
+			window.location.replace(globalConfig.staticPath+"login.html");
+		}
+	}
 }
  /**
  * 初始化左侧菜单滚动条

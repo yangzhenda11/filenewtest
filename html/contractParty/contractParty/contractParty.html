@@ -14,12 +14,15 @@
 		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-		<link rel="stylesheet" type="text/css" href="../css/contractParty.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
 	</head>
 
 	<body>
@@ -43,7 +46,7 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">是否我方签约主体</span>
-										<select id="isPartner" class="form-control">
+										<select id="isPartner" class="form-control select2me">
 											<option value="">全部</option>
 											<option value="0">是</option>
 											<option value="1">否</option>
@@ -51,7 +54,8 @@
 									</div>
 								</div>
 								<div class="input-group">
-									<button type="button" id="submitBtn" class="btn btn-info red" data-loading-text="加载中.." onclick="searchContract();"><i class="ace-icon fa fa-search"></i> 查询</button>
+									<button type="button" id="submitBtn" class="btn red" data-loading-text="加载中.." onclick="searchContract();"><i class="iconfont icon-search"></i> 查询</button>
+									<button type="button" onclick="App.resetForm('.form-horizontal')" class="btn yellow"><i class="ace-icon iconfont icon-reset"></i> 清空</button>
 								</div>
 							</div>
 						</form>
@@ -60,7 +64,6 @@
 				</div>
 			</div>
 		</div>
-		<!--modal-->
 		<!--modal-->
 		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
@@ -82,6 +85,7 @@
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="contractParty.js" type="text/javascript" charset="utf-8"></script>
 	</body>

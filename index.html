@@ -58,8 +58,13 @@
 								</li>
 								<li>
 									<!-- <a href="profile.html"> -->
-									<a href="javascript:alert('待实现')">
+									<a href="javascript:updatePasswd();">
 										<i class="ace-icon fa fa-key"></i> 更改密码
+									</a>
+								</li>
+								<li>
+									<a href="javascript:showSubpageTab('/html/sys/personalConfig/personalConfig.html','个人参数配置');">
+										<i class="ace-icon fa fa-cog"></i> 个人参数设置
 									</a>
 								</li>
 								<li class="divider"></li>
@@ -122,11 +127,53 @@
 			</div>
 		</div>
 		<div id="version"></div>
+		<div class="modal fade" id="editPasswd" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">修改密码</h4>
+					</div>
+					<div class="modal-body">
+						<form id="passwdForm" class="form-horizontal form-group">
+							<div class="col-sm-12">
+								<div class="form-group no-m-lr">
+									<label class="col-sm-3 control-label">密码</label>
+									<div class="col-sm-8">
+										<input type="password" placeholder="请输入密码" class="form-control"
+											name="passwd">
+									</div>
+								</div>
+								<div class="form-group no-m-lr">
+									<label class="col-sm-3 control-label">确认密码</label>
+									<div class="col-sm-8">
+										<input type="password" placeholder="请确认密码" class="form-control"
+											name="passConfirm">
+									</div>
+								</div>
+							</div>
+							<div class="text-center">
+								<button type="submit"
+									class="btn btn-sm btn-rounded btn-info m-sm" >保存</button>
+								<button type="button" data-dismiss="modal" aria-hidden="true"
+									class="btn btn-sm btn-rounded btn-default m-sm">取消</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 		<!--[if lt IE 9]>
-		  <script src="static/plugins/html5shiv.min.js"></script>
-		  <script src="static/plugins/respond.min.js"></script>
-		  <script src="static/plugins/html5shiv.min.js"></script>
-		  <script src="static/plugins/ie8.fix.min.js"></script>
+		  	<script src="../../static/plugins/html5shiv.min.js"></script>
+		  	<script src="../../static/plugins/respond.min.js"></script>
+		  	<script src="../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="../../static/plugins/selectivizr-min.js"></script>
 		<![endif]-->
 		<!--插件引入-->
 		<script src="static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
@@ -138,6 +185,7 @@
 		<script src="static/plugins/ace/js/ace.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/ace/js/ace.sidebar.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/contabs.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

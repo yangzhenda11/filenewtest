@@ -12,42 +12,30 @@
 		<div id="modalEdit">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<form class="form-horizontal" role="form" id="configForm">
+					<form class="form-horizontal" role="form" id="personalConfigForm">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							<h4 class="modal-title" id="modalTitle"></h4>
 						</div>
 
-						<div class="modal-body defaultModalForm">
-							<input type="hidden" name="id" id="id" value="" />
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="code">参数名称<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" id="code" name="code" class="form-control" placeholder="参数名称">
+						<div class="modal-body modalForm">
+							<input type="hidden" name="configId" value="" />
+							<input type="hidden" name="staffOrgId" value="" />
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="code">参数名称<span class="notNull">*</span></label>
+								<div class="col-sm-8">
+									<input type="text" name="code" class="form-control" placeholder="参数名称">
 								</div>
 							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="val">参数值<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" id="val" name="val" class="form-control" placeholder="参数值">
-								</div>
-							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="attra">允许用户更改<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent col-sm-11">
-									<select class="form-control select2me" name="attra" id="attra">
-										<option value="">请选择</option>
-										<option value="0">否</option>
-										<option value="1">是</option>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="val">参数值<span class="notNull">*</span></label>
+								<div class="col-sm-8">
+									<select class="form-control" name="val" placeholder="参数值">
 									</select>
+									<!-- <input type="text" id="val" name="val" class="form-control" placeholder="参数值"> -->
 								</div>
 							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="attrb">可更改枚举值</label>
-								<div class="valiParent">
-									<input type="text" id="attrb" name="attrb" class="form-control" placeholder="可更改枚举值">
-								</div>
-							</div>
+							
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-danger btn-circle"><i class="fa fa-check"></i> 保存</button>

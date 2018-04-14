@@ -96,12 +96,7 @@ function createDictTable() {
 	                    } else {
 	                        btnArray.push({ "name": "启用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'1\')"});
 	                    }
-	                    context = {
-	                        func: btnArray
-	                    }
-	                    var template = Handlebars.compile(btnModel);
-	                    var html = template(context);
-	                    return html;
+	                    return App.getDataTableBtn(btnArray);;
                 	}
                 }
             },

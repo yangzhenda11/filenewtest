@@ -54,12 +54,7 @@ function getOrgTable(orgId){
 	                    } else {
 	                        btnArray.push({ "name": "启用", "fn": "orgRe(\'" + c.ORG_ID + "\')" });
 	                    }
-	                    context = {
-	                        func: btnArray
-	                    }
-	                    var template = Handlebars.compile(btnModel);
-	                    var html = template(context);
-	                    return html;
+	                    return App.getDataTableBtn(btnArray);
 					} else {
 						return '';
 					}

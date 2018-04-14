@@ -549,7 +549,7 @@ var App = function() {
             	 	options.minimumResultsForSearch = -1;
                 };
                 $(this).select2(options);
-                $(this).val(null).trigger("change");
+                $(this).trigger("change");
             })
         }
     };
@@ -922,7 +922,7 @@ var App = function() {
 				"buttons": [], //'pdf','copy', 'excel', 'colvis'
 				"drawCallback": function() {
 					//若有气泡提示气泡
-					$("[data-toggle='tooltip']").tooltip();
+					//$("[data-toggle='tooltip']").tooltip();
 					if(options.drawCallbackFn != undefined){
 						options.drawCallbackFn();
 					}
@@ -970,6 +970,7 @@ var App = function() {
                     obj = $(el).find(sel);
                     if(obj.length > 0){
                         objType = obj[0].type;
+                        console.log(objType);
                         if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
                             obj.val(formData[a]);
                             if(objType == "select-one" && obj.hasClass('select2me')){
@@ -1063,7 +1064,7 @@ var App = function() {
             var form = $(obj).closest('form');
             form[0].reset();
             form.find('input[type=text]').data("id","");
-            form.find('.select2me').val(null).trigger("change");
+            form.find('.select2me').trigger("change");
             form.find('input[data-initData]').each(function(){
                 var initEl = $(this);
                 var initVal = initEl.attr('data-initData');
@@ -1092,7 +1093,6 @@ var App = function() {
 	                if(allowSearch == undefined)
 	                    options.minimumResultsForSearch = -1;
 	                $(this).select2(options);
-	                $(this).val(null).trigger("change");
 	            })
 	        }
 	    },
@@ -1142,7 +1142,7 @@ var App = function() {
          getDataTableBtn:function(btnArray){
          	var btnModel = '    \
 				{{#each btnArray}}\
-    			<button type="button" data-toggle="tooltip" data-placement="right" title="{{this.name}}" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
+    			<button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
     			{{/each}}';
             var template = Handlebars.compile(btnModel);
             return template({
@@ -2016,6 +2016,12 @@ $(document).ajaxStop(function(){
 });
 $(document).ajaxError(function(){
     loadEnd();
+});
+$(document).ajaxSend(function(event, jqxhr, settings) {
+	 console.log(event);
+	 console.log(jqxhr)
+	 console.log(settings)
+	 settings.data = {"da":"123"}
 });
 /*
  * Handlebars引擎模板   按钮生成

@@ -33,12 +33,7 @@ function getRoleTable(){
 	                    btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
 	                    btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
 	                    btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
-	                    context = {
-	                        func: btnArray
-	                    }
-	                    var template = Handlebars.compile(btnModel);
-	                    var html = template(context);
-	                    return html;
+	                    return App.getDataTableBtn(btnArray);
 					} else {
 						return '';
 					}

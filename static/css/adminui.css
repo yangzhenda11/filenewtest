@@ -7014,7 +7014,7 @@ Color library demo
     color: #333; }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
   height: 8px; }
 
 ::-webkit-scrollbar-track {
@@ -7031,8 +7031,7 @@ Color library demo
   background: #bbb; }
 
 html, body, .page-content {
-  height: 100%; 
-  width: 100%;}
+  height: 100%; }
 
 .page-content {
   padding: 10px;
@@ -8060,9 +8059,6 @@ Datatables general customization
 .dataTables_wrapper .table > thead > tr {
   color: #707070;
   background: repeat-x #F5F5F5; }
-
-.dataTables_wrapper .table > thead > tr > th {
-  font-weight: normal; }
 
 .dt-footer-wrapper {
   padding-top: 4px; }

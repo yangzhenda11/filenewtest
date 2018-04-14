@@ -534,20 +534,20 @@ var App = function() {
         if($().select2){
             $.fn.select2.defaults.set("theme","bootstrap");
             $('.select2me').each(function(){
-            	var maximumSelectionLength = $(this).attr('data-maximumSelectionLength');
                 var allowClearFlag = $(this).attr('data-allowClear');
                 var allowSearch = $(this).attr('data-allowSearch');
                 if(allowClearFlag != false){
                 	allowClearFlag = true;
                 }
                 options = {
-                    placeholder:"请选择",
+                    placeholder:"全部",
                     language:'zh-CN',
                     width:'100%',
                     allowClear:allowClearFlag
                 };
-                if(allowSearch == undefined)
-                    options.minimumResultsForSearch = -1;
+                if(allowSearch == undefined){
+            	 	options.minimumResultsForSearch = -1;
+                };
                 $(this).select2(options);
                 $(this).val(null).trigger("change");
             })
@@ -996,19 +996,6 @@ var App = function() {
 				}
 			}
 		},
-		/*
-		 * 重置form表单
-		 */
-		resetForm:function(obj){
-            var form = $(obj).closest('form');
-            form[0].reset();
-            form.find('.select2me').trigger('change');
-            form.find('input[data-initData]').each(function(){
-                var initEl = $(this);
-                var initVal = initEl.attr('data-initData');
-                if('undefined' !== typeof initVal )initEl.attr("value",initVal);
-            })
-        },
 		/**
 		 * setFindValue 为查看页面自动赋值不包含checkbox的赋值
 		 * @param {String} el 表单容器选择器
@@ -1069,6 +1056,82 @@ var App = function() {
 		    	return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
 		    } 
 		},
+		/*
+		 * 重置form表单
+		 */
+		resetForm:function(obj){
+            var form = $(obj).closest('form');
+            form[0].reset();
+            form.find('input[type=text]').data("id","");
+            form.find('.select2me').val(null).trigger("change");
+            form.find('input[data-initData]').each(function(){
+                var initEl = $(this);
+                var initVal = initEl.attr('data-initData');
+                if('undefined' !== typeof initVal )initEl.attr("value",initVal);
+            })
+        },
+		/*
+		 * 表单内静态select2内容的初始化
+		 * dom 表单的dom元素
+		 */
+		initFormSelect2 : function(dom){
+        	if($().select2){
+	            $.fn.select2.defaults.set("theme","bootstrap");
+	            $(dom).find(".select2me").each(function(){
+	                var allowClearFlag = $(this).attr('data-allowClear');
+	                var allowSearch = $(this).attr('data-allowSearch');
+	                if(allowClearFlag != false){
+	                	allowClearFlag = true;
+	                }
+	                options = {
+	                    placeholder:"请选择",
+	                    language:'zh-CN',
+	                    width:'100%',
+	                    allowClear:allowClearFlag
+	                };
+	                if(allowSearch == undefined)
+	                    options.minimumResultsForSearch = -1;
+	                $(this).select2(options);
+	                $(this).val(null).trigger("change");
+	            })
+	        }
+	    },
+	    /*
+		 * ajaxselect2内容的初始化
+		 * dom 初始化的dom元素
+		 * ajaxObj ajax查询参数   必传，参数和formAjaxJson一致
+		 * select2Obj selesct的参数
+		 */
+		initAjaxSelect2 : function(dom,ajaxObj,select2Obj){
+        	if($().select2){
+        		var options = select2Obj;
+        		console.log(typeof options)
+	            $.fn.select2.defaults.set("theme","bootstrap");
+			    //设置Select2的处理
+			    var allowClearFlag = $(dom).attr('data-allowClear');
+                var allowSearch = $(dom).attr('data-allowSearch');
+                if(allowClearFlag != false){
+                	allowClearFlag = true;
+                }
+                options.paceholder = "请选择";
+                options.language = 'zh-CN';
+                options.width = '100%';
+                options.allowClear = allowClearFlag;
+                if(allowSearch == undefined)
+                    options.minimumResultsForSearch = -1;
+                $(dom).select2(options);
+                $(dom).val(null).trigger("change");
+			    //绑定Ajax的内容
+			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,ajaxObj.data,succssCallback);
+			    function succssCallback(result){
+			    	var data = result.data;
+			    	$(dom).empty();//清空下拉框
+			        $.each(data, function (i, item) {
+			            $(dom).append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+			        });
+			    }
+	        }    
+	    },
 		/**
          * datatable render 文本信息 btnArray 内容：
          * 
@@ -1077,19 +1140,19 @@ var App = function() {
          */
         
          getDataTableBtn:function(btnArray){
-            var btnModel = '    \
-                {{#each btnArray}}\
-                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs tooltips" data-delay="100" data-trigger="hover" data-toggle="tooltip"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
-                {{/each}}';
+         	var btnModel = '    \
+				{{#each btnArray}}\
+    			<button type="button" data-toggle="tooltip" data-placement="right" title="{{this.name}}" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
+    			{{/each}}';
             var template = Handlebars.compile(btnModel);
             return template({
                 btnArray:btnArray
             });
         },
         getDataTableLink:function(btnArray){
-            var btnModel = '    \
+             var btnModel = '    \
                 {{#each btnArray}}\
-                <button type="button" {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}}  class="btn btn-link btn-xs"  onclick="{{this.fn}}">{{this.name}}</button>\
+                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs" data-delay="100" data-trigger="hover" data-toggle="tooltip"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
                 {{/each}}';
             var template = Handlebars.compile(btnModel);
             return template({

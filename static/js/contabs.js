@@ -33,8 +33,7 @@ $(function() {
 	});
 	$('.J_tabRefresh').click(function() {
 		var $targetFrame = $('.J_iframe:visible');
-		document.getElementById($targetFrame.attr('id')).contentWindow.location.reload(true);
-//		$targetFrame.attr('src', $targetFrame.attr('src'))
+		$targetFrame.attr('src', $targetFrame.attr('src'))
 	})
 	$(".J_tabCloseOther").on("click", conTabI);
 //	$(".J_tabShowActive").on("click", conTabJ);

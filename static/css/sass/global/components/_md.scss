@@ -1,0 +1,19 @@
+//== Forms Controls
+
+$input-md-label-color:        			#333;
+$input-md-input-border:        			$input-border;
+$input-md-label-opacity:      			1;
+$input-md-label-font-size: 				14px;
+$input-md-placeholder:	 				$input-color-placeholder;
+$input-md-color:		 				$input-color;
+$input-md-focus-border:					$brand-success;
+$input-ui-checkbox-box-color:  			#666;
+$input-ui-checkbox-disabled-opacity:	0.7;
+
+$input-icon-color:               		#999 !default;
+
+@import '_md-base';
+//@import '_md-inputs';
+@import '_ui-checkboxes';
+@import '_ui-radios';                                
+                      

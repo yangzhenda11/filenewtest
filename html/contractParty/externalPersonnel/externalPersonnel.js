@@ -62,14 +62,13 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 				if(data) {
 					var para = data.staffId + '&&' + data.staffName + '&&' + data.loginName + '&&' + data.staffStatus;
 					var btnArray = new Array();
-                    btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.staffId + "\')" ,"icon":"iconfont icon-chakan"});
-                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + para + "\')" ,"icon":"iconfont icon-chakan"});
+                    btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.staffId + "\')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + para + "\')" });
                     if ('1' == data.staffStatus) {
-                        btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + para + "\')","icon":"iconfont icon-chakan"});
+                        btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + para + "\')"});
                     } else {
-                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')","icon":"iconfont icon-chakan"});
+                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')"});
                     }
-                    
                     return App.getDataTableBtn(btnArray);;
 				} else {
 					return '';
@@ -187,6 +186,7 @@ function personnelModal(code) {
 	var editType = code[0];
 	if(editType == "add" || editType == "edit") {
 		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalEdit",function(){
+			App.initFormSelect2("#externalPersonnelForm")
 			if(editType == "add"){
 				$("#modalTitle").text("新增外部人员");
 				dateRegNameChose();
@@ -202,6 +202,11 @@ function personnelModal(code) {
 			getInfor(code[1],editType);
 		});
 	}
+}
+function showModall(){
+	alert(1)
+	$("#testModal").modal('show');
+	
 }
 /*
  * 获取人员信息详情

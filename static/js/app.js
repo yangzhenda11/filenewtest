@@ -2017,12 +2017,6 @@ $(document).ajaxStop(function(){
 $(document).ajaxError(function(){
     loadEnd();
 });
-$(document).ajaxSend(function(event, jqxhr, settings) {
-	 console.log(event);
-	 console.log(jqxhr)
-	 console.log(settings)
-	 settings.data = {"da":"123"}
-});
 /*
  * Handlebars引擎模板   按钮生成
  */

@@ -6,16 +6,16 @@ var globalConfig = {
     staticPath: "/",
     /**后台服务地址 */
     serverPath: "/",
-	/** 当前岗位信息对象 */
-    curStaffOrg: {},
     /** 当前用户的岗位id （sys_staff_org表主键） */
     curStaffOrgId: null, //10001
-    /** 当前用户所在组织对象 */
-    curOrg: {},
     /** 当前用户所在组织的id（sys_org表主键） */
     curOrgId: null, //56665
+	/** 当前岗位信息对象 */
+    //curStaffOrg: {},
+    /** 当前用户所在组织对象 */
+    //curOrg: {},
     /** 当前用户对象 */
-   	curStaff: {},
+   	//curStaff: {},
 	/*
 	 * 包括
 	 * staffCode : "001"
@@ -29,38 +29,38 @@ var globalConfig = {
     curStaffId: null, //10002
     /** 当前用户的权限集合 */
     perm: [],
-     /** 当前用户的系统设置 */
+    /** 当前用户的系统设置 */
     curConfigs:{}
 };
 var ace_menus = null;
+
 $(document).ready(function() {
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
 
     function successCallback(result) {
         var data = result.data;
-        globalConfig.curStaffId = data.staff.staffId;
-        globalConfig.curStaffName = data.staff.staffName;
-        globalConfig.curStaffOrgId = data.mainStaffOrg.staffOrgId;
-        globalConfig.curOrgId = data.org.orgId;
-        globalConfig.curStaff = data.staff;
-        globalConfig.curOrg = data.org;
-        globalConfig.curStaffOrg = data.mainStaffOrg;
+       globalConfig.curStaffId = data.staffId;
+        globalConfig.curStaffName = data.staffName;
+        globalConfig.curStaffOrgId = data.staffOrgId;
+        globalConfig.curOrgId = data.orgId;
+        //globalConfig.curStaff = data.staff;
+        //globalConfig.curOrg = data.org;
+       // globalConfig.curStaffOrg = data.mainStaffOrg;
         globalConfig.perm = data.perm;
-        $(".user-info").html("<small>欢迎,</small>" + data.staff.staffName);
-        if(data.otherStaffOrg.length>0){
-        	for(var i = 0; i < data.otherStaffOrg.length; i++){
-        		$(".user-menu").prepend("<li> <a href=\"javascript:changeStaffOrg("+ data.otherStaffOrg[i] +");\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.otherStaffOrg[i].attra + "</a> </li>");
+        ace_menus = data.menus;
+        debugger;
+        $(".user-info").html("<small>欢迎,</small>" + data.staffName);
+        if(data.staffOrgs.length>0){
+        	for(var i = 0; i < data.staffOrgs.length; i++){
+        		if (data.staffOrgId == data.staffOrgs[i].staffOrgId){
+        			$(".user-menu").prepend("<li> <a id=\"staffOrg"+ data.staffOrgs[i].staffOrgId+" \" href=\"javascript:changeStaffOrg("+ data.staffOrgs[i].staffOrgId +");\" style=\"color:red;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
+        		} else {
+        			$(".user-menu").prepend("<li> <a id=\"staffOrg"+ data.staffOrgs[i].staffOrgId+" \" href=\"javascript:changeStaffOrg("+ data.staffOrgs[i].staffOrgId +");\" style=\"color:black;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
+        		}
         	}
         }
-        $(".user-menu").prepend("<li> <a href=\"javascript:changeStaffOrg("+ data.mainStaffOrg +");\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.mainStaffOrg.attra + "</a> </li>");
-
-        App.formAjaxJson(globalConfig.serverPath + "menus?staffOrgId=" + globalConfig.curStaffOrgId + App.timestamp(), "GET", null, menuSuccess, null, null, null, false);
-
-        function menuSuccess(result) {
-            ace_menus = result.data;
-        }
         
-        App.formAjaxJson(globalConfig.serverPath + "configs/getVal?staffOrgId=" + globalConfig.curStaffOrgId+"&code=config_page_size", "GET", null, configSuccess,configImproper,configError,null,false);
+        App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", {staffOrgId:globalConfig.curStaffOrgId,code:"config_page_size"}, configSuccess,configImproper,configError,null,false);
 	    function configSuccess(result) {
 	       	if(result.data != ""){
 	       		globalConfig.curConfigs.configPagelengthMenu = result.data;
@@ -199,15 +199,18 @@ function tPFilter(permCheck) {
         return false;
     }
 }
+
 //hurx
-function changeStaffOrg(staffOrg){
-//	globalConfig.curStaffOrg = staffOrg;
-//	App.formAjaxJson(globalConfig.serverPath + "pers/permAll?" + App.timestamp(), "GET", {"staffOrgId":staffOrg.staffOrgId,"staffId":globalConfig.curStaffId}, menuCallback, null, null, null, false);
-//
-//     function menuCallback(result) {
-//    	 globalConfig.perm = result;
-//    	 window.location.href = "/index.html";
-//     }
+function changeStaffOrg(staffOrgId){
+	App.formAjaxJson(globalConfig.serverPath + "changestation/"+ staffOrgId , "GET", null, menuCallback, null, null, null, false);
+
+     function menuCallback(result) {
+    	 if(result.status){
+    		 window.location.reload();
+    	 }else{
+    		 alert(data.message);
+    	 }
+     }
 }
 var passwdValidator = {
 		message : 'This value is not valid',
@@ -242,34 +245,36 @@ var passwdValidator = {
 				}
 			}
 		},
-//		submitHandler : function(validator, form, submitButton) {
-//			alert(321);
-//			changePasswd();
-//		}
+
 	};
-function updatePasswd(){
+function updatePasswd() {
 	$('#editPasswd').modal({
-		backdrop:'static'
+		backdrop : 'static'
 	});
-	if($('#passwdForm').data('bootstrapValidator')){
+	if ($('#passwdForm').data('bootstrapValidator')) {
 		$('#passwdForm').data('bootstrapValidator').resetForm(false);
 	}
-	if(null == $('#passwdForm').data('bootstrapValidator')) {
-		$('#passwdForm').bootstrapValidator(passwdValidator).on("success.form.bv",function(e){
-			changePasswd();
-			});
+	if (null == $('#passwdForm').data('bootstrapValidator')) {
+		$('#passwdForm').bootstrapValidator(passwdValidator).on(
+				"success.form.bv", function(e) {
+					changePasswd();
+				});
 	}
 }
-function changePasswd(){
-	var passwd = $("#passwdForm input[name='passwd']").val();	
-	App.formAjaxJson(globalConfig.serverPath + "staffs/"+globalConfig.curStaffId+"/main/passwd?passwd="+passwd+ App.timestamp(), "PUT", null, passwdCallback, null, null, null, false);
-	function passwdCallback(result){
-		if(result.data) {
+function changePasswd() {
+	var passwd = $("#passwdForm input[name='passwd']").val();
+	App.formAjaxJson(globalConfig.serverPath + "staffs/"
+			+ globalConfig.curStaffId + "/main/passwd?passwd=" + passwd
+			+ App.timestamp(), "PUT", null, passwdCallback, null, null, null,
+			false);
+	function passwdCallback(result) {
+		if (result.data) {
 			alert("修改成功");
-			window.location.replace(globalConfig.staticPath+"login.html");
+//			window.location.replace(globalConfig.staticPath + "login.html");
 		}
 	}
 }
+
  /**
  * 初始化左侧菜单滚动条
  * 

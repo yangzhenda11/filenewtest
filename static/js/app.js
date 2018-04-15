@@ -1101,11 +1101,13 @@ var App = function() {
 		 * dom 初始化的dom元素
 		 * ajaxObj ajax查询参数   必传，参数和formAjaxJson一致
 		 * select2Obj selesct的参数
+		 * select2填充的key值获取对象
+		 * select2填充的value值获取对象
+		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,select2Obj){
+		initAjaxSelect2 : function(dom,ajaxObj,select2Obj,key,value,type){
         	if($().select2){
         		var options = select2Obj;
-        		console.log(typeof options)
 	            $.fn.select2.defaults.set("theme","bootstrap");
 			    //设置Select2的处理
 			    var allowClearFlag = $(dom).attr('data-allowClear');
@@ -1126,8 +1128,9 @@ var App = function() {
 			    function succssCallback(result){
 			    	var data = result.data;
 			    	$(dom).empty();//清空下拉框
+			    	$(dom).append("<option value=''>" + type + "</option>");
 			        $.each(data, function (i, item) {
-			            $(dom).append("<option value='" + item.Value + "'>" + item.Text + "</option>");
+			            $(dom).append("<option value='" + item.key + "'>" + item.value + "</option>");
 			        });
 			    }
 	        }    

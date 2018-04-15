@@ -10,27 +10,27 @@ var globalConfig = {
     curStaffOrgId: null, //10001
     /** 当前用户所在组织的id（sys_org表主键） */
     curOrgId: null, //56665
-	/** 当前岗位信息对象 */
+    /** 当前岗位信息对象 */
     //curStaffOrg: {},
     /** 当前用户所在组织对象 */
     //curOrg: {},
     /** 当前用户对象 */
-   	//curStaff: {},
-	/*
-	 * 包括
-	 * staffCode : "001"
-	 * staffId : 10002
-	 * staffKind : "1"
-	 * staffName : "管理员"
-	 */
-	/** 当前用户的用户名 */
+    //curStaff: {},
+    /*
+     * 包括
+     * staffCode : "001"
+     * staffId : 10002
+     * staffKind : "1"
+     * staffName : "管理员"
+     */
+    /** 当前用户的用户名 */
     curStaffName: "",
     /** 当前用户的id （sys_staff主键） */
     curStaffId: null, //10002
     /** 当前用户的权限集合 */
     perm: [],
     /** 当前用户的系统设置 */
-    curConfigs:{}
+    curConfigs: {}
 };
 var ace_menus = null;
 
@@ -39,50 +39,55 @@ $(document).ready(function() {
 
     function successCallback(result) {
         var data = result.data;
-       globalConfig.curStaffId = data.staffId;
+        globalConfig.curStaffId = data.staffId;
         globalConfig.curStaffName = data.staffName;
         globalConfig.curStaffOrgId = data.staffOrgId;
         globalConfig.curOrgId = data.orgId;
         //globalConfig.curStaff = data.staff;
         //globalConfig.curOrg = data.org;
-       // globalConfig.curStaffOrg = data.mainStaffOrg;
+        // globalConfig.curStaffOrg = data.mainStaffOrg;
         globalConfig.perm = data.perm;
         ace_menus = data.menus;
         debugger;
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
-        if(data.staffOrgs.length>0){
-        	for(var i = 0; i < data.staffOrgs.length; i++){
-        		if (data.staffOrgId == data.staffOrgs[i].staffOrgId){
-        			$(".user-menu").prepend("<li> <a id=\"staffOrg"+ data.staffOrgs[i].staffOrgId+" \" href=\"javascript:changeStaffOrg("+ data.staffOrgs[i].staffOrgId +");\" style=\"color:red;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
-        		} else {
-        			$(".user-menu").prepend("<li> <a id=\"staffOrg"+ data.staffOrgs[i].staffOrgId+" \" href=\"javascript:changeStaffOrg("+ data.staffOrgs[i].staffOrgId +");\" style=\"color:black;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
-        		}
-        	}
+        if (data.staffOrgs.length > 0) {
+            for (var i = 0; i < data.staffOrgs.length; i++) {
+                if (data.staffOrgId == data.staffOrgs[i].staffOrgId) {
+                    $(".user-menu").prepend("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:red;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
+                } else {
+                    $(".user-menu").prepend("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:black;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
+                }
+            }
         }
-        
-        App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", {staffOrgId:globalConfig.curStaffOrgId,code:"config_page_size"}, configSuccess,configImproper,configError,null,false);
-	    function configSuccess(result) {
-	       	if(result.data != ""){
-	       		globalConfig.curConfigs.configPagelengthMenu = result.data;
-	       	}else{
-	       		globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
-	       	}
-	    }
-	    function configImproper(result){
-	    	globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
-	    }
-	    function configError(result){
-	    	globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
-	    }
+
+        App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", { staffOrgId: globalConfig.curStaffOrgId, code: "config_page_size" }, configSuccess, configImproper, configError, null, false);
+
+        function configSuccess(result) {
+            if (result.data != "") {
+                globalConfig.curConfigs.configPagelengthMenu = result.data;
+            } else {
+                globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+            }
+        }
+
+        function configImproper(result) {
+            globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+        }
+
+        function configError(result) {
+            globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+        }
     }
+
     function improperCallback(result) {
-    	layer.alert("用户信息获取失败，请重新登录或联系管理员", {icon: 2,title:"错误",closeBtn:0}, function(index){
-			window.location.href = "login.html";
-		});
+        layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
+            window.location.href = "login.html";
+        });
     }
+
     function errorCallback(result) {
-        layer.alert("用户信息获取失败，请重新登录或联系管理员", {icon: 2,title:"错误",closeBtn:0},function(index){
-        	window.location.href = "login.html";
+        layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
+            window.location.href = "login.html";
         });
     }
 });
@@ -201,84 +206,85 @@ function tPFilter(permCheck) {
 }
 
 //hurx
-function changeStaffOrg(staffOrgId){
-	App.formAjaxJson(globalConfig.serverPath + "changestation/"+ staffOrgId , "GET", null, menuCallback, null, null, null, false);
+function changeStaffOrg(staffOrgId) {
+    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, menuCallback, null, null, null, false);
 
-     function menuCallback(result) {
-    	 if(result.status){
-    		 window.location.reload();
-    	 }else{
-    		 alert(data.message);
-    	 }
-     }
+    function menuCallback(result) {
+        if (result.status) {
+            window.location.reload();
+        } else {
+            alert(data.message);
+        }
+    }
 }
 var passwdValidator = {
-		message : 'This value is not valid',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh',
-			errorClass : "invalid"
-		},
-		submitButtons: 'button[type="submit"]',
-		fields : {
-			passwd : {
-				validators : {
-					notEmpty : {
-						message : '请输入新密码'
-					},
-					regexp : {
-						regexp : /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
-						message : "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
-					}
-				}
-			},
-			passConfirm : {
-				validators : {
-					notEmpty : {
-						message : '请再次输入密码确认'
-					},
-					identical : {
-						field : 'passwd',
-						message : '两次输入的密码不一致。'
-					}
-				}
-			}
-		},
+    live: 'enabled',
+    trigger: 'live focus blur keyup',
+    message: '校验未通过',
+    container: 'popover',
+    submitButtons: 'button[type="submit"]',
+    fields: {
+        passwd: {
+            validators: {
+                notEmpty: {
+                    message: '请输入新密码'
+                },
+                regexp: {
+                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
+                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
+                }
+            }
+        },
+        passConfirm: {
+            validators: {
+                notEmpty: {
+                    message: '请再次输入密码确认'
+                },
+                identical: {
+                    field: 'passwd',
+                    message: '两次输入的密码不一致。'
+                }
+            }
+        }
+    },
 
-	};
+};
+
 function updatePasswd() {
-	$('#editPasswd').modal({
-		backdrop : 'static'
-	});
-	if ($('#passwdForm').data('bootstrapValidator')) {
-		$('#passwdForm').data('bootstrapValidator').resetForm(false);
-	}
-	if (null == $('#passwdForm').data('bootstrapValidator')) {
-		$('#passwdForm').bootstrapValidator(passwdValidator).on(
-				"success.form.bv", function(e) {
-					changePasswd();
-				});
-	}
-}
-function changePasswd() {
-	var passwd = $("#passwdForm input[name='passwd']").val();
-	App.formAjaxJson(globalConfig.serverPath + "staffs/"
-			+ globalConfig.curStaffId + "/main/passwd?passwd=" + passwd
-			+ App.timestamp(), "PUT", null, passwdCallback, null, null, null,
-			false);
-	function passwdCallback(result) {
-		if (result.data) {
-			alert("修改成功");
-//			window.location.replace(globalConfig.staticPath + "login.html");
-		}
-	}
+    $('#editPasswd').modal({
+        backdrop: 'static'
+    });
+    if ($('#passwdForm').data('bootstrapValidator')) {
+        $('#passwdForm').data('bootstrapValidator').resetForm(false);
+    }
+    if (null == $('#passwdForm').data('bootstrapValidator')) {
+        $('#passwdForm').bootstrapValidator(passwdValidator).on(
+            "success.form.bv",
+            function(e) {
+                changePasswd();
+            });
+    }
 }
 
- /**
+function changePasswd() {
+    var passwd = $("#passwdForm input[name='passwd']").val();
+    App.formAjaxJson(globalConfig.serverPath + "staffs/" +
+        globalConfig.curStaffId + "/main/passwd?passwd=" + passwd +
+        App.timestamp(), "PUT", null, passwdCallback, null, null, null,
+        false);
+
+    function passwdCallback(result) {
+        if (result.data) {
+            alert("修改成功");
+            //			window.location.replace(globalConfig.staticPath + "login.html");
+        }
+    }
+}
+
+/**
  * 初始化左侧菜单滚动条
  * 
- * */    
+ * */
 //$('#sidebarScroller').slimScroll({
 //  allowPageScroll: true, // allow page scroll when the element scroll is ended
 //  size: '4px',

@@ -46,7 +46,7 @@ $(function() {
                     render: function(a, b, c, d) {
                         if (c) {
                             var btnArray = new Array();
-                            btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
+                        //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
                             if (cloudSwitch == 1) {
                                 btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
                             }
@@ -80,7 +80,9 @@ $(function() {
                         return html;*/
                     }
                 },
-                { "data": "STAFF_NAME", "title": "人员姓名", className: "text-center" },
+                { "data": null, "title": "人员姓名",render: function(data, type, full, meta) {
+    				return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID +')">'+ data.STAFF_NAME + '</a>';
+    			}},
                 { "data": "LOGIN_NAME", "title": "账号", className: "text-center" },
                 { "data": "ORG_NAME", "title": "部门名称", className: "text-center" },
                 {
@@ -623,6 +625,7 @@ function addStaffModal() {
     $("#modal").load("staffInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
         $("#modalTitle").text("新增人员");
         $("#modal").modal("show");
+        $("#passwdNotEpmty").show();
         dateRegNameChose();
         validate("add");
     });
@@ -646,6 +649,7 @@ function getInfor(staffId) {
     function successCallback(result) {
         var data = result.data;
         setEditForm(data);
+        $('#passwd').val('');
     }
 }
 /*
@@ -665,151 +669,296 @@ function setEditForm(data) {
  * 表单验证
  */
 function validate(editType) {
-    $('#staffForm').bootstrapValidator({
-        live: 'enabled',
-        trigger: 'live focus blur keyup',
-        message: '校验未通过',
-        container: 'popover',
-        fields: {
-            loginName: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入账号'
-                    },
-                    stringLength: {
-                        min: 0,
-                        max: 20,
-                        message: '请输入不超过20个字符'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_\-\.]+$/,
-                        message: '用户名由数字字母-_和.组成'
-                    }
-                }
-            },
-            passwd: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入密码'
-                    },
-                    stringLength: {
-                        min: 5,
-                        message: '密码至少5位'
-                    }
-                }
-            },
-            staffName: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入人员姓名'
-                    },
-                    stringLength: {
-                        min: 0,
-                        max: 15,
-                        message: '请输入不超过15个字'
-                    }
-                }
-            },
-            orgName: {
-                validators: {
-                    notEmpty: {
-                        message: '请选择所属组织'
+    if(editType=="add"){
+    	$('#staffForm').bootstrapValidator({
+            live: 'enabled',
+            trigger: 'live focus blur keyup',
+            message: '校验未通过',
+            container: 'popover',
+            fields: {
+                loginName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入账号'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 20,
+                            message: '请输入不超过20个字符'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\-\.]+$/,
+                            message: '用户名由数字字母-_和.组成'
+                        }
                     }
                 },
-                trigger: "focus blur keyup change",
-            },
-            empCode: {
-                validators: {
-                    regexp: {
-                        regexp: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
-                        message: '请输入15或18位身份证号'
-                    }
-                }
-            },
-            sex: {
-                validators: {
-                    notEmpty: {
-                        message: '请选择性别'
+                passwd: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入密码'
+                        },
+                        stringLength: {
+                            min: 5,
+                            message: '密码至少5位'
+                        }
                     }
                 },
-                trigger: "focus blur keyup change",
-            },
-            postcode: {
-                validators: {
-                    regexp: {
-                        regexp: /^[0-9]+$/,
-                        message: '请检查邮政编码'
-                    },
-                    stringLength: {
-                        min: 0,
-                        max: 6,
-                        message: '请输入不超过6位数字'
+                staffName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入人员姓名'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 15,
+                            message: '请输入不超过15个字'
+                        }
                     }
-                }
-            },
-            mailAddr: {
-                validators: {
-                    stringLength: {
-                        min: 0,
-                        max: 30,
-                        message: '请输入不超过30个字符'
-                    }
-                }
-            },
-            phone: {
-                validators: {
-                    regexp: {
-                        regexp: /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
-                        message: '请检查电话是否正确'
-                    }
-                }
-            },
-            mobilPhone: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入手机号'
+                },
+                orgName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择所属组织'
+                        }
                     },
-                    stringLength: {
-                        min: 11,
-                        max: 11,
-                        message: '请输入11位手机号码'
-                    },
-                    regexp: {
-                        regexp: /^1[3|5|7|8]{1}[0-9]{9}$/,
-                        message: '请输入正确的手机号码'
+                    trigger: "focus blur keyup change",
+                },
+                empCode: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+                            message: '请输入15或18位身份证号'
+                        }
                     }
-                }
-            },
-            email: {
-                validators: {
-                    emailAddress: {
-                        message: '请检查Email拼写'
+                },
+                sex: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择性别'
+                        }
                     },
-                    stringLength: {
-                        min: 0,
-                        max: 50,
-                        message: '请输入不超过50个字符'
+                    trigger: "focus blur keyup change",
+                },
+                postcode: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '请检查邮政编码'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 6,
+                            message: '请输入不超过6位数字'
+                        }
                     }
-                }
-            },
-            staffSort: {
-                validators: {
-                    stringLength: {
-                        min: 0,
-                        max: 8,
-                        message: '请输入不超过8位数字'
-                    },
-                    regexp: {
-                        regexp: /^[0-9]+$/,
-                        message: '排序只能输入数字'
+                },
+                mailAddr: {
+                    validators: {
+                        stringLength: {
+                            min: 0,
+                            max: 30,
+                            message: '请输入不超过30个字符'
+                        }
+                    }
+                },
+                phone: {
+                    validators: {
+                        regexp: {
+                            regexp: /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
+                            message: '请检查电话是否正确'
+                        }
+                    }
+                },
+                mobilPhone: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入手机号'
+                        },
+                        stringLength: {
+                            min: 11,
+                            max: 11,
+                            message: '请输入11位手机号码'
+                        },
+                        regexp: {
+                            regexp: /^1[3|5|7|8]{1}[0-9]{9}$/,
+                            message: '请输入正确的手机号码'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        emailAddress: {
+                            message: '请检查Email拼写'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 50,
+                            message: '请输入不超过50个字符'
+                        }
+                    }
+                },
+                staffSort: {
+                    validators: {
+                        stringLength: {
+                            min: 0,
+                            max: 8,
+                            message: '请输入不超过8位数字'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '排序只能输入数字'
+                        }
                     }
                 }
             }
-        }
-    }).on('success.form.bv', function(e) {
-        e.preventDefault();
-        updateInnalPersonnel(editType);
-    });
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            updateInnalPersonnel(editType);
+        });
+    }else{
+    	$('#staffForm').bootstrapValidator({
+            live: 'enabled',
+            trigger: 'live focus blur keyup',
+            message: '校验未通过',
+            container: 'popover',
+            fields: {
+                loginName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入账号'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 20,
+                            message: '请输入不超过20个字符'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\-\.]+$/,
+                            message: '用户名由数字字母-_和.组成'
+                        }
+                    }
+                },
+                passwd: {
+                    validators: {
+                        stringLength: {
+                            min: 5,
+                            message: '密码至少5位'
+                        }
+                    }
+                },
+                staffName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入人员姓名'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 15,
+                            message: '请输入不超过15个字'
+                        }
+                    }
+                },
+                orgName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择所属组织'
+                        }
+                    },
+                    trigger: "focus blur keyup change",
+                },
+                empCode: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+                            message: '请输入15或18位身份证号'
+                        }
+                    }
+                },
+                sex: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择性别'
+                        }
+                    },
+                    trigger: "focus blur keyup change",
+                },
+                postcode: {
+                    validators: {
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '请检查邮政编码'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 6,
+                            message: '请输入不超过6位数字'
+                        }
+                    }
+                },
+                mailAddr: {
+                    validators: {
+                        stringLength: {
+                            min: 0,
+                            max: 30,
+                            message: '请输入不超过30个字符'
+                        }
+                    }
+                },
+                phone: {
+                    validators: {
+                        regexp: {
+                            regexp: /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
+                            message: '请检查电话是否正确'
+                        }
+                    }
+                },
+                mobilPhone: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入手机号'
+                        },
+                        stringLength: {
+                            min: 11,
+                            max: 11,
+                            message: '请输入11位手机号码'
+                        },
+                        regexp: {
+                            regexp: /^1[3|5|7|8]{1}[0-9]{9}$/,
+                            message: '请输入正确的手机号码'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        emailAddress: {
+                            message: '请检查Email拼写'
+                        },
+                        stringLength: {
+                            min: 0,
+                            max: 50,
+                            message: '请输入不超过50个字符'
+                        }
+                    }
+                },
+                staffSort: {
+                    validators: {
+                        stringLength: {
+                            min: 0,
+                            max: 8,
+                            message: '请输入不超过8位数字'
+                        },
+                        regexp: {
+                            regexp: /^[0-9]+$/,
+                            message: '排序只能输入数字'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            updateInnalPersonnel(editType);
+        });
+    }
 }
 
 //日期和组织树选择触发

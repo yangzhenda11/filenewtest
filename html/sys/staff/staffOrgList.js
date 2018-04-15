@@ -14,7 +14,7 @@ $(function() {
  * 请求到结果后的回调事件
  */
 function judge(result) {
-    stopLoading("#searchBtn");
+    App.stopLoading("#searchBtn");
     return resolveResult(result);
 }
 //新增岗位

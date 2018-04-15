@@ -1,127 +1,127 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>角色表单</title>
-	</head>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>角色表单</title>
+</head>
 
-	<body>
-		<div id="modalEdit">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<form id="roleForm" action="" class="form-horizontal">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title role-form" id="editModalTitle"></h4>
-						</div>
-						<div class="modal-body defaultModalForm">
-							<input type="hidden" name="roleId" id="roleId">
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="roleName">角色名称<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" autocomplete="off" class="form-control" id="roleName" name="roleName" placeholder="角色名称" maxlength="32">
-								</div>
-							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="orgNameTree">所属组织<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent input-group" style="padding: 0 10px;">
-									<input id="orgNameTree" readonly name="orgName" type="text" class="form-control" />
-									<span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
-									<div id="orgNameTreeContent" class="zTreeContent selectZTreeCount">
-										<ul id="orgName" class="ztree"></ul>
-									</div>
-								</div>
-							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="selectID">合作方角色<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<div class="ui-radio-list ui-radio-inline">
-										<label class="ui-radio">否
+<body>
+    <div id="modalEdit">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="roleForm" action="" class="form-horizontal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title role-form" id="editModalTitle"></h4>
+                    </div>
+                    <div class="modal-body defaultModalForm">
+                        <input type="hidden" name="roleId" id="roleId">
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="roleName">角色名称<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" autocomplete="off" class="form-control" id="roleName" name="roleName" placeholder="角色名称" maxlength="32">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="orgNameTree">所属组织<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent input-group" style="padding: 0 10px;">
+                                <input id="orgNameTree" readonly name="orgName" type="text" class="form-control" />
+                                <span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
+                                <div id="orgNameTreeContent" class="zTreeContent selectZTreeCount">
+                                    <ul id="orgName" class="ztree"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="selectID">合作方角色<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <div class="ui-radio-list ui-radio-inline">
+                                    <label class="ui-radio">否
                                     <input type="radio" value="0" name="isPartnerRole" checked>
                                     <span></span>
                                 </label>
-										<label class="ui-radio">是
+                                    <label class="ui-radio">是
                                     <input type="radio" value="1" name="isPartnerRole">
                                     <span></span>
                                 </label>
-									</div>
-								</div>
-							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="roleDesc">角色描述<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" autocomplete="off" class="form-control" id="roleDesc" name="roleDesc" placeholder="角色描述" maxlength="100">
-								</div>
-							</div>
-							<div class="form-group col-sm-11">
-								<label class="control-label" for="roleDesc">角色权限<i class="iconfont icon-mi required"></i></label>
-								<div class="col-sm-9" id="rolePermissions" style="max-height: 150px;overflow: auto;">
-									<ul id="rolePermissionTree" class="ztree"></ul>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" id="submitBtn" data-type="edit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 提交</button>
-							<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="<i class="iconfont icon-close"></i>"></i> 关闭</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div id="modalDetail">
-			<div class="modal-dialog defaultModalWidth" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">角色详情</h4>
-					</div>
-					<div class="modal-body">
-						<ul class="nav nav-tabs modalDetailTab">
-							<li class="active">
-								<a href="#roleInfo" data-toggle="tab">角色信息</a>
-							</li>
-						</ul>
-						<div class="tab-content modalDetailCon">
-							<div class="tab-pane fade in active" id="roleInfo">
-								<div class="col-sm-6">
-									<div class="col-sm-4 form-control-static align-right">角色名称：</div>
-									<div class="col-sm-8 form-control-static" name="roleName"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 form-control-static align-right">所属组织：</div>
-									<div class="col-sm-8 form-control-static" id="orgName" name="orgName"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">合作方角色：</div>
-									<div class="col-sm-8 form-control-static" name="isPartnerRole"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">角色描述：</div>
-									<div class="col-sm-8 form-control-static" name="roleDesc"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">创建时间：</div>
-									<div class="col-sm-8 form-control-static" name="updateDate"></div>
-								</div>
-								<div class="col-sm-6" style="height: 34px;">&nbsp;</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">角色拥有的权限：</div>
-									<div class="col-sm-8 form-control-static" style="max-height: 150px;overflow: auto;">
-										<ul id="rolePermissionDetailTree" class="ztree" style="padding-top: 0;"></ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="<i class="iconfont icon-close"></i>"></i> 关闭</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="roleDesc">角色描述<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" autocomplete="off" class="form-control" id="roleDesc" name="roleDesc" placeholder="角色描述" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="roleDesc">角色权限<i class="iconfont icon-mi required"></i></label>
+                            <div class="col-sm-9" id="rolePermissions" style="max-height: 150px;overflow: auto;">
+                                <ul id="rolePermissionTree" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="submitBtn" data-type="edit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 提交</button>
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="modalDetail">
+        <div class="modal-dialog defaultModalWidth" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">角色详情</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs modalDetailTab">
+                        <li class="active">
+                            <a href="#roleInfo" data-toggle="tab">角色信息</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content modalDetailCon">
+                        <div class="tab-pane fade in active" id="roleInfo">
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 form-control-static align-right">角色名称：</div>
+                                <div class="col-sm-8 form-control-static" name="roleName"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 form-control-static align-right">所属组织：</div>
+                                <div class="col-sm-8 form-control-static" id="orgName" name="orgName"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">合作方角色：</div>
+                                <div class="col-sm-8 form-control-static" name="isPartnerRole"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">角色描述：</div>
+                                <div class="col-sm-8 form-control-static" name="roleDesc"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">创建时间：</div>
+                                <div class="col-sm-8 form-control-static" name="updateDate"></div>
+                            </div>
+                            <div class="col-sm-6" style="height: 34px;">&nbsp;</div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">角色拥有的权限：</div>
+                                <div class="col-sm-8 form-control-static" style="max-height: 150px;overflow: auto;">
+                                    <ul id="rolePermissionDetailTree" class="ztree" style="padding-top: 0;"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 </html>

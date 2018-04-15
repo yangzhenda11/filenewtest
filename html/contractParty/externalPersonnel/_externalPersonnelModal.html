@@ -1,227 +1,228 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>Document</title>
-	</head>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
 
-	<body>
-		<div id="modalEdit">
-			<div class="modal-dialog defaultModalWidth" role="document">
-				<div class="modal-content">
-					<form class="form-horizontal" role="form" id="externalPersonnelForm">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="modalTitle"></h4>
-						</div>
+<body>
+    <div id="modalEdit">
+        <div class="modal-dialog defaultModalWidth" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form" id="externalPersonnelForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitle"></h4>
+                    </div>
 
-						<div class="modal-body defaultModalForm">
-							<input type="hidden" name="staffId" id="staffId" value="" />
-							<input type="hidden" name="createBy" id="createBy" value="" />
-							<input type="hidden" name="updateBy" id="updateBy" value="" />
-							<input type="hidden" name="staffKind" id="staffKind" value="" />
-							<div class="form-group col-sm-6 ">
-								<label for="loginName" class="control-label">账号<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" id="loginName" name="loginName" class="form-control" placeholder="账号">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="passwd" class="control-label">密码<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="password" id="passwd" name="passwd" class="form-control" placeholder="密码">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="staffName" class="control-label">人员姓名<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" id="staffName" name="staffName" class="form-control" placeholder="人员姓名">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="orgNameIn" class="control-label">所属组织<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<div class="input-group">
-										<input id="orgNameIn" readonly name="orgName" type="text" class="form-control" />
-										<span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
-										<div id="orgNameInContent" class="zTreeContent selectZTreeCount">
-											<ul id="orgName" class="ztree"></ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="mobilPhone" class="control-label">手机号码<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<input type="text" id="mobilPhone" name="mobilPhone" class="form-control" placeholder="手机号码">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="sex" class="control-label">性别<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<select class="form-control select2me" name="sex" id="sex">
+                    <div class="modal-body defaultModalForm">
+                        <input type="hidden" name="staffId" id="staffId" value="" />
+                        <input type="hidden" name="createBy" id="createBy" value="" />
+                        <input type="hidden" name="updateBy" id="updateBy" value="" />
+                        <input type="hidden" name="staffKind" id="staffKind" value="" />
+                        <div class="form-group col-sm-6 ">
+                            <label for="loginName" class="control-label">账号<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="loginName" name="loginName" class="form-control" placeholder="账号">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="passwd" class="control-label">密码<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="password" id="passwd" name="passwd" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="staffName" class="control-label">人员姓名<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="staffName" name="staffName" class="form-control" placeholder="人员姓名">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="orgNameIn" class="control-label">所属组织<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <div class="input-group">
+                                    <input id="orgNameIn" readonly name="orgName" type="text" class="form-control" />
+                                    <span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
+                                    <div id="orgNameInContent" class="zTreeContent selectZTreeCount">
+                                        <ul id="orgName" class="ztree"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="mobilPhone" class="control-label">手机号码<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="mobilPhone" name="mobilPhone" class="form-control" placeholder="手机号码">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="sex" class="control-label">性别<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <select class="form-control select2me" name="sex" id="sex">
 										<option value="">请选择</option>
 										<option value="M">男</option>
 										<option value="W">女</option>
 									</select>
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="empCode" class="control-label">身份证号</label>
-								<div class="valiParent">
-									<input type="text" id="empCode" name="empCode" class="form-control" placeholder="身份证号">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="hireDate" class="control-label">入职日期</label>
-								<div class="valiParent">
-									<div class="input-group date date-picker">
-										<input id="hireDate" type="text" class="form-control" readonly name="hireDate">
-										<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="staffSort" class="control-label">显示顺序</label>
-								<div class="valiParent">
-									<input type="text" id="staffSort" name="staffSort" class="form-control" placeholder="显示顺序（只能为数字）">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="postcode" class="control-label">邮政编码</label>
-								<div class="valiParent">
-									<input type="text" id="postcode" name="postcode" class="form-control" placeholder="邮政编码">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="mailAddr" class="control-label">通信地址</label>
-								<div class="valiParent">
-									<input type="text" id="mailAddr" name="mailAddr" class="form-control" placeholder="通信地址">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="phone" class="control-label">电话号码</label>
-								<div class="valiParent">
-									<input type="text" id="phone" name="phone" class="form-control" placeholder="电话号码">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="email" class="control-label">邮箱号码</label>
-								<div class="valiParent">
-									<input type="text" id="email" name="email" class="form-control" placeholder="邮箱号码">
-								</div>
-							</div>
-							<div class="col-sm-6 form-group">
-								<label for="staffStatus" class="control-label">岗位状态<i class="iconfont icon-mi required"></i></label>
-								<div class="valiParent">
-									<div class="ui-radio-list ui-radio-inline">
-										<label class="ui-radio">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="empCode" class="control-label">身份证号</label>
+                            <div class="valiParent">
+                                <input type="text" id="empCode" name="empCode" class="form-control" placeholder="身份证号">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="hireDate" class="control-label">入职日期</label>
+                            <div class="valiParent">
+                                <div class="input-group date date-picker">
+                                    <input id="hireDate" type="text" class="form-control" readonly name="hireDate">
+                                    <span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="staffSort" class="control-label">显示顺序</label>
+                            <div class="valiParent">
+                                <input type="text" id="staffSort" name="staffSort" class="form-control" placeholder="显示顺序（只能为数字）">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="postcode" class="control-label">邮政编码</label>
+                            <div class="valiParent">
+                                <input type="text" id="postcode" name="postcode" class="form-control" placeholder="邮政编码">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="mailAddr" class="control-label">通信地址</label>
+                            <div class="valiParent">
+                                <input type="text" id="mailAddr" name="mailAddr" class="form-control" placeholder="通信地址">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="phone" class="control-label">电话号码</label>
+                            <div class="valiParent">
+                                <input type="text" id="phone" name="phone" class="form-control" placeholder="电话号码">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="email" class="control-label">邮箱号码</label>
+                            <div class="valiParent">
+                                <input type="text" id="email" name="email" class="form-control" placeholder="邮箱号码">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="staffStatus" class="control-label">岗位状态<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <div class="ui-radio-list ui-radio-inline">
+                                    <label class="ui-radio">
 										有效
 										<input type="radio" value="1" checked="" name="staffStatus">
 										<span></span>
 									</label>
-										<label class="ui-radio">
+                                    <label class="ui-radio">
 										无效
 										<input type="radio" value="0" name="staffStatus">
 										<span></span>
 									</label>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 保存</button>
-							<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="<i class="iconfont icon-close"></i>"></i> 关闭</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div id="modalDetail">
-			<div class="modal-dialog defaultModalWidth" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title">外部人员信息详情</h4>
-					</div>
-					<div class="modal-body">
-						<div class="modalDetailTit">人员姓名：<span id="staffNameDetail"></span></div>
-						<ul class="nav nav-tabs modalDetailTab">
-							<li>
-								<a href="#positionInfo" data-toggle="tab">岗位信息</a>
-							</li>
-							<li class="active">
-								<a href="#baseInfo" data-toggle="tab">基本信息</a>
-							</li>
-						</ul>
-						<div class="tab-content modalDetailCon">
-							<div class="tab-pane fade in active" id="baseInfo">
-								<div class="col-sm-6">
-									<div class="col-sm-4 form-control-static align-right">账号：</div>
-									<div class="col-sm-8 form-control-static" name="loginName"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 form-control-static align-right">人员姓名：</div>
-									<div class="col-sm-8 form-control-static" name="staffName"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">所属组织：</div>
-									<div class="col-sm-8 form-control-static" name="orgName"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">手机号码：</div>
-									<div class="col-sm-8 form-control-static" name="mobilPhone"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">性别：</div>
-									<div class="col-sm-8 form-control-static" name="sex"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">身份证号：</div>
-									<div class="col-sm-8 form-control-static" name="empCode"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">入职日期：</div>
-									<div class="col-sm-8 form-control-static" name="hireDate"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">显示顺序：</div>
-									<div class="col-sm-8 form-control-static" name="staffSort"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">邮政编码：</div>
-									<div class="col-sm-8 form-control-static" name="postcode"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">通讯地址：</div>
-									<div class="col-sm-8 form-control-static" name="mailAddr"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">电话号码：</div>
-									<div class="col-sm-8 form-control-static" name="phone"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">邮箱号码：</div>
-									<div class="col-sm-8 form-control-static" name="email"></div>
-								</div>
-								<div class="col-sm-6">
-									<div class="col-sm-4 align-right form-control-static">岗位状态：</div>
-									<div class="col-sm-8 form-control-static" name="staffStatus"></div>
-								</div>
-							</div>
-							<div class="tab-pane fade" id="positionInfo">
-								岗位状态
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="<i class="iconfont icon-close"></i>"></i> 关闭</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</body>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 保存</button>
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="modalDetail">
+        <div class="modal-dialog defaultModalWidth" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">外部人员信息详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modalDetailTit">人员姓名：<span id="staffNameDetail"></span></div>
+                    <ul class="nav nav-tabs modalDetailTab">
+                        <li>
+                            <a href="#positionInfo" data-toggle="tab">岗位信息</a>
+                        </li>
+                        <li class="active">
+                            <a href="#baseInfo" data-toggle="tab">基本信息</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content modalDetailCon">
+                        <div class="tab-pane fade in active" id="baseInfo">
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 form-control-static align-right">账号：</div>
+                                <div class="col-sm-8 form-control-static" name="loginName"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 form-control-static align-right">人员姓名：</div>
+                                <div class="col-sm-8 form-control-static" name="staffName"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">所属组织：</div>
+                                <div class="col-sm-8 form-control-static" name="orgName"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">手机号码：</div>
+                                <div class="col-sm-8 form-control-static" name="mobilPhone"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">性别：</div>
+                                <div class="col-sm-8 form-control-static" name="sex"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">身份证号：</div>
+                                <div class="col-sm-8 form-control-static" name="empCode"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">入职日期：</div>
+                                <div class="col-sm-8 form-control-static" name="hireDate"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">显示顺序：</div>
+                                <div class="col-sm-8 form-control-static" name="staffSort"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">邮政编码：</div>
+                                <div class="col-sm-8 form-control-static" name="postcode"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">通讯地址：</div>
+                                <div class="col-sm-8 form-control-static" name="mailAddr"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">电话号码：</div>
+                                <div class="col-sm-8 form-control-static" name="phone"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">邮箱号码：</div>
+                                <div class="col-sm-8 form-control-static" name="email"></div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="col-sm-4 align-right form-control-static">岗位状态：</div>
+                                <div class="col-sm-8 form-control-static" name="staffStatus"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="positionInfo">
+                            岗位状态
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

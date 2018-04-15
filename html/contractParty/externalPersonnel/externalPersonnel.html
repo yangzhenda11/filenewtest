@@ -45,6 +45,12 @@
 								</div>
 								<div class="col-sm-4">
 									<div class="input-group">
+										<span class="input-group-addon searchLableText">人员账号</span>
+										<input type="text" class="form-control" name="loginName" maxlength="20">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
 										<span class="input-group-addon searchLableText">人员状态</span>
 										<select class="form-control select2me" name="staffStatus">
 											<option value="">全部</option>
@@ -53,12 +59,21 @@
 										</select>
 									</div>
 								</div>
-								<div class="input-group">
-									<button type="button" id="submitBtn" class="btn red" data-loading-text="加载中.." onclick="searchPersonnel();"><i class="iconfont icon-search"></i> 查询</button>
-									<button type="button" onclick="App.resetForm('.form-horizontal')" class="btn yellow"><i class="iconfont icon-reset"></i> 清空</button>
+								<div class="col-sm-5">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">所属组织</span>
+										<input id="organisation" onclick="showTree('organisation')" readonly name="organisationTree" type="text" class="form-control" value="全部" />
+										<span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
+										<div id="organisationContent" class="zTreeContent selectZTreeCount">
+											<ul id="organisationTree" class="ztree"></ul>
+										</div>
+									</div>
 								</div>
 							</div>
-							
+							<div class="page-search-action">
+								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchPersonnel();"><i class="iconfont icon-search"></i> 查询</button>
+								<button type="button" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="ace-icon iconfont icon-reset"></i> 清空</button>
+							</div>
 						</form>
 					</div>
 					<div class="toolbars">

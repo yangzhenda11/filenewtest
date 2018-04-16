@@ -25,9 +25,7 @@ function getTreeInfo(code) {
 			orgName: "全部"
 		}
 		if(null == data) {
-			layer.msg("没有相关组织和人员信息", {
-				icon: 2
-			});
+			layer.msg("没有相关组织和人员信息");
 		} else {
 			data.unshift(allObj);
 			organisationTree = $.fn.zTree.init($("#organisationTree"), orgsSetting, data);
@@ -39,9 +37,6 @@ function getTreeInfo(code) {
  * 表格初始化
  */
 App.initDataTables('#personnelTable', "#submitBtn", {
-//	fixedColumns: {
-//		leftColumns: 2					//固定左侧两列
-//	},
 	ajax: {
 		"type": "GET",					//请求方式
 		"url": serverPath + 'staffPartner/getStaffPartnerList',	//请求地址
@@ -262,7 +257,7 @@ function dateRegNameChose(){
 	function successCallback(result) {
 		var data = result.data;
 		if(null == data) {
-			layer.msg("没有相关组织和人员信息", {icon: 2});
+			layer.msg("没有相关组织和人员信息");
 		} else {
 			orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
 		}
@@ -292,7 +287,7 @@ function updateExternalPersonnel(editType) {
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
-		layer.msg(ms, {icon: 1});
+		layer.msg(ms);
 		searchPersonnel(true);
 		$('#modal').modal('hide');
 	}
@@ -329,6 +324,9 @@ function onBodyDown(dom) {
 			hideMenu(dom);
 		}
 	});
+	$('.page-content').on('scroll',function(){
+        hideMenu(dom);
+    })
 }
 /*
  * 所属组织树配置单选配置
@@ -402,7 +400,7 @@ function onClick(event, treeId, treeNode) {
 function validate(editType) {
 	$('#externalPersonnelForm').bootstrapValidator({
 		live: 'enabled',
-		trigger: 'live focus blur keyup',
+		trigger: 'live focus blur keyup change',
 		message: '校验未通过',
 		container: 'popover',
 		fields: {
@@ -450,8 +448,7 @@ function validate(editType) {
 					notEmpty : {
 						message : '请选择所属组织'
 					}
-				},
-				trigger: "focus blur keyup change",
+				}
 			},
 			empCode : {
 				validators : {
@@ -466,8 +463,7 @@ function validate(editType) {
 					notEmpty : {
 						message : '请选择性别'
 					}
-				},
-				trigger: "focus blur keyup change",
+				}
 			},
 			postcode : {
 				validators : {

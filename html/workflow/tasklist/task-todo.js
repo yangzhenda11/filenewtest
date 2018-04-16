@@ -60,10 +60,6 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
  * 表格初始化
  */
 App.initDataTables('#searchTableTodo', "#submitBtn", {
-	fixedColumns: {
-		leftColumns: 0					//固定左侧两列
-	},
-	buttons: ['copy', 'colvis'],		//显示的工具按钮
 	ajax: {
 		"type": "GET",					//请求方式
 		"url": serverPath + 'workflowrest/taskToDo',	//请求地址
@@ -77,6 +73,7 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
 		}
 	},
 	columns: [// 对应列
+		{"data": null,"title":"操作",className: "text-center"},
 		{"data": "title","title":"待办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(20, true)},
         {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
         {"data": "name","title":"环节名称",className: "text-center"},
@@ -84,8 +81,7 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
         	render: function (a, b, c, d) { 
         		return getSmpFormatDateByLong(a, true);
         	}
-        },
-        {"data": null,"title":"操作",className: "text-center"}
+       }
     ],
     "columnDefs": [
 		{// 所有列默认值
@@ -93,7 +89,7 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
 			"defaultContent": ''
 		},
        {// 最后一列添加按钮
-        targets: -1,
+        targets: 0,
         render: function (a, b, c, d) {
         	var currentId = $("#currentId").val();;
         	var assignee = c.assignee;

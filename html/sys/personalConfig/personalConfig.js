@@ -161,7 +161,7 @@ function updatePersonalConfig(editType) {
 function validate(editType) {
 	$('#personalConfigForm').bootstrapValidator({
 		live: 'enabled',
-		trigger: 'live focus blur keyup',
+		trigger: 'live focus blur keyup change',
 		message: '校验未通过',
 		container: 'popover',
 		fields: {

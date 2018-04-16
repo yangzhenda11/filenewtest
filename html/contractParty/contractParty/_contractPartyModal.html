@@ -8,7 +8,7 @@
             <div class="modal-body defaultModalForm">
                 <div class="form-group col-sm-11">
                     <input type="hidden" name="partnerId" id="partnerId" value="" />
-                    <label for="partnerNameM" class="control-label">签约主体名称：</label>
+                    <label for="partnerNameM" class="control-label">签约主体名称</label>
                     <div class="col-sm-8" id="partnerNameM"></div>
                 </div>
                 <div class="form-group col-sm-11">
@@ -217,7 +217,7 @@
     function validate() {
         $('#contractEditForm').bootstrapValidator({
             live: 'enabled',
-            trigger: 'live focus blur keyup',
+            trigger: 'live focus blur keyup change',
             message: '校验未通过',
             container: 'popover',
             fields: {
@@ -240,8 +240,7 @@
                         notEmpty: {
                             message: '请选择所属组织'
                         }
-                    },
-                    trigger: "focus blur keyup change",
+                    }
                 },
                 ouOrgId: {
                     validators: {
@@ -255,16 +254,14 @@
                         notEmpty: {
                             message: '请选择法人代表'
                         }
-                    },
-                    trigger: "focus blur keyup change",
+                    }
                 },
                 otherTree: {
                     validators: {
                         notEmpty: {
                             message: '请选择其他映射组织'
                         }
-                    },
-                    trigger: "focus blur keyup change",
+                    }
                 }
             }
         }).on('success.form.bv', function(e) {

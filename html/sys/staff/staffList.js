@@ -672,7 +672,7 @@ function validate(editType) {
     if(editType=="add"){
     	$('#staffForm').bootstrapValidator({
             live: 'enabled',
-            trigger: 'live focus blur keyup',
+            trigger: 'live focus blur keyup change',
             message: '校验未通过',
             container: 'popover',
             fields: {
@@ -818,7 +818,7 @@ function validate(editType) {
     }else{
     	$('#staffForm').bootstrapValidator({
             live: 'enabled',
-            trigger: 'live focus blur keyup',
+            trigger: 'live focus blur keyup change',
             message: '校验未通过',
             container: 'popover',
             fields: {

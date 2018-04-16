@@ -629,6 +629,7 @@ function addStaffModal() {
     $("#modal").load("staffInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
         $("#modalTitle").text("新增人员");
         $("#modal").modal("show");
+        App.initFormSelect2("#staffForm")
         $("#passwdNotEpmty").show();
         dateRegNameChose();
         validate("add");
@@ -640,6 +641,7 @@ function addStaffModal() {
 function goStaffEdit(staffId) {
     $("#modal").load("staffInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
         $("#modalTitle").text("修改人员");
+        App.initFormSelect2("#staffForm")
         $("#modal").modal("show");
         getInfor(staffId)
     });

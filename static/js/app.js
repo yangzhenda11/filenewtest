@@ -549,7 +549,6 @@ var App = function() {
             	 	options.minimumResultsForSearch = -1;
                 };
                 $(this).select2(options);
-                $(this).trigger("change");
             })
         }
     };
@@ -970,7 +969,6 @@ var App = function() {
                     obj = $(el).find(sel);
                     if(obj.length > 0){
                         objType = obj[0].type;
-                        console.log(objType);
                         if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
                             obj.val(formData[a]);
                             if(objType == "select-one" && obj.hasClass('select2me')){
@@ -1136,9 +1134,6 @@ var App = function() {
 	    },
 		/**
          * datatable render 文本信息 btnArray 内容：
-         * 
-         * @param name string 显示的名称
-         * @param function fn 点击链接要进行的事件
          */
         
          getDataTableBtn:function(btnArray){
@@ -2021,17 +2016,16 @@ $(document).ajaxError(function(){
 });
 $(document).ajaxSend(function(event, jqxhr, settings) {
 	if(settings.type == "GET"){
-		if(settings.url.indexOf("?") === -1){
-			settings.url = settings.url + "?testData=testData";
-		}else{
-			settings.url = settings.url + "&testData=testData";
-		}
+//		if(settings.url.indexOf("?") === -1){
+//			settings.url = settings.url + "?testData=testData";
+//		}else{
+//			settings.url = settings.url + "&testData=testData";
+//		}
 	}else{
-		if(settings.data == null){
-			settings.data = "test=test";
-		}else{
-			settings.data = settings.data + "&testData=testData";
-		}
+//		var parameter = JSON.parse(settings.data);
+//		parameter.testdata = "testdata";
+//		settings.data = JSON.stringify(parameter);
+		
 	}	
 });
 /*

@@ -34,23 +34,19 @@ function showPermission(permId) {
     function successCallback(result) {
         /**表单赋值时的回调函数 */
         var valueCallback = {
-                'permType': function(value) {
-                    var permType = "";
-                    if (value == 1) {
-                        permType = "菜单";
-                    } else if (value == 2) {
-                        permType = "标签";
-                    } else if (value == 3) {
-                        permType = "请求";
-                    }
-                    // else if (value == 4) {
-                    // 	permType = "新窗口";
-                    // }
-                    ;
-                    return permType;
-                }
+            'permType': function(value) {
+                var permType = "";
+                if (value == 1) {
+                    permType = "菜单";
+                } else if (value == 2) {
+                    permType = "标签";
+                } else if (value == 3) {
+                    permType = "请求";
+                };
+                return permType;
             }
-            /**根据返回结果给表单赋值 */
+        }
+        /**根据返回结果给表单赋值 */
         App.setFindValue($("#permissionShow"), result.sysPerm, valueCallback);
     }
 }
@@ -74,7 +70,7 @@ function delPermission() {
 
         function successCallback(result) {
             layer.close(index);
-            layer.msg("删除成功", { icon: 1 });
+            layer.msg("删除成功");
             var checkNodes = perPermissionTree.getNodesByParam("permId", curNode.parentId)[0];
             perPermissionTree.selectNode(checkNodes);
             showPermission(checkNodes.permId);
@@ -92,6 +88,7 @@ function addPermission() {
     } else {
         $("#modal").load("_permissionModal.html?" + App.timestamp() + " #modalEdit", function() {
             $("#modalTitle").text("新增权限");
+            App.initFormSelect2("#permissionForm")
             $("#parentId").val(curNode.permId);
             $("#parentName").val(curNode.permName);
             $('#modal').modal('show');
@@ -111,6 +108,7 @@ function showUpdate() {
     }
     $("#modal").load("_permissionModal.html?" + App.timestamp() + " #modalEdit", function() {
         $("#modalTitle").text("修改权限");
+        App.initFormSelect2("#permissionForm")
         $('#modal').modal('show');
         var data = { 'permId': curNode.permId };
         App.formAjaxJson(serverPath + "pers/" + curNode.permId, "get", data, successCallback)
@@ -141,7 +139,7 @@ function updatePermisson(type) {
     App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
 
     function successCallback(result) {
-        layer.msg(ms, { icon: 1 });
+        layer.msg(ms);
         $('#modal').modal('hide');
         showPermission(curNode.permId);
         if (type == "add") {

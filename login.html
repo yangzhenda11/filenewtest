@@ -93,6 +93,18 @@
 		<!--当前页面依赖-->
 		<script type="text/javascript">
 			function login() {
+//				var userData = {
+//					u_name : $("#username").val(),
+//					u_pd : $("#password").val()
+//				};
+//				App.formAjaxJson("/upf_loginss", "POST", JSON.stringify(userData), successCallback);
+//				function successCallback(result) {
+//					if(data.status == 1) {
+//						window.location.href = "/index.html";
+//					} else {
+//						alert(data.message);
+//					}
+//				}
 				$.ajax({
 					url: "/upf_login",
 					type: "POST",

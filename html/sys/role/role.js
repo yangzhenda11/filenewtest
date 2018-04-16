@@ -4,11 +4,11 @@ var serverPath = config.serverPath;
 var rolePermissionTree; //权限树
 var orgNameTree; //组织树
 $(function() {
-        getRoleTable();
-    })
-    /*
-     * 查询到角色列表
-     */
+    getRoleTable();
+})
+/*
+ * 查询到角色列表
+ */
 function getRoleTable() {
     App.initDataTables('#searchRoleTable', "#submitBtn", {
         "ajax": {
@@ -36,9 +36,6 @@ function getRoleTable() {
                     } else {
                         return '';
                     }
-                    //	                html += '<button title="查看" onclick="findDetail(' + data + ')" class="btn btn-info btn-link btn-xs"><i class="fa fa-search-plus"></i></button>';
-                    //	                html += '<button title="编辑" onclick="editDetail(' + data + ')" class="btn btn-success btn-link btn-xs"><i class="fa fa-edit"></i></button>';
-                    //	                html += '<button title="删除" onclick="deleteDetail(' + data + ')" class="btn btn-success btn-link btn-xs"><i class="fa fa-minus"></i></button>';
                 }
             },
             {
@@ -74,7 +71,7 @@ function deleteDetail(roleId) {
 
         function successCallback(result) {
             layer.close(index);
-            layer.msg("删除成功", { icon: 1 });
+            layer.msg("删除成功");
             searchRole(true);
         }
     })

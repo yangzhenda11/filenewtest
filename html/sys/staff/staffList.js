@@ -46,7 +46,7 @@ $(function() {
                     render: function(a, b, c, d) {
                         if (c) {
                             var btnArray = new Array();
-                        //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
+                            //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
                             if (cloudSwitch == 1) {
                                 btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
                             }
@@ -80,11 +80,15 @@ $(function() {
                         return html;*/
                     }
                 },
-                { "data": null, "title": "人员姓名",render: function(data, type, full, meta) {
-    				return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID +')">'+ data.STAFF_NAME + '</a>';
-    			}},
-                { "data": "LOGIN_NAME", "title": "账号", className: "text-center" },
-                { "data": "ORG_NAME", "title": "部门名称", className: "text-center" },
+                {
+                    "data": null,
+                    "title": "人员姓名",
+                    render: function(data, type, full, meta) {
+                        return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
+                    }
+                },
+                { "data": "LOGIN_NAME", "title": "账号" },
+                { "data": "ORG_NAME", "title": "部门名称" },
                 {
                     "data": "SEX",
                     "title": "性别",
@@ -93,9 +97,9 @@ $(function() {
                         return (c.SEX == 'M') ? '男' : '女';
                     }
                 },
-                // { "data": "PHONE", "title": "电话号码", className: "text-center" },
-                { "data": "EMAIL", "title": "邮箱账号", className: "text-center" },
-                { "data": "MOBIL_PHONE", "title": "手机号码", className: "text-center" },
+                // { "data": "PHONE", "title": "电话号码" },
+                { "data": "EMAIL", "title": "邮箱账号" },
+                { "data": "MOBIL_PHONE", "title": "手机号码" },
                 {
                     "data": "STAFF_STATUS",
                     "title": "状态",
@@ -669,8 +673,8 @@ function setEditForm(data) {
  * 表单验证
  */
 function validate(editType) {
-    if(editType=="add"){
-    	$('#staffForm').bootstrapValidator({
+    if (editType == "add") {
+        $('#staffForm').bootstrapValidator({
             live: 'enabled',
             trigger: 'live focus blur keyup',
             message: '校验未通过',
@@ -815,8 +819,8 @@ function validate(editType) {
             e.preventDefault();
             updateInnalPersonnel(editType);
         });
-    }else{
-    	$('#staffForm').bootstrapValidator({
+    } else {
+        $('#staffForm').bootstrapValidator({
             live: 'enabled',
             trigger: 'live focus blur keyup',
             message: '校验未通过',

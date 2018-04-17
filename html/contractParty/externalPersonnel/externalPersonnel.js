@@ -198,11 +198,7 @@ function personnelModal(code) {
 		});
 	}
 }
-function showModall(){
-	alert(1)
-	$("#testModal").modal('show');
-	
-}
+
 /*
  * 获取人员信息详情
  */
@@ -273,13 +269,10 @@ function updateExternalPersonnel(editType) {
 	var url = serverPath + "staffPartner/addStaffPartner";
 	var pushType = "POST";
 	if(editType == "add"){
-		formObj.createBy = config.curStaffId;
-		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
 		formObj.staffKind = 2;
 		delete formObj.staffId;
 	}else{
-		formObj.updateBy = config.curStaffId;
 		formObj.orgId = $("#orgNameIn").data("id");
 		ms = "修改成功";
 		url = serverPath + "staffPartner/updateStaffPartner";

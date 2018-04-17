@@ -89,6 +89,7 @@ function editConfigModal(id){
 		$("#modalTitle").text("系统参数修改");
 		App.initFormSelect2("#configForm");
 		getConfig(id,"edit");
+		validate("edit");
 	});
 }
 /*
@@ -101,7 +102,6 @@ function getConfig(id,type){
 		if(type == "edit"){
 			$('#modal').modal('show');
 			App.setFormValues("#configForm",data);
-			validate("edit");
 		}else{
 			$("#modal").modal("show");
 			$("#codeDetail").text(data.code);

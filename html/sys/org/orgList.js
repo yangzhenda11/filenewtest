@@ -48,7 +48,6 @@ function getOrgTable(orgId){
                 render: function(a, b, c, d) {
                 	if(c) {
 						var btnArray = new Array();
-	                    btnArray.push({ "name": "查看", "fn": "orgShowOrgDetail(\'" + c.ORG_ID + "\')" });
 	                    if ("1" == c.ORG_STATUS) {
 	                       	btnArray.push({ "name": "禁用", "fn": "orgDel(\'" + c.ORG_ID + "\')" });
 	                    } else {
@@ -60,7 +59,13 @@ function getOrgTable(orgId){
 					}
                 }
             },
-            {"data": "ORG_NAME",title: "组织名称",render: $.fn.dataTable.render.ellipsis(22, true)},
+            {"data": null,
+            	title: "组织名称",
+            	render: function(data, type, full, meta) {
+					return '<a href=\"javascript:void(0)\" onclick = "orgShowOrgDetail(\'' + full.ORG_ID + '\')">' + full.ORG_NAME + '</a>';
+					
+				}
+            },
             { "data": "ORG_CODE", title: "组织编码"},
             {
                 "data": "ORG_TYPE",

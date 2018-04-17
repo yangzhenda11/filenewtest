@@ -549,7 +549,6 @@ var App = function() {
             	 	options.minimumResultsForSearch = -1;
                 };
                 $(this).select2(options);
-                $(this).trigger("change");
             })
         }
     };
@@ -766,7 +765,7 @@ var App = function() {
 						successCallback(result);
 					} else {
 						var ms = result.message;
-						layer.msg(ms, {icon: 2});
+						layer.msg(ms);
 						improperCallback(result);
 					};
 				},
@@ -937,11 +936,11 @@ var App = function() {
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
-		        		layer.alert(xhr.responseJSON.message, {icon: 2,title:"错误"});
+		        		layer.msg(xhr.responseJSON.message);
 		        	}
 		        }else{
 		        	loadEnd();
-		        	layer.alert("接口错误", {icon: 2,title:"错误"});
+		        	layer.msg("接口错误");
 		        }
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';
@@ -970,7 +969,6 @@ var App = function() {
                     obj = $(el).find(sel);
                     if(obj.length > 0){
                         objType = obj[0].type;
-                        console.log(objType);
                         if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
                             obj.val(formData[a]);
                             if(objType == "select-one" && obj.hasClass('select2me')){
@@ -1105,30 +1103,29 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,select2Obj,key,value,type){
+		initAjaxSelect2 : function(dom,ajaxObj,select2Obj,key,value,promptInfo){
         	if($().select2){
         		var options = select2Obj;
-	            $.fn.select2.defaults.set("theme","bootstrap");
+        		$(dom).empty();//清空下拉框
+		    	$(dom).append("<option value=''>" + promptInfo + "</option>");
 			    //设置Select2的处理
+			    $.fn.select2.defaults.set("theme","bootstrap");
 			    var allowClearFlag = $(dom).attr('data-allowClear');
                 var allowSearch = $(dom).attr('data-allowSearch');
                 if(allowClearFlag != false){
                 	allowClearFlag = true;
                 }
-                options.paceholder = "请选择";
+                options.paceholder = promptInfo;
                 options.language = 'zh-CN';
                 options.width = '100%';
                 options.allowClear = allowClearFlag;
                 if(allowSearch == undefined)
                     options.minimumResultsForSearch = -1;
                 $(dom).select2(options);
-                $(dom).val(null).trigger("change");
 			    //绑定Ajax的内容
 			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,ajaxObj.data,succssCallback);
 			    function succssCallback(result){
 			    	var data = result.data;
-			    	$(dom).empty();//清空下拉框
-			    	$(dom).append("<option value=''>" + type + "</option>");
 			        $.each(data, function (i, item) {
 			            $(dom).append("<option value='" + item.key + "'>" + item.value + "</option>");
 			        });
@@ -1137,9 +1134,6 @@ var App = function() {
 	    },
 		/**
          * datatable render 文本信息 btnArray 内容：
-         * 
-         * @param name string 显示的名称
-         * @param function fn 点击链接要进行的事件
          */
         
          getDataTableBtn:function(btnArray){
@@ -2019,6 +2013,20 @@ $(document).ajaxStop(function(){
 });
 $(document).ajaxError(function(){
     loadEnd();
+});
+$(document).ajaxSend(function(event, jqxhr, settings) {
+	if(settings.type == "GET"){
+//		if(settings.url.indexOf("?") === -1){
+//			settings.url = settings.url + "?testData=testData";
+//		}else{
+//			settings.url = settings.url + "&testData=testData";
+//		}
+	}else{
+//		var parameter = JSON.parse(settings.data);
+//		parameter.testdata = "testdata";
+//		settings.data = JSON.stringify(parameter);
+		
+	}	
 });
 /*
  * Handlebars引擎模板   按钮生成

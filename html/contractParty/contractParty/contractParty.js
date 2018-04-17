@@ -31,12 +31,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
             	if(data) {
 					var btnArray = new Array();
                     btnArray.push({ "name": "编辑", "fn": "editContract(\'" + data + "\')" });
-                    context = {
-                        func: btnArray
-                    }
-                    var template = Handlebars.compile(btnModel);
-                    var html = template(context);
-                    return html;
+                    return App.getDataTableBtn(btnArray);;
 				} else {
 					return '';
 				}
@@ -73,13 +68,6 @@ function searchContract(retainPaging) {
  */
 function editContract(data) {
 	$("#modal").load("_contractPartyModal.html?" + App.timestamp(),function(){
-			getContractInfo(data);
+		getContractInfo(data);
 	});
 }
-
-$('#contractEditModal').on('hide.bs.modal', function() {
-    $("#contractModalDefault").removeClass("hide");
-    $("#mainContent").addClass("hide");
-});
-
-

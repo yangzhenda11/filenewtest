@@ -16,10 +16,19 @@ var uploadTable = App.initDataTables('#uploadTable', {
 			"className": "text-center",
 			"title": "操作",
 			"render": function(data, type, full, meta) {
-				var result = '<a href="/fileload/downloadS3?key=' + data + '">下载</a>';
+				var result = '<a href="/fileload/downloadS3?key=' + data + '&bucketName=">下载</a>';
 				result = result + '<a style="margin-left:15px" href="#" onclick="deleteFile(\''+data+'\')">删除</a>';
 				if (/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(data)) {
-					result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\'' + data + '\')">显示图片</a>';
+					if($('#imgFile').css('display')=='none'){
+						result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\'' + data + '\')">显示图片</a>';
+					}else{
+						var str = $('#imgFile')[0].src;
+						if(decodeURI(str).indexOf(data) != -1){
+							result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "disImg()">隐藏图片</a>';
+						}else{
+							result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\'' + data + '\')">显示图片</a>';
+						}
+					}
 				}
 				return result;
 			}
@@ -38,58 +47,32 @@ var uploadTable = App.initDataTables('#uploadTable', {
 });
 
 function downloadUrl(data){
-	var url = serverPath + 'fileload/downloadS3Url?key=' + data ;
+	var url = serverPath + 'fileload/downloadS3Url?key=' + data +'&bucketName=';;
 	$.ajax({
         url : url,
         type : "get",
         success : function(data) {
             if (data != "") {
-                $('#imgFile').attr("src",data);
+            	console.log(data.data);
+            	$('#imgFile').show();
+                $('#imgFile').attr("src",data.data);
                 $('#imgFile').attr("width","256px");
                 $('#imgFile').attr("height","256px");
             }
+            var table = $('#uploadTable').DataTable();
+        	table.ajax.reload();
         }
     });
 }
-function fileUpLoad(){
-	$.ajaxFileUpload({
-		url : serverPath + 'fileload/uploadFileS3', //用于文件上传的服务器端请求地址
-		fileElementId : 'fileName',
-		dataType : 'json',
-		type : "post",
-		success : function(data) {
-			alert(data.message);
-			var table = $('#uploadTable').DataTable();
-        	table.ajax.reload();
-		},
-		error : function(data, status, e){
-	        alert(e);
-	        var table = $('#uploadTable').DataTable();
-        	table.ajax.reload();
-	    }
-	});
+
+function disImg(){
+	$('#imgFile').hide();
+	var table = $('#uploadTable').DataTable();
+	table.ajax.reload();
 }
 
-function fileMultiUpLoad(){
-	$.ajaxFileUpload({
-		url : serverPath + 'fileload/uploadMultiFilesS3', //用于文件上传的服务器端请求地址
-		fileElementId : 'multiFileName',
-		dataType : 'json',
-		type : "post",
-		success : function(data) {
-			alert(data.message);
-			var table = $('#uploadTable').DataTable();
-        	table.ajax.reload();
-		},
-		error : function(data, status, e){
-	        alert(e);
-	        var table = $('#uploadTable').DataTable();
-        	table.ajax.reload();
-	    }
-	});
-}
 function deleteFile(data){
-	var url = serverPath + 'fileload/delete?key=' + data ;
+	var url = serverPath + 'fileload/delete?key=' + data +'&bucketName=';
 	$.ajax({
         url : url,
         type : "get",
@@ -107,25 +90,33 @@ function deleteFile(data){
     $("#fileName").fileinput({
         language: 'zh', 
         uploadUrl: serverPath + 'fileload/uploadFileS3', //用于文件上传的服务器端请求地址
-        uploadAsync: true,
-//   	allowedFileExtensions: ['ini'],
+        uploadAsync: false,
+        //allowedFileExtensions: ['ini'],
         maxFileSize: 51200,
         // maxFileCount: 10,
         //showPreview:false,
         slugCallback: function (filename) {
-        	console.log(filename)
             return filename;
         },
         uploadExtraData: function(previewId, index) {	
 			//添加额外参数
 			var obj = {
-				
+				bucketName:''
 			};
 			return obj;
 		}
     });
+    //异步上传成功结果处理
     $("#fileName").on("fileuploaded", function (event, data) {
-        var res=data.response;
-        console.log(res);
+    	alert(data.response.message);
+    	var table = $('#uploadTable').DataTable();
+    	table.ajax.reload();
+    });
+    //同步上传成功结果处理
+    $("#fileName").on("filebatchuploadsuccess", function (event, data) {
+    	alert(data.response.message);
+    	$("#fileName").fileinput('reset')
+    	var table = $('#uploadTable').DataTable();
+    	table.ajax.reload();
     });
 })(window, jQuery);

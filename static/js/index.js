@@ -48,7 +48,6 @@ $(document).ready(function() {
         // globalConfig.curStaffOrg = data.mainStaffOrg;
         globalConfig.perm = data.perm;
         ace_menus = data.menus;
-        debugger;
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
             for (var i = 0; i < data.staffOrgs.length; i++) {
@@ -213,13 +212,13 @@ function changeStaffOrg(staffOrgId) {
         if (result.status) {
             window.location.reload();
         } else {
-            alert(data.message);
+            layer.msg(data.message);
         }
     }
 }
 var passwdValidator = {
     live: 'enabled',
-    trigger: 'live focus blur keyup',
+    trigger: 'live focus blur keyup change',
     message: '校验未通过',
     container: 'popover',
     fields: {

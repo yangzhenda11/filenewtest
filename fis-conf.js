@@ -3,10 +3,14 @@ fis.match('*.{js,css,png}', {
   useHash: true
 });
 
+//命令
+//fis3 release -d ../output
+
 // 启用 fis-spriter-csssprites 插件
 //fis.match('::package', {
  // spriter: fis.plugin('csssprites')
 //});
+
 
 // 对 CSS 进行图片合并
 //fis.match('*.css', {

@@ -53,8 +53,9 @@ function downloadUrl(data){
         type : "get",
         success : function(data) {
             if (data != "") {
+            	console.log(data.data);
             	$('#imgFile').show();
-                $('#imgFile').attr("src",data);
+                $('#imgFile').attr("src",data.data);
                 $('#imgFile').attr("width","256px");
                 $('#imgFile').attr("height","256px");
             }

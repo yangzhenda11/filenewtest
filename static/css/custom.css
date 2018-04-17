@@ -89,6 +89,13 @@
     width: 10%;
     padding: 60px 15px 0;
 }
+.selectL2R-actions{
+	margin-top: 42px;
+	margin-right: 5px;
+}
+.selectL2R-actions > button{
+	width: 34px;
+}
 /* 左右选择样式-结束 */
 
 

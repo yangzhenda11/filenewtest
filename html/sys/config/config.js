@@ -22,14 +22,23 @@ function getConfigTable(){
                 title: "操作",
                 className: "text-center",
                 render: function(data, type, full, meta) {
-	                var btnArray = new Array();
-	                btnArray.push({ "name": "详情", "fn": "detailConfigModal(\'" + full.id + "\')" });
-	                btnArray.push({ "name": "修改", "fn": "editConfigModal(\'" + full.id + "\')" });
-	                btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')" })
-	                return App.getDataTableBtn(btnArray);
+                	if(full){
+                		var btnArray = new Array();
+		                btnArray.push({ "name": "修改", "fn": "editConfigModal(\'" + full.id + "\')" });
+		                btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')" })
+		                return App.getDataTableBtn(btnArray);
+                	}else{
+                		return "";
+                	}
 	            }
             },
-			{ "data": "code", "title": "参数名称", render: $.fn.dataTable.render.ellipsis(22, true) },
+            {"data": null,
+            	title: "参数名称",
+            	render: function(data, type, full, meta) {
+					return '<a href=\"javascript:void(0)\" onclick = "detailConfigModal(\'' + full.id + '\')">' + full.code + '</a>';
+					
+				}
+           },
         	{ "data": "val", "title": "参数值", render: $.fn.dataTable.render.ellipsis(22, true) },
             {"data": "attra",
             	"title": "允许用户更改",
@@ -37,7 +46,7 @@ function getConfigTable(){
             		return  data == 0 ? "否" : "是";
             	}
         	},
-        	{ "data": "attrb", "title": "可更改枚举值", render: $.fn.dataTable.render.ellipsis(32, true) }
+        	{ "data": "attrb", "title": "可更改枚举值", render: $.fn.dataTable.render.ellipsis(22, true) }
 		]
 	});
 }
@@ -52,6 +61,14 @@ function searchConfig(retainPaging) {
 	} else {
 		table.ajax.reload();
 	}
+}
+/*
+ * 系统参数详情点击事件
+ */
+function detailConfigModal(id){
+	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalDetail",function(){
+		getConfig(id,"detail");
+	});
 }
 /*
  * 新增系统参数点击事件
@@ -74,34 +91,6 @@ function editConfigModal(id){
 		getConfig(id,"edit");
 	});
 }
-
-/*
- * 系统参数详情点击事件
- */
-function detailConfigModal(id){
-	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalDetail",function(){
-		getConfig(id,"detail");
-	});
-}
-
-/*
- * 系统参数删除点击事件，提交删除
- */
-function delConfig(id, code) {
-	layer.confirm('确定删除系统参数<span style="color:red;margin:0 5px;">' + code + '</span>?', {
-		icon: 3,
-		title: '删除系统参数'
-	}, function(index) {
-		App.formAjaxJson(serverPath + 'configs/' + id, "DELETE", "", successCallback);
-		function successCallback(result) {
-			layer.close(index);					
-			layer.msg("删除成功", {
-				icon: 1
-			});
-			searchConfig(true);
-		}
-	})
-}
 /*
  * 获取参数信息
  */
@@ -123,6 +112,22 @@ function getConfig(id,type){
 }
 
 /*
+ * 系统参数删除点击事件，提交删除
+ */
+function delConfig(id, code) {
+	layer.confirm('确定删除系统参数<span style="color:red;margin:0 5px;">' + code + '</span>?', {
+		icon: 3,
+		title: '删除系统参数'
+	}, function(index) {
+		App.formAjaxJson(serverPath + 'configs/' + id, "DELETE", "", successCallback);
+		function successCallback(result) {
+			layer.close(index);					
+			layer.msg("删除成功");
+			searchConfig(true);
+		}
+	})
+}
+/*
  * 新增||修改提交
  */
 function updateConfig(editType) {
@@ -134,12 +139,12 @@ function updateConfig(editType) {
 		delete formObj.id;
 	}else{
 		ms = "修改成功";
-		url = serverPath + 'configs/' + id;
+		url = serverPath + 'configs/' + formObj.id;
 		pushType = "PUT";
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
-		layer.msg(ms, {icon: 1});
+		layer.msg(ms);
 		searchConfig(true);
 		$('#modal').modal('hide');
 	}
@@ -153,7 +158,7 @@ function updateConfig(editType) {
 function validate(editType) {
 	$('#configForm').bootstrapValidator({
 		live: 'enabled',
-		trigger: 'live focus blur keyup',
+		trigger: 'live focus blur keyup change',
 		message: '校验未通过',
 		container: 'popover',
 		fields: {
@@ -176,8 +181,7 @@ function validate(editType) {
 					notEmpty: {
 	                    message: '请选择允许用户更改'
 	                }
-				},
-				trigger: "change"
+				}
 			}
 		}
 	}).on('success.form.bv', function(e) {

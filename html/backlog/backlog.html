@@ -15,12 +15,13 @@
 
 		<link rel="stylesheet" type="text/css" href="../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../static/plugins/font-awesome/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../static/plugins/select2/css/select2.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../static/plugins/select2/css/select2-bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css"/>
 		<link rel="stylesheet" type="text/css" href="../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
 		
 	</head>
 
@@ -88,7 +89,7 @@
 							</div>
 							<div class="page-search-action">
 								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="saveToModal();"><i class="iconfont icon-search"></i> 查询</button>
-								<button type="reset" class="btn btn-block yellow hidden"><i class="ace-icon fa fa-repeat"></i> 重置</button>
+								<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="iconfont icon-reset"></i> 重置</button>
 							</div>
 						</form>
 					</div>

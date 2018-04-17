@@ -2756,9 +2756,9 @@ select[multiple].input-lg,
 .form-horizontal .checkbox {
   min-height: 27px; }
 
-.form-horizontal .form-group {
+/*.form-horizontal .form-group {
   margin-left: -10px;
-  margin-right: -10px; }
+  margin-right: -10px; }*/
   .form-horizontal .form-group:before, .form-horizontal .form-group:after {
     content: " ";
     display: table; }

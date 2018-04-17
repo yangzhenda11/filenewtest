@@ -222,7 +222,6 @@ var passwdValidator = {
     trigger: 'live focus blur keyup',
     message: '校验未通过',
     container: 'popover',
-    submitButtons: 'button[type="submit"]',
     fields: {
         passwd: {
             validators: {
@@ -254,6 +253,7 @@ function updatePasswd() {
     $('#editPasswd').modal({
         backdrop: 'static'
     });
+    $('#passwdForm input').val("");
     if ($('#passwdForm').data('bootstrapValidator')) {
         $('#passwdForm').data('bootstrapValidator').resetForm(false);
     }
@@ -267,25 +267,44 @@ function updatePasswd() {
 }
 
 function changePasswd() {
-    var passwd = $("#passwdForm input[name='passwd']").val();
-    App.formAjaxJson(globalConfig.serverPath + "staffs/" +
-        globalConfig.curStaffId + "/main/passwd?passwd=" + passwd +
-        App.timestamp(), "PUT", null, passwdCallback, null, null, null,
-        false);
-
-    function passwdCallback(result) {
-        if (result.data) {
-            alert("修改成功");
-            //			window.location.replace(globalConfig.staticPath + "login.html");
+	debugger;
+	App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?"+ App.timestamp() , 
+	    	"GET",null, keyPairCallback, null, null, null,false);
+	
+	function keyPairCallback(result){
+		debugger;
+		var passwd = $("#passwdForm input[name='passwd']").val();
+		var modulus = result.data.modulus, exponent = result.data.exponent;
+        if (passwd.length != 256) {
+            var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
         }
-    }
+        var pwd = RSAUtils.encryptedString(publicKey, passwd);
+	    App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(), 
+	    	"PUT", {"passwd":pwd}, passwdCallback, null, null, null,false);
+	    function passwdCallback(result) {
+	        if (result.data) {
+	            alert("修改成功");
+	            logout();
+	        }
+	    }
+	}
+}
+
+function logout() {
+	debugger;
+	App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST",  null,successMethod, null, null, null, false);
+	function successMethod(result){
+		if(result.status){
+			window.location.href = result.data;
+		}
+	}
 }
 
 /**
  * 初始化左侧菜单滚动条
  * 
- * */
-//$('#sidebarScroller').slimScroll({
+ */
+// $('#sidebarScroller').slimScroll({
 //  allowPageScroll: true, // allow page scroll when the element scroll is ended
 //  size: '4px',
 //  color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : '#4B6A8B'),

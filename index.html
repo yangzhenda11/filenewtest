@@ -69,7 +69,7 @@
 								</li>
 								<li class="divider"></li>
 								<li>
-									<a href="#">
+									<a href="javascript:logout();">
 										<i class="ace-icon fa fa-power-off"></i> 退出
 									</a>
 								</li>
@@ -128,41 +128,35 @@
 		</div>
 		<div class="modal fade" id="editPasswd" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">修改密码</h4>
-					</div>
-					<div class="modal-body">
-						<form id="passwdForm" class="form-horizontal form-group">
-							<div class="col-sm-12">
-								<div class="form-group no-m-lr">
-									<label class="col-sm-3 control-label">密码</label>
-									<div class="col-sm-8">
-										<input type="password" placeholder="请输入密码" class="form-control"
-											name="passwd">
-									</div>
-								</div>
-								<div class="form-group no-m-lr">
-									<label class="col-sm-3 control-label">确认密码</label>
-									<div class="col-sm-8">
-										<input type="password" placeholder="请确认密码" class="form-control"
-											name="passConfirm">
-									</div>
-								</div>
-							</div>
-							<div class="text-center">
-								<button type="submit"
-									class="btn btn-sm btn-rounded btn-info m-sm" >保存</button>
-								<button type="button" data-dismiss="modal" aria-hidden="true"
-									class="btn btn-sm btn-rounded btn-default m-sm">取消</button>
-							</div>
-						</form>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
+			 <div class="modal-content">
+                <form class="form-horizontal" role="form" id="passwdForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitle">修改密码</h4>
+                    </div>
+
+                    <div class="modal-body modalForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="passwd">密码<span class="notNull">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="password" name="passwd" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="passConfirm">确认密码<span class="notNull">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="password" name="passConfirm" class="form-control" placeholder="密码">
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 保存</button>
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                    </div>
+                </form>
+                </div>
+	        </div>
 			<!-- /.modal -->
 		</div>
 		<!--[if lt IE 9]>
@@ -176,14 +170,16 @@
 		<!--插件引入-->
 		<script src="static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/index.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/js/security.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/ace/js/ace.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/ace/js/ace.sidebar.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/js/contabs.js" type="text/javascript" charset="utf-8"></script>
-		<script src="static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
+		
 	</body>
 
 </html>

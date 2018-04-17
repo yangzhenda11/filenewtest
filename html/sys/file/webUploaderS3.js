@@ -16,7 +16,7 @@ var uploadTable = App.initDataTables('#uploadTable', {
 			"className": "text-center",
 			"title": "操作",
 			"render": function(data, type, full, meta) {
-				var result = '<a href="/fileload/downloadS3?key=' + data + '">下载</a>';
+				var result = '<a href="/fileload/downloadS3?key=' + data + '&bucketName=">下载</a>';
 				result = result + '<a style="margin-left:15px" href="#" onclick="deleteFile(\''+data+'\')">删除</a>';
 				if (/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(data)) {
 					if($('#imgFile').css('display')=='none'){
@@ -47,7 +47,7 @@ var uploadTable = App.initDataTables('#uploadTable', {
 });
 
 function downloadUrl(data){
-	var url = serverPath + 'fileload/downloadS3Url?key=' + data ;
+	var url = serverPath + 'fileload/downloadS3Url?key=' + data +'&bucketName=';;
 	$.ajax({
         url : url,
         type : "get",
@@ -71,7 +71,7 @@ function disImg(){
 }
 
 function deleteFile(data){
-	var url = serverPath + 'fileload/delete?key=' + data ;
+	var url = serverPath + 'fileload/delete?key=' + data +'&bucketName=';
 	$.ajax({
         url : url,
         type : "get",
@@ -88,7 +88,7 @@ function deleteFile(data){
 (function (_, $) {
     $("#fileName").fileinput({
         language: 'zh', 
-        uploadUrl: serverPath + 'fileload/uploadMultiFilesS3', //用于文件上传的服务器端请求地址
+        uploadUrl: serverPath + 'fileload/uploadFileS3', //用于文件上传的服务器端请求地址
         uploadAsync: false,
         //allowedFileExtensions: ['ini'],
         maxFileSize: 51200,
@@ -100,7 +100,7 @@ function deleteFile(data){
         uploadExtraData: function(previewId, index) {	
 			//添加额外参数
 			var obj = {
-				
+				bucketName:''
 			};
 			return obj;
 		}

@@ -1049,9 +1049,10 @@ th, td { white-space: nowrap; }
 .nav-list > li > a > .menu-icon {
   display: inline-block;
   min-width: 30px;
-  margin-right: 10px;
+  margin-right: 4px;
   text-align: center;
-  font-size: 16px;
+  font-size: 22px;
+  top: 3px;
   font-weight: normal;
 }
 .nav-list > li:before {
@@ -1703,7 +1704,7 @@ body.mob-safari .sidebar.sidebar-fixed {
   padding: 0;
 }
 .sidebar.menu-min .nav-list > li > a > .menu-icon {
-  font-size: 18px;
+  font-size: 22px;
   height: auto;
   line-height: inherit;
   display: inline-block;

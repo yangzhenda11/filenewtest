@@ -93,7 +93,7 @@ jQuery(function($) {
 			if(menuinfo.childrens.length != 0){
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle'  href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
-				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon fa fa-desktop":"glyphicon "+menuinfo.icon)+"'></span>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'> "+menuinfo.name+" </span>");
 				$("#"+menuinfo.id+"a").append("<b class='arrow fa fa-angle-down'></b>");
 				$("#"+menuinfo.id).append("<b class='arrow'></b>");

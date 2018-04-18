@@ -1,3 +1,4 @@
+//@ sourceURL=task-todo.js
 $(function(){
 	initData();
 	var processDefinitionId = $('#processDefinitionId').val();
@@ -291,8 +292,8 @@ function addCommentForVote(pass){
 	}
 	
 //	$("#out-footer").hide();
-	$("#in-footer").show();
-//	$("#in-footer").modal("show");
+//	$("#in-footer").show();
+	$("#in-footer").modal("show");
 }
 //点击“中止”按钮，仅弹出意见填写窗口
 function addCommentForStop(){
@@ -340,8 +341,8 @@ function addCommentForStart(){
 	$("#assigneeDiv").hide();
 	$("#comment").val("同意");
 //	$("#out-footer").hide();
-	$("#in-footer").show();
-//	$("#in-footer").modal("show");
+//	$("#in-footer").show();
+	$("#in-footer").modal("show");
 }
 // 点击“转派”按钮，仅弹出处理人选择及意见填写窗口
 function addCommentForTurn(){
@@ -394,7 +395,7 @@ function refreshLink(){
 				});
 				// 最后一环节无需通过时无需选择环节与处理人
 				if (link.length == 0 || (link.length == 1 && "END" == link[0].value.split(",")[2])) {
-					$("#linkDiv").hide();
+					//$("#linkDiv").hide();
 					$("#assigneeDiv").hide();
 				} else {
 					$("#linkDiv").show();
@@ -442,7 +443,8 @@ function refreshAssignee(serverPath, processDefinitionKey, taskDefinitionKey){
 //点击返回按钮，回到默认按钮并情况处理人信息
 function selectButton(){
 //	$("#out-footer").hide();
-	$("#in-footer").hide();
+//	$("#in-footer").hide();
+	$("#in-footer").modal("hide");
 	
 	clearAssignee();
 }
@@ -482,7 +484,7 @@ function pushProcess(){
 		withdraw = linkAndWithdraw[1];
 		
 		if(taskDefinitionKey.length == 0) {
-			alert('请选择环节！');
+			layer.msg('请选择环节！');
 			return;
 		}
 	} else {
@@ -492,22 +494,22 @@ function pushProcess(){
 		assignee = $("#assignee").val();
 		
 		if(assignee == null || assignee == '') {
-			alert('请选择处理人！');
+			layer.msg('请选择处理人！');
 			return;
 		}
 	}
 	
 	var comment = $("#comment").val();
 	if(comment.length == 0) {
-		alert('请填写审批意见！');
+		layer.msg('请填写审批意见！');
 		return;
 	}
 	
-	var r = confirm("是否确认提交？");
-	if (r == true) {
+	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
 		// 调用推进方法，通过及回退均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ） 
 		modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
-	}
+		layer.close(index);
+	})
 }
 // 会签环节专用流程推动
 function pushProcessForVote(){
@@ -688,9 +690,10 @@ function initData(){
 	});
 }
 function returnList(){
-	serarchForToDo();
+	$("#in-footer").modal("hide");
 	$("#goTaskToDoDetailForToDo").hide();
 	$("#searchContentForToDo").show();
+	serarchForToDo();
 }
 
 

@@ -12,8 +12,16 @@ $(function(){
  * author:ctt
  * day:2018-0416-21
  */
-function modal_start(processDefinitionKey, assignee, taskDefinitionKey){
-	alert(processDefinitionKey + "_" + assignee + "_" + taskDefinitionKey);
+function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment){
+	//alert(processDefinitionKey + "_" + assignee + "_" + taskDefinitionKey);
+/*	业务侧推进流程需要带着表单数据的，参考以下方式和流程参数拼接在一起。
+	var jsonDate=$('#remandBaseInfo').serialize()
+	+"&taskDefinitionKey="+taskDefinitionKey
+	+"&businessKey="+_remandId
+	+"&title="+$("#remandName").val()
+	+"&comment="+comment
+	+"&assignee="+assignee
+	+"&processDefinitionKey="+processDefinitionKey;*/
 	
 	$.post(serverPath + "business/startProcess", {
 		"processDefinitionKey" : processDefinitionKey,//流程模板编码，流程回调带过来的，业务侧无需赋值。
@@ -24,10 +32,9 @@ function modal_start(processDefinitionKey, assignee, taskDefinitionKey){
 		"businessKey":""//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
 	}, function(data) {
 		alert(data.sign);
-		
 		// 成功后回调模态窗口关闭方法
 		closeModalForStart();
-	});
+	}).error(function() { alert("流程发起异常，请联系管理员！"); });
 }
 
 //待办公共页面点击选人按钮触发方法
@@ -40,7 +47,6 @@ function selectAssigneeForStart(flowLinkid){
 function setRelativeData(){
 	return false;
 }
-
 function setFlowKey(){
 	var processDefinitionKeyForStart = $("#processDefinitionKeyForStart").val();
 	var processDefinitionKey = $("#processDefinitionKey").val();

@@ -336,6 +336,48 @@ function subHistoryTitl(){
 		
 		return html;
 	}
+}
 
-
+//业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
+function addCustomTab(params){
+	var name = params.title;
+	var url = params.url;
+	var count = $("li").length;
+	var tabName = "addcustom_tab" + (count + 1);
+	var divName = "addcustom_div" + (count + 1);
+	
+	var div = "<div role=\"tabpanel\" class=\"tab-pane fade\" id='" + divName + "'></div>";
+	var htmlLi = "<li id='" + tabName + "' role='presentation'></li>";
+	var hrefLi = "<a href='#" + divName + "' aria-controls='" + divName + "' role=\"tab\" data-toggle=\"tab\">" + name + "</a>";
+	
+	$('#history').before(div);
+	//自定义标签div加载辅助页面
+	$("#" + divName).load(url,function(){
+		 App.init();
+	});
+	
+	$('#historyLi').before(htmlLi);
+	$("#" + tabName).append(hrefLi);
+	
+}
+//业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
+function addCustomTab(params){
+	var name = params.title;
+	var url = params.url;
+	var count = $("li").length;
+	var tabName = "addcustom_tab" + (count + 1);
+	var divName = "addcustom_div" + (count + 1);
+	
+	var div = "<div role=\"tabpanel\" class=\"tab-pane fade\" id='" + divName + "'></div>";
+	var htmlLi = "<li id='" + tabName + "' role='presentation'></li>";
+	var hrefLi = "<a href='#" + divName + "' aria-controls='" + divName + "' role=\"tab\" data-toggle=\"tab\">" + name + "</a>";
+	
+	$('#historyForDone').before(div);
+	//自定义标签div加载辅助页面
+	$("#" + divName).load(url);
+	
+	$('#historyLiForDone').before(htmlLi);
+	$("#" + tabName).append(hrefLi);
+	
+			
 }

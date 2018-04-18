@@ -24,9 +24,10 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 			"title":""//可不传，如果需要修改待办标题则传此参数。
 		}, function(data) {
-			alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
+			layer.msg(data.sign);
+			
 			// 成功后回调模态窗口关闭方法
-			modal_close();
+			modal_close();   
 		});
 }
 
@@ -72,7 +73,7 @@ function selectAssignee(turnAssignee, flowLinkid){
 	$("#assignee").val(10001);
 	$("#assigneeName").val("示例：处理人");
 }
-
+//查找下一步环节的时候会调用业务侧此方法返回数据。
 function setRelativeData(){ 
 	return false; 
 }

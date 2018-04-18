@@ -1,4 +1,3 @@
-//@ sourceURL=task-todo.js
 $(function(){
 	initData();
 	var processDefinitionId = $('#processDefinitionId').val();
@@ -33,7 +32,9 @@ $(function(){
 		$("#shenpiDiv").addClass("col-md-12");
 	}
 	
-	
+	$('#saveButton').click(function(){
+		modal_savefun()
+	});
 	// 据是否为会签节点处理按钮事件及显隐
 	if(isCounterSign == 'true'){
 		// 通过按钮事件添加
@@ -230,43 +231,45 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 
 // 普通环节点击“通过”或“回退”按钮，添加评论
 function addComment(pass){
-    if(typeof(beforePushProcess)=="function") {
-        if (!beforePushProcess(pass)) {
-            //alertModel("系统异常，请联系管理员");
-            return;
-        }
-    }else{
-    	layer.msg('数据校验异常，请联系管理员！');
-        return;
-    }
-	
-	// 确认按钮仅绑定推进事件
-	$("#confirmButton").unbind();
-	$('#confirmButton').click(function(){
-		pushProcess();
-	});
-//	// 处理人选择按钮方法重置
-//	$("#selectAssignee").unbind();
-//	$('#selectAssignee').click(function(){
-//		selectAssignee(false, $('#link').val().split(',')[2]);
-//	});
-	
-	$("#linkDiv").show();
-	$("#assigneeDiv").show();
-	
-	if(pass){
-		$("#comment").val("同意");
-		$("#handleType").val(1);
-	} else {
-		$("#comment").val("不同意");
-		$("#handleType").val(2);
-	}		
-	refreshLink();
-	
-//	$("#out-footer").hide();
-	//$("#in-footer").show();
-	$("#in-footer").modal("show");
-	// 刷新环节及处理人并展现	
+	if(!checkifdone()){
+	    if(typeof(beforePushProcess)=="function") {
+	        if (!beforePushProcess(pass)) {
+	            // alertModel("系统异常，请联系管理员");
+	            return;
+	        }
+	    }else{
+	    	layer.msg('数据校验异常，请联系管理员！');
+	        return;
+	    }
+		
+		// 确认按钮仅绑定推进事件
+		$("#confirmButton").unbind();
+		$('#confirmButton').click(function(){
+			pushProcess();
+		});
+	// // 处理人选择按钮方法重置
+	// $("#selectAssignee").unbind();
+	// $('#selectAssignee').click(function(){
+	// selectAssignee(false, $('#link').val().split(',')[2]);
+	// });
+		
+		$("#linkDiv").show();
+		$("#assigneeDiv").show();
+		
+		if(pass){
+			$("#comment").val("同意");
+			$("#handleType").val(1);
+		} else {
+			$("#comment").val("不同意");
+			$("#handleType").val(2);
+		}		
+		refreshLink();
+		
+	// $("#out-footer").hide();
+		// $("#in-footer").show();
+		$("#in-footer").modal("show");
+		// 刷新环节及处理人并展现
+	}
 }
 // 会签环节点击“通过”或“拒绝”按钮，添加评论
 function addCommentForVote(pass){
@@ -288,38 +291,42 @@ function addCommentForVote(pass){
 	}
 	
 //	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
+	$("#in-footer").show();
+//	$("#in-footer").modal("show");
 }
 //点击“中止”按钮，仅弹出意见填写窗口
 function addCommentForStop(){
-	// 确认按钮仅绑定推进事件
-	$("#confirmButton").unbind();
-	$('#confirmButton').click(function(){
-		stopProcess();
-	});
-	
-	$("#linkDiv").hide();
-	$("#assigneeDiv").hide();
-	$("#comment").val("中止流程");
-//	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
+	if(!checkifdone()){
+		// 确认按钮仅绑定推进事件
+		$("#confirmButton").unbind();
+		$('#confirmButton').click(function(){
+			stopProcess();
+		});
+		
+		$("#linkDiv").hide();
+		$("#assigneeDiv").hide();
+		$("#comment").val("中止流程");
+	    //$("#out-footer").hide();
+	    //$("#in-footer").show();
+		$("#in-footer").modal("show");
+	}
 }
 // 点击“简退”按钮，仅弹出意见填写窗口
 function addCommentForQuick(){
-	// 确认按钮仅绑定推进事件
-	$("#confirmButton").unbind();
-	$('#confirmButton').click(function(){
-		quickBackProcess();
-	});
-	
-	$("#linkDiv").hide();
-	$("#assigneeDiv").hide();
-	$("#comment").val("不同意");
-//	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal('show');
+	if(!checkifdone()){
+		// 确认按钮仅绑定推进事件
+		$("#confirmButton").unbind();
+		$('#confirmButton').click(function(){
+			quickBackProcess();
+		});
+		
+		$("#linkDiv").hide();
+		$("#assigneeDiv").hide();
+		$("#comment").val("不同意");
+	//	$("#out-footer").hide();
+	//	$("#in-footer").show();
+		$("#in-footer").modal('show');
+	}
 }
 //简退环节后的首环节“推进”按钮，仅弹出意见填写窗口
 function addCommentForStart(){
@@ -338,23 +345,27 @@ function addCommentForStart(){
 }
 // 点击“转派”按钮，仅弹出处理人选择及意见填写窗口
 function addCommentForTurn(){
-	// 确认按钮仅绑定推进事件
-	$("#confirmButton").unbind();
-	$('#confirmButton').click(function(){
-		transferTask();
-	});
-	// 处理人选择按钮方法重置
-	$("#selectAssignee").unbind();
-	$('#selectAssignee').click(function(){
-		selectAssignee(true, '');
-	});
-	
-	$("#linkDiv").hide();
-	$("#assigneeDiv").show();
-	$("#comment").val("请代处理");
-//	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
+	if(!checkifdone()){
+		if(beforeTransfer()){
+			// 确认按钮仅绑定推进事件
+			$("#confirmButton").unbind();
+			$('#confirmButton').click(function(){
+				transferTask();
+			});
+			// 处理人选择按钮方法重置
+			$("#selectAssignee").unbind();
+			$('#selectAssignee').click(function(){
+				selectAssignee(true, '');
+			});
+			
+			$("#linkDiv").hide();
+			$("#assigneeDiv").show();
+			$("#comment").val("请代处理");
+		//	$("#out-footer").hide();
+		//	$("#in-footer").show();
+			$("#in-footer").modal("show");
+		}
+	}
 }
 
 //环节下拉列表
@@ -365,11 +376,12 @@ function refreshLink(){
 	var isHistoryBack = $('#isHistoryBack').val(); //该环节在进行回退的时候是否进行历史记录进行匹配
 	var isUsePushExpression = $('#isUsePushExpression').val();//在流程推进的时候是否使用表达式进行匹配
 	var isUseBackExpression = $('#isUseBackExpression').val();//在流程回退的时候是否使用表达式进行匹配
+	var pathSelect=$("#pathSelect").val();
 	var processData = setRelativeData();
 	if(!processData){ 
 		processData = null;
 	}
-	$.get(serverPath + "workflowrest/tasklink/" + taskId + "/" + handleType + "/branch/"+isHistoryBack+"/"+isUsePushExpression+"/"+isUseBackExpression,processData,
+	$.get(serverPath + "workflowrest/tasklink/" + taskId + "/" + handleType + "/branch/"+isHistoryBack+"/"+isUsePushExpression+"/"+isUseBackExpression+"/"+pathSelect,processData,
 		function(data) {
 			var success = data.retCode;
 			// 返回成功即继续处理，不成功报原因
@@ -430,8 +442,7 @@ function refreshAssignee(serverPath, processDefinitionKey, taskDefinitionKey){
 //点击返回按钮，回到默认按钮并情况处理人信息
 function selectButton(){
 //	$("#out-footer").hide();
-//	$("#in-footer").hide();
-	$("#in-footer").modal("hide");
+	$("#in-footer").hide();
 	
 	clearAssignee();
 }
@@ -471,7 +482,7 @@ function pushProcess(){
 		withdraw = linkAndWithdraw[1];
 		
 		if(taskDefinitionKey.length == 0) {
-			layer.msg('请选择环节！');
+			alert('请选择环节！');
 			return;
 		}
 	} else {
@@ -481,22 +492,22 @@ function pushProcess(){
 		assignee = $("#assignee").val();
 		
 		if(assignee == null || assignee == '') {
-			layer.msg('请选择处理人！');
+			alert('请选择处理人！');
 			return;
 		}
 	}
 	
 	var comment = $("#comment").val();
 	if(comment.length == 0) {
-		layer.msg('请填写审批意见！');
+		alert('请填写审批意见！');
 		return;
 	}
 	
-	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
+	var r = confirm("是否确认提交？");
+	if (r == true) {
 		// 调用推进方法，通过及回退均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ） 
 		modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
-		layer.close(index);
-	})
+	}
 }
 // 会签环节专用流程推动
 function pushProcessForVote(){
@@ -677,10 +688,9 @@ function initData(){
 	});
 }
 function returnList(){
-	$("#in-footer").modal("show");
+	serarchForToDo();
 	$("#goTaskToDoDetailForToDo").hide();
 	$("#searchContentForToDo").show();
-	serarchForToDo();
 }
 
 
@@ -865,6 +875,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
     	$("#wflinkCode").val(linkcode);
     	$("#wfprov").val(prov);
     	$("#wfcallbackFun").val(callbackFun);
+    	App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
     });
     $("#PandJstaffiframetask").modal('show');
 }
@@ -876,4 +887,69 @@ function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
 }
 function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);
+}
+//业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
+function addCustomTab(params){
+	var name = params.title;
+	var url = params.url;
+	var count = $("li").length;
+	var tabName = "addcustom_tab" + (count + 1);
+	var divName = "addcustom_div" + (count + 1);
+	
+	var div = "<div role=\"tabpanel\" class=\"tab-pane fade\" id='" + divName + "'></div>";
+	var htmlLi = "<li id='" + tabName + "' role='presentation'></li>";
+	var hrefLi = "<a href='#" + divName + "' aria-controls='" + divName + "' role=\"tab\" data-toggle=\"tab\">" + name + "</a>";
+	
+	$('#history').before(div);
+	//自定义标签div加载辅助页面
+	$("#" + divName).load(url,function(){
+		 App.init();
+	});
+	
+	$('#historyLi').before(htmlLi);
+	$("#" + tabName).append(hrefLi);
+	
+}
+
+function setPathSelect(pathSelect){
+	$("#pathSelect").val(pathSelect);
+}
+
+//校验待办是否已经办理,true标识已经办理，false标识尚未办理
+function checkifdone(){
+	var taskId =$("#taskId").val();
+	var result=false;
+	$.ajax({
+		'cache': true,
+		'type': "POST",
+		'url':serverPath+"workflowrest/checktask?taskId="+taskId,
+		'async': false,
+		'error': function(request) {
+			layer.msg("校验待办异常，请联系管理员!",{time:1000});
+		},
+		'success': function(data) {
+			var success=data.success;
+			if(success=='1'){
+				result=false;
+			}else{
+				result=true;
+				window.top.alertModel(data.info);
+			}
+			
+		}
+	});
+	return result;
+}
+
+function modal_savefun(){
+	try{ 
+		if(typeof(modal_save)=="function"){ 
+			modal_save();
+		}else{
+			layer.msg("当前环节不需要保存数据！");
+		}
+	}catch(e){ 
+		//alert(e.name + ": " + e.message);
+		layer.msg("保存数据异常，请联系管理员！");
+	} 
 }

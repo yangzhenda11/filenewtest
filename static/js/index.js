@@ -182,22 +182,25 @@ function checkFullscreen() {
 
 // 页面过滤
 function permFilter(obj) {
-    var e = obj.querySelectorAll('[permcheck]');
+    var e = obj.querySelectorAll('[data-permcheck]');
     var perm = globalConfig.perm;
     for (var i = 0; i < e.length; i++) {
-        if (null != e[i].getAttribute('permcheck')) {
-            if (jQuery.inArray(e[i].getAttribute('permcheck'), perm) < 0) {
+        if ($(e[i]).data('permcheck') != "") {
+            if ($.inArray($(e[i]).data('permcheck'), perm) < 0) {
                 e[i].remove();
             } else {
-                $(e[i]).show();
+            	$(e[i]).removeClass("hidden");
+                
             }
+        }else{
+        	$(e[i]).removeClass("hidden");
         }
     }
 }
 // 表中过滤
 function tPFilter(permCheck) {
     var perm = globalConfig.perm;
-    if (jQuery.inArray(permCheck, perm) >= 0) {
+    if ($.inArray(permCheck, perm) >= 0) {
         return true;
     } else {
         return false;

@@ -801,6 +801,10 @@ var App = function() {
 		            o[value.name] = value.value || '';
 		        }
 		    });
+//		    $form.find("[data-isNumber='true']").each(function(index, item) {
+//				var key = $(this).attr("name");
+//				o[key] = Number(o[key]);
+//			})
 		    return o;
 		},
 		/**

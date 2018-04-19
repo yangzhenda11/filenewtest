@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
+
+	<head>
+		<meta charset="UTF-8">
+		<title>合同扫描件上传</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/scanCpyUpload.css"/>
+	</head>
+
+	<body>
+		<div class="page-content">
+			<div class="portlet">
+				<div class="portlet-title">
+					<div class="caption font-dark">
+						<span class="caption-subject bold uppercase"> 合同扫描件上传</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="toolbarBtn">
+						<div id="toolbarBtnContent">
+							<button class="btn blue">保存</button>
+							<button class="btn purple">提交</button>
+							<button class="btn red" onclick="backPage()">返回上一页</button>
+						</div>
+					</div>
+					<div class="form-fieldset">
+               			<div class="form-fieldset-title">
+               				<span><i class="iconfont icon-layers"></i> 合同信息</span>
+               				<div class="form-fieldset-tools">
+               					<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+               				</div>
+               			</div>
+               			<div class="form-fieldset-body">
+               				<div class="row defaultFieldsetForm">
+               					<div class="col-sm-6 form-group">
+									<label for="proCode" class="control-label">合同编号：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+									</div>
+               					</div>
+               					<div class="col-sm-6 form-group">
+									<label for="proCode" class="control-label">承办人：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+									</div>
+               					</div>
+               					<div class="col-sm-6 form-group">
+									<label for="proCode" class="control-label">合同名称：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+									</div>
+               					</div>
+               					<div class="col-sm-6 form-group">
+									<label for="proCode" class="control-label">承办部门：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+									</div>
+               					</div>
+               					<div class="col-sm-6 form-group">
+									<label for="proCode" class="control-label">我方主体：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+									</div>
+               					</div>
+               					<div class="col-sm-6 form-group">
+									<label for="proCode" class="control-label">对方主体：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+									</div>
+               					</div>
+               				</div>
+               			</div>
+               		</div>
+               		<div class="form-fieldset">
+               			<div class="form-fieldset-title">
+               				<span><i class="iconfont icon-layers"></i> 合同扫描件</span>
+               				<div class="form-fieldset-tools">
+               					<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+               				</div>
+               			</div>
+               			<div class="form-fieldset-body">
+               				<div class="row">
+               					<div class="col-sm-6 form-group">
+               						<label for="proCode" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+               						<div class="col-sm-9">
+               							<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
+               						</div>
+               					</div>
+               					<div class="col-sm-6">
+               						<button class="btn red">选择文件</button>
+               					</div>
+               					<div class="col-sm-12 cluesRed">
+               						提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
+               					</div>
+               					<div class="col-sm-12 clues">
+               						合同附件扫描件：
+               					</div>
+               					<div class="col-sm-12 cluesRed">
+               						提示：合同合同附件扫描件支持上传多种格式文件，可针对附件名依次上传对应扫描件。
+               					</div>
+               					<div class="col-sm-12">
+               						<table id="scanCpyloadTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+               					</div>
+               				</div>
+               			</div>
+               		</div>
+				</div>
+			</div>
+		</div>
+		<!--[if lt IE 9]>
+		  	<script src="../../static/plugins/html5shiv.min.js"></script>
+		  	<script src="../../static/plugins/respond.min.js"></script>
+		  	<script src="../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="../../static/plugins/selectivizr-min.js"></script>
+		<![endif]-->
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="scanCpyUploadEdit.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

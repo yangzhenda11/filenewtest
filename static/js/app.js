@@ -1166,6 +1166,51 @@ var App = function() {
             content += '<span></span></label>';
             return content;
         },
+        /*
+         * 获取当前ifreamutl参数
+         */
+        getPresentParm : function(isUrl){
+        	var persentUrl = top.$('.J_iframe:visible').attr('src');
+        	if(isUrl){
+        		return persentUrl;
+        	}else{
+				var theRequest = new Object();   
+				if (persentUrl.indexOf("?") != -1) {   
+					var subStrLength = persentUrl.indexOf("?") + 1;
+				    var str = persentUrl.substr(subStrLength);   
+				    strs = str.split("&");   
+				    for(var i = 0; i < strs.length; i ++) {   
+				        theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
+				    }   
+				}   
+				return theRequest;   
+        	}
+        },
+        /*
+         * 改变当前ifream切换url
+         */
+        changePresentUrl : function(url){
+        	var $resentFrame = top.$('.J_iframe:visible');
+			$resentFrame.attr('src', url)
+        },
+        /*
+         * 详情页固定操作按钮
+         * 1.操作按钮父级ID值
+         * 2.滚动固定的高度
+         */
+        fixToolBars : function(dom,dixScrollTop){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				var toolbarBtn  = document.getElementById(dom);
+				if(topScroll > dixScrollTop){
+					toolbarBtn.style.position = 'fixed';
+					toolbarBtn.style.top = '0';
+					toolbarBtn.style.zIndex = '9999';
+				}else{
+					toolbarBtn.style.position = 'static';
+				}
+			})
+        },
 		// init main components
         initComponents:function(){
             this.initAjax();

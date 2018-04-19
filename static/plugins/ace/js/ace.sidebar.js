@@ -482,6 +482,11 @@
 
 		e.preventDefault();
 		$sidebar.ace_sidebar('toggleMenu', this);
+		if($(sidebar).hasClass("menu-min")){
+			$("#sidebar").css("overflow","inherit");
+		}else{
+			$("#sidebar").css("overflow","auto");
+		}
 	})
 	//this button is used in `mobile_style = 3` responsive menu style to expand minimized sidebar
 	.on(ace.click_event+'.ace.menu', '.sidebar-expand', function(e){

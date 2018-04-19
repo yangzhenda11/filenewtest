@@ -41,3 +41,9 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         }
     ]
 });
+
+//跳转到上传页面
+function addScanCpy(){
+	var src = "html/scanCpyMgt/scanCpyUpload/scanCpyUploadEdit.html?type=2&id=1";
+	App.changePresentUrl(src);
+}

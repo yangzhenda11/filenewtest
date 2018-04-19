@@ -1,5 +1,6 @@
 //系统的全局变量
-//var serverPath = config.serverPath;
+/*var serverPath = config.serverPath;
+var config = top.globalConfig;*/
 
 /*
  * 初始化表格
@@ -7,8 +8,17 @@
 App.initDataTables('#searchContractTable', "#submitBtn", {
 	 ajax: {
         "type": "GET",
-        "url": "www.baidu.com",
+        "url": "null",
         "data": function(d) {//自定义传入参数
+        	d.staffId = config.staffId;
+        	d.contractNumber = $("input[name='contractNumber']").val();
+			d.contractType = $("input[name='contractType']").val();
+			//d.undertakerId = $("input[name='undertakerId']").val();
+			d.undertakeName = $("input[name='undertakeName']").val();
+			//d.oppoPartyId = $("input[name='oppoPartyId']").val();
+			d.oppoPartyName = $("input[name='oppoPartyName']").val();
+			d.approve_date_begin = $("input[name='approve_date_begin']").val();
+			d.approve_date_end = $("input[name='approve_date_end']").val();
             return d;
         }
     },

@@ -12,6 +12,7 @@
 	<title>Document</title>
 </head>
 <body>
+	<input type="hidden" id="contractId" class="form-control">
 	<div class="page-content">
 		
 			<div class="portlet">
@@ -49,7 +50,7 @@
 										<span class="input-group-addon searchLableText">承办人</span>
 										<input type="hidden"  id="undertakerId" class="form-control"/>
 										<input type="text" id="undertakeName" class="form-control"/>
-										<span class="input-group-addon"><i class="iconfont icon-search"></i></span>
+										<span class="input-group-addon" onclick="undertakeTree()"><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
 								<div class="col-sm-4">
@@ -63,7 +64,7 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">审批通过日期</span>
-										<input type="text" name="approve_date_begin" id="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+										<input type="text" name="approve_date" id="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
                                         <span class="input-group-addon searchLableText" >-</span>
                                         <input type="text" name="approve_date_end" id="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"

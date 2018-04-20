@@ -44,6 +44,13 @@
 							<span class="input-group-addon" id="searchOtherSubject" ><i class="iconfont icon-search"></i></span>
 						</div>
 					</div>
+					<div class="col-sm-4">
+						<div class="input-group">
+							<span class="input-group-addon searchLableText">合同编号</span>
+							<input id="contractData" name="contractData" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchContractData" ><i class="iconfont icon-search"></i></span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -73,6 +80,9 @@
 			})
 			$("#searchOtherSubject").click(function(){
 				App.getCommonModal("otherSubject","#otherSubject","loginName");
+			})
+			$("#searchContractData").click(function(){
+				App.getCommonModal("contractData","#contractData","contractNumber");
 			})
 		</script>
 	</body>

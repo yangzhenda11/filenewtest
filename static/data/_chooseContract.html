@@ -1,10 +1,9 @@
 <link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 <style type="text/css">
-	#otherSubjectTable .radioCheck .ui-radio {
-		top: 3px;
+	#contractDataTable .radioCheck .ui-radio {
+		top: 6px;
 		left: 2px;
-		margin-bottom: 0px;
 		/*position: relative;
 		top: 50%;
 		left: 50%;
@@ -15,26 +14,32 @@
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title" id="myModalLabel">对方主体</h4>
+			<h4 class="modal-title" id="myModalLabel">合同查询</h4>
 		</div>
 		<div class="modal-body">
 			<div class="portlet-body">
 				<div class="page-search">
 					<form class="form-horizontal" action="">
 						<div class="row page-search-form">
-							<div class="col-sm-5">
+							<div class="col-sm-4">
 								<div class="input-group">
-									<span class="input-group-addon searchLableText">人员姓名</span>
-									<input type="text" class="form-control" name="staffName" maxlength="20">
+									<span class="input-group-addon searchLableText">合同名称</span>
+									<input type="text" class="form-control" name="contractName" >
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="input-group">
+									<span class="input-group-addon searchLableText">合同编号</span>
+									<input type="text" class="form-control" name="contractNumber" >
 								</div>
 							</div>
 							<div class="input-group">
-								<button type="button" id="searchBtnM" class="btn btn-block red" data-loading-text="加载中.." onclick="searchOtherSubjectData();"><i class="iconfont icon-search"></i> 查询</button>
+								<button type="button" id="searchBtnM" class="btn btn-block red" data-loading-text="加载中.." onclick="searchContractData();"><i class="iconfont icon-search"></i> 查询</button>
 							</div>
 						</div>
 					</form>
 				</div>
-				<table id="otherSubjectTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				<table id="contractDataTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 			</div>
 
 		</div>
@@ -52,19 +57,16 @@
 	var serverPath = config.serverPath;
 	var setDom = null;
 	//初始化表格
-	function initOtherSubjectData(dom, textValue, ajaxData) {
+	function initContractData(dom, textValue, ajaxData) {
 		setDom = dom;
 		$("#modal").modal("show");
-		App.initDataTables('#otherSubjectTable', "#searchBtnM", {
+		App.initDataTables('#contractDataTable', "#searchBtnM", {
 			ajax: {
-				"type": "get", //请求方式
-				"url": serverPath + 'staffPartner/getStaffPartnerList', //请求地址
-				"data": function(d) { //自定义传入参数
-					d.sysOrgId = config.curOrgId;
-					d.staffName = $("input[name='staffName']").val();
-					d.loginName = $("input[name='loginName']").val();
-					d.staffStatus = $("select[name='staffStatus']").val();
-					d.orgId = $("#organisation").data("id");
+				"type": "post",
+				"url": serverPath + 'contractBaseInfo/listContractByUndertakerId',
+				"data": function(d) {
+					d.contractName = $("input[name='contractName']").val();
+					d.contractNumber = $("input[name='contractNumber']").val();
 					return d;
 				}
 			},
@@ -78,37 +80,36 @@
 					}
 				},
 				{
-					"data": "loginName",
-					"title": "账号"
+					"data": "contractName",
+					"title": "合同名称",
+					"className":"whiteSpaceNormal",
+					"width":"35%"
 				},
 				{
-					"data": "orgName",
-					"title": "组织"
+					"data": "contractNumber",
+					"title": "合同编号"
 				},
 				{
-					"data": "sex",
-					"title": "性别",
-					render: function(data, type, full, meta) {
-						return data == 'M' ? '男' : '女';
-					}
+					"data": "partyName",
+					"title": "对方主体名称"
 				}
 			]
 		});
 		//行点击事件  
-		$('#otherSubjectTable tbody').on('click', 'tr', function() {
+		$('#contractDataTable tbody').on('click', 'tr', function() {
 			$(this).find("input[name='checkRadio']").prop("checked", true);
 			//获取选择行的内容
-			//var data = $('#otherSubjectTable').DataTable().row(this).data();
+			//var data = $('#contractDataTable').DataTable().row(this).data();
 		});
 	}
 	//搜索点击事件
-	function searchOtherSubjectData() {
-		var table = $('#otherSubjectTable').DataTable();
+	function searchContractData() {
+		var table = $('#contractDataTable').DataTable();
 		table.ajax.reload();
 	}
 	//点击确定页面dom元素选择值
 	function checkOtherSubject() {
-		var checkValue = $("#otherSubjectTable").find("input[name='checkRadio']:checked").val();
+		var checkValue = $("#contractDataTable").find("input[name='checkRadio']:checked").val();
 		$(setDom).val(checkValue);
 		$("#modal").modal("hide");
 	}

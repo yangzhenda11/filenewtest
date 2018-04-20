@@ -68,7 +68,7 @@
 			})
 			function test(type,ajaxData,dom,key){
 				$("#modal").load("/static/data/_contractType.html",function(){
-					getContractData(ajaxData,dom,key);
+					initContractTree(ajaxData,"#organisation",["level","dictId"]);
 				})
 			}
 		</script>

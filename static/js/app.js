@@ -1211,6 +1211,27 @@ var App = function() {
 				}
 			})
         },
+        /*
+         * 加载公共modal框
+         * 页面中需加入一个id为modal的div,即:
+         * '<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
+         * type:加载modal的类型
+         * dom:设值的input框dom元素  如:"#contractType",
+         * value:框内显示内容对象返回数据的key值,
+         * ajaxData:ajax传递的参数,若无传空或null
+         * setkey: 设定的data值(只针对modal内容为树时生效),可为空,可为一个也可为数组,例传入 "id">dom元素设值data-id = "**"
+         */
+        getCommonModal : function(type, dom, value, ajaxData, setkey){
+        	if(type == "contractType"){
+        		$("#modal").load("/static/data/_contractType.html",function(){
+					initContractTree(dom,value,ajaxData,setkey);
+				})
+        	}else if(type == "otherSubject"){
+        		$("#modal").load("/static/data/_otherSubject.html",function(){
+					initOtherSubjectData(dom, value, ajaxData);
+				})
+        	}
+		},
 		// init main components
         initComponents:function(){
             this.initAjax();

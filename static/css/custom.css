@@ -334,13 +334,36 @@ button:focus{
     margin-bottom: 30px;
 }
 /*
- * modal编辑框样式
+ * 列表页样式重置
+ */
+.form-fieldset > .form-fieldset-body{
+	padding-top: 20px;
+}
+.form-fieldset-body .control-label{
+	text-align: right;
+}
+.form-fieldset-body .control-label{
+	padding-top: 5px;
+}
+.toolbarBtn{
+	height: 42px;
+}
+#toolbarBtnContent{
+	width: 96%;
+	background: rgb(255,255,255,0.8);
+}
+#toolbarBtnContent button{
+	margin: 5px 3px;
+}
+
+/*
+ * 编辑框样式
  */
 /*默认弹出框宽度*/
 .defaultModalWidth{
 	width: 90%;
 }
-.defaultModalForm .form-group{
+.defaultModalForm .form-group,.defaultFieldsetForm .form-group{
 		display:table;
 }
 .defaultModalForm .form-group > label{
@@ -351,7 +374,15 @@ button:focus{
     vertical-align:middle;    
     display:table-cell;
 }
-.defaultModalForm .form-group > .valiParent{
+.defaultFieldsetForm .form-group > label{
+		width: 20%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+}
+.defaultModalForm .form-group > .valiParent,.defaultFieldsetForm .form-group > .valiParent{
 		width: 100%;
 		float: left;
 	  position: relative;
@@ -359,6 +390,7 @@ button:focus{
     padding-left: 10px;
     padding-right: 10px;
 }
+
 /*必填*号*/
 .notNull{
 	color: #E43A45;

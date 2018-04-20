@@ -1,0 +1,116 @@
+<style type="text/css">
+	.contractTypeTree{
+		overflow: auto;
+	}
+</style>
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel">合同类型选择</h4>
+		</div>
+		<div class="modal-body" style="padding-left: 10%;">
+			<div class="action-tools">
+				<a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
+					<span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
+				</a>
+				<a href="#" class="my-icon-a" title="全部折叠" onclick="collapseAll();">
+					<span class="glyphicon glyphicon-minus my-icon" aria-hidden="true"></span>
+				</a>
+				<a href="#" class="my-icon-a" title="刷新" onclick="initContractTree();">
+					<span class="glyphicon glyphicon-refresh my-icon" aria-hidden="true"></span>
+				</a>
+			</div>
+			<ul id="contractTypeTree" class="ztree contractTypeTree"></ul>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//系统全局变量获取
+	var config = top.globalConfig;
+	var serverPath = config.serverPath;
+	//树的全局变量
+	var contractTypeTree = null;
+	//设置树的高度
+	var documentHeight = $(".page-content").height() - 155;
+	$("#contractTypeTree").css("max-height",documentHeight);	
+	//生成树
+	function initContractTree(ajaxData,dom,setKey) {
+		$("#modal").modal("show");
+		//配置
+		var treeSetting = {
+			view: {
+				selectedMulti: false
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "dictId",
+					pIdKey: "dictParentId",
+					rootPId: 0
+				},
+				key: {
+					name: "dictLabel"
+				}
+			},
+			callback: {
+				onClick: setInputInfo
+			}
+		};
+		//获取数据
+		App.formAjaxJson(serverPath + "dicts/", "get", "", successCallback);
+
+		function successCallback(result) {
+			var data = result.dicts;
+			if(data != "") {
+				if(contractTypeTree){
+					contractTypeTree.destroy();
+				}
+				contractTypeTree = $.fn.zTree.init($("#contractTypeTree"), treeSetting, data);
+				var rootNode = contractTypeTree.getNodes()[0]; //获取第一个节点
+				contractTypeTree.expandNode(rootNode); //展开第一个节点
+//				var nodes = contractTypeTree.getNodesByParam("level",1);
+//				console.log(nodes);
+//				for (var i = 0; i = nodes.length; i++) {
+//				    contractTypeTree.expandNode(nodes[i]);
+//				}
+			}else{
+				layer.msg("暂无数据，请稍后重试");
+			}
+		}
+		//点击设置input框的值key  >> data-key 
+		function setInputInfo(event, treeId, treeNode) {
+			console.log(treeNode);
+			if($.isArray(setKey)){
+				$.each(setKey, function(k,v) {
+					$(dom).data(v,treeNode[v]);
+				});
+			}else{
+				$(dom).data(setKey,treeNode[setKey]);
+			}
+			$(dom).val(treeNode.dictLabel);
+			$("#modal").modal("hide");
+		}
+	}
+	// 展开所有
+	function expandAll() {
+	    var nodes = contractTypeTree.getNodes();
+	    expandNodes(nodes);
+	}
+	
+	//展开所有节点及其子节点
+	function expandNodes(nodes) {
+	    if (!nodes)
+	        return;
+	    for (var i = 0, l = nodes.length; i < l; i++) {
+	        contractTypeTree.expandNode(nodes[i], true, false, false);
+	        if (nodes[i].isParent) {
+	            expandNodes(nodes[i].children);
+	        }
+	    }
+	}
+	// 关闭所有
+	function collapseAll() {
+	    contractTypeTree.expandAll(false);
+	}
+</script>

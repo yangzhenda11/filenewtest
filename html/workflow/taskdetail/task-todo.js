@@ -119,7 +119,8 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 		if (success == 1){
 			// 获取url串及后续参数并赋值给公共参数对象
 			var url = serverPath + data.dataRows[0].url;
-			$('#param').val(url.substring(url.indexOf("?") + 1));
+			//$('#param').val(url.substring(url.indexOf("?") + 1));
+			$('#param').val(data.dataRows[0].param);
 			// 环节类型赋值
 			var startLink = data.dataRows[0].startLink;
 			var endLink = data.dataRows[0].endLink;
@@ -127,7 +128,9 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 			$('#endLink').val(endLink);
 			
 			// 使用业务办理div加载主办页面
-			$("#business").load(url);
+			//$("#business").load(url);
+            $('#businessiframe').attr("src",url);
+
 			
 		} else if (success == 0){
 			alert(data.retValue);
@@ -233,8 +236,8 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 // 普通环节点击“通过”或“回退”按钮，添加评论
 function addComment(pass){
 	if(!checkifdone()){
-	    if(typeof(beforePushProcess)=="function") {
-	        if (!beforePushProcess(pass)) {
+	    if(typeof(document.getElementById("businessiframe").contentWindow.beforePushProcess)=="function") {
+	        if (!document.getElementById("businessiframe").contentWindow.beforePushProcess(pass)) {
 	            // alertModel("系统异常，请联系管理员");
 	            return;
 	        }
@@ -347,7 +350,7 @@ function addCommentForStart(){
 // 点击“转派”按钮，仅弹出处理人选择及意见填写窗口
 function addCommentForTurn(){
 	if(!checkifdone()){
-		if(beforeTransfer()){
+		if(document.getElementById("businessiframe").contentWindow.beforeTransfer()){
 			// 确认按钮仅绑定推进事件
 			$("#confirmButton").unbind();
 			$('#confirmButton').click(function(){
@@ -378,9 +381,12 @@ function refreshLink(){
 	var isUsePushExpression = $('#isUsePushExpression').val();//在流程推进的时候是否使用表达式进行匹配
 	var isUseBackExpression = $('#isUseBackExpression').val();//在流程回退的时候是否使用表达式进行匹配
 	var pathSelect=$("#pathSelect").val();
-	var processData = setRelativeData();
-	if(!processData){ 
-		processData = null;
+	var processData=null;
+	if(typeof(document.getElementById("businessiframe").contentWindow.setRelativeData)=="function"){
+		processData = document.getElementById("businessiframe").contentWindow.setRelativeData();
+		if(!processData){ 
+			processData = null;
+		}
 	}
 	$.get(serverPath + "workflowrest/tasklink/" + taskId + "/" + handleType + "/branch/"+isHistoryBack+"/"+isUsePushExpression+"/"+isUseBackExpression+"/"+pathSelect,processData,
 		function(data) {
@@ -507,7 +513,7 @@ function pushProcess(){
 	
 	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
 		// 调用推进方法，通过及回退均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ） 
-		modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
+		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
 		layer.close(index);
 	})
 }
@@ -523,7 +529,7 @@ function pushProcessForVote(){
 	if (r == true) { 
 		alert($('#processInstanceId').val() + ":" + $('#taskId').val() );
 		// 调用推进方法，会签环节同意及拒绝均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ），非必要参数传空串
-		modal_pass(serverPath, '', '', $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), '');
+		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, '', '', $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), '');
 	}
 }
 
@@ -538,7 +544,7 @@ function stopProcess(){
 	var r = confirm("【终止】确认后，当前流程将在本环节结束，是否确认？");
 	if (r == true) {
 		// 调用中止方法
-		modal_stop(serverPath, $('#processInstanceId').val(), $('#taskId').val(), comment);
+		document.getElementById("businessiframe").contentWindow.modal_stop(serverPath, $('#processInstanceId').val(), $('#taskId').val(), comment);
 	}
 }
 // 流程简退-退回操作，即不存在业务数据变动的环节回退任务至首环节
@@ -946,8 +952,8 @@ function checkifdone(){
 
 function modal_savefun(){
 	try{ 
-		if(typeof(modal_save)=="function"){ 
-			modal_save();
+		if(typeof(document.getElementById("businessiframe").contentWindow.modal_save)=="function"){ 
+			document.getElementById("businessiframe").contentWindow.modal_save();
 		}else{
 			layer.msg("当前环节不需要保存数据！");
 		}

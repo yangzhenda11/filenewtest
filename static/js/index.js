@@ -28,7 +28,7 @@ var globalConfig = {
     /** 当前用户的id （sys_staff主键） */
     curStaffId: null, //10002
     /** 当前用户的权限集合 */
-    perm: [],
+    permissions: [],
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
@@ -46,7 +46,7 @@ $(document).ready(function() {
         //globalConfig.curStaff = data.staff;
         //globalConfig.curOrg = data.org;
         // globalConfig.curStaffOrg = data.mainStaffOrg;
-        globalConfig.perm = data.perm;
+        globalConfig.permissions = data.permissions;
         ace_menus = data.menus;
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
@@ -183,7 +183,7 @@ function checkFullscreen() {
 // 页面过滤
 function permFilter(obj) {
     var e = obj.querySelectorAll('[data-permcheck]');
-    var perm = globalConfig.perm;
+    var perm = globalConfig.permissions;
     for (var i = 0; i < e.length; i++) {
         if ($(e[i]).data('permcheck') != "") {
             if ($.inArray($(e[i]).data('permcheck'), perm) < 0) {
@@ -199,7 +199,7 @@ function permFilter(obj) {
 }
 // 表中过滤
 function tPFilter(permCheck) {
-    var perm = globalConfig.perm;
+    var perm = globalConfig.permissions;
     if ($.inArray(permCheck, perm) >= 0) {
         return true;
     } else {

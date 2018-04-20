@@ -34,7 +34,8 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 		if (success == 1){
 			// 获取url串及后续参数并赋值给公共参数对象
 			var url = serverPath + "" + data.dataRows[0].url;
-			$('#paramForDone').val(url.substring(url.indexOf("?") + 1));
+			//$('#paramForDone').val(url.substring(url.indexOf("?") + 1));
+			$('#paramForDone').val(data.dataRows[0].param);
 			
 			// 环节类型赋值
 			var startLink = data.dataRows[0].startLink;
@@ -43,7 +44,8 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 			$('#endLinkForDone').val(endLink);
 			
 			// 使用业务办理div加载主办页面
-			$("#businessForDone").load(url);
+			//$("#businessForDone").load(url);
+			$('#businessForDoneiframe').attr("src",url);
 			
 		} else if (success == 0){
 			alert(data.retVal);
@@ -149,7 +151,7 @@ function returnProcess(){
 	var r = confirm("【撤回】确认后，当前流程将撤回本环节，是否确认？")
 	if (r == true) {
 		// 调用推进方法
-		modal_return(serverPath, $('#processInstanceIdForDone').val(), $('#taskIdForDone').val());
+		document.getElementById("businessForDoneiframe").contentWindow.modal_return(serverPath, $('#processInstanceIdForDone').val(), $('#taskIdForDone').val());
 	}
 }
 
@@ -339,6 +341,7 @@ function subHistoryTitl(){
 }
 
 //业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
+/*
 function addCustomTab(params){
 	var name = params.title;
 	var url = params.url;
@@ -360,6 +363,7 @@ function addCustomTab(params){
 	$("#" + tabName).append(hrefLi);
 	
 }
+*/
 //业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
 function addCustomTab(params){
 	var name = params.title;

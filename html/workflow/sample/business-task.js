@@ -1,13 +1,15 @@
 $(function(){
 	//调用流程公共js添加tab示例
 	var url='/html/workflow/sample/business-task-tab.html';
-	addCustomTab({"title":"多tab测试","url":url});
+	parent.addCustomTab({"title":"多tab测试","url":url});
 	var url1='/html/workflow/sample/business-task-tab.html';
-	addCustomTab({"title":"多tab测试1","url":url1});
+	parent.addCustomTab({"title":"多tab测试1","url":url1});
 	var url2='/html/workflow/sample/business-task-tab.html';
-	addCustomTab({"title":"多tab测试2","url":url2});
+	parent.addCustomTab({"title":"多tab测试2","url":url2});
 	var url3='/html/workflow/sample/business-task-tab.html';
-	addCustomTab({"title":"多tab测试3","url":url3});
+	parent.addCustomTab({"title":"多tab测试3","url":url3});
+	
+	alert(getQueryString("test"));
 });
 
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
@@ -27,7 +29,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			layer.msg(data.sign);
 			
 			// 成功后回调模态窗口关闭方法
-			modal_close();   
+			parent.modal_close();   
 		});
 }
 
@@ -41,7 +43,7 @@ function modal_return(root, processInstanceId, taskId){
 	}, function(data) {
 		alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
 		// 成功后回调模态窗口关闭方法
-		modal_close();
+		parent.modal_close();
 	});
 }
 
@@ -57,7 +59,7 @@ function modal_stop(root, processInstanceId, taskId, comment){
 	}, function(data) {
 		alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
 		// 成功后回调模态窗口关闭方法
-		modal_close();
+		parent.modal_close();
 	});
 }
 
@@ -87,10 +89,10 @@ function beforePushProcess(pass){
 	var assigneeParam = { 
 			"prov": "sd",  //省分，来自需求工单，必传
 			}
-	setAssigneeParam(assigneeParam);
+	parent.setAssigneeParam(assigneeParam);
 	
 	//3,设置路由值，默认为0，对于有分支的场景需要单独设置路由值
-	//setPathSelect(1);
+	//parent.setPathSelect(1);
 	
 	return result;
 }
@@ -104,6 +106,12 @@ function beforeTransfer(){
 	var assigneeParam = { 
 			"prov": "sd",  //省分，来自需求工单，必传
 	}
-	setAssigneeParam(assigneeParam);
+	parent.setAssigneeParam(assigneeParam);
 	return result;
 }
+function getQueryString(name) { 
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+    var r = window.location.search.substr(1).match(reg); 
+    if (r != null) return unescape(r[2]); 
+    return null; 
+} 

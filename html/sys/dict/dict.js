@@ -303,7 +303,7 @@ function updateDict(editType,dictId){
 	//formObj.provinceCode = $("#provinceCodeTree").data("id");
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
 	function successCallback(result) {
-		layer.msg(ms, {icon: 1});
+		layer.msg(ms);
 		getDictTree();
 		$('#modal').modal('hide');
 	}

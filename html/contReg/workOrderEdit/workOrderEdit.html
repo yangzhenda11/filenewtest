@@ -17,10 +17,8 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
 	</head>
@@ -30,11 +28,17 @@
 			<div class="portlet">
 				<div class="portlet-title">
 					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase"> 跳转页面</span>
+						<span class="caption-subject bold uppercase"> 工单编辑</span>
 					</div>
 				</div>
-				<div class="portlet-body">
-					<button class="btn red" onclick="a()">返回原来页面</button>
+				<div class="portlet-body" style="overflow: hidden;">
+					<div class="col-sm-4">
+						<div class="input-group">
+							<span class="input-group-addon searchLableText">所属组织</span>
+							<input id="organisation" name="organisation" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchOrganisation" ><i class="iconfont icon-search"></i></span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -56,17 +60,16 @@
 		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
-		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			
-			function a(){
-				window.history.go(-1);
+			$("#searchOrganisation").click(function(){
+				test();
+			})
+			function test(type,ajaxData,dom,key){
+				$("#modal").load("/static/data/_contractType.html",function(){
+					getContractData(ajaxData,dom,key);
+				})
 			}
 		</script>
 	</body>

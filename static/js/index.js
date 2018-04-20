@@ -46,7 +46,7 @@ $(document).ready(function() {
         //globalConfig.curStaff = data.staff;
         //globalConfig.curOrg = data.org;
         // globalConfig.curStaffOrg = data.mainStaffOrg;
-        globalConfig.perm = data.perm;
+        globalConfig.perm = data.permissions;
         ace_menus = data.menus;
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {

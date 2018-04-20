@@ -16,7 +16,7 @@ var uploadTable = App.initDataTables('#uploadTable', {
 			"className": "text-center",
 			"title": "操作",
 			"render": function(data, type, full, meta) {
-				var result = '<a href="/fileload/downloadS3?key=' + data + '&bucketName=">下载</a>';
+				var result = '<a href="/fileload/downloadS3?key=' + data.substr(0,data.lastIndexOf('.')) + '">下载</a>';
 				result = result + '<a style="margin-left:15px" href="#" onclick="deleteFile(\''+data+'\')">删除</a>';
 				if (/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(data)) {
 					if($('#imgFile').css('display')=='none'){
@@ -47,10 +47,12 @@ var uploadTable = App.initDataTables('#uploadTable', {
 });
 
 function downloadUrl(data){
-	var url = serverPath + 'fileload/downloadS3Url?key=' + data +'&bucketName=';;
+	var url = serverPath + 'fileload/downloadS3Url';
+	var key = data.substr(0,data.lastIndexOf('.'));
 	$.ajax({
         url : url,
-        type : "get",
+        type : "post",
+        data : {key:key},
         success : function(data) {
             if (data != "") {
             	console.log(data.data);
@@ -72,10 +74,12 @@ function disImg(){
 }
 
 function deleteFile(data){
-	var url = serverPath + 'fileload/delete?key=' + data +'&bucketName=';
+	var url = serverPath + 'fileload/delete';
+	var key = data.substr(0,data.lastIndexOf('.'));
 	$.ajax({
         url : url,
-        type : "get",
+        type : "post",
+        data : {key:key},
         success : function(data) {
         	alert(data.message);
         	var table = $('#uploadTable').DataTable();
@@ -89,30 +93,30 @@ function deleteFile(data){
 (function (_, $) {
     $("#fileName").fileinput({
         language: 'zh', 
-        uploadUrl: serverPath + 'fileload/uploadFileS3', //用于文件上传的服务器端请求地址
+        uploadUrl: serverPath + 'fileload/uploadFileS3', // 用于文件上传的服务器端请求地址
         uploadAsync: false,
-        //allowedFileExtensions: ['ini'],
+        // allowedFileExtensions: ['ini'],
         maxFileSize: 51200,
         // maxFileCount: 10,
-        //showPreview:false,
+        showPreview:false,
         slugCallback: function (filename) {
             return filename;
         },
         uploadExtraData: function(previewId, index) {	
-			//添加额外参数
+			// 添加额外参数
 			var obj = {
-				bucketName:''
+				displayName:''
 			};
 			return obj;
 		}
     });
-    //异步上传成功结果处理
+    // 异步上传成功结果处理
     $("#fileName").on("fileuploaded", function (event, data) {
     	alert(data.response.message);
     	var table = $('#uploadTable').DataTable();
     	table.ajax.reload();
     });
-    //同步上传成功结果处理
+    // 同步上传成功结果处理
     $("#fileName").on("filebatchuploadsuccess", function (event, data) {
     	alert(data.response.message);
     	$("#fileName").fileinput('reset')

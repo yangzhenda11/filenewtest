@@ -14,15 +14,13 @@
                 <div class="form-group col-sm-11">
                     <label for="partnerCode" class="control-label">关联编码<i class="iconfont icon-mi required"></i></label>
                     <div class="valiParent">
-                        <select id="partnerCode" data-allowSearch='5' name="associateCode" class="form-control" value="906520">
-                        </select>
+                        <select id="partnerCode" data-allowSearch='5' data-placeholder="请选择关联编码" name="associateCode" class="form-control select2me"></select>
                     </div>
                 </div>
                 <div class="form-group col-sm-11">
                     <label for="isPartner" class="control-label">是否联通方<i class="iconfont icon-mi required"></i></label>
                     <div class="valiParent">
                         <select id="isPartnerM" name="isUnicomOrg" onchange="changeIsunicom()" class="form-control select2me">
-                        	<option value="">是阿萨德</option>
 							<option value="0">是</option>
 							<option value="1">否</option>
 						</select>
@@ -82,12 +80,13 @@
         $('#modal').modal('show');
         App.initFormSelect2("#contractEditForm");
         var ajaxObj = {
-        	"url" : serverPath + "dicts/listChildrenByDicttId",
+        	"url" :  serverPath + "dicts/listChildrenByDicttId",
         	"type" : "post",
         	"data" : {"dictId": 89},
         	"async" : false
         }
-        App.initAjaxSelect2("#partnerCode",ajaxObj,"","dictValue","dictLabel","iiiiiii");
+        App.initAjaxSelect2("#partnerCode",ajaxObj,"dictValue","dictLabel");
+        
         var url = serverPath + "orgPartner/" + data;
         App.formAjaxJson(url, "POST", "", successCallback);
 

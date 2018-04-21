@@ -1081,8 +1081,8 @@ var App = function() {
         	if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            $(dom).find(".select2me").each(function(){
-	                var allowClearFlag = $(this).attr('data-allowClear');
-	                var allowSearch = $(this).attr('data-allowSearch');
+	                var allowClearFlag = $(this).data('allowClear');
+	                var allowSearch = $(this).data('allowSearch');
 	                if(allowClearFlag != false){
 	                	allowClearFlag = true;
 	                }
@@ -1094,6 +1094,8 @@ var App = function() {
 	                };
 	                if(allowSearch == undefined)
 	                    options.minimumResultsForSearch = -1;
+	                console.log($(this).html())
+	                console.log($(this))
 	                $(this).select2(options);
 	            })
 	        }
@@ -1109,30 +1111,46 @@ var App = function() {
 		 */
 		initAjaxSelect2 : function(dom,ajaxObj,select2Obj,key,value,promptInfo){
         	if($().select2){
-        		var options = select2Obj;
+        		var options = {};
+        		if(select2Obj){
+        			options = select2Obj;
+        		};
+        		options.paceholder = "请选择";
         		$(dom).empty();//清空下拉框
-		    	$(dom).append("<option value=''>" + promptInfo + "</option>");
+        		if(promptInfo){
+        			//$(dom).append('<option value="">' + promptInfo + '</option>');
+        			//options.paceholder = promptInfo;
+        		};
 			    //设置Select2的处理
 			    $.fn.select2.defaults.set("theme","bootstrap");
-			    var allowClearFlag = $(dom).attr('data-allowClear');
-                var allowSearch = $(dom).attr('data-allowSearch');
+			    var allowClearFlag = $(dom).data('allowClear');
+                var allowSearch = $(dom).data('allowSearch');
                 if(allowClearFlag != false){
                 	allowClearFlag = true;
-                }
-                options.paceholder = promptInfo;
+                };
                 options.language = 'zh-CN';
                 options.width = '100%';
                 options.allowClear = allowClearFlag;
                 if(allowSearch == undefined)
-                    options.minimumResultsForSearch = -1;
-                $(dom).select2(options);
+                options.minimumResultsForSearch = -1;
 			    //绑定Ajax的内容
-			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,ajaxObj.data,succssCallback);
+			    if(ajaxObj.type == "post"){
+			    	var postData = JSON.stringify(ajaxObj.data);	
+			    }else{
+			    	var postData = ajaxObj.data;
+			    }
+			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback,null,null,null,ajaxObj.async);
 			    function succssCallback(result){
 			    	var data = result.data;
+			    	var html = "";
 			        $.each(data, function (i, item) {
-			            $(dom).append("<option value='" + item.key + "'>" + item.value + "</option>");
+			            html += "<option value='" + item[key] + "'>" + item[value] + "</option>";
 			        });
+			        $(dom).html(html);
+			        console.log($(dom).html());
+			         console.log(options)
+			         console.log($(dom));
+                	$(dom).select2(options);
 			    }
 	        }    
 	    },
@@ -1211,6 +1229,31 @@ var App = function() {
 				}
 			})
         },
+        /*
+         * 加载公共modal框
+         * 页面中需加入一个id为modal的div,即:
+         * '<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
+         * type:加载modal的类型
+         * dom:设值的input框dom元素  如:"#contractType",
+         * value:框内显示内容对象返回数据的key值,
+         * ajaxData:ajax传递的参数,若无传空或null
+         * setkey: 设定的data值(只针对modal内容为树时生效),可为空,可为一个也可为数组,例传入 "id">dom元素设值data-id = "**"
+         */
+        getCommonModal : function(type, dom, value, ajaxData, setkey){
+        	if(type == "contractType"){
+        		$("#modal").load("/static/data/_contractType.html",function(){
+					initContractTree(dom,value,ajaxData,setkey);
+				})
+        	}else if(type == "otherSubject"){
+        		$("#modal").load("/static/data/_otherSubject.html",function(){
+					initOtherSubjectData(dom, value, ajaxData);
+				})
+        	}else if(type == "contractData"){
+        		$("#modal").load("/static/data/_chooseContract.html",function(){
+					initContractData(dom, value, ajaxData);
+				})
+        	}
+		},
 		// init main components
         initComponents:function(){
             this.initAjax();

@@ -17,8 +17,6 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
 	</head>
@@ -34,9 +32,23 @@
 				<div class="portlet-body" style="overflow: hidden;">
 					<div class="col-sm-4">
 						<div class="input-group">
-							<span class="input-group-addon searchLableText">所属组织</span>
-							<input id="organisation" name="organisation" type="text" class="form-control" value="" />
-							<span class="input-group-addon" id="searchOrganisation" ><i class="iconfont icon-search"></i></span>
+							<span class="input-group-addon searchLableText">合同类型</span>
+							<input id="contractType" name="contractType" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchContractType" ><i class="iconfont icon-search"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group">
+							<span class="input-group-addon searchLableText">对方主体</span>
+							<input id="otherSubject" name="otherSubject" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchOtherSubject" ><i class="iconfont icon-search"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group">
+							<span class="input-group-addon searchLableText">合同编号</span>
+							<input id="contractData" name="contractData" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchContractData" ><i class="iconfont icon-search"></i></span>
 						</div>
 					</div>
 				</div>
@@ -60,17 +72,18 @@
 		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
-		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			$("#searchOrganisation").click(function(){
-				test();
+			$("#searchContractType").click(function(){
+				App.getCommonModal("contractType","#contractType","typeFullname","",["level"]);
 			})
-			function test(type,ajaxData,dom,key){
-				$("#modal").load("/static/data/_contractType.html",function(){
-					initContractTree(ajaxData,"#organisation",["level","dictId"]);
-				})
-			}
+			$("#searchOtherSubject").click(function(){
+				App.getCommonModal("otherSubject","#otherSubject","loginName");
+			})
+			$("#searchContractData").click(function(){
+				App.getCommonModal("contractData","#contractData","contractNumber");
+			})
 		</script>
 	</body>
 

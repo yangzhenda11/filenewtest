@@ -15,11 +15,11 @@ var curOrgStaffRole = 1;
  */
 App.initDataTables('#searchContractTable', "#submitBtn", {
     ajax: {
-        "type": "GET",
+        "type": "POST",
         "url": serverPath + 'orgPartner',
         "data": function(d) {
             d.partnerName = $("#partnerName").val();
-            d.isPartner = $("#isPartner").val();
+            d.isUnicomOrg = $("#isPartner").val();
             return d;
         }
     },
@@ -39,7 +39,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         },
         {"data": "partnerMdmCode","title": "编码"},
         {"data": "partnerName","title": "签约主体名称"},
-        {"data": "isPartner","title": "是否联通方",
+        {"data": "isUnicomOrg","title": "是否联通方",
             "render": function(data, type, full, meta) {
                 if (data == 0) {
                     return '是';
@@ -48,7 +48,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
                 }
             }
         },
-        {"data": "partnerCode","title": "关联编码"},
+        {"data": "associateCode","title": "关联编码"},
         {"data": "orgName","title": "所属组织"}
     ]
 });

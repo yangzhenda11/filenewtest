@@ -1,4 +1,4 @@
-
+//@ sourceURL=common-detail.js
 $(function(){ 
 	$("#startProcess").load("/html/workflow/startpanel/process-start.html",function() {
 		// 根据业务标识选择流程模板。如果编制界面一打开就能确定业务类型和流程的话可以放在此处，否则放在“发起”按钮的方法里。
@@ -29,7 +29,7 @@ function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment){
 		"taskDefinitionKey" : taskDefinitionKey,//下一步环节code，流程回调带过来的，业务侧无需赋值。
 		"comment":comment, //办理意见，流程回调带过来的，业务侧无需赋值。
 		"title":"此待办为流程测试专用，表动哦，如需待办请通过需求管理自己启动哦。",// 待办标题，需要业务侧提供，一般为业务名称，需求为需求名称。
-		"businessKey":""//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
+		"businessKey":"11111111"//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
 	}, function(data) {
 		alert(data.sign);
 		// 成功后回调模态窗口关闭方法
@@ -74,3 +74,39 @@ function flowStart(){
 	showStartPanel();
 }
 
+function businessPush(){
+	var flowParam=App.getFlowParam(serverPath,"11111111");
+	modal_passBybuss(flowParam);
+	
+}
+
+//点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
+function modal_passBybuss(flowParam){
+	//typeof(tmp) == "undefined"
+	var root=serverPath;//flowParam.root
+	var taskDefinitionKey=flowParam.taskDefinitionKey
+	var assignee=flowParam.assignee
+	var processInstanceId=flowParam.processInstanceId
+	var taskId=flowParam.taskId
+	var comment=flowParam.comment
+	var handleType=flowParam.handleType
+	var withdraw=flowParam.withdraw
+    
+	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
+		$.post(root + "business/pushProcess", {
+			"processInstanceId" : processInstanceId,//当前流程实例
+			"taskId" : taskId,//当前任务id
+			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
+			"assignee" : assignee,//下一步参与者
+			"comment" : comment,//下一步办理意见
+			"handleType" : handleType,//处理类型，1为通过，2为回退
+			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
+			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+			"title":"testetetetest"//可不传，如果需要修改待办标题则传此参数。
+		}, function(data) {
+			layer.msg(data.sign);
+			
+			// 成功后回调模态窗口关闭方法
+			parent.modal_close();   
+		});
+}

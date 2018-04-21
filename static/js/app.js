@@ -2021,6 +2021,33 @@ var App = function() {
                 if('function' == typeof options.onCancel) options.onCancel();
                 layer.close(layerIndex);
             });
+        },
+        getFlowParam:function(serverPath,businessId){
+        	var flowparam=null;
+        	if(businessId.length==0){
+        		layer.msg("业务主键不可为空！");
+        	}else{
+        		$.ajax({
+        			type: 'get',
+        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId,
+        			//data: null,
+        			dataType: 'json',
+        			async: false,
+        			contentType: "application/json",
+        			success: function(result){
+        				var result = result;
+        				if (result.success == 1) {
+        					flowparam=result.flowdata;
+        				} else {
+        					layer.msg("获取流程参数异常！");
+        				};
+        			},
+        			error: function(result) {
+        				layer.alert("接口错误", {icon: 2,title:"错误"});
+        			}
+        		});
+        	}
+        	return flowparam;
         }
 	};
 }();

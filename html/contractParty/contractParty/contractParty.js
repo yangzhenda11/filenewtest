@@ -14,11 +14,12 @@ var curOrgStaffRole = 1;
  * 初始化表格
  */
 App.initDataTables('#searchContractTable', "#submitBtn", {
+	
     ajax: {
         "type": "POST",
         "url": serverPath + 'orgPartner',
         "data": function(d) {
-            d.partnerName = $("#partnerName").val();
+            d.partnerName = $("#partnerName").val().trim();
             d.isUnicomOrg = $("#isPartner").val();
             return d;
         }

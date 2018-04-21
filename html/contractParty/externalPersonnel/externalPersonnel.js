@@ -42,8 +42,8 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 		"url": serverPath + 'staffPartner/getStaffPartnerList',	//请求地址
 		"data": function(d) {							//自定义传入参数
 			d.sysOrgId = config.curOrgId;
-			d.staffName = $("input[name='staffName']").val();
-			d.loginName = $("input[name='loginName']").val();
+			d.staffName = $("input[name='staffName']").val().trim();
+			d.loginName = $("input[name='loginName']").val().trim();
 			d.staffStatus = $("select[name='staffStatus']").val();
 			d.orgId = $("#organisation").data("id");
 			return d;
@@ -107,7 +107,10 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 				return data == '1' ? '有效' : '无效';
 			}
 		}
-	]
+	],
+	"fixedColumns":{
+		"leftColumns":2
+	}
 });
 /*
  * 搜索点击事件

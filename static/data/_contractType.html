@@ -37,7 +37,7 @@
 	var documentHeight = $(".page-content").height() - 165;
 	$("#contractTypeTree").css("max-height",documentHeight);	
 	//生成树
-	function initContractTree(dom,textValue,ajaxData,setKey) {
+	function initContractTree(dom,textValue,setKey,ajaxData) {
 		$("#modal").modal("show");
 		//配置
 		var treeSetting = {
@@ -60,7 +60,7 @@
 			}
 		};
 		//获取数据
-		App.formAjaxJson(serverPath + "contractType/list", "post", ajaxData, successCallback);
+		App.formAjaxJson(serverPath + "contractType/list", "post", JSON.stringify(ajaxData), successCallback);
 
 		function successCallback(result) {
 			var data = result.data;
@@ -75,7 +75,7 @@
 		}
 		//点击设置input框的值setKey >> data-key 
 		function setInputInfo(event, treeId, treeNode) {
-			if(setKey != ""){
+			if(setKey != undefined){
 				if($.isArray(setKey)){
 					$.each(setKey, function(k,v) {
 						$(dom).data(v,treeNode[v]);

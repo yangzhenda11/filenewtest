@@ -19,14 +19,14 @@ function getDictTree() {
 	        dictTree.expandNode(rootNode);				//展开第一个节点
 	        dictTree.selectNode(rootNode, false, false);	//选中第一个节点
 	        if (rootNode) {
-	        	curNodeId = rootNode.dictId;
+	        	curNodeId = rootNode.dictValue;
 	            createDictTable();
 	            $("#toolbars").removeClass("hide");
 	        }
 		}else{
 			dictTree.destroy();
 			dictTree = $.fn.zTree.init($("#dictTree"), dictTreeSetting, data);
-			var checkNodes = dictTree.getNodeByParam("dictId", curNodeId);
+			var checkNodes = dictTree.getNodeByParam("dictValue", curNodeId);
 			dictTree.expandNode(checkNodes);
 			dictTree.selectNode(checkNodes, false, false);
 			searchDict(true);
@@ -43,7 +43,7 @@ var dictTreeSetting = {
     data: {
         simpleData: {
             enable: true,
-            idKey: "dictId",
+            idKey: "dictValue",
             pIdKey: "dictParentId",
             rootPId: 0
         },
@@ -57,7 +57,7 @@ var dictTreeSetting = {
 };
 //获取给节点及其子节点的列表信息
 function getDictChildInfo(event, treeId, treeNode) {
-	curNodeId = treeNode.dictId;
+	curNodeId = treeNode.dictValue;
 	if(treeNode.level < 2){
 		$("#toolbars").removeClass("hide");
 	}else{
@@ -100,10 +100,10 @@ function createDictTable() {
                 	}
                 }
             },
-			{ "data": "dictId", title: "编号"},
-            { "data": "dictParentId", title: "父节点编号"},
-            { "data": "dictLabel", title: "字典名称"},
-            { "data": "dictValue", title: "值"},
+			//{ "data": "dictId", title: "编号"},
+            { "data": "dictParentId", title: "字典编码"},
+            { "data": "dictLabel", title: "字典项名称"},
+            { "data": "dictValue", title: "字典项编码"},
             //{ "data": "dictType", title: "类型"},
             { "data": "orgName", title: "适用范围"},
             { "data": "dictSort", title: "顺序"}
@@ -215,14 +215,14 @@ function postDictChangeStatus(dictId,dictStatus){
 		layer.msg(ms, {
 			icon: 1
 		});
-		if(checkTree.dictId == dictId){
+		if(checkTree.dictValue == dictValue){
 			if(checkTree.level == 0){
-				curNodeId = dictTree.getNodes()[0].dictId;
+				curNodeId = dictTree.getNodes()[0].dictValue;
 			}else{
 				curNodeId = checkTree.dictParentId;
 			}
 		}else{
-			curNodeId = checkTree.dictId;
+			curNodeId = checkTree.dictValue;
 		};
 		getDictTree();
 	}
@@ -251,7 +251,8 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 			$("#modalTitle").text("新增字典");
 			var checkTree = dictTree.getSelectedNodes()[0];
 			$("#dictParentName").val(checkTree.dictLabel);
-			$("#dictParentId").val(checkTree.dictId);
+			$("#dictParentId").val(checkTree.dictValue);
+			$("#dictValue").removeAttr("disabled");
 			validate(editType);
 			$('#modal').modal('show');
 		} else if(editType == "edit") {
@@ -260,7 +261,9 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 				return false;
 			}
 			$("#modalTitle").text("字典修改");
+			$("#dictValue").attr("disabled", "disabled");
 			getDictInfor(editType,dictId,provinceName)
+
 		}
 	});
 }

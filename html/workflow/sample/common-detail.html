@@ -44,6 +44,8 @@
                                 <select class="form-control" id="processDefinitionKeyForStart" name="processDefinitionKeyForStart" data-placeholder="选择流程模板"
                                 onchange="setFlowKey();">
                                     <option value="" selected="selected">--请选择--</option>
+                                    <option value="ContractscanProcess">合同扫描上传验证流程</option>
+                                    <option value="ContractprojectProcess">工单创建流程</option>
                                     <option value="ReleasePoint">普通审批</option>
                                     <option value="Vote">投票会签</option>
                                     <option value="M_main">主子流程_分离</option>
@@ -51,12 +53,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-4">
                             <div style="text-align: right">
                                 <button id="showPanel" type="button" class="btn btn-block red editBtn" onclick="flowStart();">发起</button>
                             </div>
+                            <br>
                             <div style="text-align: right">
                                 <button id="showPanel" type="button" class="btn btn-block red editBtn" onclick="businessPush();">业务功能入口模拟流程推动的提交</button>
+                            </div>
+                            <br>
+                            <div style="text-align: right">
+                                <button id="showPanel" type="button" class="btn btn-block red editBtn" onclick="pushReceiveTask();">后台自动任务模拟提交</button>
                             </div>
                         </div>
                     </div>

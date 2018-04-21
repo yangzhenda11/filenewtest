@@ -59,7 +59,7 @@ function flowStart(){
 	
 	
 	//2,调用流程公共界面js根据业务类型后台查询匹配的流程模板。该方法也可以放在流程初始化的时候。
-	getProcessDefinitionKey("contract_ReleasePoint");
+	//getProcessDefinitionKey("contract_scan");
 	
 	//3,传递选人参数，用于个性选人等。
 	var assigneeParam = { 
@@ -109,4 +109,27 @@ function modal_passBybuss(flowParam){
 			// 成功后回调模态窗口关闭方法
 			parent.modal_close();   
 		});
+}
+function pushReceiveTask(){
+	var currentTask=null;
+		$.ajax({
+			type: 'get',
+			url: serverPath+'workflowrest/pushReceiveTask?businessId=11111111&taskStatus=1',
+			//data: null,
+			dataType: 'json',
+			async: false,
+			contentType: "application/json",
+			success: function(result){
+				var result = result;
+				if (result.success == 1) {
+					currentTask=result.flowdata;
+				} else {
+					layer.msg("推送后台任务失败！");
+				};
+			},
+			error: function(result) {
+				layer.alert("接口错误", {icon: 2,title:"错误"});
+			}
+		});
+	console.log(currentTask);
 }

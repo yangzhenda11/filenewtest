@@ -39,15 +39,22 @@
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group">
-							<span class="input-group-addon searchLableText">对方主体</span>
-							<input id="otherSubject" name="otherSubject" type="text" class="form-control" value="" />
-							<span class="input-group-addon" id="searchOtherSubject" ><i class="iconfont icon-search"></i></span>
+							<span class="input-group-addon searchLableText">选择承办人</span>
+							<input id="agentStaff" name="agentStaff" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchAgentStaff" ><i class="iconfont icon-search"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="input-group">
+							<span class="input-group-addon searchLableText">选择承办部门</span>
+							<input id="agentDepartment" name="agentDepartment" type="text" class="form-control" value="" />
+							<span class="input-group-addon" id="searchAgentDepartment" ><i class="iconfont icon-search"></i></span>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="input-group">
 							<span class="input-group-addon searchLableText">合同编号</span>
-							<input id="contractData" name="contractData" type="text" class="form-control" value="" />
+							<input id="contractDataSearch" name="contractDataSearch" type="text" class="form-control" value="" />
 							<span class="input-group-addon" id="searchContractData" ><i class="iconfont icon-search"></i></span>
 						</div>
 					</div>
@@ -76,13 +83,16 @@
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$("#searchContractType").click(function(){
-				App.getCommonModal("contractType","#contractType","typeFullname","",["level","id"]);
+				App.getCommonModal("contractType","#contractType","typeFullname",["typeId","typeGroup"]);
 			})
-			$("#searchOtherSubject").click(function(){
-				App.getCommonModal("otherSubject","#otherSubject","loginName");
+			$("#searchAgentStaff").click(function(){
+				App.getCommonModal("agentStaff","#agentStaff","name",["id","parentId","parentCode"]);
+			})
+			$("#searchAgentDepartment").click(function(){
+				App.getCommonModal("agentDepartment","#agentDepartment","orgName",["orgId","orgCode","parentId","parentCode"]);
 			})
 			$("#searchContractData").click(function(){
-				App.getCommonModal("contractData","#contractData","contractName");
+				App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber");
 			})
 		</script>
 	</body>

@@ -19,29 +19,26 @@
 		<div class="modal-body">
 			<div class="portlet-body">
 				<div class="page-search">
-					<form class="form-horizontal" action="">
-						<div class="row page-search-form">
-							<div class="col-sm-4">
-								<div class="input-group">
-									<span class="input-group-addon searchLableText">合同名称</span>
-									<input type="text" class="form-control" name="contractName" >
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<div class="input-group">
-									<span class="input-group-addon searchLableText">合同编号</span>
-									<input type="text" class="form-control" name="contractNumber" >
-								</div>
-							</div>
+					<div class="row page-search-form">
+						<div class="col-sm-4">
 							<div class="input-group">
-								<button type="button" id="searchBtnM" class="btn btn-block red" data-loading-text="加载中.." onclick="searchContractData();"><i class="iconfont icon-search"></i> 查询</button>
+								<span class="input-group-addon searchLableText">合同名称</span>
+								<input type="text" class="form-control" name="contractName" >
 							</div>
 						</div>
-					</form>
+						<div class="col-sm-4">
+							<div class="input-group">
+								<span class="input-group-addon searchLableText">合同编号</span>
+								<input type="text" class="form-control" name="contractNumber" >
+							</div>
+						</div>
+						<div class="input-group">
+							<button type="button" id="searchBtnM" class="btn btn-block red" data-loading-text="加载中.." onclick="searchContractData();"><i class="iconfont icon-search"></i> 查询</button>
+						</div>
+					</div>
 				</div>
 				<table id="contractDataTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 			</div>
-
 		</div>
 		<div class="modal-footer">
 			<button type="button" onclick="checkOtherSubject()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
@@ -57,7 +54,7 @@
 	var serverPath = config.serverPath;
 	var setDom = null;
 	//初始化表格
-	function initContractData(dom, textValue, ajaxData) {
+	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
 		setDom = dom;
 		$("#modal").modal("show");
 		App.initDataTables('#contractDataTable', "#searchBtnM", {
@@ -75,8 +72,8 @@
 					"className": "text-center radioCheck",
 					"title": "操作",
 					"render": function(data, type, full, meta) {
-						var radio = "<label class='ui-radio'><input type='radio' value = '" + data + "' name='checkRadio'><span></span></label>";
-						return radio;
+						var radioHtml = "<label class='ui-radio'><input type='radio' value = '" + data + "' name='checkRadio'><span></span></label>";
+						return radioHtml;
 					}
 				},
 				{

@@ -1092,8 +1092,9 @@ var App = function() {
 	                    width:'100%',
 	                    allowClear:allowClearFlag
 	                };
-	                if(allowSearch == undefined)
-	                    options.minimumResultsForSearch = 1;
+	                if(allowSearch == undefined){
+	                	options.minimumResultsForSearch = 1;
+	                }
 	                $(this).select2(options);
 	            })
 	        }
@@ -1102,27 +1103,45 @@ var App = function() {
 		 * ajaxselect2内容的初始化
 		 * dom 初始化的dom元素
 		 * ajaxObj ajax查询参数   必传，参数和formAjaxJson一致
-		 * select2Obj selesct的参数
 		 * select2填充的key值获取对象
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
 		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
-    		$(dom).empty();
-    		$(dom).append('<option value="">请选择</option>');
-		    //绑定Ajax的内容
-		    if(ajaxObj.type == "post"){
-		    	var postData = JSON.stringify(ajaxObj.data);	
-		    }else{
-		    	var postData = ajaxObj.data;
-		    }
-		    App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback,null,null,null,ajaxObj.async);
-		    function succssCallback(result){
-		    	var data = result.data;
-		        $.each(data, function (i, item) {
-		            $(dom).append("<option value='" + item[key] + "'>" + item[value] + "</option>");
-		        });
-		    }
+    		if($().select2){
+	            $.fn.select2.defaults.set("theme","bootstrap");
+	            var options = {
+                    placeholder:"请选择",
+                    language:'zh-CN',
+                    width:'100%'
+                };
+                var allowClearFlag = $(dom).attr('data-allowClear');
+                var allowSearch = $(dom).attr('data-allowSearch');
+                if(allowClearFlag != false){
+                	options.allowClear = true;
+                }
+                if(allowSearch == undefined){
+                	options.minimumResultsForSearch = 1;
+                }
+                if(promptInfo){
+                	options.placeholder=promptInfo;
+                }
+                $(dom).append('<option value="">请选择</option>');
+                $(dom).select2(options);
+                //绑定Ajax的内容
+			    if(ajaxObj.type == "post"){
+			    	var postData = JSON.stringify(ajaxObj.data);	
+			    }else{
+			    	var postData = ajaxObj.data;
+			    }
+			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback,null,null,null,ajaxObj.async);
+			    function succssCallback(result){
+			    	var data = result.data;
+			        $.each(data, function (i, item) {
+			            $(dom).append("<option value='" + item[key] + "'>" + item[value] + "</option>");
+			        });
+			    }
+	      	} 
 	    },
 		/**
          * datatable render 文本信息 btnArray 内容：
@@ -1206,21 +1225,25 @@ var App = function() {
          * type:加载modal的类型
          * dom:设值的input框dom元素  如:"#contractType",
          * value:框内显示内容对象返回数据的key值,
+         * setkey: 设定的data值(只针对modal内容为树时生效),可为空,可为一个也可为数组,例传入 "id" dom元素设值data-id = "**"
          * ajaxData:ajax传递的参数,若无传空或null
-         * setkey: 设定的data值(只针对modal内容为树时生效),可为空,可为一个也可为数组,例传入 "id">dom元素设值data-id = "**"
          */
-        getCommonModal : function(type, dom, value, ajaxData, setkey){
+        getCommonModal : function(type, dom, value, setkey, ajaxData){
         	if(type == "contractType"){
         		$("#modal").load("/static/data/_contractType.html",function(){
-					initContractTree(dom,value,ajaxData,setkey);
+					initContractTree(dom, value, setkey, ajaxData);
 				})
-        	}else if(type == "otherSubject"){
-        		$("#modal").load("/static/data/_otherSubject.html",function(){
-					initOtherSubjectData(dom, value, ajaxData);
+        	}else if(type == "contractDataSearch"){
+        		$("#modal").load("/static/data/_contractDataSearch.html",function(){
+					initContractDataSearch(dom, value, setkey, ajaxData);
 				})
-        	}else if(type == "contractData"){
-        		$("#modal").load("/static/data/_chooseContract.html",function(){
-					initContractData(dom, value, ajaxData);
+        	}else if(type == "agentStaff"){
+        		$("#modal").load("/static/data/_agentStaff.html",function(){
+					initAgentStaffTree(dom, value, setkey, ajaxData);
+				})
+        	}else if(type == "agentDepartment"){
+        		$("#modal").load("/static/data/_agentDepartment.html",function(){
+					initAgentDepartmentTree(dom, value, setkey, ajaxData);
 				})
         	}
 		},

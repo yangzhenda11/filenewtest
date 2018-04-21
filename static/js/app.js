@@ -1081,8 +1081,8 @@ var App = function() {
         	if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            $(dom).find(".select2me").each(function(){
-	                var allowClearFlag = $(this).data('allowClear');
-	                var allowSearch = $(this).data('allowSearch');
+	                var allowClearFlag = $(this).attr('data-allowClear');
+	                var allowSearch = $(this).attr('data-allowSearch');
 	                if(allowClearFlag != false){
 	                	allowClearFlag = true;
 	                }
@@ -1093,9 +1093,7 @@ var App = function() {
 	                    allowClear:allowClearFlag
 	                };
 	                if(allowSearch == undefined)
-	                    options.minimumResultsForSearch = -1;
-	                console.log($(this).html())
-	                console.log($(this))
+	                    options.minimumResultsForSearch = 1;
 	                $(this).select2(options);
 	            })
 	        }
@@ -1109,50 +1107,22 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,select2Obj,key,value,promptInfo){
-        	if($().select2){
-        		var options = {};
-        		if(select2Obj){
-        			options = select2Obj;
-        		};
-        		options.paceholder = "请选择";
-        		$(dom).empty();//清空下拉框
-        		if(promptInfo){
-        			//$(dom).append('<option value="">' + promptInfo + '</option>');
-        			//options.paceholder = promptInfo;
-        		};
-			    //设置Select2的处理
-			    $.fn.select2.defaults.set("theme","bootstrap");
-			    var allowClearFlag = $(dom).data('allowClear');
-                var allowSearch = $(dom).data('allowSearch');
-                if(allowClearFlag != false){
-                	allowClearFlag = true;
-                };
-                options.language = 'zh-CN';
-                options.width = '100%';
-                options.allowClear = allowClearFlag;
-                if(allowSearch == undefined)
-                options.minimumResultsForSearch = -1;
-			    //绑定Ajax的内容
-			    if(ajaxObj.type == "post"){
-			    	var postData = JSON.stringify(ajaxObj.data);	
-			    }else{
-			    	var postData = ajaxObj.data;
-			    }
-			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback,null,null,null,ajaxObj.async);
-			    function succssCallback(result){
-			    	var data = result.data;
-			    	var html = "";
-			        $.each(data, function (i, item) {
-			            html += "<option value='" + item[key] + "'>" + item[value] + "</option>";
-			        });
-			        $(dom).html(html);
-			        console.log($(dom).html());
-			         console.log(options)
-			         console.log($(dom));
-                	$(dom).select2(options);
-			    }
-	        }    
+		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
+    		$(dom).empty();
+    		$(dom).append('<option value="">请选择</option>');
+		    //绑定Ajax的内容
+		    if(ajaxObj.type == "post"){
+		    	var postData = JSON.stringify(ajaxObj.data);	
+		    }else{
+		    	var postData = ajaxObj.data;
+		    }
+		    App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback,null,null,null,ajaxObj.async);
+		    function succssCallback(result){
+		    	var data = result.data;
+		        $.each(data, function (i, item) {
+		            $(dom).append("<option value='" + item[key] + "'>" + item[value] + "</option>");
+		        });
+		    }
 	    },
 		/**
          * datatable render 文本信息 btnArray 内容：
@@ -2120,6 +2090,12 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 		
 	}	
 });
+/*
+ * .trim()兼容IE8
+ */
+String.prototype.trim = function() {
+    return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
 /*
  * Handlebars引擎模板   按钮生成
  */

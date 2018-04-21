@@ -76,13 +76,13 @@
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$("#searchContractType").click(function(){
-				App.getCommonModal("contractType","#contractType","typeFullname","",["level"]);
+				App.getCommonModal("contractType","#contractType","typeFullname","",["level","id"]);
 			})
 			$("#searchOtherSubject").click(function(){
 				App.getCommonModal("otherSubject","#otherSubject","loginName");
 			})
 			$("#searchContractData").click(function(){
-				App.getCommonModal("contractData","#contractData","contractNumber");
+				App.getCommonModal("contractData","#contractData","contractName");
 			})
 		</script>
 	</body>

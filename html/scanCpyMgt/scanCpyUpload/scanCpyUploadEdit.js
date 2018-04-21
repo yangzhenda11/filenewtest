@@ -26,7 +26,7 @@ App.initDataTables('#scanCpyloadTable',{
             return d;
         }
     },
-    "columns": [{
+    "columns": [
     	{"data": "displayName","title": "文件列表"},
     	{
             "data": "",
@@ -37,6 +37,6 @@ App.initDataTables('#scanCpyloadTable',{
 					
 				}
             }
-        },
-    }]
+        }
+    ]
 });

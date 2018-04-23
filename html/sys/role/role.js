@@ -144,8 +144,8 @@ function getRoleInfo(id, type) {
             var valueCallback = { 'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") } }
             App.setFormValues($("#roleForm"), result.data, valueCallback);
             $("#orgNameTree").attr("title", result.data.orgName);
-            //$("#orgNameTree").data("orgCode", result.data.orgId);
-            $("#orgNameTree").data("provCode", result.data.orgId);
+            $("#orgNameTree").data("orgCode", result.data.orgId);
+            $("#orgNameTree").data("provCode", result.data.provCode);
             loadPerTree(id);
         }
     }

@@ -796,15 +796,15 @@ var App = function() {
 		            if (!o[value.name].push) {
 		                o[value.name] = [o[value.name]];
 		            }
-		            o[value.name].push(value.value || '');
+		            o[value.name].push(value.value.trim() || '');
 		        } else {
-		            o[value.name] = value.value || '';
+		            o[value.name] = value.value.trim() || '';
 		        }
 		    });
 //		    $form.find("[data-isNumber='true']").each(function(index, item) {
 //				var key = $(this).attr("name");
 //				o[key] = Number(o[key]);
-//			})
+//			});
 		    return o;
 		},
 		/**
@@ -1221,7 +1221,7 @@ var App = function() {
         /*
          * 加载公共modal框
          * 页面中需加入一个id为modal的div,即:
-         * '<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
+         * '<div class="commom fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
          * type:加载modal的类型
          * dom:设值的input框dom元素  如:"#contractType",
          * value:框内显示内容对象返回数据的key值,
@@ -1230,19 +1230,19 @@ var App = function() {
          */
         getCommonModal : function(type, dom, value, setkey, ajaxData){
         	if(type == "contractType"){
-        		$("#modal").load("/static/data/_contractType.html",function(){
+        		$("#commomModal").load("/static/data/_contractType.html",function(){
 					initContractTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "contractDataSearch"){
-        		$("#modal").load("/static/data/_contractDataSearch.html",function(){
+        		$("#commomModal").load("/static/data/_contractDataSearch.html",function(){
 					initContractDataSearch(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "agentStaff"){
-        		$("#modal").load("/static/data/_agentStaff.html",function(){
+        		$("#commomModal").load("/static/data/_agentStaff.html",function(){
 					initAgentStaffTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "agentDepartment"){
-        		$("#modal").load("/static/data/_agentDepartment.html",function(){
+        		$("#commomModal").load("/static/data/_agentDepartment.html",function(){
 					initAgentDepartmentTree(dom, value, setkey, ajaxData);
 				})
         	}

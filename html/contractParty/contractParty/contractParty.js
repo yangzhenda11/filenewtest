@@ -43,9 +43,9 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         {"data": "isUnicomOrg","title": "是否联通方",
             "render": function(data, type, full, meta) {
                 if (data == 0) {
-                    return '是';
-                } else {
                     return '否';
+                } else {
+                    return '是';
                 }
             }
         },

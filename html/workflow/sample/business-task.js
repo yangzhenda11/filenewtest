@@ -9,7 +9,7 @@ $(function(){
 	var url3='/html/workflow/sample/business-task-tab.html';
 	parent.addCustomTab({"title":"多tab测试3","url":url3});
 	
-	alert(getQueryString("test"));
+	console.log(getQueryString("test"));
 });
 
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。

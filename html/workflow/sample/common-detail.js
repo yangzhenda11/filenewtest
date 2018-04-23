@@ -122,9 +122,10 @@ function pushReceiveTask(){
 			success: function(result){
 				var result = result;
 				if (result.success == 1) {
-					currentTask=result.flowdata;
+					//currentTask=result.flowdata;
+					layer.msg(result.info);
 				} else {
-					layer.msg("推送后台任务失败！");
+					layer.msg(result.info);
 				};
 			},
 			error: function(result) {

@@ -21,8 +21,8 @@
                     <label for="isPartner" class="control-label">是否联通方<i class="iconfont icon-mi required"></i></label>
                     <div class="valiParent">
                         <select id="isPartnerM" name="isUnicomOrg" onchange="changeIsunicom()" class="form-control select2me">
-							<option value="0">是</option>
-							<option value="1">否</option>
+							<option value="1">是</option>
+							<option value="0">否</option>
 						</select>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
             $("#partnerNameM").text(data.partnerName);
             $("#partnerCode").val(data.associateCode).trigger('change');
             $("#isPartnerM").val(data.isUnicomOrg).trigger('change');
-            if (data.isUnicomOrg == 0) {
+            if (data.isUnicomOrg == 1) {
                 $("#isunicom").removeClass("hide");
                 $("#ouOrgId").val(data.ouOrgId);
                 $("#organisation").val(data.orgName);
@@ -122,7 +122,7 @@
      */
     function changeIsunicom() {
         var isPartnerValue = $("#isPartnerM").val();
-        if (isPartnerValue == 0) {
+        if (isPartnerValue == 1) {
             $("#isunicom").removeClass("hide");
             getTreeInfo();
         } else {

@@ -108,6 +108,9 @@
 			$("#searchOtherSubject").click(function(){
 				App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 			})
+			$("#otherSubject").on("input",function(){
+				$(this).data("exactSearch",false);
+			});
 		</script>
 	</body>
 

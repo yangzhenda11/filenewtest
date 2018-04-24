@@ -1177,7 +1177,7 @@ var App = function() {
          * 获取当前ifreamutl参数
          */
         getPresentParm : function(isUrl){
-        	var persentUrl = top.$('.J_iframe:visible').attr('src');
+        	var persentUrl = window.location.href;
         	if(isUrl){
         		return persentUrl;
         	}else{
@@ -1193,12 +1193,17 @@ var App = function() {
 				return theRequest;   
         	}
         },
+        getQueryString : function(name){
+        	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+		    var r = window.location.search.substr(1).match(reg); 
+		    if (r != null) return unescape(r[2]); 
+		    return null; 
+        },
         /*
          * 改变当前ifream切换url
          */
         changePresentUrl : function(url){
-        	var $resentFrame = top.$('.J_iframe:visible');
-			$resentFrame.attr('src', url)
+        	window.location.href = url;
         },
         /*
          * 详情页固定操作按钮
@@ -1230,27 +1235,27 @@ var App = function() {
          */
         getCommonModal : function(type, dom, value, setkey, ajaxData){
         	if(type == "contractType"){
-        		$("#commomModal").load("/static/data/_contractType.html",function(){
+        		$("#commomModal").load("/static/data/_contractType.html?" + App.timestamp(),function(){
 					initContractTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "contractDataSearch"){
-        		$("#commomModal").load("/static/data/_contractDataSearch.html",function(){
+        		$("#commomModal").load("/static/data/_contractDataSearch.html?" + App.timestamp(),function(){
 					initContractDataSearch(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "agentStaff"){
-        		$("#commomModal").load("/static/data/_agentStaff.html",function(){
+        		$("#commomModal").load("/static/data/_agentStaff.html?" + App.timestamp(),function(){
 					initAgentStaffTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "agentDepartment"){
-        		$("#commomModal").load("/static/data/_agentDepartment.html",function(){
+        		$("#commomModal").load("/static/data/_agentDepartment.html?" + App.timestamp(),function(){
 					initAgentDepartmentTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "ourSubject"){
-        		$("#commomModal").load("/static/data/_ourSubject.html",function(){
+        		$("#commomModal").load("/static/data/_ourSubject.html?" + App.timestamp(),function(){
 					initOurSubject(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "otherSubject"){
-        		$("#commomModal").load("/static/data/_otherSubject.html",function(){
+        		$("#commomModal").load("/static/data/_otherSubject.html?" + App.timestamp(),function(){
 					initOtherSubject(dom, value, setkey, ajaxData);
 				})
         	}

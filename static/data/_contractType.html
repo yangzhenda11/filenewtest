@@ -60,6 +60,7 @@
 				onClick: setInputInfo
 			}
 		};
+		alert(JSON.stringify(treeSetting))
 		//获取数据
 		App.formAjaxJson(serverPath + "contractType/list", "post", JSON.stringify(ajaxData), successCallback);
 

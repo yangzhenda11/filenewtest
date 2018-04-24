@@ -1187,7 +1187,7 @@ var App = function() {
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
 				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
+				        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);   
 				    }   
 				}   
 				return theRequest;   
@@ -1244,6 +1244,14 @@ var App = function() {
         	}else if(type == "agentDepartment"){
         		$("#commomModal").load("/static/data/_agentDepartment.html",function(){
 					initAgentDepartmentTree(dom, value, setkey, ajaxData);
+				})
+        	}else if(type == "ourSubject"){
+        		$("#commomModal").load("/static/data/_ourSubject.html",function(){
+					initOurSubject(dom, value, setkey, ajaxData);
+				})
+        	}else if(type == "otherSubject"){
+        		$("#commomModal").load("/static/data/_otherSubject.html",function(){
+					initOtherSubject(dom, value, setkey, ajaxData);
 				})
         	}
 		},

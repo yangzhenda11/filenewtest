@@ -7,21 +7,19 @@ var serverPath = config.serverPath;
  */
 App.initDataTables('#searchContractTable', "#submitBtn", {
 	 ajax: {
-        "type": "GET",
+        "type": "POST",
+        "contentType":"application/json;charset=utf-8",
         "url": serverPath+'contractUpload/contractUploadList',
         "data": function(d) {//自定义传入参数
         	d.contractId = config.contractId;
-        	d.contractName = $("input[name='contractName']").val();
-        	d.contractNumber = $("#contractNumber").val();
-			d.contractType = $("#contractType").val();
+        	d.contractNumber = $("input[name='contractNumber']").val();
+        	d.contractName = $("#contractName").val();
+			d.contractType = $("input[name='contractType']").val();
 			d.undertakerId = $("#undertakerId").val();
-			d.undertakeName = $("input[name='undertakeName']").val();
 			d.oppoPartyId = $("#oppoPartyId").val();
-			d.oppoPartyName = $("#oppoPartyName").val();
-			/*d.approve_date_begin = $("input[name='approve_date_begin']").val();
-			d.approve_date_end = $("input[name='approve_date_end']").val();*/
-			d.approve_date = $("#approveDate").val();
-            return d;
+			d.approve_date_begin = $("#approve_date_begin").val();
+			d.approve_date_end = $("#approve_date_end").val();
+            return JSON.stringify(d);
         }
     },
     "columns": [
@@ -29,6 +27,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         {"data": "contractName","title": "合同名称"},
         {"data": "contractNumber","title": "合同编号"},
         {"data": "executeDeptName","title": "承办部门"},
+        {"data": "undertakerId","bVisible":false,"title": "承办人"},
         {"data": "undertakeName","title": "承办人"},
         {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
         {"data": "unicomPartyName","title": "我方主体"},
@@ -69,3 +68,20 @@ function searchContractUpload(retainPaging) {
 		table.ajax.reload();
 	}
 }
+//点击合同类型事件
+$(function(){
+	$("#searchContractType").click(function() {
+		App.getCommonModal("contractType", "#contractType","typeFullname","typeId");
+	})
+	$("#searchUndertakerName").click(function(){
+		App.getCommonModal("agentStaff","#undertakeName","name","id");
+	})
+	$("#searchOtherSubject").click(function(){
+		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
+	})
+	$("#contractType","#undertakeName","#oppoPartyName").on("input",function(){
+		$(this).data("exactSearch",false);
+	})
+})
+
+

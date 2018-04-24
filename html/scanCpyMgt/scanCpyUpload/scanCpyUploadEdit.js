@@ -1,19 +1,20 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 console.log(parm);
-$(function(){
-	if(parm.pageType == 1){
-		$(".toolbarBtn,.portlet-title").remove();
-	}
-})
 //系统的全局变量获取
 var config = top.globalConfig;
 console.log(config);
 var serverPath = config.serverPath;
 //页面初始化事件
 $(function() {
-	//固定操作按钮在70px的高度
-	App.fixToolBars("toolbarBtnContent", 70);
+	if(parm.pageType == 1){
+		$(".toolbarBtn,.portlet-title").remove();
+		$(".page-content,.portlet-body").css("padding",'0px');
+		$(".portlet").css("cssText","border:none !important;padding:0px");
+	}else{
+		//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 70);
+	}
 	console.log(getQueryString("processInstanceId"));
 })
 //返回上一页

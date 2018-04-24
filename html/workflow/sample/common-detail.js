@@ -13,6 +13,7 @@ $(function(){
  * day:2018-0416-21
  */
 function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment){
+	
 	//alert(processDefinitionKey + "_" + assignee + "_" + taskDefinitionKey);
 /*	业务侧推进流程需要带着表单数据的，参考以下方式和流程参数拼接在一起。
 	var jsonDate=$('#remandBaseInfo').serialize()
@@ -28,8 +29,8 @@ function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment){
 		"assignee" : assignee, //下一步参与者，流程回调带过来的，业务侧无需赋值。
 		"taskDefinitionKey" : taskDefinitionKey,//下一步环节code，流程回调带过来的，业务侧无需赋值。
 		"comment":comment, //办理意见，流程回调带过来的，业务侧无需赋值。
-		"title":"此待办为流程测试专用，表动哦，如需待办请通过需求管理自己启动哦。",// 待办标题，需要业务侧提供，一般为业务名称，需求为需求名称。
-		"businessKey":"11111111"//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
+		"title":$("#taskTitle").val(),// 待办标题，需要业务侧提供，一般为业务名称，需求为需求名称。
+		"businessKey":$("#taskBusinessKey").val()//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
 	}, function(data) {
 		alert(data.sign);
 		// 成功后回调模态窗口关闭方法
@@ -52,11 +53,24 @@ function setFlowKey(){
 	var processDefinitionKey = $("#processDefinitionKey").val();
 	$("#processDefinitionKey").val(processDefinitionKeyForStart);
 }
+function setProjectPath(){
+	var projectPathselect = $("#projectPathselect").val();
+	$("#pathSelect").val(projectPathselect);
+}
 
 //该方法为业务编制界面的“发起”按钮方法，方法名随意，首先进行业务校验等业务处理，然后调用流程公共界面中js方法传递流程相关的参数。
 function flowStart(){
 	//1,业务侧表单校验等。
-	
+	var taskBusinessKey=$("#taskBusinessKey").val();
+	var taskTitle=$("#taskTitle").val();
+	if(taskBusinessKey.length==0){
+		layer.msg("请填写业务主键！");
+		return;
+	}
+	if(taskTitle.length==0){
+		layer.msg("请填写待办标题！");
+		return;
+	}
 	
 	//2,调用流程公共界面js根据业务类型后台查询匹配的流程模板。该方法也可以放在流程初始化的时候。
 	//getProcessDefinitionKey("contract_scan");
@@ -75,7 +89,13 @@ function flowStart(){
 }
 
 function businessPush(){
-	var flowParam=App.getFlowParam(serverPath,"11111111");
+	
+	var taskBusinessKey=$("#taskBusinessKey").val();
+	if(taskBusinessKey.length==0){
+		layer.msg("请填写业务主键！");
+		return;
+	}
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
 	modal_passBybuss(flowParam);
 	
 }
@@ -102,7 +122,7 @@ function modal_passBybuss(flowParam){
 			"handleType" : handleType,//处理类型，1为通过，2为回退
 			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
-			"title":"testetetetest"//可不传，如果需要修改待办标题则传此参数。
+			"title":""//可不传，如果需要修改待办标题则传此参数。
 		}, function(data) {
 			layer.msg(data.sign);
 			
@@ -111,10 +131,27 @@ function modal_passBybuss(flowParam){
 		});
 }
 function pushReceiveTask(){
+	
+	var taskBusinessKey=$("#taskBusinessKey").val();
+	var taskTitle=$("#taskTitle").val();
+	var receiveStatus=$("#receiveStatus").val();
+	if(taskBusinessKey.length==0){
+		layer.msg("请填写业务主键！");
+		return;
+	}
+	if(taskTitle.length==0){
+		layer.msg("请填写待办标题！");
+		return;
+	}
+	if(receiveStatus.length==0){
+		layer.msg("请选择后台任务的触发状态！");
+		return;
+	}
+	
 	var currentTask=null;
 		$.ajax({
 			type: 'get',
-			url: serverPath+'workflowrest/pushReceiveTask?businessId=11111111&taskStatus=1',
+			url: serverPath+'workflowrest/pushReceiveTask?businessId='+$("#taskBusinessKey").val()+'&taskStatus='+receiveStatus,
 			//data: null,
 			dataType: 'json',
 			async: false,
@@ -122,9 +159,10 @@ function pushReceiveTask(){
 			success: function(result){
 				var result = result;
 				if (result.success == 1) {
-					currentTask=result.flowdata;
+					//currentTask=result.flowdata;
+					layer.msg(result.info);
 				} else {
-					layer.msg("推送后台任务失败！");
+					layer.msg(result.info);
 				};
 			},
 			error: function(result) {

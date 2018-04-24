@@ -12,9 +12,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
-
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+	<link rel="stylesheet" type="text/css" href="../css/workflow.css"/>
 </head>
 <body>
     <!-- 当前任务参数串 -->
@@ -167,13 +167,13 @@
                             <div class="col-md-8 column" id="shenpiDiv">
                                 <div id="linkDiv">
                                     <div class="form-group">
-                                        <label for="link" style="text-align: center;">办理步骤<span class="notNull">*</span></label> 
+                                        <label for="link" style="text-align: center;">办理步骤<i class="iconfont icon-mi required"></i></label> 
                                         <select class="form-control" id="link" name="link" onchange="clearAssignee();"></select>
                                     </div>
                                 </div>
                                 <div id="assigneeDiv">
                                     <div class="form-group">
-                                        <label for="assignee" style="text-align: center;">办理人员<span class="notNull">*</span></label>
+                                        <label for="assignee" style="text-align: center;">办理人员<i class="iconfont icon-mi required"></i></label>
                                         <div class="input-group">
                                             <input type="text" name="assigneeName" class="form-control" id="assigneeName" readonly="readonly" style="padding-left: 10px" /> 
                                             <input type="hidden" name="assignee" class="form-control" id="assignee" /> 
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="comment" style="text-align: center; padding-top: 25px;">审批处理意见<span class="notNull">*</span></label>
+                                    <label for="comment" style="text-align: center; padding-top: 25px;">审批处理意见<i class="iconfont icon-mi required"></i></label>
                                     <textarea name="comment" id="comment" class="form-control" rows="3" required autofocus></textarea>
                                 </div>
                             </div>

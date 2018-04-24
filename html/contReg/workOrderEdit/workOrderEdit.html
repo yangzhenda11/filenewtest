@@ -38,36 +38,8 @@
 						<span class="caption-subject bold uppercase"> 工单编辑</span>
 					</div>
 				</div>
-				<div class="portlet-body" style="overflow: hidden;">
-					<iframe id="residentIframe"  scrolling="no" onload="changeFrameHeight()" src=""></iframe>
-					<!--<div class="col-sm-4">
-						<div class="input-group">
-							<span class="input-group-addon searchLableText">合同类型</span>
-							<input id="contractType" name="contractType" type="text" class="form-control" value="" />
-							<span class="input-group-addon" id="searchContractType" ><i class="iconfont icon-search"></i></span>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="input-group">
-							<span class="input-group-addon searchLableText">选择承办人</span>
-							<input id="agentStaff" name="agentStaff" type="text" class="form-control" value="" />
-							<span class="input-group-addon" id="searchAgentStaff" ><i class="iconfont icon-search"></i></span>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="input-group">
-							<span class="input-group-addon searchLableText">选择承办部门</span>
-							<input id="agentDepartment" name="agentDepartment" type="text" class="form-control" value="" />
-							<span class="input-group-addon" id="searchAgentDepartment" ><i class="iconfont icon-search"></i></span>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="input-group">
-							<span class="input-group-addon searchLableText">合同编号</span>
-							<input id="contractDataSearch" name="contractDataSearch" type="text" class="form-control" value="" />
-							<span class="input-group-addon" id="searchContractData" ><i class="iconfont icon-search"></i></span>
-						</div>
-					</div>-->
+				<div class="portlet-body">
+					<iframe id="residentIframe" height="400px" src=""></iframe>
 				</div>
 			</div>
 		</div>
@@ -94,29 +66,10 @@
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="workOrderEdit.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			$("#searchContractType").click(function(){
-				App.getCommonModal("contractType","#contractType","typeFullname",["typeId","typeGroup"]);
-			})
-			$("#searchAgentStaff").click(function(){
-				App.getCommonModal("agentStaff","#agentStaff","name",["id","parentId","parentCode"]);
-			})
-			$("#searchAgentDepartment").click(function(){
-				App.getCommonModal("agentDepartment","#agentDepartment","orgName",["orgId","orgCode","parentId","parentCode"]);
-			})
-			$("#searchContractData").click(function(){
-				App.getCommonModal("contractDataSearch","#contractDataSearch","partnerName");
-			})
-			function changeFrameHeight(){
-			    var ifm= $("#residentIframe"); 
-			    ifm.
-			    ifm.height=document.documentElement.clientHeight;
 			
+			function changeFrameHeight(){
+			    
 			}
-
-window.onresize=function(){  
-     changeFrameHeight();  
-
-} 
 		</script>
 	</body>
 

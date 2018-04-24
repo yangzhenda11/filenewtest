@@ -42,7 +42,8 @@
 		//配置
 		var treeSetting = {
 			view: {
-				selectedMulti: false
+				selectedMulti: false,
+				dblClickExpand: false
 			},
 			data: {
 				simpleData: {
@@ -56,7 +57,8 @@
 				}
 			},
 			callback: {
-				onClick: setInputInfo
+				onClick: setInputInfo,
+				dblClickExpand : setInputInfo
 			}
 		};
 		//获取数据

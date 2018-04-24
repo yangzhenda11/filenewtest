@@ -59,7 +59,7 @@
 	//初始化表格
 	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		$('#commomModal').on('shown.bs.modal', function (e) {
+		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getContractData(dom, textValue, setKey, ajaxData);
 		})
 	}
@@ -128,7 +128,7 @@
 	function checkContractData() {
 		var checkValue = $("#contractDataTable").find("input[name='checkRadio']:checked").val();
 		$(setDom).val(checkValue);
-		$(dom).data("exactSearch",true);
+		$(setDom).data("exactSearch",true);
 		$("#commomModal").modal("hide");
 	}
 </script>

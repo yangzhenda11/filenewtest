@@ -60,7 +60,6 @@
 				onClick: setInputInfo
 			}
 		};
-		alert(JSON.stringify(treeSetting))
 		//获取数据
 		App.formAjaxJson(serverPath + "contractType/list", "post", JSON.stringify(ajaxData), successCallback);
 
@@ -89,7 +88,7 @@
 			$(dom).data("exactSearch",true);
 			$(dom).val(treeNode[textValue]);
 			$(dom).attr("title",treeNode[textValue]);
-			$("#commomModal").modal("hide");
+			//$("#commomModal").modal("hide");
 		}
 	}
 	// 展开所有

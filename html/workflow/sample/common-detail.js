@@ -53,6 +53,10 @@ function setFlowKey(){
 	var processDefinitionKey = $("#processDefinitionKey").val();
 	$("#processDefinitionKey").val(processDefinitionKeyForStart);
 }
+function setProjectPath(){
+	var projectPathselect = $("#projectPathselect").val();
+	$("#pathSelect").val(projectPathselect);
+}
 
 //该方法为业务编制界面的“发起”按钮方法，方法名随意，首先进行业务校验等业务处理，然后调用流程公共界面中js方法传递流程相关的参数。
 function flowStart(){

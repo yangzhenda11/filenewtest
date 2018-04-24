@@ -1,4 +1,17 @@
-#residentIframe {
-  width: 100%;
-  border: none;
+#goTaskToDoDetailForToDo,
+.full-height-content-body,
+.tab-content,
+#business {
+  height: 100%;
+}
+.portlet {
+  height: 100%;
+  position: relative;
+}
+.portlet-body {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

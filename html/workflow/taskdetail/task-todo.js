@@ -948,7 +948,6 @@ function checkifdone(){
 				result=true;
 				window.top.alertModel(data.info);
 			}
-			
 		}
 	});
 	return result;

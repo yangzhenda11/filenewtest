@@ -12,6 +12,7 @@ $(function() {
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
 	}else{
+		$(".toolbarBtn,.portlet-title").removeClass("hidden");
 		//固定操作按钮在70px的高度
 		App.fixToolBars("toolbarBtnContent", 70);
 	}

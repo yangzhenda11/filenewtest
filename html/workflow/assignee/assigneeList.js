@@ -25,11 +25,6 @@ if(chooseType==2){
 	$("#duoxuan").hide();
 }
 var dataTableConfig={
-		fixedColumns: {
-			leftColumns: 2					//固定左侧两列
-		},
-		destroy:true,
-		buttons: [],		//显示的工具按钮
 		ajax: {
 			"type": "GET",					//请求方式
 			"url": serverPath + 'assignee/searchMap4Page',	//请求地址

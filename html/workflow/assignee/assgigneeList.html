@@ -31,9 +31,9 @@
                     <div class="page-content">
                         <div class="portlet">
                             <div class="portlet-body">
-                                <div class="page-search">
+                                <div class="page-search" style="height: 84px;overflow: hidden;">
                                     <form autocomplete="off" class="form-horizontal">
-                                        <div class="row page-search-form" style="overflow: visible;">
+                                        <div class="row page-search-form">
                                             <div class="col-sm-4">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">人员名称</span> <input type="text" class="form-control" id="searchEfstaffName" placeholder="人员名称">
@@ -52,10 +52,10 @@
                                         </div>
                                         <div class="page-search-action">
                                             <button type="button" id="searchEforgHome" onclick="selectStaffList();" class="btn btn-block red" data-loading-text="加载中...">
-                                                <i class="ace-icon fa fa-search"></i>查询
+                                                <i class="iconfont icon-search"></i>查询
                                             </button>
-                                            <button type="reset" class="btn btn-block yellow margin-top-10" onclick="App.resetForm(this)">
-                                                <i class="ace-icon fa fa-repeat"></i> 重置
+                                            <button type="reset" class="btn btn-block yellow" onclick="App.resetForm(this)">
+                                                <i class="iconfont icon-reset"></i> 清空
                                             </button>
                                         </div>
                                     </form>

@@ -53,7 +53,7 @@
 	//初始化表格
 	function initOtherSubject(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		$('#commomModal').on('shown.bs.modal', function (e) {
+		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getOtherSubjectData(dom, textValue, setKey, ajaxData);
 		})
 	}

@@ -31,7 +31,6 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         	d.contractName = $("#contractName").val();
 			d.approveDateBegin = $("#approve_date_begin").val();
 			d.approveDateEnd = $("#approve_date_end").val();
-			console.log(d);
            return JSON.stringify(d);
           /*return d;*/
         }

@@ -116,7 +116,6 @@
 					$(dom).data(setKey,data[setKey]);
 				}
 			};
-			$(dom).data("exactSearch",false);
 		});
 	}
 	//搜索点击事件
@@ -128,6 +127,7 @@
 	function checkContractData() {
 		var checkValue = $("#contractDataTable").find("input[name='checkRadio']:checked").val();
 		$(setDom).val(checkValue);
+		$(dom).data("exactSearch",false);
 		$("#commomModal").modal("hide");
 	}
 </script>

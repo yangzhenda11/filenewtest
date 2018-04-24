@@ -69,12 +69,13 @@
 		App.initDataTables('#contractDataTable', "#searchBtnM", {
 			ajax: {
 				"type": "post",
+				"contentType": "application/json",
 				"url": serverPath + 'contractBaseInfo/listContractByUndertakerId',
 				"data": function(d) {
 					d.contractName = $("input[name='contractName']").val().trim();
 					d.contractNumber = $("input[name='contractNumber']").val().trim();
 					var parm = $.extend({}, ajaxData, d);
-					return parm;
+					return JSON.stringify(parm);
 				}
 			},
 			"columns": [{

@@ -63,12 +63,13 @@
 		App.initDataTables('#otherSubjectTable', "#searchBtnM", {
 			ajax: {
 				"type": "post",
+				"contentType": "application/json",
 				"url": serverPath + 'contractType/listPartner',
 				"data": function(d) {
 					d.type = 0;
 					d.partnerName = $("input[name='partnerName']").val().trim();
 					var parm = $.extend({}, ajaxData, d);
-					return parm;
+					return JSON.stringify(parm);
 				}
 			},
 			"columns": [{

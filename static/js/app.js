@@ -1177,7 +1177,7 @@ var App = function() {
          * 获取当前ifreamutl参数
          */
         getPresentParm : function(isUrl){
-        	var persentUrl = top.$('.J_iframe:visible').attr('src');
+        	var persentUrl = window.location.href;
         	if(isUrl){
         		return persentUrl;
         	}else{
@@ -1197,8 +1197,7 @@ var App = function() {
          * 改变当前ifream切换url
          */
         changePresentUrl : function(url){
-        	var $resentFrame = top.$('.J_iframe:visible');
-			$resentFrame.attr('src', url)
+        	window.location.href = url;
         },
         /*
          * 详情页固定操作按钮

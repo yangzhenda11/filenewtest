@@ -10,6 +10,22 @@ var curOrgStaffNode = null;
  * 角色ID的获取，目前写死，待协调
  */
 var curOrgStaffRole = 1;
+var ajaxObj = {
+    "url" :  serverPath + "dicts/listChildrenByDicttId",
+    "type" : "post",
+    "data" : {"dictId": 9065},
+    "async" : false
+};
+//从缓存中取关联编码字典集
+var associateCodeInfo = new Array();
+var postData = JSON.stringify(ajaxObj.data);
+App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback1,null,null,null,ajaxObj.async);
+function succssCallback1(result) {
+    var data = result.data;
+    $.each(data, function (i, item) {
+        associateCodeInfo[item.dictValue] = item.dictLabel;
+    });
+}
 /*
  * 初始化表格
  */
@@ -49,7 +65,14 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
                 }
             }
         },
-        {"data": "associateCode","title": "关联编码"},
+        {"data": "associateCode","title": "关联编码",
+            "render": function(data, type, full, meta) {
+                if(data == null){
+                    return "";
+                }
+                return associateCodeInfo[data];
+            }
+        },
         {"data": "orgName","title": "所属组织"}
     ]
 });

@@ -36,7 +36,11 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         }
     },
     "columns": [
-        {"data": "contractId","title": "序号"},
+    	//增加序号列
+        {"data" : null,
+		"render" : function(data, type, full, meta){
+		return meta.row + 1 + meta.settings._iDisplayStart;
+		}}, 
         {"data": "contractName","title": "合同名称"},
         {"data": "contractNumber","title": "合同编号"},
         {"data": "executeDeptName","title": "承办部门"},
@@ -68,6 +72,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 			}
 		},
     ]
+    
 });
 
 //跳转到上传页面
@@ -108,5 +113,3 @@ $(function(){
 		$(this).data("exactSearch",false);
 	})
 })
-
-

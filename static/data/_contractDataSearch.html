@@ -59,7 +59,7 @@
 	//初始化表格
 	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		$('#commomModal').on('shown.bs.modal', function (e) {
+		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getContractData(dom, textValue, setKey, ajaxData);
 		})
 	}

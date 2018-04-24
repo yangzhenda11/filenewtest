@@ -15,11 +15,12 @@
 <link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" type="text/css" href="/static/plugins/simple-line-icons/simple-line-icons.min.css" />
 <link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css" />
-<link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
 <link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
 <link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css">
 <link rel="stylesheet" type="text/css" href="/static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 <link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 <body>
     <div class="page-content" id="searchContentForDone">
@@ -59,14 +60,14 @@
                                     <input type="text" class="form-control" id="linkNameForDone" name="linkName" size="30px" />
                                 </div>
                             </div>
-                            <div class="page-search-action">
-                                <button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="serarchForDone();">
-                                    <i class="ace-icon fa fa-search"></i> 查询
-                                </button>
-                                <button type="reset" class="btn btn-block yellow margin-top-10" onclick="resetConditionForDone();">
-                                    <i class="ace-icon fa fa-repeat"></i> 重置
-                                </button>
-                            </div>
+                        </div>
+                        <div class="page-search-action">
+                            <button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="serarchForDone();">
+                                <i class="iconfont icon-search"></i> 查询
+                            </button>
+                            <button type="reset" class="btn btn-block yellow" onclick="resetConditionForDone();">
+                                <i class="iconfont icon-reset"></i> 清空
+                            </button>
                         </div>
                     </form>
 

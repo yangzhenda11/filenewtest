@@ -38,7 +38,7 @@
 	$("#contractTypeTree").css("max-height",documentHeight);	
 	//生成树
 	function initContractTree(dom,textValue,setKey,ajaxData) {
-		$("#modal").modal("show");
+		$("#commomModal").modal("show");
 		//配置
 		var treeSetting = {
 			view: {
@@ -84,9 +84,10 @@
 					$(dom).data(setKey,treeNode[setKey]);
 				}
 			};
+			$(dom).data("isInput",false);
 			$(dom).val(treeNode[textValue]);
 			$(dom).attr("title",treeNode[textValue]);
-			$("#modal").modal("hide");
+			$("#commomModal").modal("hide");
 		}
 	}
 	// 展开所有

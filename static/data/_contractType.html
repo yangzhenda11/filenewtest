@@ -57,7 +57,8 @@
 				}
 			},
 			callback: {
-				onClick: setInputInfo
+				onClick: setInputInfo,
+				dblClickExpand : setInputInfo
 			}
 		};
 		//获取数据
@@ -88,7 +89,7 @@
 			$(dom).data("exactSearch",true);
 			$(dom).val(treeNode[textValue]);
 			$(dom).attr("title",treeNode[textValue]);
-			//$("#commomModal").modal("hide");
+			$("#commomModal").modal("hide");
 		}
 	}
 	// 展开所有

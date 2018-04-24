@@ -11,13 +11,13 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         "contentType":"application/json;charset=utf-8",
         "url": serverPath+'contractUpload/contractUploadList',
         "data": function(d) {//自定义传入参数
-        	if($("#contractType").data("exactSearch")){
-        		d.typeId = $("#contractType").data("typeId");
+        	if($("#contractTypeName").data("exactSearch")){
+        		d.contractType = $("#contractTypeName").data("typeId");
         	}else{
-        		d.contractType = $("input[name='contractType']").val();
+        		d.contractTypeName = $("#contractTypeName").val();
         	};
         	if($("#undertakeName").data("exactSearch")){
-        		d.Id = $("#undertakeName").data("Id");
+        		d.undertakerId = $("#undertakeName").data("id");
         	}else{
         		d.undertakeName = $("#undertakeName").val();
         	};
@@ -36,7 +36,11 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         }
     },
     "columns": [
-        {"data": "contractId","title": "序号"},
+    	//增加序号列
+        {"data" : null,
+		"render" : function(data, type, full, meta){
+		return meta.row + 1 + meta.settings._iDisplayStart;
+		}}, 
         {"data": "contractName","title": "合同名称"},
         {"data": "contractNumber","title": "合同编号"},
         {"data": "executeDeptName","title": "承办部门"},
@@ -68,6 +72,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 			}
 		},
     ]
+    
 });
 
 //跳转到上传页面
@@ -90,7 +95,7 @@ function searchContractUpload(retainPaging) {
 //点击iconfont弹出模态框事件
 $(function(){
 	$("#searchContractType").click(function() {
-		App.getCommonModal("contractType", "#contractType","typeFullname","typeId");
+		App.getCommonModal("contractType", "#contractTypeName","typeFullname","typeId");
 	})
 	$("#searchUndertakerName").click(function(){
 		App.getCommonModal("agentStaff","#undertakeName","name","id");
@@ -98,9 +103,13 @@ $(function(){
 	$("#searchOtherSubject").click(function(){
 		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
 	})
-	$("#contractType","#undertakeName","#oppoPartyName").on("input",function(){
+	$("#contractTypeName").on("input",function(){
+		$(this).data("exactSearch",false);
+	})
+	$("#undertakeName").on("input",function(){
+		$(this).data("exactSearch",false);
+	})
+	$("#oppoPartyName").on("input",function(){
 		$(this).data("exactSearch",false);
 	})
 })
-
-

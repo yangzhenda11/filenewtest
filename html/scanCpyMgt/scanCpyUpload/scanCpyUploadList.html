@@ -41,7 +41,8 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">合同类型</span>
-										<input type="text" id="contractType" name="contractType" class="form-control" >
+										<input type="hidden"  id="contractType" name="contractType" class="form-control"/>
+										<input type="text" id="contractTypeName" name="contractTypeName" class="form-control" >
 										<span class="input-group-addon" id="searchContractType" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
@@ -64,10 +65,10 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">审批通过日期</span>
-										<input type="text" name="approve_date" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+										<input type="text" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
                                         <span class="input-group-addon searchLableText" >-</span>
-                                        <input type="text" name="approve_date_end" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        <input type="text" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
 									</div>
 								</div>

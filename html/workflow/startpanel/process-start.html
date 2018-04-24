@@ -33,10 +33,10 @@
                 <div class="modal-body form">
                     <div class="form-body">
                         <div class="form-group" id="nextlink">
-                            <label for="linkForStart">办理步骤<span class="notNull">*</span></label> <select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
+                            <label for="linkForStart">办理步骤<i class="iconfont icon-mi required"></i></label> <select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
                         </div>
                         <div class="form-group" id="nextassignee" style="position: relative;">
-                            <label for="assigneeNameForStart">办理人员 <span class="notNull">*</span></label>
+                            <label for="assigneeNameForStart">办理人员 <i class="iconfont icon-mi required"></i></label>
                             <div class="input-group">
                                 <input type="text" name="assigneeName" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" /> 
                                 <input type="hidden"name="assignee" class="form-control" id="assigneeForStart" /> 
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="comment">处理意见 <span class="notNull">*</span></label>
+                            <label for="comment">处理意见 <i class="iconfont icon-mi required"></i></label>
                             <textarea name="comment" id="comment" class="form-control" rows="3" required autofocus maxlength="125"></textarea>
                         </div>
                     </div>

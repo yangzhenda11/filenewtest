@@ -92,7 +92,8 @@ function beforePushProcess(pass){
 	parent.setAssigneeParam(assigneeParam);
 	
 	//3,设置路由值，默认为0，对于有分支的场景需要单独设置路由值
-	//parent.setPathSelect(1);
+	var pathSelect=$("#ifshenpi").val();
+	parent.setPathSelect(pathSelect);
 	
 	return result;
 }

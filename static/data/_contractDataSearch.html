@@ -6,8 +6,11 @@
 	}
 	#contractDataTable .radioCheck .ui-radio {
 		position: absolute;
-		top: 36%;
-		left: 36%;
+		top: 50%;
+		left: 50%;
+		padding-left: 20px;
+		margin-top: -10px;
+		margin-left: -10px;
 	}
 </style>
 <div class="modal-dialog" role="document" style="width: 68%;">
@@ -41,7 +44,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button type="button" onclick="checkOtherSubject()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+			<button type="button" onclick="checkContractData()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
 			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
 		</div>
 	</div>
@@ -55,16 +58,23 @@
 	var setDom = null;
 	//初始化表格
 	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
+		$("#commomModal").modal("show");
+		$('#commomModal').on('shown.bs.modal', function (e) {
+			getContractData(dom, textValue, setKey, ajaxData);
+		})
+	}
+	
+	function getContractData(dom, textValue, setKey, ajaxData) {
 		setDom = dom;
-		$("#modal").modal("show");
 		App.initDataTables('#contractDataTable', "#searchBtnM", {
 			ajax: {
 				"type": "post",
 				"url": serverPath + 'contractBaseInfo/listContractByUndertakerId',
 				"data": function(d) {
-					d.contractName = $("input[name='contractName']").val();
-					d.contractNumber = $("input[name='contractNumber']").val();
-					return d;
+					d.contractName = $("input[name='contractName']").val().trim();
+					d.contractNumber = $("input[name='contractNumber']").val().trim();
+					var parm = $.extend({}, ajaxData, d);
+					return parm;
 				}
 			},
 			"columns": [{
@@ -96,7 +106,16 @@
 		$('#contractDataTable tbody').on('click', 'tr', function() {
 			$(this).find("input[name='checkRadio']").prop("checked", true);
 			//获取选择行的内容
-			//var data = $('#contractDataTable').DataTable().row(this).data();
+			var data = $('#contractDataTable').DataTable().row(this).data();
+			if(setKey != undefined){
+				if($.isArray(setKey)){
+					$.each(setKey, function(k,v) {
+						$(dom).data(v,data[v]);
+					});
+				}else{
+					$(dom).data(setKey,data[setKey]);
+				}
+			};
 		});
 	}
 	//搜索点击事件
@@ -105,9 +124,10 @@
 		table.ajax.reload();
 	}
 	//点击确定页面dom元素选择值
-	function checkOtherSubject() {
+	function checkContractData() {
 		var checkValue = $("#contractDataTable").find("input[name='checkRadio']:checked").val();
 		$(setDom).val(checkValue);
-		$("#modal").modal("hide");
+		$(dom).data("exactSearch",false);
+		$("#commomModal").modal("hide");
 	}
 </script>

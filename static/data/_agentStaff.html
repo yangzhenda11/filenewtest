@@ -38,11 +38,12 @@
 		textValue = value;
 		setKey = key;
 		dom = inputDom;
-		$("#modal").modal("show");
+		$("#commomModal").modal("show");
 		//配置
 		var treeSetting = {
 			view: {
-				selectedMulti: false
+				selectedMulti: false,
+				dblClickExpand: false
 			},
 			data: {
 				simpleData: {
@@ -106,9 +107,10 @@
 					$(dom).data(setKey,treeNode[setKey]);
 				}
 			};
+			$(dom).data("exactSearch",false);
 			$(dom).val(treeNode[textValue]);
 			$(dom).attr("title",treeNode[textValue]);
-			$("#modal").modal("hide");
+			$("#commomModal").modal("hide");
 		}else{
 			layer.msg("请选择具体的人员",{icon:2})
 		}

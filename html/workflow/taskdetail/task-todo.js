@@ -130,6 +130,7 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 			// 使用业务办理div加载主办页面
 			//$("#business").load(url);
             $('#businessiframe').attr("src",url);
+            $("#business").show();
 
 			
 		} else if (success == 0){
@@ -698,6 +699,7 @@ function initData(){
 function returnList(){
 	$("#in-footer").modal("hide");
 	$("#goTaskToDoDetailForToDo").hide();
+	$("#business").hide();
 	$("#searchContentForToDo").show();
 	serarchForToDo();
 }
@@ -879,9 +881,9 @@ function selectstaff(){
     var linkcode = $("#link").val().toString().split(",")[0];
     var prov=$("#wprov").val();
     
-    jandyStaffSearch(flowKey,linkcode,prov,callbackFun);
+    jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 }
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
 
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
@@ -889,9 +891,21 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
     	$("#wflinkCode").val(linkcode);
     	$("#wfprov").val(prov);
     	$("#wfcallbackFun").val(callbackFun);
+    	$("#wfstaffSelectType").val(staffSelectType);
     	$("#PandJstaffiframetask").modal('show');
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
+    		chooseType=$("#wfstaffSelectType").val();
+    		if(chooseType==2){
+    			$("#duoxuan").show();
+    			tablestr='<input type="checkbox" class="checkall" />';
+    		}else{
+    			$("#duoxuan").hide();
+    		}
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+			$(".checkall").click(function () {
+			      var check = $(this).prop("checked");
+			      $(".checkchild").prop("checked", check);
+			});
 		})
     });
     

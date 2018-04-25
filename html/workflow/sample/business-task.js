@@ -95,6 +95,9 @@ function beforePushProcess(pass){
 	var pathSelect=$("#ifshenpi").val();
 	parent.setPathSelect(pathSelect);
 	
+	var staffSelectType=$("#staffSelectType").val();
+	parent.setStaffSelectType(staffSelectType);
+	
 	return result;
 }
 

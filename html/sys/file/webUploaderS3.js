@@ -95,10 +95,10 @@ function deleteFile(data){
         language: 'zh', 
         uploadUrl: serverPath + 'fileload/uploadFileS3', // 用于文件上传的服务器端请求地址
         uploadAsync: false,
-        // allowedFileExtensions: ['ini'],
+//         allowedFileExtensions: ['ini'],
         maxFileSize: 51200,
-        // maxFileCount: 10,
-        showPreview:false,
+       	maxFileCount: 10,
+       	dropZoneEnabled: false,
         slugCallback: function (filename) {
             return filename;
         },

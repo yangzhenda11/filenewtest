@@ -31,12 +31,12 @@
             msgFilePreviewError: 'An error occurred while reading the file "{name}".',
             msgInvalidFileType: 'Invalid type for file "{name}". Only "{types}" files are supported.',
             msgInvalidFileExtension: '"{name}"不符合文件传输要求，仅支持后缀为".{extensions}"格式的文件。',
-            msgValidationError: '"{name}"不符合文件传输要求，仅支持后缀为".{extensions}"格式的文件。',
+            msgValidationError: '处理失败',
             msgLoading: 'Loading file {index} of {files} &hellip;',
             msgProgress: 'Loading file {index} of {files} - {name} - {percent}% completed.',
             msgSelected: '选中{n}个文件',
             msgFoldersNotAllowed: 'Drag & drop files only! {n} folder(s) dropped were skipped.',
-            dropZoneTitle: '请先选择文件或将文件拖入框内，然后点击<span id="sbb">上传</span>按钮上传(仅支持.ppm格式)'
+            dropZoneTitle: '请先选择文件或将文件拖入框内，然后点击<span id="sbb">上传</span>按钮上传'
     };
 
     $.extend($.fn.fileinput.defaults, $.fn.fileinput.locales.es);

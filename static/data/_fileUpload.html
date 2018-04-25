@@ -1,0 +1,112 @@
+<style type="text/css">
+	.fileUploadModalForm .form-group{
+		display:table;
+	}
+	.fileUploadModalForm .form-group > label{
+		width: 18%;
+	    min-height: 1px;
+	    line-height: 16px;
+	    padding:0 10px 0 0;
+	    vertical-align:middle;    
+	    display:table-cell;
+	    text-align: right;
+	}
+	.fileUploadModalForm .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  	position: relative;
+	    min-height: 1px;
+	    padding-left: 10px;
+	    padding-right: 10px;
+	}
+</style>
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="fileUploadModalLabel"></h4>
+		</div>
+			<div class="modal-body fileUploadModalForm">
+                <div class="form-group col-sm-12">
+                    <label for="partnerCode" class="control-label">文件<i class="iconfont icon-mi required"></i></label>
+                    <div class="valiParent">
+                        <input type="file" id="uploadFileName" name="uploadFileName" />
+                    </div>
+                </div>
+               	<div class="form-group col-sm-12">
+                    <label for="partnerCode" class="control-label">附件列表</label>
+                    <div class="valiParent" style="color: red;">
+                        <i class="iconfont icon-mi required"></i>选中上传成功文件中文件名，点击删除，此文档不做上传处理。</br>
+                        <i class="iconfont icon-mi required"></i>正文大小不能超过？M。（具体大小待确定）。</br>
+                        <i class="iconfont icon-mi required"></i>仅上传合同正文时，不支持上传多个文件。
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="partnerCode" class="control-label">上传成功文件</label>
+                    <div class="valiParent">
+                        
+                    </div>
+                </div>
+           </div>
+		<div class="modal-footer">
+			<button type="button" onclick="checkContractData()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+			<button type="button" onclick="checkContractData()" class="btn btn-default btn-circle"><i class="iconfont icon-shanchu"></i> 删除</button>
+			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	//系统全局变量获取
+	var config = top.globalConfig;
+	var serverPath = config.serverPath;
+	function setParm(setting){
+		console.log(setting);
+		$("#fileUploadModalLabel").text(fileUploadModalLabel);
+		$("#uploadFileName").attr("multiple",setting.multiple);
+		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
+		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
+		var fileExtensions = [];
+		if(setting.fileExtensions){
+			fileExtensions = setting.fileExtensions;
+		};
+		initFileUpload(setting.url,uploadAsync,fileExtensions);
+	}
+	
+	/*
+	 * 文件上传
+	 */
+	function initFileUpload(url,uploadAsync,fileExtensions){
+		console.log(uploadAsync)
+		$("#uploadFileName").fileinput({
+        language: 'zh', 
+        uploadUrl: serverPath + url, // 用于文件上传的服务器端请求地址
+        uploadAsync: uploadAsync,
+        allowedFileExtensions: fileExtensions,
+        maxFileSize: 51200,
+       	maxFileCount: 10,
+       	dropZoneEnabled: false,
+        slugCallback: function (filename) {
+            return filename;
+        },
+        uploadExtraData: function(previewId, index) {	
+			// 添加额外参数
+			var obj = {
+				displayName:''
+			};
+			return obj;
+		}
+    });
+    // 异步上传成功结果处理
+    $("#uploadFileName").on("fileuploaded", function (event, data) {
+    	alert(data.response.message);
+    });
+    // 同步上传成功结果处理
+    $("#uploadFileName").on("filebatchuploadsuccess", function (event, data) {
+    	alert(data.response.message);
+    	$("#fileName").fileinput('reset')
+    	
+    });
+	}
+    
+</script>

@@ -373,6 +373,7 @@ button:focus{
     padding:0 10px 0 0;
     vertical-align:middle;    
     display:table-cell;
+    text-align: right;
 }
 .defaultFieldsetForm .form-group > label{
 		width: 20%;

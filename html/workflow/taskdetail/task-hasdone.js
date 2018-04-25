@@ -46,6 +46,7 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 			// 使用业务办理div加载主办页面
 			//$("#businessForDone").load(url);
 			$('#businessForDoneiframe').attr("src",url);
+			$("#businessForDone").show();
 			
 		} else if (success == 0){
 			alert(data.retVal);
@@ -163,6 +164,7 @@ function modal_close(){
 function returnListForDone(){
 	serarchForDone();
 	$("#goTaskToDoDetailForDone").hide();
+	$("#businessForDone").show();
 	$("#searchContentForDone").show();
 }
 

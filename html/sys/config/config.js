@@ -2,11 +2,14 @@
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
+	parent.data_permFilter(document);
 	getConfigTable();
 })
 /*
  * 获取系统参数列表
  */
+var configUpdate = parent.data_tpFilter("sys:config:update");
+var configDelete = parent.data_tpFilter("sys:config:delete");
 function getConfigTable(){
 	App.initDataTables('#configTable', "#submitBtn", {
 		ajax: {
@@ -24,8 +27,12 @@ function getConfigTable(){
                 render: function(data, type, full, meta) {
                 	if(full){
                 		var btnArray = new Array();
-		                btnArray.push({ "name": "修改", "fn": "editConfigModal(\'" + full.id + "\')" });
-		                btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')" })
+                		if(configUpdate){
+                			btnArray.push({ "name": "修改", "fn": "editConfigModal(\'" + full.id + "\')" });
+                		}
+                		if(configDelete){
+                			btnArray.push({ "name": "删除", "fn": "delConfig(\'" + full.id + "\',\'" + full.code + "\')" });
+                		}
 		                return App.getDataTableBtn(btnArray);
                 	}else{
                 		return "";

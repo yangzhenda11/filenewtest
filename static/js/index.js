@@ -181,7 +181,7 @@ function checkFullscreen() {
 }
 
 // 页面过滤
-function permFilter(obj) {
+function data_permFilter(obj) {
     var e = obj.querySelectorAll('[data-permcheck]');
     var perm = globalConfig.permissions;
     for (var i = 0; i < e.length; i++) {
@@ -189,16 +189,16 @@ function permFilter(obj) {
             if ($.inArray($(e[i]).data('permcheck'), perm) < 0) {
                 e[i].remove();
             } else {
-            	$(e[i]).removeClass("hidden");
-                
+                $(e[i]).removeClass("hidden");
+
             }
-        }else{
-        	$(e[i]).removeClass("hidden");
+        } else {
+            $(e[i]).removeClass("hidden");
         }
     }
 }
 // 表中过滤
-function tPFilter(permCheck) {
+function data_tpFilter(permCheck) {
     var perm = globalConfig.permissions;
     if ($.inArray(permCheck, perm) >= 0) {
         return true;
@@ -269,37 +269,40 @@ function updatePasswd() {
 }
 
 function changePasswd() {
-	debugger;
-	App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?"+ App.timestamp() , 
-	    	"GET",null, keyPairCallback, null, null, null,false);
-	
-	function keyPairCallback(result){
-		debugger;
-		var passwd = $("#passwdForm input[name='passwd']").val();
-		var modulus = result.data.modulus, exponent = result.data.exponent;
+    debugger;
+    App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),
+        "GET", null, keyPairCallback, null, null, null, false);
+
+    function keyPairCallback(result) {
+        debugger;
+        var passwd = $("#passwdForm input[name='passwd']").val();
+        var modulus = result.data.modulus,
+            exponent = result.data.exponent;
         if (passwd.length != 256) {
             var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
         }
         var pwd = RSAUtils.encryptedString(publicKey, passwd);
-	    App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(), 
-	    	"PUT", {"passwd":pwd}, passwdCallback, null, null, null,false);
-	    function passwdCallback(result) {
-	        if (result.data) {
-	            alert("修改成功");
-	            logout();
-	        }
-	    }
-	}
+        App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(),
+            "PUT", { "passwd": pwd }, passwdCallback, null, null, null, false);
+
+        function passwdCallback(result) {
+            if (result.data) {
+                alert("修改成功");
+                logout();
+            }
+        }
+    }
 }
 
 function logout() {
-	debugger;
-	App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST",  null,successMethod, null, null, null, false);
-	function successMethod(result){
-		if(result.status){
-			window.location.href = result.data;
-		}
-	}
+    debugger;
+    App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST", null, successMethod, null, null, null, false);
+
+    function successMethod(result) {
+        if (result.status) {
+            window.location.href = result.data;
+        }
+    }
 }
 
 /**

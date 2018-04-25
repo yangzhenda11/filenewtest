@@ -853,7 +853,7 @@ var App = function() {
 			if(!$().dataTable) {
 				return;
 			};
-			var pagelengthMenu = parent.globalConfig.curConfigs.configPagelengthMenu.split(",")
+			var pagelengthMenu = top.globalConfig.curConfigs.configPagelengthMenu.split(",")
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];
 				btn = "";

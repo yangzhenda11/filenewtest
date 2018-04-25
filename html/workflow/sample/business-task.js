@@ -95,6 +95,9 @@ function beforePushProcess(pass){
 	var pathSelect=$("#ifshenpi").val();
 	parent.setPathSelect(pathSelect);
 	
+	var staffSelectType=$("#staffSelectType").val();
+	parent.setStaffSelectType(staffSelectType);
+	
 	return result;
 }
 
@@ -116,3 +119,7 @@ function getQueryString(name) {
     if (r != null) return unescape(r[2]); 
     return null; 
 } 
+function setStaffSelectType(){
+	var staffSelectType=$("#staffSelectType").val();
+	parent.setStaffSelectType(staffSelectType);
+}

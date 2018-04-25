@@ -5,7 +5,7 @@ var id = parm.id;
 
 //系统的全局变量获取
 var config = top.globalConfig;
-//console.log(config);
+console.log(config);
 var serverPath = config.serverPath;
 
 

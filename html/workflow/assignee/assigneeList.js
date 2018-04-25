@@ -15,15 +15,10 @@ var btnModel =  '    \
     {{/each}}';
 var template = Handlebars.compile(btnModel);
 
-var chooseType=2
+var chooseType=$("#wfstaffSelectType").val();
 
 var tablestr="操作";
-if(chooseType==2){
-	$("#duoxuan").show();
-	tablestr='<input type="checkbox" class="checkall" />';
-}else{
-	$("#duoxuan").hide();
-}
+
 var dataTableConfig={
 		ajax: {
 			"type": "GET",					//请求方式
@@ -110,10 +105,6 @@ function selectStaffList(resetPaging) {
 //		// 加载表格
 //		searchStaffTable = App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 //	}
-	$(".checkall").click(function () {
-	      var check = $(this).prop("checked");
-	      $(".checkchild").prop("checked", check);
-	});
 }
 
 //人员列表的回调函数
@@ -130,7 +121,7 @@ function resetFun(){
 	$("#searchEfOName").val('');
 } 
 function addMultiStaff(){
-	  funName=$("#callbackFun").val();
+	  funName=$("#wfcallbackFun").val();
 	  if ($(".checkchild:checked").length == 0){
 			layer.msg("请选人员，可以多选！",{time:1000});
 			return;
@@ -145,6 +136,5 @@ function addMultiStaff(){
 	    });
 	  ids=ids.substring(0,ids.length-1);
 	  names=names.substring(0,names.length-1);
-	  window.parent[funName](ids,names);
+	  eval(funName+"("+ids+","+names+")");
 	}
-

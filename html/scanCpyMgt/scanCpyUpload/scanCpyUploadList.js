@@ -39,9 +39,12 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
     	//增加序号列
         {"data" : null,
 		"render" : function(data, type, full, meta){
-		return meta.row + 1 + meta.settings._iDisplayStart;
+			return meta.col + 1;
 		}}, 
-        {"data": "contractName","title": "合同名称"},
+        {"data": "contractName","title": "合同名称",
+        	"className":"whiteSpaceNormal",
+			"width":"25%"
+        },
         {"data": "contractNumber","title": "合同编号"},
         {"data": "executeDeptName","title": "承办部门"},
         {"data": "undertakerId","bVisible":false,"title": "承办人"},

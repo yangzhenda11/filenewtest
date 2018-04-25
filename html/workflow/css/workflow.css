@@ -1,7 +1,8 @@
 #goTaskToDoDetailForToDo,
+#goTaskToDoDetailForDone,
 .full-height-content-body,
 .ifr-tab-content,
-#business {
+.ifr-tabpanel {
   height: 100%;
 }
 .ifr-portlet {
@@ -15,7 +16,7 @@
   right: 0;
   bottom: 0;
 }
-.nav-tabs {
+.tabbable-line .nav-tabs {
   border: none;
   margin-bottom: 1px;
 }

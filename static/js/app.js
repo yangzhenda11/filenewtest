@@ -2125,7 +2125,7 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
  */
 function loadStart(){
 //	NProgress.start();
-	layerIndex = layer.msg('加载中', {icon: 16,shade: 0.01,time:false});
+	layerIndex = layer.msg('数据处理中,请稍后...', {icon: 16,shade: 0.01,time:false});
 }
 function loadEnd(){
 	layer.close(layerIndex);

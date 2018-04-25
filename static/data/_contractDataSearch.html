@@ -1,46 +1,36 @@
-<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-<style type="text/css">
-	#contractDataTable .radioCheck{
-		position: relative;
-	}
-	#contractDataTable .radioCheck .ui-radio {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		padding-left: 20px;
-		margin-top: -10px;
-		margin-left: -10px;
-	}
-</style>
-<div class="modal-dialog" role="document" style="width: 68%;">
+<link rel="stylesheet" type="text/css" href="css/commonModal.css"/>
+<div class="modal-dialog" role="document" style="width: 90%;">
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="modal-title" id="myModalLabel">合同查询</h4>
 		</div>
-		<div class="modal-body">
+		<div class="modal-body commonModalTableBody">
 			<div class="portlet-body">
-				<div class="page-search">
-					<div class="row page-search-form">
-						<div class="col-sm-4">
-							<div class="input-group">
-								<span class="input-group-addon searchLableText">合同名称</span>
-								<input type="text" class="form-control" name="contractName" >
+				<div class="pageSearchContent">
+					<div class="page-search">
+						<div class="row page-search-form">
+							<div class="col-sm-4">
+								<div class="input-group">
+									<span class="input-group-addon searchLableText">合同名称</span>
+									<input type="text" class="form-control" name="contractName" >
+								</div>
 							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="input-group">
-								<span class="input-group-addon searchLableText">合同编号</span>
-								<input type="text" class="form-control" name="contractNumber" >
+							<div class="col-sm-4">
+								<div class="input-group">
+									<span class="input-group-addon searchLableText">合同编号</span>
+									<input type="text" class="form-control" name="contractNumber" >
+								</div>
 							</div>
-						</div>
-						<div class="input-group">
-							<button type="button" id="searchBtnM" class="btn btn-block red" data-loading-text="加载中.." onclick="searchContractData();"><i class="iconfont icon-search"></i> 查询</button>
+							<div class="input-group">
+								<button type="button" id="searchBtnM" class="btn btn-block red" data-loading-text="加载中.." onclick="searchContractData();"><i class="iconfont icon-search"></i> 查询</button>
+							</div>
 						</div>
 					</div>
 				</div>
-				<table id="contractDataTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				<div id="contractTableDom" class="tableContent">
+					<table id="contractDataTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				</div>
 			</div>
 		</div>
 		<div class="modal-footer">
@@ -49,8 +39,6 @@
 		</div>
 	</div>
 </div>
-<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 <script type="text/javascript">
 	//系统全局变量获取
 	var config = top.globalConfig;
@@ -59,6 +47,8 @@
 	//初始化表格
 	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
+		var documentHeight = $(".page-content").height() - 250;
+		$("#contractTableDom").css("height",documentHeight);
 		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getContractData(dom, textValue, setKey, ajaxData);
 		})
@@ -126,9 +116,14 @@
 	}
 	//点击确定页面dom元素选择值
 	function checkContractData() {
-		var checkValue = $("#contractDataTable").find("input[name='checkRadio']:checked").val();
-		$(setDom).val(checkValue);
-		$(setDom).data("exactSearch",true);
-		$("#commomModal").modal("hide");
+		var checkRadio = $("#contractDataTable").find("input[name='checkRadio']:checked");
+		if(checkRadio.length == 0){
+			layer.msg("请选择一项合同",{icon:2})
+		}else{
+			var checkValue = checkRadio.val();
+			$(setDom).val(checkValue);
+			$(setDom).data("exactSearch",true);
+			$("#commomModal").modal("hide");
+		}
 	}
 </script>

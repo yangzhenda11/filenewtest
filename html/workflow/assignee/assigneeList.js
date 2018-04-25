@@ -15,7 +15,7 @@ var btnModel =  '    \
     {{/each}}';
 var template = Handlebars.compile(btnModel);
 
-var chooseType=1
+var chooseType=2
 
 var tablestr="操作";
 if(chooseType==2){
@@ -25,11 +25,6 @@ if(chooseType==2){
 	$("#duoxuan").hide();
 }
 var dataTableConfig={
-		fixedColumns: {
-			leftColumns: 2					//固定左侧两列
-		},
-		destroy:true,
-		buttons: [],		//显示的工具按钮
 		ajax: {
 			"type": "GET",					//请求方式
 			"url": serverPath + 'assignee/searchMap4Page',	//请求地址
@@ -53,7 +48,7 @@ var dataTableConfig={
 				"render"    : function (data, type, row, meta) {
 		        	
 					
-						if(chooseType=='2'){
+						if(chooseType==2){
 							return '<input type="checkbox"  class="checkchild"  value="' + row.staffOrgId + '-'+row.staffName+'" />';
 						}else{
 							var fn = "selectStaffValue(\'"+row.ORG_ID+"\',\'"+row.org_code+"\',\'"+row.full_name+"\',\'"+row.STAFF_NAME+"\',\'"+row.STAFF_ORG_ID+"\','"+$("#wfcallbackFun").val()+"')"; 
@@ -115,6 +110,10 @@ function selectStaffList(resetPaging) {
 //		// 加载表格
 //		searchStaffTable = App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 //	}
+	$(".checkall").click(function () {
+	      var check = $(this).prop("checked");
+	      $(".checkchild").prop("checked", check);
+	});
 }
 
 //人员列表的回调函数

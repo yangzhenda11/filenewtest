@@ -15,10 +15,6 @@ var template = Handlebars.compile(btnModel);
  * 表格初始化
  */
 App.initDataTables('#searchTableForDone', "#submitBtn", {
-	fixedColumns: {
-		leftColumns: 0					//固定左侧两列
-	},
-	buttons: ['copy', 'colvis'],		//显示的工具按钮
 	ajax: {
 		"type": "GET",					//请求方式
 		"url": serverPath + 'workflowrest/taskHasDone',	//请求地址

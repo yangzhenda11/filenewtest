@@ -884,9 +884,13 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
     	$("#wflinkCode").val(linkcode);
     	$("#wfprov").val(prov);
     	$("#wfcallbackFun").val(callbackFun);
-    	App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+    	$("#PandJstaffiframetask").modal('show');
+    	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
+			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+		})
     });
-    $("#PandJstaffiframetask").modal('show');
+    
+    
 }
 function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
     // console.log(orgId,orgName,staffId,staffOrgId);
@@ -944,7 +948,6 @@ function checkifdone(){
 				result=true;
 				window.top.alertModel(data.info);
 			}
-			
 		}
 	});
 	return result;

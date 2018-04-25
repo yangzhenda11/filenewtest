@@ -849,7 +849,7 @@ var App = function() {
 		 * btn : 搜索按钮 ID
 		 * options : 初始化事件
 		 */
-		initDataTables: function(el, btn, options) {
+		initDataTables: function(el, btn, options,successCallback) {
 			if(!$().dataTable) {
 				return;
 			};
@@ -940,7 +940,7 @@ var App = function() {
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
-		        		layer.msg(xhr.responseJSON.message);
+		        		layer.alert(xhr.responseJSON.message,{icon:2});
 		        	}
 		        }else{
 		        	loadEnd();

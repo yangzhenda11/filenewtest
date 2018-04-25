@@ -15,11 +15,13 @@
     <link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/plugins/simple-line-icons/simple-line-icons.min.css" />
     <link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
     <link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css">
     <link rel="stylesheet" type="text/css" href="/static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+	<link rel="stylesheet" type="text/css" href="../css/workflow.css"/>
 </head>
 <body>
 	<div class="page-content" id="searchContentForToDo">
@@ -32,7 +34,7 @@
             <div class="portlet-body">
                 <div class="page-search">
                     <form class="form-horizontal" action="">
-                        <div class="row page-search-form" style="overflow: visible;">
+                        <div class="row page-search-form">
                             <div class="col-sm-4">
                 				<div class="input-group">
                 					<span class="input-group-addon">待办标题:</span>
@@ -57,14 +59,14 @@
                 					<input type="text" class="form-control" id="linkName" name="linkName" size="30px"/>
                 				</div>
                             </div>
-                            <div class="page-search-action">
-                                <button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中..." onclick="serarchForToDo();">
-                                    <i class="ace-icon fa fa-search"></i> 查询
-                                </button>
-                                <button type="reset" class="btn btn-block yellow margin-top-10" onclick="resetConditionForToDo();">
-                                    <i class="ace-icon fa fa-repeat"></i> 重置
-                                </button>
-                            </div>
+                        </div>
+                        <div class="page-search-action">
+                            <button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="serarchForToDo();">
+                                <i class="iconfont icon-search"></i> 查询
+                            </button>
+                            <button type="reset" class="btn btn-block yellow" onclick="resetConditionForToDo();">
+                                <i class="iconfont icon-reset"></i> 清空
+                            </button>
                         </div>
                     </form>
                 </div>

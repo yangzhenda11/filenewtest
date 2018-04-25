@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 <style type="text/css">
 	#ourSubjectTable .radioCheck{
 		position: relative;
@@ -11,6 +9,9 @@
 		padding-left: 20px;
 		margin-top: -10px;
 		margin-left: -10px;
+	}
+	#ourSubjectTableDom{
+		overflow: auto;
 	}
 </style>
 <div class="modal-dialog" role="document" style="width: 68%;">
@@ -34,7 +35,9 @@
 						</div>
 					</div>
 				</div>
-				<table id="ourSubjectTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				<div id="ourSubjectTableDom">
+					<table id="ourSubjectTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				</div>
 			</div>
 		</div>
 		<div class="modal-footer">
@@ -43,8 +46,6 @@
 		</div>
 	</div>
 </div>
-<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 <script type="text/javascript">
 	//系统全局变量获取
 	var config = top.globalConfig;
@@ -53,7 +54,9 @@
 	//初始化表格
 	function initOurSubject(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		$('#commomModal').on('shown.bs.modal', function (e) {
+		var documentHeight = $(".page-content").height() - 250;
+		$("#ourSubjectTableDom").css("height",documentHeight);
+		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getOurSubjectData(dom, textValue, setKey, ajaxData);
 		})
 	}
@@ -61,6 +64,7 @@
 	function getOurSubjectData(dom, textValue, setKey, ajaxData) {
 		setDom = dom;
 		App.initDataTables('#ourSubjectTable', "#searchBtnM", {
+			destroy:true,
 			ajax: {
 				"type": "post",
 				"contentType": "application/json",

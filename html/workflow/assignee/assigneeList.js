@@ -6,6 +6,10 @@
 $(function(){
 	// 加载表格
 	$("#currentId").val(curStaffOrgId);
+	$(".checkall").click(function () {
+	      var check = $(this).prop("checked");
+	      $(".checkchild").prop("checked", check);
+	});
 });
 var searchStaffTable;
 // 后面构建btn 代码
@@ -15,7 +19,7 @@ var btnModel =  '    \
     {{/each}}';
 var template = Handlebars.compile(btnModel);
 
-var chooseType=2
+var chooseType=1
 
 var tablestr="操作";
 if(chooseType==2){
@@ -110,10 +114,6 @@ function selectStaffList(resetPaging) {
 //		// 加载表格
 //		searchStaffTable = App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 //	}
-	$(".checkall").click(function () {
-	      var check = $(this).prop("checked");
-	      $(".checkchild").prop("checked", check);
-	});
 }
 
 //人员列表的回调函数

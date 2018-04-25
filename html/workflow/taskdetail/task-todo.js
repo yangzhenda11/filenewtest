@@ -870,11 +870,16 @@ function getTables(data){
 }
 
 function selectstaff(){
+	var staffSelectType=$("#wStaffSelectType").val();
+	var callbackFun='getassignee';
+	if(staffSelectType==2){
+		callbackFun="getassignees";
+	}
 	var flowKey = $("#processDefinitionKey").val();
     var linkcode = $("#link").val().toString().split(",")[0];
     var prov=$("#wprov").val();
     
-    jandyStaffSearch(flowKey,linkcode,prov,'getassignee');
+    jandyStaffSearch(flowKey,linkcode,prov,callbackFun);
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
 
@@ -897,6 +902,11 @@ function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
     $("#assignee").val(STAFF_ORG_ID);
     $("#assigneeName").val(STAFF_NAME);
     $("#PandJstaffiframetask").modal('hide');
+}
+function getassignees(STAFF_ORG_IDS,STAFF_NAMES){
+	$("#assignee").val(STAFF_ORG_IDS);
+	$("#assigneeName").val(STAFF_NAMES);
+	$("#PandJstaffiframetask").modal('hide');
 }
 function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);
@@ -964,4 +974,10 @@ function modal_savefun(){
 		//alert(e.name + ": " + e.message);
 		layer.msg("保存数据异常，请联系管理员！");
 	} 
+}
+
+function setStaffSelectType(staffSelectType){
+	if(staffSelectType.length>0){
+		$("#wStaffSelectType").val(staffSelectType);
+	}
 }

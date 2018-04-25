@@ -43,6 +43,16 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 form-group">
+                                <label for="staffSelectType" class="control-label">控制人员的单选还是多选：<i class="iconfont icon-mi required"></i></label>
+                                <div class="valiParent">
+                                    <!-- 业务页面所必须的流程Key定义 -->
+                                    <select class="form-control" id="staffSelectType" name="staffSelectType" data-placeholder="" onchange="setStaffSelectType();">
+                                        <option value="0">默认单选</option>
+                                        <option value="1">设置为多选</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 form-group">
                                 <label for="taskTitle" class="control-label">业务信息XXX：</label>
                                 <div class="valiParent">
                                     <input type="text" class="form-control" id="taskTitle" value="" />

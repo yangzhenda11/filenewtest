@@ -32,18 +32,18 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 			d.approveDateBegin = $("#approve_date_begin").val();
 			d.approveDateEnd = $("#approve_date_end").val();
            return JSON.stringify(d);
-          /*return d;*/
         }
     },
     "columns": [
     	//增加序号列
         {"data" : null,
+         "title":"序号",
 		"render" : function(data, type, full, meta){
 			return meta.col + 1;
 		}}, 
         {"data": "contractName","title": "合同名称",
-        	"className":"whiteSpaceNormal",
-			"width":"25%"
+         "className":"whiteSpaceNormal",
+		 "width":"25%"
         },
         {"data": "contractNumber","title": "合同编号"},
         {"data": "executeDeptName","title": "承办部门"},

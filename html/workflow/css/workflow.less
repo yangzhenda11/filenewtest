@@ -1,15 +1,35 @@
-#goTaskToDoDetailForToDo,.full-height-content-body,.tab-content,#business{
+#goTaskToDoDetailForToDo,#goTaskToDoDetailForDone,.full-height-content-body,.ifr-tab-content,.ifr-tabpanel{
     height: 100%;
 }
-.portlet{
+
+.ifr-portlet{
     height: 100%;
     position: relative;
 }
-.portlet-body{
+.ifr-portlet-body{
     position: absolute;
     top: 50px;
     left: 0;
     right: 0;
     bottom: 0;
     
+}
+.tabbable-line .nav-tabs{
+    border: none;
+    margin-bottom: 1px;
+}
+.nav-tabs > li > a{
+    border: none;
+}
+.nav-tabs > li.active{
+    border-top: none;
+    border-bottom:4px solid #d11718;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus{
+    border: none;
+}
+.nav-tabs > li > a:hover{
+    background: none;
+    border: none;
+    border-bottom:4px solid #e69c9c;
 }

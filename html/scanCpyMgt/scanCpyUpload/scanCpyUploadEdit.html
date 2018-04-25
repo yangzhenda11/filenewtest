@@ -17,6 +17,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/scanCpyUpload.css"/>
@@ -25,13 +26,13 @@
 	<body>
 		<div class="page-content hidden">
 			<div class="portlet">
-				<div class="portlet-title hidden">
+				<div class="portlet-title">
 					<div class="caption font-dark">
 						<span class="caption-subject bold uppercase"> 合同扫描件上传</span>
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="toolbarBtn hidden">
+					<div class="toolbarBtn">
 						<div id="toolbarBtnContent">
 							<button class="btn blue">保存</button>
 							<button class="btn purple">提交</button>
@@ -88,7 +89,7 @@
                					<div class="col-sm-6 form-group">
 									<label for="executeDeptName" class="control-label">我方主体：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+										<input type="text" class="form-control" id="unicomPartyName" disabled="disabled" value="" />
 									</div>
                					</div>
                					<div class="col-sm-6 form-group">
@@ -109,14 +110,14 @@
                			</div>
                			<div class="form-fieldset-body">
                				<div class="row">
-               					<div class="col-sm-6 form-group">
+               					<div class="col-sm-6 form-group" id="uploadFile_div1">
                						<label for="proCode" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
-               						<div class="col-sm-9">
-               							<input type="text" class="form-control" id="proCode" disabled="disabled" value="" />
-               						</div>
+               						<input type="file" name="myfile" id="myfile">
+               						<button type="button" onclick="uploadFile()">上传</button>
                					</div>
-               					<div class="col-sm-6">
-               						<button class="btn red">选择文件</button>
+               					<div class="col-sm-6 form-group" id="uploadFile_div2" style="display: none;">
+               						<label for="proCode" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+               						<input type="text" class="form-control" id="uploadFileName" disabled="disabled" value="" />
                					</div>
                					<div class="col-sm-12 cluesRed">
                						提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
@@ -136,6 +137,41 @@
 				</div>
 			</div>
 		</div>
+        <div class="modal fade" id="uploadModal" tabindex="-1" data-backdrop="static" role="dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form" id="configForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitle"></h4>
+                    </div>
+                    <div class="modal-body defaultModalForm">
+                        <input type="hidden" name="id" id="id" value="" />
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="code">文件：</label>
+                            <input type="file" name="myAttachment" id="myAttachment">
+                            <button type="button" onclick="uploadAttachment()">上传</button>
+                        </div>
+                        <div class="form-group col-sm-11">
+                            <label class="control-label" for="val">说明：</label>
+                            <div class="valiParent">
+                                <textarea rows="3" cols="40">*选中列表框中文件名，点击删除，则此文档不上传。*正文大小不能超过？M。（具体大小待确定）。*仅上传合同正文时，不支持上传多个文件。
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-11">
+                        	<label class="control-label" for="val">附件列表：</label>
+                            <div class="valiParent col-sm-11">
+                                <textarea rows="3" cols="40" id="appendixList"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 		<!--[if lt IE 9]>
 		  	<script src="../../static/plugins/html5shiv.min.js"></script>
 		  	<script src="../../static/plugins/respond.min.js"></script>
@@ -146,11 +182,19 @@
 		<![endif]-->
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/ajaxfileupload/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+		
+		
 		<!--业务依赖-->
+		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
+		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="scanCpyUploadEdit.js" type="text/javascript" charset="utf-8"></script>
 	</body>

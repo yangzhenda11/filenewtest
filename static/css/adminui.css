@@ -3653,7 +3653,7 @@ Portlets
   .portlet.full-height-content {
     margin-bottom: 0; }
     .portlet.full-height-content .full-height-content-body {
-      overflow: auto; }
+       }
   .portlet > .portlet-footer {
     padding: 10px 20px;
     text-align: center;

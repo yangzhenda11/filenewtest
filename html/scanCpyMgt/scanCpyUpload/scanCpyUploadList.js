@@ -77,7 +77,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 
 //跳转到上传页面
 function jumpContractUploadEdit(contractId){
-	var src = "html/scanCpyMgt/scanCpyUpload/scanCpyUploadEdit.html?pageType=2&id="+contractId;
+	var src = "/html/scanCpyMgt/scanCpyUpload/scanCpyUploadEdit.html?pageType=2&id="+contractId;
 	App.changePresentUrl(src);
 }
 

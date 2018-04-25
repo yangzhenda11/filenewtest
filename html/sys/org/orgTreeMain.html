@@ -13,6 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
@@ -52,8 +53,11 @@
 							<button type="button" class="btn btn-info red" onclick="showUpdate();">
                                 <i class="ace-icon fa fa-pencil"></i> 修改节点
                            </button>
-                            <button type="button" class="btn btn-info red" onclick="delOrg();">
+                           <button type="button" class="btn btn-info red" onclick="delOrg();">
                                 <i class="ace-icon fa fa-minus"></i> 删除节点
+                           </button>
+                           <button type="button" class="btn btn-info red" onclick="searchOu();">
+                                <i class="ace-icon fa fa-plus"></i> 组织映射关系
                            </button>
 						</div>
 						<div class="form-body">
@@ -101,7 +105,47 @@
 			</div>
 		</div>
 		<!--modal-->
-		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+		
+	<div id="modalEdit" >
+        <div class="modal-dialog defaultModalWidth" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form" id="ouForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitle"></h4>
+                    </div>
+                    <div class="modal-body defaultModalForm">
+                            <div class="col-sm-5">
+                                <div class="input-group" id="orgNameOu">
+                                     
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">ou组织列表</span>
+                                    <select class="form-control" name="ouList" id="ouList" data-placeholder="ou组织列表">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+	                            <div class="toolbars" id="addBtn">
+								   <button type="button" class="btn red" onclick="addOu();"><i class="iconfont icon-add"></i>添加</button>
+								</div>
+                            </div>
+                         
+		                <table id="ouTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+		            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+		</div>
+		
+		
 		<!--[if lt IE 9]>
 			<script src="../../../static/plugins/html5shiv.min.js"></script>
 			<script src="../../../static/plugins/respond.min.js"></script>
@@ -117,7 +161,10 @@
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
+		<script src="../../../static/plugins/datatables-plugin/datatables.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../static/plugins/datatables-plugin/ellipsis.js"></script>
 		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="orgTreeMain.js"></script>

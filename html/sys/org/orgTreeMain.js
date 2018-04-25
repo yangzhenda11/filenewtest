@@ -159,6 +159,58 @@ function updateOrg(type) {
         $('#orgForm').data('bootstrapValidator').resetForm();
     }
 }
+//添加ou
+function searchOu() {
+    if (!curNode) {
+        layer.alert("请选择节点节点", { icon: 2, title: "添加ou" });
+        return;
+    } else {
+        $("#modal").load("ouModal.html?" + App.timestamp() + " #modalEdit", function() {
+            $("#modalTitle").text("新增ou组织");
+            $("#orgNameOu").append("<p>当前组织："+curNode.orgName+"</p>");
+            $.get(serverPath + 'orgs/selectOuList/'+curNode.orgCode,function(result){
+            	debugger
+            	for(var i=0;i<result.length;i++){
+            		$("#ouList").append("<option>"+result[i].ouName+"</option>");
+            	}
+    		});
+            
+                    
+                    App.initDataTables('#ouTable', {
+                    	ajax: {
+                    		"type": "GET",					//请求方式
+                    		"url": serverPath + 'orgs/selectOuByOrgCode/'+curNode.orgCode, //请求路径
+                    	},
+                    	"columns": [{
+                    			"data": null,
+                    			"className": "text-center",
+                    			"title": "操作",
+                    			"render": function(data, type, full, meta) {
+                    				debugger
+                    				if(data) {
+                    					var btnArray = new Array();
+                    					btnArray.push({ "name": "删除", "fn": "updateOu(\'" + data.ouName + "\')" });
+                                        return App.getDataTableBtn(btnArray);
+                    				} else {
+                    					return '';
+                    				}
+                    			}
+                    		},
+                    		{
+                    			"data": "ouName",
+                    			"title": "ou组织名称"
+                    		},
+                    	],
+                    	"fixedColumns":{
+                    		"leftColumns":2
+                    	}
+                    });
+            
+                $('#modal').modal('show');
+            
+        });
+    }
+}
 /*
  * 表单验证
  */

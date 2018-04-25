@@ -19,6 +19,7 @@ $(function() {
     App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback)
 
     function successCallback(result) {
+    	debugger
         var zNodes = result.sysPerm;
         perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
         curNode = perPermissionTree.getNodes()[0];

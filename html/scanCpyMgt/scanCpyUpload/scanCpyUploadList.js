@@ -39,20 +39,29 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         {"data" : null,
          "title":"序号",
 		"render" : function(data, type, full, meta){
-			return meta.col + 1;
+			return meta.row + 1;
 		}}, 
         {"data": "contractName","title": "合同名称",
          "className":"whiteSpaceNormal",
 		 "width":"25%"
         },
         {"data": "contractNumber","title": "合同编号"},
-        {"data": "executeDeptName","title": "承办部门"},
+        {"data": "executeDeptName","title": "承办部门",
+        "className":"whiteSpaceNormal",
+		 "width":"15%"
+        },
         {"data": "undertakerId","bVisible":false,"title": "承办人"},
         {"data": "undertakeName","title": "承办人"},
         {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
-        {"data": "unicomPartyName","title": "我方主体"},
+        {"data": "unicomPartyName","title": "我方主体",
+        "className":"whiteSpaceNormal",
+		 "width":"20%"
+		 },
         {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
-        {"data": "oppoPartyName","title": "对方主体"},
+        {"data": "oppoPartyName","title": "对方主体",
+        "className":"whiteSpaceNormal",
+		 "width":"20%"
+		 },
         {
 	            "data": "approveDate",
 	            "title": "审批时间",

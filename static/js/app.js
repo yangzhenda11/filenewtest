@@ -940,7 +940,7 @@ var App = function() {
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
-		        		layer.alert(xhr.responseJSON.message,{icon:2});
+		        		layer.alert(xhr.responseJSON.message,{icon:2,title:"错误"});
 		        	}
 		        }else{
 		        	loadEnd();
@@ -1225,7 +1225,7 @@ var App = function() {
         },
         /*
          * 加载公共modal框
-         * 页面中需加入一个id为modal的div,即:
+         * 页面中需加入一个id为commomModal的div,即:
          * '<div class="commom fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
          * type:加载modal的类型
          * dom:设值的input框dom元素  如:"#contractType",
@@ -1259,6 +1259,18 @@ var App = function() {
 					initOtherSubject(dom, value, setkey, ajaxData);
 				})
         	}
+		},
+		/*
+		 * 加载文件上传公共模态框
+		 * 页面中需加入一个id为commomModal的div,即:
+         * '<div class="commom fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
+         * setting:配置参数
+         * queryCallback:点击确定执行的方法
+		 */
+		getFileUploadModal : function(setting,queryCallback){
+			$("#commomModal").load("/static/data/_fileUpload.html?" + App.timestamp(),function(){
+				setParm(setting,queryCallback);
+			})
 		},
 		// init main components
         initComponents:function(){

@@ -156,7 +156,7 @@
 	    function parseResult(data){
 	    	if(data.response.status == 1){
 				for(var i = 0; i < fileValue.length; i++){
-					$("#uploadSuccessFile").append("<div class='fileItem' data-id="+data.response.data+">" + fileValue[i].name + "</div>")
+					$("#uploadSuccessFile").append("<div class='fileItem' data-id="+JSON.stringify(data.response.data)+">" + fileValue[i].name + "</div>")
 				};
 		    	layer.msg(data.response.message);
 		    	$("#uploadFileName").fileinput('reset');
@@ -183,7 +183,7 @@
     	$(".fileItem").each(function(index,element){
     		var itemInfo = {
     			name:$(element).text(),
-    			data:JSON.parse($(element).data("id"))
+    			data:$(element).data("id")
     		};
     		fileInfo.push(itemInfo);
     	});

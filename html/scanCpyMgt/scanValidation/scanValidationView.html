@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
+
+	<head>
+		<meta charset="UTF-8">
+		<title>合同扫描件上传</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-fileinput/fileinput.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<link rel="stylesheet" type="text/css" href="../css/scanCpyUpload.css" />
+		
+	</head>
+
+	<body>
+		<div class="page-content hidden">
+			<div class="portlet">
+				<div class="portlet-title">
+					<div class="caption font-dark">
+						<span class="caption-subject bold uppercase"> 合同扫描件验证</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="toolbarBtn">
+						<div id="toolbarBtnContent">
+							<button class="btn red" onclick="backPage()">关闭</button>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 合同基本信息</span>
+						</div>
+						<div class="form-fieldset-body">
+							<div class="row defaultFieldsetForm">
+								<div class="col-sm-6 form-group">
+									<label for="contractNumber" class="control-label">合同编号：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="contractNumber" disabled="disabled" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="executeDeptName" class="control-label">承办部门：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="contractName" class="control-label">合同名称：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="undertakeName" class="control-label">承办人：</label>
+										<div class="col-sm-3">
+											<div class="valiParent">
+												<input type="text" class="form-control" id="undertakeName" disabled="disabled" value="" />
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="valiParent">
+												<input type="text" class="form-control" id="undertakeMobile" disabled="disabled" value="" />
+											</div>
+										</div>
+										<div class="col-sm-5">
+											<div class="valiParent">
+												<input type="text" class="form-control" id="undertakePhone" disabled="disabled" value="" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="executeDeptName" class="control-label">我方主体：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="unicomPartyName" disabled="disabled" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="oppoPartyName" class="control-label">对方主体：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="oppoPartyName" disabled="disabled" value="" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 差异说明</span>
+							<div class="form-fieldset-tools">
+								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+							</div>
+						</div>
+						<div class="form-fieldset-body">
+							<div class="row">
+								
+								<div class="col-sm-12">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 验证结果</span>
+							<div class="form-fieldset-tools">
+								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+							</div>
+						</div>
+						<div class="form-fieldset-body">
+							<div class="row hidden" id="validationResult">
+								<div id="textPdfDiv">
+									<iframe id="textPdfContent"></iframe>
+								</div>
+								<div id="scandocPdfDiv">
+									<iframe id="scandocPdfContent"></iframe>
+									<select id="pdfScaleSelect">
+							            <option value="auto" selected="selected">自动缩放</option>
+							            <option value="page-actual">实际大小</option>
+							            <option value="page-fit">适合页面</option>
+							            <option value="page-width">适合页宽</option>
+							            <option value="custom">自定义</option>
+							            <option value="0.5">50%</option>
+							            <option value="0.75">75%</option>
+							            <option value="1">100%</option>
+							            <option value="1.25">125%</option>
+							            <option value="1.5">150%</option>
+							            <option value="2">200%</option>
+							            <option value="3">300%</option>
+							            <option value="4">400%</option>
+						          	</select>
+						          	<div id="customScale" class="hidden">
+						          		<input type="text" id="scalevalue" value="" />
+						          		<button onclick="customScale()">确定</button>
+						          	</div>
+								</div>
+								<div id="differenceDiv">
+									<!--<iframe id="scandocPdfContent" style="width: 100%;height: 500px;"></iframe>-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 差异记录</span>
+							<div class="form-fieldset-tools">
+								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+							</div>
+						</div>
+						<div class="form-fieldset-body">
+							<div class="form-fieldset">
+								<div class="form-fieldset-title">
+									<span> 版本号1</span>
+									<div class="form-fieldset-tools">
+										<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row">
+										<div class="col-sm-12">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-fieldset">
+								<div class="form-fieldset-title">
+									<span> 版本号2</span>
+									<div class="form-fieldset-tools">
+										<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row">
+										<div class="col-sm-12">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap-fileinput/fileinput_locale_zh.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="scanValidationView.js" type="text/javascript" charset="utf-8"></script>
+
+	</body>
+
+</html>

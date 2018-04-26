@@ -60,7 +60,11 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
             return meta.row + 1;
         }
         },
-        {"data": "contractNumber","title": "合同编号"},
+        {"data": null,"title": "合同编号",
+        	render: function(data, type, full, meta) {
+				return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.contractId + '\')">' + data.contractNumber + '</a>';
+			}
+        },
         {"data": "contractName","title": "合同名称"},
         {"data": "contractType","title": "合同类型"},
         {"data": "ourPartyName","title": "我方主体"},
@@ -106,3 +110,11 @@ function listScanValidationInfo(retainPaging) {
     }
 }
 /*******************************进行分页查询数据-end******************************************* */
+/*
+ * 跳转到验证页面
+ */
+//跳转到上传页面
+function jumpScanValidationView(contractId){
+	var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&contractId="+contractId;
+	App.changePresentUrl(src);
+}

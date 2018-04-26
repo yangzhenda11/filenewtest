@@ -93,8 +93,8 @@ App.initDataTables('#scanCpyloadTable', {
 				if(data) {
 					var btnArray = new Array();
                     btnArray.push({ "name": "添加", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
-                    btnArray.push({ "name": "查看", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
-                    btnArray.push({ "name": "删除", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "查看", "fn": "test()","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "删除", "fn": "test()","icon":"iconfont icon-add"});
                     return App.getDataTableBtn(btnArray);
 				} else {
 					return '';
@@ -127,6 +127,10 @@ function addAttachment(attachId){
 		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
+}
+
+function test(){
+	alert("功能修改中");
 }
 
 /**

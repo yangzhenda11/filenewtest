@@ -100,7 +100,7 @@
 	}
 	$("#uploadFileName").on("click",function(){
 		if($(".fileItem").length >= maxNumeber){
-			layer.alert("最多上传"+maxNumeber+"个文件，若继续上传请先删除文件！",{icon:2,title:"错误"});
+			layer.msg("最多上传"+maxNumeber+"个文件，若继续上传请先删除文件！",{icon:2,time:4000});
 			return false;
 		}
 	})
@@ -193,6 +193,10 @@
      * 点击确定执行的方法
      */
     function getFileUploadInfo(){
-    	successCallback();
+    	if($("#uploadFileName").val() != ""){
+    		layer.msg("请先点击上传按钮上传文件或删除按钮删除文件后再执行该操作!",{icon:2,time:3000})
+    	}else{
+    		successCallback();
+    	}
     }
 </script>

@@ -422,3 +422,9 @@ button:focus{
 	white-space:normal !important;
 	word-break: break-all !important;
 }
+/*
+ * 放上显示手势图标
+ */
+.custorPoint{
+	cursor: pointer;
+}

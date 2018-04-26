@@ -3,10 +3,7 @@
  */
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
-var organisationTree = null;
-var otherTree = null;
-var legalTree = null;
-var curOrgStaffNode = null;
+
 /** ----------------------------查询弹框的js-start-------------------------------------- */
 $("#searchContractType").click(function(){
     App.getCommonModal("contractType","#contractType","typeFullname","typeId");
@@ -20,15 +17,12 @@ $("#searchAgentDepartment").click(function(){
 $("#searchContractData").click(function(){
     App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber","contractId");
 })
-$("#searchOurSubject").click(function(){
-    App.getCommonModal("ourSubject","#ourSubject","partnerName","partnerId");
-})
 $("#searchOtherSubject").click(function(){
     App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 })
-$("#otherSubject").on("input",function(){
-    $(this).data("exactSearch",false);
-});
+//$("#otherSubject").on("input",function(){
+//  $(this).data("exactSearch",false);
+//});
 /** ----------------------------查询弹框的js-end-------------------------------------- */
 /*******************************进行分页查询数据-start******************************************* */
 /*
@@ -53,9 +47,9 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
             body.length = d.length;//要取的数据的
             var formData = $("#scanValidationForm").serializeArray();//把form里面的数据序列化成数组
             formData.forEach(function (e) {
-                body[e.name] = e.value;
+                d[e.name] = e.value.trim();
             });
-            return body;
+            return d;
         }
     },
     "columns": [{
@@ -63,8 +57,7 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
         "className": "text-center",
         "title": "序号",
         "render": function(data, type, full, meta) {
-            console.info(meta);
-            return meta.row+1;
+            return meta.row + 1;
         }
         },
         {"data": "contractNumber","title": "合同编号"},
@@ -113,7 +106,3 @@ function listScanValidationInfo(retainPaging) {
     }
 }
 /*******************************进行分页查询数据-end******************************************* */
-//清空按钮点击处理
-function resetConditionForToDo(){
-    alert(2);
-}

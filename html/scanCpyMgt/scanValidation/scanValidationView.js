@@ -28,7 +28,7 @@ $(function() {
 //	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 	var textPdf = "contract1.pdf";
 	var scandocPdf = "contract2.pdf";
-	var isDifferences = false;
+	var isDifferences = true;
 	var verifyNumber = 2;
 	
 	validationResultView(isDifferences,verifyNumber);

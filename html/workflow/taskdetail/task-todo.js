@@ -236,6 +236,8 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 
 // 普通环节点击“通过”或“回退”按钮，添加评论
 function addComment(pass){
+	clearAssignee();
+	
 	if(!checkifdone()){
 	    if(typeof(document.getElementById("businessiframe").contentWindow.beforePushProcess)=="function") {
 	        if (!document.getElementById("businessiframe").contentWindow.beforePushProcess(pass)) {
@@ -262,10 +264,10 @@ function addComment(pass){
 		$("#assigneeDiv").show();
 		
 		if(pass){
-			$("#comment").val("同意");
+			//$("#comment").val("同意");
 			$("#handleType").val(1);
 		} else {
-			$("#comment").val("不同意");
+			//$("#comment").val("不同意");
 			$("#handleType").val(2);
 		}		
 		refreshLink();
@@ -288,10 +290,10 @@ function addCommentForVote(pass){
 	$("#assigneeDiv").hide();
 	// 据按钮类型选择处理方式
 	if(pass){
-		$("#comment").val("通过");
+		//$("#comment").val("通过");
 		$("#handleType").val(1);
 	} else {
-		$("#comment").val("不通过");
+		//$("#comment").val("不通过");
 		$("#handleType").val(2);
 	}
 	
@@ -327,7 +329,7 @@ function addCommentForQuick(){
 		
 		$("#linkDiv").hide();
 		$("#assigneeDiv").hide();
-		$("#comment").val("不同意");
+		//$("#comment").val("不同意");
 	//	$("#out-footer").hide();
 	//	$("#in-footer").show();
 		$("#in-footer").modal('show');
@@ -343,7 +345,7 @@ function addCommentForStart(){
 	
 	$("#linkDiv").hide();
 	$("#assigneeDiv").hide();
-	$("#comment").val("同意");
+	//$("#comment").val("同意");
 //	$("#out-footer").hide();
 //	$("#in-footer").show();
 	$("#in-footer").modal("show");
@@ -365,7 +367,7 @@ function addCommentForTurn(){
 			
 			$("#linkDiv").hide();
 			$("#assigneeDiv").show();
-			$("#comment").val("请代处理");
+			//$("#comment").val("请代处理");
 		//	$("#out-footer").hide();
 		//	$("#in-footer").show();
 			$("#in-footer").modal("show");
@@ -885,22 +887,15 @@ function selectstaff(){
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
 
+	$("#wfflowKey").val(flowKey);
+	$("#wflinkCode").val(linkcode);
+	$("#wfprov").val(prov);
+	$("#wfcallbackFun").val(callbackFun);
+	$("#wfstaffSelectType").val(staffSelectType);
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
-    	$("#wfflowKey").val(flowKey);
-    	$("#wflinkCode").val(linkcode);
-    	$("#wfprov").val(prov);
-    	$("#wfcallbackFun").val(callbackFun);
-    	$("#wfstaffSelectType").val(staffSelectType);
     	$("#PandJstaffiframetask").modal('show');
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
-    		chooseType=$("#wfstaffSelectType").val();
-    		if(chooseType==2){
-    			$("#duoxuan").show();
-    			tablestr='<input type="checkbox" class="checkall" />';
-    		}else{
-    			$("#duoxuan").hide();
-    		}
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
 			      var check = $(this).prop("checked");
@@ -993,5 +988,11 @@ function modal_savefun(){
 function setStaffSelectType(staffSelectType){
 	if(staffSelectType.length>0){
 		$("#wStaffSelectType").val(staffSelectType);
+	}
+}
+
+function setComment(businessInfo){
+	if(businessInfo.length>0){
+		$("#comment").val(businessInfo);
 	}
 }

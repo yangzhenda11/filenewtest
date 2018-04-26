@@ -17,8 +17,17 @@ var template = Handlebars.compile(btnModel);
 
 var chooseType=$("#wfstaffSelectType").val();
 
-var tablestr="操作";
-
+var tablestr="";
+if(chooseType==2){
+	$("#duoxuan").show();
+	tablestr='<input type="checkbox" class="checkall" />';
+}else if(chooseType==1){
+	$("#duoxuan").hide();
+	tablestr="操作"
+}else{
+	$("#duoxuan").hide();
+	tablestr="未知"
+}
 var dataTableConfig={
 		ajax: {
 			"type": "GET",					//请求方式
@@ -44,7 +53,7 @@ var dataTableConfig={
 		        	
 					
 						if(chooseType==2){
-							return '<input type="checkbox"  class="checkchild"  value="' + row.staffOrgId + '-'+row.staffName+'" />';
+							return '<input type="checkbox"  class="checkchild"  value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
 						}else{
 							var fn = "selectStaffValue(\'"+row.ORG_ID+"\',\'"+row.org_code+"\',\'"+row.full_name+"\',\'"+row.STAFF_NAME+"\',\'"+row.STAFF_ORG_ID+"\','"+$("#wfcallbackFun").val()+"')"; 
 							var context =
@@ -136,5 +145,5 @@ function addMultiStaff(){
 	    });
 	  ids=ids.substring(0,ids.length-1);
 	  names=names.substring(0,names.length-1);
-	  eval(funName+"("+ids+","+names+")");
+	  eval(funName+"(\'"+ids+"\',\'"+names+"\')");
 	}

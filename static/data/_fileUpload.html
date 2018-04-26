@@ -26,6 +26,10 @@
 	.actived{
 		color: red;
 	}
+	.aDisable{
+		background: #e8dcdc;
+		pointer-events:none
+	}
 </style>
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
@@ -68,10 +72,14 @@
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
 	var successCallback = null;
+	var maxNumeber = 999;
 	function setParm(setting,queryCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#commomModal").modal("show");
+		if(setting.maxNumber){
+			maxNumeber = setting.maxNumber;
+		}
 		var emptyFn = function(){};
 		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
@@ -90,6 +98,12 @@
 		};
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
 	}
+	$("#uploadFileName").on("click",function(){
+		if($(".fileItem").length >= maxNumeber){
+			layer.alert("最多上传"+maxNumeber+"个文件，若继续上传请先删除文件！",{icon:2,title:"错误"});
+			return false;
+		}
+	})
 	/*
 	 * 事件委托绑定
 	 */
@@ -108,9 +122,16 @@
 	        uploadAsync: uploadAsync,
 	        allowedFileExtensions: fileExtensions,
 	        maxFileSize: 51200,
-	       	maxFileCount: 10,
+	       	maxFileCount: 1,
 	       	dropZoneEnabled: false,
 	        slugCallback: function (filename) {
+	        	if($(".kv-fileinput-error").css("display") == "block"){
+	        		$(".fileinput-upload-button").addClass("aDisable");
+	        		$(".fileinput-upload-button").attr("title","禁止上传");
+	        	}else{
+	        		$(".fileinput-upload-button").removeClass("aDisable");
+	        		$(".fileinput-upload-button").attr("title","点击上传");
+	        	}
 	            return filename;
 	        },
 	        uploadExtraData: function(previewId, index) {

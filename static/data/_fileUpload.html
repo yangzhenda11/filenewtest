@@ -148,7 +148,11 @@
 	 * 列表内删除
 	 */
 	function deleteFileItem(){
-		$(".actived").remove();
+		if($(".actived").length == 0){
+			layer.msg("请选中上传成功文件中文件名，删除后此文档不做上传处理。",{icon:2});
+		}else{
+			$(".actived").remove();
+		}
 	}
     /*
      * 获取列表内内容

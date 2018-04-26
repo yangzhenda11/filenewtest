@@ -85,19 +85,7 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
                 return "";
             }
         }},
-        {"data": "verifyVersion","title": "版本号",
-            "render": function(data, type, full, meta) {
-                if (data == 1) {
-                    return '未验证';
-                } else if(data == 2){
-                    return '验证中';
-                }else if(data == 3){
-                    return '已验证';
-                }else{
-                    return "";
-                }
-            }
-        },
+        {"data": "verifyVersion","title": "版本号"},
         {"data": "ctreatedDateString","title": "验证日期"}
     ]
 });

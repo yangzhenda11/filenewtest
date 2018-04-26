@@ -22,7 +22,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         		d.undertakeName = $("#undertakeName").val();
         	};
         	if($("#oppoPartyName").data("exactSearch")){
-        		d.partnerId = $("#oppoPartyName").data("partnerId");
+        		d.oppoPartyId = $("#oppoPartyName").data("partnerId");
         	}else{
         		d.oppoPartyName = $("#oppoPartyName").val();
         	};

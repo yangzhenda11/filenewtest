@@ -95,8 +95,15 @@ function beforePushProcess(pass){
 	var pathSelect=$("#ifshenpi").val();
 	parent.setPathSelect(pathSelect);
 	
+	//4,设置选人单选还是多选。
 	var staffSelectType=$("#staffSelectType").val();
 	parent.setStaffSelectType(staffSelectType);
+	
+	//5,设置办理意见
+	if(pass){
+		var businessInfo=$("#BusinessInfo").val();
+		parent.setComment(businessInfo);
+	}
 	
 	return result;
 }

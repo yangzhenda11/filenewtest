@@ -29,8 +29,8 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         	d.contractId = config.contractId;
         	d.contractNumber = $("#contractNumber").val();
         	d.contractName = $("#contractName").val();
-			d.approveDateBegin = $("#approve_date_begin").val();
-			d.approveDateEnd = $("#approve_date_end").val();
+			d.approveDateBegin = $("#approveDateBegin").val();
+			d.approveDateEnd = $("#approveDateEnd").val();
            return JSON.stringify(d);
         }
     },
@@ -48,25 +48,26 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         {"data": "contractNumber","title": "合同编号"},
         {"data": "executeDeptName","title": "承办部门",
         "className":"whiteSpaceNormal",
-		 "width":"15%"
+		 "width":"13%"
         },
         {"data": "undertakerId","bVisible":false,"title": "承办人"},
         {"data": "undertakeName","title": "承办人"},
         {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
         {"data": "unicomPartyName","title": "我方主体",
         "className":"whiteSpaceNormal",
-		 "width":"20%"
+		 "width":"15%"
 		 },
         {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体",
         "className":"whiteSpaceNormal",
-		 "width":"20%"
+		 "width":"15%"
 		 },
+		 {"data": "id","bVisible":false,"title": "id"},
         {
 	            "data": "approveDate",
-	            "title": "审批时间",
+	            "title": "审批通过时间",
 	            render: function(data, type, full, meta) {
-	                return App.formatDateTime(data);
+	                return formatDateTime(data);
 	            }
 	        },
         {
@@ -76,7 +77,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var btnArray = new Array();
-                    btnArray.push({ "name": "添加", "fn": "jumpContractUploadEdit(\'"+data.contractId+"\')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "添加", "fn": "jumpContractUploadEdit(\'"+data.id+"\')","icon":"iconfont icon-add"});
                     return App.getDataTableBtn(btnArray);
 				} else {
 					return '';
@@ -88,8 +89,8 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 });
 
 //跳转到上传页面
-function jumpContractUploadEdit(contractId){
-	var src = "/html/scanCpyMgt/scanCpyUpload/scanCpyUploadEdit.html?pageType=2&id="+contractId;
+function jumpContractUploadEdit(id){
+	var src = "/html/scanCpyMgt/scanCpyUpload/scanCpyUploadEdit.html?pageType=2&id="+id;
 	App.changePresentUrl(src);
 }
 
@@ -125,3 +126,18 @@ $(function(){
 		$(this).data("exactSearch",false);
 	})
 })
+
+//调整时间显示，不显示时分秒
+function formatDateTime(inputTime,type) {
+	if(inputTime){
+		var date = new Date(inputTime);
+	}else{
+		return "";
+	}
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	m = m < 10 ? ('0' + m) : m;
+	var d = date.getDate();
+	d = d < 10 ? ('0' + d) : d;
+	return y + '-' + m + '-' + d;
+}

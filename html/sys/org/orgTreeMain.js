@@ -159,7 +159,7 @@ function updateOrg(type) {
         $('#orgForm').data('bootstrapValidator').resetForm();
     }
 }
-//添加ou
+//添加ou页面展示
 function searchOu() {
     if (!curNode) {
         layer.alert("请选择节点节点", { icon: 2, title: "添加ou" });
@@ -175,40 +175,63 @@ function searchOu() {
             	}
     		});
             
-                    
-                    App.initDataTables('#ouTable', {
-                    	ajax: {
-                    		"type": "GET",					//请求方式
-                    		"url": serverPath + 'orgs/selectOuByOrgCode/'+curNode.orgCode, //请求路径
-                    	},
-                    	"columns": [{
-                    			"data": null,
-                    			"className": "text-center",
-                    			"title": "操作",
-                    			"render": function(data, type, full, meta) {
-                    				debugger
-                    				if(data) {
-                    					var btnArray = new Array();
-                    					btnArray.push({ "name": "删除", "fn": "updateOu(\'" + data.ouName + "\')" });
-                                        return App.getDataTableBtn(btnArray);
-                    				} else {
-                    					return '';
-                    				}
-                    			}
-                    		},
-                    		{
-                    			"data": "ouName",
-                    			"title": "ou组织名称"
-                    		},
-                    	],
-                    	"fixedColumns":{
-                    		"leftColumns":2
-                    	}
-                    });
+        App.initDataTables('#ouTable', {
+        	ajax: {
+        		"type": "GET",					//请求方式
+        		"url": serverPath + 'orgs/selectOuByOrgCode/'+curNode.orgCode, //请求路径
+        	},
+        	"columns": [{
+        			"data": null,
+        			"className": "text-center",
+        			"title": "操作",
+        			"render": function(data, type, full, meta) {
+        				debugger
+        				if(data) {
+        					var btnArray = new Array();
+        					btnArray.push({ "name": "删除", "fn": "delOu(\'" + data.ouName + "\')" });
+                            return App.getDataTableBtn(btnArray);
+        				} else {
+        					return '';
+        				}
+        			}
+        		},
+        		{
+        			"data": "ouName",
+        			"title": "ou组织名称"
+        		},
+        	],
+        	"fixedColumns":{
+        		"leftColumns":2
+        	}
+        });
             
-                $('#modal').modal('show');
+        $('#modal').modal('show');
             
         });
+    }
+}
+//添加ou
+function addOu(){
+	var ouName=$("#ouList").find("option:selected").text();
+	var orgCode=curNode.orgCode;
+	App.formAjaxJson(serverPath + "orgs/addOu/" + ouName+"/"+orgCode, "POST", "", successCallback)
+    function successCallback(result) {
+		if(result.data.orgCode==null){
+			layer.alert("此ou已存在", {icon: 2,title:"重复"});
+		}
+		var ms = "新增成功";
+		layer.msg(ms, { icon: 1 });
+		$('#ouTable').DataTable().ajax.reload();
+    }
+}
+//删除ou
+function delOu(ouName){
+	var orgCode=curNode.orgCode;
+	App.formAjaxJson(serverPath + "orgs/delOu/" + ouName+"/"+orgCode, "DELETE", "", successCallback)
+    function successCallback(result) {
+		var ms = "删除成功";
+		layer.msg(ms, { icon: 1 });
+		$('#ouTable').DataTable().ajax.reload();
     }
 }
 /*

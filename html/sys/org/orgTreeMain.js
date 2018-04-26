@@ -8,6 +8,15 @@ var serverPath = config.serverPath;
 var orgTree = null;
 var curNode = null;
 $(function() {
+	//查询云门户开关参数
+    App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
+    function ajaxSuccess(result) {
+    	if(result.sysConfig.val==0){
+    		$("#isShowAdd").hide();
+    		$("#isShowUpdate").hide();
+    		$("#isShowDel").hide();
+    	}
+    }
     var windowHeigth = $(window).height();
     var documentHeight = $(".portlet").outerHeight();
     if (windowHeigth > documentHeight) {

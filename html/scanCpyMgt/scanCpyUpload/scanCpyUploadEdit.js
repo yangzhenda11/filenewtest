@@ -1,11 +1,11 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 console.log(parm);
-var id = parm.id;
+var contractId = parm.id;
 
 //系统的全局变量获取
 var config = top.globalConfig;
-console.log(config);
+//console.log(config);
 var serverPath = config.serverPath;
 
 
@@ -27,22 +27,27 @@ $(function() {
 
 //查询该合同下是否上传了扫描件
 function checkFileIsUpload(){
-	var url = serverPath + 'contractUpload/checkFileIsUpload?contractId=111';
+	var url = serverPath + 'contractUpload/checkFileIsUpload?id=113';
 	$.ajax({
 		url : url,
         type : "post",
         success : function(data) {
-			if(data.displayName!=null&&data.displayName!=""){
-				$("#uploadFileName").val(data.displayName);
+        	console.log(data);
+			if(data.count==1){
+				var label=document.getElementById("fileName"); 
+				label.innerText=data.displayName; 
+				$("#fileName").html(data.displayName); 
 				$("#uploadFile_div2").show();
     			$("#uploadFile_div1").hide();
+    			$("#delButton1").show();
+    			$("#delButton2").hide();
 			}
         }
 	});
 }
 
 function getContractInfo(){
-	var url = serverPath + 'contractUpload/getContractById?contractId=1';
+	var url = serverPath + 'contractUpload/getContractById?id=113';
 	$.ajax({
 		url : url,
         type : "post",
@@ -73,14 +78,13 @@ App.initDataTables('#scanCpyloadTable', {
         "type": "POST",
         "url": serverPath+'contractUpload/listFile',
         "data": function(d) {
-            d.contractId = 110;
+            d.id = 113;
             return d;
         }
     },
     "columns": [
     	{"data": "","title": "序号"},
     	{"data": "displayName","title": "文件列表"},
-    	{"data": "storeId","title": "文件存储id"},
     	{
 			"data": null,
 			"className": "text-center",
@@ -88,7 +92,9 @@ App.initDataTables('#scanCpyloadTable', {
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var btnArray = new Array();
-                    btnArray.push({ "name": "添加", "fn": "addAttachment('" + JSON.stringify(full) + "')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "添加", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "查看", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "删除", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
                     return App.getDataTableBtn(btnArray);
 				} else {
 					return '';
@@ -100,21 +106,28 @@ App.initDataTables('#scanCpyloadTable', {
           $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
          return nRow;
     },
-    "columnDefs": [
-     	{
-            'render': function (data, type, full, meta) {
-            	//只是显示附件名称10个字
-            	var html = "<a href='/contractUpload/downloadFile?displayName="+full.displayName+"'><span title='"+full.displayName+"'>"+full.displayName.substr(0, 10);
-            	if(full.displayName.length>10){
-               		html+="&#8230;</span></a>";
-               	}else{
-               		html+="</span></a>";
-               	}
-            	return html;
-            }
-     	}
-     ]
 });
+
+var array=[];
+function addAttachment(attachId){
+	var setting = {
+		title : "文件上传",
+		url:'contractUpload/uploadFile',	//上传地址，非空
+		maxNumber:1,//最大上传数量
+		//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
+		//fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
+		extraData:{attachId:attachId}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
+	};
+	function queryCallback(){//点击确定执行的函数，必传。
+		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
+		$("#commomModal").modal("hide");//模态框关闭
+		if(fileInfo.length!=0){
+			array.push(fileInfo[0].data);
+			console.log(array);
+		}
+	}
+	App.getFileUploadModal(setting,queryCallback);
+}
 
 /**
  * 上传文件
@@ -143,21 +156,74 @@ App.initDataTables('#scanCpyloadTable', {
     // 异步上传成功结果处理
     $("#myfile").on("fileuploaded", function (event, data) {
     	alert(data.response.message);
-    	//var table = $('#uploadTable').DataTable();
-    	//table.ajax.reload();
+    	var table = $('#scanCpyloadTable').DataTable();
+    	table.ajax.reload();
     });
     // 同步上传成功结果处理
     $("#myfile").on("filebatchuploadsuccess", function (event, data) {
     	alert(data.response.message);
-    	$("#fileName").fileinput('reset')
-    	//var table = $('#uploadTable').DataTable();
-    	//table.ajax.reload();
+    	$("#myfile").fileinput('reset')
+    	var table = $('#scanCpyloadTable').DataTable();
+    	table.ajax.reload();
     });
 })(window, jQuery);
 
-function addAttachment(row){
-	console.log(row);
-	$('#uploadModal').modal('show');
+
+/**
+ * 点击选择按钮触发事件
+ * */
+var result={};//保存上传成功后返回的对象
+function fileUpload(){
+	var setting = {
+		title : "文件上传",
+		url:'contractUpload/uploadFile',	//上传地址，非空
+		maxNumber:1,//最大上传数量
+		//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
+		//fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
+		extraData:{attachId:''}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
+	};
+	function queryCallback(){//点击确定执行的函数，必传。
+		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
+		$("#commomModal").modal("hide");//模态框关闭
+		if(fileInfo.length!=0){
+			result = fileInfo[0].data;
+			console.log(result);
+			var label=document.getElementById("fileName"); 
+			label.innerText=result.displayName; 
+			$("#fileName").html(result.displayName); 
+			$("#uploadFile_div1").hide();
+    		$("#uploadFile_div2").show();
+    		$("#delButton1").hide();
+    		$("#delButton2").show();
+		}
+	}
+	App.getFileUploadModal(setting,queryCallback);
+}
+
+/**
+ * 删除合同正文扫描件
+ * */
+function delContractText(){
+	var url = serverPath + 'contractUpload/delContractText?id=113';
+	$.ajax({
+		url : url,
+        type : "post",
+        success : function(data) {
+       		if(data.status=='1'){
+       			$("#uploadFile_div1").show();
+    			$("#uploadFile_div2").hide();		
+       		}else if(data.status=='0'){
+       			alert(data.message);
+       		}
+        }
+	});
+}
+
+function delContractText2(){
+	$("#uploadFile_div1").show();
+    $("#uploadFile_div2").hide();
+    result={};
+    console.log(result);
 }
 
 
@@ -202,125 +268,64 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		});
 }
 
+//转派前回调业务侧实现的方法，业务进行必要的校验等操作。
+function beforeTransfer(){
+	var result=true;
+	//1,业务侧的校验
+	
+	//2，设置转派选人的参数
+	var assigneeParam = { 
+			"prov": "sd",  //省分，来自需求工单，必传
+	}
+	parent.setAssigneeParam(assigneeParam);
+	return result;
+}
+
+
+function businessPush(){
+	var taskBusinessKey=1100006;
+	if(taskBusinessKey.length==0){
+		layer.msg("请填写业务主键！");
+		return;
+	}
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
+	modal_passBybuss(flowParam);
+}
+
+//点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
+function modal_passBybuss(flowParam){
+	//typeof(tmp) == "undefined"
+	var root=serverPath;//flowParam.root
+	var taskDefinitionKey=flowParam.taskDefinitionKey
+	var assignee=flowParam.assignee
+	var processInstanceId=flowParam.processInstanceId
+	var taskId=flowParam.taskId
+	var comment=flowParam.comment
+	var handleType=flowParam.handleType
+	var withdraw=flowParam.withdraw
+    
+	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
+		$.post(root + "contractUpload/pushProcess", {
+			"processInstanceId" : processInstanceId,//当前流程实例
+			"taskId" : taskId,//当前任务id
+			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
+			"assignee" : assignee,//下一步参与者
+			"comment" : comment,//下一步办理意见
+			"handleType" : handleType,//处理类型，1为通过，2为回退
+			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
+			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+			"title":""//可不传，如果需要修改待办标题则传此参数。
+		}, function(data) {
+			layer.msg(data.sign);
+			
+			// 成功后回调模态窗口关闭方法
+			parent.modal_close();   
+		});
+}
+
 function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg); 
     if (r != null) return unescape(r[2]); 
     return null; 
 }
-
-
-//上传文件
-/*
-function uploadFile(){
-	var myfile = $("#myfile").val();
-	if (myfile == "") {
-		alert("请选择要上传的文件");
-		return;
-	}
-	//获取该上传文件的dom对象
-	var dom = $('#myfile');
-	
-	//获取上传文件的文件名
-	var fullFileName = dom.val();
-	var tempFileName = fullFileName.substr(fullFileName.lastIndexOf("\\")+1,fullFileName.length);
-	var names = tempFileName.split(".");
-	var reg = names[names.length-1];
-	var b = false;
-	if("jpg".toLowerCase() == reg.toLowerCase()){
-		b = true;
-	}
-	if(!b){
-		alert("该文档类型只能上传jpg类型的文件");
-		return false;
-	}
-	var sizeIsOk = true;
-	try{
-    	//判断文件大小是否超出限制
-		var fSize = $('#myfile')[0].files[0].size;
-
-		var MB = (50 * 1024 * 1024).toString();
-		sizeIsOk = fSize < MB;
-	}catch(e){}
-	
-	if (!sizeIsOk) {
-		alert("上传文件大小超出限制,请上传小于50M的文件");
-		return false;
-	}else if(fSize==0){
-		alert("不能上传空文件");
-		return false;
-	}
-	
-	$.ajaxFileUpload({
-		'url' : serverPath+'contractUpload/uploadFile?busiId=110',
-		'fileElementId' : "myfile",
-		'contentType' : "text/html",
-        'processData' : true,
-		'beforeSend': function(){},
-	    'complete': function(){},
-		'data' : function(data) {
-			//console.log(data);
-			$("#myfile").val("");
-		}
-	});
-	var table = $('#scanCpyloadTable').DataTable();
-	table.ajax.reload();
-}
-*/
-
-/*
-function uploadAttachment(){
-	var myAttachment = $("#myAttachment").val();
-	if (myAttachment == "") {
-		alert("请选择要上传的文件");
-		return;
-	}
-	//获取该上传文件的dom对象
-	var dom = $('#myAttachment');
-	
-	//获取上传文件的文件名
-	var fullFileName = dom.val();
-	var tempFileName = fullFileName.substr(fullFileName.lastIndexOf("\\")+1,fullFileName.length);
-	var names = tempFileName.split(".");
-	var reg = names[names.length-1];
-	var b = false;
-	if("jpg".toLowerCase() == reg.toLowerCase()){
-		b = true;
-	}
-	if(!b){
-		alert("该文档类型只能上传jpg类型的文件");
-		return false;
-	}
-	var sizeIsOk = true;
-	try{
-    	//判断文件大小是否超出限制
-		var fSize = $('#myfile')[0].files[0].size;
-
-		var MB = (50 * 1024 * 1024).toString();
-		sizeIsOk = fSize < MB;
-	}catch(e){}
-	
-	if (!sizeIsOk) {
-		alert("上传文件大小超出限制,请上传小于50M的文件");
-		return false;
-	}else if(fSize==0){
-		alert("不能上传空文件");
-		return false;
-	}
-	
-	$.ajaxFileUpload({
-		'url' : serverPath+'contractUpload/uploadAttachment?storeId=110',
-		'fileElementId' : "myAttachment",
-		'contentType' : "text/html",
-        'processData' : true,
-		'beforeSend': function(){},
-	    'complete': function(){},
-		'success' : function(data) {
-			console.log(data);
-			$("#myfile").val("");
-		}
-	});
-}
-*/
-
-

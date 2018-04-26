@@ -133,15 +133,16 @@
 				var setting = {
 					title : "文件上传测试",
 					url:'fileload/uploadFileS3',		//上传地址，非空
-					//multiple:"multiple",				//多个文件上传，参数:multiple，默认单个上传，可为空
 					//uploadAsync : false   			//ajax提交是否异步提交，参数:false|true，默认为true,可为空
 					//fileExtensions:["pdf"]			//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
-					
+					//extraData:{test:123,test2:456}	//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
+				};
+				function queryCallback(){				//点击确定执行的函数，必传。
+					var fileInfo = getFileItemInfo();	//可以在此获取上传列表的内容，通过内置getFileItem获取；
+					$("#commomModal").modal("hide");    //模态框关闭
+					console.log(fileInfo);
 				}
-				$("#commomModal").load("/static/data/_fileUpload.html?" + App.timestamp(),function(){
-					$("#commomModal").modal("show");
-					setParm(setting);
-				})
+				App.getFileUploadModal(setting,queryCallback);
 			}
 		</script>
 	</body>

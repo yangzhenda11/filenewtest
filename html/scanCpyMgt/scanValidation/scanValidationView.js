@@ -18,32 +18,73 @@ $(function() {
 		$(".toolbarBtn,.portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
-		$(".page-content").removeClass("hidden");
+		$(".page-content,#setExplain").removeClass("hidden");
 	}else{
 		$(".page-content").removeClass("hidden");
+		$("#setExplain").removeClass("hidden");				//展示,*******删除
 		//固定操作按钮在70px的高度
-		App.fixToolBars("toolbarBtnContent", 70);
+		//App.fixToolBars("toolbarBtnContent", 70);
 	}
 //	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 	var textPdf = "contract1.pdf";
 	var scandocPdf = "contract2.pdf";
-	var isDiffent = true;
-	validationResultView(textPdf,scandocPdf,isDiffent)
+	var isDifferences = false;
+	var verifyNumber = 2;
+	
+	validationResultView(isDifferences,verifyNumber);
+	if(isDifferences){
+		setTbodyValue();
+		if(verifyNumber > 1){
+			
+		}
+	}
+	$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+	$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+	
 })
-
+/*
+ * 加载右侧差异项的列表的tbody
+ */
+function setTbodyValue(data){
+	var html = "";
+	for(var i = 0; i < 20; i++){
+		html += '<tr>'+
+				'<td>' + i + '</td>'+
+				'<td>合同定稿正文测试</td>'+
+				'<td>正文扫描件测试</td>'+
+				'</tr>'
+	}
+	$("#differenceTbody").html(html);
+}
+/*
+ * 验证有差异时右侧table的点击事件
+ */
+$("#differenceTbody").on("click","tr",function(el){
+	console.log(el)
+	alert("事件委托点击")
+})
 //返回上一页
 function backPage(){
 	window.history.go(-1);
 }
-
-function validationResultView(textPdf,scandocPdf,isDiffent){
-	if(isDiffent){
+/*
+ * 设置验证结果页面展示形式
+ */
+function validationResultView(isDifferences,verifyNumber){
+	if(isDifferences){
+		$("#differencesThat").removeClass("hidden");
 		$("#textPdfDiv,#scandocPdfDiv,#differenceDiv").addClass("col-sm-4");
+		$("#scaleContent").css("padding-left","20%");
+		if(verifyNumber > 1){
+			$("#differencesRecord").removeClass("hidden");
+		}
 	}else{
 		$("#textPdfDiv,#scandocPdfDiv").addClass("col-sm-6");
+		$("#differencesThat,#differencesRecord,#differenceDiv").remove();
+		$("#scaleContent").css("padding-left","44%");
 	};
-	$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-	$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+	var pdfViewHeight = $(".page-content").height() - 10;
+	$("#scandocPdfContent,#textPdfContent,#differenceTable").css({"height":pdfViewHeight,"overflow":"auto"});
 	$("#validationResult").removeClass("hidden");
 	
 }

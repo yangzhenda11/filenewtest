@@ -40,7 +40,13 @@
 					</div>
 					<div class="form-fieldset">
 						<div class="form-fieldset-title">
-							<span><i class="iconfont icon-layers"></i> 合同基本信息</span>
+							<span><i class="iconfont icon-layers"></i> 基本信息</span>
+							<div class="contractVInfo">
+								<span>合同验证状态：</span>
+								<span id="verifyState">审批中</span>
+								<span>版本号：</span>
+								<span id="contratVersion">1</span>
+							</div>
 						</div>
 						<div class="form-fieldset-body">
 							<div class="row defaultFieldsetForm">
@@ -97,7 +103,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-fieldset">
+					<div class="form-fieldset hidden" id="differencesThat">
 						<div class="form-fieldset-title">
 							<span><i class="iconfont icon-layers"></i> 差异说明</span>
 							<div class="form-fieldset-tools">
@@ -106,14 +112,19 @@
 						</div>
 						<div class="form-fieldset-body">
 							<div class="row">
-								
-								<div class="col-sm-12">
-									
+								<div class="col-sm-12 differencesThatItem">
+									<div class="thatItemTitle">承办人</div>
+									<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>
+									<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div>
+								</div>
+								<div class="col-sm-12 paddingLR0 hidden" id="setExplain">
+									<i class="iconfont icon-mi required"></i><span>  填写说明</span>
+									<textarea class="form-control" id="differencesExplain" name="differencesExplain"></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="form-fieldset">
+					<div class="form-fieldset hidden" id="validationResult">
 						<div class="form-fieldset-title">
 							<span><i class="iconfont icon-layers"></i> 验证结果</span>
 							<div class="form-fieldset-tools">
@@ -121,39 +132,63 @@
 							</div>
 						</div>
 						<div class="form-fieldset-body">
-							<div class="row hidden" id="validationResult">
+							<div class="row">
 								<div id="textPdfDiv">
+									<div class="pdfTitle">合同定稿正文</div>
 									<iframe id="textPdfContent"></iframe>
 								</div>
 								<div id="scandocPdfDiv">
+									<div class="pdfTitle">正文扫描件</div>
 									<iframe id="scandocPdfContent"></iframe>
-									<select id="pdfScaleSelect">
-							            <option value="auto" selected="selected">自动缩放</option>
-							            <option value="page-actual">实际大小</option>
-							            <option value="page-fit">适合页面</option>
-							            <option value="page-width">适合页宽</option>
-							            <option value="custom">自定义</option>
-							            <option value="0.5">50%</option>
-							            <option value="0.75">75%</option>
-							            <option value="1">100%</option>
-							            <option value="1.25">125%</option>
-							            <option value="1.5">150%</option>
-							            <option value="2">200%</option>
-							            <option value="3">300%</option>
-							            <option value="4">400%</option>
-						          	</select>
-						          	<div id="customScale" class="hidden">
-						          		<input type="text" id="scalevalue" value="" />
-						          		<button onclick="customScale()">确定</button>
-						          	</div>
 								</div>
 								<div id="differenceDiv">
-									<!--<iframe id="scandocPdfContent" style="width: 100%;height: 500px;"></iframe>-->
+									<div class="differenceTitle">
+										验证日期:<span id="verifyData">2018年3月21日</span>
+										<span class="floatR">共有<span id="differenceNumber">10</span>项不符</span>
+									</div>
+									<div id="differenceTable" >
+										<table class="table table-hover table-bordered table-striped">
+											<thead>
+												<tr>
+													<th>序号</th>
+													<th>合同定稿正文</th>
+													<th>正文扫描件</th>
+												</tr>
+											</thead>
+											<tbody id="differenceTbody"></tbody>
+										</table>
+									</div>
+								</div>
+								<div class="col-sm-12" id="scaleContent">
+									<div class="col-sm-3">
+										<select id="pdfScaleSelect" class="form-control select2me" data-placeholder="自动缩放">
+								            <option value="auto" selected="selected">自动缩放</option>
+								            <option value="page-actual">实际大小</option>
+								            <option value="page-fit">适合页面</option>
+								            <option value="page-width">适合页宽</option>
+								            <option value="0.5">50%</option>
+								            <option value="0.75">75%</option>
+								            <option value="1">100%</option>
+								            <option value="1.25">125%</option>
+								            <option value="1.5">150%</option>
+								            <option value="2">200%</option>
+								            <option value="3">300%</option>
+								            <option value="custom">自定义</option>
+							          	</select>
+									</div>
+									<div id="customScale" class="hidden">
+										<div class="col-sm-2">
+											<input type="text" id="scalevalue" class="form-control" value="" />
+										</div>
+										<div class="col-sm-1">
+											<button onclick="customScale()" class="btn-sm btn red">确定</button>
+										</div>
+						          	</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="form-fieldset">
+					<div class="form-fieldset hidden" id="differencesRecord">
 						<div class="form-fieldset-title">
 							<span><i class="iconfont icon-layers"></i> 差异记录</span>
 							<div class="form-fieldset-tools">

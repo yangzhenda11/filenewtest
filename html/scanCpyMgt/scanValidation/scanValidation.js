@@ -33,17 +33,8 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
         "type": "POST",
         "url": serverPath + 'sysScanValidation/listSysScanValidationInfo',
         "data": function(d) {
-            /*d.contractNumber = $("#contractDataSearch").val();
-            d.contractName = $("#contractDataSearch").val();
-            d.contractType = $("#contractDataSearch").val();
-            d.executeDeptName = $("#contractDataSearch").val();
-            d.undertakeName = $("#contractDataSearch").val();
-            d.partyName = $("#contractDataSearch").val();
-            d.verifyStatus = $("#contractDataSearch").val();
-            d.startVerifyDate = $("#contractDataSearch").val();
-            d.endVerifyDate = $("#contractDataSearch").val();*/
             var body = {};
-            body.start = d.start;//开始的序号
+            body.start = d.start;//开始的
             body.length = d.length;//要取的数据的
             var formData = $("#scanValidationForm").serializeArray();//把form里面的数据序列化成数组
             formData.forEach(function (e) {

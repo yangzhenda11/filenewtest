@@ -26,6 +26,10 @@
 	.actived{
 		color: red;
 	}
+	.aDisable{
+		background: #e8dcdc;
+		pointer-events:none
+	}
 </style>
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
@@ -68,10 +72,14 @@
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
 	var successCallback = null;
+	var maxNumeber = 999;
 	function setParm(setting,queryCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#commomModal").modal("show");
+		if(setting.maxNumber){
+			maxNumeber = setting.maxNumber;
+		}
 		var emptyFn = function(){};
 		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
@@ -90,6 +98,12 @@
 		};
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
 	}
+	$("#uploadFileName").on("click",function(){
+		if($(".fileItem").length >= maxNumeber){
+			layer.msg("最多上传"+maxNumeber+"个文件，若继续上传请先删除文件！",{icon:2,time:4000});
+			return false;
+		}
+	})
 	/*
 	 * 事件委托绑定
 	 */
@@ -108,9 +122,16 @@
 	        uploadAsync: uploadAsync,
 	        allowedFileExtensions: fileExtensions,
 	        maxFileSize: 51200,
-	       	maxFileCount: 10,
+	       	maxFileCount: 1,
 	       	dropZoneEnabled: false,
 	        slugCallback: function (filename) {
+	        	if($(".kv-fileinput-error").css("display") == "block"){
+	        		$(".fileinput-upload-button").addClass("aDisable");
+	        		$(".fileinput-upload-button").attr("title","禁止上传");
+	        	}else{
+	        		$(".fileinput-upload-button").removeClass("aDisable");
+	        		$(".fileinput-upload-button").attr("title","点击上传");
+	        	}
 	            return filename;
 	        },
 	        uploadExtraData: function(previewId, index) {
@@ -135,7 +156,7 @@
 	    function parseResult(data){
 	    	if(data.response.status == 1){
 				for(var i = 0; i < fileValue.length; i++){
-					$("#uploadSuccessFile").append("<div class='fileItem' data-id="+data.response.data+">" + fileValue[i].name + "</div>")
+					$("#uploadSuccessFile").append("<div class='fileItem' data-id="+JSON.stringify(data.response.data)+">" + fileValue[i].name + "</div>")
 				};
 		    	layer.msg(data.response.message);
 		    	$("#uploadFileName").fileinput('reset');
@@ -162,7 +183,7 @@
     	$(".fileItem").each(function(index,element){
     		var itemInfo = {
     			name:$(element).text(),
-    			data:JSON.parse($(element).data("id"))
+    			data:$(element).data("id")
     		};
     		fileInfo.push(itemInfo);
     	});
@@ -172,6 +193,10 @@
      * 点击确定执行的方法
      */
     function getFileUploadInfo(){
-    	successCallback();
+    	if($("#uploadFileName").val() != ""){
+    		layer.msg("请先点击上传按钮上传文件或删除按钮删除文件后再执行该操作!",{icon:2,time:3000})
+    	}else{
+    		successCallback();
+    	}
     }
 </script>

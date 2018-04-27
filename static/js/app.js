@@ -1065,7 +1065,8 @@ var App = function() {
 		resetForm:function(obj){
             var form = $(obj).closest('form');
             form[0].reset();
-            form.find('input[type=text]').data("id","");
+            form.find('input[type=text]').data("id","")
+            form.find('input[type=text]').data("exactSearch","");
             form.find('.select2me').trigger("change");
             form.find('input[data-initData]').each(function(){
                 var initEl = $(this);

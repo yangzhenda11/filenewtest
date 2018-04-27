@@ -47,34 +47,35 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
     "columns": [
     	//增加序号列
         {"data" : null,
+         "title":"序号",
 		"render" : function(data, type, full, meta){
-			return meta.col + 1;
-		}}, 
-        {"data": "contractName","title": "合同名称",
-        	"className":"whiteSpaceNormal",
-			//"width":"25%"
-        },
+						return meta.row + 1;
+				   }
+		},
+        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
         {"data": "contractNumber","title": "合同编号"},
-        {"data": "executeDeptName","title": "承办部门"},
+        {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"13%"},
         {"data": "undertakerId","bVisible":false,"title": "承办人"},
         {"data": "undertakeName","title": "承办人"},
         {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
-        {"data": "unicomPartyName","title": "我方主体"},
+        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
         {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
-        {"data": "oppoPartyName","title": "对方主体"},
+        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"},
+		{"data": "id","bVisible":false,"title": "id"},
         {
-	            "data": "approveDate",
-	            "title": "审批时间",
-	            render: function(data, type, full, meta) {
-	                return App.formatDateTime(data);
-	            }
+	        "data": "approveDate",
+	        "title": "审批通过时间",
+	        render: function(data, type, full, meta) {
+	            return formatDateTime(data);
+	        }
 	    },
         {
-			"data": key,
+			"data": "id",
 			"className": "text-center",
-			"title": "操作",
+			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
-				var result = '<a href="/contractUpload/downloadS3?key=' + data.substr(0,data.lastIndexOf('.')) + '">下载</a>';
+				console.log(full);
+				var result = '<a href="/contractUpload/downloadContractText?id=' + full.id + '">正文下载</a>';
 				return result;
 			}
 		},
@@ -85,7 +86,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var btnArray = new Array();
-                    btnArray.push({ "name": "打开", "fn": "jumpContractUploadEdit(\'"+data.contractId+"\')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "打开", "fn": "jumpSanCpyQueryDetail(\'"+data.id+"\')","icon":"iconfont icon-add"});
                     return App.getDataTableBtn(btnArray);
 				} else {
 					return '';
@@ -140,3 +141,24 @@ $(function(){
 		$(this).data("exactSearch",false);
 	})
 })
+
+//跳转展示列表页面
+function jumpSanCpyQueryDetail(id){
+	var src = "/html/scanCpyMgt/scanCpyQuery/scanCpyQueryDetail.html?id="+id;
+	App.changePresentUrl(src);
+}
+
+//调整时间显示，不显示时分秒
+function formatDateTime(inputTime,type) {
+	if(inputTime){
+		var date = new Date(inputTime);
+	}else{
+		return "";
+	}
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	m = m < 10 ? ('0' + m) : m;
+	var d = date.getDate();
+	d = d < 10 ? ('0' + d) : d;
+	return y + '-' + m + '-' + d;
+}

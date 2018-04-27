@@ -84,6 +84,10 @@ function flowStart(){
 	//4,调用流程公共方法下一步路由值默认为0，特殊场景业务侧调用此方法设置路由值
 	//setPathSelect(1);
 	
+	//4,设置选人单选还是多选。
+	var staffSelectType=$("#staffSelectType").val();
+	setStaffSelectType(staffSelectType);
+	
 	//5,调用流程公共方法打开下一步公共界面。传递参数为业务类型，比如合同类型，后台获取与之匹配的流程模板。
 	showStartPanel();
 }
@@ -170,4 +174,8 @@ function pushReceiveTask(){
 			}
 		});
 	console.log(currentTask);
+}
+function resetStaffSelectType(){
+	var staffSelectType=$("#staffSelectType").val();
+	setStaffSelectType(staffSelectType);
 }

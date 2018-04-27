@@ -122,18 +122,15 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
 
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
-//    	$("#wfflowKey").val(flowKey);
-//    	$("#wflinkCode").val(linkcode);
-//    	$("#wfprov").val(prov);
-//    	$("#wfcallbackFun").val(callbackFun);
-//    	$("#wfstaffSelectType").val(staffSelectType);
     	$("#PandJstaffiframetask").modal('show');
-    	//alert("6-"+tablestr);
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+			$(".checkall").click(function () {
+			      var check = $(this).prop("checked");
+			      $(".checkchild").prop("checked", check);
+			});
 		})
-		//alert("7-"+tablestr);
     });
 }
 function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){

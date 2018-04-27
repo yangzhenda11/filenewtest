@@ -8,6 +8,7 @@ var serverPath = config.serverPath;
 var perPermissionTree = null;
 var curNode = null;
 $(function() {
+	parent.data_permFilter(document);
     var windowHeigth = $(window).height();
     var documentHeight = $(".portlet").outerHeight();
     if (windowHeigth > documentHeight) {
@@ -19,6 +20,7 @@ $(function() {
     App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback)
 
     function successCallback(result) {
+    	debugger
         var zNodes = result.sysPerm;
         perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
         curNode = perPermissionTree.getNodes()[0];

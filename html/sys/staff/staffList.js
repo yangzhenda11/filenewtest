@@ -644,6 +644,7 @@ function goStaffEdit(staffId) {
         App.initFormSelect2("#staffForm")
         $("#modal").modal("show");
         getInfor(staffId)
+        $("#selectedStaffId").val(staffId);
     });
 }
 /*
@@ -695,7 +696,25 @@ function validate(editType) {
                         regexp: {
                             regexp: /^[a-zA-Z0-9_\-\.]+$/,
                             message: '用户名由数字字母-_和.组成'
-                        }
+                        },
+                        callback: { 
+                            message: '此账号已存在',  
+                            callback: function(value, validator, $field) {  
+                                	var flag=true;
+                                	if(value!=""){
+                                		App.formAjaxJson(parent.globalConfig.serverPath + "staffs/checkLoginName/"+ value, "get", "", successCallback,null,null,null,false);
+                                	}
+                                	function successCallback(result) {
+                                		var staffId=$("#selectedStaffId").val();
+                                		if(!result.data||result.data.staffId==staffId){
+                                			flag=true;
+                                		}else{
+                                			flag=false;
+                                		}
+                                	};
+                                    return flag;
+                            }  
+                        }  
                     }
                 },
                 passwd: {

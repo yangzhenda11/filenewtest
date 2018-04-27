@@ -4,11 +4,13 @@ var dictTree;	//字典树
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
 $(function() {
+	parent.data_permFilter(document);
     getDictTree();
 })
 /*
  * 获取字典树
  */
+
 function getDictTree() {
 	App.formAjaxJson(serverPath + "dicts/", "get", "", successCallback);
 	function successCallback(result) {
@@ -68,6 +70,8 @@ function getDictChildInfo(event, treeId, treeNode) {
 /*
  * dataTable初始化事件
  */
+var dictUpdate = parent.data_tpFilter("sys:dict:update");
+var dictDelete = parent.data_tpFilter("sys:dict:delete");
 function createDictTable() {
 	App.initDataTables('#dictTable', "#submitBtn", {
 		ajax: {
@@ -89,9 +93,9 @@ function createDictTable() {
                 		return "";
                 	}else{
                 		var btnArray = new Array();
-	                    btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
-	                    //btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
-	                    if ('1' == c.dictStatus) {
+            			btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
+                    //btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
+            			if ('1' == c.dictStatus) {
 	                        btnArray.push({ "name": "禁用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'0\')"});
 	                    } else {
 	                        btnArray.push({ "name": "启用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'1\')"});

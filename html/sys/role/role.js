@@ -4,11 +4,14 @@ var serverPath = config.serverPath;
 var rolePermissionTree; //权限树
 var orgNameTree; //组织树
 $(function() {
+	parent.data_permFilter(document);
     getRoleTable();
 })
-/*
- * 查询到角色列表
- */
+    /*
+     * 查询到角色列表
+     */
+var roleUpdate = parent.data_tpFilter("sys:role:update");
+var roleDelete = parent.data_tpFilter("sys:role:delete");
 function getRoleTable() {
     App.initDataTables('#searchRoleTable', "#submitBtn", {
         "ajax": {
@@ -29,9 +32,13 @@ function getRoleTable() {
                 "render": function(data, type, row, meta) {
                     if (data) {
                         var btnArray = new Array();
-                        //btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
-                        btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
-                        btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
+//                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
+                        if(roleUpdate){
+                        	btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
+                        }
+                        if(roleDelete){
+                        	btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
+                        }
                         return App.getDataTableBtn(btnArray);
                     } else {
                         return '';

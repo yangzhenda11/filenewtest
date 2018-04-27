@@ -1,7 +1,7 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 console.log(parm);
-var contractId = parm.id;
+var id = parm.id;
 
 //系统的全局变量获取
 var config = top.globalConfig;
@@ -27,7 +27,7 @@ $(function() {
 
 //查询该合同下是否上传了扫描件
 function checkFileIsUpload(){
-	var url = serverPath + 'contractUpload/checkFileIsUpload?id=113';
+	var url = serverPath + 'contractUpload/checkFileIsUpload?id='+id;
 	$.ajax({
 		url : url,
         type : "post",
@@ -47,7 +47,7 @@ function checkFileIsUpload(){
 }
 
 function getContractInfo(){
-	var url = serverPath + 'contractUpload/getContractById?id=113';
+	var url = serverPath + 'contractUpload/getContractById?id='+id;
 	$.ajax({
 		url : url,
         type : "post",
@@ -188,13 +188,13 @@ function fileUpload(){
 	};
 	function queryCallback(){//点击确定执行的函数，必传。
 		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
+		console.log(fileInfo);
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			result = fileInfo[0].data;
-			console.log(result);
-			var label=document.getElementById("fileName"); 
-			label.innerText=result.displayName; 
-			$("#fileName").html(result.displayName); 
+			var label=document.getElementById("fileName");
+			label.innerText=fileInfo[0].name;
+			$("#fileName").html(fileInfo[0].name);
 			$("#uploadFile_div1").hide();
     		$("#uploadFile_div2").show();
     		$("#delButton1").hide();
@@ -230,7 +230,22 @@ function delContractText2(){
     console.log(result);
 }
 
-
+function saveContract(){
+	var url = serverPath + 'contractUpload/saveContract';
+	$.ajax({
+		url : url,
+        type : "post",
+        data:{"fileEntity":JSON.stringify(result)},
+        success : function(data) {
+       		/*if(data.status=='1'){
+       			$("#uploadFile_div1").show();
+    			$("#uploadFile_div2").hide();		
+       		}else if(data.status=='0'){
+       			alert(data.message);
+       		}*/
+        }
+	});
+}
 
 /**
  * 工作流相关

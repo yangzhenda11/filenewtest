@@ -73,8 +73,8 @@ function getScanValidationInfo(verifyId){
 		//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 		var textPdf = "contract1.pdf";
 		var scandocPdf = "contract2.pdf";
-		//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录
 		if(isDifferences){
 			getDifferenceRecord(data.contractId)
@@ -262,7 +262,7 @@ function validationResultView(isDifferences){
 /*
  * 检测两个文档是否加载完成
  */
-//var interval1 = setInterval('loadTextPdf()', 300);
+var interval1 = setInterval('loadTextPdf()', 300);
 function loadTextPdf() {
 	if(document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval1);
@@ -273,7 +273,7 @@ function loadTextPdf() {
 		});
 	}
 }
-//var interval2 = setInterval('loadScandocPdf()', 300);
+var interval2 = setInterval('loadScandocPdf()', 300);
 function loadScandocPdf() {
 	if(document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval2);

@@ -1,7 +1,7 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 console.log(parm);
-var verifyId = parm.verifyId;
+var verifyId = "";
 
 //系统的全局变量获取
 var config = top.globalConfig;
@@ -18,10 +18,17 @@ $(function() {
 		$(".toolbarBtn,.portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
-		$(".page-content,#setExplain").removeClass("hidden");
+		$(".page-content").removeClass("hidden");
+		verifyId = parm.businessKey;
+		if(parm.taskFlag = "db"){
+			$("#setExplain").removeClass("hidden");
+		}else{
+			$("#setExplain").remove();
+		}
 	}else{
 		$(".page-content").removeClass("hidden");
-		//$("#setExplain").removeClass("hidden");				//展示,*******删除
+		$("#setExplain").remove();
+		verifyId = parm.verifyId;
 		//固定操作按钮在70px的高度
 		//App.fixToolBars("toolbarBtnContent", 70);
 	}
@@ -35,7 +42,7 @@ function getScanValidationInfo(verifyId){
 	var postData = {
 		verifyId : verifyId
 	}
-	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		console.log(data);
@@ -79,6 +86,10 @@ function getScanValidationInfo(verifyId){
 		if(isDifferences){
 			getDifferenceRecord(data.contractId)
 		}
+	}
+	function improperCallback(){
+		clearInterval(interval1);
+		clearInterval(interval2);
 	}
 }
 /*

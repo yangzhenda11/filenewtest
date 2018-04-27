@@ -83,7 +83,7 @@ function verifyProcessTrue() {
                 }
             }},
             {"data": "verifyVersion","className": "text-center","title": "版本号"},
-            {"data": "ctreatedDateString","className": "text-center","title": "验证日期"}
+            {"data": "verifyDate","className": "text-center","title": "验证日期"}
         ]
     });
 }
@@ -124,11 +124,7 @@ function verifyProcessFalse() {
                     return meta.row + 1;
                 }
             },
-            {"data": null,"title": "合同编号","className": "text-center",
-                render: function(data, type, full, meta) {
-                    return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
-                }
-            },
+            {"data": "contractNumber","title": "合同编号","className": "text-center",},
             {"data": "contractName","className": "text-center","title": "合同名称"},
             {"data": "typeName","className": "text-center","title": "合同类型"},
             {"data": "ourPartyName","className": "text-center","title": "我方主体"},

@@ -57,7 +57,7 @@ function verifyProcessTrue() {
                 return meta.row + 1;
             }
             },
-            {"data": null,"title": "合同编号",
+            {"data": null,"title": "合同编号","className": "text-center",
                 render: function(data, type, full, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
                 }
@@ -110,9 +110,18 @@ function verifyProcessFalse() {
         },
         "columns": [
             {"className": "text-center",
+                "title":'<label class="ui-checkbox"><input id="checkchild" type="checkbox" /><span></span> </label>',
                 "data": "contractId",
                 "render": function (data, type, full, meta) {
                     return '<label class="ui-checkbox"><input id="checkchild" type="checkbox" value="' + data + '" /><span></span> </label>';
+                }
+            },
+            {
+                "data": "contractNumber",
+                "className": "text-center",
+                "title": "序号",
+                "render": function(data, type, full, meta) {
+                    return meta.row + 1;
                 }
             },
             {"data": null,"title": "合同编号","className": "text-center",
@@ -140,8 +149,7 @@ function verifyProcessFalse() {
                         return "";
                     }
                 }},
-            {"data": "verifyVersion","className": "text-center","title": "版本号"},
-            {"data": "ctreatedDateString","className": "text-center","title": "验证日期"}
+            {"data": "verifyVersion","className": "text-center","title": "版本号"}
         ]
     });
 }

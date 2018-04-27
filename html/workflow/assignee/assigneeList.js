@@ -3,6 +3,33 @@
  * 人员列表单选页
  * @author ctt
  */
+var tablestr="";
+var chooseType;
+//alert("1-"+chooseType);
+function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
+	$("#wfflowKey").val(flowKey);
+	$("#wflinkCode").val(linkcode);
+	$("#wfprov").val(prov);
+	$("#wfcallbackFun").val(callbackFun);
+	$("#wfstaffSelectType").val(staffSelectType);
+	$("#PandJstaffiframetask").modal('show');
+	
+	chooseType=$("#wfstaffSelectType").val();
+	//alert("2-"+chooseType);
+
+	if(chooseType==2){
+		$("#duoxuan").show();
+		tablestr='<input type="checkbox" class="checkall" />';
+	}else if(chooseType==1){
+		$("#duoxuan").hide();
+		tablestr="操作"
+	}else{
+		$("#duoxuan").hide();
+		tablestr="未知"
+	}
+	//alert("3-"+tablestr);
+}
+
 $(function(){
 	// 加载表格
 	$("#currentId").val(curStaffOrgId);
@@ -15,19 +42,7 @@ var btnModel =  '    \
     {{/each}}';
 var template = Handlebars.compile(btnModel);
 
-var chooseType=$("#wfstaffSelectType").val();
 
-var tablestr="";
-if(chooseType==2){
-	$("#duoxuan").show();
-	tablestr='<input type="checkbox" class="checkall" />';
-}else if(chooseType==1){
-	$("#duoxuan").hide();
-	tablestr="操作"
-}else{
-	$("#duoxuan").hide();
-	tablestr="未知"
-}
 var dataTableConfig={
 		ajax: {
 			"type": "GET",					//请求方式
@@ -40,6 +55,7 @@ var dataTableConfig={
 				d.orgFullName=$("#searchEfOName").val();
 				d.staffName  =$("#searchEfstaffName").val();
 				d.loginName  =$("#loginname").val();
+				//alert("4-"+tablestr);
 	        	return d;
 			}
 		},           

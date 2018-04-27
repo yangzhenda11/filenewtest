@@ -110,20 +110,26 @@ function selectstaff(){
 	var flowKey = $("#processDefinitionKey").val();
     var linkcode = $("#linkForStart").val().toString().split(",")[0];
     var prov=$("#wprov").val();
+	var staffSelectType=$("#wStaffSelectType").val();
+	var callbackFun='getassignee';
+	if(staffSelectType==2){
+		callbackFun="getassignees";
+	}
     
-    jandyStaffSearch(flowKey,linkcode,prov,'getassignee');
+    jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 }
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun){
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
 
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
-    	$("#wfflowKey").val(flowKey);
-    	$("#wflinkCode").val(linkcode);
-    	$("#wfprov").val(prov);
-    	$("#wfcallbackFun").val(callbackFun);
     	$("#PandJstaffiframetask").modal('show');
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+			$(".checkall").click(function () {
+			      var check = $(this).prop("checked");
+			      $(".checkchild").prop("checked", check);
+			});
 		})
     });
 }
@@ -132,6 +138,11 @@ function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
     $("#assigneeForStart").val(STAFF_ORG_ID);
     $("#assigneeNameForStart").val(STAFF_NAME);
     $("#PandJstaffiframetask").modal('hide');
+}
+function getassignees(STAFF_ORG_IDS,STAFF_NAMES){
+	$("#assigneeForStart").val(STAFF_ORG_IDS);
+	$("#assigneeNameForStart").val(STAFF_NAMES);
+	$("#PandJstaffiframetask").modal('hide');
 }
 function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);
@@ -160,6 +171,11 @@ function setPathSelect(pathSelect){
 	$("#pathSelect").val(pathSelect);
 }
 
+function setStaffSelectType(staffSelectType){
+	if(staffSelectType.length>0){
+		$("#wStaffSelectType").val(staffSelectType);
+	}
+}
 
 
 

@@ -3,6 +3,31 @@
  * 人员列表单选页
  * @author ctt
  */
+var tablestr='';
+var dataTableConfig = {};
+var chooseType;
+function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
+	$("#wfflowKey").val(flowKey);
+	$("#wflinkCode").val(linkcode);
+	$("#wfprov").val(prov);
+	$("#wfcallbackFun").val(callbackFun);
+	$("#wfstaffSelectType").val(staffSelectType);
+	
+	chooseType=$("#wfstaffSelectType").val();
+
+	if(chooseType==2){
+		$("#duoxuan").show();
+		tablestr='<input type="checkbox" class="checkall" />';
+	}else if(chooseType==1){
+		$("#duoxuan").hide();
+		tablestr="操作"
+	}else{
+		$("#duoxuan").hide();
+		tablestr="未知"
+	}
+	setDataTableConfig();
+}
+
 $(function(){
 	// 加载表格
 	$("#currentId").val(curStaffOrgId);
@@ -15,20 +40,8 @@ var btnModel =  '    \
     {{/each}}';
 var template = Handlebars.compile(btnModel);
 
-var chooseType=$("#wfstaffSelectType").val();
-
-var tablestr="";
-if(chooseType==2){
-	$("#duoxuan").show();
-	tablestr='<input type="checkbox" class="checkall" />';
-}else if(chooseType==1){
-	$("#duoxuan").hide();
-	tablestr="操作"
-}else{
-	$("#duoxuan").hide();
-	tablestr="未知"
-}
-var dataTableConfig={
+function setDataTableConfig(){
+	dataTableConfig={
 		ajax: {
 			"type": "GET",					//请求方式
 			"url": serverPath + 'assignee/searchMap4Page',	//请求地址
@@ -51,7 +64,6 @@ var dataTableConfig={
 		
 				"render"    : function (data, type, row, meta) {
 		        	
-					
 						if(chooseType==2){
 							return '<input type="checkbox"  class="checkchild"  value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
 						}else{
@@ -92,6 +104,8 @@ var dataTableConfig={
 	        {"data": "staff_sort","title":"人员排序",className: "text-center","visible" : false}
 	    ]
 	};
+}
+
 /*
  * 表格初始化
  */

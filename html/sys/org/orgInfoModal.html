@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>组织弹出框</title>
+</head>
+
+<body>
+    <div id="modalEdit">
+        <div class="modal-dialog defaultModalWidth" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form" id="orgForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitle"></h4>
+                    </div>
+                    <div class="modal-body defaultModalForm">
+                        <input type="hidden" name="orgId" value="">
+                        <input type="hidden" id="parentId" name="parentId" value="">
+                        <input type="hidden" name="createBy" id="createBy" value="">
+                        <input type="hidden" name="updateBy" id="updateBy" value="">
+                        <div class="col-sm-6 form-group">
+                            <label for="parentName" class="control-label">父节点名称<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="parentName" disabled="disabled" name="parentName" class="form-control" placeholder="父节点名称">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="orgName" class="control-label">组织名称<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="orgName" class="form-control" name="orgName" maxlength="20" placeholder="组织名称">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="fullName" class="control-label">组织全称<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="fullName" class="form-control" name="fullName" maxlength="20" placeholder="组织全称">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="orgCode" class="control-label">组织编码<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="orgCode" class="form-control" name="orgCode" placeholder="组织编码" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="orgType" class="control-label">组织类型<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <select class="form-control select2me" name="orgType" id="orgType">
+										<option value="">请选择</option>
+										<option value="1">公司</option>
+										<option value="2">部门</option>
+										<option value="3">处室</option>
+										<option value="4">虚拟组织</option>
+								</select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="orgStatus" class="control-label">状态<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <select class="form-control select2me" name="orgStatus" id="orgStatus">
+										<option value="1" selected>有效</option>
+										<option value="0">无效</option>
+								</select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="provinceCode" class="control-label">省分编码<i class="iconfont icon-mi required"></i></label>
+                            <div class="valiParent">
+                                <input type="text" id="provinceCode" class="form-control" name="provinceCode" placeholder="省份编码" maxlength="50">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label for="orgSort" class="control-label">展示顺序</label>
+                            <div class="valiParent">
+                                <input type="text" id="orgSort" class="form-control" name="orgSort" placeholder="展示顺序" maxlength="50">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>保存</button>
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

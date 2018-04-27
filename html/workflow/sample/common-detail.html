@@ -61,6 +61,7 @@
                                         <option value="Vote">投票会签</option>
                                         <option value="M_main">主子流程_分离</option>
                                         <option value="Main_Sub">主子流程</option>
+                                        <option value="testProcess">候选人抢单流程</option>
                                     </select>
                                 </div>
                             </div>
@@ -94,6 +95,16 @@
                                     <select class="form-control" id="projectPathselect" name="projectPathselect" data-placeholder="选择后台任务触发状态"  onchange="setProjectPath();">
                                         <option value="0" selected="selected">工单创建成功-默认路由值0</option>
                                         <option value="1">工单创建失败提醒-路由值1</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label for="staffSelectType" class="control-label">控制人员的单选还是多选：<i class="iconfont icon-mi required"></i></label>
+                                <div class="valiParent">
+                                    <!-- 业务页面所必须的流程Key定义 -->
+                                    <select class="form-control" id="staffSelectType" name="staffSelectType" data-placeholder="" onchange="resetStaffSelectType();">
+                                        <option value="1">默认单选</option>
+                                        <option value="2">设置为多选</option>
                                     </select>
                                 </div>
                             </div>

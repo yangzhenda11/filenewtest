@@ -668,7 +668,6 @@ var App = function() {
 //			
 //		}
 //	};
-	//* END:CORE HANDLERS *//
 	
 	/*
 	 * 页面上调用要return出来
@@ -2101,7 +2100,6 @@ var App = function() {
 	};
 }();
 
-<!-- END THEME LAYOUT SCRIPTS -->
 
 jQuery(document).ready(function() {
 	App.init();

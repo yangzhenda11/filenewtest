@@ -354,22 +354,30 @@ function addCommentForStart(){
 function addCommentForTurn(){
 	if(!checkifdone()){
 		if(document.getElementById("businessiframe").contentWindow.beforeTransfer()){
+			
+			var taskDefinitionKey=$('#taskDefinitionKey').val();
+			var taskDefinitionName=$('#name').val();
+			var linkId="00000";
+			var linkvalue=taskDefinitionKey+',1,'+linkId;
+			$("#link").prepend("<option value='"+linkvalue+"'>"+taskDefinitionName+"</option>");
+			$("#link").get(0).selectedIndex = 0;
+			$("#comment").val("");
 			// 确认按钮仅绑定推进事件
 			$("#confirmButton").unbind();
 			$('#confirmButton').click(function(){
 				transferTask();
 			});
 			// 处理人选择按钮方法重置
-			$("#selectAssignee").unbind();
-			$('#selectAssignee').click(function(){
-				selectAssignee(true, '');
-			});
+			//$("#selectAssignee").unbind();
+			//$('#selectAssignee').click(function(){
+			//	selectAssignee(true, '');
+			//});
 			
 			$("#linkDiv").hide();
 			$("#assigneeDiv").show();
 			//$("#comment").val("请代处理");
-		//	$("#out-footer").hide();
-		//	$("#in-footer").show();
+			//$("#out-footer").hide();
+			//$("#in-footer").show();
 			$("#in-footer").modal("show");
 		}
 	}
@@ -887,14 +895,10 @@ function selectstaff(){
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
 
-	$("#wfflowKey").val(flowKey);
-	$("#wflinkCode").val(linkcode);
-	$("#wfprov").val(prov);
-	$("#wfcallbackFun").val(callbackFun);
-	$("#wfstaffSelectType").val(staffSelectType);
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {

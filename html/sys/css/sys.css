@@ -23,7 +23,18 @@
   bottom: 0px;
   left: 33%;
 }
+.orgHeightBorder {
+  position: absolute;
+  width: 1px;
+  background: #EEF1F5;
+  top: 8px;
+  bottom: 0px;
+  left: 38%;
+}
 #permissionShow {
+  margin-top: 20px;
+}
+#orgShow {
   margin-top: 20px;
 }
 #permissionShow .form-control-static {

@@ -8,14 +8,15 @@ var serverPath = config.serverPath;
 var orgTree = null;
 var curNode = null;
 $(function() {
-	//查询云门户开关参数
+    //查询云门户开关参数
     App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
+
     function ajaxSuccess(result) {
-    	if(result.sysConfig.val==0){
-    		$("#isShowAdd").hide();
-    		$("#isShowUpdate").hide();
-    		$("#isShowDel").hide();
-    	}
+        if (result.sysConfig.val == 0) {
+            $("#isShowAdd").hide();
+            $("#isShowUpdate").hide();
+            $("#isShowDel").hide();
+        }
     }
     var windowHeigth = $(window).height();
     var documentHeight = $(".portlet").outerHeight();
@@ -25,8 +26,10 @@ $(function() {
         $("#orgTree").css("max-height", documentHeight - 110);
     }
     // 初始化树
-    App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
+    App.formAjaxJson(serverPath + "orgs/" + config.curCompanyId + "/orgTree", "get", "", successCallback);
+
     function successCallback(result) {
+        debugger;
         var zNodes = result.data[0];
         orgTree = $.fn.zTree.init($("#orgTree"), orgSetting, zNodes);
         curNode = orgTree.getNodes()[0];
@@ -75,7 +78,7 @@ function delOrg() {
     }, function(index) {
         var orgId = curNode.orgId;
         var data = { 'orgIds': orgId };
-        App.formAjaxJson(serverPath  + "orgs/" + orgId, "DELETE", data, successCallback);
+        App.formAjaxJson(serverPath + "orgs/" + orgId, "DELETE", data, successCallback);
 
         function successCallback(result) {
             layer.close(index);
@@ -137,14 +140,14 @@ function updateOrg(type) {
     var url = serverPath + 'orgs/addOrg';
     var pushType = "POST";
     if (type == "add") {
-    	formObj.createBy = config.curStaffId;
-    	formObj.updateBy = config.curStaffId;
+        formObj.createBy = config.curStaffId;
+        formObj.updateBy = config.curStaffId;
         delete formObj.orgId;
     } else {
         ms = "修改成功";
         formObj.updateBy = config.curStaffId;
         url = serverPath + "orgs/updateOrg";
-            pushType = "PUT";
+        pushType = "PUT";
     }
     App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
 
@@ -160,7 +163,7 @@ function updateOrg(type) {
             orgTree.addNodes(curNode, updateNodes);
         } else {
             curNode.orgName = result.data.orgName,
-            orgTree.updateNode(curNode);
+                orgTree.updateNode(curNode);
         }
     }
 
@@ -176,71 +179,73 @@ function searchOu() {
     } else {
         $("#modal").load("ouModal.html?" + App.timestamp() + " #modalEdit", function() {
             $("#modalTitle").text("新增ou组织");
-            $("#orgNameOu").append("<p>当前组织："+curNode.orgName+"</p>");
-            $.get(serverPath + 'orgs/selectOuList/'+curNode.orgCode,function(result){
-            	debugger
-            	for(var i=0;i<result.length;i++){
-            		$("#ouList").append("<option>"+result[i].ouName+"</option>");
-            	}
-    		});
-            
-        App.initDataTables('#ouTable', {
-        	ajax: {
-        		"type": "GET",					//请求方式
-        		"url": serverPath + 'orgs/selectOuByOrgCode/'+curNode.orgCode, //请求路径
-        	},
-        	"columns": [{
-        			"data": null,
-        			"className": "text-center",
-        			"title": "操作",
-        			"render": function(data, type, full, meta) {
-        				debugger
-        				if(data) {
-        					var btnArray = new Array();
-        					btnArray.push({ "name": "删除", "fn": "delOu(\'" + data.ouName + "\')" });
-                            return App.getDataTableBtn(btnArray);
-        				} else {
-        					return '';
-        				}
-        			}
-        		},
-        		{
-        			"data": "ouName",
-        			"title": "ou组织名称"
-        		},
-        	],
-        	"fixedColumns":{
-        		"leftColumns":2
-        	}
-        });
-            
-        $('#modal').modal('show');
-            
+            $("#orgNameOu").append("<p>当前组织：" + curNode.orgName + "</p>");
+            $.get(serverPath + 'orgs/selectOuList/' + curNode.orgCode, function(result) {
+                debugger
+                for (var i = 0; i < result.length; i++) {
+                    $("#ouList").append("<option>" + result[i].ouName + "</option>");
+                }
+            });
+
+            App.initDataTables('#ouTable', {
+                ajax: {
+                    "type": "GET", //请求方式
+                    "url": serverPath + 'orgs/selectOuByOrgCode/' + curNode.orgCode, //请求路径
+                },
+                "columns": [{
+                        "data": null,
+                        "className": "text-center",
+                        "title": "操作",
+                        "render": function(data, type, full, meta) {
+                            debugger
+                            if (data) {
+                                var btnArray = new Array();
+                                btnArray.push({ "name": "删除", "fn": "delOu(\'" + data.ouName + "\')" });
+                                return App.getDataTableBtn(btnArray);
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    {
+                        "data": "ouName",
+                        "title": "ou组织名称"
+                    },
+                ],
+                "fixedColumns": {
+                    "leftColumns": 2
+                }
+            });
+
+            $('#modal').modal('show');
+
         });
     }
 }
 //添加ou
-function addOu(){
-	var ouName=$("#ouList").find("option:selected").text();
-	var orgCode=curNode.orgCode;
-	App.formAjaxJson(serverPath + "orgs/addOu/" + ouName+"/"+orgCode, "POST", "", successCallback)
+function addOu() {
+    var ouName = $("#ouList").find("option:selected").text();
+    var orgCode = curNode.orgCode;
+    App.formAjaxJson(serverPath + "orgs/addOu/" + ouName + "/" + orgCode, "POST", "", successCallback)
+
     function successCallback(result) {
-		if(result.data.orgCode==null){
-			layer.alert("此ou已存在", {icon: 2,title:"重复"});
-		}
-		var ms = "新增成功";
-		layer.msg(ms, { icon: 1 });
-		$('#ouTable').DataTable().ajax.reload();
+        if (result.data.orgCode == null) {
+            layer.alert("此ou已存在", { icon: 2, title: "重复" });
+        }
+        var ms = "新增成功";
+        layer.msg(ms, { icon: 1 });
+        $('#ouTable').DataTable().ajax.reload();
     }
 }
 //删除ou
-function delOu(ouName){
-	var orgCode=curNode.orgCode;
-	App.formAjaxJson(serverPath + "orgs/delOu/" + ouName+"/"+orgCode, "DELETE", "", successCallback)
+function delOu(ouName) {
+    var orgCode = curNode.orgCode;
+    App.formAjaxJson(serverPath + "orgs/delOu/" + ouName + "/" + orgCode, "DELETE", "", successCallback)
+
     function successCallback(result) {
-		var ms = "删除成功";
-		layer.msg(ms, { icon: 1 });
-		$('#ouTable').DataTable().ajax.reload();
+        var ms = "删除成功";
+        layer.msg(ms, { icon: 1 });
+        $('#ouTable').DataTable().ajax.reload();
     }
 }
 /*
@@ -272,24 +277,25 @@ function validate(editType) {
                     notEmpty: {
                         message: '请输入组织编码'
                     },
-                    callback: { 
-                        message: '此组织编码已存在',  
-                        callback: function(value, validator, $field) {  
-                            	var flag=true;
-                            	if(value!=""){
-                            		App.formAjaxJson(serverPath + "orgs/checkOrgCode/"+ value, "get", "", successCallback,null,null,null,false);
-                            	}
-                            	function successCallback(result) {
-                            		var orgId = curNode.orgId;
-                            		if(!result.data||result.data.orgId==orgId){
-                            			flag=true;
-                            		}else{
-                            			flag=false;
-                            		}
-                            	};
-                                return flag;
-                        }  
-                    }  
+                    callback: {
+                        message: '此组织编码已存在',
+                        callback: function(value, validator, $field) {
+                            var flag = true;
+                            if (value != "") {
+                                App.formAjaxJson(serverPath + "orgs/checkOrgCode/" + value, "get", "", successCallback, null, null, null, false);
+                            }
+
+                            function successCallback(result) {
+                                var orgId = curNode.orgId;
+                                if (!result.data || result.data.orgId == orgId) {
+                                    flag = true;
+                                } else {
+                                    flag = false;
+                                }
+                            };
+                            return flag;
+                        }
+                    }
                 }
             },
             orgType: {
@@ -325,6 +331,7 @@ function validate(editType) {
 // 刷新站点树
 function refreshTree() {
     App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
+
     function successCallback(result) {
         orgTree.destroy('orgTree');
         zNodes = result.data[0];
@@ -357,35 +364,35 @@ function collapseAll() {
 }
 // 组织树基础设置
 var orgSetting = {
-	    async: {
-	        enable: true,
-	        url: "",
-	        type: "get",
-	        dataType: 'json',
-	        dataFilter: orgsfilter
-	    },
-	    data: {
-	        simpleData: {
-	            enable: true,
-	            idKey: "orgId",
-	            pIdKey: "parentId"
-	        },
-	        key: {
-	            name: "orgName"
-	        }
-	    },
-	    view: {
-	        dblClickExpand: false
-	    },
-	    callback: {
-	        onAsyncError: onAsyncError,
-	        beforeAsync: zTreeBeforeAsync,
-	        onClick: function(event, treeId, treeNode) {
-	            curNode = treeNode;
-	            showOrg(treeNode.orgId);
-	        }
-	    }
-	};
+    async: {
+        enable: true,
+        url: "",
+        type: "get",
+        dataType: 'json',
+        dataFilter: orgsfilter
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "orgId",
+            pIdKey: "parentId"
+        },
+        key: {
+            name: "orgName"
+        }
+    },
+    view: {
+        dblClickExpand: false
+    },
+    callback: {
+        onAsyncError: onAsyncError,
+        beforeAsync: zTreeBeforeAsync,
+        onClick: function(event, treeId, treeNode) {
+            curNode = treeNode;
+            showOrg(treeNode.orgId);
+        }
+    }
+};
 // 过滤异步加载ztree时返回的数据
 function orgsfilter(treeId, parentNode, responseData) {
     var responseData = responseData.data;

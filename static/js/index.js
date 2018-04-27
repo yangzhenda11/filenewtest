@@ -10,6 +10,8 @@ var globalConfig = {
     curStaffOrgId: null, //10001
     /** 当前用户所在组织的id（sys_org表主键） */
     curOrgId: null, //56665
+    /** 当前用户所在组织的上级公司id（sys_org表主键） */
+    curCompanyId: null,
     /** 当前岗位信息对象 */
     //curStaffOrg: {},
     /** 当前用户所在组织对象 */
@@ -43,6 +45,7 @@ $(document).ready(function() {
         globalConfig.curStaffName = data.staffName;
         globalConfig.curStaffOrgId = data.staffOrgId;
         globalConfig.curOrgId = data.orgId;
+        globalConfig.curCompanyId = data.companyId;
         //globalConfig.curStaff = data.staff;
         //globalConfig.curOrg = data.org;
         // globalConfig.curStaffOrg = data.mainStaffOrg;
@@ -183,10 +186,10 @@ function checkFullscreen() {
 // 页面过滤
 function data_permFilter(obj) {
     var e = obj.querySelectorAll('[data-permcheck]');
-    var perm = globalConfig.permissions;
+    var permissions = globalConfig.permissions;
     for (var i = 0; i < e.length; i++) {
         if ($(e[i]).data('permcheck') != "") {
-            if ($.inArray($(e[i]).data('permcheck'), perm) < 0) {
+            if ($.inArray($(e[i]).data('permcheck'), permissions) < 0) {
                 e[i].remove();
             } else {
                 $(e[i]).removeClass("hidden");
@@ -198,9 +201,9 @@ function data_permFilter(obj) {
     }
 }
 // 表中过滤
-function data_tpFilter(permCheck) {
-    var perm = globalConfig.permissions;
-    if ($.inArray(permCheck, perm) >= 0) {
+function data_tPFilter(permCheck) {
+    var permissions = globalConfig.permissions;
+    if ($.inArray(permCheck, permissions) >= 0) {
         return true;
     } else {
         return false;

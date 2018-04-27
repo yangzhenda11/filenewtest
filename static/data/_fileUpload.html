@@ -23,7 +23,7 @@
 		cursor: pointer;
 		margin: 2px 0;
 	}
-	.actived{
+	.listActived{
 		color: red;
 	}
 	.aDisable{
@@ -73,6 +73,8 @@
 	var serverPath = config.serverPath;
 	var successCallback = null;
 	var maxNumeber = 999;
+	var saveObj = {};
+	var flag = 1;
 	function setParm(setting,queryCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
@@ -108,8 +110,8 @@
 	 * 事件委托绑定
 	 */
 	$("#uploadSuccessFile").on("click",".fileItem",function(){
-		$(".fileItem").removeClass("actived");
-		$(this).addClass("actived");
+		$(".fileItem").removeClass("listActived");
+		$(this).addClass("listActived");
 	})
 	/*
 	 * 文件上传
@@ -154,9 +156,12 @@
             parseResult(data);
          });
 	    function parseResult(data){
+	    	flag++;
 	    	if(data.response.status == 1){
 				for(var i = 0; i < fileValue.length; i++){
-					$("#uploadSuccessFile").append("<div class='fileItem' data-id="+JSON.stringify(data.response.data)+">" + fileValue[i].name + "</div>")
+					var keys = "fileSave" + flag + i;
+					$("#uploadSuccessFile").append("<div data-keys='"+keys+"' class='fileItem'>" + fileValue[i].name + "</div>");
+					saveObj[keys] = data.response.data;
 				};
 		    	layer.msg(data.response.message);
 		    	$("#uploadFileName").fileinput('reset');
@@ -169,10 +174,11 @@
 	 * 列表内删除
 	 */
 	function deleteFileItem(){
-		if($(".actived").length == 0){
+		if($(".listActived").length == 0){
 			layer.msg("请选中上传成功文件中文件名，删除后此文档不做上传处理。",{icon:2});
 		}else{
-			$(".actived").remove();
+			delete saveObj[$(".listActived").data("keys")]
+			$(".listActived").remove();
 		}
 	}
     /*
@@ -183,7 +189,7 @@
     	$(".fileItem").each(function(index,element){
     		var itemInfo = {
     			name:$(element).text(),
-    			data:$(element).data("id")
+    			data:saveObj[$(element).data("keys")]
     		};
     		fileInfo.push(itemInfo);
     	});

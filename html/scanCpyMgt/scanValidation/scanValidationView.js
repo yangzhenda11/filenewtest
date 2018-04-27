@@ -64,8 +64,8 @@ function getScanValidationInfo(verifyId){
 		$("#executeDeptName").val(data.executeDeptName);
 		$("#contractName").val(data.contractName);
 		$("#undertakeName").val(data.undertakeName);
-		$("#undertakePhone").val(data.undertakePhone);
-    	$("#undertakeMobile").val(data.undertakeMobile);
+		$("#mobilPhone").val(data.mobilPhone);
+    	$("#phone").val(data.phone);
 		$("#otherPartyName").val(data.otherPartyName);
     	$("#ourPartyName").val(data.ourPartyName);
 		//pdf URL设值
@@ -90,7 +90,6 @@ function getDifferenceRecord(contractId){
 	App.formAjaxJson(serverPath + "sysScanValidation/getVerifyDiffId", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		console.log(data);
 		if(data.length == 0){
 			layer.alert("当前验证有差异，暂未获取到差异记录",{icon:2});
 			return false;
@@ -164,38 +163,48 @@ $("#differenceTbody").on("click","tr",function(el){
 	console.log(this)
 	alert($(this).data("textpageno"));
 })
+
 /*
  * 加载差异记录的列表及差异说明
  */
 function setDifferenceRecord(data){
-	for(var i = 1; i < data.length; i++){
+	var differenceRecordHtml = "";
+	for(var i = 0; i < data.length; i++){
 		var diffInfoItem = data[i];
+		var verifyDiffCount = diffInfoItem.verifyDiffCount == null || diffInfoItem.verifyDiffCount == undefined ? 0 : diffInfoItem.verifyDiffCount;
+		var thatItemHtml = "";
+		var differenceTbodyHtml = "";
+		//生成意见项
 		if(diffInfoItem.tSBusiProcessInfoVo.length > 0){
-			var thatItemHtml = "";
-			for(var i = tSBusiProcessInfoVo.length - 1; i >= 0; i--){
-				thatItemHtml += creatThatItemHtml(tSBusiProcessInfoVo[i]);
+			for(var o = diffInfoItem.tSBusiProcessInfoVo.length - 1; o >= 0; o--){
+				thatItemHtml += creatThatItemHtml(diffInfoItem.tSBusiProcessInfoVo[o]);
 			}
-			$("#thatItemContent").html(thatItemHtml);
 		};
-		'<div class="form-fieldset">'+
+		//生成列表项
+		if(diffInfoItem.verifyDiffVo.length > 0){
+			for(var k = 0; k < diffInfoItem.verifyDiffVo.length; k++){
+				differenceTbodyHtml += creatDiffTbodyHtml(diffInfoItem.verifyDiffVo[k],k)
+			}
+		};
+		//拼接dom
+		differenceRecordHtml += '<div class="form-fieldset">'+
 			'<div class="form-fieldset-title">'+
-				'<span class="diffVersion">版本号：1</span>'+
-				'<span class="diffValiDate">验证日期：2017年3月21日</span>'+
-				'<span class="diffNum">共有<span class="mLR5">0</span>项不符</span>'+
-				'<div class="form-fieldset-tools"><a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a></div>'+
+				'<span class="diffVersion">版本号：'+ diffInfoItem.verifyVersion +'</span>'+
+				'<span class="diffValiDate">验证日期：'+ diffInfoItem.verifyDate +'</span>'+
+				'<span class="diffNum">共有<span class="mLR5">'+ verifyDiffCount +'</span>项不符</span>'+
+				'<div class="form-fieldset-tools"><a href="#" class="form-collapse"><i class="fa fa-angle-down"></i></a></div>'+
 			'</div>'+
-			'<div class="form-fieldset-body"><div class="row"><div class="col-sm-12 differencesThatItem">'+
-				'<div class="thatItemTitle">承办人</div>'+
-				'<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>'+
-				'<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div></div>'+
+			'<div class="form-fieldset-body" style="display:none;"><div class="row">'+ thatItemHtml +
 					'<table class="table table-hover table-bordered table-striped">'+
 						'<thead><tr><th>序号</th><th>合同定稿正文</th><th>正文扫描件</th></tr></thead>'+
-						'<tbody></tbody>'+
+						'<tbody>'+ differenceTbodyHtml +'</tbody>'+
 					'</table>'+
 				'</div>'+
 			'</div>'+
 		'</div>';
 	}
+	$("#differenceRecordContent").html(differenceRecordHtml);
+	panelAction('#differenceRecordContent .form-collapse', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
 }
 //返回上一页
 function backPage(){
@@ -299,7 +308,16 @@ function customScale(){
     };
 	
 }
-
-
-
-
+/*
+ * 差异记录收缩
+ */
+function panelAction(el, parentEl, bodyEl, icon1, icon2) {
+	$(el).off("click").on("click",function(){
+		var dom = $(this);
+		var pnode = dom.closest(parentEl);
+		var pbody = pnode.nextAll(bodyEl).first();
+		var iconToggle = dom.find('.fa');
+		pbody.slideToggle(200);
+		iconToggle.toggleClass(icon1).toggleClass(icon2);
+	})	
+}

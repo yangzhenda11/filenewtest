@@ -1178,6 +1178,9 @@ var App = function() {
          */
         getPresentParm : function(isUrl){
         	var persentUrl = window.location.href;
+        	if(persentUrl[persentUrl.length-1] == "#"){
+        		persentUrl = persentUrl.substring(0,persentUrl.length - 1);
+        	};
         	if(isUrl){
         		return persentUrl;
         	}else{

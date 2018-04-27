@@ -111,10 +111,11 @@ function verifyProcessFalse() {
         "columns": [
             {"className": "text-center",
                 "data": "contractId",
+                "title":"",
                 "render": function (data, type, full, meta) {
                     return '<label class="ui-checkbox"><input id="checkchild" type="checkbox" value="' + data + '" /><span></span> </label>';
                 }
-            },
+           },
             {"data": null,"title": "合同编号","className": "text-center",
                 render: function(data, type, full, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';

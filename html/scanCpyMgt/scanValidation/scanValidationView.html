@@ -78,12 +78,12 @@
 										</div>
 										<div class="col-sm-4">
 											<div class="valiParent">
-												<input type="text" class="form-control" id="undertakeMobile" disabled="disabled" value="" />
+												<input type="text" class="form-control" id="mobilPhone" disabled="disabled" value="" />
 											</div>
 										</div>
 										<div class="col-sm-5">
 											<div class="valiParent">
-												<input type="text" class="form-control" id="undertakePhone" disabled="disabled" value="" />
+												<input type="text" class="form-control" id="phone" disabled="disabled" value="" />
 											</div>
 										</div>
 									</div>
@@ -130,7 +130,7 @@
 						<div class="form-fieldset-title">
 							<span><i class="iconfont icon-layers"></i> 验证结果</span>
 							<div class="form-fieldset-tools">
-								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+								<a href="#" class="form-collapse"><i class="fa fa-angle-down"></i></a>
 							</div>
 						</div>
 						<div class="form-fieldset-body">
@@ -144,6 +144,12 @@
 									<iframe id="scandocPdfContent"></iframe>
 								</div>
 								<div id="differenceDiv">
+									<div id="pdfToggle">
+										<div class="">
+											
+										</div>
+										<i class="iconfont icon-preview"></i>
+									</div>
 									<div class="differenceTitle">
 										验证日期:<span id="verifyData"></span>
 										<span class="floatR">共有<span id="differenceNumber" class="mLR5">0</span>项不符</span>
@@ -198,9 +204,7 @@
 							</div>
 						</div>
 						<div class="form-fieldset-body">
-							<div id="">
-								
-							</div>
+							<div id="differenceRecordContent"></div>
 							<!--<div class="form-fieldset">
 								<div class="form-fieldset-title">
 									<span class="diffVersion">版本号：1</span>

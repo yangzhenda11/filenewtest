@@ -1,11 +1,11 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 console.log(parm);
-var contractId = parm.contractId;
+var verifyId = parm.verifyId;
 
 //系统的全局变量获取
 var config = top.globalConfig;
-console.log(config);
+//console.log(config);
 var serverPath = config.serverPath;
 
 //全局变量
@@ -25,7 +25,7 @@ $(function() {
 		//固定操作按钮在70px的高度
 		//App.fixToolBars("toolbarBtnContent", 70);
 	}
-	var verifyId = 1;
+	//获取合同基本信息
 	getScanValidationInfo(verifyId);	
 })
 /*
@@ -35,49 +35,168 @@ function getScanValidationInfo(verifyId){
 	var postData = {
 		verifyId : verifyId
 	}
-	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId?verifyId="+verifyId, "post", "", successCallback);
+	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		console.log(result);
-	}
-	//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
-	
-	var isDifferences = true;
-	var verifyNumber = 2;
-	
-	validationResultView(isDifferences,verifyNumber);
-	if(isDifferences){
-		setTbodyValue();
-		if(verifyNumber > 1){
-			
+		console.log(data);
+		var verifyState = "";
+		if(data.verifyStatus == 1){
+			verifyState = "草稿";
+		}else if(data.verifyStatus == 2){
+			verifyState = "审批中";
+		}else if(data.verifyStatus == 3){
+			verifyState = "生效";
+		}else if(data.verifyStatus == 4){
+			verifyState = "失效";
+		}
+		$("#verifyState").text(verifyState);
+		$("#contratVersion").text(data.verifyVersion);
+		//判断是否有差异
+		if(data.verifyDiffCount == null || data.verifyDiffCount == "" || data.verifyDiffCount == undefined){
+			var isDifferences = false;
+		}else{
+			var isDifferences = true;
+		};
+		//设值展现形式
+		validationResultView(isDifferences);
+//		var executeDeptName = data.executeDeptName == null || data.executeDeptName == undefined ? "" :  data.executeDeptName;
+		$("#contractNumber").val(data.contractNumber);
+		$("#executeDeptName").val(data.executeDeptName);
+		$("#contractName").val(data.contractName);
+		$("#undertakeName").val(data.undertakeName);
+		$("#undertakePhone").val(data.undertakePhone);
+    	$("#undertakeMobile").val(data.undertakeMobile);
+		$("#otherPartyName").val(data.otherPartyName);
+    	$("#ourPartyName").val(data.ourPartyName);
+		//pdf URL设值
+		//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
+		var textPdf = "contract1.pdf";
+		var scandocPdf = "contract2.pdf";
+		//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		//若有差异查询差异记录
+		if(isDifferences){
+			getDifferenceRecord(data.contractId)
 		}
 	}
-	var textPdf = "contract1.pdf";
-	var scandocPdf = "contract2.pdf";
-	//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-	//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 }
 /*
- * 加载右侧差异项的列表的tbody
+ * 若有版本差异记录获取版本差异
  */
-function setTbodyValue(data){
-	var html = "";
-	for(var i = 0; i < 20; i++){
-		html += '<tr>'+
-				'<td>' + i + '</td>'+
-				'<td>合同定稿正文测试</td>'+
-				'<td>正文扫描件测试</td>'+
-				'</tr>'
+function getDifferenceRecord(contractId){
+	var postData = {
+		contractId : contractId
 	}
-	$("#differenceTbody").html(html);
+	App.formAjaxJson(serverPath + "sysScanValidation/getVerifyDiffId", "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		console.log(data);
+		if(data.length == 0){
+			layer.alert("当前验证有差异，暂未获取到差异记录",{icon:2});
+			return false;
+		};
+		//加载右侧差异项的列表的tbody及差异说明
+		setDifferenceInfo(data[0]);
+		if(data.length > 1){
+			$("#differencesRecord").removeClass("hidden");
+			//加载差异记录的列表及差异说明
+			setDifferenceRecord(data);
+		}else{
+			$("#differencesRecord").remove();
+		}
+	}
+}
+/*
+ * 加载右侧差异项的列表的tbody及差异说明
+ */
+function setDifferenceInfo(data){
+	$("#verifyData").text(data.verifyDate);
+	var verifyDiffCount = data.verifyDiffCount == null || data.verifyDiffCount == undefined ? 0 : data.verifyDiffCount;
+	$("#differenceNumber").text(verifyDiffCount);
+	var tSBusiProcessInfoVo = data.tSBusiProcessInfoVo;
+	var verifyDiffVo = data.verifyDiffVo;
+	if(tSBusiProcessInfoVo.length == 0 && parm.pageType == 2){
+		$("#differencesThat").remove();
+	}else{
+		if(tSBusiProcessInfoVo.length > 0){
+			var thatItemHtml = "";
+			for(var i = tSBusiProcessInfoVo.length - 1; i >= 0; i--){
+				thatItemHtml += creatThatItemHtml(tSBusiProcessInfoVo[i]);
+			}
+			$("#thatItemContent").html(thatItemHtml);
+		};
+		var differenceTbodyHtml = "";
+		for(var k = 0; k < verifyDiffVo.length; k++){
+			differenceTbodyHtml += creatDiffTbodyHtml(verifyDiffVo[k],k)
+		}
+		$("#differenceTbody").html(differenceTbodyHtml);
+	}
+}
+/*
+ * 生成消息项
+ */
+function creatThatItemHtml(data){
+	var thatItemTitle = data.createdType == 2 ? "承办领导" : "承办人";
+	var thatItemContent = data.pinfoContent;
+	var thatItemFooter = data.orgName + "：" + data.createdName + "<span class='marL30'>" + data.ctreatedDate;
+	var html = '<div class="col-sm-12 differencesThatItem">'+
+		'<div class="thatItemTitle">'+ thatItemTitle +'</div>'+
+		'<div class="thatItemContent">'+ thatItemContent +'</div>'+
+		'<div class="thatItemFooter">'+ thatItemFooter +'</div>'+
+		'</div>';
+	return html;
+}
+/*
+ * 生成列表项
+ */
+function creatDiffTbodyHtml(data,k){
+	var html = '<tr data-textpageno='+ data.textPageno +' data-textlineno='+ data.textLineno +'>'+
+		'<td>' + (k+1) + '</td>'+
+		'<td>'+ data.textDiff +'</td>'+
+		'<td>'+ data.scandocDiff +'</td>'+
+		'</tr>';
+	return html;
 }
 /*
  * 验证有差异时右侧table的点击事件
  */
 $("#differenceTbody").on("click","tr",function(el){
-	console.log(el)
-	alert("事件委托点击")
+	console.log(this)
+	alert($(this).data("textpageno"));
 })
+/*
+ * 加载差异记录的列表及差异说明
+ */
+function setDifferenceRecord(data){
+	for(var i = 1; i < data.length; i++){
+		var diffInfoItem = data[i];
+		if(diffInfoItem.tSBusiProcessInfoVo.length > 0){
+			var thatItemHtml = "";
+			for(var i = tSBusiProcessInfoVo.length - 1; i >= 0; i--){
+				thatItemHtml += creatThatItemHtml(tSBusiProcessInfoVo[i]);
+			}
+			$("#thatItemContent").html(thatItemHtml);
+		};
+		'<div class="form-fieldset">'+
+			'<div class="form-fieldset-title">'+
+				'<span class="diffVersion">版本号：1</span>'+
+				'<span class="diffValiDate">验证日期：2017年3月21日</span>'+
+				'<span class="diffNum">共有<span class="mLR5">0</span>项不符</span>'+
+				'<div class="form-fieldset-tools"><a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a></div>'+
+			'</div>'+
+			'<div class="form-fieldset-body"><div class="row"><div class="col-sm-12 differencesThatItem">'+
+				'<div class="thatItemTitle">承办人</div>'+
+				'<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>'+
+				'<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div></div>'+
+					'<table class="table table-hover table-bordered table-striped">'+
+						'<thead><tr><th>序号</th><th>合同定稿正文</th><th>正文扫描件</th></tr></thead>'+
+						'<tbody></tbody>'+
+					'</table>'+
+				'</div>'+
+			'</div>'+
+		'</div>';
+	}
+}
 //返回上一页
 function backPage(){
 	window.history.go(-1);
@@ -85,14 +204,11 @@ function backPage(){
 /*
  * 设置验证结果页面展示形式
  */
-function validationResultView(isDifferences,verifyNumber){
+function validationResultView(isDifferences){
 	if(isDifferences){
 		$("#differencesThat").removeClass("hidden");
 		$("#textPdfDiv,#scandocPdfDiv,#differenceDiv").addClass("col-sm-4");
 		$("#scaleContent").css("padding-left","20%");
-		if(verifyNumber > 1){
-			$("#differencesRecord").removeClass("hidden");
-		}
 	}else{
 		$("#textPdfDiv,#scandocPdfDiv").addClass("col-sm-6");
 		$("#differencesThat,#differencesRecord,#differenceDiv").remove();

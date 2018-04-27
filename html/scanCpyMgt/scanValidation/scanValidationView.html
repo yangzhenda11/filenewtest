@@ -43,9 +43,9 @@
 							<span><i class="iconfont icon-layers"></i> 基本信息</span>
 							<div class="contractVInfo">
 								<span>合同验证状态：</span>
-								<span id="verifyState">审批中</span>
+								<span id="verifyState"></span>
 								<span>版本号：</span>
-								<span id="contratVersion">1</span>
+								<span id="contratVersion"></span>
 							</div>
 						</div>
 						<div class="form-fieldset-body">
@@ -89,15 +89,15 @@
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="executeDeptName" class="control-label">我方主体：</label>
+									<label for="ourPartyName" class="control-label">我方主体：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" id="unicomPartyName" disabled="disabled" value="" />
+										<input type="text" class="form-control" id="ourPartyName" disabled="disabled" value="" />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="oppoPartyName" class="control-label">对方主体：</label>
+									<label for="otherPartyName" class="control-label">对方主体：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" id="oppoPartyName" disabled="disabled" value="" />
+										<input type="text" class="form-control" id="otherPartyName" disabled="disabled" value="" />
 									</div>
 								</div>
 							</div>
@@ -112,10 +112,12 @@
 						</div>
 						<div class="form-fieldset-body">
 							<div class="row">
-								<div class="col-sm-12 differencesThatItem">
+								<div id="thatItemContent">
+								<!--<div class="col-sm-12 differencesThatItem">
 									<div class="thatItemTitle">承办人</div>
 									<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>
 									<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div>
+								</div>-->
 								</div>
 								<div class="col-sm-12 paddingLR0 hidden" id="setExplain">
 									<i class="iconfont icon-mi required"></i><span>  填写说明</span>
@@ -143,8 +145,8 @@
 								</div>
 								<div id="differenceDiv">
 									<div class="differenceTitle">
-										验证日期:<span id="verifyData">2018年3月21日</span>
-										<span class="floatR">共有<span id="differenceNumber">10</span>项不符</span>
+										验证日期:<span id="verifyData"></span>
+										<span class="floatR">共有<span id="differenceNumber" class="mLR5">0</span>项不符</span>
 									</div>
 									<div id="differenceTable" >
 										<table class="table table-hover table-bordered table-striped">
@@ -196,36 +198,38 @@
 							</div>
 						</div>
 						<div class="form-fieldset-body">
-							<div class="form-fieldset">
+							<div id="">
+								
+							</div>
+							<!--<div class="form-fieldset">
 								<div class="form-fieldset-title">
-									<span> 版本号1</span>
+									<span class="diffVersion">版本号：1</span>
+									<span class="diffValiDate">验证日期：2017年3月21日</span>
+									<span class="diffNum">共有<span class="mLR5">0</span>项不符</span>
 									<div class="form-fieldset-tools">
 										<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 									</div>
 								</div>
 								<div class="form-fieldset-body">
 									<div class="row">
-										<div class="col-sm-12">
-											
+										<div class="col-sm-12 differencesThatItem">
+											<div class="thatItemTitle">承办人</div>
+											<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>
+											<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div>
 										</div>
+										<table class="table table-hover table-bordered table-striped">
+											<thead>
+												<tr>
+													<th>序号</th>
+													<th>合同定稿正文</th>
+													<th>正文扫描件</th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
 									</div>
 								</div>
-							</div>
-							<div class="form-fieldset">
-								<div class="form-fieldset-title">
-									<span> 版本号2</span>
-									<div class="form-fieldset-tools">
-										<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
-									</div>
-								</div>
-								<div class="form-fieldset-body">
-									<div class="row">
-										<div class="col-sm-12">
-											
-										</div>
-									</div>
-								</div>
-							</div>
+							</div>-->
 						</div>
 					</div>
 				</div>

@@ -40,6 +40,10 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
             formData.forEach(function (e) {
                 d[e.name] = e.value.trim();
             });
+            if(d.verifyStatus == 0 || d.verifyStatus == undefined){
+            	d.verifyStatus = "";
+            };
+            console.log(d);
             return d;
         }
     },
@@ -53,7 +57,8 @@ App.initDataTables('#getScanValidationList', "#submitBtn", {
         },
         {"data": null,"title": "合同编号",
         	render: function(data, type, full, meta) {
-				return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.contractId + '\')">' + data.contractNumber + '</a>';
+        		console.log(data);
+				return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
 			}
         },
         {"data": "contractName","title": "合同名称"},
@@ -90,10 +95,22 @@ function listScanValidationInfo(retainPaging) {
 }
 /*******************************进行分页查询数据-end******************************************* */
 /*
+ * 扫描件是否验证点击判断
+ */
+$("input[name=optionsRadiosinline]").on("click",function(){
+	if($(this).val() == 0){
+		$("#startValidation").removeClass("hidden");
+		$("#verifyStatus").val(0).attr("disabled","").trigger("change");
+	}else{
+		$("#startValidation").addClass("hidden");
+		$("#verifyStatus").val(3).removeAttr("disabled").trigger("change");
+	}
+})
+/*
  * 跳转到验证页面
  */
 //跳转到上传页面
-function jumpScanValidationView(contractId){
-	var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&contractId="+contractId;
+function jumpScanValidationView(verifyId){
+	var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&verifyId="+verifyId;
 	App.changePresentUrl(src);
 }

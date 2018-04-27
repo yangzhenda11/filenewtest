@@ -57,7 +57,7 @@ function verifyProcessTrue() {
                 return meta.row + 1;
             }
             },
-            {"data": null,"title": "合同编号12",
+            {"data": null,"title": "合同编号",
                 render: function(data, type, full, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
                 }

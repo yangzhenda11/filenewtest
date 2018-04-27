@@ -668,7 +668,6 @@ var App = function() {
 //			
 //		}
 //	};
-	//* END:CORE HANDLERS *//
 	
 	/*
 	 * 页面上调用要return出来
@@ -858,6 +857,7 @@ var App = function() {
 				options = arguments[1];
 				btn = "";
 			};
+			console.log(options);
 			options = $.extend(true, {
 				"serverSide": true,					//开启服务器请求模式
 				"ordering": false,
@@ -2101,7 +2101,6 @@ var App = function() {
 	};
 }();
 
-<!-- END THEME LAYOUT SCRIPTS -->
 
 jQuery(document).ready(function() {
 	App.init();

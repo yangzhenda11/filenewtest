@@ -3,7 +3,8 @@
  * 人员列表单选页
  * @author ctt
  */
-var tablestr="";
+var tablestr='';
+var dataTableConfig = {};
 var chooseType;
 //alert("1-"+chooseType);
 function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
@@ -12,7 +13,7 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
 	$("#wfprov").val(prov);
 	$("#wfcallbackFun").val(callbackFun);
 	$("#wfstaffSelectType").val(staffSelectType);
-	$("#PandJstaffiframetask").modal('show');
+//	$("#PandJstaffiframetask").modal('show');
 	
 	chooseType=$("#wfstaffSelectType").val();
 	//alert("2-"+chooseType);
@@ -28,6 +29,7 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
 		tablestr="未知"
 	}
 	//alert("3-"+tablestr);
+	setDataTableConfig();
 }
 
 $(function(){
@@ -42,8 +44,8 @@ var btnModel =  '    \
     {{/each}}';
 var template = Handlebars.compile(btnModel);
 
-
-var dataTableConfig={
+function setDataTableConfig(){
+	dataTableConfig={
 		ajax: {
 			"type": "GET",					//请求方式
 			"url": serverPath + 'assignee/searchMap4Page',	//请求地址
@@ -55,7 +57,7 @@ var dataTableConfig={
 				d.orgFullName=$("#searchEfOName").val();
 				d.staffName  =$("#searchEfstaffName").val();
 				d.loginName  =$("#loginname").val();
-				//alert("4-"+tablestr);
+				alert("4-"+tablestr);
 	        	return d;
 			}
 		},           
@@ -67,7 +69,6 @@ var dataTableConfig={
 		
 				"render"    : function (data, type, row, meta) {
 		        	
-					
 						if(chooseType==2){
 							return '<input type="checkbox"  class="checkchild"  value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
 						}else{
@@ -108,6 +109,8 @@ var dataTableConfig={
 	        {"data": "staff_sort","title":"人员排序",className: "text-center","visible" : false}
 	    ]
 	};
+}
+
 /*
  * 表格初始化
  */

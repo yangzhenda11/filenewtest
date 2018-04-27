@@ -25,9 +25,23 @@ $(function() {
 		//固定操作按钮在70px的高度
 		//App.fixToolBars("toolbarBtnContent", 70);
 	}
-//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
-	var textPdf = "contract1.pdf";
-	var scandocPdf = "contract2.pdf";
+	var verifyId = 1;
+	getScanValidationInfo(verifyId);	
+})
+/*
+ * 获取合同基本信息
+ */
+function getScanValidationInfo(verifyId){
+	var postData = {
+		verifyId : verifyId
+	}
+	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId?verifyId="+verifyId, "post", "", successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		console.log(result);
+	}
+	//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
+	
 	var isDifferences = true;
 	var verifyNumber = 2;
 	
@@ -38,10 +52,11 @@ $(function() {
 			
 		}
 	}
-	$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-	$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
-	
-})
+	var textPdf = "contract1.pdf";
+	var scandocPdf = "contract2.pdf";
+	//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+	//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+}
 /*
  * 加载右侧差异项的列表的tbody
  */
@@ -91,7 +106,7 @@ function validationResultView(isDifferences,verifyNumber){
 /*
  * 检测两个文档是否加载完成
  */
-var interval1 = setInterval('loadTextPdf()', 300);
+//var interval1 = setInterval('loadTextPdf()', 300);
 function loadTextPdf() {
 	if(document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval1);
@@ -102,7 +117,7 @@ function loadTextPdf() {
 		});
 	}
 }
-var interval2 = setInterval('loadScandocPdf()', 300);
+//var interval2 = setInterval('loadScandocPdf()', 300);
 function loadScandocPdf() {
 	if(document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval2);

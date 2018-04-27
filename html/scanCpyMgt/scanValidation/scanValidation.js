@@ -165,7 +165,7 @@ function listScanValidationInfo(retainPaging) {
  * 扫描件是否验证点击判断
  */
 $("input[name=verifyProcess]").on("click",function(){
-	if($(this).val() == 3){
+	if($(this).val() == 1){
 		$("#startValidation").removeClass("hidden");
 		$("#verifyStatus").val(0).attr("disabled","").trigger("change");
         verifyProcessFalse();

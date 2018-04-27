@@ -857,7 +857,6 @@ var App = function() {
 				options = arguments[1];
 				btn = "";
 			};
-			console.log(options);
 			options = $.extend(true, {
 				"serverSide": true,					//开启服务器请求模式
 				"ordering": false,

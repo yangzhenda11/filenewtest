@@ -21,7 +21,7 @@ $(function() {
 		$(".page-content,#setExplain").removeClass("hidden");
 	}else{
 		$(".page-content").removeClass("hidden");
-		$("#setExplain").removeClass("hidden");				//展示,*******删除
+		//$("#setExplain").removeClass("hidden");				//展示,*******删除
 		//固定操作按钮在70px的高度
 		//App.fixToolBars("toolbarBtnContent", 70);
 	}
@@ -50,7 +50,8 @@ function getScanValidationInfo(verifyId){
 			verifyState = "失效";
 		}
 		$("#verifyState").text(verifyState);
-		$("#contratVersion").text(data.verifyVersion);
+		var verifyVersion = data.verifyVersion == null ? "暂无版本" : data.verifyVersion;
+		$("#contratVersion").text(verifyVersion);
 		//判断是否有差异
 		if(data.verifyDiffCount == null || data.verifyDiffCount == "" || data.verifyDiffCount == undefined){
 			var isDifferences = false;
@@ -162,7 +163,24 @@ function creatDiffTbodyHtml(data,k){
 $("#differenceTbody").on("click","tr",function(el){
 	console.log(this)
 	alert($(this).data("textpageno"));
+//	var textpageno = $(this).data("textpageno");
+//	document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.page = textpageno;	
+//	pdfApiSearch("textPdfContent",$(this).children().eq(1));
+//	document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.page = textpageno;
+//	pdfApiSearch("scandocPdfContent",$(this).children().eq(2));
 })
+/*
+ * pdf搜索
+ */
+function pdfApiSearch(dom,data){
+	document.getElementById(dom).contentWindow.PDFViewerApplication.findController.executeCommand('find', {
+	    query: data,
+	    phraseSearch: true,
+	    caseSensitive: true,
+	    highlightAll: true,
+	    findPrevious: undefined
+	});
+}
 
 /*
  * 加载差异记录的列表及差异说明
@@ -214,19 +232,32 @@ function backPage(){
  * 设置验证结果页面展示形式
  */
 function validationResultView(isDifferences){
+	var pdfViewHeight = $(".page-content").height() - 10;
 	if(isDifferences){
 		$("#differencesThat").removeClass("hidden");
 		$("#textPdfDiv,#scandocPdfDiv,#differenceDiv").addClass("col-sm-4");
 		$("#scaleContent").css("padding-left","20%");
+		$("#pdfToggle").css("height",pdfViewHeight + 25);
+		$(".squery").on("click",function(){
+			if($(this).data("isFewer")){
+				$("#pdfContent,#scaleContent").removeClass("hidden");
+				$("#differenceDiv").removeClass("col-sm-12").addClass("col-sm-4");
+				$(this).children().removeClass("icon-sanjiaoright").addClass("icon-sanjiaoleft");
+				$(this).data("isFewer",false);
+			}else{
+				$("#pdfContent,#scaleContent").addClass("hidden");
+				$("#differenceDiv").removeClass("col-sm-4").addClass("col-sm-12");
+				$(this).children().removeClass("icon-sanjiaoleft").addClass("icon-sanjiaoright");
+				$(this).data("isFewer",true);
+			}
+		})
 	}else{
 		$("#textPdfDiv,#scandocPdfDiv").addClass("col-sm-6");
 		$("#differencesThat,#differencesRecord,#differenceDiv").remove();
 		$("#scaleContent").css("padding-left","44%");
 	};
-	var pdfViewHeight = $(".page-content").height() - 10;
 	$("#scandocPdfContent,#textPdfContent,#differenceTable").css({"height":pdfViewHeight,"overflow":"auto"});
-	$("#validationResult").removeClass("hidden");
-	
+	$("#validationResult").removeClass("hidden");	
 }
 /*
  * 检测两个文档是否加载完成

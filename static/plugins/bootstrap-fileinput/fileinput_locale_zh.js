@@ -9,7 +9,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 (function ($) {
-    "use strict";
     $.fn.fileinput.locales.es = {
     		fileSingle: '单个文件',
             filePlural: '多个文件',

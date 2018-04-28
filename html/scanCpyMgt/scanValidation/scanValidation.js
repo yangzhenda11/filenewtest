@@ -17,9 +17,18 @@ $("#searchAgentDepartment").click(function(){
 $("#searchOtherSubject").click(function(){
     App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 })
-//$("#otherSubject").on("input",function(){
-//  $(this).data("exactSearch",false);
-//});
+$("#contractType").on("input",function(){
+    $(this).data("exactSearch",false);
+})
+$("#agentStaff").on("input",function(){
+    $(this).data("exactSearch",false);
+})
+$("#agentDepartment").on("input",function(){
+    $(this).data("exactSearch",false);
+})
+$("#otherSubject").on("input",function(){
+    $(this).data("exactSearch",false);
+})
 /** ----------------------------查询弹框的js-end-------------------------------------- */
 /*******************************进行分页查询数据-start******************************************* */
 /*
@@ -27,7 +36,7 @@ $("#searchOtherSubject").click(function(){
  */
 verifyProcessTrue();
 function verifyProcessTrue() {
-    App.initDataTables('#getScanValidationList', "#submitBtn", {
+    App.initDataTables('#getScanValidationListTrue', "#submitBtn", {
         "destroy": true,
         ajax: {
             "type": "POST",
@@ -40,8 +49,29 @@ function verifyProcessTrue() {
                 formData.forEach(function (e) {
                     d[e.name] = e.value.trim();
                 });
-                if(d.verifyStatus == 0 || d.verifyStatus == undefined){
-                    d.verifyStatus = "";
+                if($("#contractType").data("exactSearch")){
+                    d.contractTypeId = $("#contractType").data("typeId");
+                }else{
+                    d.contractTypeId = "";
+                    d.contractType = $("#contractType").val();
+                };
+                if($("#agentStaff").data("exactSearch")){
+                    d.undertakeNameId = $("#agentStaff").data("id");
+                }else{
+                    d.undertakeNameId = "";
+                    d.undertakeName = $("#agentStaff").val();
+                };
+                if($("#agentDepartment").data("exactSearch")){
+                    d.executeDeptNameId = $("#agentDepartment").data("orgId");
+                }else{
+                    d.executeDeptNameId = "";
+                    d.executeDeptName = $("#agentDepartment").val();
+                };
+                if($("#otherSubject").data("exactSearch")){
+                    d.partyNameId = $("#otherSubject").data("partnerId");
+                }else{
+                    d.partyNameId = "";
+                    d.partyName = $("#otherSubject").val();
                 };
                 return d;
             }
@@ -54,18 +84,18 @@ function verifyProcessTrue() {
                 return meta.row + 1;
             }
         },
-            {"data": null,"title": "合同编号","className": "text-center",
+            {"data": null,"title": "合同编号","className":"whiteSpaceNormal","width":"20%",
                 render: function(data, type, full, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
                 }
             },
-            {"data": "contractName","className": "text-center","title": "合同名称"},
-            {"data": "typeName","className": "text-center","title": "合同类型"},
-            {"data": "ourPartyName","className": "text-center","title": "我方主体"},
-            {"data": "otherPartyName","className": "text-center","title": "对方主体"},
-            {"data": "executeDeptName","className": "text-center","title": "承办部门"},
-            {"data": "undertakeName","className": "text-center","title": "承办人"},
-            {"data": "verifyStatus","className": "text-center","title": "合同验证状态",
+            {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"35%"},
+            {"data": "typeName","title": "合同类型"},
+            {"data": "ourPartyName","title": "我方主体"},
+            {"data": "otherPartyName","title": "对方主体"},
+            {"data": "executeDeptName","title": "承办部门"},
+            {"data": "undertakeName","title": "承办人"},
+            {"data": "verifyStatus","title": "合同验证状态",
                 "render": function(data, type, full, meta) {
                     if (data == 903010) {
                         return '草稿';
@@ -86,7 +116,7 @@ function verifyProcessTrue() {
 }
 
 function verifyProcessFalse() {
-    App.initDataTables('#getScanValidationList', "#submitBtn", {
+    App.initDataTables('#getScanValidationListFalse', "#submitBtn", {
         "destroy": true,
         ajax: {
             "type": "POST",
@@ -100,6 +130,30 @@ function verifyProcessFalse() {
                     d[e.name] = e.value.trim();
                 });
                 d.verifyStatus = "90300";
+                if($("#contractType").data("exactSearch")){
+                    d.contractTypeId = $("#contractType").data("typeId");
+                }else{
+                    d.contractTypeId = "";
+                    d.contractType = $("#contractType").val();
+                };
+                if($("#agentStaff").data("exactSearch")){
+                    d.undertakeNameId = $("#agentStaff").data("id");
+                }else{
+                    d.undertakeNameId = "";
+                    d.undertakeName = $("#agentStaff").val();
+                };
+                if($("#agentDepartment").data("exactSearch")){
+                    d.executeDeptNameId = $("#agentDepartment").data("orgId");
+                }else{
+                    d.executeDeptNameId = "";
+                    d.executeDeptName = $("#agentDepartment").val();
+                };
+                if($("#otherSubject").data("exactSearch")){
+                    d.partyNameId = $("#otherSubject").data("partnerId");
+                }else{
+                    d.partyNameId = "";
+                    d.partyName = $("#otherSubject").val();
+                };
                 return d;
             }
         },
@@ -119,14 +173,14 @@ function verifyProcessFalse() {
                     return meta.row + 1;
                 }
             },
-            {"data": "contractNumber","title": "合同编号","className": "text-center",},
-            {"data": "contractName","className": "text-center","title": "合同名称"},
-            {"data": "typeName","className": "text-center","title": "合同类型"},
-            {"data": "ourPartyName","className": "text-center","title": "我方主体"},
-            {"data": "otherPartyName","className": "text-center","title": "对方主体"},
-            {"data": "executeDeptName","className": "text-center","title": "承办部门"},
-            {"data": "undertakeName","className": "text-center","title": "承办人"},
-            {"data": "verifyStatus","className": "text-center","title": "合同验证状态",
+            {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"25%"},
+            {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
+            {"data": "typeName","title": "合同类型"},
+            {"data": "ourPartyName","title": "我方主体"},
+            {"data": "otherPartyName","title": "对方主体"},
+            {"data": "executeDeptName","title": "承办部门"},
+            {"data": "undertakeName","title": "承办人"},
+            {"data": "verifyStatus","title": "合同验证状态",
                 "render": function(data, type, full, meta) {
                     if (data == 903010) {
                         return '草稿';
@@ -148,7 +202,11 @@ function verifyProcessFalse() {
 /*******************************进行分页查询数据-end******************************************* */
 
 function listScanValidationInfo(retainPaging) {
-    var table = $('#getScanValidationList').DataTable();
+    if($("#scanValidationListTrue").hasClass("hidden")){
+        var table = $('#getScanValidationListFalse').DataTable();
+    }else {
+        var table = $('#getScanValidationListTrue').DataTable();
+    }
     if(retainPaging) {
         table.ajax.reload(null, false);
     } else {
@@ -161,11 +219,13 @@ function listScanValidationInfo(retainPaging) {
  */
 $("input[name=verifyProcess]").on("click",function(){
     if($(this).val() == 1){
-        $("#startValidation").removeClass("hidden");
+        $("#scanValidationListTrue").addClass("hidden");
+        $("#startValidation,#scanValidationListFalse").removeClass("hidden");
         $("#verifyStatus").val(9030).attr("disabled","").trigger("change");
         verifyProcessFalse();
     }else{
-        $("#startValidation").addClass("hidden");
+        $("#scanValidationListTrue").removeClass("hidden");
+        $("#startValidation,#scanValidationListFalse").addClass("hidden");
         $("#verifyStatus").val(903030).removeAttr("disabled").trigger("change");
         verifyProcessTrue();
     }

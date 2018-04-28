@@ -159,8 +159,8 @@ function getScanValidationInfo(verifyId){
 		$("#undertakeName").val(data.undertakeName);
 		$("#mobilPhone").val(data.mobilPhone);
     	$("#phone").val(data.phone);
-		$("#otherPartyName").val(data.otherPartyName);
-    	$("#ourPartyName").val(data.ourPartyName);
+		$("#otherPartyName").text(data.otherPartyName);
+    	$("#ourPartyName").text(data.ourPartyName);
 		//pdf URL设值
 		//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 		var textPdf = "contract1.pdf";

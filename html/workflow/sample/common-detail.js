@@ -12,7 +12,7 @@ $(function(){
  * author:ctt
  * day:2018-0416-21
  */
-function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment){
+function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,iscandidate){
 	
 	//alert(processDefinitionKey + "_" + assignee + "_" + taskDefinitionKey);
 /*	业务侧推进流程需要带着表单数据的，参考以下方式和流程参数拼接在一起。
@@ -30,7 +30,8 @@ function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment){
 		"taskDefinitionKey" : taskDefinitionKey,//下一步环节code，流程回调带过来的，业务侧无需赋值。
 		"comment":comment, //办理意见，流程回调带过来的，业务侧无需赋值。
 		"title":$("#taskTitle").val(),// 待办标题，需要业务侧提供，一般为业务名称，需求为需求名称。
-		"businessKey":$("#taskBusinessKey").val()//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
+		"businessKey":$("#taskBusinessKey").val(),//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
+		"iscandidate":iscandidate
 	}, function(data) {
 		alert(data.sign);
 		// 成功后回调模态窗口关闭方法
@@ -178,4 +179,24 @@ function pushReceiveTask(){
 function resetStaffSelectType(){
 	var staffSelectType=$("#staffSelectType").val();
 	setStaffSelectType(staffSelectType);
+}
+
+function applyCandidateTask(){
+	
+	var taskBusinessKey=$("#taskBusinessKey").val();
+	if(taskBusinessKey.length==0){
+		layer.msg("请填写业务主键！");
+		return;
+	}
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
+	modal_applyCandidateTask(flowParam);
+	
+}
+function modal_applyCandidateTask(flowParam){
+	$.post(serverPath + "business/applyCandidateTask", flowParam, function(data) {
+		layer.msg(data.sign);
+		
+		// 成功后回调模态窗口关闭方法
+		parent.modal_close();   
+	});
 }

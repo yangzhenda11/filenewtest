@@ -84,9 +84,15 @@ function startProcess(processDefinitionKey, assignee, taskDefinitionKey){
         layer.msg('请填写处理意见！',{time:2000});
         return;
     }
+    var iscandidate=$("#linkForStart").val().toString().split(",")[3];
+    if(iscandidate == null || iscandidate.length == 0){
+    	layer.msg('流程异常，无法识别下一步环节是否是需要抢单环节，请联系管理员！',{time:2000});
+    	return;
+    }
+    
 	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
 			// 调用发起方法
-			modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment);
+			modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,iscandidate);
 			layer.close(index);
 		})
 }
@@ -109,9 +115,15 @@ function closeModalForStart(){
 function selectstaff(){
 	var flowKey = $("#processDefinitionKey").val();
     var linkcode = $("#linkForStart").val().toString().split(",")[0];
+    //下一步要提交的环节是否是候选人环节
+    var idcandidate=$("#linkForStart").val().toString().split(",")[3];
     var prov=$("#wprov").val();
 	var staffSelectType=$("#wStaffSelectType").val();
 	var callbackFun='getassignee';
+	if(idcandidate==1){
+		layer.msg("因下一步环节是候选人抢单环节，所以强制切换选人模式为多选！");
+		staffSelectType=2;
+	}
 	if(staffSelectType==2){
 		callbackFun="getassignees";
 	}

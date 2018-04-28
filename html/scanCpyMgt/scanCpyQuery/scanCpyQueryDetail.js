@@ -13,7 +13,7 @@ $(function() {
 })
 
 function getContractInfo(){
-	var url = serverPath + 'contractUpload/getContractById?id=113';
+	var url = serverPath + 'contractUpload/getContractById?id='+id;
 	$.ajax({
 		url : url,
         type : "post",
@@ -41,7 +41,12 @@ App.initDataTables('#contractTextTable', {
     },
     "columns": [
     	{"data": "","title": "序号"},
-    	{"data": "displayName","title": "文件列表"},
+    	{"data": null,"title": "文件列表",
+            render: function(data, type, full, meta) {
+                //return '<a href="javascript:void(0);" onclick="showScan(\'' + data + '\')">'+full.displayName+'</a>';
+                return '<a href="/contractUpload/downloadS3?key1=' + full.storeIdDisplay + '">'+full.displayName+'</a>';
+            }
+        },
     	{
 	        "data": "ctreatedDate",
 	        "title": "上传日期",
@@ -49,18 +54,7 @@ App.initDataTables('#contractTextTable', {
 	            return formatDateTime(data);
 	        }
 	    },
-    	{"data": "storeIdDisplay","title": "存储id"},
     	{"data": "createdByName","title": "上传人"},
-    	{
-			"data": "key1",
-			"className": "text-center",
-			"title": "操作",
-			"render": function(data, type, full, meta) {
-				//console.log(full);
-				var result = '<a href="/contractUpload/downloadS3?key1=' + full.storeIdDisplay + '">下载</a>';
-				return result;
-			}
-		}
     ],
     "fnRowCallback" : function(nRow, aData, iDisplayIndex){
         $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
@@ -79,7 +73,11 @@ App.initDataTables('#contractAttachmentTable', {
     },
     "columns": [
     	{"data": "","title": "序号"},
-    	{"data": "displayName","title": "文件列表"},
+    	{"data": null,"title": "文件列表",
+            render: function(data, type, full, meta) {
+                return '<a href="/contractUpload/downloadS3?key1=' + full.storeIdDisplay + '">'+full.displayName+'</a>';
+            }
+        },
     	{
 	        "data": "ctreatedDate",
 	        "title": "上传日期",
@@ -87,18 +85,7 @@ App.initDataTables('#contractAttachmentTable', {
 	            return formatDateTime(data);
 	        }
 	    },
-	    {"data": "storeIdDisplay","title": "存储id"},
     	{"data": "createdByName","title": "上传人"},
-    	{
-			"data": "key1",
-			"className": "text-center",
-			"title": "操作",
-			"render": function(data, type, full, meta) {
-				console.log(full.storeIdDisplay);
-				var result = '<a href="/contractUpload/downloadS3?key1=' + full.storeIdDisplay + '">下载</a>';
-				return result;
-			}
-		}
     ],
     "fnRowCallback" : function(nRow, aData, iDisplayIndex){
         $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
@@ -120,3 +107,27 @@ function formatDateTime(inputTime,type) {
 	d = d < 10 ? ('0' + d) : d;
 	return y + '-' + m + '-' + d;
 }
+
+//返回上一页
+function backPage(){
+	window.history.go(-1);
+}
+
+/*function showScan(data){
+	$("#imageModal").modal("show");
+	var url = serverPath + 'contractUpload/downloadS3Url';
+	$.ajax({
+        url : url,
+        type : "post",
+        data : {key:data},
+        success : function(data) {
+            if (data != "") {
+            	console.log(data.data);
+            	$('#imgFile').show();
+                $('#imgFile').attr("src",data.data);
+                $('#imgFile').attr("width","256px");
+                $('#imgFile').attr("height","256px");
+            }
+        }
+    });
+}*/

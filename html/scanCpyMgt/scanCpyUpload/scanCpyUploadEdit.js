@@ -78,7 +78,7 @@ App.initDataTables('#scanCpyloadTable', {
         "type": "POST",
         "url": serverPath+'contractUpload/listFile',
         "data": function(d) {
-            d.id = 113;
+            d.id = id;
             return d;
         }
     },
@@ -92,7 +92,7 @@ App.initDataTables('#scanCpyloadTable', {
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var btnArray = new Array();
-                    btnArray.push({ "name": "添加", "fn": "addAttachment('" + data.attachId + "')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "添加", "fn": "addAttachment('" + data.attachId + "',this)","icon":"iconfont icon-add"});
                     btnArray.push({ "name": "查看", "fn": "test()","icon":"iconfont icon-add"});
                     btnArray.push({ "name": "删除", "fn": "test()","icon":"iconfont icon-add"});
                     return App.getDataTableBtn(btnArray);
@@ -109,7 +109,7 @@ App.initDataTables('#scanCpyloadTable', {
 });
 
 var array=[];
-function addAttachment(attachId){
+function addAttachment(attachId,el){
 	var setting = {
 		title : "文件上传",
 		url:'contractUpload/uploadFile',	//上传地址，非空
@@ -127,6 +127,7 @@ function addAttachment(attachId){
 		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
+	$(el).nextAll()).hide();
 }
 
 function test(){
@@ -188,7 +189,8 @@ function fileUpload(){
 	};
 	function queryCallback(){//点击确定执行的函数，必传。
 		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
-		console.log(fileInfo);
+		console.log(fileInfo[0].data);
+		console.log(fileInfo[0].data.bucketName);
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			result = fileInfo[0].data;
@@ -231,21 +233,73 @@ function delContractText2(){
 }
 
 function saveContract(){
-	var url = serverPath + 'contractUpload/saveContract';
-	$.ajax({
-		url : url,
-        type : "post",
-        data:{"fileEntity":JSON.stringify(result)},
-        success : function(data) {
-       		/*if(data.status=='1'){
-       			$("#uploadFile_div1").show();
-    			$("#uploadFile_div2").hide();		
-       		}else if(data.status=='0'){
-       			alert(data.message);
-       		}*/
-        }
-	});
+	var arrayList=new Array();
+	if(JSON.stringify(result) == "{}"){
+		if(array.length==0){
+			alert("没有上传任何文件！");
+		}else{
+       		console.log(JSON.stringify(array));
+       		$.ajax({
+				url : serverPath + 'contractUpload/saveAttachment',
+        		type : "post",
+        		data:{"strArray":JSON.stringify(array)},
+        			success : function(data) {
+       				if(data.status=='1'){
+       					alert("保存成功！");
+       				}else if(data.status=='0'){
+       					alert(data.message);
+       				}
+        		}	
+			});
+		}
+	}else{
+		if(array.length==0){
+			var jsonStr = JSON.stringify(result);
+			$.ajax({
+				url : serverPath + 'contractUpload/saveContract',
+        		type : "post",
+        		data:{"jsonStr":jsonStr,"id":id},
+        		success : function(data) {
+       				if(data.status=='1'){
+       					alert(data.message);
+       				}else if(data.status=='0'){
+       					alert(data.message);
+       				}
+       			}
+			});
+		}else{
+			var jsonStr = JSON.stringify(result);
+			$.ajax({
+				url : serverPath + 'contractUpload/saveContract',
+        		type : "post",
+        		data:{"jsonStr":jsonStr,"id":id},
+        		success : function(data) {
+       				if(data.status=='1'){
+       					for(var i=0;i<array.length;i++){
+       						var str = JSON.stringify(array[i]);
+							arrayList.push(str);
+       					}
+       					$.ajax({
+							url : serverPath + 'contractUpload/saveAttachment',
+        					type : "post",
+        					data:{"strArray":arrayList},
+        					success : function(data) {
+       							if(data.status=='1'){
+       								alert("保存成功！");
+       							}else if(data.status=='0'){
+       								alert(data.message);
+       							}
+        					}	
+						});
+       				}else if(data.status=='0'){
+       					alert(data.message);
+       				}
+        		}
+			});
+		}
+	}
 }
+
 
 /**
  * 工作流相关

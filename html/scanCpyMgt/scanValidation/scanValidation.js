@@ -89,13 +89,13 @@ function verifyProcessTrue() {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
                 }
             },
-            {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-            {"data": "typeName","title": "合同类型"},
-            {"data": "ourPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"20%"},
-            {"data": "otherPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"20%"},
-            {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"20%"},
-            {"data": "undertakeName","title": "承办人"},
-            {"data": "verifyStatus","title": "合同验证状态",
+            {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"35%"},
+            {"data": "typeName","title": "合同类型","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "ourPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "otherPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "verifyStatus","title": "合同验证状态","className":"whiteSpaceNormal","width":"10%",
                 "render": function(data, type, full, meta) {
                     if (data == 903010) {
                         return '草稿';
@@ -113,7 +113,9 @@ function verifyProcessTrue() {
             {"data": "verifyDate","className": "text-center","title": "验证日期",
             	render: function(data, type, full, meta) {
 	                return App.formatDateTime(data,"yyyy-MM-dd");
-	            }}
+            	}
+        	}
+
         ]
     });
 }
@@ -161,29 +163,27 @@ function verifyProcessFalse() {
             }
         },
         "columns": [
-            {"className": "text-center",
-                "title":'<label class="ui-checkbox"><input id="checkchild" type="checkbox" /><span></span> </label>',
-                "data": "contractId",
+            {"title":'<label class="ui-checkbox"><input id="checkchild" type="checkbox" /><span></span> </label>',
+                "data": "contractId","className":"whiteSpaceNormal","width":"3%",
                 "render": function (data, type, full, meta) {
                     return '<label class="ui-checkbox"><input id="checkchild" type="checkbox" value="' + data + '" /><span></span> </label>';
                 }
             },
-            {
-                "data": "contractNumber",
-                "className": "text-center",
+            {"data": "contractNumber","className":"whiteSpaceNormal","width":"3%",
+                "className":"whiteSpaceNormal","width":"5%",
                 "title": "序号",
                 "render": function(data, type, full, meta) {
                     return meta.row + 1;
                 }
             },
-            {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"25%"},
+            {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"10%"},
             {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-            {"data": "typeName","title": "合同类型"},
-            {"data": "ourPartyName","title": "我方主体"},
-            {"data": "otherPartyName","title": "对方主体"},
-            {"data": "executeDeptName","title": "承办部门"},
-            {"data": "undertakeName","title": "承办人"},
-            {"data": "verifyStatus","title": "合同验证状态",
+            {"data": "typeName","title": "合同类型","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "ourPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "otherPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width":"10%"},
+            {"data": "verifyStatus","title": "合同验证状态","className":"whiteSpaceNormal","width":"10%",
                 "render": function(data, type, full, meta) {
                     if (data == 903010) {
                         return '草稿';
@@ -197,7 +197,7 @@ function verifyProcessFalse() {
                         return "";
                     }
                 }},
-            {"data": "verifyVersion","className": "text-center","title": "版本号"}
+            {"data": "verifyVersion","className":"whiteSpaceNormal","width":"10%","title": "版本号"}
         ]
     });
 }

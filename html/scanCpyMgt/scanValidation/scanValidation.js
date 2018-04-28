@@ -14,9 +14,6 @@ $("#searchAgentStaff").click(function(){
 $("#searchAgentDepartment").click(function(){
     App.getCommonModal("agentDepartment","#agentDepartment","orgName","orgId");
 })
-$("#searchContractData").click(function(){
-    App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber","contractId");
-})
 $("#searchOtherSubject").click(function(){
     App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 })
@@ -70,13 +67,13 @@ function verifyProcessTrue() {
             {"data": "undertakeName","className": "text-center","title": "承办人"},
             {"data": "verifyStatus","className": "text-center","title": "合同验证状态",
                 "render": function(data, type, full, meta) {
-                    if (data == 1) {
+                    if (data == 903010) {
                         return '草稿';
-                    } else if(data == 2){
+                    } else if(data == 903020){
                         return '审批中';
-                    }else if(data == 3){
+                    }else if(data == 903030){
                         return '生效';
-                    }else if(data == 4){
+                    }else if(data == 903040){
                         return '失效';
                     }else{
                         return "";
@@ -102,9 +99,7 @@ function verifyProcessFalse() {
                 formData.forEach(function (e) {
                     d[e.name] = e.value.trim();
                 });
-                if(d.verifyStatus == 0 || d.verifyStatus == undefined){
-                    d.verifyStatus = "";
-                };
+                d.verifyStatus = "90300";
                 return d;
             }
         },
@@ -133,13 +128,13 @@ function verifyProcessFalse() {
             {"data": "undertakeName","className": "text-center","title": "承办人"},
             {"data": "verifyStatus","className": "text-center","title": "合同验证状态",
                 "render": function(data, type, full, meta) {
-                    if (data == 1) {
+                    if (data == 903010) {
                         return '草稿';
-                    } else if(data == 2){
+                    } else if(data == 903020){
                         return '审批中';
-                    }else if(data == 3){
+                    }else if(data == 903030){
                         return '生效';
-                    }else if(data == 4){
+                    }else if(data == 903040){
                         return '失效';
                     }else{
                         return "";
@@ -167,11 +162,11 @@ function listScanValidationInfo(retainPaging) {
 $("input[name=verifyProcess]").on("click",function(){
     if($(this).val() == 1){
         $("#startValidation").removeClass("hidden");
-        $("#verifyStatus").val(0).attr("disabled","").trigger("change");
+        $("#verifyStatus").val(9030).attr("disabled","").trigger("change");
         verifyProcessFalse();
     }else{
         $("#startValidation").addClass("hidden");
-        $("#verifyStatus").val(3).removeAttr("disabled").trigger("change");
+        $("#verifyStatus").val(903030).removeAttr("disabled").trigger("change");
         verifyProcessTrue();
     }
 })

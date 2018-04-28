@@ -589,11 +589,11 @@ var App = function() {
 			}
 			pbody.slideToggle(times);
 			meicon.toggleClass(icon1).toggleClass(icon2);
-			if(el == '.page-search-more a') {
-				var panelSearch = me.closest('.page-search');
-				var resetBtn = panelSearch.find('.page-search-action').find('button[type=reset]');
-				resetBtn.toggleClass('hidden');
-			}
+//			if(el == '.page-search-more a') {
+//				var panelSearch = me.closest('.page-search');
+//				var resetBtn = panelSearch.find('.page-search-action').find('button[type=reset]');
+//				resetBtn.toggleClass('hidden');
+//			}
 		})
 	}
 

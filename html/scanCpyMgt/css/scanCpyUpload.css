@@ -91,6 +91,7 @@
   padding: 6px 12px;
   border-radius: 3px;
   color: #767676;
+  min-height: 32px;
 }
 /*
  * 差异记录

@@ -152,15 +152,16 @@ function getScanValidationInfo(verifyId){
 		};
 		//设值展现形式
 		validationResultView(isDifferences);
-//		var executeDeptName = data.executeDeptName == null || data.executeDeptName == undefined ? "" :  data.executeDeptName;
+		var otherPartyName = data.otherPartyName == null || data.otherPartyName == undefined ? "" :  data.otherPartyName;
+		var ourPartyName = data.ourPartyName == null || data.ourPartyName == undefined ? "" :  data.ourPartyName;
 		$("#contractNumber").val(data.contractNumber);
 		$("#executeDeptName").val(data.executeDeptName);
 		$("#contractName").val(data.contractName);
 		$("#undertakeName").val(data.undertakeName);
 		$("#mobilPhone").val(data.mobilPhone);
     	$("#phone").val(data.phone);
-		$("#otherPartyName").text(data.otherPartyName);
-    	$("#ourPartyName").text(data.ourPartyName);
+		$("#otherPartyName").text(otherPartyName);
+    	$("#ourPartyName").text(ourPartyName);
 		//pdf URL设值
 		//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 		var textPdf = "contract1.pdf";
@@ -221,12 +222,12 @@ function setDifferenceInfo(data){
 			}
 			$("#thatItemContent").html(thatItemHtml);
 		};
-		var differenceTbodyHtml = "";
-		for(var k = 0; k < verifyDiffVo.length; k++){
-			differenceTbodyHtml += creatDiffTbodyHtml(verifyDiffVo[k],k)
-		}
-		$("#differenceTbody").html(differenceTbodyHtml);
-	}
+	};
+	var differenceTbodyHtml = "";
+	for(var k = 0; k < verifyDiffVo.length; k++){
+		differenceTbodyHtml += creatDiffTbodyHtml(verifyDiffVo[k],k)
+	};
+	$("#differenceTbody").html(differenceTbodyHtml);
 }
 /*
  * 生成消息项
@@ -258,7 +259,7 @@ function creatDiffTbodyHtml(data,k){
  */
 $("#differenceTbody").on("click","tr",function(el){
 	console.log(this)
-	alert($(this).data("textpageno"));
+	alert("textpageno="+$(this).data("textpageno"));
 //	var textpageno = $(this).data("textpageno");
 //	document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.page = textpageno;	
 //	pdfApiSearch("textPdfContent",$(this).children().eq(1));

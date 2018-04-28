@@ -14,9 +14,6 @@ $("#searchAgentStaff").click(function(){
 $("#searchAgentDepartment").click(function(){
     App.getCommonModal("agentDepartment","#agentDepartment","orgName","orgId");
 })
-$("#searchContractData").click(function(){
-    App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber","contractId");
-})
 $("#searchOtherSubject").click(function(){
     App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 })
@@ -56,8 +53,8 @@ function verifyProcessTrue() {
             "render": function(data, type, full, meta) {
                 return meta.row + 1;
             }
-            },
-            {"data": null,"title": "合同编号",
+        },
+            {"data": null,"title": "合同编号","className": "text-center",
                 render: function(data, type, full, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
                 }
@@ -70,20 +67,20 @@ function verifyProcessTrue() {
             {"data": "undertakeName","className": "text-center","title": "承办人"},
             {"data": "verifyStatus","className": "text-center","title": "合同验证状态",
                 "render": function(data, type, full, meta) {
-                if (data == 1) {
-                    return '草稿';
-                } else if(data == 2){
-                    return '审批中';
-                }else if(data == 3){
-                    return '生效';
-                }else if(data == 4){
-                    return '失效';
-                }else{
-                    return "";
-                }
-            }},
+                    if (data == 903010) {
+                        return '草稿';
+                    } else if(data == 903020){
+                        return '审批中';
+                    }else if(data == 903030){
+                        return '生效';
+                    }else if(data == 903040){
+                        return '失效';
+                    }else{
+                        return "";
+                    }
+                }},
             {"data": "verifyVersion","className": "text-center","title": "版本号"},
-            {"data": "ctreatedDateString","className": "text-center","title": "验证日期"}
+            {"data": "verifyDate","className": "text-center","title": "验证日期"}
         ]
     });
 }
@@ -102,25 +99,27 @@ function verifyProcessFalse() {
                 formData.forEach(function (e) {
                     d[e.name] = e.value.trim();
                 });
-                if(d.verifyStatus == 0 || d.verifyStatus == undefined){
-                    d.verifyStatus = "";
-                };
+                d.verifyStatus = "90300";
                 return d;
             }
         },
         "columns": [
             {"className": "text-center",
+                "title":'<label class="ui-checkbox"><input id="checkchild" type="checkbox" /><span></span> </label>',
                 "data": "contractId",
-                "title":"",
                 "render": function (data, type, full, meta) {
                     return '<label class="ui-checkbox"><input id="checkchild" type="checkbox" value="' + data + '" /><span></span> </label>';
                 }
-           },
-            {"data": null,"title": "合同编号","className": "text-center",
-                render: function(data, type, full, meta) {
-                    return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
+            },
+            {
+                "data": "contractNumber",
+                "className": "text-center",
+                "title": "序号",
+                "render": function(data, type, full, meta) {
+                    return meta.row + 1;
                 }
             },
+            {"data": "contractNumber","title": "合同编号","className": "text-center",},
             {"data": "contractName","className": "text-center","title": "合同名称"},
             {"data": "typeName","className": "text-center","title": "合同类型"},
             {"data": "ourPartyName","className": "text-center","title": "我方主体"},
@@ -129,20 +128,19 @@ function verifyProcessFalse() {
             {"data": "undertakeName","className": "text-center","title": "承办人"},
             {"data": "verifyStatus","className": "text-center","title": "合同验证状态",
                 "render": function(data, type, full, meta) {
-                    if (data == 1) {
+                    if (data == 903010) {
                         return '草稿';
-                    } else if(data == 2){
+                    } else if(data == 903020){
                         return '审批中';
-                    }else if(data == 3){
+                    }else if(data == 903030){
                         return '生效';
-                    }else if(data == 4){
+                    }else if(data == 903040){
                         return '失效';
                     }else{
                         return "";
                     }
                 }},
-            {"data": "verifyVersion","className": "text-center","title": "版本号"},
-            {"data": "ctreatedDateString","className": "text-center","title": "验证日期"}
+            {"data": "verifyVersion","className": "text-center","title": "版本号"}
         ]
     });
 }
@@ -162,21 +160,21 @@ function listScanValidationInfo(retainPaging) {
  * 扫描件是否验证点击判断
  */
 $("input[name=verifyProcess]").on("click",function(){
-	if($(this).val() == 3){
-		$("#startValidation").removeClass("hidden");
-		$("#verifyStatus").val(0).attr("disabled","").trigger("change");
+    if($(this).val() == 1){
+        $("#startValidation").removeClass("hidden");
+        $("#verifyStatus").val(9030).attr("disabled","").trigger("change");
         verifyProcessFalse();
-	}else{
-		$("#startValidation").addClass("hidden");
-		$("#verifyStatus").val(3).removeAttr("disabled").trigger("change");
+    }else{
+        $("#startValidation").addClass("hidden");
+        $("#verifyStatus").val(903030).removeAttr("disabled").trigger("change");
         verifyProcessTrue();
-	}
+    }
 })
 /*
  * 跳转到验证页面
  */
 //跳转到上传页面
 function jumpScanValidationView(verifyId){
-	var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&verifyId="+verifyId;
-	App.changePresentUrl(src);
+    var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&verifyId="+verifyId;
+    App.changePresentUrl(src);
 }

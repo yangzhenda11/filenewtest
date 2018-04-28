@@ -12,7 +12,7 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         "url": serverPath+'contractUpload/contractUploadList',
         "data": function(d) {//自定义传入参数
         	if($("#contractTypeName").data("exactSearch")){
-        		d.contractType = $("#contractTypeName").data("typeId");
+        		d.typeId = $("#contractTypeName").data("typeId");
         	}else{
         		d.contractTypeName = $("#contractTypeName").val();
         	};

@@ -88,10 +88,9 @@
 		<script src="static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="static/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript" charset="utf-8"></script>
-		<!--业务依赖-->
-		<script src="static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<!--当前页面依赖-->
 		<script type="text/javascript">
+			var layerIndex = null;
 			function login() {
 //				var userData = {
 //					u_name : $("#username").val(),
@@ -121,6 +120,22 @@
 					}
 				});
 			}
+			function loadStart(){
+			//	NProgress.start();
+				layerIndex = layer.msg('登录中...', {icon: 16,shade: 0.01,time:false});
+			}
+			function loadEnd(){
+				layer.close(layerIndex);
+			}
+			$(document).ajaxStart(function(){
+				loadStart();
+			})
+			$(document).ajaxStop(function(){
+			    loadEnd();
+			});
+			$(document).ajaxError(function(){
+			    loadEnd();
+			});
 		</script>
 	</body>
 

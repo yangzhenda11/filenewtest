@@ -19,16 +19,15 @@
 	    padding-left: 10px;
 	    padding-right: 10px;
 	}
-	.fileItem{
-		cursor: pointer;
-		margin: 2px 0;
-	}
-	.listActived{
-		color: red;
-	}
 	.aDisable{
 		background: #e8dcdc;
 		pointer-events:none
+	}
+	.fileUploadModalForm table{
+		margin-bottom: 10px;
+	}
+	.align-center{
+		text-align: center;
 	}
 </style>
 <div class="modal-dialog" role="document">
@@ -53,15 +52,24 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
-                    <label for="partnerCode" class="control-label">上传成功文件</label>
-                    <div class="valiParent" id="uploadSuccessFile">
-                        
-                    </div>
+                    <label for="partnerCode">上传成功文件</label>
+                    <table class="table table-hover table-bordered table-striped align-center">
+                        <thead>
+							<tr>
+								<th class="align-center">文件名</th>
+								<th class="align-center">操作</th>
+							</tr>
+						</thead>
+						<tbody id="uploadSuccessFile">
+							<tr class="defaultTr">
+								<td colspan="2">暂无文件</td>
+							</tr>
+						</tbody>
+                    </table>
                 </div>
            </div>
 		<div class="modal-footer">
 			<button type="button" onclick="getFileUploadInfo()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
-			<button type="button" onclick="deleteFileItem()" class="btn btn-default btn-circle"><i class="iconfont icon-shanchu"></i> 删除</button>
 			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
 		</div>
 	</div>
@@ -158,9 +166,12 @@
 	    function parseResult(data){
 	    	flag++;
 	    	if(data.response.status == 1){
+	    		$(".defaultTr").addClass("hidden");
 				for(var i = 0; i < fileValue.length; i++){
 					var keys = "fileSave" + flag + i;
-					$("#uploadSuccessFile").append("<div data-keys='"+keys+"' class='fileItem'>" + fileValue[i].name + "</div>");
+					var html = '<tr><td>'+ fileValue[i].name +
+					'</td><td><button type="button" data-name="'+fileValue[i].name+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
+					$("#uploadSuccessFile").append(html);
 					saveObj[keys] = data.response.data;
 				};
 		    	layer.msg(data.response.message);
@@ -173,14 +184,13 @@
 	/*
 	 * 列表内删除
 	 */
-	function deleteFileItem(){
-		if($(".listActived").length == 0){
-			layer.msg("请选中上传成功文件中文件名，删除后此文档不做上传处理。",{icon:2});
-		}else{
-			delete saveObj[$(".listActived").data("keys")]
-			$(".listActived").remove();
+	$("table").on("click",".fileItem",function(el){
+		delete saveObj[$(this).data("keys")];
+		$(this).parent().parent().remove();
+		if($("#uploadSuccessFile").children().length == 1){
+			$(".defaultTr").removeClass("hidden");
 		}
-	}
+	})
     /*
      * 获取列表内内容
      */
@@ -188,7 +198,7 @@
     	var fileInfo = [];
     	$(".fileItem").each(function(index,element){
     		var itemInfo = {
-    			name:$(element).text(),
+    			name:$(element).data("name"),
     			data:saveObj[$(element).data("keys")]
     		};
     		fileInfo.push(itemInfo);

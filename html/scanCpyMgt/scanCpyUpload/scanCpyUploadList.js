@@ -67,8 +67,8 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 	            "data": "approveDate",
 	            "title": "审批通过时间",
 	            render: function(data, type, full, meta) {
-	                return formatDateTime(data);
-	            }
+	                return App.formatDateTime(data,"yyyy-MM-dd");
+            	}
 	        },
         {
 			"data": null,
@@ -126,18 +126,3 @@ $(function(){
 		$(this).data("exactSearch",false);
 	})
 })
-
-//调整时间显示，不显示时分秒
-function formatDateTime(inputTime,type) {
-	if(inputTime){
-		var date = new Date(inputTime);
-	}else{
-		return "";
-	}
-	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
-	m = m < 10 ? ('0' + m) : m;
-	var d = date.getDate();
-	d = d < 10 ? ('0' + d) : d;
-	return y + '-' + m + '-' + d;
-}

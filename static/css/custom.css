@@ -28,7 +28,7 @@
 .table_toolbars .btn{margin-right:5px;}
 /* 设定table_toolbars中按钮的间距-结束 */
 .dataTables_scrollBody{
-	overflow: inherit !important;
+	overflow-y: inherit !important;
 }
 /* 重定义弹出层间距-开始 */
 /*.modal .modal-header {

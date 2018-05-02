@@ -17,7 +17,7 @@ $(function() {
                 "type": "GET",
                 "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
                 "data": function(d) { // 查询参数
-                    d.sysOrgId = parent.globalConfig.curOrgId;
+                    d.sysOrgId = parent.globalConfig.curCompanyId;
                     d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
                     //d.orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
@@ -697,24 +697,25 @@ function validate(editType) {
                             regexp: /^[a-zA-Z0-9_\-\.]+$/,
                             message: '用户名由数字字母-_和.组成'
                         },
-                        callback: { 
-                            message: '此账号已存在',  
-                            callback: function(value, validator, $field) {  
-                                	var flag=true;
-                                	if(value!=""){
-                                		App.formAjaxJson(parent.globalConfig.serverPath + "staffs/checkLoginName/"+ value, "get", "", successCallback,null,null,null,false);
-                                	}
-                                	function successCallback(result) {
-                                		var staffId=$("#selectedStaffId").val();
-                                		if(!result.data||result.data.staffId==staffId){
-                                			flag=true;
-                                		}else{
-                                			flag=false;
-                                		}
-                                	};
-                                    return flag;
-                            }  
-                        }  
+                        callback: {
+                            message: '此账号已存在',
+                            callback: function(value, validator, $field) {
+                                var flag = true;
+                                if (value != "") {
+                                    App.formAjaxJson(parent.globalConfig.serverPath + "staffs/checkLoginName/" + value, "get", "", successCallback, null, null, null, false);
+                                }
+
+                                function successCallback(result) {
+                                    var staffId = $("#selectedStaffId").val();
+                                    if (!result.data || result.data.staffId == staffId) {
+                                        flag = true;
+                                    } else {
+                                        flag = false;
+                                    }
+                                };
+                                return flag;
+                            }
+                        }
                     }
                 },
                 passwd: {

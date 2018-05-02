@@ -46,8 +46,8 @@
     margin-bottom: 14px;
 }
 .thatItemTitle{
-    height: 36px;
-    line-height: 36px;
+    height: 26px;
+    line-height: 26px;
     font-weight:  bold;
     background: #f5f5f5;
     padding-left: 10px;
@@ -86,6 +86,18 @@
     margin-left: 30px;
 }
 /*
+ * 防input框
+ */
+.divInput{
+    cursor: not-allowed;
+    background: #f5f5f5;
+    border: 1px solid #ececec;
+    padding: 6px 12px;
+    border-radius: 3px;
+    color: #767676;
+    min-height: 32px;
+}
+/*
  * 差异记录
  */
 .diffVersion,.diffValiDate,.diffNum{
@@ -94,29 +106,4 @@
 .diffValiDate{
     margin-left: 50px;
     margin-right: 30px;
-}
-#pdfToggle{
-    position:  absolute;
-    height: 526px;
-    width: 1px;
-    background: #ccc;
-    top: 15px;
-    left: 0px;
-}
-.squery{
-    position:  absolute;
-    top: 50%;
-    width: 12px;
-    height: 50px;
-    background: #d11718;
-    left: -5px;
-    line-height: 50px;
-    margin-top: -25px;
-    text-align:  center;
-    cursor: pointer;
-    i{
-        left: -3px;
-        position:  relative;
-        color: #fff;
-    }
 }

@@ -201,7 +201,7 @@ function data_permFilter(obj) {
     }
 }
 // 表中过滤
-function data_tPFilter(permCheck) {
+function data_tpFilter(permCheck) {
     var permissions = globalConfig.permissions;
     if ($.inArray(permCheck, permissions) >= 0) {
         return true;

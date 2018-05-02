@@ -64,6 +64,25 @@
                                     <input type="text" name="mobilPhone" autocomplete="off" class="form-control" placeholder="">
                                 </div>
                             </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">岗位类别</span>
+                                    <select class="form-control" name="staffOrgType" data-placeholder="人员状态">
+                                        <option value="" selected="selected">全部</option>
+                                        <option value="F">主岗</option>
+                                        <option value="T">兼岗</option>
+                                        <option value="J">借调</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">部门名称</span>
+                                    <input type="text" name="orgName" onclick="getStaffSearch_OrgTree(this);" onfocus="javascript:this.blur();"
+                                    	autocomplete="off" class="form-control" placeholder="">
+                                    <input type="hidden" name="orgId">
+                                </div>
+                            </div>
                         </div>
                         <div class="page-search-action">
                             <button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchStaff();"><i class="iconfont icon-search"></i> 查询</button>

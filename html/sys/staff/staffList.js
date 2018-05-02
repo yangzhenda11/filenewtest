@@ -1,3 +1,4 @@
+var serverPath = parent.globalConfig.serverPath;
 $(function() {
     var cloudSwitch;
     //查询云门户开关参数
@@ -20,10 +21,14 @@ $(function() {
                     d.sysOrgId = parent.globalConfig.curCompanyId;
                     d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
-                    //d.orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                    var orgId= $("input[name='orgId']", $('#searchStaffForm')).val();
+                    if(null!=orgId && ''!=orgId){
+                    	d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                    }
                     d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
                     d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
                     d.staffKind = "1"; //$("#curTabstaffKind").val();
+                    d.attra = $("select[name='staffOrgType']", $('#searchStaffForm')).val();
                     return d;
                 },
                 "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -90,6 +95,14 @@ $(function() {
                 { "data": "LOGIN_NAME", "title": "账号" },
                 { "data": "ORG_NAME", "title": "部门名称" },
                 {
+                    "data": "STAFF_ORG_TYPE",
+                    "title": "岗位状态",
+                    className: "text-center",
+                    render: function(a, b, c, d) {
+                        return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗':'借调' ) ;
+                    }
+                },
+                {
                     "data": "SEX",
                     "title": "性别",
                     className: "text-center",
@@ -101,11 +114,11 @@ $(function() {
                 { "data": "EMAIL", "title": "邮箱账号" },
                 { "data": "MOBIL_PHONE", "title": "手机号码" },
                 {
-                    "data": "STAFF_STATUS",
-                    "title": "状态",
+                    "data": "STAFF_ORG_STATUS",
+                    "title": "岗位状态",
                     className: "text-center",
                     render: function(a, b, c, d) {
-                        return ('1' == c.STAFF_STATUS) ? '有效' : '无效';
+                        return ('1' == c.STAFF_ORG_STATUS) ? '有效' : '无效';
                     }
                 }
             ],
@@ -309,7 +322,11 @@ function showStaffDetail(staffId) {
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
-                return App.formatDateTime(new Date(data), "yyyy-mm-dd")
+            	if(data){
+            		return App.formatDateTime(new Date(data), "yyyy-mm-dd");
+            	}else{
+            		return '';
+            	}
                     //  return getFormatDate(new Date(data), "yyyy-MM-dd");
 
             }
@@ -319,7 +336,7 @@ function showStaffDetail(staffId) {
             }
 
             function sexCallback(data) {
-                return data == 'W' ? '女' : '男';
+                return data == 'F' ? '女' : '男';
             }
         }
         $('#infoModal').on('hide.bs.modal', function() {
@@ -1149,4 +1166,13 @@ function searchPersonnel(resetPaging) {
     } else {
         table.ajax.reload();
     }
+}
+
+function getStaffSearch_OrgTree(obj){
+	selectOrgTree('staffAdd_OrgTree',obj,parent.globalConfig.curCompanyId,getStaffSearch_OrgTreeId,'','1','400','300');
+}
+
+function getStaffSearch_OrgTreeId(orgId, orgName, orgCode){
+	$("input[name='orgName']",$('#searchStaffForm')).val(orgName);
+	$("input[name='orgId']",$('#searchStaffForm')).val(orgId);
 }

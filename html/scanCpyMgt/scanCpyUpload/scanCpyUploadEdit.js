@@ -39,8 +39,6 @@ function checkFileIsUpload(){
 				$("#fileName").html(data.displayName); 
 				$("#uploadFile_div2").show();
     			$("#uploadFile_div1").hide();
-    			$("#delButton1").show();
-    			$("#delButton2").hide();
 			}
         }
 	});
@@ -82,6 +80,7 @@ App.initDataTables('#scanCpyloadTable', {
             return d;
         }
     },
+    "paging":false,
     "columns": [
     	{"data": "","title": "序号"},
     	{"data": "displayName","title": "文件列表"},
@@ -93,8 +92,8 @@ App.initDataTables('#scanCpyloadTable', {
 				if(data) {
 					var btnArray = new Array();
                     btnArray.push({ "name": "添加", "fn": "addAttachment('" + data.attachId + "',this)","icon":"iconfont icon-add"});
-                    btnArray.push({ "name": "查看", "fn": "test()","icon":"iconfont icon-add"});
-                    btnArray.push({ "name": "删除", "fn": "test()","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "下载", "fn": "downLoad('" + data.attachId + "')","icon":"iconfont icon-add","type":"hidden"});
+                    btnArray.push({ "name": "删除", "fn": "del('" + data.attachId + "',this)","icon":"iconfont icon-add","type":"hidden"});
                     return App.getDataTableBtn(btnArray);
 				} else {
 					return '';
@@ -108,8 +107,20 @@ App.initDataTables('#scanCpyloadTable', {
     },
 });
 
+function downLoad(attachId){
+	$.ajax({
+        url : serverPath + 'contractUpload/downloadAttachment',
+        type : "GET",
+        data : {id:attachId},
+        success : function(data) {
+        }
+    });
+}
+
 var array=[];
 function addAttachment(attachId,el){
+	//$(el).addClass("hidden");
+	//$(el).nextAll().removeClass("hidden");
 	var setting = {
 		title : "文件上传",
 		url:'contractUpload/uploadFile',	//上传地址，非空
@@ -124,68 +135,41 @@ function addAttachment(attachId,el){
 		if(fileInfo.length!=0){
 			array.push(fileInfo[0].data);
 			console.log(array);
+			$(el).addClass("hidden");
+			$(el).nextAll().removeClass("hidden");
 		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
-	$(el).nextAll()).hide();
-}
-
-function test(){
-	alert("功能修改中");
 }
 
 /**
- * 上传文件
+ * 附件列表点击删除按钮删除附件
  * */
-(function (_, $) {
-    $("#myfile").fileinput({
-        language: 'zh', 
-        uploadUrl: serverPath+'contractUpload/uploadFile', // 用于文件上传的服务器端请求地址
-        uploadAsync: false,
-        //allowedFileExtensions: ['pdf'],
-        maxFileSize: 51200,
-        // maxFileCount: 10,
-        showPreview:false,
-        slugCallback: function (filename) {
-            return filename;
-        },
-        uploadExtraData: function(previewId, index) {	
-			// 添加额外参数
-			var obj = {
-				displayName:'',
-				busiId:110
-			};
-			return obj;
+function del(attachId,el){
+	$(el).prevAll().removeClass("hidden");
+	$(el).addClass("hidden");
+	$(el).prev().addClass("hidden");
+	for(var i=0;i<array.length;i++){
+		if(attachId==array[i].attachId){
+			array.remove(i);
 		}
-    });
-    // 异步上传成功结果处理
-    $("#myfile").on("fileuploaded", function (event, data) {
-    	alert(data.response.message);
-    	var table = $('#scanCpyloadTable').DataTable();
-    	table.ajax.reload();
-    });
-    // 同步上传成功结果处理
-    $("#myfile").on("filebatchuploadsuccess", function (event, data) {
-    	alert(data.response.message);
-    	$("#myfile").fileinput('reset')
-    	var table = $('#scanCpyloadTable').DataTable();
-    	table.ajax.reload();
-    });
-})(window, jQuery);
-
+	}
+	console.log(array);
+}
 
 /**
  * 点击选择按钮触发事件
  * */
 var result={};//保存上传成功后返回的对象
 function fileUpload(){
+	var fileName = $("#contractNumber").val()+"正文扫描件.pdf";
 	var setting = {
 		title : "文件上传",
 		url:'contractUpload/uploadFile',	//上传地址，非空
 		maxNumber:1,//最大上传数量
 		//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
 		//fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
-		extraData:{attachId:''}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
+		extraData:{attachId:'',displayName:fileName}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
 	};
 	function queryCallback(){//点击确定执行的函数，必传。
 		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
@@ -195,12 +179,11 @@ function fileUpload(){
 		if(fileInfo.length!=0){
 			result = fileInfo[0].data;
 			var label=document.getElementById("fileName");
-			label.innerText=fileInfo[0].name;
-			$("#fileName").html(fileInfo[0].name);
+			label.innerText=fileName;
+			$("#fileName").html(fileName);
+			//$("#fileName").val(fileName);
 			$("#uploadFile_div1").hide();
     		$("#uploadFile_div2").show();
-    		$("#delButton1").hide();
-    		$("#delButton2").show();
 		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
@@ -210,7 +193,10 @@ function fileUpload(){
  * 删除合同正文扫描件
  * */
 function delContractText(){
-	var url = serverPath + 'contractUpload/delContractText?id=113';
+	$("#uploadFile_div1").show();
+    $("#uploadFile_div2").hide();
+    result={};
+	/*var url = serverPath + 'contractUpload/delContractText?id=113';
 	$.ajax({
 		url : url,
         type : "post",
@@ -222,14 +208,7 @@ function delContractText(){
        			alert(data.message);
        		}
         }
-	});
-}
-
-function delContractText2(){
-	$("#uploadFile_div1").show();
-    $("#uploadFile_div2").hide();
-    result={};
-    console.log(result);
+	});*/
 }
 
 function saveContract(){

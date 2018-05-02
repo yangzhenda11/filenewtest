@@ -112,22 +112,3 @@ function formatDateTime(inputTime,type) {
 function backPage(){
 	window.history.go(-1);
 }
-
-/*function showScan(data){
-	$("#imageModal").modal("show");
-	var url = serverPath + 'contractUpload/downloadS3Url';
-	$.ajax({
-        url : url,
-        type : "post",
-        data : {key:data},
-        success : function(data) {
-            if (data != "") {
-            	console.log(data.data);
-            	$('#imgFile').show();
-                $('#imgFile').attr("src",data.data);
-                $('#imgFile').attr("width","256px");
-                $('#imgFile').attr("height","256px");
-            }
-        }
-    });
-}*/

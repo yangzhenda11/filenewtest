@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>字典弹出框</title>
+    <script type="text/javascript">
+		var userBean = ${userBean};
+	</script>
 </head>
 
 <body>
@@ -34,7 +37,13 @@
                                 <input type="text" id="dictParentId" disabled="disabled" class="form-control" name="dictParentId" placeholder="字典编码" maxlength="20">
                             </div>
                         </div>
-                        
+                        <div class="col-sm-6 form-group">
+                        	<label for="dictLabel" class="control-label">适用范围<i class="iconfont icon-mi required"></i></label>
+                        	<div class="valiParent">
+                        	<input type="text" id="provinceCode" disabled="disabled" class="form-control" name="provinceCode"
+                        		 placeholder="适用范围" maxlength="20">
+                        	</div>
+                        </div>
                         <div class="col-sm-6 form-group">
                             <label for="dictLabel" class="control-label">字典项名称<i class="iconfont icon-mi required"></i></label>
                             <div class="valiParent">

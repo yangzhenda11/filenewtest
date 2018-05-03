@@ -87,8 +87,8 @@ function beforePushProcess(pass){
 	parent.setPathSelect(pathSelect);
 	
 	//4,设置选人单选还是多选。
-	var staffSelectType=$("#staffSelectType").val();
-	parent.setStaffSelectType(staffSelectType);
+	//var staffSelectType=$("#staffSelectType").val();
+	//parent.setStaffSelectType(staffSelectType);
 	
 	//5,设置办理意见
 	if(pass){
@@ -113,12 +113,12 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
+	var createdType = isLeader == true ? 2 : 1;
 	
 	if(isDifferences == false){
 		var url = "";
 	}else{
 		var url = "sysScanValidation/saveOpinionPushProcess";
-		var createdType = isLeader == true ? 2 : 1;
 		postData.relationId = relationId;
 		postData.busiId = verifyId;
 		postData.createdType = createdType;

@@ -13,20 +13,30 @@ var timer = null;
 var verifyId = null;
 var isDifferences = null;
 var isLeader = null;
+var relationId = null;
+//取关联字典编码
+var associateCodeInfo = new Array();
+App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId","post",JSON.stringify({"dictId": 9030}),succssCallback,null,null,null,false);
+function succssCallback(result) {
+    var data = result.data;
+    $.each(data, function (i, item) {
+        associateCodeInfo[item.dictValue] = item.dictLabel;
+    });
+}
 
 //页面初始化事件
 $(function() {
 	if(parm.pageType == 1){
-		$(".toolbarBtn,.portlet-title,.closeBtn").remove();
+		$(".portlet-title,.closeBtn").remove();
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
 		$(".page-content").removeClass("hidden");
 		verifyId = parm.businessKey;
 		if(parm.taskFlag = "db"){
+			$("#toolbarBtnContent").css("width","99%");
 			$("#setExplain").removeClass("hidden");
 		}else{
-			$("#setExplain").remove();
-			$("#toolbarBtnContent").remove();
+			$("#setExplain,.toolbarBtn").remove();
 		};
 		if(parm.taskDefinitionKey == "YZSP"){
 			isLeader = true;
@@ -43,10 +53,8 @@ $(function() {
 	//获取合同基本信息
 	getScanValidationInfo(verifyId);	
 })
-
-//3013913619  2.9 modal_save   5.2.5   5.3.1
 /*
- * 工作流回调页面方法
+ * 工作流回调页面方法			涉及提交下一步操作的验证
  * isDifferences是否有差异，无差异直接提交不选人-false，有差异选人-true
  * isLeader 是否为领导， true领导>选人|退回承办人   ，false 非领导 > 重新上传|下一步选人
  */
@@ -104,18 +112,68 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
-	}
-	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback,improperCallback);
+	};
+	
+	if(isDifferences == false){
+		var url = "";
+	}else{
+		var url = "sysScanValidation/saveOpinionPushProcess";
+		var createdType = isLeader == true ? 2 : 1;
+		postData.relationId = relationId;
+		postData.busiId = verifyId;
+		postData.createdType = createdType;
+		postData.pinfoContent = $("#differencesExplain").val();
+	};
+	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		var data = result.data;
-		console.log(data);
-		
+		layer.msg("保存成功");
 	}
-	function improperCallback(result){
-		console.log(result);
+//	function improperCallback(result){
+//		console.log(result);
+//	}
+}
+//保存回调业务侧实现的方法。
+function modal_save(){
+	var createdType = isLeader == true ? 2 : 1;
+	var postData = {
+		relationId : relationId,
+		busiId : verifyId,
+		createdType : createdType,
+		pinfoContent : $("#differencesExplain").val()
+	};
+	console.log(postData);
+	App.formAjaxJson(serverPath + "sysScanValidation/saveOpinion", "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		layer.msg("保存成功");
+		relationId = result.data.relationId;
 	}
 }
 
+//转派前回调业务侧实现的方法，业务进行必要的校验等操作。
+function beforeTransfer(){
+	var result=true;
+	//1,业务侧的校验
+	
+	//2，设置转派选人的参数
+	var assigneeParam = { 
+			"prov": "sd",  //省分，来自需求工单，必传
+	}
+	parent.setAssigneeParam(assigneeParam);
+	return result;
+}
+//撤回代码示例，业务界面需要实现，可以拼接业务参数到后台，数据的更新和流程的撤回放在业务侧方法里，保持事务同步。
+function modal_return(root, processInstanceId, taskId){
+	//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
+	
+	$.post(root + "business/withdrawProcess", {
+		"processInstanceId" : processInstanceId,//流程实例
+		"taskId" : taskId //任务id
+	}, function(data) {
+		alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
+		// 成功后回调模态窗口关闭方法
+		parent.modal_close();
+	});
+}
 
 
 
@@ -131,17 +189,8 @@ function getScanValidationInfo(verifyId){
 	function successCallback(result) {
 		var data = result.data;
 		console.log(data);
-		var verifyState = "";
-		if(data.verifyStatus == 1){
-			verifyState = "草稿";
-		}else if(data.verifyStatus == 2){
-			verifyState = "审批中";
-		}else if(data.verifyStatus == 3){
-			verifyState = "生效";
-		}else if(data.verifyStatus == 4){
-			verifyState = "失效";
-		}
-		$("#verifyState").text(verifyState);
+		
+		$("#verifyState").text(associateCodeInfo[data.verifyStatus]);
 		var verifyVersion = data.verifyVersion == null ? "暂无版本" : data.verifyVersion;
 		$("#contratVersion").text(verifyVersion);
 		//判断是否有差异
@@ -160,14 +209,14 @@ function getScanValidationInfo(verifyId){
 		$("#undertakeName").val(data.undertakeName);
 		$("#mobilPhone").val(data.mobilPhone);
     	$("#phone").val(data.phone);
-		$("#otherPartyName").text(otherPartyName);
-    	$("#ourPartyName").text(ourPartyName);
+		$("#otherPartyName").html(otherPartyName);
+    	$("#ourPartyName").html(ourPartyName);
 		//pdf URL设值
-		//	var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
+		//var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 		var textPdf = "contract1.pdf";
 		var scandocPdf = "contract2.pdf";
-		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录
 		if(isDifferences){
 			getDifferenceRecord(data.contractId)
@@ -212,6 +261,21 @@ function setDifferenceInfo(data){
 	$("#differenceNumber").text(verifyDiffCount);
 	var tSBusiProcessInfoVo = data.tSBusiProcessInfoVo;
 	var verifyDiffVo = data.verifyDiffVo;
+	if(tSBusiProcessInfoVo.length > 0){
+		if(isLeader == true){
+			if(tSBusiProcessInfoVo[0].createdType == 2){
+				$("#differencesExplain").val(tSBusiProcessInfoVo[0].pinfoContent);
+				relationId = tSBusiProcessInfoVo[0].relationId;
+				tSBusiProcessInfoVo.splice(0,1);
+			}
+		}else{
+			if(tSBusiProcessInfoVo[0].createdType == 1){
+				$("#differencesExplain").val(tSBusiProcessInfoVo[0].pinfoContent);
+				relationId = tSBusiProcessInfoVo[0].relationId;
+				tSBusiProcessInfoVo.splice(0,1);
+			}
+		}
+	};
 	if(tSBusiProcessInfoVo.length == 0 && parm.pageType == 2){
 		$("#differencesThat").remove();
 	}else{
@@ -233,9 +297,10 @@ function setDifferenceInfo(data){
  * 生成消息项
  */
 function creatThatItemHtml(data){
-	var thatItemTitle = data.createdType == 2 ? "承办领导" : "承办人";
+	var thatItemTitle = data.createdType == 2 ? "承办部门领导" : "承办人";
 	var thatItemContent = data.pinfoContent;
-	var thatItemFooter = data.orgName + "：" + data.createdName + "<span class='marL30'>" + data.ctreatedDate;
+	var itemDate = data.updatedDate == null ? data.ctreatedDate : data.updatedDate;
+	var thatItemFooter = data.orgName + "：" + data.createdName + "<span class='marL30'>" + itemDate;
 	var html = '<div class="col-sm-12 differencesThatItem">'+
 		'<div class="thatItemTitle">'+ thatItemTitle +'</div>'+
 		'<div class="thatItemContent">'+ thatItemContent +'</div>'+
@@ -291,6 +356,16 @@ function setDifferenceRecord(data){
 		var differenceTbodyHtml = "";
 		//生成意见项
 		if(diffInfoItem.tSBusiProcessInfoVo.length > 0){
+			if(isLeader == true){
+				if(diffInfoItem.tSBusiProcessInfoVo[0].createdType == 2){
+					diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
+				}
+			}else{
+				if(diffInfoItem.tSBusiProcessInfoVo[0].createdType == 1){
+					diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
+				}
+			};
+			
 			for(var o = diffInfoItem.tSBusiProcessInfoVo.length - 1; o >= 0; o--){
 				thatItemHtml += creatThatItemHtml(diffInfoItem.tSBusiProcessInfoVo[o]);
 			}
@@ -359,7 +434,7 @@ function validationResultView(isDifferences){
 /*
  * 检测两个文档是否加载完成
  */
-var interval1 = setInterval('loadTextPdf()', 300);
+//var interval1 = setInterval('loadTextPdf()', 300);
 function loadTextPdf() {
 	if(document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval1);
@@ -370,7 +445,7 @@ function loadTextPdf() {
 		});
 	}
 }
-var interval2 = setInterval('loadScandocPdf()', 300);
+//var interval2 = setInterval('loadScandocPdf()', 300);
 function loadScandocPdf() {
 	if(document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval2);

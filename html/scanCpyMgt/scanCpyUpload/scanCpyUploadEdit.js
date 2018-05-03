@@ -1,7 +1,14 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 console.log(parm);
-var id = parm.id;
+var id;
+if(parm.pageType==1){
+	id = parm.businessKey;
+}else if(parm.pageType==2){
+	id = parm.id;
+}else{
+	id=0;
+}
 
 //系统的全局变量获取
 var config = top.globalConfig;
@@ -21,9 +28,33 @@ $(function() {
 		//固定操作按钮在70px的高度
 		App.fixToolBars("toolbarBtnContent", 70);
 	}
+	
+	$.ajax({
+        "type": "POST",
+        "url": serverPath+'contractUpload/listFile?id='+id,
+        "success": function(data) {
+            var array=data.data;
+            var rows=array.length;
+            var cols=3;
+            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th>序号</th><th>文件列表</th><th>操作</th></tr></thead><tbody>";
+            for(i=1;i<=rows;i++){
+            	htmlstr+="<tr>";
+            	htmlstr+="<td align='center'>" + i +"</td>";
+            	htmlstr+="<td align='center'>" + array[i-1].displayName +"</td>";
+            	htmlstr+="<td><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment("+array[i-1].attachId+")'>添加</button>";
+            	htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none;' onclick='downLoad("+array[i-1].attachId+")'>下载</button>";
+            	htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' style='display:none;' onclick='del("+array[i-1].attachId+")'>删除</button></td>";
+            	htmlstr+="</tr>";
+            }
+            htmlstr+="</tbody></table>";
+            document.getElementById('scanCpyloadTable').innerHTML=htmlstr;
+        }
+    });
+    
 	checkFileIsUpload();
 	getContractInfo();
 })
+
 
 //查询该合同下是否上传了扫描件
 function checkFileIsUpload(){
@@ -32,7 +63,7 @@ function checkFileIsUpload(){
 		url : url,
         type : "post",
         success : function(data) {
-        	console.log(data);
+        	//console.log(data);
 			if(data.count==1){
 				var label=document.getElementById("fileName"); 
 				label.innerText=data.displayName; 
@@ -57,8 +88,8 @@ function getContractInfo(){
         	$("#undertakeMobile").val(data.data.undertakeMobile);
         	$("#contractName").val(data.data.contractName);
         	$("#executeDeptName").val(data.data.executeDeptName);
-        	$("#unicomPartyName").val(data.data.unicomPartyName);
-        	$("#oppoPartyName").val(data.data.oppoPartyName);
+        	$("#unicomPartyName").text(data.data.unicomPartyName);
+        	$("#oppoPartyName").text(data.data.oppoPartyName);
         }
 	});
 }
@@ -71,7 +102,7 @@ function backPage(){
 /**
  * 初始化表格
  * */
-App.initDataTables('#scanCpyloadTable', {
+/*App.initDataTables('#scanCpyloadTable', {
 	ajax: {
         "type": "POST",
         "url": serverPath+'contractUpload/listFile',
@@ -105,7 +136,7 @@ App.initDataTables('#scanCpyloadTable', {
           $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
          return nRow;
     },
-});
+});*/
 
 function downLoad(attachId){
 	$.ajax({
@@ -118,9 +149,7 @@ function downLoad(attachId){
 }
 
 var array=[];
-function addAttachment(attachId,el){
-	//$(el).addClass("hidden");
-	//$(el).nextAll().removeClass("hidden");
+function addAttachment(attachId){
 	var setting = {
 		title : "文件上传",
 		url:'contractUpload/uploadFile',	//上传地址，非空
@@ -135,8 +164,10 @@ function addAttachment(attachId,el){
 		if(fileInfo.length!=0){
 			array.push(fileInfo[0].data);
 			console.log(array);
-			$(el).addClass("hidden");
-			$(el).nextAll().removeClass("hidden");
+			$("#addButton"+attachId+"").hide();
+			//$(el).nextAll().removeClass("hidden");
+			$("#downLoadButton"+attachId+"").show();
+			$("#delButton"+attachId+"").show();
 		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
@@ -145,13 +176,13 @@ function addAttachment(attachId,el){
 /**
  * 附件列表点击删除按钮删除附件
  * */
-function del(attachId,el){
-	$(el).prevAll().removeClass("hidden");
-	$(el).addClass("hidden");
-	$(el).prev().addClass("hidden");
+function del(attachId){
+	$("#addButton"+attachId+"").show();
+	$("#downLoadButton"+attachId+"").hide();
+	$("#delButton"+attachId+"").hide();
 	for(var i=0;i<array.length;i++){
 		if(attachId==array[i].attachId){
-			array.remove(i);
+			array.splice(i,1);
 		}
 	}
 	console.log(array);
@@ -181,7 +212,6 @@ function fileUpload(){
 			var label=document.getElementById("fileName");
 			label.innerText=fileName;
 			$("#fileName").html(fileName);
-			//$("#fileName").val(fileName);
 			$("#uploadFile_div1").hide();
     		$("#uploadFile_div2").show();
 		}
@@ -203,7 +233,7 @@ function delContractText(){
         success : function(data) {
        		if(data.status=='1'){
        			$("#uploadFile_div1").show();
-    			$("#uploadFile_div2").hide();		
+    			$("#uploadFile_div2").hide();
        		}else if(data.status=='0'){
        			alert(data.message);
        		}

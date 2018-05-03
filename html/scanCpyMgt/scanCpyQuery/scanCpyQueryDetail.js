@@ -9,6 +9,48 @@ var serverPath = config.serverPath;
 
 
 $(function() {
+	$.ajax({
+        "type": "POST",
+        "url": serverPath+'contractScanQuery/listContractText?id='+id,
+        "success": function(data) {
+            var array=data.data;
+            var rows=array.length;
+            var cols=4;
+            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th>序号</th><th>文件列表</th><th>上传日期</th><th>上传人</th></tr></thead><tbody>";
+            for(i=1;i<=rows;i++){
+            	htmlstr+="<tr>";
+            	htmlstr+="<td align='center'>" + i +"</td>";
+            	htmlstr+="<td align='center'><a href='/contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
+            	htmlstr+="<td align='center'>" + formatDateTime(array[i-1].ctreatedDate) +"</td>";
+            	htmlstr+="<td align='center'>" + array[i-1].createdByName +"</td>";
+            	htmlstr+="</tr>";
+            }
+            htmlstr+="</tbody></table>";
+            document.getElementById('contractTextTable').innerHTML=htmlstr;
+        }
+    });
+    
+    $.ajax({
+        "type": "POST",
+        "url": serverPath+'contractScanQuery/listContractAttachment?id='+id,
+        "success": function(data) {
+            var array=data.data;
+            var rows=array.length;
+            var cols=4;
+            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th>序号</th><th>文件列表</th><th>上传日期</th><th>上传人</th></tr></thead><tbody>";
+            for(i=1;i<=rows;i++){
+            	htmlstr+="<tr>";
+            	htmlstr+="<td align='center'>" + i +"</td>";
+            	htmlstr+="<td align='center'><a href='/contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
+            	htmlstr+="<td align='center'>" + formatDateTime(array[i-1].ctreatedDate) +"</td>";
+            	htmlstr+="<td align='center'>" + array[i-1].createdByName +"</td>";
+            	htmlstr+="</tr>";
+            }
+            htmlstr+="</tbody></table>";
+            document.getElementById('contractAttachmentTable').innerHTML=htmlstr;
+        }
+    });
+	
 	getContractInfo();
 })
 
@@ -24,13 +66,14 @@ function getContractInfo(){
         	$("#undertakeMobile").val(data.data.undertakeMobile);
         	$("#contractName").val(data.data.contractName);
         	$("#executeDeptName").val(data.data.executeDeptName);
-        	$("#unicomPartyName").val(data.data.unicomPartyName);
+        	//$("#unicomPartyName").val(data.data.unicomPartyName);
+        	$("#unicomPartyName").text(String(data.data.unicomPartyName));
         	$("#oppoPartyName").val(data.data.oppoPartyName);
         }
 	});
 }
 
-App.initDataTables('#contractTextTable', {
+/*App.initDataTables('#contractTextTable', {
 	ajax: {
         "type": "POST",
         "url": serverPath+'contractScanQuery/listContractText',
@@ -60,9 +103,9 @@ App.initDataTables('#contractTextTable', {
         $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
         return nRow;
     },
-});
+});*/
 
-App.initDataTables('#contractAttachmentTable', {
+/*App.initDataTables('#contractAttachmentTable', {
 	ajax: {
         "type": "POST",
         "url": serverPath+'contractScanQuery/listContractAttachment',
@@ -91,7 +134,7 @@ App.initDataTables('#contractAttachmentTable', {
         $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
         return nRow;
     },
-});
+});*/
 
 //调整时间显示，不显示时分秒
 function formatDateTime(inputTime,type) {

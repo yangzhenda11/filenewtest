@@ -13,7 +13,7 @@ $(function(){
 });
 
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
-function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId, comment, handleType, withdraw){
+function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId, comment, handleType, withdraw,iscandidate){
 	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
 		$.post(root + "business/pushProcess", {
 			"processInstanceId" : processInstanceId,//当前流程实例
@@ -24,7 +24,8 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			"handleType" : handleType,//处理类型，1为通过，2为回退
 			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
-			"title":""//可不传，如果需要修改待办标题则传此参数。
+			"title":"",//可不传，如果需要修改待办标题则传此参数。
+			"iscandidate":iscandidate //是否是多候选人的抢单环节
 		}, function(data) {
 			layer.msg(data.sign);
 			
@@ -41,7 +42,7 @@ function modal_return(root, processInstanceId, taskId){
 		"processInstanceId" : processInstanceId,//流程实例
 		"taskId" : taskId //任务id
 	}, function(data) {
-		alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
+		layer.msg(data.sign + "（业务开发人员自定义提示消息有无及内容）");
 		// 成功后回调模态窗口关闭方法
 		parent.modal_close();
 	});
@@ -57,7 +58,7 @@ function modal_stop(root, processInstanceId, taskId, comment){
 		"taskId" : taskId,//任务id
 		"comment" : comment//办理意见
 	}, function(data) {
-		alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
+		layer.alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
 		// 成功后回调模态窗口关闭方法
 		parent.modal_close();
 	});

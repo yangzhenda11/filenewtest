@@ -521,10 +521,15 @@ function pushProcess(){
 		layer.msg('请填写审批意见！');
 		return;
 	}
+    var iscandidate=$("#link").val().toString().split(",")[3];
+    if(iscandidate == null || iscandidate.length == 0){
+    	layer.msg('流程异常，无法识别下一步环节是否是需要抢单环节，请联系管理员！',{time:2000});
+    	return;
+    }
 	
 	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
 		// 调用推进方法，通过及回退均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ） 
-		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
+		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw,iscandidate);
 		layer.close(index);
 	})
 }

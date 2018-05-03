@@ -88,3 +88,30 @@ function selectAssignee(turnAssignee, flowLinkid){
 function setRelativeData(){
 	return false;
 }
+//流程点“通过”或“回退”回调业务侧此方法，业务侧完成表单校验并设置流程参数。
+function beforePushProcess(pass){
+	var result=true;
+	//1，业务侧的校验，校验不通过则返回false
+	
+	//2,设置下一步选人的参数，用于匹配通用规则选人。
+	var assigneeParam = { 
+			"prov": "sd",  //省分，来自需求工单，必传
+			}
+	parent.setAssigneeParam(assigneeParam);
+	
+	//3,设置路由值，默认为0，对于有分支的场景需要单独设置路由值
+	var pathSelect=$("#ifshenpi").val();
+	parent.setPathSelect(pathSelect);
+	
+	//4,设置选人单选还是多选。
+	var staffSelectType=$("#staffSelectType").val();
+	parent.setStaffSelectType(staffSelectType);
+	
+	//5,设置办理意见
+	if(pass){
+		var businessInfo=$("#BusinessInfo").val();
+		parent.setComment(businessInfo);
+	}
+	
+	return result;
+}

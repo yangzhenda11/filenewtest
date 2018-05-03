@@ -70,8 +70,8 @@ function getDictChildInfo(event, treeId, treeNode) {
 /*
  * dataTable初始化事件
  */
-var dictUpdate = parent.data_tpFilter("sys:dict:update");
-var dictDelete = parent.data_tpFilter("sys:dict:delete");
+/*var dictUpdate = parent.data_tpFilter("sys:dict:update");
+var dictDelete = parent.data_tpFilter("sys:dict:delete");*/
 function createDictTable() {
 	App.initDataTables('#dictTable', "#submitBtn", {
 		ajax: {
@@ -93,7 +93,7 @@ function createDictTable() {
                 		return "";
                 	}else{
                 		var btnArray = new Array();
-            			btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
+            			btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.provName +"\')" });
                     //btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
             			if ('1' == c.dictStatus) {
 	                        btnArray.push({ "name": "禁用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'0\')"});
@@ -108,8 +108,7 @@ function createDictTable() {
             { "data": "dictParentId", title: "字典编码"},
             { "data": "dictLabel", title: "字典项名称"},
             { "data": "dictValue", title: "字典项编码"},
-            //{ "data": "dictType", title: "类型"},
-            { "data": "orgName", title: "适用范围"},
+            { "data": "provName", title: "适用范围"},
             { "data": "dictSort", title: "顺序"}
 		],
 		drawCallbackFn:function(){
@@ -256,6 +255,7 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 			var checkTree = dictTree.getSelectedNodes()[0];
 			$("#dictParentName").val(checkTree.dictLabel);
 			$("#dictParentId").val(checkTree.dictValue);
+			$("#provinceCode").val(top.globalConfig.provinceName);
 			$("#dictValue").removeAttr("disabled");
 			validate(editType);
 			$('#modal').modal('show');

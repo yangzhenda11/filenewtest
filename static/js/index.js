@@ -31,6 +31,8 @@ var globalConfig = {
     curStaffId: null, //10002
     /** 当前用户的权限集合 */
     permissions: [],
+    /**当前岗位组织省份code */
+   	provCode : null,
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
@@ -40,7 +42,9 @@ $(document).ready(function() {
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
 
     function successCallback(result) {
+    	console.log(result);
         var data = result.data;
+        globalConfig.provCode = data.provCode;
         globalConfig.curStaffId = data.staffId;
         globalConfig.curStaffName = data.staffName;
         globalConfig.curStaffOrgId = data.staffOrgId;
@@ -201,7 +205,7 @@ function data_permFilter(obj) {
     }
 }
 // 表中过滤
-function data_tPFilter(permCheck) {
+function data_tpFilter(permCheck) {
     var permissions = globalConfig.permissions;
     if ($.inArray(permCheck, permissions) >= 0) {
         return true;

@@ -8,7 +8,7 @@ var serverPath = config.serverPath;
 var perPermissionTree = null;
 var curNode = null;
 $(function() {
-	parent.data_permFilter(document);
+    parent.data_permFilter(document);
     var windowHeigth = $(window).height();
     var documentHeight = $(".portlet").outerHeight();
     if (windowHeigth > documentHeight) {
@@ -20,7 +20,7 @@ $(function() {
     App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback)
 
     function successCallback(result) {
-    	debugger
+        // debugger
         var zNodes = result.sysPerm;
         perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
         curNode = perPermissionTree.getNodes()[0];
@@ -36,19 +36,19 @@ function showPermission(permId) {
     function successCallback(result) {
         /**表单赋值时的回调函数 */
         var valueCallback = {
-            'permType': function(value) {
-                var permType = "";
-                if (value == 1) {
-                    permType = "菜单";
-                } else if (value == 2) {
-                    permType = "标签";
-                } else if (value == 3) {
-                    permType = "请求";
-                };
-                return permType;
+                'permType': function(value) {
+                    var permType = "";
+                    if (value == 1) {
+                        permType = "菜单";
+                    } else if (value == 2) {
+                        permType = "标签";
+                    } else if (value == 3) {
+                        permType = "请求";
+                    };
+                    return permType;
+                }
             }
-        }
-        /**根据返回结果给表单赋值 */
+            /**根据返回结果给表单赋值 */
         App.setFindValue($("#permissionShow"), result.sysPerm, valueCallback);
     }
 }

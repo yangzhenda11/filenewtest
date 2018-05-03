@@ -4,14 +4,15 @@ var serverPath = config.serverPath;
 var rolePermissionTree; //权限树
 var orgNameTree; //组织树
 $(function() {
-	parent.data_permFilter(document);
-    getRoleTable();
-})
+        parent.data_permFilter(document);
+        getRoleTable();
+    })
     /*
      * 查询到角色列表
      */
 var roleUpdate = parent.data_tpFilter("sys:role:update");
 var roleDelete = parent.data_tpFilter("sys:role:delete");
+
 function getRoleTable() {
     App.initDataTables('#searchRoleTable', "#submitBtn", {
         "ajax": {
@@ -30,14 +31,18 @@ function getRoleTable() {
                 "title": "操作",
                 "className": "text-center",
                 "render": function(data, type, row, meta) {
+                	debugger;
                     if (data) {
                         var btnArray = new Array();
-//                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
-                        if(roleUpdate){
-                        	btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
+                        //                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
+                        if (roleUpdate) {
+                            btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
                         }
-                        if(roleDelete){
-                        	btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
+                        if (roleDelete) {
+                            btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
+                        }
+                        if (roleUpdate) {
+                            btnArray.push({ "name": "授权", "fn": "openAddRolePerm(\'" + row.roleName + "\',\'" + data + "\')" });
                         }
                         return App.getDataTableBtn(btnArray);
                     } else {
@@ -54,6 +59,12 @@ function getRoleTable() {
             },
             { "data": "orgName", title: "所属组织" },
             { "data": "roleDesc", title: "角色描述" },
+            { "data": "roleStatus", title: "角色状态",
+            	render: function(a, b, c, d) {
+                    return ('1' == c.roleStatus) ? '有效' : '无效';
+                }
+            },
+            { "data": "roleCount", title: "授权人数" },
             {
                 "data": "createDate",
                 title: "添加时间",
@@ -82,6 +93,10 @@ function deleteDetail(roleId) {
             searchRole(true);
         }
     })
+}
+
+function authRole(roleId) {
+
 }
 /**
  * 执行查询
@@ -169,6 +184,37 @@ function openAddModal() {
         validate("add");
     })
 }
+/**
+ * 打开授权窗口,授权
+ */
+function openAddRolePerm(roleName,roleId) {
+    $("#modal").load("rolePerm.html?" + App.timestamp() + " #modalEdit", function() {
+        $("#editModalTitle").text(roleName+"角色授权");
+        $("#modal").modal("show");
+        getRoleInfo(roleId, "edit");
+        $("#roleId").val(roleId);
+        $("#staffId").val(config.curStaffId);
+        $('#rolePermForm').bootstrapValidator({
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var ms="授权成功";
+            var formObj = App.getFormValues($("#rolePermForm"));
+            var permId = '';
+            var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
+            for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
+                permId += rolePermissionTreeNodes[i].permId + ",";
+            }
+            formObj.permId = permId.substring(0, permId.length - 1);
+            var url = serverPath + "roles/addRolePerm";
+            App.formAjaxJson(url, "PUT", JSON.stringify(formObj), successCallback);
+            function successCallback(result) {
+                layer.msg(ms, { icon: 1 });
+                searchRole(true);
+                $('#modal').modal('hide');
+            }
+        });
+    })
+}
 /*
  * 加载组织树和权限树
  * id  编辑时的ID值，用来查询该ID下存在的权限
@@ -231,11 +277,11 @@ function updateRoleValue(editType) {
     formObj.permId = permId.substring(0, permId.length - 1);
     formObj.orgId = $("#orgNameTree").data("orgCode");
     formObj.provCode = $("#orgNameTree").data("provCode");
-    if (formObj.permId == '') {
+    /*if (formObj.permId == '') {
         layer.msg("请选择该角色对应的权限", { icon: 2 });
         $('#roleForm').data('bootstrapValidator').resetForm();
         return false;
-    }
+    }*/
     if (editType == "add") {
         delete formObj.roleId;
     } else {

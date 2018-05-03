@@ -113,7 +113,7 @@ function showUpdate() {
     if (!curNode) {
         layer.alert("请选择父节点", { icon: 2, title: "修改节点" });
         return;
-    } else if (config.curOrgId == curNode.orgId) {
+    } else if (config.curCompanyId == curNode.orgId) {
         layer.alert("父节点不能修改", { icon: 2, title: "修改节点" });
         return;
     }
@@ -128,7 +128,9 @@ function showUpdate() {
             /**根据返回结果给表单赋值 */
             App.setFormValues($("#orgForm"), result.data);
             var parentNode = orgTree.getNodesByParam("orgId", result.data.parentId)[0];
-            $("#parentName").val(parentNode.orgName);
+            if (parentNode) {
+                $("#parentName").val(parentNode.orgName);
+            }
             validate("edit");
         }
     });
@@ -177,6 +179,7 @@ function searchOu() {
         layer.alert("请选择节点节点", { icon: 2, title: "添加ou" });
         return;
     } else {
+        $('#modal').modal('show');
         $("#modal").load("ouModal.html?" + App.timestamp() + " #modalEdit", function() {
             $("#modalTitle").text("新增ou组织");
             $("#orgNameOu").append("<p>当前组织：" + curNode.orgName + "</p>");
@@ -217,8 +220,6 @@ function searchOu() {
                 }
             });
 
-            $('#modal').modal('show');
-
         });
     }
 }
@@ -231,6 +232,7 @@ function addOu() {
     function successCallback(result) {
         if (result.data.orgCode == null) {
             layer.alert("此ou已存在", { icon: 2, title: "重复" });
+            return;
         }
         var ms = "新增成功";
         layer.msg(ms, { icon: 1 });
@@ -330,7 +332,7 @@ function validate(editType) {
 
 // 刷新站点树
 function refreshTree() {
-    App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
+    App.formAjaxJson(serverPath + "orgs/" + config.curCompanyId + "/orgTree", "get", "", successCallback);
 
     function successCallback(result) {
         orgTree.destroy('orgTree');

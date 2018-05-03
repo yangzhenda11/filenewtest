@@ -88,8 +88,8 @@ function getContractInfo(){
         	$("#undertakeMobile").val(data.data.undertakeMobile);
         	$("#contractName").val(data.data.contractName);
         	$("#executeDeptName").val(data.data.executeDeptName);
-        	$("#unicomPartyName").val(data.data.unicomPartyName);
-        	$("#oppoPartyName").val(data.data.oppoPartyName);
+        	$("#unicomPartyName").text(data.data.unicomPartyName);
+        	$("#oppoPartyName").text(data.data.oppoPartyName);
         }
 	});
 }

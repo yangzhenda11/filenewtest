@@ -136,7 +136,6 @@ function createDictTable() {
 function searchDict(resetPaging) {
 	var table = $('#dictTable').DataTable();
 	var checkNode =  dictTree.getSelectedNodes()[0];
-	console.log(checkNode)
 	if(checkNode.level > 1){
 		curNodeId = checkNode.dictParentId;
 	}

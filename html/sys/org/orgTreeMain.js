@@ -29,7 +29,6 @@ $(function() {
     App.formAjaxJson(serverPath + "orgs/" + config.curCompanyId + "/orgTree", "get", "", successCallback);
 
     function successCallback(result) {
-        debugger;
         var zNodes = result.data[0];
         orgTree = $.fn.zTree.init($("#orgTree"), orgSetting, zNodes);
         curNode = orgTree.getNodes()[0];
@@ -176,15 +175,15 @@ function updateOrg(type) {
 //添加ou页面展示
 function searchOu() {
     if (!curNode) {
-        layer.alert("请选择节点节点", { icon: 2, title: "添加ou" });
+        layer.alert("请选择节点节点", { icon: 2, title: "提示" });
         return;
     } else {
+        $('#modal').empty();
         $('#modal').modal('show');
         $("#modal").load("ouModal.html?" + App.timestamp() + " #modalEdit", function() {
             $("#modalTitle").text("新增ou组织");
             $("#orgNameOu").append("<p>当前组织：" + curNode.orgName + "</p>");
             $.get(serverPath + 'orgs/selectOuList/' + curNode.orgCode, function(result) {
-                debugger
                 for (var i = 0; i < result.length; i++) {
                     $("#ouList").append("<option>" + result[i].ouName + "</option>");
                 }
@@ -200,7 +199,6 @@ function searchOu() {
                         "className": "text-center",
                         "title": "操作",
                         "render": function(data, type, full, meta) {
-                            debugger
                             if (data) {
                                 var btnArray = new Array();
                                 btnArray.push({ "name": "删除", "fn": "delOu(\'" + data.ouName + "\')" });
@@ -217,7 +215,8 @@ function searchOu() {
                 ],
                 "fixedColumns": {
                     "leftColumns": 2
-                }
+                },
+                "drawCallback": function(settings) {}
             });
 
         });

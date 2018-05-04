@@ -30,7 +30,7 @@ $(function() {
 		$(".portlet").css("cssText","border:none !important;padding:0px");
 		$(".page-content").removeClass("hidden");
 		verifyId = parm.businessKey;
-		if(parm.taskFlag = "db"){
+		if(parm.taskFlag == "db"){
 			$("#setExplain").removeClass("hidden");
 		}else{
 			$("#setExplain").remove();
@@ -116,11 +116,11 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData.createdType = createdType;
 		postData.pinfoContent = $("#differencesExplain").val();
 	};
-	console.log(postData);
 	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		layer.alert("处理成功");
-		parent.modal_close();
+		parent.layer.alert("处理成功",{icon:1},function(){
+			parent.modal_close();
+		});
 	};
 }
 //保存回调业务侧实现的方法。
@@ -178,7 +178,6 @@ function modal_passBybuss(flowParam){
 	var handleType=flowParam.handleType;
 	var withdraw=flowParam.withdraw;
 	var iscandidate=flowParam.iscandidate;
-    alert(JSON.stringify(flowParam));
 	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
 		$.post(root + "business/pushProcess", {
 			"processInstanceId" : processInstanceId,//当前流程实例
@@ -243,7 +242,7 @@ function getScanValidationInfo(verifyId){
 		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录
 		if(isDifferences){
-			if(parm.pageType == 1 && parm.taskFlag = "db"){
+			if(parm.pageType == 1 && parm.taskFlag == "db"){
 				parent.setUserButton(true,parm.businessKey);
 			};
 			getDifferenceRecord(data.contractId,data.verifyVersion)

@@ -93,7 +93,8 @@ function beforePushProcess(pass){
 	
 	//5,设置办理意见
 	if(pass){
-		var businessInfo = $("#differencesExplain").val();
+//		var businessInfo = $("#differencesExplain").val();
+		var businessInfo = "测试";
 		parent.setComment(businessInfo);
 	}
 	return result;
@@ -132,7 +133,6 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		layer.alert("处理成功");
-		alert("处理成功")
 		parent.modal_close();
 	}
 //	function improperCallback(result){

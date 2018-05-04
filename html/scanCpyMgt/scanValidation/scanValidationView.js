@@ -40,6 +40,7 @@ $(function() {
 		};
 		if(parm.taskDefinitionKey == "YZSP"){
 			isLeader = true;
+			$(".toolbarBtn").remove();
 		}else{
 			isLeader = false;
 		}
@@ -117,7 +118,8 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 	var createdType = isLeader == true ? 2 : 1;
 	//是否有差异
 	if(isDifferences == false){
-		var url = "";
+		var url = "sysScanValidation/saveOpinionPushProcessTrue";
+		postData.verifyId = verifyId;
 	}else{
 		var url = "sysScanValidation/saveOpinionPushProcess";
 		postData.relationId = relationId;
@@ -129,7 +131,9 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 	console.log(postData);
 	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		layer.msg("提交成功");
+		layer.alert("处理成功");
+		alert("处理成功")
+		parent.modal_close();
 	}
 //	function improperCallback(result){
 //		console.log(result);

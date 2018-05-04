@@ -348,11 +348,12 @@ h6.block {
 /* Links */
 a {
   text-shadow: none;
-  color: /*#337ab7*/#e43a45; }
+  color: #337ab7; }
   a:hover {
-    color:#D12610 /*#23527c*/; }
+    color:#23527c; }
   a:focus, a:hover, a:active {
     outline: 0; }
+
 /* Horizontal break */
 hr {
   margin: 10px 0;

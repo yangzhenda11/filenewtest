@@ -103,8 +103,31 @@ $(function(){
 			});
 		}
 	}
+	//合同验证结果确认环节定制的“重新上传扫描件”按钮，点按钮相当于重新发起后台验证。
+	$('#userButton').hide();
 	
 });
+//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制，控制按钮显示和绑定单击事件。
+function setUserButton(isShow){
+	if(isShow){
+		$('#userButton').show();
+		$('#userButton').click(function(){
+			addCommentByuser();
+		});
+	}else{
+		$('#userButton').hide();
+		$("#userButton").unbind();
+	}
+}
+function addCommentByuser(){
+	//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制的流程推进，handletype=1，pathselect=1
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,1);
+	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
+		document.getElementById("businessiframe").contentWindow.modal_passBybuss(flowParam);
+	}else{
+		layer.msg("网络异常，请联系管理员！");
+	}
+}
 
 // 根据任务ID获取实际任务办理页面的路径并load到主DIV
 function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, processDefinitionId) {
@@ -247,6 +270,16 @@ function addComment(pass){
 	    }else{
 	    	layer.msg('数据校验异常，请联系管理员！');
 	        return;
+	    }
+	    if(typeof(document.getElementById("businessiframe").contentWindow.setComment)=="function") {
+	    	var userComment=document.getElementById("businessiframe").contentWindow.setComment(pass);
+	    	if(userComment!=null&&typeof(userComment)!="undefined"&&userComment.length>0){
+	    		$("#comment").val(userComment);
+	    	}else{
+	    		$("#comment").val("");
+	    	}
+	    }else{
+	    	$("#comment").val("");
 	    }
 		
 		// 确认按钮仅绑定推进事件
@@ -889,13 +922,17 @@ function getTables(data){
 function selectstaff(){
 	var staffSelectType=$("#wStaffSelectType").val();
 	var callbackFun='getassignee';
-	if(staffSelectType==2){
-		callbackFun="getassignees";
-	}
 	var flowKey = $("#processDefinitionKey").val();
     var linkcode = $("#link").val().toString().split(",")[0];
+    var idcandidate=$("#link").val().toString().split(",")[3];
     var prov=$("#wprov").val();
-    
+	if(idcandidate==1){
+		layer.msg("因下一步环节是候选人抢单环节，所以强制切换选人模式为多选！");
+		staffSelectType=2;
+	}
+    if(staffSelectType==2){
+    	callbackFun="getassignees";
+    }
     jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
@@ -995,13 +1032,8 @@ function modal_savefun(){
 }
 
 function setStaffSelectType(staffSelectType){
-	if(staffSelectType.length>0){
+	if(staffSelectType!=null&&typeof(staffSelectType)!="undefined"&&staffSelectType.length>0){
 		$("#wStaffSelectType").val(staffSelectType);
 	}
 }
 
-function setComment(businessInfo){
-	if(businessInfo.length>0){
-		$("#comment").val(businessInfo);
-	}
-}

@@ -100,12 +100,6 @@ function beforePushProcess(pass){
 	var staffSelectType=$("#staffSelectType").val();
 	parent.setStaffSelectType(staffSelectType);
 	
-	//5,设置办理意见
-	if(pass){
-		var businessInfo=$("#BusinessInfo").val();
-		parent.setComment(businessInfo);
-	}
-	
 	return result;
 }
 
@@ -130,4 +124,47 @@ function getQueryString(name) {
 function setStaffSelectType(){
 	var staffSelectType=$("#staffSelectType").val();
 	parent.setStaffSelectType(staffSelectType);
+}
+
+//设置办理意见
+function setComment(pass){
+	var userComment=$("#BusinessInfo").val();
+	return userComment;
+}
+
+function pushProcessByuser(){
+	parent.setUserButton(true);
+}
+
+//点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
+function modal_passBybuss(flowParam){
+	//typeof(tmp) == "undefined"
+	var root=serverPath;//flowParam.root
+	var taskDefinitionKey=flowParam.taskDefinitionKey;
+	var assignee=flowParam.assignee;
+	var processInstanceId=flowParam.processInstanceId;
+	var taskId=flowParam.taskId;
+	var comment=flowParam.comment;
+	var handleType=flowParam.handleType;
+	var withdraw=flowParam.withdraw;
+	var iscandidate=flowParam.iscandidate;
+    
+	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
+		$.post(root + "business/pushProcess", {
+			"processInstanceId" : processInstanceId,//当前流程实例
+			"taskId" : taskId,//当前任务id
+			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
+			"assignee" : assignee,//下一步参与者
+			"comment" : comment,//下一步办理意见
+			"handleType" : handleType,//处理类型，1为通过，2为回退
+			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
+			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+			"title":"",//可不传，如果需要修改待办标题则传此参数。
+			"iscandidate":iscandidate //是否是多候选人的抢单环节
+		}, function(data) {
+			layer.msg(data.sign);
+			
+			// 成功后回调模态窗口关闭方法
+			parent.modal_close();   
+		});
 }

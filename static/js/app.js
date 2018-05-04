@@ -2071,14 +2071,14 @@ var App = function() {
                 layer.close(layerIndex);
             });
         },
-        getFlowParam:function(serverPath,businessId){
+        getFlowParam:function(serverPath,businessId,handleType,pathSelect){
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");
         	}else{
         		$.ajax({
         			type: 'get',
-        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId,
+        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect,
         			//data: null,
         			dataType: 'json',
         			async: false,

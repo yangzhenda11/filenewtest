@@ -100,7 +100,8 @@ function businessPush(){
 		layer.msg("请填写业务主键！");
 		return;
 	}
-	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
+	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
 	modal_passBybuss(flowParam);
 	
 }
@@ -109,13 +110,14 @@ function businessPush(){
 function modal_passBybuss(flowParam){
 	//typeof(tmp) == "undefined"
 	var root=serverPath;//flowParam.root
-	var taskDefinitionKey=flowParam.taskDefinitionKey
-	var assignee=flowParam.assignee
-	var processInstanceId=flowParam.processInstanceId
-	var taskId=flowParam.taskId
-	var comment=flowParam.comment
-	var handleType=flowParam.handleType
-	var withdraw=flowParam.withdraw
+	var taskDefinitionKey=flowParam.taskDefinitionKey;
+	var assignee=flowParam.assignee;
+	var processInstanceId=flowParam.processInstanceId;
+	var taskId=flowParam.taskId;
+	var comment=flowParam.comment;
+	var handleType=flowParam.handleType;
+	var withdraw=flowParam.withdraw;
+	var iscandidate=flowParam.iscandidate;
     
 	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
 		$.post(root + "business/pushProcess", {

@@ -368,18 +368,6 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			/*dictType : {
-				validators : {
-					notEmpty : {
-						message : '请输入字典类型'
-					},
-					stringLength : {
-						min : 0,
-						max : 20,
-						message : '请输入不超过20个字符'
-					}
-				}
-			},*/
 			dictSort : {
 				validators : {
 					notEmpty : {
@@ -404,13 +392,13 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			provinceName : {
-				validators : {
-					notEmpty : {
-						message : '请选择省分编码'
-					}
-				}
-			}
+			provinceCode: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择适用范围'
+                    }
+                }
+            }
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
@@ -428,6 +416,7 @@ function refreshTree() {
         dictTree.expandNode(rootNode);
         dictTree.selectNode(rootNode, false, false);
         if (rootNode) {
+     		curNodeId = rootNode.dictId;
         	$("#toolbars").removeClass("hide");
         	curNodeId = rootNode.dictId;
 			searchDict(true);

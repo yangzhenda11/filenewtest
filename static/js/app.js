@@ -788,23 +788,33 @@ var App = function() {
 		 * 根据name值取值
 		 */
 		getFormValues: function($form) {
-		    var o = {};
-		    var a = $form.serializeArray();
-		    $.each(a, function(index, value) {
-		        if (o[value.name]) {
-		            if (!o[value.name].push) {
-		                o[value.name] = [o[value.name]];
-		            }
-		            o[value.name].push(value.value.trim() || '');
-		        } else {
-		            o[value.name] = value.value.trim() || '';
-		        }
-		    });
+var formData = {};
+			$form.find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+				var formType = formItem.type;
+				var formName = $(formItem).attr('name');
+				var formValue = '';
+				if(formType == "text" || formType == "password" || formType == "select-one" || formType == "textarea" || formType == "hidden") {
+					formValue = $(formItem).val().trim();
+					formData[formName] = formValue;
+				} else if(formType == "checkbox") {
+					if($(formItem).is(':checked')) {
+						if(typeof formData[formName] == 'undefined') {
+							formData[formName] = new Array();
+						}
+						formData[formName].push($(formItem).val());
+					}
+				} else if(formType == "radio") {
+					if($(formItem).is(':checked')) {
+						formValue = $(formItem).val();
+						formData[formName] = formValue;
+					}
+				}
+			})
+			return formData;
 //		    $form.find("[data-isNumber='true']").each(function(index, item) {
 //				var key = $(this).attr("name");
 //				o[key] = Number(o[key]);
 //			});
-		    return o;
 		},
 		/**
 		 * 生成时间戳
@@ -967,7 +977,7 @@ var App = function() {
 						formData[b] = tvalue;
 					}
 				}
-                for( var a in formData){
+                for(var a in formData){
                     sel = ":input[name='" + a + "']";
                     obj = $(el).find(sel);
                     if(obj.length > 0){

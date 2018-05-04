@@ -114,13 +114,7 @@
 						</div>
 						<div class="form-fieldset-body">
 							<div class="row">
-								<div id="thatItemContent">
-								<!--<div class="col-sm-12 differencesThatItem">
-									<div class="thatItemTitle">承办人</div>
-									<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>
-									<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div>
-								</div>-->
-								</div>
+								<div id="thatItemContent"></div>
 								<div class="col-sm-12 paddingLR0 hidden" id="setExplain">
 									<i class="iconfont icon-mi required"></i><span>  填写说明</span>
 									<textarea class="form-control" id="differencesExplain" name="differencesExplain" maxlength="256"></textarea>
@@ -208,46 +202,13 @@
 						</div>
 						<div class="form-fieldset-body">
 							<div id="differenceRecordContent"></div>
-							<!--<div class="form-fieldset">
-								<div class="form-fieldset-title">
-									<span class="diffVersion">版本号：1</span>
-									<span class="diffValiDate">验证日期：2017年3月21日</span>
-									<span class="diffNum">共有<span class="mLR5">0</span>项不符</span>
-									<div class="form-fieldset-tools">
-										<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
-									</div>
-								</div>
-								<div class="form-fieldset-body">
-									<div class="row">
-										<div class="col-sm-12 differencesThatItem">
-											<div class="thatItemTitle">承办人</div>
-											<div class="thatItemContent">因XXX原因，存在差异项，请领导批准。</div>
-											<div class="thatItemFooter">采购部: 王芳  2018-01-16   09:23:42</div>
-										</div>
-										<table class="table table-hover table-bordered table-striped">
-											<thead>
-												<tr>
-													<th>序号</th>
-													<th>合同定稿正文</th>
-													<th>正文扫描件</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>-->
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<!--modal-->
+		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
@@ -256,7 +217,6 @@
 		<!--业务依赖-->
 		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-fileinput/fileinput_locale_zh.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="scanValidationView.js" type="text/javascript" charset="utf-8"></script>
 

@@ -1,10 +1,8 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项
 var parm = App.getPresentParm();
-console.log(parm);
 
 //系统的全局变量获取
 var config = top.globalConfig;
-//console.log(config);
 var serverPath = config.serverPath;
 
 //全局变量
@@ -27,30 +25,28 @@ function succssCallback(result) {
 //页面初始化事件
 $(function() {
 	if(parm.pageType == 1){
-		$(".portlet-title,.closeBtn").remove();
+		$(".portlet-title,.toolbarBtn").remove();
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
 		$(".page-content").removeClass("hidden");
 		verifyId = parm.businessKey;
 		if(parm.taskFlag = "db"){
-			$("#toolbarBtnContent").css("width","99%");
 			$("#setExplain").removeClass("hidden");
 		}else{
-			$("#setExplain,.toolbarBtn").remove();
+			$("#setExplain").remove();
 		};
 		if(parm.taskDefinitionKey == "YZSP"){
 			isLeader = true;
-			$(".toolbarBtn").remove();
 		}else{
 			isLeader = false;
 		}
 	}else{
 		$(".page-content").removeClass("hidden");
-		$("#setExplain,.reuploadBtn").remove();
+		$("#setExplain").remove();
 		verifyId = parm.verifyId;
+		//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 70);
 	};
-	//固定操作按钮在70px的高度
-	App.fixToolBars("toolbarBtnContent", 70);
 	//获取合同基本信息
 	getScanValidationInfo(verifyId);	
 })
@@ -84,7 +80,7 @@ function beforePushProcess(pass){
 			}
 	parent.setAssigneeParam(assigneeParam);
 	
-	//3,设置路由值，默认为0，对于有分支的场景需要单独设置路由值
+	//3,设置路由值
 	parent.setPathSelect(pathSelect);
 	
 	//4,设置选人单选还是多选。
@@ -101,9 +97,6 @@ function beforePushProcess(pass){
 }
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
 function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId, comment, handleType, withdraw){
-	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
-	//自定义业务上传接口
-//	$("#differencesExplain").val()	意见的获取
 	var postData = {
 		"processInstanceId" : processInstanceId,//当前流程实例
 		"taskId" : taskId,//当前任务id
@@ -115,13 +108,13 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
-	//是否承办人
-	var createdType = isLeader == true ? 2 : 1;
 	//是否有差异
 	if(isDifferences == false){
 		var url = "sysScanValidation/saveOpinionPushProcessTrue";
 		postData.verifyId = verifyId;
 	}else{
+		//是否承办人
+		var createdType = isLeader == true ? 2 : 1;
 		var url = "sysScanValidation/saveOpinionPushProcess";
 		postData.relationId = relationId;
 		postData.busiId = verifyId;
@@ -194,8 +187,6 @@ function getScanValidationInfo(verifyId){
 	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		console.log(data);
-		
 		$("#verifyState").text(associateCodeInfo[data.verifyStatus]);
 		var verifyVersion = data.verifyVersion == null ? "暂无版本" : data.verifyVersion;
 		$("#contratVersion").text(verifyVersion);
@@ -225,7 +216,7 @@ function getScanValidationInfo(verifyId){
 		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录
 		if(isDifferences){
-			getDifferenceRecord(data.contractId)
+			getDifferenceRecord(data.contractId,verifyVersion)
 		}
 	}
 	function improperCallback(){
@@ -236,13 +227,19 @@ function getScanValidationInfo(verifyId){
 /*
  * 若有版本差异记录获取版本差异
  */
-function getDifferenceRecord(contractId){
+function getDifferenceRecord(contractId,verifyVersion){
 	var postData = {
 		contractId : contractId
 	}
 	App.formAjaxJson(serverPath + "sysScanValidation/getVerifyDiffId", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		var data = result.data;
+		var result = result.data;
+		var data = [];
+		for(var i = 0; i < result.length; i++){
+			if(result[i].verifyVersion <= verifyVersion){
+				data.push(result[i]);
+			}
+		};
 		if(data.length == 0){
 			layer.alert("当前验证有差异，暂未获取到差异记录",{icon:2});
 			return false;

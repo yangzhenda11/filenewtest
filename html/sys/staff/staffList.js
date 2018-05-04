@@ -21,9 +21,9 @@ $(function() {
                     d.sysOrgId = parent.globalConfig.curCompanyId;
                     d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
-                    var orgId= $("input[name='orgId']", $('#searchStaffForm')).val();
-                    if(null!=orgId && ''!=orgId){
-                    	d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                    var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                    if (null != orgId && '' != orgId) {
+                        d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
                     }
                     d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
                     d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
@@ -100,7 +100,7 @@ $(function() {
                     "title": "岗位类别",
                     className: "text-center",
                     render: function(a, b, c, d) {
-                        return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗':'借调' ) ;
+                        return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
                     }
                 },
                 {
@@ -323,12 +323,12 @@ function showStaffDetail(staffId) {
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
-            	if(data){
-            		return App.formatDateTime(new Date(data), "yyyy-mm-dd");
-            	}else{
-            		return '';
-            	}
-                    //  return getFormatDate(new Date(data), "yyyy-MM-dd");
+                if (data) {
+                    return App.formatDateTime(new Date(data), "yyyy-mm-dd");
+                } else {
+                    return '';
+                }
+                //  return getFormatDate(new Date(data), "yyyy-MM-dd");
 
             }
 
@@ -1235,4 +1235,5 @@ function addStaffOrg(){
     function improperCallbacks(result) {
         $('#addStaffOrgForm').data('bootstrapValidator').resetForm();
     }	
+
 }

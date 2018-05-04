@@ -30,7 +30,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
         	};
         	
         	if($("#executeDeptName").data("exactSearch")){
-        		d.executeDeptNameId = $("#executeDeptName").data("executeDeptNameId");
+        		d.executeDeptId = $("#executeDeptName").data("executeDeptId");
         	}else{
         		d.executeDeptName = $("#executeDeptName").val();
         	};
@@ -124,7 +124,7 @@ $(function(){
 	})
 	//承办部门
 	$("#searchexecuteDept").click(function(){
-		App.getCommonModal("agentDepartment","#executeDeptName","executeDeptName","executeDeptNameId");
+		App.getCommonModal("agentDepartment","#executeDeptName","executeDeptName","executeDeptId");
 	})
 	
 	

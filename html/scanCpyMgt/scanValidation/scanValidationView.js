@@ -113,20 +113,23 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
+	//是否承办人
 	var createdType = isLeader == true ? 2 : 1;
-	
+	//是否有差异
 	if(isDifferences == false){
 		var url = "";
 	}else{
 		var url = "sysScanValidation/saveOpinionPushProcess";
 		postData.relationId = relationId;
 		postData.busiId = verifyId;
+		postData.verifyId = verifyId;
 		postData.createdType = createdType;
 		postData.pinfoContent = $("#differencesExplain").val();
 	};
+	console.log(postData);
 	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		layer.msg("保存成功");
+		layer.msg("提交成功");
 	}
 //	function improperCallback(result){
 //		console.log(result);
@@ -141,11 +144,10 @@ function modal_save(){
 		createdType : createdType,
 		pinfoContent : $("#differencesExplain").val()
 	};
-	console.log(postData);
 	App.formAjaxJson(serverPath + "sysScanValidation/saveOpinion", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		layer.msg("保存成功");
-		relationId = result.data.relationId;
+		relationId = result.data.saveRelationId;
 	}
 }
 

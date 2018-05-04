@@ -55,6 +55,7 @@ $(function() {
                             if (cloudSwitch == 1) {
                                 btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
                             }
+                            btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
                             btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
                             btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             if ("1" == c.STAFF_ORG_STATUS) {
@@ -96,7 +97,7 @@ $(function() {
                 { "data": "ORG_NAME", "title": "部门名称" },
                 {
                     "data": "STAFF_ORG_TYPE",
-                    "title": "岗位状态",
+                    "title": "岗位类别",
                     className: "text-center",
                     render: function(a, b, c, d) {
                         return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗':'借调' ) ;
@@ -1169,10 +1170,69 @@ function searchPersonnel(resetPaging) {
 }
 
 function getStaffSearch_OrgTree(obj){
-	selectOrgTree('staffAdd_OrgTree',obj,parent.globalConfig.curCompanyId,getStaffSearch_OrgTreeId,'','1','400','300');
+	selectOrgTree('staffSearch_OrgTree',obj,parent.globalConfig.curCompanyId,getStaffSearch_OrgTreeId,'','1','400','300');
 }
 
 function getStaffSearch_OrgTreeId(orgId, orgName, orgCode){
 	$("input[name='orgName']",$('#searchStaffForm')).val(orgName);
 	$("input[name='orgId']",$('#searchStaffForm')).val(orgId);
+}
+
+function goAddStaffOrg(staffId){
+	$("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
+        $("#modalTitle").text("新增岗位");
+        App.initFormSelect2("#addStaffOrgForm");
+        $("#modal").modal("show");
+        $("input[name='staffId']",$('#addStaffOrgForm')).val(staffId);
+        $('#addStaffOrgForm').bootstrapValidator({
+            live: 'enabled',
+            trigger: 'live focus blur keyup change',
+            message: '校验未通过',
+            container: 'popover',
+            fields: {
+            	orgName: {
+                     validators: {
+                         notEmpty: {
+                             message: '请选择所属组织'
+                         }
+                     },
+                     trigger: "focus blur keyup change",
+                 }
+            }
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            addStaffOrg();
+        });
+    });
+}
+
+function addStaffOrg_OrgTree(obj){
+	selectOrgTree('staffOrgAdd_OrgTree',obj,parent.globalConfig.curCompanyId,addStaffOrg_OrgTreeId,'','1','400','300');
+}
+function addStaffOrg_OrgTreeId(orgId, orgName, orgCode){
+	$("input[name='orgName']",$('#addStaffOrgForm')).val(orgName);
+	$("input[name='orgId']",$('#addStaffOrgForm')).val(orgId);
+	$("#addStaffOrgForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", null);
+	$("#addStaffOrgForm").data("bootstrapValidator").validateField('orgName');
+
+}
+
+function addStaffOrg(){
+    var formObj = App.getFormValues($("#addStaffOrgForm"));
+    var ms = "新增成功";
+    formObj.createBy = parent.globalConfig.curStaffId;
+    formObj.updateBy = parent.globalConfig.curStaffId;
+    formObj.staffOrgStatus = 1;
+    var url = parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrg/";
+    App.formAjaxJson(url, 'POST', JSON.stringify(formObj), successCallback, improperCallbacks);
+
+    function successCallback(result) {
+        layer.msg(ms, { icon: 1 });
+        searchPersonnel(true);
+        $('#modal').modal('hide');
+    }
+
+    function improperCallbacks(result) {
+        $('#addStaffOrgForm').data('bootstrapValidator').resetForm();
+    }	
 }

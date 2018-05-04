@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>人员弹出框</title>
+</head>
+
+<body>
+    <div id="modalAddSO">
+        <div class="modal-dialog defaultModalWidth" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form" id="addStaffOrgForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitle"></h4>
+                    </div>
+                    <div class="modal-body defaultModalForm">
+                    	<input type="hidden" name="staffId" id="staffId" value="" />
+                        <div class="col-sm-10 form-group">
+                            <label for="orgName" class="control-label">所属组织<span class="notNull">*</span></label>
+                            <div class="valiParent">
+                                <input type="text" name="orgName" class="form-control" readonly
+									  onclick="addStaffOrg_OrgTree(this);" placeholder="所属组织">
+								<input type="hidden" name="orgId">
+                            </div>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <label for="staffOrgType" class="control-label">岗位类别</label>
+                            <div class="valiParent">
+                                <div class="ui-radio-list ui-radio-inline">
+                                    <label class="ui-radio">
+										兼岗
+										<input type="radio" value="T" checked="" name="staffOrgType">
+										<span></span>
+									</label>
+                                    <label class="ui-radio">
+										借调
+										<input type="radio" value="J" name="staffOrgType">
+										<span></span>
+									</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>保存</button>
+                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

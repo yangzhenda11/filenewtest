@@ -350,7 +350,7 @@ a {
   text-shadow: none;
   color: /*#337ab7*/#e43a45; }
   a:hover {
-    color: /*#23527c*/#C00000; }
+    color:#D12610 /*#23527c*/; }
   a:focus, a:hover, a:active {
     outline: 0; }
 /* Horizontal break */

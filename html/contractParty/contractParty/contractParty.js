@@ -10,6 +10,7 @@ var curOrgStaffNode = null;
  * 角色ID的获取，目前写死，待协调
  */
 var curOrgStaffRole = 1;
+
 var ajaxObj = {
     "url" :  serverPath + "dicts/listChildrenByDicttId",
     "type" : "post",

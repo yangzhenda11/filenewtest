@@ -93,7 +93,7 @@ function createDictTable() {
                 		return "";
                 	}else{
                 		var btnArray = new Array();
-            			btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.provName +"\')" });
+            			btnArray.push({ "name": "修改", "fn": "dictModal(\'edit\',\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.orgName +"\')" });
                     //btnArray.push({ "name": "删除", "fn": "delDict(\'" + c.dictId + "\',\'" + c.dictLabel + "\',\'" + c.dictParentId + "\')"});
             			if ('1' == c.dictStatus) {
 	                        btnArray.push({ "name": "禁用", "fn": "changeDictStatus(\'" + c.dictId + "\',\'" + c.dictParentId + "\',\'" + c.dictLabel + "\', \'0\')"});
@@ -108,7 +108,14 @@ function createDictTable() {
             { "data": "dictParentId", title: "字典编码"},
             { "data": "dictLabel", title: "字典项名称"},
             { "data": "dictValue", title: "字典项编码"},
-            { "data": "provName", title: "适用范围"},
+            {"data": "provinceCode","title": "适用范围",
+            	"render": function(data, type, full, meta) {
+                	if(data == null){
+                    	return "";
+                	}
+                	return provinceCodeInfo[data];
+            	}
+        	},
             { "data": "dictSort", title: "顺序"}
 		],
 		drawCallbackFn:function(){
@@ -128,6 +135,10 @@ function createDictTable() {
  */
 function searchDict(resetPaging) {
 	var table = $('#dictTable').DataTable();
+	var checkNode =  dictTree.getSelectedNodes()[0];
+	if(checkNode.level > 1){
+		curNodeId = checkNode.dictParentId;
+	}
 	if(resetPaging) {
 		table.ajax.reload(null, false);
 	} else {
@@ -250,12 +261,21 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 		$("#provinceCodeTree").on("click",function(){
 			showTree('provinceCodeTree');
 		});*/
+		
+		App.initFormSelect2("#dictForm");
+        var ajaxObj = {
+        	"url" :  serverPath + "dicts/listChildrenByDicttId",
+        	"type" : "post",
+        	"data" : {"dictId": 9075},
+        	"async" : false
+        }
+        App.initAjaxSelect2("#provinceCode",ajaxObj,"dictValue","dictLabel","请选择省分编码");
+        
 		if(editType == "add") {
 			$("#modalTitle").text("新增字典");
 			var checkTree = dictTree.getSelectedNodes()[0];
 			$("#dictParentName").val(checkTree.dictLabel);
 			$("#dictParentId").val(checkTree.dictValue);
-			$("#provinceCode").val(top.globalConfig.provinceName);
 			$("#dictValue").removeAttr("disabled");
 			validate(editType);
 			$('#modal').modal('show');
@@ -352,18 +372,6 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			/*dictType : {
-				validators : {
-					notEmpty : {
-						message : '请输入字典类型'
-					},
-					stringLength : {
-						min : 0,
-						max : 20,
-						message : '请输入不超过20个字符'
-					}
-				}
-			},*/
 			dictSort : {
 				validators : {
 					notEmpty : {
@@ -388,13 +396,13 @@ function validate(editType,dictId) {
 					}
 				}
 			},
-			provinceName : {
-				validators : {
-					notEmpty : {
-						message : '请选择省分编码'
-					}
-				}
-			}
+			provinceCode: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择适用范围'
+                    }
+                }
+            }
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
@@ -412,6 +420,7 @@ function refreshTree() {
         dictTree.expandNode(rootNode);
         dictTree.selectNode(rootNode, false, false);
         if (rootNode) {
+     		curNodeId = rootNode.dictId;
         	$("#toolbars").removeClass("hide");
         	curNodeId = rootNode.dictId;
 			searchDict(true);
@@ -438,6 +447,23 @@ function expandNodes(nodes) {
 // 关闭所有
 function collapseAll() {
     dictTree.expandAll(false);
+}
+
+var ajaxObj = {
+    "url" :  serverPath + "dicts/listChildrenByDicttId",
+    "type" : "post",
+    "data" : {"dictId": 9075},
+    "async" : false
+};
+//从缓存中取关联编码字典集
+var provinceCodeInfo = new Array();
+var postData = JSON.stringify(ajaxObj.data);
+App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback1,null,null,null,ajaxObj.async);
+function succssCallback1(result) {
+    var data = result.data;
+    $.each(data, function (i, item) {
+        provinceCodeInfo[item.dictValue] = item.dictLabel;
+    });
 }
 /*
  * 显示所属组织树

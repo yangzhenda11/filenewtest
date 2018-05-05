@@ -41,7 +41,7 @@ $(function() {
 		}else{
 			isLeader = false;
 		}
-	}else{
+	}else if(parm.pageType == 2){
 		$(".page-content").removeClass("hidden");
 		$("#setExplain").remove();
 		verifyId = parm.verifyId;

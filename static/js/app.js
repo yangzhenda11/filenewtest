@@ -783,6 +783,16 @@ var App = function() {
 		stopLoading: function(el){
     		$(el).button('reset');
 		},
+		//判断是否存在指定函数   
+		isExitsFunction : function(funcName) {  
+		    try {  
+		        if (typeof (eval(funcName)) == "function") {  
+		            return true;  
+		        }  
+		    } catch (e) {  
+		    }  
+		    return false;  
+		},
 		/**
 		 * 表单元素序列化
 		 * 根据name值取值
@@ -2182,10 +2192,3 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
-/*
- * Handlebars引擎模板   按钮生成
- */
-var btnModel = '    \
-	{{#each func}}\
-    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
-    {{/each}}';

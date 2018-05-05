@@ -443,3 +443,6 @@ button:focus{
     min-height: 32px;
     white-space: pre;
 }
+.required{
+    color: red;
+}

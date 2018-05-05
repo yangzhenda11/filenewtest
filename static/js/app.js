@@ -869,13 +869,14 @@ var formData = {};
 			};
 			options = $.extend(true, {
 				"serverSide": true,					//开启服务器请求模式
-				"ordering": false,
+				"searching":false,
 				"scrollX": true,
 				"scrollCollapse": true,
 				"sScrollX": "100%",
 				"sScrollXInner": "100%",
 				"bAutoWidth": true,
-				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
+				"ordering": false,
+				//"order":  [[ 0, 'asc' ], [ 1, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
 					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",

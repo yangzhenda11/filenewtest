@@ -8,10 +8,11 @@ var serverPath = config.serverPath;
 //全局变量
 var pdfLoadFlag = 0;
 var timer = null;
-var verifyId = null;
-var isDifferences = null;
-var isLeader = null;
-var relationId = null;
+var verifyId = null;		//页面主键ID
+var isDifferences = null;	//是否有差异
+var isLeader = null;		//是否是领导审批页面
+var relationId = null;		//保存意见是的ID
+var contractId = null;		//合同ID
 //取关联字典编码
 var associateCodeInfo = new Array();
 App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId","post",JSON.stringify({"dictId": 9030}),succssCallback,null,null,null,false);
@@ -40,7 +41,7 @@ $(function() {
 		}else{
 			isLeader = false;
 		}
-	}else{
+	}else if(parm.pageType == 2){
 		$(".page-content").removeClass("hidden");
 		$("#setExplain").remove();
 		verifyId = parm.verifyId;
@@ -119,12 +120,15 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData.createdType = createdType;
 		postData.pinfoContent = $("#differencesExplain").val();
 	};
-	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		parent.layer.alert("处理成功",{icon:1},function(){
 			parent.modal_close();
 		});
 	};
+	function improperCallback(result){
+		parent.layer.alert(result.message,{icon:1});
+	}
 }
 //设置办理意见
 function setComment(pass){
@@ -133,18 +137,23 @@ function setComment(pass){
 }
 //保存回调业务侧实现的方法。
 function modal_save(){
-	var createdType = isLeader == true ? 2 : 1;
-	var postData = {
-		relationId : relationId,
-		busiId : verifyId,
-		createdType : createdType,
-		pinfoContent : $("#differencesExplain").val()
-	};
-	App.formAjaxJson(serverPath + "sysScanValidation/saveOpinion", "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		layer.msg("保存成功");
-		relationId = result.data.saveRelationId;
+	if(isDifferences == true){
+		var createdType = isLeader == true ? 2 : 1;
+		var postData = {
+			relationId : relationId,
+			busiId : verifyId,
+			createdType : createdType,
+			pinfoContent : $("#differencesExplain").val()
+		};
+		App.formAjaxJson(serverPath + "sysScanValidation/saveOpinion", "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			layer.msg("保存成功");
+			relationId = result.data.saveRelationId;
+		}
+	}else{
+		layer.msg("当前环节不需要保存数据");
 	}
+	
 }
 /*
  * 重新上传扫描件,推动工作流
@@ -160,47 +169,21 @@ function modal_passBybuss(flowParam){
 	function queryCallback(){
 		var fileInfo = getFileItemInfo();
 		$("#commomModal").modal("hide");
+		var postData = flowParam;
+		postData.verifyId = verifyId;
+		postData.storeId = fileInfo[0].data;
+		postData.contractId = contractId;
+		App.formAjaxJson(serverPath + "sysScanValidation/uploadScannedDoc", "post", JSON.stringify(postData), successCallback,improperCallback);
+		function successCallback(result) {
+			parent.layer.alert("提交成功！系统将对扫描件进行验证，验证结果请在待办中查询。",{icon:1},function(){
+				parent.modal_close();
+			});
+		}
+		function improperCallback(result){
+			parent.layer.alert(result.message,{icon:1});
+		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//typeof(tmp) == "undefined"
-//	var root=serverPath;//flowParam.root
-//	var taskDefinitionKey=flowParam.taskDefinitionKey;
-//	var assignee=flowParam.assignee;
-//	var processInstanceId=flowParam.processInstanceId;
-//	var taskId=flowParam.taskId;
-//	var comment=flowParam.comment;
-//	var handleType=flowParam.handleType;
-//	var withdraw=flowParam.withdraw;
-//	var iscandidate=flowParam.iscandidate;
-	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
-//		$.post(root + "business/pushProcess", {
-//			"processInstanceId" : processInstanceId,//当前流程实例
-//			"taskId" : taskId,//当前任务id
-//			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
-//			"assignee" : assignee,//下一步参与者
-//			"comment" : comment,//下一步办理意见
-//			"handleType" : handleType,//处理类型，1为通过，2为回退
-//			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
-//			"nowtaskDefinitionKey":'',//当前办理环节
-//			"title":"",//可不传，如果需要修改待办标题则传此参数。
-//			"iscandidate":iscandidate //是否是多候选人的抢单环节
-//		}, function(data) {
-//			layer.msg(data.sign);
-//			
-//			// 成功后回调模态窗口关闭方法
-//			parent.modal_close();   
-//		});
 }
 
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作。
@@ -251,6 +234,7 @@ function getScanValidationInfo(verifyId){
 		};
 		//设值展现形式
 		validationResultView(isDifferences);
+		contractId = data.contractId;
 		var otherPartyName = data.otherPartyName == null || data.otherPartyName == undefined ? "" :  data.otherPartyName;
 		var ourPartyName = data.ourPartyName == null || data.ourPartyName == undefined ? "" :  data.ourPartyName;
 		$("#contractNumber").val(data.contractNumber);
@@ -265,14 +249,14 @@ function getScanValidationInfo(verifyId){
 		//var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 		var textPdf = "contract1.pdf";
 		var scandocPdf = "contract2.pdf";
-		//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录
 		if(isDifferences){
 			if(parm.pageType == 1 && parm.taskFlag == "db" && isLeader == false){
 				parent.setUserButton(true,parm.businessKey);
 			};
-			getDifferenceRecord(data.contractId,data.verifyVersion)
+			getDifferenceRecord(contractId,data.verifyVersion)
 		}
 	}
 	function improperCallback(){
@@ -497,7 +481,7 @@ function validationResultView(isDifferences){
 /*
  * 检测两个文档是否加载完成
  */
-//var interval1 = setInterval('loadTextPdf()', 300);
+var interval1 = setInterval('loadTextPdf()', 500);
 function loadTextPdf() {
 	if(document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval1);
@@ -508,7 +492,7 @@ function loadTextPdf() {
 		});
 	}
 }
-//var interval2 = setInterval('loadScandocPdf()', 300);
+var interval2 = setInterval('loadScandocPdf()', 500);
 function loadScandocPdf() {
 	if(document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval2);

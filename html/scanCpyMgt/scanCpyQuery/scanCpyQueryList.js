@@ -41,7 +41,6 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			d.approveDateBegin = $("#approve_date_begin").val();
 			d.approveDateEnd = $("#approve_date_end").val();
            	return JSON.stringify(d);
-          /*return d;*/
         }
     },
     "columns": [

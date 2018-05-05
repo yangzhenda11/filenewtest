@@ -783,6 +783,16 @@ var App = function() {
 		stopLoading: function(el){
     		$(el).button('reset');
 		},
+		//判断是否存在指定函数   
+		isExitsFunction : function(funcName) {  
+		    try {  
+		        if (typeof (eval(funcName)) == "function") {  
+		            return true;  
+		        }  
+		    } catch (e) {  
+		    }  
+		    return false;  
+		},
 		/**
 		 * 表单元素序列化
 		 * 根据name值取值
@@ -869,13 +879,14 @@ var formData = {};
 			};
 			options = $.extend(true, {
 				"serverSide": true,					//开启服务器请求模式
-				"ordering": false,
+				"searching":false,
 				"scrollX": true,
-				"scrollCollapse": true,
+				"scrollCollapse": false,
 				"sScrollX": "100%",
 				"sScrollXInner": "100%",
 				"bAutoWidth": true,
-				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
+				"ordering": false,
+				//"order":  [[ 2, 'asc' ], [ 4, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
 					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
@@ -2181,10 +2192,3 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
-/*
- * Handlebars引擎模板   按钮生成
- */
-var btnModel = '    \
-	{{#each func}}\
-    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
-    {{/each}}';

@@ -203,7 +203,6 @@ function showSubpageTab(link,title){
 	}
 	return false
 }
-//showSubpageTab('html/components/bootstrapValidate.html','表单校验1');
 function conTabH() {
 	var m = $(this).parents(".J_menuTab").data("id");
 	var l = $(this).parents(".J_menuTab").width();

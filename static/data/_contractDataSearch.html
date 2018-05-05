@@ -44,11 +44,11 @@
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
 	var setDom = null;
+	var documentHeight = 0;
 	//初始化表格
 	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		var documentHeight = $(".page-content").height() - 250;
-		$("#contractTableDom").css("height",documentHeight);
+		documentHeight = $(".page-content").height() - 250;
 		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getContractData(dom, textValue, setKey, ajaxData);
 		})
@@ -57,6 +57,7 @@
 	function getContractData(dom, textValue, setKey, ajaxData) {
 		setDom = dom;
 		App.initDataTables('#contractDataTable', "#searchBtnM", {
+			scrollY:documentHeight,
 			ajax: {
 				"type": "post",
 				"contentType": "application/json",

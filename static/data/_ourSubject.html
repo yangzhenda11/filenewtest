@@ -43,6 +43,7 @@
 	function initOurSubject(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
 		documentHeight = $(".page-content").height() - 340;
+		$("#ourSubjectTableDom").css("height",documentHeight + 90);
 		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getOurSubjectData(dom, textValue, setKey, ajaxData);
 		})

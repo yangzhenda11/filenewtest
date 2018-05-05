@@ -771,10 +771,20 @@
 		}
 		if((typeof b) == "string"){
 			b = JSON.parse(b);
+			var orderList = b.order;
+			for(var k = 0; k < orderList.length; k++){
+				var va = b.order[k].column;
+				b.order[k].column = b.columns[va].data;
+			}
 			delete b["search"]
 			delete b["columns"]
 			b = JSON.stringify(b);
 		}else{
+			var orderList = b.order;
+			for(var k = 0; k < orderList.length; k++){
+				var va = b.order[k].column;
+				b.order[k].column = b.columns[va].data;
+			}
 			delete b["search"]
 			delete b["columns"]
 		};

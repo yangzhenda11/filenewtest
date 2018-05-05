@@ -745,7 +745,6 @@
 				if(c[b][f].unique && (!d[f] || !a.bSortCellsTop)) d[f] = c[b][f].cell;
 		return d
 	}
-
 	function sa(a, b, c) {
 		r(a, "aoServerParams", "serverParams", [b]);
 		if(b && h.isArray(b)) {
@@ -757,6 +756,7 @@
 			});
 			b = d
 		}
+		
 		var f, g = a.ajax,
 			j = a.oInstance,
 			i = function(b) {
@@ -769,6 +769,25 @@
 				b = h.isFunction(f) && n ? n : h.extend(!0, b, n);
 			delete g.data
 		}
+		if((typeof b) == "string"){
+			b = JSON.parse(b);
+			var orderList = b.order;
+			for(var k = 0; k < orderList.length; k++){
+				var va = b.order[k].column;
+				b.order[k].column = b.columns[va].data;
+			}
+			delete b["search"]
+			delete b["columns"]
+			b = JSON.stringify(b);
+		}else{
+			var orderList = b.order;
+			for(var k = 0; k < orderList.length; k++){
+				var va = b.order[k].column;
+				b.order[k].column = b.columns[va].data;
+			}
+			delete b["search"]
+			delete b["columns"]
+		};
 		n = {
 			data: b,
 			success: function(b) {

@@ -783,28 +783,48 @@ var App = function() {
 		stopLoading: function(el){
     		$(el).button('reset');
 		},
+		//判断是否存在指定函数   
+		isExitsFunction : function(funcName) {  
+		    try {  
+		        if (typeof (eval(funcName)) == "function") {  
+		            return true;  
+		        }  
+		    } catch (e) {  
+		    }  
+		    return false;  
+		},
 		/**
 		 * 表单元素序列化
 		 * 根据name值取值
 		 */
 		getFormValues: function($form) {
-		    var o = {};
-		    var a = $form.serializeArray();
-		    $.each(a, function(index, value) {
-		        if (o[value.name]) {
-		            if (!o[value.name].push) {
-		                o[value.name] = [o[value.name]];
-		            }
-		            o[value.name].push(value.value.trim() || '');
-		        } else {
-		            o[value.name] = value.value.trim() || '';
-		        }
-		    });
+var formData = {};
+			$form.find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+				var formType = formItem.type;
+				var formName = $(formItem).attr('name');
+				var formValue = '';
+				if(formType == "text" || formType == "password" || formType == "select-one" || formType == "textarea" || formType == "hidden") {
+					formValue = $(formItem).val().trim();
+					formData[formName] = formValue;
+				} else if(formType == "checkbox") {
+					if($(formItem).is(':checked')) {
+						if(typeof formData[formName] == 'undefined') {
+							formData[formName] = new Array();
+						}
+						formData[formName].push($(formItem).val());
+					}
+				} else if(formType == "radio") {
+					if($(formItem).is(':checked')) {
+						formValue = $(formItem).val();
+						formData[formName] = formValue;
+					}
+				}
+			})
+			return formData;
 //		    $form.find("[data-isNumber='true']").each(function(index, item) {
 //				var key = $(this).attr("name");
 //				o[key] = Number(o[key]);
 //			});
-		    return o;
 		},
 		/**
 		 * 生成时间戳
@@ -859,13 +879,14 @@ var App = function() {
 			};
 			options = $.extend(true, {
 				"serverSide": true,					//开启服务器请求模式
-				"ordering": false,
+				"searching":false,
 				"scrollX": true,
-				"scrollCollapse": true,
+				"scrollCollapse": false,
 				"sScrollX": "100%",
 				"sScrollXInner": "100%",
 				"bAutoWidth": true,
-				"order": [], //默认排序查询,为空则表示取消默认排序否则复选框一列会出现小箭头 
+				"ordering": false,
+				//"order":  [[ 2, 'asc' ], [ 4, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
 					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
@@ -967,7 +988,7 @@ var App = function() {
 						formData[b] = tvalue;
 					}
 				}
-                for( var a in formData){
+                for(var a in formData){
                     sel = ":input[name='" + a + "']";
                     obj = $(el).find(sel);
                     if(obj.length > 0){
@@ -2171,10 +2192,3 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
-/*
- * Handlebars引擎模板   按钮生成
- */
-var btnModel = '    \
-	{{#each func}}\
-    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
-    {{/each}}';

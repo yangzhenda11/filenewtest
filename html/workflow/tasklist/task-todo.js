@@ -55,6 +55,22 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$("#goTaskToDoDetailForToDo").show();
 	$("#searchContentForToDo").hide();
 }
+function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
+		processDefinitionId, processDefinitionKey, executionId, assignee) {
+	
+	var flowParam = {
+		"taskDefinitionKey" : taskDefinitionKey,
+		"assignee" : assignee,
+		"processInstanceId" : processInstanceId,
+		"taskId" : id
+	}
+	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,
+			function(data) {
+				layer.msg(data.sign);
+				// 成功后刷新列表
+				serarchForToDo();
+			});
+}
 
 /*
  * 表格初始化
@@ -93,23 +109,35 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
         render: function (a, b, c, d) {
         	var currentId = $("#currentId").val();;
         	var assignee = c.assignee;
+        	var context ="";
         	
         	// 按钮显隐设置及方法设置
         	var disabled = "disabled";
-        	var title = "title=当前任务属于【" + c.staffOrgName + "】，请切换岗位后处理";
+        	var buttontitle = "title=当前任务属于【" + c.staffOrgName + "】，请切换岗位后处理";
         	var fn = "";
         	if(currentId == assignee){
         		disabled = "";
         		title = "";
         		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+        		context =
+        		{
+        				func: [
+        					{"name": "处理", "title": buttontitle, "fn": fn, "type": disabled}
+        					]
+        		};
+        	}
+        	if(assignee.indexOf("candidate-") != -1){
+        		disabled = "";
+        		buttontitle = "title=该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
+        		fn = "onclick=applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+        		context =
+            	{
+            			func: [
+            				{"name": "申领", "title": buttontitle, "fn": fn, "type": disabled}
+            				]
+            	};
         	}
         	
-            var context =
-            {
-                func: [
-                	{"name": "处理", "title": title, "fn": fn, "type": disabled}
-                ]
-            };
             var html = template(context);
             return html;
         }

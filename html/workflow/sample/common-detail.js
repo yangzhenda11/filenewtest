@@ -31,9 +31,9 @@ function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,i
 		"comment":comment, //办理意见，流程回调带过来的，业务侧无需赋值。
 		"title":$("#taskTitle").val(),// 待办标题，需要业务侧提供，一般为业务名称，需求为需求名称。
 		"businessKey":$("#taskBusinessKey").val(),//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
-		"iscandidate":iscandidate
+		"iscandidate":iscandidate //是否是多候选人的抢单环节
 	}, function(data) {
-		alert(data.sign);
+		layer.alert(data.sign);
 		// 成功后回调模态窗口关闭方法
 		closeModalForStart();
 	}).error(function() { alert("流程发起异常，请联系管理员！"); });
@@ -100,7 +100,8 @@ function businessPush(){
 		layer.msg("请填写业务主键！");
 		return;
 	}
-	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
+	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
 	modal_passBybuss(flowParam);
 	
 }
@@ -109,13 +110,14 @@ function businessPush(){
 function modal_passBybuss(flowParam){
 	//typeof(tmp) == "undefined"
 	var root=serverPath;//flowParam.root
-	var taskDefinitionKey=flowParam.taskDefinitionKey
-	var assignee=flowParam.assignee
-	var processInstanceId=flowParam.processInstanceId
-	var taskId=flowParam.taskId
-	var comment=flowParam.comment
-	var handleType=flowParam.handleType
-	var withdraw=flowParam.withdraw
+	var taskDefinitionKey=flowParam.taskDefinitionKey;
+	var assignee=flowParam.assignee;
+	var processInstanceId=flowParam.processInstanceId;
+	var taskId=flowParam.taskId;
+	var comment=flowParam.comment;
+	var handleType=flowParam.handleType;
+	var withdraw=flowParam.withdraw;
+	var iscandidate=flowParam.iscandidate;
     
 	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
 		$.post(root + "business/pushProcess", {
@@ -127,7 +129,8 @@ function modal_passBybuss(flowParam){
 			"handleType" : handleType,//处理类型，1为通过，2为回退
 			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
-			"title":""//可不传，如果需要修改待办标题则传此参数。
+			"title":"",//可不传，如果需要修改待办标题则传此参数。
+			"iscandidate":iscandidate //是否是多候选人的抢单环节
 		}, function(data) {
 			layer.msg(data.sign);
 			

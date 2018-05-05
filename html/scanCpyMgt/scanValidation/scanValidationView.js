@@ -1,19 +1,18 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项
 var parm = App.getPresentParm();
-console.log(parm);
 
 //系统的全局变量获取
 var config = top.globalConfig;
-//console.log(config);
 var serverPath = config.serverPath;
 
 //全局变量
 var pdfLoadFlag = 0;
 var timer = null;
-var verifyId = null;
-var isDifferences = null;
-var isLeader = null;
-var relationId = null;
+var verifyId = null;		//页面主键ID
+var isDifferences = null;	//是否有差异
+var isLeader = null;		//是否是领导审批页面
+var relationId = null;		//保存意见是的ID
+var contractId = null;		//合同ID
 //取关联字典编码
 var associateCodeInfo = new Array();
 App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId","post",JSON.stringify({"dictId": 9030}),succssCallback,null,null,null,false);
@@ -27,38 +26,39 @@ function succssCallback(result) {
 //页面初始化事件
 $(function() {
 	if(parm.pageType == 1){
-		$(".portlet-title,.closeBtn").remove();
+		$(".portlet-title,.toolbarBtn").remove();
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
 		$(".page-content").removeClass("hidden");
 		verifyId = parm.businessKey;
-		if(parm.taskFlag = "db"){
-			$("#toolbarBtnContent").css("width","99%");
+		if(parm.taskFlag == "db"){
 			$("#setExplain").removeClass("hidden");
 		}else{
-			$("#setExplain,.toolbarBtn").remove();
+			$("#setExplain").remove();
 		};
 		if(parm.taskDefinitionKey == "YZSP"){
 			isLeader = true;
-			$(".toolbarBtn").remove();
 		}else{
 			isLeader = false;
 		}
 	}else{
 		$(".page-content").removeClass("hidden");
-		$("#setExplain,.reuploadBtn").remove();
+		$("#setExplain").remove();
 		verifyId = parm.verifyId;
+		//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 70);
 	};
-	//固定操作按钮在70px的高度
-	App.fixToolBars("toolbarBtnContent", 70);
 	//获取合同基本信息
 	getScanValidationInfo(verifyId);	
 })
+
+
 /*
  * 工作流回调页面方法			涉及提交下一步操作的验证
  * isDifferences是否有差异，无差异直接提交不选人-false，有差异选人-true
  * isLeader 是否为领导， true领导>选人|退回承办人   ，false 非领导 > 重新上传|下一步选人
  */
+//通过或退回回调的方法
 function beforePushProcess(pass){
 	var result = true;
 	var pathSelect = null;
@@ -84,25 +84,17 @@ function beforePushProcess(pass){
 			}
 	parent.setAssigneeParam(assigneeParam);
 	
-	//3,设置路由值，默认为0，对于有分支的场景需要单独设置路由值
+	//3,设置路由值
 	parent.setPathSelect(pathSelect);
 	
 	//4,设置选人单选还是多选。
 	//var staffSelectType=$("#staffSelectType").val();
 	//parent.setStaffSelectType(staffSelectType);
 	
-	//5,设置办理意见
-	if(pass){
-		var businessInfo = $("#differencesExplain").val();
-		parent.setComment(businessInfo);
-	}
 	return result;
 }
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
 function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId, comment, handleType, withdraw){
-	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
-	//自定义业务上传接口
-//	$("#differencesExplain").val()	意见的获取
 	var postData = {
 		"processInstanceId" : processInstanceId,//当前流程实例
 		"taskId" : taskId,//当前任务id
@@ -114,13 +106,13 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
-	//是否承办人
-	var createdType = isLeader == true ? 2 : 1;
 	//是否有差异
 	if(isDifferences == false){
 		var url = "sysScanValidation/saveOpinionPushProcessTrue";
 		postData.verifyId = verifyId;
 	}else{
+		//是否承办人
+		var createdType = isLeader == true ? 2 : 1;
 		var url = "sysScanValidation/saveOpinionPushProcess";
 		postData.relationId = relationId;
 		postData.busiId = verifyId;
@@ -128,31 +120,70 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData.createdType = createdType;
 		postData.pinfoContent = $("#differencesExplain").val();
 	};
-	console.log(postData);
-	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
-		layer.alert("处理成功");
-		alert("处理成功")
-		parent.modal_close();
+		parent.layer.alert("处理成功",{icon:1},function(){
+			parent.modal_close();
+		});
+	};
+	function improperCallback(result){
+		parent.layer.alert(result.message,{icon:1});
 	}
-//	function improperCallback(result){
-//		console.log(result);
-//	}
+}
+//设置办理意见
+function setComment(pass){
+	var userComment=$("#differencesExplain").val();
+	return userComment;
 }
 //保存回调业务侧实现的方法。
 function modal_save(){
-	var createdType = isLeader == true ? 2 : 1;
-	var postData = {
-		relationId : relationId,
-		busiId : verifyId,
-		createdType : createdType,
-		pinfoContent : $("#differencesExplain").val()
-	};
-	App.formAjaxJson(serverPath + "sysScanValidation/saveOpinion", "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		layer.msg("保存成功");
-		relationId = result.data.saveRelationId;
+	if(isDifferences == true){
+		var createdType = isLeader == true ? 2 : 1;
+		var postData = {
+			relationId : relationId,
+			busiId : verifyId,
+			createdType : createdType,
+			pinfoContent : $("#differencesExplain").val()
+		};
+		App.formAjaxJson(serverPath + "sysScanValidation/saveOpinion", "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			layer.msg("保存成功");
+			relationId = result.data.saveRelationId;
+		}
+	}else{
+		layer.msg("当前环节不需要保存数据");
 	}
+	
+}
+/*
+ * 重新上传扫描件,推动工作流
+ */
+function modal_passBybuss(flowParam){
+	var setting = {
+		title : "合同正文扫描件上传",
+		url:'fileload/uploadFileS3',
+		maxNumber:1,
+		fileExtensions:["pdf"]
+		//extraData:{test:123,test2:456}	//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
+	};
+	function queryCallback(){
+		var fileInfo = getFileItemInfo();
+		$("#commomModal").modal("hide");
+		var postData = flowParam;
+		postData.verifyId = verifyId;
+		postData.storeId = fileInfo[0].data;
+		postData.contractId = contractId;
+		App.formAjaxJson(serverPath + "sysScanValidation/uploadScannedDoc", "post", JSON.stringify(postData), successCallback,improperCallback);
+		function successCallback(result) {
+			parent.layer.alert("提交成功！系统将对扫描件进行验证，验证结果请在待办中查询。",{icon:1},function(){
+				parent.modal_close();
+			});
+		}
+		function improperCallback(result){
+			parent.layer.alert(result.message,{icon:1});
+		}
+	}
+	App.getFileUploadModal(setting,queryCallback);
 }
 
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作。
@@ -183,7 +214,6 @@ function modal_return(root, processInstanceId, taskId){
 
 
 
-
 /*
  * 获取合同基本信息
  */
@@ -194,11 +224,8 @@ function getScanValidationInfo(verifyId){
 	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		console.log(data);
-		
 		$("#verifyState").text(associateCodeInfo[data.verifyStatus]);
-		var verifyVersion = data.verifyVersion == null ? "暂无版本" : data.verifyVersion;
-		$("#contratVersion").text(verifyVersion);
+		$("#contratVersion").text(data.verifyVersion);
 		//判断是否有差异
 		if(data.verifyDiffCount == null || data.verifyDiffCount == "" || data.verifyDiffCount == undefined){
 			isDifferences = false;
@@ -207,6 +234,7 @@ function getScanValidationInfo(verifyId){
 		};
 		//设值展现形式
 		validationResultView(isDifferences);
+		contractId = data.contractId;
 		var otherPartyName = data.otherPartyName == null || data.otherPartyName == undefined ? "" :  data.otherPartyName;
 		var ourPartyName = data.ourPartyName == null || data.ourPartyName == undefined ? "" :  data.ourPartyName;
 		$("#contractNumber").val(data.contractNumber);
@@ -221,11 +249,14 @@ function getScanValidationInfo(verifyId){
 		//var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
 		var textPdf = "contract1.pdf";
 		var scandocPdf = "contract2.pdf";
-		//$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-		//$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录
 		if(isDifferences){
-			getDifferenceRecord(data.contractId)
+			if(parm.pageType == 1 && parm.taskFlag == "db" && isLeader == false){
+				parent.setUserButton(true,parm.businessKey);
+			};
+			getDifferenceRecord(contractId,data.verifyVersion)
 		}
 	}
 	function improperCallback(){
@@ -236,13 +267,19 @@ function getScanValidationInfo(verifyId){
 /*
  * 若有版本差异记录获取版本差异
  */
-function getDifferenceRecord(contractId){
+function getDifferenceRecord(contractId,verifyVersion){
 	var postData = {
 		contractId : contractId
 	}
 	App.formAjaxJson(serverPath + "sysScanValidation/getVerifyDiffId", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		var data = result.data;
+		var result = result.data;
+		var data = [];
+		for(var i = 0; i < result.length; i++){
+			if(result[i].verifyVersion <= verifyVersion){
+				data.push(result[i]);
+			}
+		};
 		if(data.length == 0){
 			layer.alert("当前验证有差异，暂未获取到差异记录",{icon:2});
 			return false;
@@ -268,17 +305,19 @@ function setDifferenceInfo(data){
 	var tSBusiProcessInfoVo = data.tSBusiProcessInfoVo;
 	var verifyDiffVo = data.verifyDiffVo;
 	if(tSBusiProcessInfoVo.length > 0){
-		if(isLeader == true){
-			if(tSBusiProcessInfoVo[0].createdType == 2){
-				$("#differencesExplain").val(tSBusiProcessInfoVo[0].pinfoContent);
-				relationId = tSBusiProcessInfoVo[0].relationId;
-				tSBusiProcessInfoVo.splice(0,1);
-			}
-		}else{
-			if(tSBusiProcessInfoVo[0].createdType == 1){
-				$("#differencesExplain").val(tSBusiProcessInfoVo[0].pinfoContent);
-				relationId = tSBusiProcessInfoVo[0].relationId;
-				tSBusiProcessInfoVo.splice(0,1);
+		if(parm.taskFlag == "db"){
+			if(isLeader == true){
+				if(tSBusiProcessInfoVo[0].createdType == 2){
+					$("#differencesExplain").val(tSBusiProcessInfoVo[0].pinfoContent);
+					relationId = tSBusiProcessInfoVo[0].relationId;
+					tSBusiProcessInfoVo.splice(0,1);
+				}
+			}else{
+				if(tSBusiProcessInfoVo[0].createdType == 1){
+					$("#differencesExplain").val(tSBusiProcessInfoVo[0].pinfoContent);
+					relationId = tSBusiProcessInfoVo[0].relationId;
+					tSBusiProcessInfoVo.splice(0,1);
+				}
 			}
 		}
 	};
@@ -362,15 +401,17 @@ function setDifferenceRecord(data){
 		var differenceTbodyHtml = "";
 		//生成意见项
 		if(diffInfoItem.tSBusiProcessInfoVo.length > 0){
-			if(isLeader == true){
-				if(diffInfoItem.tSBusiProcessInfoVo[0].createdType == 2){
-					diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
-				}
-			}else{
-				if(diffInfoItem.tSBusiProcessInfoVo[0].createdType == 1){
-					diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
-				}
-			};
+			if(parm.taskFlag == "db"){
+				if(isLeader == true){
+					if(diffInfoItem.tSBusiProcessInfoVo[0].createdType == 2){
+						diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
+					}
+				}else{
+					if(diffInfoItem.tSBusiProcessInfoVo[0].createdType == 1){
+						diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
+					}
+				};
+			}
 			
 			for(var o = diffInfoItem.tSBusiProcessInfoVo.length - 1; o >= 0; o--){
 				thatItemHtml += creatThatItemHtml(diffInfoItem.tSBusiProcessInfoVo[o]);
@@ -440,7 +481,7 @@ function validationResultView(isDifferences){
 /*
  * 检测两个文档是否加载完成
  */
-//var interval1 = setInterval('loadTextPdf()', 300);
+var interval1 = setInterval('loadTextPdf()', 500);
 function loadTextPdf() {
 	if(document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval1);
@@ -451,7 +492,7 @@ function loadTextPdf() {
 		});
 	}
 }
-//var interval2 = setInterval('loadScandocPdf()', 300);
+var interval2 = setInterval('loadScandocPdf()', 500);
 function loadScandocPdf() {
 	if(document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval2);

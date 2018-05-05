@@ -209,8 +209,9 @@
      * 点击确定执行的方法
      */
     function getFileUploadInfo(){
-    	if($("#uploadFileName").val() != ""){
-    		layer.msg("请先点击上传按钮上传文件或删除按钮删除文件后再执行该操作!",{icon:2,time:3000})
+    	var fileUploadItem = getFileItemInfo();
+    	if(fileUploadItem.length == 0){
+    		layer.msg("请先点击上传按钮上传文件后再执行该操作！",{icon:2,time:3000})
     	}else{
     		successCallback();
     	}

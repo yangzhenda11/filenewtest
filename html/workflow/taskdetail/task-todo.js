@@ -103,8 +103,31 @@ $(function(){
 			});
 		}
 	}
+	//合同验证结果确认环节定制的“重新上传扫描件”按钮，点按钮相当于重新发起后台验证。
+	$('#userButton').hide();
 	
 });
+//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制，控制按钮显示和绑定单击事件。
+function setUserButton(isShow,businessKey){
+	if(isShow){
+		$('#userButton').show();
+		$('#userButton').click(function(){
+			addCommentByuser(businessKey);
+		});
+	}else{
+		$('#userButton').hide();
+		$("#userButton").unbind();
+	}
+}
+function addCommentByuser(businessKey){
+	//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制的流程推进，handletype=1，pathselect=1
+	var flowParam=App.getFlowParam(serverPath,businessKey,1,1);
+	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
+		document.getElementById("businessiframe").contentWindow.modal_passBybuss(flowParam);
+	}else{
+		layer.msg("网络异常，请联系管理员！");
+	}
+}
 
 // 根据任务ID获取实际任务办理页面的路径并load到主DIV
 function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, processDefinitionId) {
@@ -247,6 +270,16 @@ function addComment(pass){
 	    }else{
 	    	layer.msg('数据校验异常，请联系管理员！');
 	        return;
+	    }
+	    if(typeof(document.getElementById("businessiframe").contentWindow.setComment)=="function") {
+	    	var userComment=document.getElementById("businessiframe").contentWindow.setComment(pass);
+	    	if(userComment!=null&&typeof(userComment)!="undefined"&&userComment.length>0){
+	    		$("#comment").val(userComment);
+	    	}else{
+	    		$("#comment").val("");
+	    	}
+	    }else{
+	    	$("#comment").val("");
 	    }
 		
 		// 确认按钮仅绑定推进事件
@@ -521,10 +554,15 @@ function pushProcess(){
 		layer.msg('请填写审批意见！');
 		return;
 	}
+    var iscandidate=$("#link").val().toString().split(",")[3];
+    if(iscandidate == null || iscandidate.length == 0){
+    	layer.msg('流程异常，无法识别下一步环节是否是需要抢单环节，请联系管理员！',{time:2000});
+    	return;
+    }
 	
 	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
 		// 调用推进方法，通过及回退均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ） 
-		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw);
+		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw,iscandidate);
 		layer.close(index);
 	})
 }
@@ -884,13 +922,17 @@ function getTables(data){
 function selectstaff(){
 	var staffSelectType=$("#wStaffSelectType").val();
 	var callbackFun='getassignee';
-	if(staffSelectType==2){
-		callbackFun="getassignees";
-	}
 	var flowKey = $("#processDefinitionKey").val();
     var linkcode = $("#link").val().toString().split(",")[0];
+    var idcandidate=$("#link").val().toString().split(",")[3];
     var prov=$("#wprov").val();
-    
+	if(idcandidate==1){
+		layer.msg("因下一步环节是候选人抢单环节，所以强制切换选人模式为多选！");
+		staffSelectType=2;
+	}
+    if(staffSelectType==2){
+    	callbackFun="getassignees";
+    }
     jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
@@ -990,13 +1032,8 @@ function modal_savefun(){
 }
 
 function setStaffSelectType(staffSelectType){
-	if(staffSelectType.length>0){
+	if(staffSelectType!=null&&typeof(staffSelectType)!="undefined"&&staffSelectType.length>0){
 		$("#wStaffSelectType").val(staffSelectType);
 	}
 }
 
-function setComment(businessInfo){
-	if(businessInfo.length>0){
-		$("#comment").val(businessInfo);
-	}
-}

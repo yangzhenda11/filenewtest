@@ -22,6 +22,7 @@ function getRoleTable() {
                 d.roleName = $('#sysRoleName').val();
                 d.orgName = $("#sysOrgName").val();
                 d.staffOrgId = config.curStaffOrgId;
+                d.companyId = config.curCompanyId;
                 d.roleStatus = 1;
                 return d;
             }
@@ -31,7 +32,6 @@ function getRoleTable() {
                 "title": "操作",
                 "className": "text-center",
                 "render": function(data, type, row, meta) {
-                	debugger;
                     if (data) {
                         var btnArray = new Array();
                         //                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
@@ -43,6 +43,11 @@ function getRoleTable() {
                         }
                         if (roleUpdate) {
                             btnArray.push({ "name": "授权", "fn": "openAddRolePerm(\'" + row.roleName + "\',\'" + data + "\')" });
+                        }
+                        if ("1" == row.roleStatus) {
+                            btnArray.push({ "name": "禁用", "fn": "changeRoleStatus(\'" + data + "\',\'" + row.roleName + "\',0)" });
+                        } else {
+                            btnArray.push({ "name": "启用", "fn": "changeRoleStatus(\'" +data + "\',\'" + row.roleName + "\',1)" });
                         }
                         return App.getDataTableBtn(btnArray);
                     } else {
@@ -64,7 +69,11 @@ function getRoleTable() {
                     return ('1' == c.roleStatus) ? '有效' : '无效';
                 }
             },
-            { "data": "roleCount", title: "授权人数" },
+            { "data": "roleCount", title: "授权人数", 
+            	render: function(data, type, row, meta) {
+                return '<a href=\"javascript:void(0)\" onclick = "findStaff(\'' + row.roleId + '\')">' + data + '</a>';
+                }
+            },
             {
                 "data": "createDate",
                 title: "添加时间",
@@ -75,7 +84,49 @@ function getRoleTable() {
         ]
     })
 }
-
+/**
+ * 启用/禁用角色
+ * daiyw 
+ */
+function changeRoleStatus(roleId, roleName, roleStatus) {
+    if (1 === roleStatus) {
+        layer.confirm("确认启用" + roleName + "吗？", {
+            btn: ['启用', '取消'],
+            icon: 0,
+            skin: 'layer-ext-moon'
+        }, function() {
+            $.ajax({ //提交服务端
+                "type": "PUT",
+                "url": serverPath + 'roles/' + roleId + "/status/" + roleStatus,
+                success: function(data) {
+                    layer.alert("启用成功", {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                    $('#searchRoleTable').DataTable().ajax.reload(null, false);
+                }
+            });
+        });
+    } else {
+        layer.confirm("确认禁用" + roleName + "吗？", {
+            btn: ['禁用', '取消'],
+            icon: 0,
+            skin: 'layer-ext-moon'
+        }, function() {
+            $.ajax({ //提交服务端
+                "type": "PUT",
+                "url": parent.globalConfig.serverPath + 'roles/' + roleId + "/status/" + roleStatus,
+                success: function(data) {
+                    layer.alert("禁用成功", {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                    $('#searchRoleTable').DataTable().ajax.reload(null, false);
+                }
+            });
+        });
+    }
+}
 /**
  * 删除某个角色
  * @param {角色id} roleId 
@@ -119,6 +170,89 @@ function findDetail(itemId) {
         $("#modal").modal("show");
         getRoleInfo(itemId, "detail");
     });
+}
+/**
+ * 查看角色授权人员列表
+ * daiyw
+ */
+function findStaff(roleId) {
+    $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
+        $("#modal").modal("show");
+        getRoleStaffTable(roleId);
+    });
+}
+/**
+ * 授权人员列表
+ * daiyw
+ */
+function getRoleStaffTable(roleId) {
+    App.initDataTables('#searchRoleStaffTable', "#submitBtn", {
+        "ajax": {
+            "type": "GET",
+            "url": serverPath + 'roles/searchRoleStaff',
+            "data": function(d) { // 查询参数
+                d.staffName = $('#staffName').val();
+                d.loginName = $("#loginName").val();
+                d.companyId = config.curCompanyId;
+                d.roleId = roleId;
+                return d;
+            }
+        },
+        "columns": [
+        	{
+                "data": null,
+                "title": "人员姓名",
+                render: function(data, type, full, meta) {
+                    return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
+                }
+            },
+            { "data": "LOGIN_NAME", "title": "账号" },
+            { "data": "ORG_NAME", "title": "部门名称" },
+            {
+                "data": "STAFF_ORG_TYPE",
+                "title": "岗位状态",
+                className: "text-center",
+                render: function(a, b, c, d) {
+                    return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗':'借调' ) ;
+                }
+            },
+            {
+                "data": "SEX",
+                "title": "性别",
+                className: "text-center",
+                render: function(a, b, c, d) {
+                    return (c.SEX == 'M') ? '男' : '女';
+                }
+            },
+            // { "data": "PHONE", "title": "电话号码" },
+            { "data": "EMAIL", "title": "邮箱账号" },
+            { "data": "MOBIL_PHONE", "title": "手机号码" },
+            {
+                "data": "STAFF_ORG_STATUS",
+                "title": "岗位状态",
+                className: "text-center",
+                render: function(a, b, c, d) {
+                    return ('1' == c.STAFF_ORG_STATUS) ? '有效' : '无效';
+                }
+            }
+        ]
+    })
+}
+/**
+ * 根据条件查询授权人员
+ * daiyw
+ */
+function searchRoleStaff() {
+    var table = $('#searchRoleStaffTable').DataTable();
+    table.ajax.reload();
+}
+/**
+ * 重置授权人员查询条件
+ * daiyw
+ */
+function reset(){
+	$("#staffName").val("");
+	$("#loginName").val("");
 }
 /**
  * 角色编辑

@@ -11,7 +11,7 @@ $(function() {
         }
         //根据当前登录人的岗位id查询其组织id
         //var curStaffOrgId1 = parent.globalConfig.curStaffOrgId;
-        App.initDataTables('#staffSearchTable', {
+        App.initDataTables('#staffSearchOnlyTable', {
             "serverSide": true, //开启服务器请求模式
             //buttons: ['copy', 'colvis'], //显示的工具按钮
             ajax: {
@@ -19,16 +19,16 @@ $(function() {
                 "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
                 "data": function(d) { // 查询参数
                     d.sysOrgId = parent.globalConfig.curCompanyId;
-                    d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
-                    d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
-                    var orgId= $("input[name='orgId']", $('#searchStaffForm')).val();
+                    d.staffName = $("input[name='staffName']", $('#searchOnlyStaffForm')).val();
+                    d.loginName = $("input[name='loginName']", $('#searchOnlyStaffForm')).val();
+                    var orgId= $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
                     if(null!=orgId && ''!=orgId){
-                    	d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                    	d.sysOrgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
                     }
-                    d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
-                    d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
+                    d.staffStatus = $("select[name='staffStatus']", $('#searchOnlyStaffForm')).val();
+                    d.mobilPhone = $("input[name='mobilPhone']", $('#searchOnlyStaffForm')).val();
                     d.staffKind = "1"; //$("#curTabstaffKind").val();
-                    d.attra = $("select[name='staffOrgType']", $('#searchStaffForm')).val();
+                    d.attra = $("select[name='staffOrgType']", $('#searchOnlyStaffForm')).val();
                     return d;
                 },
                 "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -117,7 +117,7 @@ function judge(result) {
  * @returns 
  */
 function searchStaff(retainPaging) {
-    var table = $('#staffSearchTable').DataTable();
+    var table = $('#staffSearchOnlyTable').DataTable();
     if (retainPaging) {
         table.ajax.reload(null, false);
     } else {
@@ -251,7 +251,7 @@ function returnStaffList() {
  * 搜索点击事件
  */
 function searchPersonnel(resetPaging) {
-    var table = $('#staffSearchTable').DataTable();
+    var table = $('#staffSearchOnlyTable').DataTable();
     if (resetPaging) {
         table.ajax.reload(null, false);
     } else {
@@ -264,6 +264,6 @@ function getStaffSearch_OrgTree(obj){
 }
 
 function getStaffSearch_OrgTreeId(orgId, orgName, orgCode){
-	$("input[name='orgName']",$('#searchStaffForm')).val(orgName);
-	$("input[name='orgId']",$('#searchStaffForm')).val(orgId);
+	$("input[name='orgName']",$('#searchOnlyStaffForm')).val(orgName);
+	$("input[name='orgId']",$('#searchOnlyStaffForm')).val(orgId);
 }

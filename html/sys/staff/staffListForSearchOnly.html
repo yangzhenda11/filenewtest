@@ -24,7 +24,6 @@
 </head>
 
 <body>
-	<input type="hidden" name="selectedStaffOrgId" id="selectedStaffOrgId">
     <div id="divStaffList" class="page-content">
         <div class="portlet">
             <div class="portlet-title">
@@ -34,7 +33,7 @@
             </div>
             <div class="portlet-body">
                 <div class="page-search">
-                    <form class="form-horizontal" action="" id="searchStaffForm">
+                    <form class="form-horizontal" action="" id="searchOnlyStaffForm">
                         <div class="row page-search-form">
                             <div class="col-sm-4">
                                 <div class="input-group">
@@ -90,21 +89,10 @@
                         </div>
                     </form>
                 </div>
-                <table id="staffSearchTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+                <table id="staffSearchOnlyTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
             </div>
         </div>
     </div>
-    <!-- <div id="staffModalPart">
-        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal_label">
-        </div>
-    </div>
-    <div id="staffLoadPart" class="page-content"></div>
-    <div id="roleModalPart">
-        <div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="roleModal_label">
-        </div>
-    </div>
-    modal
-	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div> -->
     <!--[if lt IE 9]>
 	  	<script src="../../../static/plugins/html5shiv.min.js"></script>
 	  	<script src="../../../static/plugins/respond.min.js"></script>

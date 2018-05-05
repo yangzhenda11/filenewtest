@@ -19,6 +19,7 @@
                     </div>
                     <div class="modal-body defaultModalForm">
                     	<input type="hidden" name="staffId" id="staffId" value="" />
+                    	<input type="hidden" name="staffOrgId" id="staffOrgId" value="" />
                         <div class="col-sm-10 form-group">
                             <label for="orgName" class="control-label">所属组织<span class="notNull">*</span></label>
                             <div class="valiParent">
@@ -33,12 +34,29 @@
                                 <div class="ui-radio-list ui-radio-inline">
                                     <label class="ui-radio">
 										兼岗
-										<input type="radio" value="T" checked="" name="staffOrgType">
+										<input type="radio" value="T" checked="checked" name="staffOrgType">
 										<span></span>
 									</label>
                                     <label class="ui-radio">
 										借调
 										<input type="radio" value="J" name="staffOrgType">
+										<span></span>
+									</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-10 form-group">
+                            <label for="staffOrgStatus" class="control-label">岗位状态</label>
+                            <div class="valiParent">
+                                <div class="ui-radio-list ui-radio-inline">
+                                    <label class="ui-radio">
+										有效
+										<input type="radio" value="1" checked="checked" name="staffOrgStatus">
+										<span></span>
+									</label>
+                                    <label class="ui-radio">
+										无效
+										<input type="radio" value="0" name="staffOrgStatus">
 										<span></span>
 									</label>
                                 </div>

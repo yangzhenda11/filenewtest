@@ -8,10 +8,11 @@ var serverPath = config.serverPath;
 //全局变量
 var pdfLoadFlag = 0;
 var timer = null;
-var verifyId = null;
-var isDifferences = null;
-var isLeader = null;
-var relationId = null;
+var verifyId = null;		//页面主键ID
+var isDifferences = null;	//是否有差异
+var isLeader = null;		//是否是领导审批页面
+var relationId = null;		//保存意见是的ID
+var contractId = null;		//合同ID
 //取关联字典编码
 var associateCodeInfo = new Array();
 App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId","post",JSON.stringify({"dictId": 9030}),succssCallback,null,null,null,false);
@@ -119,12 +120,15 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData.createdType = createdType;
 		postData.pinfoContent = $("#differencesExplain").val();
 	};
-	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		parent.layer.alert("处理成功",{icon:1},function(){
 			parent.modal_close();
 		});
 	};
+	function improperCallback(result){
+		parent.layer.alert(result.message,{icon:1});
+	}
 }
 //设置办理意见
 function setComment(pass){
@@ -159,7 +163,23 @@ function modal_passBybuss(flowParam){
 	};
 	function queryCallback(){
 		var fileInfo = getFileItemInfo();
+		console.log(fileInfo);
 		$("#commomModal").modal("hide");
+		var postData = flowParam;
+		
+		postData.verifyId = verifyId;
+		postData.storeId = fileInfo[0].data;
+		postData.contractId = contractId;
+		console.log(postData);
+		App.formAjaxJson(serverPath + "sysScanValidation/uploadScannedDoc", "post", JSON.stringify(postData), successCallback,improperCallback);
+		function successCallback(result) {
+			parent.layer.alert("提交成功！系统将对扫描件进行验证，验证结果请在待办中查询。",{icon:1},function(){
+				parent.modal_close();
+			});
+		}
+		function improperCallback(result){
+			parent.layer.alert(result.message,{icon:1});
+		}
 	}
 	App.getFileUploadModal(setting,queryCallback);
 	
@@ -251,6 +271,7 @@ function getScanValidationInfo(verifyId){
 		};
 		//设值展现形式
 		validationResultView(isDifferences);
+		contractId = data.contractId;
 		var otherPartyName = data.otherPartyName == null || data.otherPartyName == undefined ? "" :  data.otherPartyName;
 		var ourPartyName = data.ourPartyName == null || data.ourPartyName == undefined ? "" :  data.ourPartyName;
 		$("#contractNumber").val(data.contractNumber);
@@ -272,7 +293,7 @@ function getScanValidationInfo(verifyId){
 			if(parm.pageType == 1 && parm.taskFlag == "db" && isLeader == false){
 				parent.setUserButton(true,parm.businessKey);
 			};
-			getDifferenceRecord(data.contractId,data.verifyVersion)
+			getDifferenceRecord(contractId,data.verifyVersion)
 		}
 	}
 	function improperCallback(){

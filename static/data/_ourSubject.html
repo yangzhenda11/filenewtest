@@ -38,11 +38,12 @@
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
 	var setDom = null;
+	var documentHeight = 0;
 	//初始化表格
 	function initOurSubject(dom, textValue, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		var documentHeight = $(".page-content").height() - 250;
-		$("#ourSubjectTableDom").css("height",documentHeight);
+		documentHeight = $(".page-content").height() - 340;
+		$("#ourSubjectTableDom").css("height",documentHeight + 90);
 		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
 			getOurSubjectData(dom, textValue, setKey, ajaxData);
 		})
@@ -51,7 +52,7 @@
 	function getOurSubjectData(dom, textValue, setKey, ajaxData) {
 		setDom = dom;
 		App.initDataTables('#ourSubjectTable', "#searchBtnM", {
-			destroy:true,
+			scrollY:documentHeight,
 			ajax: {
 				"type": "post",
 				"contentType": "application/json",

@@ -23,7 +23,7 @@ $(function() {
 		$(".page-content,.portlet-body").css("padding",'0px');
 		$(".portlet").css("cssText","border:none !important;padding:0px");
 		$(".page-content").removeClass("hidden");
-	}else{
+	}else if(parm.pageType == 2){
 		$(".page-content").removeClass("hidden");
 		//固定操作按钮在70px的高度
 		App.fixToolBars("toolbarBtnContent", 70);
@@ -36,12 +36,12 @@ $(function() {
             var array=data.data;
             var rows=array.length;
             var cols=3;
-            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th>序号</th><th>文件列表</th><th>操作</th></tr></thead><tbody>";
+            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
             	htmlstr+="<tr>";
             	htmlstr+="<td align='center'>" + i +"</td>";
             	htmlstr+="<td align='center'>" + array[i-1].displayName +"</td>";
-            	htmlstr+="<td><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment("+array[i-1].attachId+")'>添加</button>";
+            	htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment("+array[i-1].attachId+")'>添加</button>";
             	htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none;' onclick='downLoad("+array[i-1].attachId+")'>下载</button>";
             	htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' style='display:none;' onclick='del("+array[i-1].attachId+")'>删除</button></td>";
             	htmlstr+="</tr>";
@@ -163,9 +163,7 @@ function addAttachment(attachId){
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			array.push(fileInfo[0].data);
-			console.log(array);
 			$("#addButton"+attachId+"").hide();
-			//$(el).nextAll().removeClass("hidden");
 			$("#downLoadButton"+attachId+"").show();
 			$("#delButton"+attachId+"").show();
 		}
@@ -199,13 +197,13 @@ function fileUpload(){
 		url:'contractUpload/uploadFile',	//上传地址，非空
 		maxNumber:1,//最大上传数量
 		//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
-		//fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
+		fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
 		extraData:{attachId:'',displayName:fileName}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
 	};
 	function queryCallback(){//点击确定执行的函数，必传。
 		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
-		console.log(fileInfo[0].data);
-		console.log(fileInfo[0].data.bucketName);
+		//console.log(fileInfo[0].data);
+		//console.log(fileInfo[0].data.bucketName);
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			result = fileInfo[0].data;

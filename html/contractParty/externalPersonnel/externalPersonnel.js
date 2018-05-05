@@ -241,14 +241,14 @@ function setEditForm(data){
 }
 //日期和组织树选择触发
 function dateRegNameChose(){
-	if($.fn.datepicker) {
-		$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
-		$.fn.datepicker.defaults.language = 'zh-CN';
-		$.fn.datepicker.defaults.autoclose = true;
-		$('.date-picker').datepicker({
-			format: "yyyy-mm-dd"
-		});
-	};
+//	if($.fn.datepicker) {
+//		$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+//		$.fn.datepicker.defaults.language = 'zh-CN';
+//		$.fn.datepicker.defaults.autoclose = true;
+//		$('.date-picker').datepicker({
+//			format: "yyyy-mm-dd"
+//		});
+//	};
 	$("#orgNameIn").on("click",function(){
 		showTree('orgNameIn');
 	});

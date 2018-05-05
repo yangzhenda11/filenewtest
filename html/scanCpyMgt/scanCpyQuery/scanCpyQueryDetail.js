@@ -16,7 +16,7 @@ $(function() {
             var array=data.data;
             var rows=array.length;
             var cols=4;
-            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th>序号</th><th>文件列表</th><th>上传日期</th><th>上传人</th></tr></thead><tbody>";
+            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>上传日期</th><th style='text-align:center;'>上传人</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
             	htmlstr+="<tr>";
             	htmlstr+="<td align='center'>" + i +"</td>";
@@ -37,7 +37,7 @@ $(function() {
             var array=data.data;
             var rows=array.length;
             var cols=4;
-            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th>序号</th><th>文件列表</th><th>上传日期</th><th>上传人</th></tr></thead><tbody>";
+            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>上传日期</th><th style='text-align:center;'>上传人</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
             	htmlstr+="<tr>";
             	htmlstr+="<td align='center'>" + i +"</td>";

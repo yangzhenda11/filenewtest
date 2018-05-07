@@ -1,6 +1,6 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
-console.log(parm);
+//console.log(parm);
 var id;
 if(parm.pageType==1){
 	id = parm.businessKey;
@@ -34,16 +34,19 @@ $(function() {
         "url": serverPath+'contractUpload/listFile?id='+id,
         "success": function(data) {
             var array=data.data;
+            console.log(array[0]);
             var rows=array.length;
             var cols=3;
             var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
+            	console.log(typeof array[i-1].attachId)
+            	var id = array[i-1].attachId+"";
             	htmlstr+="<tr>";
             	htmlstr+="<td align='center'>" + i +"</td>";
             	htmlstr+="<td align='center'>" + array[i-1].displayName +"</td>";
-            	htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment("+array[i-1].attachId+")'>添加</button>";
-            	htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none;' onclick='downLoad("+array[i-1].attachId+")'>下载</button>";
-            	htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' style='display:none;' onclick='del("+array[i-1].attachId+")'>删除</button></td>";
+            	htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
+            	htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none;' onclick='downLoad(\""+array[i-1].attachId+"\")'>下载</button>";
+            	htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' style='display:none;' onclick='del(\""+array[i-1].attachId+"\")'>删除</button></td>";
             	htmlstr+="</tr>";
             }
             htmlstr+="</tbody></table>";

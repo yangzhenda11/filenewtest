@@ -30,6 +30,18 @@ App.initDataTables('#contractCheckListTable', "#submitBtn", {
 });
 
 
+/*
+ * 搜索点击事件
+ */
+function searchContractCheckList(retainPaging) {
+	var table = $('#contractCheckListTable').DataTable();
+	if(retainPaging) {
+		table.ajax.reload(null, false);
+	} else {
+		table.ajax.reload();
+	}
+}
+
 function ceshi(){
 	alert("aaaa");
 }

@@ -431,6 +431,12 @@ button:focus{
 	cursor: pointer;
 }
 /*
+ * th居中
+ */
+th.thAlignCenter{
+	text-align: center;
+}
+/*
  * 仿input框
  */
 .divInput{

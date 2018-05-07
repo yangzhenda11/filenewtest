@@ -325,10 +325,7 @@ function setDifferenceInfo(data){
 		$("#differencesThat").remove();
 	}else{
 		if(tSBusiProcessInfoVo.length > 0){
-			var thatItemHtml = "";
-			for(var i = tSBusiProcessInfoVo.length - 1; i >= 0; i--){
-				thatItemHtml += creatThatItemHtml(tSBusiProcessInfoVo[i]);
-			}
+			var thatItemHtml = creatThatItemHtml(tSBusiProcessInfoVo);
 			$("#thatItemContent").html(thatItemHtml);
 		};
 	};
@@ -342,16 +339,31 @@ function setDifferenceInfo(data){
  * 生成消息项
  */
 function creatThatItemHtml(data){
-	var thatItemTitle = data.createdType == 2 ? "承办部门领导" : "承办人";
-	var thatItemContent = data.pinfoContent;
-	var itemDate = data.updatedDate == null ? data.ctreatedDate : data.updatedDate;
-	var thatItemFooter = data.orgName + "：" + data.createdName + "<span class='marL30'>" + itemDate;
-	var html = '<div class="col-sm-12 differencesThatItem">'+
-		'<div class="thatItemTitle">'+ thatItemTitle +'</div>'+
-		'<div class="thatItemContent">'+ thatItemContent +'</div>'+
-		'<div class="thatItemFooter">'+ thatItemFooter +'</div>'+
-		'</div>';
-	return html;
+	var undertakerHtml = "";
+	var learderHtml = "";
+	var returnHtml = "";
+	for(var i = 0; i < data.length; i++){
+		var thatItemContent = data[i].pinfoContent;
+		var itemDate = data[i].updatedDate == null ? data[i].ctreatedDate : data[i].updatedDate;
+		var thatItemFooter = data[i].orgName + "：" + data[i].createdName + "<span class='marL30'>" + itemDate;
+		var html = '<div class="thatItemContent">'+ thatItemContent +'</div>'+
+			'<div class="thatItemFooter">'+ thatItemFooter +'</div>';
+		if(data[i].createdType == 2){
+			learderHtml += html;
+		}else{
+			undertakerHtml += html;
+		}
+	};
+	if(undertakerHtml != ""){
+		returnHtml += '<div class="col-sm-12 differencesThatItem">'+
+			'<div class="thatItemTitle">承办人</div>'+ undertakerHtml +'</div>';
+	};
+	if(learderHtml != ""){
+		returnHtml += '<div class="col-sm-12 differencesThatItem">'+
+			'<div class="thatItemTitle">承办部门领导</div>'+ learderHtml +'</div>';
+	};
+	
+	return returnHtml;
 }
 /*
  * 生成列表项
@@ -411,11 +423,10 @@ function setDifferenceRecord(data){
 						diffInfoItem.tSBusiProcessInfoVo.splice(0,1);
 					}
 				};
-			}
-			
-			for(var o = diffInfoItem.tSBusiProcessInfoVo.length - 1; o >= 0; o--){
-				thatItemHtml += creatThatItemHtml(diffInfoItem.tSBusiProcessInfoVo[o]);
-			}
+			};
+		}
+		if(diffInfoItem.tSBusiProcessInfoVo.length > 0){
+			thatItemHtml = creatThatItemHtml(diffInfoItem.tSBusiProcessInfoVo);
 		};
 		//生成列表项
 		if(diffInfoItem.verifyDiffVo.length > 0){

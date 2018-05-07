@@ -24,7 +24,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			"handleType" : handleType,//处理类型，1为通过，2为回退
 			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
-			"title":"",//可不传，如果需要修改待办标题则传此参数。
+			"title":$("#BusinessTile").val(),//可不传，如果需要修改待办标题则传此参数。
 			"iscandidate":iscandidate //是否是多候选人的抢单环节
 		}, function(data) {
 			layer.msg(data.sign);

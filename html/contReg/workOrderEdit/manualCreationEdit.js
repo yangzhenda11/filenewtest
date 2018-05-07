@@ -17,11 +17,13 @@ App.initDataTables('#contractCheckListTable', "#submitBtn", {
         }
     },
     "columns": [
-    	{"data" : null,
-         "title":"选择",
-		"render" : function(data, type, full, meta){
-						return meta.row + 1;
-				   }
+    	{
+    		"data" : "contractId",
+         	"title":"选择",
+			"render":function(data, type, full, meta){
+						var result = '<input type="radio" name="radio" onclick="selectcontract(\'' +data.contractId+ '\');">';
+				   		return result;
+					}
 		},
 		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
         {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"25%"},
@@ -41,6 +43,8 @@ function searchContractCheckList(retainPaging) {
 		table.ajax.reload();
 	}
 }
+
+
 
 function ceshi(){
 	alert("aaaa");

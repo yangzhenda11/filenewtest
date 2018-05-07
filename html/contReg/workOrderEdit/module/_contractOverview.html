@@ -14,9 +14,9 @@
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">承办部门：</label>
+				<label for="contractNumber" class="control-label">合同类型：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="contractNumber" disabled="disabled" value="" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
@@ -25,9 +25,84 @@
 					<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
 				</div>
 			</div>
+			<div class="col-sm-6 form-group">
+				<label for="contractName" class="control-label">合同履行现状：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="ourPartyName" class="control-label">我方主体：</label>
+				<div class="valiParent">
+					<div id="ourPartyName" class="divInput"></div>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="otherPartyName" class="control-label">对方主体：</label>
+				<div class="valiParent otherPartyParent">
+					<div id="otherPartyName" class="divInput"></div>
+				</div>
+				<button type="button" class="btn blue" id="partyMore">更多</button>
+			</div>
+			<div id="partyContent" class="hidden">
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">我方法定代表人：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" name="test" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">对方法定代表人：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" name="test2" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">我方联系人：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" name="test3" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">对方联系人：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">我方注册地址：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">对方注册地址：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">我方联系电话：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="executeDeptName" class="control-label">对方联系电话：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="executeDeptName" value="" />
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="executeDeptName" class="control-label">承办部门：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+				</div>
+			</div>
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label for="undertakeName" class="control-label">承办人：</label>
+					<label for="undertakeName" class="control-label">承办人联系方式：</label>
 					<div class="col-sm-3">
 						<div class="valiParent">
 							<input type="text" class="form-control" id="undertakeName" disabled="disabled" value="" />
@@ -46,20 +121,79 @@
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="ourPartyName" class="control-label">我方主体：</label>
+				<label for="executeDeptName" class="control-label">是否固定金额：</label>
 				<div class="valiParent">
-					<div id="ourPartyName" class="divInput"></div>
+					<div class="ui-radio-list ui-radio-inline">
+						<label class="ui-radio">
+							是
+							<input type="radio" value="1" checked="" name="radioText">
+							<span></span>
+						</label>
+						<label class="ui-radio">
+							否
+							<input type="radio" value="2" name="radioText">
+							<span></span>
+						</label>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="otherPartyName" class="control-label">对方主体：</label>
+				<label for="executeDeptName" class="control-label">增值税税率：</label>
 				<div class="valiParent">
-					<div id="otherPartyName" class="divInput"></div>
+					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="executeDeptName" class="control-label">含增值税合同金额：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="executeDeptName" class="control-label">不含增值税合同金额：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
-	//alert(123);
+	$("#partyMore").on("click",function(){
+		if($("#partyContent").hasClass("hidden")){
+			$("#partyContent").removeClass("hidden");
+			$("#partyMore").text("隐藏");
+		}else{
+			$("#partyContent").addClass("hidden");
+			$("#partyMore").text("更多");
+		}
+	})
+	$("#workOrderContent").bootstrapValidator("addField", "test", {  
+		container: 'popover',
+		trigger: 'live focus blur keyup change',
+       	validators: {  
+           	notEmpty: {  
+               	message: '名称不能为空'  
+           	}
+       }  
+   	});
+   	$("#workOrderContent").bootstrapValidator("addField", "test2", {  
+		container: 'popover',
+		trigger: 'live focus blur keyup change',
+       	validators: {  
+           	notEmpty: {  
+               	message: '名称不能为空'  
+           	}
+       }  
+   	});
+   	$("#workOrderContent").bootstrapValidator("addField", "test3", {  
+		container: 'popover',
+		trigger: 'live focus blur keyup change',
+       	validators: {  
+           	notEmpty: {  
+               	message: '名称不能为空'  
+           	}
+       }  
+   	});
+	
 </script>

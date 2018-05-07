@@ -15,13 +15,16 @@ $(function(){
 	
 	// 处理撤回按钮显隐
 	var canWithDraw = $('#canWithDrawForDone').val();
+	console.log('canWithDraw='+canWithDraw);
 	if(canWithDraw == 'true'){
 		$('#returnButtonForDone').click(function(){
 			returnProcess();
 		});
 	} else {
-		$('#returnButtonForDone').addClass('disabled'); 
+		$('#returnButtonForDone').hide();
+		//$('#returnButtonForDone').addClass('disabled'); 
 	}
+	
 });
 
 //根据任务ID获取实际任务办理页面的路径并load到主DIV

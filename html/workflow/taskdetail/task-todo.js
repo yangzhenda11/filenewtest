@@ -668,19 +668,21 @@ function transferTask(){
 	}
 	
 	// 示例中只会转派给当前登录人，业务侧需要自行拓展
-	var r = confirm("【转派】确认后，当前任务将转派给已选择受理人，是否确认？");
-	if (r == true) {
+	layer.confirm('【转派】确认后，当前任务将转派给已选择受理人，是否确认？', {icon: 3,title: '确认'}, function(index) {
 		// 调用转派方法
 		$.post(serverPath + "workflowrest/transfertask/" + processInstanceId + "/" + taskId + "/" + assignee, {
 			"comment" : comment
 		}, function(data) {
 			if(data.retCode == 1){
-				alert("转派完成！");
-				// 成功后回调模态窗口关闭方法
-				modal_close();
+				layer.alert("转派成功",{icon:1},function(){
+					// 成功后回调模 态窗口关闭方法
+					modal_close();
+				});
 			}			
 		});
-	}
+		layer.close(index);
+	})
+	
 }
 
 //清空下环节处理人已选择内容

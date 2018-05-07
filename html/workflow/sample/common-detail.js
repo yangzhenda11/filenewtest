@@ -12,7 +12,7 @@ $(function(){
  * author:ctt
  * day:2018-0416-21
  */
-function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,iscandidate){
+function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,withdraw,iscandidate){
 	
 	//alert(processDefinitionKey + "_" + assignee + "_" + taskDefinitionKey);
 /*	业务侧推进流程需要带着表单数据的，参考以下方式和流程参数拼接在一起。
@@ -31,7 +31,8 @@ function modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,i
 		"comment":comment, //办理意见，流程回调带过来的，业务侧无需赋值。
 		"title":$("#taskTitle").val(),// 待办标题，需要业务侧提供，一般为业务名称，需求为需求名称。
 		"businessKey":$("#taskBusinessKey").val(),//业务主键，需要业务侧提供，必传，需求为需求ID，楼宇为楼宇主键等。
-		"iscandidate":iscandidate //是否是多候选人的抢单环节
+		"iscandidate":iscandidate ,//是否是多候选人的抢单环节
+		"withdraw":withdraw //是否允许撤回
 	}, function(data) {
 		layer.alert(data.sign);
 		// 成功后回调模态窗口关闭方法

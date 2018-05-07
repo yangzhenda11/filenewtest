@@ -39,10 +39,8 @@ $(function() {
             var cols=3;
             var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
-            	console.log(typeof array[i-1].attachId)
-            	var id = array[i-1].attachId+"";
             	htmlstr+="<tr>";
-            	htmlstr+="<td align='center'>" + i +"</td>";
+            	htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='' /></td>";
             	htmlstr+="<td align='center'>" + array[i-1].displayName +"</td>";
             	htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
             	htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none;' onclick='downLoad(\""+array[i-1].attachId+"\")'>下载</button>";
@@ -66,11 +64,11 @@ function checkFileIsUpload(){
 		url : url,
         type : "post",
         success : function(data) {
-        	//console.log(data);
 			if(data.count==1){
-				var label=document.getElementById("fileName"); 
-				label.innerText=data.displayName; 
-				$("#fileName").html(data.displayName); 
+				var fileName = data.contractNumber+"正文扫描件.pdf";
+				var label=document.getElementById("fileName");
+				label.innerText=fileName;
+				$("#fileName").html(fileName);
 				$("#uploadFile_div2").show();
     			$("#uploadFile_div1").hide();
 			}
@@ -102,46 +100,9 @@ function backPage(){
 	window.history.go(-1);
 }
 
-/**
- * 初始化表格
- * */
-/*App.initDataTables('#scanCpyloadTable', {
-	ajax: {
-        "type": "POST",
-        "url": serverPath+'contractUpload/listFile',
-        "data": function(d) {
-            d.id = id;
-            return d;
-        }
-    },
-    "paging":false,
-    "columns": [
-    	{"data": "","title": "序号"},
-    	{"data": "displayName","title": "文件列表"},
-    	{
-			"data": null,
-			"className": "text-center",
-			"title": "操作",
-			"render": function(data, type, full, meta) {
-				if(data) {
-					var btnArray = new Array();
-                    btnArray.push({ "name": "添加", "fn": "addAttachment('" + data.attachId + "',this)","icon":"iconfont icon-add"});
-                    btnArray.push({ "name": "下载", "fn": "downLoad('" + data.attachId + "')","icon":"iconfont icon-add","type":"hidden"});
-                    btnArray.push({ "name": "删除", "fn": "del('" + data.attachId + "',this)","icon":"iconfont icon-add","type":"hidden"});
-                    return App.getDataTableBtn(btnArray);
-				} else {
-					return '';
-				}
-			}
-		}
-    ],
-    "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-          $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
-         return nRow;
-    },
-});*/
-
 function downLoad(attachId){
+	attachId = $("#att"+attachId+"").val();
+	//alert(attachId);
 	$.ajax({
         url : serverPath + 'contractUpload/downloadAttachment',
         type : "GET",
@@ -166,6 +127,7 @@ function addAttachment(attachId){
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			array.push(fileInfo[0].data);
+			$("#att"+attachId+"").val(fileInfo[0].data.storeId);
 			$("#addButton"+attachId+"").hide();
 			$("#downLoadButton"+attachId+"").show();
 			$("#delButton"+attachId+"").show();
@@ -186,7 +148,6 @@ function del(attachId){
 			array.splice(i,1);
 		}
 	}
-	console.log(array);
 }
 
 /**
@@ -244,6 +205,7 @@ function delContractText(){
 
 function saveContract(){
 	var arrayList=new Array();
+	debugger;
 	if(JSON.stringify(result) == "{}"){
 		if(array.length==0){
 			alert("没有上传任何文件！");
@@ -285,14 +247,15 @@ function saveContract(){
         		data:{"jsonStr":jsonStr,"id":id},
         		success : function(data) {
        				if(data.status=='1'){
-       					for(var i=0;i<array.length;i++){
+       					/*for(var i=0;i<array.length;i++){
        						var str = JSON.stringify(array[i]);
 							arrayList.push(str);
        					}
+       					console.log(arrayList)*/
        					$.ajax({
 							url : serverPath + 'contractUpload/saveAttachment',
         					type : "post",
-        					data:{"strArray":arrayList},
+        					data:{"strArray":JSON.stringify(array)},
         					success : function(data) {
        							if(data.status=='1'){
        								alert("保存成功！");

@@ -69,7 +69,7 @@ function refreshAssigneeForStart(serverPath, processDefinitionKey, taskDefinitio
 }
 
 // 点击【提交】按钮，弹出模态窗口
-function startProcess(processDefinitionKey, assignee, taskDefinitionKey){
+function startProcess(processDefinitionKey, assignee, taskDefinitionKey,withdraw){
 	
     if(processDefinitionKey.length == 0){
         layer.msg('请选择办理环节！',{time:2000});
@@ -92,7 +92,7 @@ function startProcess(processDefinitionKey, assignee, taskDefinitionKey){
     
 	layer.confirm('是否确认提交？', {icon: 3,title: '确认'}, function(index) {
 			// 调用发起方法
-			modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,iscandidate);
+			modal_start(processDefinitionKey, assignee, taskDefinitionKey,comment,withdraw,iscandidate);
 			layer.close(index);
 		})
 }

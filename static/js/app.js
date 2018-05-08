@@ -2205,7 +2205,32 @@ var formData = {};
         		});
         	}
         	return flowparam;
+        },
+        applyCandidateTask:function(serverPath,flowParam){
+    		$.ajax({
+    			type: 'get',
+    			url: serverPath+"workflowrest/applyCandidateTask",
+    			data: flowParam,
+    			dataType: 'json',
+    			async: false,
+    			contentType: "application/json",
+    			success: function(result){
+    				var data = result;
+    				if (data.success == 1){
+    					layer.msg(data.sign);
+    				}else {
+    					layer.msg(data.sign);
+    					return;
+    				} 
+    			},
+    			error: function(result) {
+    				layer.alert("流程参数异常，请联系管理员！", {icon: 2,title:"错误"});
+    			}
+    		});
         }
+        
+        
+        
 	};
 }();
 

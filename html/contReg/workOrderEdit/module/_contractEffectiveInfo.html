@@ -1,9 +1,158 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
-</html>
+<div class="form-fieldset" id="differencesThat">
+	<div class="form-fieldset-title">
+		<span><i class="iconfont icon-layers"></i> 合同生效信息</span>
+		<div class="form-fieldset-tools">
+			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+	<div class="form-fieldset-body">
+		<div class="row defaultFieldsetForm">
+			<div class="portlet">
+                <div class="portlet-body form">
+                    <p>承办人确认信息：</p>
+					<div>
+						<label class="ui-checkbox">
+							<input type="checkbox" value="1" name="undertakerRequery">
+							<span></span>
+							<i class="iconfont icon-mi required"></i>
+							各方均已签字盖章，签字盖章的合同文本与系统内最终审批的合同文本一致
+						</label>
+					</div>
+            	</div>
+       	    </div>
+			
+			<div class="col-sm-6 form-group">
+				<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>我方签约日期：</label>
+				<div class="valiParent input-group">
+					<input type="text" name="startVerifyDate" id="startVerifyDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+					<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>对方签约日期：</label>
+				<div class="valiParent input-group">
+					<input type="text" name="startVerifyDate" id="startVerifyDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+					<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="contractName" class="control-label"><i class="iconfont icon-mi required"></i>合同有效期确认方式：</label>
+				<div class="valiParent">
+					<select class="form-control select2me" data-allowClear="false" name="contractValidity" id="contractValidity">
+						<option value="1">固定起止日期</option>
+						<option value="2">按条件约定合同生效日期，期限固定</option>
+						<option value="3">按条件约定合同生效日期，期限固定</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="contractName" class="control-label"><i class="iconfont icon-mi required"></i>是否顺延：</label>
+				<div class="valiParent">
+					<div class="ui-radio-list ui-radio-inline">
+						<label class="ui-radio">
+							是
+							<input type="radio" value="1" checked="" name="postpone">
+							<span></span>
+						</label>
+						<label class="ui-radio">
+							否
+							<input type="radio" value="0" name="postpone">
+							<span></span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="contractValidity1">
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
+					<div class="valiParent input-group">
+						<input type="text" name="startVerifyDate" id="startVerifyDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+						<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
+					<div class="valiParent input-group">
+						<input type="text" name="startVerifyDate" id="startVerifyDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+						<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+			<div id="contractValidity2" class="hidden">
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="phone" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>生效时限：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="phone" value="" />
+					</div>
+				</div>
+			</div>
+			<div id="contractValidity3">
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>顺延条件：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="phone" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>顺延时限：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="phone" value="" />
+					</div>
+				</div>
+			</div>
+			<div id="contractValidity4" class="hidden">
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="phone" value="" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="contractNumber" class="control-label"><i class="iconfont icon-mi required"></i>满足终止：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="phone" value="" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$("select[name='contractValidity']").on("change",function(){
+		$("#contractValidity1,#contractValidity2,#contractValidity3,#contractValidity4").addClass("hidden");
+		if($(this).val() == 1){
+			$("#contractValidity1,#contractValidity3").removeClass("hidden");
+			$("input[name='postpone'][value=1]").prop("checked",true);
+		}else if($(this).val() == 2){
+			$("#contractValidity2,#contractValidity3").removeClass("hidden");
+			$("input[name='postpone'][value=1]").prop("checked",true);
+		}else if($(this).val() == 3){
+			$("#contractValidity4").removeClass("hidden");
+			$("input[name='postpone'][value=1]").prop("disabled",true);
+			$("input[name='postpone'][value=0]").prop("checked",true);
+		}
+	});
+	$("input[name='postpone']").on("change",function(){
+		var contractValidityValue = $("select[name='contractValidity']").val();
+		$("#contractValidity1,#contractValidity2,#contractValidity3,#contractValidity4").addClass("hidden");
+		if(contractValidityValue == 1){
+			if($(this).val() == 0){
+				$("#contractValidity1").removeClass("hidden");
+			}else if($(this).val() == 1){
+				$("#contractValidity1,#contractValidity3").removeClass("hidden");
+			}
+		}else if(contractValidityValue == 2){
+			if($(this).val() == 0){
+				$("#contractValidity2").removeClass("hidden");
+			}else if($(this).val() == 1){
+				$("#contractValidity2,#contractValidity3").removeClass("hidden");
+			}
+		}
+	});
+</script>

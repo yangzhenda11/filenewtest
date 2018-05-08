@@ -73,7 +73,6 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 		{
 			"data": null,
 			"title": "人员姓名",
-			"className": "text-center123",
 			render: function(data, type, full, meta) {
 				return '<a href=\"javascript:void(0)\" onclick = "personnelModal(\'detail&&' + data.staffId + '\')">' + data.staffName + '</a>';
 			}

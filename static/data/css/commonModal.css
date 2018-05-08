@@ -9,16 +9,6 @@
   padding: 0 25px;
   overflow: auto;
 }
-.commonModalTableBody .ui-radio {
-  padding-left: 20px;
-  margin: 0;
-  height: 14px;
-}
-#ourSubjectTable .ui-radio {
-  padding-left: 20px;
-  margin: 0;
-  height: 14px;
-}
 #ourSubjectTableDom {
   overflow: auto;
 }

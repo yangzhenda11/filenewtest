@@ -1,9 +1,84 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
-</html>
+<div class="form-fieldset" id="differencesThat">
+	<div class="form-fieldset-title">
+		<span><i class="iconfont icon-layers"></i> 选择合同履行人</span>
+		<div class="form-fieldset-tools">
+			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+	<div class="form-fieldset-body">
+		<div class="row">
+			<div class="ui-radio-list ui-radio-inline">
+				<label class="ui-radio">
+					<input type="radio" value="1" checked="" name="feasorRadio">
+					<span></span>
+					本级履行或上下级共同履行
+				</label>
+				<label class="ui-radio">
+					<input type="radio" value="2" name="feasorRadio">
+					<span></span>
+					仅有下级组织履行
+				</label>
+			</div>
+			<div class="feasorContent">
+				<button type="button" class="btn red">添加主要履行人</button>
+				<button type="button" class="btn red marginLeft15" onclick="delectFeasor()">删除主要履行人</button>
+			</div>
+			<table class='table table-hover table-bordered table-striped table-checkable' id="feasorTable">
+				<thead>
+					<tr>
+						<th><label class='ui-checkbox'><input type='checkbox' name='feasorCheckAll' id="feasorCheckAll"><span></span></label></th>
+						<th>主要履行人</th>
+						<th>主要履行人所属组织</th>
+					</tr>
+				</thead>
+				<tbody id="feasorTbody">
+					<tr>
+						<td><label class='ui-checkbox'><input type='checkbox' name='feasorCheck'><span></span></label></td>
+						<td>李华</td>
+						<td>合同管理处</td>
+					</tr>
+					<tr>
+						<td><label class='ui-checkbox'><input type='checkbox' name='feasorCheck'><span></span></label></td>
+						<td>李华</td>
+						<td>合同管理处</td>
+					</tr>
+					<tr>
+						<td><label class='ui-checkbox'><input type='checkbox' name='feasorCheck'><span></span></label></td>
+						<td>李华</td>
+						<td>合同管理处</td>
+					</tr>
+					<tr>
+						<td><label class='ui-checkbox'><input type='checkbox' name='feasorCheck'><span></span></label></td>
+						<td>李华</td>
+						<td>合同管理处</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	App.checkAllFn("#feasorCheckAll","feasorCheck");
+	$("input[name='feasorRadio']").on("change",function(){
+		//if($(this).val() == 1){
+			layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示"},function(){
+				alert(1);
+			})
+		//}else{
+			
+		//}
+	});
+	/*
+	 * 删除履行人
+	 */
+	function delectFeasor(){
+		var checkLength = $("input[name='feasorCheck']:checked").length;
+		if(checkLength == 0){
+			layer.msg("请勾选履行人复选框进行删除")
+		}else{
+			$("input[name='feasorCheck']:checked").each(function(k,v){
+				$(v).parents("tr").remove();
+			})
+		}
+	}
+</script>

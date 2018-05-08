@@ -535,9 +535,12 @@ var App = function() {
             $.fn.select2.defaults.set("theme","bootstrap");
             $('.select2me').each(function(){
                 var allowClearFlag = $(this).attr('data-allowClear');
+                console.log(allowClearFlag)
                 var allowSearch = $(this).attr('data-allowSearch');
-                if(allowClearFlag != false){
+                if(allowClearFlag != "false"){
                 	allowClearFlag = true;
+                }else{
+                	allowClearFlag = false;
                 }
                 options = {
                     placeholder:"全部",
@@ -1164,6 +1167,27 @@ var formData = {};
 			    }
 	      	} 
 	    },
+	    /*
+		 * 全选全不选
+		 */
+		checkAllFn:function(mainCheckbox,itemCheckbox){
+			var $checkItem = $('input[name="' + itemCheckbox + '"]');
+			$("" + mainCheckbox + "").prop('checked',false);
+			$("" + mainCheckbox + "").on('change', function(event){
+				if(this.checked){
+				  	$('input[name="' + itemCheckbox + '"]').prop('checked',true);
+				}else{
+					$('input[name="' + itemCheckbox + '"]').prop('checked',false);
+				}
+			});
+			$checkItem.on('change',function(){
+				if($checkItem.length == $('input[name="' + itemCheckbox + '"]:checked').length){
+					$("" + mainCheckbox + "").prop('checked',true);
+				}else{
+					$("" + mainCheckbox + "").prop('checked',false);
+				}
+			})
+		},
 		/**
          * datatable render 文本信息 btnArray 内容：
          */
@@ -1678,6 +1702,70 @@ var formData = {};
         getResponsiveBreakpoint:function(size){
             return _getResponsiveBreakpoint(size);
         },
+        initDefaultEditDataTables: function(el, options) {
+			if(!$().dataTable) {
+				return;
+			}
+			var drawCallback = function() {};
+			if(options.drawCallback) {
+				drawCallback = options.drawCallback
+			};
+			options = $.extend(true, {
+				"ordering": false,
+				"scrollX": true,
+				"scrollCollapse": true,
+				"sScrollX": "100%",
+				"sScrollXInner": "100%",
+				"bAutoWidth": true,
+				"oLanguage": {
+					"sProcessing": "正在加载数据，请稍候...",
+					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
+					"sZeroRecords": "没有匹配结果",
+					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
+					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
+					"sInfoFiltered": "(由 _MAX_ 条记录结果过滤)",
+					"sInfoPostFix": "",
+					"sSearch": "",
+					"sSearchPlaceholder": "输入关键字筛选表格",
+					"sUrl": "",
+					"sDecimal": "",
+					"sThousands": ",",
+					"sEmptyTable": "表中数据为空",
+					"sLoadingRecords": "载入中...",
+					"sInfoThousands": ",",
+					"oPaginate": {
+						"sFirst": "首页",
+						"sPrevious": "上页",
+						"sNext": "下页",
+						"sLast": "末页"
+					}
+				},
+				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t',
+				"processing": false,
+				"paging": false,
+				"language": {
+					"emptyTable": "没有关联的需求信息!",
+					"thousands": ","
+				},
+				"columnDefs": [{
+					"targets": "_all",
+					"defaultContent": ''
+				}],
+				"buttons": [],
+				"drawCallback": function() {
+					$(":checkbox[name='td-checkbox']").prop('checked', false);
+				}
+			}, options);
+			options.drawCallback = function() {
+				if(options.toolbars) {
+					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
+					$(options.toolbars).remove();
+				}
+				drawCallback();
+			}
+			var oTable = $(el).dataTable(options);
+			return oTable;
+		},
 		/**
          * initEditableDatatables 基于initDataTables 实现表格的可编辑 options 新增 addRowBtn
          * String 触发新增按钮的id或calss选择器 options.columns 新增 isEditable Booleans
@@ -1729,7 +1817,7 @@ var formData = {};
             }
 
             options.serverSide = false;
-            var oTable = this.initDataTables(el,options,true);
+            var oTable = this.initDefaultEditDataTables(el,options,true);
             var table = $(el);
             
             /* 删除一行 */
@@ -1853,7 +1941,7 @@ var formData = {};
                     if(c.isEditable){
                         var targetId = c.data + i;
                         if(c.isSelectData){
-                            var selectHtml = '<select name="' + c.data + '" data-allowClear="true" class="form-control select2me" id="' + targetId + '" name="' + c.data + '" value="' + aData[c.data]
+                            var selectHtml = '<select name="' + c.data + '" data-allowClear="true" class="form-control select2me" id="' + targetId + '" value="' + aData[c.data]
                             + '" style="width:100%;" ';
                             if(c.isDisabled){
                                 selectHtml += 'disabled ';

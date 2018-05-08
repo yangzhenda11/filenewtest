@@ -674,9 +674,10 @@ function transferTask(){
 			"comment" : comment
 		}, function(data) {
 			if(data.retCode == 1){
-				alert("转派完成！");
-				// 成功后回调模态窗口关闭方法
-				modal_close();
+				layer.alert("转派成功",{icon:1},function(){
+					// 成功后回调模 态窗口关闭方法
+					modal_close();
+				});
 			}			
 		});
 		layer.close(index);

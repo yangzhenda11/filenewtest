@@ -18,6 +18,7 @@ $(function() {
 	App.fixToolBars("toolbarBtnContent", 70);
 	setDomContent();
 })
+
 /*
  * 设置dom元素，并load进入
  */
@@ -32,7 +33,7 @@ function setDomContent(type) {
 		accountInfo: "module/_accountInfo.html",
 		invoiceInfo: "module/_invoiceInfo.html",
 		otherFinanceInfo: "module/_otherFinanceInfo.html",
-		procurementInfo: "module/_procurementInfo.html",
+		projectInfo: "module/_projectInfo.html",
 		alterationInfo: "module/_alterationInfo.html"
 	}
 	var loadFlag = 0;
@@ -63,11 +64,27 @@ function saveContent() {
 	$('.form-wrapper').each(function(index, wrapperItem) {
 		var targetObj = $(wrapperItem).data('target');
 		if(!App.isExitsFunction("getValue_" + targetObj)){
-			return false;
+			return true;
 		};
 		var itemFun = eval('getValue_' + targetObj);
 		submitData[targetObj] = itemFun();
 	})
 	console.log(submitData)
 }
- 
+/*
+ * 加载验证
+ */
+/*
+ * 表单验证
+ */
+function validate() {
+	$('#workOrderContent').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup change',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+			
+		}
+	})
+}

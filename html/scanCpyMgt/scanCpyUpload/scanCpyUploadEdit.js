@@ -78,7 +78,7 @@ function checkFileIsUpload(){
 				var fileName = data.contractNumber+"正文扫描件.pdf";
 				var htmlstr = "<div class='col-sm-12 control-label paddingLR0'><a href='/contractUpload/downloadS3?key1="+data.storeId+"'>"+fileName+"</a></div>";
 				document.getElementById('fileNameDiv').innerHTML=htmlstr;
-				$("#uploadFileName").val(fileName);
+				$("#uploadFileNameshow").val(fileName);
 				/*var label=document.getElementById("fileName");
 				label.innerText=fileName;
 				$("#fileName").html(fileName);*/
@@ -194,7 +194,7 @@ function fileUpload(){
 			label.innerText=fileName;
 			$("#fileName").html(fileName);*/
 			//var htmlstr = "<label for='proCode' class='col-sm-12 control-label paddingLR0' id='fileName'>"+fileName+"</label>";
-			$("#uploadFileName").val(fileName);
+			$("#uploadFileNameshow").val(fileName);
 			var htmlstr = "<div class='col-sm-12 control-label paddingLR0'><a href='/contractUpload/downloadS3?key1="+result.storeId+"'>"+fileName+"</a></div>";
 			document.getElementById('fileNameDiv').innerHTML=htmlstr;
 			$("#uploadFile_div1").hide();

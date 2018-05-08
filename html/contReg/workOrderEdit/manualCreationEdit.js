@@ -44,8 +44,17 @@ function searchContractCheckList(retainPaging) {
 	}
 }
 
+//点击iconfont弹出模态框事件
+$(function(){
+	$("#searchContractData").click(function() {
+		App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber",["contractId","contractName","partyName"]);
+	})
+})
 
-
-function ceshi(){
-	alert("aaaa");
-}
+$('#commomModal').on('hide.bs.modal',function(){
+	//console.log($("#contractDataSearch").data("partyName"));
+	if($("#contractDataSearch").data("exactSearch")){
+        $("#contractName").val($("#contractDataSearch").data("contractName"));
+		$("#oppoPartyName").text($("#contractDataSearch").data("partyName"));
+   }
+});

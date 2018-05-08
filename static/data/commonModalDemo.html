@@ -119,7 +119,7 @@
 				App.getCommonModal("agentDepartment","#agentDepartment","orgName","orgId");
 			})
 			$("#searchContractData").click(function(){
-				App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber","contractId");
+				App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber",["contractId","contractName"]);
 			})
 			$("#searchOurSubject").click(function(){
 				App.getCommonModal("ourSubject","#ourSubject","partnerName","partnerId");

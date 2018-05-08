@@ -9,6 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 		<link rel="stylesheet" type="text/css" href="../css/workOrderEdit.css"/>
@@ -32,18 +34,18 @@
                		<div class="form-fieldset-body">
                			<div class="row defaultFieldsetForm">
                				<div class="col-sm-12 form-group">
-								<label for="contractNumberText" class="control-label">合同编号：</label>
+								<label for="contractNumber" class="control-label">合同编号：</label>
 								<div class="valiParent">
 									<div class="input-group">	
-										<input type="text" id="contractNumberText" name="contractNumberText" class="form-control"/>
-										<span class="input-group-addon" id="searchContractNumber" data-toggle="modal" data-target="#contractListModal"><i class="iconfont icon-search"></i></span>
+										<input type="text" id="contractDataSearch" name="contractDataSearch" class="form-control"/>
+										<span class="input-group-addon" id="searchContractData" data-toggle="modal" data-target="#contractListModal"><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
                				</div>
                				<div class="col-sm-12 form-group">
-								<label for="contractNameText" class="control-label">合同名称：</label>
+								<label for="contractName" class="control-label">合同名称：</label>
 								<div class="valiParent">
-									<input type="text" class="form-control" id="contractNameText" disabled="disabled" value="" />
+									<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
 								</div>
                				</div>
                				<div class="col-sm-12 form-group">
@@ -82,7 +84,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="contractListModal" role="dialog" aria-hidden="true" data-backdrop="static">
+	<!--模态框-->
+	<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+	<!--<div class="modal fade" id="contractListModal" role="dialog" aria-hidden="true" data-backdrop="static">
 		<div class="page-content">
 			<div class="portlet">
 				<div class="portlet-body">
@@ -124,7 +128,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 	
 	<!--基础依赖-->
 	<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
@@ -134,6 +138,7 @@
 	<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 	<!--业务依赖-->
 	<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../../../static/plugins/datatables/ellipsis.js"></script>

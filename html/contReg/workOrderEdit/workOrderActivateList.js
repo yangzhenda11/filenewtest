@@ -12,7 +12,7 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
         "url": serverPath+'workOrderActivate/workOrderActivateList',
         "data": function(d) {//自定义传入参数
         	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("undertakeId");
+        		d.undertakerId = $("#undertakeName").data("id");
         	}else{
         		d.undertakeName = $("#undertakeName").val();
         	};
@@ -53,12 +53,14 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
     ]
 });
 
+
 //点击iconfont弹出模态框事件
 $(function(){
 	//承办人
 	$("#searchUndertaker").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","undertakeName","undertakeId");
+		App.getCommonModal("agentStaff","#undertakeName","name","id");
 	})
+	
 	$("#undertakeName").on("input",function(){
 		$(this).data("exactSearch",false);
 	})

@@ -38,7 +38,7 @@ $(function() {
             var cols=3;
             var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
-            	//console.log(i+"***"+array[i-1].storeId);
+            	console.log(i+"***"+array[i-1].storeId);
             	htmlstr+="<tr>";
             	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
             		htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='"+array[i-1].storeId+"' /></td>";
@@ -49,6 +49,7 @@ $(function() {
             	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
             		htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' style='display:none' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
             		htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' onclick='downLoad(\""+array[i-1].attachId+"\")'>下载</button>";
+            		//htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' onclick='window.location.href=\"/contractUpload/downloadS3?key1="+array[i-1].storeId+"\"'>下载</button>";
             		htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' onclick='del(\""+array[i-1].attachId+"\")'>删除</button></td>";
             	}else{
             		htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
@@ -123,13 +124,14 @@ function backPage(){
 function downLoad(attachId){
 	attachId = $("#att"+attachId+"").val();
 	//alert(attachId);
-	$.ajax({
+	window.location.href="/contractUpload/downloadS3?key1="+attachId;
+	/*$.ajax({
         url : serverPath + 'contractUpload/downloadAttachment',
         type : "GET",
         data : {id:attachId},
         success : function(data) {
         }
-    });
+    });*/
 }
 
 var array=[];

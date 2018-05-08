@@ -535,7 +535,6 @@ var App = function() {
             $.fn.select2.defaults.set("theme","bootstrap");
             $('.select2me').each(function(){
                 var allowClearFlag = $(this).attr('data-allowClear');
-                console.log(allowClearFlag)
                 var allowSearch = $(this).attr('data-allowSearch');
                 if(allowClearFlag != "false"){
                 	allowClearFlag = true;
@@ -1180,13 +1179,13 @@ var formData = {};
 					$('input[name="' + itemCheckbox + '"]').prop('checked',false);
 				}
 			});
-			$checkItem.on('change',function(){
-				if($checkItem.length == $('input[name="' + itemCheckbox + '"]:checked').length){
-					$("" + mainCheckbox + "").prop('checked',true);
-				}else{
-					$("" + mainCheckbox + "").prop('checked',false);
-				}
-			})
+//			$checkItem.on('change',function(){
+//				if($checkItem.length == $('input[name="' + itemCheckbox + '"]:checked').length){
+//					$("" + mainCheckbox + "").prop('checked',true);
+//				}else{
+//					$("" + mainCheckbox + "").prop('checked',false);
+//				}
+//			})
 		},
 		/**
          * datatable render 文本信息 btnArray 内容：
@@ -1730,7 +1729,7 @@ var formData = {};
 					"sUrl": "",
 					"sDecimal": "",
 					"sThousands": ",",
-					"sEmptyTable": "表中数据为空",
+					"sEmptyTable": "暂无数据",
 					"sLoadingRecords": "载入中...",
 					"sInfoThousands": ",",
 					"oPaginate": {
@@ -1786,8 +1785,8 @@ var formData = {};
                 "width":'10%',
                 "className":'text-center',
                 "render":function(data,type,row,meta){
-                    var html = '<button class="btn btn-link btn-xs dt-edit" title="编辑"><i class="iconfont icon-bianji"></i></button>'
-                    html += '<button class="btn btn-link btn-xs dt-delete" title="删除"><i class="iconfont icon-shanchu"></i></button>';
+                    var html = '<button class="btn btn-link btn-xs dt-edit" title="编辑">编辑</button>'
+                    html += '<button class="btn btn-link btn-xs dt-delete" title="删除">删除</button>';
                     return html;
                 }
             });
@@ -1897,8 +1896,8 @@ var formData = {};
             /* 复原行 */
             function restoreRow(oTable,nRow){
                 var oTdEdit = $(nRow).find('td:eq(0)');
-                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="编辑"><i class="iconfont icon-bianji"></i></button>';
-                oTdEditHtml += '<button class="btn btn-link btn-xs dt-delete" title="删除"><i class="iconfont icon-shanchu"></i></button>';
+                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="编辑">编辑</button>';
+                oTdEditHtml += '<button class="btn btn-link btn-xs dt-delete" title="删除">删除</button>';
                 oTdEdit.html(oTdEditHtml);
                 var aData = oTable.fnGetData(nRow);
                 var jqTds = $('>td',nRow);
@@ -1917,8 +1916,8 @@ var formData = {};
             /* 编辑行 */
             function editRow(oTable,nRow){
                 var oTdEdit = $(nRow).find('td:eq(0)');
-                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="保存"><i class="iconfont icon-baocun"></i></button>';
-                oTdEditHtml += '<button class="btn btn-link btn-xs dt-cancel" title="取消"><i class="iconfont icon-quxiao"></i></button>';
+                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="保存">保存</button>';
+                oTdEditHtml += '<button class="btn btn-link btn-xs dt-cancel" title="取消">取消</button>';
                 oTdEdit.html(oTdEditHtml);
                 var aData = oTable.fnGetData(nRow);
                 var clength = $('>td',nRow).length;
@@ -1941,7 +1940,7 @@ var formData = {};
                     if(c.isEditable){
                         var targetId = c.data + i;
                         if(c.isSelectData){
-                            var selectHtml = '<select name="' + c.data + '" data-allowClear="true" class="form-control select2me" id="' + targetId + '" value="' + aData[c.data]
+                            var selectHtml = '<select name="' + c.data + '" class="form-control select2me" data-placeholder="'+c.selectPlaceholder+'" id="' + targetId + '" value="' + aData[c.data]
                             + '" style="width:100%;" ';
                             if(c.isDisabled){
                                 selectHtml += 'disabled ';
@@ -1957,6 +1956,7 @@ var formData = {};
                                 }
                             }
                             oTd.html(selectHtml);
+                            App.initFormSelect2(oTd);
                         }else{
                             var tdHtml = '<input type="text" class="form-control" id="' + targetId + '" name="' + c.data + '" value="' + value + '" style="width:100%;' + style + '" ';
                             if(c.onclickHandler){
@@ -2000,8 +2000,8 @@ var formData = {};
                     var value = $(this).val();
                     oTable.fnUpdate(value,nRow,tdIndex,false);
                 });
-                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="编辑"><i class="iconfont icon-bianji"></i></button>';
-                oTdEditHtml += '<button class="btn btn-link btn-xs dt-cancel" title="删除"><i class="iconfont icon-shanchu"></i></button>';
+                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="编辑">编辑</button>';
+                oTdEditHtml += '<button class="btn btn-link btn-xs dt-cancel" title="删除">删除</button>';
                 oTable.fnUpdate(oTdEditHtml,nRow,0,false);
                 oTable.fnDraw();
                 if(nNew){
@@ -2012,7 +2012,6 @@ var formData = {};
                     options.fnSaveEditRow(aData);
                 }
             }
-            
             return oTable;
         },
         delTableItem:function(el,callback,text){// el 为table的id ；itemName为名称的字段名 ;text为未选中删除记录时,点击删除的提示语

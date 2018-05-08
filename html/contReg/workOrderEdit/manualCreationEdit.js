@@ -44,8 +44,36 @@ function searchContractCheckList(retainPaging) {
 	}
 }
 
+//点击iconfont弹出模态框事件
+$(function(){
+	$("#searchContractData").click(function() {
+		App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber",["contractId","contractName","unicomPartyName","partyName","undertakeName","executeDeptName","approveDate"]);
+	})
+})
 
+$('#commomModal').on('hide.bs.modal',function(){
+	//console.log($("#contractDataSearch").data("unicomPartyName"));
+	if($("#contractDataSearch").data("exactSearch")){
+        $("#contractName").val($("#contractDataSearch").data("contractName"));
+        $("#unicomPartyName").text($("#contractDataSearch").data("unicomPartyName"));
+		$("#oppoPartyName").text($("#contractDataSearch").data("partyName"));
+		$("#undertakeName").val($("#contractDataSearch").data("undertakeName"));
+		$("#executeDeptName").val($("#contractDataSearch").data("executeDeptName"));
+		$("#approveDate").val(formatDateTime($("#contractDataSearch").data("approveDate")));
+   }
+});
 
-function ceshi(){
-	alert("aaaa");
+//调整时间显示，不显示时分秒
+function formatDateTime(inputTime,type) {
+	if(inputTime){
+		var date = new Date(inputTime);
+	}else{
+		return "";
+	}
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	m = m < 10 ? ('0' + m) : m;
+	var d = date.getDate();
+	d = d < 10 ? ('0' + d) : d;
+	return y + '-' + m + '-' + d;
 }

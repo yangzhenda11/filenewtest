@@ -34,17 +34,27 @@ $(function() {
         "url": serverPath+'contractUpload/listFile?id='+id,
         "success": function(data) {
             var array=data.data;
-            console.log(array[0]);
             var rows=array.length;
             var cols=3;
             var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
+            	//console.log(i+"***"+array[i-1].storeId);
             	htmlstr+="<tr>";
-            	htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='' /></td>";
+            	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
+            		htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='"+array[i-1].storeId+"' /></td>";
+            	}else{
+            		htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='' /></td>";
+            	}
             	htmlstr+="<td align='center'>" + array[i-1].displayName +"</td>";
-            	htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
-            	htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none;' onclick='downLoad(\""+array[i-1].attachId+"\")'>下载</button>";
-            	htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' style='display:none;' onclick='del(\""+array[i-1].attachId+"\")'>删除</button></td>";
+            	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
+            		htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' style='display:none' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
+            		htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' onclick='downLoad(\""+array[i-1].attachId+"\")'>下载</button>";
+            		htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' onclick='del(\""+array[i-1].attachId+"\")'>删除</button></td>";
+            	}else{
+            		htmlstr+="<td align='center'><button type='button' id='addButton"+array[i-1].attachId+"' onclick='addAttachment(\""+array[i-1].attachId+"\")'>添加</button>";
+            		htmlstr+="<button type='button' id='downLoadButton"+array[i-1].attachId+"' style='display:none' onclick='downLoad(\""+array[i-1].attachId+"\")'>下载</button>";
+            		htmlstr+="<button type='button' id='delButton"+array[i-1].attachId+"' style='display:none' onclick='del(\""+array[i-1].attachId+"\")'>删除</button></td>";
+            	}
             	htmlstr+="</tr>";
             }
             htmlstr+="</tbody></table>";
@@ -66,11 +76,16 @@ function checkFileIsUpload(){
         success : function(data) {
 			if(data.count==1){
 				var fileName = data.contractNumber+"正文扫描件.pdf";
-				var label=document.getElementById("fileName");
+				var htmlstr = "<a href='/contractUpload/downloadS3?key1="+data.storeId+"'>"+fileName+"</a>";
+				document.getElementById('fileNameDiv').innerHTML=htmlstr;
+				/*var label=document.getElementById("fileName");
 				label.innerText=fileName;
-				$("#fileName").html(fileName);
+				$("#fileName").html(fileName);*/
 				$("#uploadFile_div2").show();
     			$("#uploadFile_div1").hide();
+			}else{
+				$("#uploadFile_div2").hide();
+    			$("#uploadFile_div1").show();
 			}
         }
 	});
@@ -167,13 +182,15 @@ function fileUpload(){
 	function queryCallback(){//点击确定执行的函数，必传。
 		var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
 		//console.log(fileInfo[0].data);
-		//console.log(fileInfo[0].data.bucketName);
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			result = fileInfo[0].data;
-			var label=document.getElementById("fileName");
+			/*var label=document.getElementById("fileName");
 			label.innerText=fileName;
-			$("#fileName").html(fileName);
+			$("#fileName").html(fileName);*/
+			//var htmlstr = "<label for='proCode' class='col-sm-12 control-label paddingLR0' id='fileName'>"+fileName+"</label>";
+			var htmlstr = "<a href='/contractUpload/downloadS3?key1="+result.storeId+"'>"+fileName+"</a>";
+			document.getElementById('fileNameDiv').innerHTML=htmlstr;
 			$("#uploadFile_div1").hide();
     		$("#uploadFile_div2").show();
 		}
@@ -204,8 +221,8 @@ function delContractText(){
 }
 
 function saveContract(){
-	var arrayList=new Array();
-	debugger;
+	console.log("result====="+result);
+	console.log("array====="+array);
 	if(JSON.stringify(result) == "{}"){
 		if(array.length==0){
 			alert("没有上传任何文件！");

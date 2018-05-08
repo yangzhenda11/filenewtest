@@ -108,14 +108,15 @@ function createDictTable() {
             { "data": "dictParentId", title: "字典编码"},
             { "data": "dictLabel", title: "字典项名称"},
             { "data": "dictValue", title: "字典项编码"},
-            {"data": "provinceCode","title": "适用范围",
+            /*{"data": "provinceCode","title": "适用范围",
             	"render": function(data, type, full, meta) {
                 	if(data == null){
                     	return "";
                 	}
                 	return provinceCodeInfo[data];
             	}
-        	},
+        	},*/
+        	{"data": "provName",title: "适用范围"},
             { "data": "dictSort", title: "顺序"}
 		],
 		drawCallbackFn:function(){
@@ -246,7 +247,7 @@ function postDictChangeStatus(dictId,dictStatus){
 /*
  * 字典新增修改弹出框
  */
-function dictModal(editType,dictId,dictParentId,provinceName){
+function dictModal(editType,dictId,dictParentId,id){
 	$("#modal").load("_dictModal.html?" + App.timestamp()+" #modalEdit",function(){
 		//加载组织树
 		/*App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
@@ -264,12 +265,13 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 		
 		App.initFormSelect2("#dictForm");
         var ajaxObj = {
-        	"url" :  serverPath + "dicts/listChildrenByDicttId",
+        	"url" :  serverPath + "dicts/dictProvSelect",
         	"type" : "post",
-        	"data" : {"dictId": 9075},
+        	"data" : {id},
         	"async" : false
         }
-        App.initAjaxSelect2("#provinceCode",ajaxObj,"dictValue","dictLabel","请选择省分编码");
+        App.initAjaxSelect2("#provinceCode",ajaxObj,"provCode","provName","请选择省分编码");
+        
         
 		if(editType == "add") {
 			$("#modalTitle").text("新增字典");
@@ -286,7 +288,7 @@ function dictModal(editType,dictId,dictParentId,provinceName){
 			}
 			$("#modalTitle").text("字典修改");
 			$("#dictValue").attr("disabled", "disabled");
-			getDictInfor(editType,dictId,provinceName)
+			getDictInfor(editType,dictId)
 
 		}
 	});
@@ -449,22 +451,8 @@ function collapseAll() {
     dictTree.expandAll(false);
 }
 
-var ajaxObj = {
-    "url" :  serverPath + "dicts/listChildrenByDicttId",
-    "type" : "post",
-    "data" : {"dictId": 9075},
-    "async" : false
-};
-//从缓存中取关联编码字典集
-var provinceCodeInfo = new Array();
-var postData = JSON.stringify(ajaxObj.data);
-App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback1,null,null,null,ajaxObj.async);
-function succssCallback1(result) {
-    var data = result.data;
-    $.each(data, function (i, item) {
-        provinceCodeInfo[item.dictValue] = item.dictLabel;
-    });
-}
+
+
 /*
  * 显示所属组织树
  */

@@ -313,6 +313,15 @@ button:focus{
 .marginLeft25{
 	margin-left: 25px;
 }
+.margin-top-10{
+	margin-top: 10px;
+}
+.paddingR0{
+	padding-right: 0;
+}
+.paddingL0{
+	padding-left: 0;
+}
 /*th居中*/
 th.thAlignCenter{
 	text-align: center;

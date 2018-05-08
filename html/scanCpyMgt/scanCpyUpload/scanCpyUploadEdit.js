@@ -78,6 +78,7 @@ function checkFileIsUpload(){
 				var fileName = data.contractNumber+"正文扫描件.pdf";
 				var htmlstr = "<a href='/contractUpload/downloadS3?key1="+data.storeId+"'>"+fileName+"</a>";
 				document.getElementById('fileNameDiv').innerHTML=htmlstr;
+				$("#uploadFileName").val(fileName);
 				/*var label=document.getElementById("fileName");
 				label.innerText=fileName;
 				$("#fileName").html(fileName);*/
@@ -97,7 +98,7 @@ function getContractInfo(){
 		url : url,
         type : "post",
         success : function(data) {
-        	//console.log(data.data);
+        	console.log(data.data);
         	$("#contractNumber").val(data.data.contractNumber);
         	$("#undertakeName").val(data.data.undertakeName);
         	$("#undertakePhone").val(data.data.undertakePhone);
@@ -189,6 +190,7 @@ function fileUpload(){
 			label.innerText=fileName;
 			$("#fileName").html(fileName);*/
 			//var htmlstr = "<label for='proCode' class='col-sm-12 control-label paddingLR0' id='fileName'>"+fileName+"</label>";
+			$("#uploadFileName").val(fileName);
 			var htmlstr = "<a href='/contractUpload/downloadS3?key1="+result.storeId+"'>"+fileName+"</a>";
 			document.getElementById('fileNameDiv').innerHTML=htmlstr;
 			$("#uploadFile_div1").hide();
@@ -202,6 +204,7 @@ function fileUpload(){
  * 删除合同正文扫描件
  * */
 function delContractText(){
+	$("#uploadFileName").val('');
 	$("#uploadFile_div1").show();
     $("#uploadFile_div2").hide();
     result={};
@@ -221,8 +224,8 @@ function delContractText(){
 }
 
 function saveContract(){
-	console.log("result====="+result);
-	console.log("array====="+array);
+	//console.log("result====="+result);
+	//console.log("array====="+array);
 	if(JSON.stringify(result) == "{}"){
 		if(array.length==0){
 			alert("没有上传任何文件！");
@@ -346,13 +349,20 @@ function beforeTransfer(){
 
 
 function businessPush(){
-	var taskBusinessKey=1100006;
+	if(JSON.stringify(result) == "{}" && $("#uploadFileName").val()==''){
+		alert("请上传合同正文扫描件！");
+		return;
+	}
+	var taskBusinessKey=id;
+	alert(taskBusinessKey);
 	if(taskBusinessKey.length==0){
 		layer.msg("请填写业务主键！");
 		return;
 	}
-	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
-	modal_passBybuss(flowParam);
+	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
+	App.applyCandidateTask(serverPath,flowParam);
+	//modal_passBybuss(flowParam);
 }
 
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。

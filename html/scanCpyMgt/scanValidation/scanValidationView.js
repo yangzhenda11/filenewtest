@@ -104,6 +104,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"handleType" : handleType,//处理类型，1为通过，2为回退
 		"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+		"taskDefinitionKeyNow":parm.taskDefinitionKey,
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
 	//是否有差异
@@ -246,9 +247,9 @@ function getScanValidationInfo(verifyId){
 		$("#otherPartyName").html(otherPartyName);
     	$("#ourPartyName").html(ourPartyName);
 		//pdf URL设值
-		//var url = encodeURIComponent("/pdf.js/web/compressed.tracemonkey-pldi-09.pdf");
-		var textPdf = "contract1.pdf";
-		var scandocPdf = "contract2.pdf";
+		var url = encodeURIComponent("/fileload/downloadS3?key=2091649519838216197");
+		var textPdf = encodeURIComponent("/fileload/downloadS3?key=2091649519838216197");
+		var scandocPdf = encodeURIComponent("/fileload/downloadS3?key=2091649519838216197");
 		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
 		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录

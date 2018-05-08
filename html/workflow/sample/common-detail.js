@@ -192,8 +192,10 @@ function applyCandidateTask(){
 		layer.msg("请填写业务主键！");
 		return;
 	}
-	var flowParam=App.getFlowParam(serverPath,taskBusinessKey);
-	modal_applyCandidateTask(flowParam);
+	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
+	App.applyCandidateTask(serverPath,flowParam);
+	//modal_applyCandidateTask(flowParam);
 	
 }
 function modal_applyCandidateTask(flowParam){

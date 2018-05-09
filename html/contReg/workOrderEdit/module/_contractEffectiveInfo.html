@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 合同生效信息</span>
 		<div class="form-fieldset-tools">
@@ -126,10 +126,11 @@
 <script type="text/javascript">
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_validity(){
-		return {}
-	}
+//	function getValue_validity(isSubmit){
+//		return {};
+//	}
 	
 	
 	$("select[name='contractValidity']").on("change",function(){

@@ -800,25 +800,27 @@ var App = function() {
 		 * 根据name值取值
 		 */
 		getFormValues: function($form) {
-var formData = {};
+			var formData = {};
 			$form.find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
 				var formType = formItem.type;
 				var formName = $(formItem).attr('name');
 				var formValue = '';
-				if(formType == "text" || formType == "password" || formType == "select-one" || formType == "textarea" || formType == "hidden") {
-					formValue = $(formItem).val().trim();
-					formData[formName] = formValue;
-				} else if(formType == "checkbox") {
-					if($(formItem).is(':checked')) {
-						if(typeof formData[formName] == 'undefined') {
-							formData[formName] = new Array();
-						}
-						formData[formName].push($(formItem).val());
-					}
-				} else if(formType == "radio") {
-					if($(formItem).is(':checked')) {
-						formValue = $(formItem).val();
+				if(formName != undefined){
+					if(formType == "text" || formType == "password" || formType == "select-one" || formType == "textarea" || formType == "hidden") {
+						formValue = $(formItem).val().trim();
 						formData[formName] = formValue;
+					} else if(formType == "checkbox") {
+						if($(formItem).is(':checked')) {
+							if(typeof formData[formName] == 'undefined') {
+								formData[formName] = new Array();
+							}
+							formData[formName].push($(formItem).val());
+						}
+					} else if(formType == "radio") {
+						if($(formItem).is(':checked')) {
+							formValue = $(formItem).val();
+							formData[formName] = formValue;
+						}
 					}
 				}
 			})
@@ -1014,7 +1016,7 @@ var formData = {};
          */
         setChecked: function(name, value) {
 			var cks = document.getElementsByName(name);
-			var arr = value.split(',');
+			var arr = value.toString().split(',');
 			for(var i = 0; i < cks.length; i++) {	
 				if(isInArray(arr, cks[i].value)) {			//判断是否在数组内
 					cks[i].checked = true;
@@ -1172,20 +1174,35 @@ var formData = {};
 		checkAllFn:function(mainCheckbox,itemCheckbox){
 			var $checkItem = $('input[name="' + itemCheckbox + '"]');
 			$("" + mainCheckbox + "").prop('checked',false);
-			$("" + mainCheckbox + "").on('change', function(event){
+			$("" + mainCheckbox + "").off('change').on('change', function(event){
 				if(this.checked){
 				  	$('input[name="' + itemCheckbox + '"]').prop('checked',true);
 				}else{
 					$('input[name="' + itemCheckbox + '"]').prop('checked',false);
 				}
 			});
-//			$checkItem.on('change',function(){
-//				if($checkItem.length == $('input[name="' + itemCheckbox + '"]:checked').length){
-//					$("" + mainCheckbox + "").prop('checked',true);
-//				}else{
-//					$("" + mainCheckbox + "").prop('checked',false);
-//				}
-//			})
+			$checkItem.off('change').on('change',function(){
+				if($checkItem.length == $('input[name="' + itemCheckbox + '"]:checked').length){
+					$("" + mainCheckbox + "").prop('checked',true);
+				}else{
+					$("" + mainCheckbox + "").prop('checked',false);
+				}
+			})
+		},
+		/*
+		 * 全选全不选
+		 */
+		getDictInfo:function(code,callbackFn){
+			var postData = {"dictId": code};
+			App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, null, null, null, false);
+			function successCallback(result) {
+				var data = result.data;
+				var resturnData = {};
+				for(var i = 0; i < data.length; i++){
+					resturnData[data[i].dictValue] = data[i].dictLabel
+				};
+				callbackFn(resturnData);
+			}
 		},
 		/**
          * datatable render 文本信息 btnArray 内容：
@@ -1316,6 +1333,16 @@ var formData = {};
 			$("#commomModal").load("/static/data/_fileUpload.html?" + App.timestamp(),function(){
 				setParm(setting,queryCallback);
 			})
+		},
+		/*
+		 * 添加验证
+		 */
+		addValidatorField:function(dom,name,validators){
+			$(dom).bootstrapValidator("addField", name, {  
+				container: 'popover',
+				trigger: 'live focus blur keyup change',
+		       	validators: validators
+		   	});
 		},
 		// init main components
         initComponents:function(){

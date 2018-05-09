@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 采购信息</span>
 		<div class="form-fieldset-tools">
@@ -6,105 +6,113 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row defaultFieldsetForm">
+		<div class="row defaultFieldsetForm" id="purchaseForm">
 			<div class="col-sm-6 form-group">
-				<label for="contractNumber" class="control-label">采购结果编号：</label>
+				<label for="resultNumber" class="control-label">采购结果编号：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="resultNumber" name="resultNumber" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="contractNumber" class="control-label">采购合同流水号：</label>
+				<label for="purchaseContractNumber" class="control-label">采购合同流水号：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractNumber" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="purchaseContractNumber" name="purchaseContractNumber" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="contractName" class="control-label">配置单编号：</label>
+				<label for="purchaseConfig" class="control-label">配置单编号：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="purchaseConfig" name="purchaseConfig" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="contractName" class="control-label">是否需要审计：</label>
+				<label for="isAudit" class="control-label">是否需要审计：</label>
 				<div class="valiParent">
 					<div class="ui-radio-list ui-radio-inline">
 						<label class="ui-radio">
 							是
-							<input type="radio" value="1" checked="" name="radioText">
+							<input type="radio" value="1" disabled="disabled" name="isAudit">
 							<span></span>
 						</label>
 						<label class="ui-radio">
 							否
-							<input type="radio" value="2" name="radioText">
+							<input type="radio" value="0" disabled="disabled" name="isAudit">
 							<span></span>
 						</label>
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="ourPartyName" class="control-label">签约方式：</label>
+				<label for="signingMode" class="control-label">签约方式：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="signingMode" name="signingMode" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">付款方式：</label>
+				<label for="paymentMethod" class="control-label">付款方式：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="paymentMethod" name="paymentMethod" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">框架协议：</label>
+				<label for="frameworkAgreement" class="control-label">框架协议：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="frameworkAgreement" name="frameworkAgreement" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">前移物资协议：</label>
+				<label for="materialAgreement" class="control-label">前移物资协议：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="materialAgreement" name="materialAgreement" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">招标单位：</label>
+				<label for="tenderingUnit" class="control-label">招标单位：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="tenderingUnit" name="tenderingUnit" disabled="disabled" />
 				</div>
 			</div>
 			
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">需求部门：</label>
+				<label for="demandSector" class="control-label">需求部门：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="demandSector" name="demandSector" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">专业类型：</label>
+				<label for="professionalType" class="control-label">专业类型：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="professionalType" name="professionalType" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">审计状态：</label>
+				<label for="auditStatus" class="control-label">审计状态：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="auditStatus" name="auditStatus" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">备注：</label>
+				<label for="remarks" class="control-label">备注：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="remarks" name="remarks" disabled="disabled" />
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
+	//获取采购信息
+	getPurchase();
 	/*
-	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * 获取采购信息
 	 */
-	function getValue_purchase(){
-		return {}
+	function getPurchase(){
+		var url = serverPath + "contractOrderEditorController/getPurchaseId";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			App.setFormValues("#purchaseForm",data);
+		}
 	}
 </script>

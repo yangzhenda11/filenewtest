@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 开票信息</span>
 		<div class="form-fieldset-tools">
@@ -8,14 +8,25 @@
 	<div class="form-fieldset-body">
 		<div class="row">
 			<div class="portlet-body">
-				<button class="btn red" id="addInvoiceBtn"><i class="iconfont icon-add"></i> 新增</button>
-				<table id="invoiceInfoTable" class="table table-striped table-bordered table-hover table-header-fixed">
-
-					<tr>
-						<td></td>
-						<td>122122</td>
-						<td>机动车销售统一发票</td>
-					</tr>
+				<div class="tableToobarContent">
+					<button class="btn red" type="button" onclick="addInvoiceTr()"><i class="iconfont icon-add"></i> 新增</button>
+					<button class="btn red" type="button" onclick="delectsInvoiceTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
+				</div>
+				<table class="table table-hover table-bordered table-striped table-align">
+					<thead>
+						<tr>
+							<th><label class='ui-checkbox'><input type='checkbox' name='invocieCheckAll' id="invocieCheckAll"><span></span></label></th>
+							<th>序号</th>
+							<th>发票抬头</th>
+							<th>开票类型</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="invoiceTbody">
+						<tr class="emptyTr">
+							<td colspan="5">暂无开票信息</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -24,99 +35,130 @@
 <script type="text/javascript">
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_invoice(){
-		var value = getInvoiceInfoTable();
-		if(value){
-			return {y:value}
-		}else{
-			return false;
-		}
-	}
+//	function getValue_invoiceList(isSubmit){
+//		var invoiceDataList = [];
+//		$.each($("#invoiceTbody tr"),function(k,v){
+//			if(!$(v).hasClass("emptyTr")){
+//				var invoiceDataItem = {};
+//				invoiceDataItem.wcardId = wcardId;
+//				invoiceDataItem.invoiceId = $(v).data("id");
+//				invoiceDataItem.invoiceTitle = $(v).find(".invoiceTitleName").val();
+//				invoiceDataItem.invoiceType = $(v).find(".invoiceTypeName").val();
+//				invoiceDataList.push(invoiceDataItem);
+//			}
+//		});
+//		return invoiceDataList;
+//	}
+	//name自增基础值
+	var isCreateInvoiceTrLength = 0;
+	//获取开票信息字典值
+	var invoiceType = new Object();
+	getInvoiceDict();
+	//获取开票信息
+	getInvoiceInfo();
 	
 	
-	
-	var invoiceType = {};
-	var invoiceTypeData = {};
-	var invoiceInfoTable = null;
-	getInvoiceType();
-
 	/*
 	 * 获取开票信息字典值
+	 * 开票类型   invoiceType
 	 */
-	function getInvoiceType() {
-		App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify({
-			"dictId": 9025
-		}), successCallback, null, null, null, false);
+	function getInvoiceDict() {
+		App.getDictInfo(9025,getInvoiceType);
+		function getInvoiceType(result){
+			invoiceType = result;
+		}
+	}
+	
+	/*
+	 * 获取开票信息
+	 */
+	function getInvoiceInfo() {
+		var url = serverPath + "contractOrderEditorController/getInvoiceId";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
 
 		function successCallback(result) {
-			if(result.data != "") {
-				var ary = [];
-				for(var k = 0; k < result.data.length; k++){
-					ary.push(result.data[k].dictLabel);
-					invoiceType[result.data[k].dictLabel] = result.data[k].dictLabel;
-					invoiceTypeData[result.data[k].dictLabel] = result.data[k].dictValue;
-				}
-				var nary = ary.sort();
-				for(var i = 0; i < ary.length; i++) {
-					if(nary[i] == nary[i + 1]) {
-						layer.alert("字典'开票类型'中存在重复内容：" + nary[i]+"请处理后再操作！");
-						return false;
-					}
-				};
-				initInvoiceInfoTable();
-			}
+			console.log(result);
+
+			//isCreateInvoiceTrLength = $("#invoiceTbody").find("tr").length;
 		}
 	}
 	/*
-	 * 初始化开票信息表格
+	 * 新增点击
 	 */
-	function initInvoiceInfoTable(){
-		invoiceInfoTable = App.initEditableDatatables('#invoiceInfoTable', {
-			"addRowBtn": "#addInvoiceBtn",
-			"columns": [
-				{
-					"data": "invoiceTitle",
-					"title": "发票抬头",
-					"className": "text-center",
-					"isEditable": true
-				},
-				{
-					"data": "invoiceType",
-					"title": "开票类型",
-					"className": "text-center",
-					"isEditable": true,
-					"isSelectData": invoiceType,
-					"selectPlaceholder":"请选择开票类型"
-				}
-			],
-			"fnValidEditRow": function(row) {
-				var flag = true;
-				if(row.invoiceTitle == '') {
-					layer.msg("发票抬头不能为空")
-					flag = false;
-				}else if(row.invoiceType == ''){
-					layer.msg("请选择开票类型")
-					flag = false;
-				}
-				return flag;
-			}
+	function addInvoiceTr(){
+		if($("#invoiceTbody .emptyTr")[0] != undefined){
+			$("#invoiceTbody .emptyTr").remove();
+		}
+		isCreateInvoiceTrLength++;
+		var invoiceTitleName = "invoiceTitle" + isCreateInvoiceTrLength;
+		var invoiceTypeName = "invoiceTypeName" + isCreateInvoiceTrLength;
+		var selectHtml = "<option value=''>请选择</option>";
+		$.each(invoiceType, function(k,v) {
+			selectHtml += "<option value='"+ k +"'>"+ v +"</option>";
+		});
+		var appendHtml = "<tr data-id='100000'>"+
+							"<td><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
+							"<td class='orderNumber'></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' /></div></td>"+
+							"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"'>"+ selectHtml +"</select></div></td>"+
+							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+						"</tr>";
+		$("#invoiceTbody").append(appendHtml);
+		App.initFormSelect2("."+invoiceTypeName);
+		addNotEmptyValidatorField(invoiceTitleName,"发票抬头不能为空");
+		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
+		addInvoiceTableSort();
+		App.checkAllFn("#invocieCheckAll","invoiceCheck");
+	}
+	/*
+	 * 批量删除表格数据
+	 */
+	function delectsInvoiceTr(){
+		var checkInvoiceLength = $("#invoiceTbody input[name='invoiceCheck']:checked").length;
+		if(checkInvoiceLength == 0){
+			layer.msg("请勾选要删除的开票信息");
+		}else{
+			layer.confirm("是否要删除这"+checkInvoiceLength+"条数据？",{icon:7,title:"提示"},function(index){
+				layer.close(index);
+				$.each($("#invoiceTbody input[name='invoiceCheck']:checked"), function(k,v) {
+					$(v).parents("tr").remove();
+				});
+				addInvoiceTableSort();
+				App.checkAllFn("#invocieCheckAll","invoiceCheck");
+				addInvoiceTbodyEmptyTr();
+			})
+		}
+	}
+	/*
+	 * 删除表格数据
+	 */
+	function delectInvoiceTr(dom){
+		layer.confirm("是否要删除此条数据？",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			$(dom).parents("tr").remove();
+			addInvoiceTableSort();
+			App.checkAllFn("#invocieCheckAll","invoiceCheck");
+			addInvoiceTbodyEmptyTr();
+		})
+	}
+	/*
+	 * 表格数据增加序号
+	 */
+	function addInvoiceTableSort(){
+		$.each($("#invoiceTbody .orderNumber"), function(k,v) {
+			$(v).text(k+1);
 		});
 	}
-	function getInvoiceInfoTable(){
-		var invoiceInfoTableData = invoiceInfoTable.fnGetData();
-		var returnData = [];
-		for(var o = 0; o < invoiceInfoTableData.length; o++){
-			if(invoiceInfoTableData[o].invoiceTitle == "" || invoiceInfoTableData[o].invoiceType == ""){
-				layer.alert("请先保存开票信息",{icon:2});
-				return false;
-			}
-			var item = {
-				invoiceTitle : invoiceInfoTableData[o].invoiceTitle,
-				invoiceType : invoiceTypeData[invoiceInfoTableData[o].invoiceType]
-			}
-			returnData.push(item);
+	/*
+	 * 若为空增加empty值
+	 */
+	function addInvoiceTbodyEmptyTr(){
+		if($("#invoiceTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="5">暂无开票信息</td></tr>';
+			$("#invoiceTbody").html(html);
 		}
-		return returnData;
 	}
 </script>

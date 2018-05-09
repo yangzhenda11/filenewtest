@@ -1,29 +1,28 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 其他财务约定</span>
 		<div class="form-fieldset-tools">
 			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
-	<div class="form-fieldset-body">
+	<div class="form-fieldset-body" id="promiseSpendForm">
 		<div class="row fieldsetForm15">
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">施工保险条款：</label>
+				<label for="insurancePromise" class="control-label">施工保险条款：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control" ></textarea>
-					
+					<textarea id="insurancePromise" name="insurancePromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">延期付款利息：</label>
+				<label for="interestPromise" class="control-label">延期付款利息：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="interestPromise" name="interestPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">违约保证金押金约定：</label>
+				<label for="securityPromise" class="control-label">违约保证金押金约定：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="securityPromise" name="securityPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 		</div>
@@ -32,9 +31,39 @@
 <script type="text/javascript">
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_promiseSpend(){
-		return {};
+	function getValue_promiseSpend(isSubmit){
+		var promiseSpendData = App.getFormValues($("#promiseSpendForm"));
+		promiseSpendData.wcardId = wcardId;
+		promiseSpendData.promiseId = 100000;
+		return promiseSpendData;
 	}
+	
+	//获取其他财务约定
+	getPromiseSpend();
+	/*
+	 * 获取其他财务约定
+	 */
+	function getPromiseSpend(){
+		if(wcardTypeCode == 1){							//收入类
+			var url = serverPath + "contractOrderEditorController/getPromiseIncomeId";
+		}else if(wcardTypeCode == 2){					//支出类
+			var url = serverPath + "contractOrderEditorController/getPromiseSpendId";
+		}else{
+			layer.alert("暂无接口",{icon:2});
+			return;
+		};
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			App.setFormValues("#promiseSpendForm",data);
+		}
+	}
+	//增加不能为空的验证
+	addNotEmptyValidatorField("insurancePromise","施工保险条款不能为空");
+	addNotEmptyValidatorField("interestPromise","延期付款利息不能为空");
+	addNotEmptyValidatorField("securityPromise","违约保证金押金约定不能为空");
 	
 </script>

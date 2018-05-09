@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 变更管理、风险、争议、关闭、评价</span>
 		<div class="form-fieldset-tools">
@@ -6,54 +6,54 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row fieldsetForm15">
+		<div class="row fieldsetForm15" id="adjustSpendForm">
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">协议变更条款：</label>
+				<label for="protocolAdjust" class="control-label">协议变更条款：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control" ></textarea>
+					<textarea id="protocolAdjust" name="protocolAdjust" class="form-control" maxlength="1000"></textarea>
 					
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">新增需求条款：</label>
+				<label for="demandAdd" class="control-label">新增需求条款：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="demandAdd" name="demandAdd" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">需求变更条款：</label>
+				<label for="demandAdjust" class="control-label">需求变更条款：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="demandAdjust" name="demandAdjust" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">违约金/赔偿责任约定：</label>
+				<label for="penaltyPromise" class="control-label">违约金/赔偿责任约定：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="penaltyPromise" name="penaltyPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">法律适用条款：</label>
+				<label for="lawTerm" class="control-label">法律适用条款：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="lawTerm" name="lawTerm" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">知识产权：</label>
+				<label for="knowledgeProperty" class="control-label">知识产权：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="knowledgeProperty" name="knowledgeProperty" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">提前终止/合同解除：</label>
+				<label for="terminatePromise" class="control-label">提前终止/合同解除：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="terminatePromise" name="terminatePromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="contractNumber" class="control-label">保修条款：</label>
+				<label for="bugPromise" class="control-label">保修条款：</label>
 				<div class="valiParent">
-					<textarea name="test" class="form-control"></textarea>
+					<textarea id="bugPromise" name="bugPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 		</div>
@@ -62,9 +62,44 @@
 <script type="text/javascript">
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_adjustSpend(){
-		return {};
+	function getValue_adjustSpend(isSubmit){
+		var adjustSpendData = App.getFormValues($("#adjustSpendForm"));
+		adjustSpendData.wcardId = wcardId;
+		adjustSpendData.adjustId = 100000;
+		return adjustSpendData;
 	}
 	
+	//获取变更管理、风险、争议、关闭、评价
+	getAdjustSpend();
+	/*
+	 * 获取变更管理、风险、争议、关闭、评价
+	 */
+	function getAdjustSpend(){
+		if(wcardTypeCode == 1){							//收入类
+			var url = serverPath + "contractOrderEditorController/getAdjustIncomeId";
+		}else if(wcardTypeCode == 2){					//支出类
+			var url = serverPath + "contractOrderEditorController/getAdjustSpendId";
+		}else{
+			layer.alert("暂无接口",{icon:2});
+			return;
+		};
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			App.setFormValues("#adjustSpendForm",data);
+		}
+	}
+	//增加不能为空的验证
+	addNotEmptyValidatorField("protocolAdjust","协议变更条款不能为空");
+	addNotEmptyValidatorField("demandAdd","新增需求条款不能为空");
+	addNotEmptyValidatorField("demandAdjust","需求变更条款不能为空");
+	addNotEmptyValidatorField("penaltyPromise","违约金/赔偿责任约定不能为空");
+	addNotEmptyValidatorField("lawTerm","法律适用条款不能为空");
+	addNotEmptyValidatorField("knowledgeProperty","知识产权不能为空");
+	addNotEmptyValidatorField("terminatePromise","提前终止/合同解除不能为空");
+	addNotEmptyValidatorField("bugPromise","保修条款不能为空");
+   	
 </script>

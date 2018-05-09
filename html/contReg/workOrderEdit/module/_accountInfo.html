@@ -1,45 +1,67 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 账号信息</span>
 		<div class="form-fieldset-tools">
 			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
-	<div class="form-fieldset-body">
+	<div class="form-fieldset-body" id="accountListContent">
 		<div class="row">
 			<div class="portlet" id="payeeAccountInfo">
                 <div class="portlet-title ">
                     <div class="caption font-dark">
-                        <span class="caption-subject bold uppercase"><i class="iconfont icon-mi required hidden payeeRequired"></i>收款方账号信息</span>
+                        <span class="caption-subject bold uppercase"><i class="iconfont icon-mi required"></i>收款方账号信息</span>
                     </div>
                 </div>
                 <div class="portlet-body">
-                	<button class="btn red" id="addPayeeBtn"><i class="iconfont icon-add"></i> 新增</button>
-                    <table id="payeeAccountInfoTable" class="table table-striped table-bordered table-hover table-header-fixed">
-						<tr>
-							<td></td>
-							<td>12</td>
-							<td>122122</td>
-							<td>122122</td>
-						</tr>
+                	<div class="tableToobarContent">
+                		<button class="btn red" type="button" onclick="addPayeeTr()"><i class="iconfont icon-add"></i> 新增</button>
+                		<button class="btn red" type="button" onclick="delectsPayeeTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
+                	</div>    	
+                    <table class="table table-hover table-bordered table-striped table-align">
+                    	<thead>
+							<tr>
+								<th><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
+								<th>收款方账户名称</th>
+								<th>收款方银行账号</th>
+								<th>收款方开户银行</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="payeeInfoTbody">
+							<tr class="emptyTr">
+								<td colspan="5">暂无收款方账号信息</td>
+							</tr>
+						</tbody>
 					</table>
             	</div>
        	   </div>
        	   <div class="portlet" id="payerAccountInfo">
                 <div class="portlet-title ">
                     <div class="caption font-dark">
-                        <span class="caption-subject bold uppercase"><i class="iconfont icon-mi required hidden payerRequired"></i>付款方账号信息</span>
+                        <span class="caption-subject bold uppercase">付款方账号信息</span>
                     </div>
                 </div>
                 <div class="portlet-body">
-                	<button class="btn red" id="addPayerBtn"><i class="iconfont icon-add"></i> 新增</button>
-                    <table id="payerAccountInfoTable" class="table table-striped table-bordered table-hover table-header-fixed">
-						<tr>
-							<td></td>
-							<td>12</td>
-							<td>122122</td>
-							<td>122122</td>
-						</tr>
+                	<div class="tableToobarContent">
+                		<button class="btn red" type="button" onclick="addPayerTr()"><i class="iconfont icon-add"></i> 新增</button>
+                		<button class="btn red" type="button" onclick="delectsPayerTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
+                	</div>    	
+                    <table class="table table-hover table-bordered table-striped table-align">
+                    	<thead>
+							<tr>
+								<th><label class='ui-checkbox'><input type='checkbox' name='payerCheckAll' id="payerCheckAll"><span></span></label></th>
+								<th>付款方账户名称</th>
+								<th>付款方银行账号</th>
+								<th>付款方开户银行</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="payerInfoTbody">
+							<tr class="emptyTr">
+								<td colspan="5">暂无付款方账号信息</td>
+							</tr>
+						</tbody>
 					</table>
             	</div>
        	   </div>
@@ -48,124 +70,281 @@
 </div>
 <script type="text/javascript">
 	/*
-	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function getValue_account(){
-		return {}
+	function setPageId_accountListId(){
+		$.each($("#accountListContent tr"), function(k,v) {
+			if(!$(v).hasClass("emptyTr")){
+				if($(v).data("id") != undefined){
+					console.log(v);
+				}
+			}
+		});
 	}
-	
-	
-	
-	
-//	var pareeRequired = "";
-//	var parerRequired = "";
-	isPareeValidte(true);
-	initPayeeAccountTable();
-	initPayerAccountTable();
 	/*
-	 * 收款方付款方校验
-	 * isParee:true   收款方
-	 * isParee：false 付款方
+	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function isPareeValidte(isParee){
-		if(isParee){
-			$(".payeeRequired").removeClass("hidden");
+	function getValue_accountList(isSubmit){
+		var accountDataList = [];
+		accountDataList = returnAccoutTableInfor("payeeInfoTbody",accountDataList);
+		accountDataList = returnAccoutTableInfor("payerInfoTbody",accountDataList);
+		if(isSubmit){
+			var havePayeeInfo = false;
+			$.each(accountDataList, function(k,v) {
+				if(v.accountType == 1){
+					havePayeeInfo = true;
+					return;
+				}
+			});
+			if(havePayeeInfo){
+				return accountDataList;
+			}else{
+				layer.alert("请至少填写一项收款方信息",{icon:2,title:"错误"});
+				return false;
+			}
 		}else{
-			$(".payerRequired").removeClass("hidden");
+			return accountDataList;
 		}
 	}
 	/*
-	 * 初始化收款方账号信息可编辑表格
+	 * 返回table的信息
 	 */
-	function initPayeeAccountTable(){
-		var oTable = App.initEditableDatatables('#payeeAccountInfoTable', {
-			"addRowBtn": "#addPayeeBtn",
-			"columns": [{
-					"data": "payeeAccountName",
-					"title": "收款方账户名称",
-					"className": "text-center",
-					"isEditable": true
-				},
-				{
-					"data": "payeeBankAccount",
-					"title": "收款方银行账号",
-					"className": "text-center",
-					"isEditable": true
-				},
-				{
-					"data": "payeeDepositAccount",
-					"title": "收款方开户银行",
-					"className": "text-center",
-					"isEditable": true
-				}
-			],
-			"fnDeleteEditRow": function(row) {
-				console.log('删除了一行，数据为：' + JSON.stringify(row));
-			},
-			"fnValidEditRow": function(row) {
-				var flag = true;
-				//对数据进行逻辑校验
-				console.log('用户要新增一条记录，数据为:' + JSON.stringify(row));
-				if(row.busiCode == '') {
-					layer.open({
-						title: '提示',
-						content: '工单编码不能为空',
-						icon: 0
-					})
-					flag = false;
-				}
-				return flag;
-			},
-			"fnSaveEditRow": function(row) {
-				console.log('新增了一行，数据为：' + JSON.stringify(row));
+	function returnAccoutTableInfor(dom,accountDataList){
+		$.each($("#"+ dom +" tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var accountDataItem = {};
+				if(dom == "payerInfoTbody"){
+					accountDataItem.accountType = 2;
+				}else if(dom == "payeeInfoTbody"){
+					accountDataItem.accountType = 1;
+				};
+				accountDataItem.wcardId = wcardId;
+				accountDataItem.accountId = $(v).data("id");
+				accountDataItem.accountName = $(v).find(".accountName").val();
+				accountDataItem.accountNumber = $(v).find(".accountNumber").val();
+				accountDataItem.openBank = $(v).find(".openBank").val();
+				accountDataList.push(accountDataItem);
 			}
 		});
+		return accountDataList;
+	}
+	//name自增基础值
+	var isCreateAccountTrLength = 0;
+	//获取账户信息
+	getAccountInfo();
+	
+	/*
+	 * 获取账户信息
+	 */
+	function getAccountInfo() {
+		var url = serverPath + "contractOrderEditorController/getAccountId";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+
+		function successCallback(result) {
+			var data = result.data;
+			if(data.length > 0){
+				isCreateAccountTrLength = data.length;
+				for(var i = 0; i < data.length; i++){
+					var accountName = "accountName"+i;
+					var accountNumber = "accountNumber"+i;
+					var openBank = "openBank"+i;
+					if(data[i].accountType == 1){
+						if($("#payeeInfoTbody .emptyTr")[0] != undefined){
+							$("#payeeInfoTbody .emptyTr").remove();
+						};
+						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
+											"<td><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' /></div></td>"+
+											"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
+										"</tr>";
+						$("#payeeInfoTbody").append(appendHtml);
+						addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
+						addNotEmptyValidatorField(openBank,"收款方开户银行不能为空");
+						var payeeAccountNumberField = {
+							notEmpty : {
+								message : "收款方银行账号不能为空"
+							},
+							regexp : {
+								regexp : /^[0-9]+$/,
+								message : '收款方银行账号只能输入数字'
+							}
+						}
+					   	App.addValidatorField("#workOrderContentForm",accountNumber,payeeAccountNumberField);
+						App.checkAllFn("#payeeCheckAll","payeeCheck");
+					}else if(data[i].accountType == 2){
+						if($("#payerInfoTbody .emptyTr")[0] != undefined){
+							$("#payerInfoTbody .emptyTr").remove();
+						};
+						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
+											"<td><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' /></div></td>"+
+											"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
+										"</tr>";
+						$("#payerInfoTbody").append(appendHtml);
+						addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
+						addNotEmptyValidatorField(openBank,"付款方开户银行不能为空");
+						var payerAccountNumberField = {
+							notEmpty : {
+								message : "付款方银行账号不能为空"
+							},
+							regexp : {
+								regexp : /^[0-9]+$/,
+								message : '付款方银行账号只能输入数字'
+							}
+						}
+					   	App.addValidatorField("#workOrderContentForm",accountNumber,payerAccountNumberField);
+						App.checkAllFn("#payerCheckAll","payerCheck");
+					}
+				};
+			}
+		}
 	}
 	/*
-	 * 初始化付款方账号信息可编辑表格
+	 * 收款方新增点击
 	 */
-	function initPayerAccountTable(){
-		var oTable = App.initEditableDatatables('#payerAccountInfoTable', {
-			"addRowBtn": "#addPayerBtn",
-			"columns": [{
-					"data": "payerAccountName",
-					"title": "付款方账户名称",
-					"className": "text-center",
-					"isEditable": true
-				},
-				{
-					"data": "payerBankAccount",
-					"title": "付款方银行账号",
-					"className": "text-center",
-					"isEditable": true
-				},
-				{
-					"data": "payerDepositAccount",
-					"title": "付款方开户银行",
-					"className": "text-center",
-					"isEditable": true
-				}
-			],
-			"fnDeleteEditRow": function(row) {
-				console.log('删除了一行，数据为：' + JSON.stringify(row));
+	function addPayeeTr(){
+		if($("#payeeInfoTbody .emptyTr")[0] != undefined){
+			$("#payeeInfoTbody .emptyTr").remove();
+		}
+		isCreateAccountTrLength++;
+		var accountName = "accountName" + isCreateAccountTrLength;
+		var accountNumber = "accountNumber" + isCreateAccountTrLength;
+		var openBank = "openBank" + isCreateAccountTrLength;
+		var appendHtml = "<tr data-id='100000'>"+
+							"<td><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' /></div></td>"+
+							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
+						"</tr>";
+		$("#payeeInfoTbody").append(appendHtml);
+		addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
+		addNotEmptyValidatorField(openBank,"收款方开户银行不能为空");
+		var payeeAccountNumberField = {
+			notEmpty : {
+				message : "收款方银行账号不能为空"
 			},
-			"fnValidEditRow": function(row) {
-				var flag = true;
-				//对数据进行逻辑校验
-				console.log('用户要新增一条记录，数据为:' + JSON.stringify(row));
-				if(row.busiCode == '') {
-					layer.open({
-						title: '提示',
-						content: '工单编码不能为空',
-						icon: 0
-					})
-					flag = false;
-				}
-				return flag;
-			},
-			"fnSaveEditRow": function(row) {
-				console.log('新增了一行，数据为：' + JSON.stringify(row));
+			regexp : {
+				regexp : /^[0-9]+$/,
+				message : '收款方银行账号只能输入数字'
 			}
-		});
+		}
+	   	App.addValidatorField("#workOrderContentForm",accountNumber,payeeAccountNumberField);
+		App.checkAllFn("#payeeCheckAll","payeeCheck");
+	}
+	/*
+	 * 批量删除收款方表格数据
+	 */
+	function delectsPayeeTr(){
+		var checkInvoiceLength = $("#payeeInfoTbody input[name='payeeCheck']:checked").length;
+		if(checkInvoiceLength == 0){
+			layer.msg("请勾选要删除的收款方账户信息");
+		}else{
+			layer.confirm("是否要删除这"+checkInvoiceLength+"条数据？",{icon:7,title:"提示"},function(index){
+				layer.close(index);
+				$.each($("#payeeInfoTbody input[name='payeeCheck']:checked"), function(k,v) {
+					$(v).parents("tr").remove();
+				});
+				App.checkAllFn("#payeeCheckAll","payeeCheck");
+				addPayeeInfoTbodyEmptyTr();
+			})
+		}
+	}
+	/*
+	 * 删除收款方表格数据
+	 */
+	function delectPayeeTr(dom){
+		layer.confirm("是否要删除此条数据？",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			$(dom).parents("tr").remove();
+			App.checkAllFn("#payeeCheckAll","payeeCheck");
+			addPayeeInfoTbodyEmptyTr();
+		})
+	}
+	/*
+	 * 若为空增加empty值
+	 */
+	function addPayeeInfoTbodyEmptyTr(){
+		if($("#payeeInfoTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="5">暂无收款方账号信息</td></tr>';
+			$("#payeeInfoTbody").html(html);
+		}
+	}
+	/*
+	 * 付款方新增点击
+	 */
+	function addPayerTr(){
+		if($("#payerInfoTbody .emptyTr")[0] != undefined){
+			$("#payerInfoTbody .emptyTr").remove();
+		}
+		isCreateAccountTrLength++;
+		var accountName = "accountName" + isCreateAccountTrLength;
+		var accountNumber = "accountNumber" + isCreateAccountTrLength;
+		var openBank = "openBank" + isCreateAccountTrLength;
+		var appendHtml = "<tr data-id='100000'>"+
+							"<td><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' /></div></td>"+
+							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
+						"</tr>";
+		$("#payerInfoTbody").append(appendHtml);
+		addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
+		addNotEmptyValidatorField(openBank,"付款方开户银行不能为空");
+		var payerAccountNumberField = {
+			notEmpty : {
+				message : "付款方银行账号不能为空"
+			},
+			regexp : {
+				regexp : /^[0-9]+$/,
+				message : '付款方银行账号只能输入数字'
+			}
+		}
+	   	App.addValidatorField("#workOrderContentForm",accountNumber,payerAccountNumberField);
+		App.checkAllFn("#payerCheckAll","payerCheck");
+	}
+	/*
+	 * 批量删除付款方表格数据
+	 */
+	function delectsPayerTr(){
+		var checkInvoiceLength = $("#payerInfoTbody input[name='payerCheck']:checked").length;
+		if(checkInvoiceLength == 0){
+			layer.msg("请勾选要删除的付款方账户信息");
+		}else{
+			layer.confirm("是否要删除这"+checkInvoiceLength+"条数据？",{icon:7,title:"提示"},function(index){
+				layer.close(index);
+				$.each($("#payerInfoTbody input[name='payerCheck']:checked"), function(k,v) {
+					$(v).parents("tr").remove();
+				});
+				App.checkAllFn("#payerCheckAll","payerCheck");
+				addPayerInfoTbodyEmptyTr();
+			})
+		}
+	}
+	/*
+	 * 删除付款方表格数据
+	 */
+	function delectPayerTr(dom){
+		layer.confirm("是否要删除此条数据？",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			$(dom).parents("tr").remove();
+			App.checkAllFn("#payerCheckAll","payerCheck");
+			addPayerInfoTbodyEmptyTr();
+		})
+	}
+	/*
+	 * 若为空增加empty值
+	 */
+	function addPayerInfoTbodyEmptyTr(){
+		if($("#payerInfoTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="5">暂无付款方账号信息</td></tr>';
+			$("#payerInfoTbody").html(html);
+		}
 	}
 </script>

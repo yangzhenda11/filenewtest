@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 合同总览</span>
 		<div class="form-fieldset-tools">
@@ -6,29 +6,33 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row defaultFieldsetForm">
+		<div class="row defaultFieldsetForm" id="contractOverviewForm">
+			<div id="contractOverViewTitle">
+				工单编号：<span id="wcardNumber"></span>	
+				工单状态：<span id="wcardStatus"></span>
+			</div>
 			<div class="col-sm-6 form-group">
 				<label for="contractNumber" class="control-label">合同编号：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractNumber" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="contractNumber" name="contractNumber" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="contractNumber" class="control-label">合同类型：</label>
+				<label for="typeFullname" class="control-label">合同类型：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractNumber" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="typeFullname" name="typeFullname" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
 				<label for="contractName" class="control-label">合同名称：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="contractName" name="contractName" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="contractName" class="control-label">合同履行现状：</label>
+				<label for="executeStatus" class="control-label">合同履行现状：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="executeStatus" name="executeStatus" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
@@ -46,71 +50,71 @@
 			</div>
 			<div id="partyContent" class="hidden">
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">我方法定代表人：</label>
+					<label for="partyALegalperson" class="control-label">我方法定代表人：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" name="test" value="" />
+						<input type="text" class="form-control" id="partyALegalperson" name="partyALegalperson" maxlength="20" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">对方法定代表人：</label>
+					<label for="partyZLegalperson" class="control-label">对方法定代表人：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" name="test2" value="" />
+						<input type="text" class="form-control" id="partyZLegalperson" name="partyZLegalperson" maxlength="20" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">我方联系人：</label>
+					<label for="partyAContact" class="control-label">我方联系人：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" name="test3" value="" />
+						<input type="text" class="form-control" id="partyAContact" name="partyAContact" maxlength="20" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">对方联系人：</label>
+					<label for="partyZContact" class="control-label">对方联系人：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" value="" />
+						<input type="text" class="form-control" id="partyZContact" name="partyZContact" maxlength="20" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">我方注册地址：</label>
+					<label for="partyARegaddr" class="control-label">我方注册地址：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" value="" />
+						<input type="text" class="form-control" id="partyARegaddr" name="partyARegaddr" maxlength="100" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">对方注册地址：</label>
+					<label for="partyZRegaddr" class="control-label">对方注册地址：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" value="" />
+						<input type="text" class="form-control" id="partyZRegaddr" name="partyZRegaddr" maxlength="100" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">我方联系电话：</label>
+					<label for="partyATelephone" class="control-label">我方联系电话：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" value="" />
+						<input type="text" class="form-control" id="partyATelephone" name="partyATelephone" maxlength="30" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
-					<label for="executeDeptName" class="control-label">对方联系电话：</label>
+					<label for="partyZTelephone" class="control-label">对方联系电话：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="executeDeptName" value="" />
+						<input type="text" class="form-control" id="partyZTelephone" name="partyZTelephone" maxlength="30" />
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
 				<label for="executeDeptName" class="control-label">承办部门：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+					<input type="text" class="form-control" id="executeDeptName" name="executeDeptName" disabled="disabled" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
 				<label for="undertakeName" class="control-label">承办人联系方式：</label>
 				<div class="valiParent">
 					<div class="col-sm-3 paddingL0">
-						<input type="text" class="form-control" id="undertakeName" disabled="disabled" value="" />
+						<input type="text" class="form-control" id="undertakeName" name="undertakeName" disabled="disabled" />
 					</div>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" id="mobilPhone" disabled="disabled" value="" />
+						<input type="text" class="form-control" id="mobilPhone" name="mobilPhone" disabled="disabled" />
 					</div>
 					<div class="col-sm-5 paddingR0">
-						<input type="text" class="form-control" id="phone" disabled="disabled" value="" />
+						<input type="text" class="form-control" id="phone" name="phone" disabled="disabled" />
 					</div>
 				</div>
 			</div>
@@ -120,33 +124,35 @@
 					<div class="ui-radio-list ui-radio-inline">
 						<label class="ui-radio">
 							是
-							<input type="radio" value="1" checked="" name="radioText">
+							<input type="radio" value="1" disabled="disabled" name="isFixed">
 							<span></span>
 						</label>
 						<label class="ui-radio">
 							否
-							<input type="radio" value="2" name="radioText">
+							<input type="radio" value="0" disabled="disabled" name="isFixed">
 							<span></span>
 						</label>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">增值税税率：</label>
-				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+			<div class="hidden" id="isNotFixedOver">
+				<div class="col-sm-6 form-group">
+					<label for="vatRate" class="control-label">增值税税率：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="vatRate" name="vatRate" disabled="disabled" />
+					</div>
 				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">含增值税合同金额：</label>
-				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+				<div class="col-sm-6 form-group">
+					<label for="contractValue" class="control-label">含增值税合同金额：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="contractValue" name="contractValue" disabled="disabled" />
+					</div>
 				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">不含增值税合同金额：</label>
-				<div class="valiParent">
-					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+				<div class="col-sm-6 form-group">
+					<label for="contractValueNovat" class="control-label">不含增值税合同金额：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="contractValueNovat" name="contractValueNovat" disabled="disabled" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -155,12 +161,61 @@
 <script type="text/javascript">
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_contractOverv(){
-		return {};
+	function getValue_contractOverv(isSubmit){
+		var contractOverData = App.getFormValues($("#contractOverviewForm"));
+		contractOverData.wcardId = wcardId;
+		contractOverData.contractId = contractId;
+		return contractOverData;
+	}
+	//获取字典值
+	getContractOverviewDict();
+	//获取合同基本信息
+	getContractOverInfo();
+	
+	var ticketStateType = new Object();
+	var performanceState = new Object();
+	/*
+	 * 获取字典值
+	 * 合同工单状态   ticketStateType
+	 * 合同履行现状	performanceState
+	 */
+	function getContractOverviewDict() {
+		App.getDictInfo(9040,getTicketStateType);
+		function getTicketStateType(result){
+			ticketStateType = result;
+		}
+		App.getDictInfo(9010,getPerformanceState);
+		function getPerformanceState(result){
+			performanceState = result;
+		}
+	}
+	/*
+	 * 获取合同基本信息
+	 */
+	function getContractOverInfo() {
+		var performanceStateInfo = performanceState;
+		var ticketStateTypeInfo = ticketStateType;
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			var valueCallback = {'executeStatus':function(value){return performanceStateInfo[value]}}
+			App.setFormValues("#contractOverviewForm",data);
+			if(data.isFixed == 1){
+				$("#isNotFixedOver").removeClass("hidden");
+			};
+			$("#ourPartyName").text(data.ourPartyName);
+			$("#otherPartyName").text(data.otherPartyName);
+			$("#wcardNumber").text(data.wcardNumber);
+			$("#wcardStatus").text(ticketStateTypeInfo[data.wcardStatus]);
+		}
 	}
 	
-	
+	/*
+	 * 更多信息展示和隐藏
+	 */
 	$("#partyMore").on("click",function(){
 		if($("#partyContent").hasClass("hidden")){
 			$("#partyContent").removeClass("hidden");
@@ -170,32 +225,16 @@
 			$("#partyMore").text("更多");
 		}
 	})
-	$("#workOrderContent").bootstrapValidator("addField", "test", {  
-		container: 'popover',
-		trigger: 'live focus blur keyup change',
-       	validators: {  
-           	notEmpty: {  
-               	message: '名称不能为空'  
-           	}
-       }  
-   	});
-   	$("#workOrderContent").bootstrapValidator("addField", "test2", {  
-		container: 'popover',
-		trigger: 'live focus blur keyup change',
-       	validators: {  
-           	notEmpty: {  
-               	message: '名称不能为空'  
-           	}
-       }  
-   	});
-   	$("#workOrderContent").bootstrapValidator("addField", "test3", {  
-		container: 'popover',
-		trigger: 'live focus blur keyup change',
-       	validators: {  
-           	notEmpty: {  
-               	message: '名称不能为空'  
-           	}
-       }  
-   	});
-	
+	/*
+	 * 添加验证
+	 */
+	var phoneValidator = {
+		regexp: {
+			regexp: /^((\+86)|(86))?[1][3456789][0-9]{9}$|^([0-9]{3,4}-)?[0-9]{7,8}(-[0-9]{3,4})?$/,
+    		message: '联系电话输入错误'
+		}
+	}
+   	App.addValidatorField("#workOrderContentForm","partyATelephone",phoneValidator);
+   	App.addValidatorField("#workOrderContentForm","partyZTelephone",phoneValidator);
+   	
 </script>

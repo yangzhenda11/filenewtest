@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 选择合同履行人</span>
 		<div class="form-fieldset-tools">
@@ -60,10 +60,11 @@
 <script type="text/javascript">
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_performer(){
-		return {y:1}
-	}
+//	function getValue_performer(isSubmit){
+//		return {};
+//	}
 
 
 	App.checkAllFn("#feasorCheckAll","feasorCheck");

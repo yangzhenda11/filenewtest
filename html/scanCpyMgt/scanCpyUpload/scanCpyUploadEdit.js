@@ -1,6 +1,6 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
-//console.log(parm);
+console.log(parm);
 var id;
 if(parm.pageType==1){
 	id = parm.businessKey;
@@ -38,7 +38,7 @@ $(function() {
             var cols=3;
             var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
-            	console.log(i+"***"+array[i-1].storeId);
+            	//console.log(i+"***"+array[i-1].storeId);
             	htmlstr+="<tr>";
             	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
             		htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='"+array[i-1].storeId+"' /></td>";
@@ -76,13 +76,11 @@ function checkFileIsUpload(){
         type : "post",
         success : function(data) {
 			if(data.count==1){
+				//console.log(data);
 				var fileName = data.contractNumber+"正文扫描件.pdf";
 				var htmlstr = "<div class='col-sm-12 control-label paddingLR0'><a href='/contractUpload/downloadS3?key1="+data.storeId+"'>"+fileName+"</a></div>";
 				document.getElementById('fileNameDiv').innerHTML=htmlstr;
 				$("#uploadFileNameshow").val(fileName);
-				/*var label=document.getElementById("fileName");
-				label.innerText=fileName;
-				$("#fileName").html(fileName);*/
 				$("#uploadFile_div2").show();
     			$("#uploadFile_div1").hide();
 			}else{
@@ -141,7 +139,7 @@ function addAttachment(attachId){
 		url:'contractUpload/uploadFile',	//上传地址，非空
 		maxNumber:1,//最大上传数量
 		//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
-		//fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
+		fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
 		extraData:{attachId:attachId}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
 	};
 	function queryCallback(){//点击确定执行的函数，必传。
@@ -192,10 +190,7 @@ function fileUpload(){
 		$("#commomModal").modal("hide");//模态框关闭
 		if(fileInfo.length!=0){
 			result = fileInfo[0].data;
-			/*var label=document.getElementById("fileName");
-			label.innerText=fileName;
-			$("#fileName").html(fileName);*/
-			//var htmlstr = "<label for='proCode' class='col-sm-12 control-label paddingLR0' id='fileName'>"+fileName+"</label>";
+			console.log(result);
 			$("#uploadFileNameshow").val(fileName);
 			var htmlstr = "<div class='col-sm-12 control-label paddingLR0'><a href='/contractUpload/downloadS3?key1="+result.storeId+"'>"+fileName+"</a></div>";
 			document.getElementById('fileNameDiv').innerHTML=htmlstr;
@@ -209,62 +204,78 @@ function fileUpload(){
 /**
  * 删除合同正文扫描件
  * */
-function delContractText(){
-	$("#uploadFileName").val('');
+function delScan(){
+	/*var id = $("#uploadStoreId").val();
+	$("#delUploadStoreId").val(id);
+	$("#uploadFileNameshow").val('');
+	$("#uploadStoreId").val('');*/
+	$("#uploadFileNameshow").val('');
 	$("#uploadFile_div1").show();
     $("#uploadFile_div2").hide();
     result={};
-	/*var url = serverPath + 'contractUpload/delContractText?id=113';
+}
+
+function saveContractText(){
+	var jsonStr = JSON.stringify(result);
+	$.ajax({
+		url : serverPath + 'contractUpload/saveContract',
+        type : "post",
+        data:{"jsonStr":jsonStr,"id":id},
+        success : function(data) {
+       		if(data.status=='1'){
+       			alert(data.message);
+       		}else if(data.status=='0'){
+       			alert(data.message);
+       		}
+       	}
+	});
+}
+
+function delContractText(){
+	var url = serverPath + 'contractUpload/delContractText?id='+id;
 	$.ajax({
 		url : url,
         type : "post",
         success : function(data) {
        		if(data.status=='1'){
-       			$("#uploadFile_div1").show();
-    			$("#uploadFile_div2").hide();
+       			//alert("保存成功！");
        		}else if(data.status=='0'){
        			alert(data.message);
        		}
         }
-	});*/
+	});
 }
 
-function saveContract(){
-	//console.log("result====="+result);
-	//console.log("array====="+array);
-	if(JSON.stringify(result) == "{}"){
-		if(array.length==0){
-			alert("没有上传任何文件！");
-		}else{
-       		console.log(JSON.stringify(array));
-       		$.ajax({
-				url : serverPath + 'contractUpload/saveAttachment',
-        		type : "post",
-        		data:{"strArray":JSON.stringify(array)},
-        			success : function(data) {
+function saveAttachment(){
+	$.ajax({
+		url : serverPath + 'contractUpload/saveAttachment',
+        type : "post",
+        data:{"strArray":JSON.stringify(array)},
+        success : function(data) {
        				if(data.status=='1'){
        					alert("保存成功！");
        				}else if(data.status=='0'){
        					alert(data.message);
        				}
-        		}	
-			});
+        		}
+	});
+}
+
+function saveContract(){
+	console.log("result====="+result);
+	console.log("array====="+array);
+	if(JSON.stringify(result) == "{}"){
+		if($("#uploadFileNameshow").val()==''){
+			delContractText();
+		}
+		if(array.length==0){
+			alert("保存成功！");
+		}else{
+       		saveAttachment();
 		}
 	}else{
 		if(array.length==0){
-			var jsonStr = JSON.stringify(result);
-			$.ajax({
-				url : serverPath + 'contractUpload/saveContract',
-        		type : "post",
-        		data:{"jsonStr":jsonStr,"id":id},
-        		success : function(data) {
-       				if(data.status=='1'){
-       					alert(data.message);
-       				}else if(data.status=='0'){
-       					alert(data.message);
-       				}
-       			}
-			});
+			saveContractText();
 		}else{
 			var jsonStr = JSON.stringify(result);
 			$.ajax({

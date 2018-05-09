@@ -68,6 +68,11 @@ function getContractInfo(){
         	$("#executeDeptName").val(data.data.executeDeptName);
         	$("#unicomPartyName").text(data.data.unicomPartyName);
         	$("#oppoPartyName").text(data.data.oppoPartyName);
+        	
+        	var contractType=data.data.contractType;
+        	var label=document.getElementById("contractType");
+			label.innerText=contractType;
+			$("#contractType").html(contractType);
         }
 	});
 }

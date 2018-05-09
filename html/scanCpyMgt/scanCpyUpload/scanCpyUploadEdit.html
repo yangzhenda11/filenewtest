@@ -48,7 +48,10 @@
                				</div>
                			</div>
                			<div class="form-fieldset-body">
-               				<div class="row defaultFieldsetForm">
+               				<div class="row defaultFieldsetForm" style="position: relative;padding-top: 20px;">
+               					<div style="position: absolute;right: 20px;top: -15px;">
+               						<label for="contractType" class="col-sm-12 control-label paddingLR0" id="contractType"></label>
+               					</div>
                					<div class="col-sm-6 form-group">
 									<label for="contractNumber" class="control-label">合同编号：</label>
 									<div class="valiParent">
@@ -84,15 +87,15 @@
                					<div class="col-sm-6 form-group">
 									<label for="executeDeptName" class="control-label">我方主体：</label>
 									<div class="valiParent">
-										<div class="divInput" id="unicomPartyName">
+										<div class="divInput" id="unicomPartyName" style="line-height: 25px;">
 										<!--<input type="text" class="form-control" id="unicomPartyName" disabled="disabled" value="" />-->
 										</div>
 									</div>
                					</div>
                					<div class="col-sm-6 form-group">
-									<label for="oppoPartyName" class="control-label">对方主体：</label>
+									<label for="oppoPartyName" class="control-label" >对方主体：</label>
 									<div class="valiParent">
-										<div class="divInput" id="oppoPartyName">
+										<div class="divInput" id="oppoPartyName" style="line-height: 25px;">
 										<!--<input type="text" class="form-control" id="oppoPartyName" disabled="disabled" value="" />-->
 										</div>
 									</div>
@@ -112,7 +115,7 @@
                					<div class="col-sm-6 form-group" id="uploadFile_div1">
                						<label for="proCode" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
                						<div class="col-sm-7">
-										<input type="text" class="form-control" id="uploadFileName" value="" />
+										<input type="text" class="form-control" id="uploadFileNameshow" value="" />
 									</div>
                						<div class="col-sm-2">
 										<button class="btn red" onclick="fileUpload()">添加</button>

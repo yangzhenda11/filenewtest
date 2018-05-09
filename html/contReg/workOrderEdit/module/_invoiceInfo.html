@@ -34,23 +34,38 @@
 </div>
 <script type="text/javascript">
 	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_invoiceListId(value){
+		var valueKey = 0;
+		$.each($("#invoiceTbody tr"), function(k,v) {
+			if(!$(v).hasClass("emptyTr")){
+				if($(v).data("id") != undefined){
+					$(v).data("id",value[valueKey]);
+					valueKey++;
+				}
+			}
+		});
+	}
+	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-//	function getValue_invoiceList(isSubmit){
-//		var invoiceDataList = [];
-//		$.each($("#invoiceTbody tr"),function(k,v){
-//			if(!$(v).hasClass("emptyTr")){
-//				var invoiceDataItem = {};
-//				invoiceDataItem.wcardId = wcardId;
-//				invoiceDataItem.invoiceId = $(v).data("id");
-//				invoiceDataItem.invoiceTitle = $(v).find(".invoiceTitleName").val();
-//				invoiceDataItem.invoiceType = $(v).find(".invoiceTypeName").val();
-//				invoiceDataList.push(invoiceDataItem);
-//			}
-//		});
-//		return invoiceDataList;
-//	}
+	function getValue_invoiceList(isSubmit){
+		var invoiceDataList = [];
+		$.each($("#invoiceTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var invoiceDataItem = {};
+				invoiceDataItem.wcardId = wcardId;
+				invoiceDataItem.contractNumber = contractNumber;-
+				invoiceDataItem.invoiceId = $(v).data("id");
+				invoiceDataItem.invoiceTitle = $(v).find(".invoiceTitleName").val();
+				invoiceDataItem.invoiceType = $(v).find(".invoiceTypeName").val();
+				invoiceDataList.push(invoiceDataItem);
+			}
+		});
+		return invoiceDataList;
+	}
 	//name自增基础值
 	var isCreateInvoiceTrLength = 0;
 	//获取开票信息字典值

@@ -7,6 +7,7 @@
 	</div>
 	<div class="form-fieldset-body" id="promiseSpendForm">
 		<div class="row fieldsetForm15">
+			<input type="hidden" name="promiseId" id="promiseId" value="100000" />
 			<div class="col-sm-12 form-group">
 				<label for="insurancePromise" class="control-label">施工保险条款：</label>
 				<div class="valiParent">
@@ -30,13 +31,18 @@
 </div>
 <script type="text/javascript">
 	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_promiseSpendId(value){
+		$("#promiseId").val(value);
+	}
+	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
 	function getValue_promiseSpend(isSubmit){
 		var promiseSpendData = App.getFormValues($("#promiseSpendForm"));
 		promiseSpendData.wcardId = wcardId;
-		promiseSpendData.promiseId = 100000;
 		return promiseSpendData;
 	}
 	

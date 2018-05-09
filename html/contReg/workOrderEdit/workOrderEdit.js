@@ -32,8 +32,8 @@ function getWorkOrderInfo(){
 		if(data.length > 0){
 			var domObj = [];
 			contractId = data[0].contractId;
-			wcardTypeCode = data[0].wcardTypeCode;
 			contractNumber = data[0].contractNumber;
+			wcardTypeCode = data[0].wcardTypeCode;
 			if(wcardTypeCode == 1){
 				wcardType = "收入-租线类";
 			}else if(wcardTypeCode == 2){
@@ -97,8 +97,8 @@ function getContentValue(isSubmit) {
 		if(!App.isExitsFunction("getValue_" + targetObj)){
 			return true;
 		};
-		var itemFun = eval('getValue_' + targetObj);
-		var itemValue = itemFun(isSubmit);
+		var itemFn = eval('getValue_' + targetObj);
+		var itemValue = itemFn(isSubmit);
 		if(itemValue){
 			submitData[targetObj] = itemValue;
 		}else{
@@ -118,10 +118,18 @@ function saveContent(){
 		if(submitData){
 			console.log(submitData);
 			var postData = JSON.stringify(submitData);
-			//App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
 			function successCallback(result) {
 				var data = result.data;
-				console.log(data);
+				if(data.length > 0){
+					$.each(data, function(k,v) {
+						if(!App.isExitsFunction("setPageId_" + k)){
+							return true;
+						};
+						var itemCallbackFn = eval('getValue_' + k);
+						itemCallbackFn(v);
+					});
+				}
 			}
 			
 		}

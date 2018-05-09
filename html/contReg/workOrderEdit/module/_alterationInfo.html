@@ -7,6 +7,7 @@
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row fieldsetForm15" id="adjustSpendForm">
+			<input type="hidden" name="adjustId" id="adjustId" value="100000" />
 			<div class="col-sm-12 form-group">
 				<label for="protocolAdjust" class="control-label">协议变更条款：</label>
 				<div class="valiParent">
@@ -61,13 +62,19 @@
 </div>
 <script type="text/javascript">
 	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_adjustSpendId(value){
+		$("#adjustId").val(value);
+	}
+	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
 	function getValue_adjustSpend(isSubmit){
 		var adjustSpendData = App.getFormValues($("#adjustSpendForm"));
 		adjustSpendData.wcardId = wcardId;
-		adjustSpendData.adjustId = 100000;
+		adjustSpendData.contractNumber = contractNumber;
 		return adjustSpendData;
 	}
 	

@@ -72,11 +72,13 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_accountListId(){
+	function setPageId_accountListId(value){
+		var valueKey = 0;
 		$.each($("#accountListContent tr"), function(k,v) {
 			if(!$(v).hasClass("emptyTr")){
 				if($(v).data("id") != undefined){
-					console.log(v);
+					$(v).data("id",value[valueKey]);
+					valueKey++;
 				}
 			}
 		});
@@ -120,6 +122,7 @@
 					accountDataItem.accountType = 1;
 				};
 				accountDataItem.wcardId = wcardId;
+				accountDataItem.contractNumber = contractNumber;
 				accountDataItem.accountId = $(v).data("id");
 				accountDataItem.accountName = $(v).find(".accountName").val();
 				accountDataItem.accountNumber = $(v).find(".accountNumber").val();

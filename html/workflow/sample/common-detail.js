@@ -103,6 +103,7 @@ function businessPush(){
 	}
 	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
 	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
+	App.applyCandidateTask(serverPath,flowParam);
 	modal_passBybuss(flowParam);
 	
 }

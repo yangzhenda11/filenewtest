@@ -1,6 +1,9 @@
 var serverPath = parent.globalConfig.serverPath;
 
 $(function() {
+    // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
+    //     App.getCommonModal("staff", "#searchStaffName", "orgName", ["staffId", "staffOid"]);
+    // });
     var cloudSwitch;
     //查询云门户开关参数
     App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
@@ -47,7 +50,7 @@ $(function() {
             "columns": [ // 对应列
                 {
                     "data": null,
-                    className: "text-right",
+                    className: "text-center",
                     title: "操作",
                     render: function(a, b, c, d) {
                         if (c) {
@@ -1309,12 +1312,7 @@ function addStaffOrg(editType) {
  * 跳转角色复制
  */
 function goStaffOrgRoleCopy(staffOrgId) {
-    debugger;
-    selectStaff('staffOrgRoleCopy', parent.globalConfig.curCompanyId, parent.globalConfig.curStaffOrgId, callBackFun, '', 2);
-
-    function callBackFun(orgId, orgCode, orgName) {
-        alert('hhh');
-    }
+    App.getCommonModal("staff", "#", "orgName", ["staffId", "staffOid"]);
 }
 
 function goDelStaffOrg(staffId, staffOrgId) {

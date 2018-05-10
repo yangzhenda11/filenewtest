@@ -1,115 +1,119 @@
 <style type="text/css">
-	.agentStaffTree{
-		overflow: auto;
-	}
+    .agentStaffTree {
+        overflow: auto;
+    }
 </style>
 <div class="modal-dialog" role="document">
-	<div class="modal-content">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title" id="myModalLabel">选择承办人</h4>
-		</div>
-		<div class="modal-body" style="padding-left: 10%;padding-top: 10px;">
-			<ul id="agentStaffTree" class="ztree agentStaffTree"></ul>
-		</div>
-		<div class="modal-footer">
-			<button type="button" onclick="checkAgent()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
-			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
-		</div>
-	</div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">选择承办人</h4>
+        </div>
+        <div class="modal-body" style="padding-left: 10%;padding-top: 10px;">
+            <ul id="agentStaffTree" class="ztree agentStaffTree"></ul>
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="checkAgent()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+            <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-	//系统全局变量获取
-	var config = top.globalConfig;
-	var serverPath = config.serverPath;
-	//全局变量
-	var agentStaffTree = null;
-	var textValue = null;
-	var setKey = null;
-	var dom = null;
-	//设置树的高度
-	var documentHeight = $(".page-content").height() - 190;
-	$("#agentStaffTree").css("height",documentHeight);	
-	//生成树
-	function initAgentStaffTree(inputDom,value,key,ajaxData) {
-		textValue = value;
-		setKey = key;
-		dom = inputDom;
-		$("#commomModal").modal("show");
-		//配置
-		var treeSetting = {
-			view: {
-				selectedMulti: false,
-				dblClickExpand: false
-			},
-			data: {
-				simpleData: {
-					enable: true,
-					idKey: "id",
-					pIdKey: "parentId"
-				},
-				key: {
-					name: "name"
-				}
-			},
-			callback: {
-				onDblClick: setInputInfo
-			}
-		};
-		//获取数据
-		App.formAjaxJson(serverPath + "contractType/listUndertaker", "post", JSON.stringify(ajaxData), successCallback);
+    //系统全局变量获取
+    var config = top.globalConfig;
+    var serverPath = config.serverPath;
+    //全局变量
+    var agentStaffTree = null;
+    var textValue = null;
+    var setKey = null;
+    var dom = null;
+    //设置树的高度
+    var documentHeight = $(".page-content").height() - 190;
+    $("#agentStaffTree").css("height", documentHeight);
+    //生成树
+    function initAgentStaffTree(inputDom, value, key, ajaxData) {
+        textValue = value;
+        setKey = key;
+        dom = inputDom;
+        $("#commomModal").modal("show");
+        //配置
+        var treeSetting = {
+            view: {
+                selectedMulti: false,
+                dblClickExpand: false
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "parentId"
+                },
+                key: {
+                    name: "name"
+                }
+            },
+            callback: {
+                onDblClick: setInputInfo
+            }
+        };
+        //获取数据
+        App.formAjaxJson(serverPath + "contractType/listUndertaker", "post", JSON.stringify(ajaxData), successCallback);
 
-		function successCallback(result) {
-			var data = result.data;
-			if(data != "") {
-				if(agentStaffTree){
-					agentStaffTree.destroy();
-				}
-				agentStaffTree = $.fn.zTree.init($("#agentStaffTree"), treeSetting, data);
-				// 默认展开第一层
-			    var nodes = agentStaffTree.getNodes();
-				for (var i = 0, l = nodes.length; i < l; i++) {
-			        agentStaffTree.expandNode(nodes[i]);
-			    }
-			}else{
-				layer.msg("暂无数据，请稍后重试");
-			}
-		}
-		//双击事件 
-		function setInputInfo(event, treeId, treeNode) {
-			setInputValue(treeNode);
-		}
-	}
-	//确定按钮点击
-	function checkAgent(){
-		var treeNode = agentStaffTree.getSelectedNodes()[0];
-		if(treeNode == undefined){
-			layer.msg("请选择人员",{icon:2})
-		}else{
-			setInputValue(treeNode);
-		}
-	}
-	/*
-	 * 判断是否选的是人员
-	 * 设置input框的值setKey >> data-key
-	 */
-	function setInputValue(treeNode){
-		if(treeNode.orgType == ""){
-			if(setKey != undefined){
-				if($.isArray(setKey)){
-					$.each(setKey, function(k,v) {
-						$(dom).data(v,treeNode[v]);
-					});
-				}else{
-					$(dom).data(setKey,treeNode[setKey]);
-				}
-			};
-			$(dom).data("exactSearch",true);
-			$(dom).val(treeNode[textValue]);
-			$(dom).attr("title",treeNode[textValue]);
-			$("#commomModal").modal("hide");
-		}else{
-			layer.msg("请选择具体的人员",{icon:2})
-		}
-	}
+        function successCallback(result) {
+            var data = result.data;
+            if (data != "") {
+                if (agentStaffTree) {
+                    agentStaffTree.destroy();
+                }
+                agentStaffTree = $.fn.zTree.init($("#agentStaffTree"), treeSetting, data);
+                // 默认展开第一层
+                var nodes = agentStaffTree.getNodes();
+                for (var i = 0, l = nodes.length; i < l; i++) {
+                    agentStaffTree.expandNode(nodes[i]);
+                }
+            } else {
+                layer.msg("暂无数据，请稍后重试");
+            }
+        }
+        //双击事件 
+        function setInputInfo(event, treeId, treeNode) {
+            setInputValue(treeNode);
+        }
+    }
+    //确定按钮点击
+    function checkAgent() {
+        var treeNode = agentStaffTree.getSelectedNodes()[0];
+        if (treeNode == undefined) {
+            layer.msg("请选择人员", {
+                icon: 2
+            })
+        } else {
+            setInputValue(treeNode);
+        }
+    }
+    /*
+     * 判断是否选的是人员
+     * 设置input框的值setKey >> data-key
+     */
+    function setInputValue(treeNode) {
+        if (treeNode.orgType == "") {
+            if (setKey != undefined) {
+                if ($.isArray(setKey)) {
+                    $.each(setKey, function(k, v) {
+                        $(dom).data(v, treeNode[v]);
+                    });
+                } else {
+                    $(dom).data(setKey, treeNode[setKey]);
+                }
+            };
+            $(dom).data("exactSearch", true);
+            $(dom).val(treeNode[textValue]);
+            $(dom).attr("title", treeNode[textValue]);
+            $("#commomModal").modal("hide");
+        } else {
+            layer.msg("请选择具体的人员", {
+                icon: 2
+            })
+        }
+    }
 </script>

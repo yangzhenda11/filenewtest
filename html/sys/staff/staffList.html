@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
@@ -20,11 +20,11 @@
     <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
     <link href="../common/treeDropDown.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-	<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 </head>
 
 <body>
-	<input type="hidden" name="selectedStaffOrgId" id="selectedStaffOrgId">
+    <input type="hidden" name="selectedStaffOrgId" id="selectedStaffOrgId">
     <div id="divStaffList" class="page-content">
         <div class="portlet">
             <div class="portlet-title">
@@ -39,7 +39,7 @@
                             <div class="col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">人员姓名</span>
-                                    <input type="text" name="staffName" autocomplete="off" class="form-control" placeholder="">
+                                    <input type="text" id="searchStaffName" name="staffName" autocomplete="off" class="form-control" placeholder="">
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -78,8 +78,7 @@
                             <div class="col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">部门名称</span>
-                                    <input type="text" name="orgName" onclick="getStaffSearch_OrgTree(this);" onfocus="javascript:this.blur();"
-                                    	autocomplete="off" class="form-control" placeholder="">
+                                    <input type="text" name="orgName" onclick="getStaffSearch_OrgTree(this);" onfocus="javascript:this.blur();" autocomplete="off" class="form-control" placeholder="">
                                     <input type="hidden" name="orgId">
                                 </div>
                             </div>
@@ -91,8 +90,8 @@
                     </form>
                 </div>
                 <div class="toolbars" id="addBtn" style="display: none">
-					<button type="button" class="btn red" onclick="addStaffModal();"><i class="iconfont icon-add"></i>  新增</button>
-				</div>
+                    <button type="button" class="btn red" onclick="addStaffModal();"><i class="iconfont icon-add"></i>  新增</button>
+                </div>
                 <table id="staffSearchTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
             </div>
         </div>
@@ -107,7 +106,8 @@
         </div>
     </div>
     <!--modal-->
-	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+    <div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     <!--[if lt IE 9]>
 	  	<script src="../../../static/plugins/html5shiv.min.js"></script>
 	  	<script src="../../../static/plugins/respond.min.js"></script>
@@ -127,7 +127,7 @@
     <!--业务依赖-->
     <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
     <script src="../../../static/plugins/datatables/ellipsis.js"></script>
     <!--<script src="../../../static/plugins/date-format.js" type="text/javascript" charset="utf-8"></script>-->

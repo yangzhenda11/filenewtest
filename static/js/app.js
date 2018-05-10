@@ -97,8 +97,8 @@ var App = function() {
                 
                 App.destroySlimScroll(portletBody.find('.full-height-content-body')); // destroy slimscroll 
                 
-                height = height - target.children('.portlet-title').outerHeight(true) - parseInt(target.children('.portlet-body').css('padding-top'))
-                - parseInt(target.children('.portlet-body').css('padding-bottom')) - 5;
+                    height = height - target.children('.portlet-title').outerHeight(true) - parseInt(target.children('.portlet-body').css('padding-top')) -
+                        parseInt(target.children('.portlet-body').css('padding-bottom')) - 5;
                 var portletFooter = target.children('.portlet-footer');
                 
                 if(portletFooter.length > 0){
@@ -791,8 +791,7 @@ var App = function() {
 		        if (typeof (eval(funcName)) == "function") {  
 		            return true;  
 		        }  
-		    } catch (e) {  
-		    }  
+            } catch (e) {}
 		    return false;  
 		},
 		/**
@@ -983,7 +982,9 @@ var App = function() {
 		 */
 		setFormValues:function(el, formData, valueCallback){
             if(formData != undefined && formData != null){
-                var obj = null,sel = null,objType = null;
+                var obj = null,
+                    sel = null,
+                    objType = null;
 				$(el).find(".form-control[name]").val('');	//将有name的.form-control设置为空
 				if(valueCallback != undefined && valueCallback != null) {
 					for(var b in valueCallback) {
@@ -1160,6 +1161,7 @@ var App = function() {
 			    	var postData = ajaxObj.data;
 			    }
 			    App.formAjaxJson(ajaxObj.url,ajaxObj.type,postData,succssCallback,null,null,null,ajaxObj.async);
+
 			    function succssCallback(result){
 			    	var data = result.data;
 			        $.each(data, function (i, item) {
@@ -1304,6 +1306,10 @@ var App = function() {
         		$("#commomModal").load("/static/data/_contractDataSearch.html?" + App.timestamp(),function(){
 					initContractDataSearch(dom, value, setkey, ajaxData);
 				})
+            } else if (type == "staff") {
+                $("#commomModal").load("/static/data/_staff.html?" + App.timestamp(), function() {
+                    initStaffTree(dom, value, setkey, ajaxData);
+                })
         	}else if(type == "agentStaff"){
         		$("#commomModal").load("/static/data/_agentStaff.html?" + App.timestamp(),function(){
 					initAgentStaffTree(dom, value, setkey, ajaxData);
@@ -1482,15 +1488,15 @@ var App = function() {
             options = $.extend(true,{},options);
             var html = '';
             if(options.animate){
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '">'
-                + '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
+                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '">' +
+                    '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
             }else if(options.iconOnly){
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
             }else if(options.textOnly){
                 html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
             }else{
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath()
-                + 'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
+                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() +
+                    'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
             }
             
             if(options.target){ // element blocking
@@ -1553,8 +1559,8 @@ var App = function() {
             }else{
                 $('.page-loading').remove();
                 $('body').append(
-                '<div class="page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...')
-                + '</span></div>');
+                    '<div class="page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') +
+                    '</span></div>');
             }
         },
         
@@ -1579,9 +1585,9 @@ var App = function() {
             
             var id = App.getUniqueID("App_alert");
             
-            var html = '<div id="' + id + '" class="custom-alerts alert alert-' + options.type + ' fade in">'
-            + (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '')
-            + (options.icon !== "" ? '<i class="fa-lg fa fa-' + options.icon + '"></i>  ' : '') + options.message + '</div>';
+            var html = '<div id="' + id + '" class="custom-alerts alert alert-' + options.type + ' fade in">' +
+                (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '') +
+                (options.icon !== "" ? '<i class="fa-lg fa fa-' + options.icon + '"></i>  ' : '') + options.message + '</div>';
             
             if(options.reset){
                 $('.custom-alerts').remove();
@@ -1637,7 +1643,8 @@ var App = function() {
         
         // public function to get a paremeter by name from URL
         getURLParameter:function(paramName){
-            var searchString = window.location.search.substring(1),i,val,params = searchString.split("&");
+            var searchString = window.location.search.substring(1),
+                i, val, params = searchString.split("&");
             
             for(i = 0;i < params.length;i++){
                 val = params[i].split("=");
@@ -1661,7 +1668,8 @@ var App = function() {
         // To get the correct viewport width based on
         // http://andylangton.co.uk/articles/javascript/get-viewport-size-javascript/
         getViewPort:function(){
-            var e = window,a = 'inner';
+            var e = window,
+                a = 'inner';
             if( !('innerWidth' in window)){
                 a = 'client';
                 e = document.documentElement || document.body;
@@ -1831,12 +1839,10 @@ var App = function() {
             });
             
             // options.drawCallback
-            var drawCallback = function(){
-            };
+            var drawCallback = function() {};
             if(options.drawCallback){
                 drawCallback = options.drawCallback
-            }
-            ;
+            };
             
             options.drawCallback = function(){
                 drawCallback();
@@ -2092,17 +2098,13 @@ var App = function() {
             var minC =diffValue/minute;
             if(monthC>=1){
                 result="" + parseInt(monthC) + "月前";
-            }
-            else if(weekC>=1){
+            } else if (weekC >= 1) {
                 result="" + parseInt(weekC) + "周前";
-            }
-            else if(dayC>=1){
+            } else if (dayC >= 1) {
                 result=""+ parseInt(dayC) +"天前";
-            }
-            else if(hourC>=1){
+            } else if (hourC >= 1) {
                 result=""+ parseInt(hourC) +"小时前";
-            }
-            else if(minC>=1){
+            } else if (minC >= 1) {
                 result=""+ parseInt(minC) +"分钟前";
             }else
             result="刚刚";
@@ -2265,6 +2267,7 @@ var App = function() {
 jQuery(document).ready(function() {
 	App.init();
 });
+
 function isInArray(arr,val) { 
 	var testStr="," + arr.join(",") + ","; 
 	return testStr.indexOf("," + val + ",") != -1; 
@@ -2299,6 +2302,7 @@ function loadStart(){
 //	NProgress.start();
 	layerIndex = layer.msg('数据处理中,请稍后...', {icon: 16,shade: 0.01,time:false});
 }
+
 function loadEnd(){
 	layer.close(layerIndex);
 }

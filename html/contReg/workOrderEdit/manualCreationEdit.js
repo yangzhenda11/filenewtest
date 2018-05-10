@@ -93,7 +93,7 @@ function createWorkOrder(){
         data:{"contractNumber":contractNumber},
         success:function(data) {
        				if(data.status=='1'){
-       					alert(data.message);
+       					alert("工单"+data.message+"创建成功！");
        				}else if(data.status=='0'){
        					alert(data.message);
        				}

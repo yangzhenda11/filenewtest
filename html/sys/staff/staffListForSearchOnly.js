@@ -21,9 +21,9 @@ $(function() {
                     d.sysOrgId = parent.globalConfig.curCompanyId;
                     d.staffName = $("input[name='staffName']", $('#searchOnlyStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchOnlyStaffForm')).val();
-                    var orgId= $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
-                    if(null!=orgId && ''!=orgId){
-                    	d.sysOrgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
+                    var orgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
+                    if (null != orgId && '' != orgId) {
+                        d.sysOrgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
                     }
                     d.staffStatus = $("select[name='staffStatus']", $('#searchOnlyStaffForm')).val();
                     d.mobilPhone = $("input[name='mobilPhone']", $('#searchOnlyStaffForm')).val();
@@ -44,7 +44,7 @@ $(function() {
             //     [3, "asc"]
             // ],
             "columns": [ // 对应列
-                
+
                 {
                     "data": null,
                     "title": "人员姓名",
@@ -59,7 +59,7 @@ $(function() {
                     "title": "岗位类别",
                     className: "text-center",
                     render: function(a, b, c, d) {
-                        return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗':'借调' ) ;
+                        return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
                     }
                 },
                 {
@@ -83,7 +83,7 @@ $(function() {
                 }
             ],
             "columnDefs": [{ // 所有列默认值
-                    render: $.fn.dataTable.render.ellipsis(22, true),
+                    //render: $.fn.dataTable.render.ellipsis(22, true),
                     "targets": "_all",
                     "defaultContent": ''
                 },
@@ -138,7 +138,7 @@ var orgTypeSet = {
 function showStaffDetail(staffId) {
     //var curTabstaffKind = $('#curTabstaffKind').val();
     //debugger;
-    $('#infoModal').load("../staff/staffDetailModal.html", function() {
+    $('#infoModal').load("staffDetailModal.html", function() {
         //$("#staffDetailId").val(staffId);
 
         $('#infoModal').modal({ show: true, backdrop: 'static' });
@@ -213,12 +213,12 @@ function showStaffDetail(staffId) {
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
-            	if(data){
-            		return App.formatDateTime(new Date(data), "yyyy-mm-dd");
-            	}else{
-            		return '';
-            	}
-                    //  return getFormatDate(new Date(data), "yyyy-MM-dd");
+                if (data) {
+                    return App.formatDateTime(new Date(data), "yyyy-mm-dd");
+                } else {
+                    return '';
+                }
+                //  return getFormatDate(new Date(data), "yyyy-MM-dd");
 
             }
 
@@ -259,11 +259,11 @@ function searchPersonnel(resetPaging) {
     }
 }
 
-function getStaffSearch_OrgTree(obj){
-	selectOrgTree('staffSearch_OrgTree',obj,parent.globalConfig.curCompanyId,getStaffSearch_OrgTreeId,'','1','400','300');
+function getStaffSearch_OrgTree(obj) {
+    selectOrgTree('staffSearch_OrgTree', obj, parent.globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
 }
 
-function getStaffSearch_OrgTreeId(orgId, orgName, orgCode){
-	$("input[name='orgName']",$('#searchOnlyStaffForm')).val(orgName);
-	$("input[name='orgId']",$('#searchOnlyStaffForm')).val(orgId);
+function getStaffSearch_OrgTreeId(orgId, orgName, orgCode) {
+    $("input[name='orgName']", $('#searchOnlyStaffForm')).val(orgName);
+    $("input[name='orgId']", $('#searchOnlyStaffForm')).val(orgId);
 }

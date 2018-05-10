@@ -5,7 +5,7 @@
 			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
-	<div class="form-fieldset-body" id="promiseSpendForm">
+	<div class="form-fieldset-body" id="promiseIncomeForm">
 		<div class="row fieldsetForm15">
 			<input type="hidden" name="promiseId" id="promiseId" value="100000" />
 			<div class="col-sm-12 form-group">
@@ -33,36 +33,32 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_promiseSpendId(value){
+	function setPageId_promiseIncomeId(value){
 		$("#promiseId").val(value);
 	}
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_promiseSpend(isSubmit){
-		var promiseSpendData = App.getFormValues($("#promiseSpendForm"));
-		promiseSpendData.wcardId = wcardId;
-		promiseSpendData.contractNumber = contractNumber;
-		return promiseSpendData;
+	function getValue_promiseIncome(isSubmit){
+		var promiseIncomeData = App.getFormValues($("#promiseIncomeForm"));
+		promiseIncomeData.wcardId = wcardId;
+		promiseIncomeData.contractNumber = contractNumber;
+		return promiseIncomeData;
 	}
 	
 	//获取其他财务约定
-	getPromiseSpend();
+	getPromiseIncome();
 	/*
 	 * 获取其他财务约定
 	 */
-	function getPromiseSpend(){
+	function getPromiseIncome(){
 		var url = serverPath + "contractOrderEditorController/getPromiseIncomeId";
 		var postData = JSON.stringify({wcardId:wcardId});
-		App.formAjaxJson(url, "post", postData, successCallback);
+		//App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			App.setFormValues("#promiseSpendForm",data);
+			App.setFormValues("#promiseIncomeForm",data);
 		}
 	}
-	//增加不能为空的验证
-//	addNotEmptyValidatorField("insurancePromise","施工保险条款不能为空");
-//	addNotEmptyValidatorField("interestPromise","延期付款利息不能为空");
-//	addNotEmptyValidatorField("securityPromise","违约保证金押金约定不能为空");
 </script>

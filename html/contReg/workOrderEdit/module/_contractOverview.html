@@ -202,7 +202,7 @@
 		function successCallback(result) {
 			var data = result.data;
 			var valueCallback = {'executeStatus':function(value){return performanceStateInfo[value]}}
-			App.setFormValues("#contractOverviewForm",data);
+			App.setFormValues("#contractOverviewForm",data,valueCallback);
 			if(data.isFixed == 1){
 				$("#isNotFixedOver").removeClass("hidden");
 			};

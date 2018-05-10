@@ -1,31 +1,32 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-		<span><i class="iconfont icon-layers"></i> 合同总览</span>
+		<span><i class="iconfont icon-layers"></i> 约定收款信息</span>
 		<div class="form-fieldset-tools">
 			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row defaultFieldsetForm" id="contractOverviewForm">
+		<div class="row defaultFieldsetForm" id="appointReceiptForm">
+			<input type="hidden" name="payId" id="appointReceiptPayId" value="100000" />
 			<div class="col-sm-6 form-group">
-				<label for="contractNumber" class="control-label">合同编号：</label>
+				<label for="payType" class="control-label">支付方式：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractNumber" name="contractNumber" disabled="disabled" />
+					<select id="appointPayType" data-allowSearch='5' name="payType" class="form-control"></select>
+				</div>
+			</div>
+			<div class="col-sm-3 form-group">
+				<input type="text" class="form-control" id="appointReceiptTypeOther" disabled="disabled" name="typeOther" />
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="payFrequency" class="control-label">约定收款期限：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="payFrequency" name="payFrequency" />
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<input type="text" class="form-control" id="contractNumber" name="contractNumber" />
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="contractNumber" class="control-label">合同编号：</label>
+				<label for="payCondition" class="control-label">租费结算条件：</label>
 				<div class="valiParent">
-					<input type="text" class="form-control" id="contractNumber" name="contractNumber" disabled="disabled" />
-				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="typeFullname" class="control-label">合同类型：</label>
-				<div class="valiParent">
-					<input type="text" class="form-control" id="typeFullname" name="typeFullname" disabled="disabled" />
+					<input type="text" class="form-control" id="payCondition" name="payCondition" />
 				</div>
 			</div>
 		</div>
@@ -35,56 +36,53 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_Id(value){
-		$("#adjustId").val(value);
+	function setPageId_incomePayId(value){
+		$("#appointReceiptPayId").val(value);
 	}
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_(isSubmit){
-		var adjustSpendData = App.getFormValues($("#"));
-		adjustSpendData.wcardId = wcardId;
-		adjustSpendData.contractNumber = contractNumber;
-		return adjustSpendData;
+	function getValue_incomePay(isSubmit){
+		var incomePaData = App.getFormValues($("#appointReceiptForm"));
+		incomePaData.wcardId = wcardId;
+		incomePaData.contractNumber = contractNumber;
+		return incomePaData;
 	}
 	//获取字典值
-	getContractOverviewDict();
-	//获取合同基本信息
-	getContractOverInfo();
-	
-	var ticketStateType = new Object();
-	var performanceState = new Object();
+	var ajaxObj = {
+    	"url" :  serverPath + "dicts/listChildrenByDicttId",
+    	"type" : "post",
+    	"data" : {"dictId": 9035},
+    	"async" : false
+    }
+    App.initAjaxSelect2("#appointPayType",ajaxObj,"dictValue","dictLabel","请选择支付方式");
+	//获取约定收款信息
+	getAppointReceiptInfo();
 	/*
-	 * 获取字典值
-	 * 合同工单状态   ticketStateType
-	 * 合同履行现状	performanceState
+	 * 获取约定收款信息
 	 */
-	function getContractOverviewDict() {
-		App.getDictInfo(9040,getTicketStateType);
-		function getTicketStateType(result){
-			ticketStateType = result;
-		}
-		App.getDictInfo(9010,getPerformanceState);
-		function getPerformanceState(result){
-			performanceState = result;
-		}
-	}
-	/*
-	 * 获取合同基本信息
-	 */
-	function getContractOverInfo() {
-		var performanceStateInfo = performanceState;
-		var ticketStateTypeInfo = ticketStateType;
+	function getAppointReceiptInfo() {
 		var postData = JSON.stringify({wcardId:wcardId});
-		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
+		var url = serverPath + "contractOrderEditorController/getIncomePayId";
+		//App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			var valueCallback = {'executeStatus':function(value){return performanceStateInfo[value]}}
-			
+			if(data){
+				$("#appointPayType").val(data.payType).trigger('change');
+				$("#appointReceiptTypeOther").val(data.typeOther);
+				$("#payFrequency").val(data.payFrequency);
+				$("#payCondition").val(data.payCondition);
+			}
 		}
 	}
-	
-	
-   	
+	$("#appointPayType").on("change",function(){
+		var value = $(this).val();
+		if(value == 903540){
+			$('#appointReceiptTypeOther').attr("disabled",false);
+		}else{
+			$("#appointReceiptTypeOther").val("");
+			$("#appointReceiptTypeOther").attr("disabled",true)
+		}
+	})
 </script>

@@ -981,7 +981,6 @@ var App = function() {
 		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
 		 */
 		setFormValues:function(el, formData, valueCallback){
-			console.log(formData);
             if(formData != undefined && formData != null){
                 var obj = null,
                     sel = null,

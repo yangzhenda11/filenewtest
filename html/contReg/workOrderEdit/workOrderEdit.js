@@ -48,6 +48,10 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
+//			domObj.unshift({key:"test3",value:"module/_otherFinanceIncomeInfo.html"}) 
+//			domObj.unshift({key:"test4",value:"module/_alterationIncomeInfo.html"}) 
+//			domObj.unshift({key:"test1",value:"module/_lineChargesList.html"}) 
+//			domObj.unshift({key:"test2",value:"module/_appointReceiptInfo.html"}) 
 			setDomContent(domObj);
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})

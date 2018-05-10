@@ -121,15 +121,7 @@ function saveContent(){
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
 			function successCallback(result) {
 				var data = result.data;
-				if(data.length > 0){
-					$.each(data, function(k,v) {
-						if(!App.isExitsFunction("setPageId_" + k)){
-							return true;
-						};
-						var itemCallbackFn = eval('getValue_' + k);
-						itemCallbackFn(v);
-					});
-				}
+				setPageIdCallback(data);
 			}
 			
 		}
@@ -157,7 +149,21 @@ function validate() {
 		}
 	});
 }
-
+/*
+ * 保存或提交后更改各模块内对于ID值得callback函数
+ * 页面内需声明"setPageId_"+约定各页面返回的ID值，  （约定为domain的name值即保存时的各模块key+ID）
+ */
+function setPageIdCallback(data){
+	if(data.length > 0){
+		$.each(data, function(k,v) {
+			if(!App.isExitsFunction("setPageId_" + k)){
+				return true;
+			};
+			var itemCallbackFn = eval('setPageId_' + k);
+			itemCallbackFn(v);
+		});
+	}
+}
 /*
  * 不能为空的验证信息
  */

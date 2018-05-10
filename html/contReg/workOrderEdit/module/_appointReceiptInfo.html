@@ -1,0 +1,90 @@
+<div class="form-fieldset">
+	<div class="form-fieldset-title">
+		<span><i class="iconfont icon-layers"></i> 合同总览</span>
+		<div class="form-fieldset-tools">
+			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+	<div class="form-fieldset-body">
+		<div class="row defaultFieldsetForm" id="contractOverviewForm">
+			<div class="col-sm-6 form-group">
+				<label for="contractNumber" class="control-label">合同编号：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="contractNumber" name="contractNumber" disabled="disabled" />
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<input type="text" class="form-control" id="contractNumber" name="contractNumber" />
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="contractNumber" class="control-label">合同编号：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="contractNumber" name="contractNumber" disabled="disabled" />
+				</div>
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="typeFullname" class="control-label">合同类型：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="typeFullname" name="typeFullname" disabled="disabled" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_Id(value){
+		$("#adjustId").val(value);
+	}
+	/*
+	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
+	 */
+	function getValue_(isSubmit){
+		var adjustSpendData = App.getFormValues($("#"));
+		adjustSpendData.wcardId = wcardId;
+		adjustSpendData.contractNumber = contractNumber;
+		return adjustSpendData;
+	}
+	//获取字典值
+	getContractOverviewDict();
+	//获取合同基本信息
+	getContractOverInfo();
+	
+	var ticketStateType = new Object();
+	var performanceState = new Object();
+	/*
+	 * 获取字典值
+	 * 合同工单状态   ticketStateType
+	 * 合同履行现状	performanceState
+	 */
+	function getContractOverviewDict() {
+		App.getDictInfo(9040,getTicketStateType);
+		function getTicketStateType(result){
+			ticketStateType = result;
+		}
+		App.getDictInfo(9010,getPerformanceState);
+		function getPerformanceState(result){
+			performanceState = result;
+		}
+	}
+	/*
+	 * 获取合同基本信息
+	 */
+	function getContractOverInfo() {
+		var performanceStateInfo = performanceState;
+		var ticketStateTypeInfo = ticketStateType;
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			var valueCallback = {'executeStatus':function(value){return performanceStateInfo[value]}}
+			
+		}
+	}
+	
+	
+   	
+</script>

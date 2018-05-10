@@ -91,7 +91,9 @@
 		var accountDataList = [];
 		accountDataList = returnAccoutTableInfor("payeeInfoTbody",accountDataList);
 		accountDataList = returnAccoutTableInfor("payerInfoTbody",accountDataList);
-		if(isSubmit){
+		//当合同总览中"固定金额"为"是"时，加校验"至少有一条收款方信息";
+		var isFixedValue = $("input[name='isFixed']:checked").val();
+		if(isSubmit && isFixedValue == 1){
 			var havePayeeInfo = false;
 			$.each(accountDataList, function(k,v) {
 				if(v.accountType == 1){

@@ -59,7 +59,6 @@
 	 * 获取合同正文扫描件
 	 */
 	function getContarctScanCopyContractText(){
-		//var contractId = 117;		//测试
 		var url = serverPath + 'contractScanQuery/listContractText?id=' + contractId;
 		App.formAjaxJson(url, "post", null, successCallback);
 		function successCallback(result) {
@@ -83,7 +82,6 @@
 	 * 获取合同附件扫描件
 	 */
 	function getContarctScanCopyContractAttachment(){
-		//var contractId = 117;		//测试
 		var url = serverPath + 'contractScanQuery/listContractAttachment?id=' + contractId;
 		App.formAjaxJson(url, "post", null, successCallback);
 		function successCallback(result) {

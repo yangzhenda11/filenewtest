@@ -982,6 +982,7 @@ var App = function() {
 		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
 		 */
 		setFormValues:function(el, formData, valueCallback){
+			console.log(formData);
             if(formData != undefined && formData != null){
                 var obj = null,sel = null,objType = null;
 				$(el).find(".form-control[name]").val('');	//将有name的.form-control设置为空
@@ -1015,6 +1016,9 @@ var App = function() {
          * 设置checkbox或者radio选中
          */
         setChecked: function(name, value) {
+        	if(value == null){
+        		return;
+        	};
 			var cks = document.getElementsByName(name);
 			var arr = value.toString().split(',');
 			for(var i = 0; i < cks.length; i++) {	

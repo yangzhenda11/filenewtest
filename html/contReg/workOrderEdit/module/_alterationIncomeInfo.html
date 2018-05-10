@@ -40,19 +40,25 @@
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="knowledgeProperty" class="control-label">知识产权：</label>
-				<div class="valiParent">
-					<textarea id="knowledgeProperty" name="knowledgeProperty" class="form-control" maxlength="1000"></textarea>
-				</div>
-			</div>
-			<div class="col-sm-12 form-group">
 				<label for="terminatePromise" class="control-label">提前终止/合同解除：</label>
 				<div class="valiParent">
 					<textarea id="terminatePromise" name="terminatePromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="bugPromise" class="control-label">保修条款：</label>
+				<label for="qualityPromise" class="control-label">质量保障条款：</label>
+				<div class="valiParent">
+					<textarea id="qualityPromise" name="qualityPromise" class="form-control" maxlength="1000"></textarea>
+				</div>
+			</div>
+			<div class="col-sm-12 form-group">
+				<label for="supportPromise" class="control-label">技术支持条款：</label>
+				<div class="valiParent">
+					<textarea id="supportPromise" name="supportPromise" class="form-control" maxlength="1000"></textarea>
+				</div>
+			</div>
+			<div class="col-sm-12 form-group">
+				<label for="bugPromise" class="control-label">故障排除条款：</label>
 				<div class="valiParent">
 					<textarea id="bugPromise" name="bugPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
@@ -64,15 +70,15 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_adjustSpendId(value){
+	function setPageId_Id(value){
 		$("#adjustId").val(value);
 	}
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_adjustSpend(isSubmit){
-		var adjustSpendData = App.getFormValues($("#adjustSpendForm"));
+	function getValue_(isSubmit){
+		var adjustSpendData = App.getFormValues($("#"));
 		adjustSpendData.wcardId = wcardId;
 		adjustSpendData.contractNumber = contractNumber;
 		return adjustSpendData;
@@ -84,7 +90,7 @@
 	 * 获取变更管理、风险、争议、关闭、评价
 	 */
 	function getAdjustSpend(){
-		var url = serverPath + "contractOrderEditorController/getAdjustSpendId";
+		var url = serverPath + "contractOrderEditorController/getAdjustIncomeId";
 		var postData = JSON.stringify({wcardId:wcardId});
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
@@ -92,14 +98,4 @@
 			App.setFormValues("#adjustSpendForm",data);
 		}
 	}
-	//增加不能为空的验证
-//	addNotEmptyValidatorField("protocolAdjust","协议变更条款不能为空");
-//	addNotEmptyValidatorField("demandAdd","新增需求条款不能为空");
-//	addNotEmptyValidatorField("demandAdjust","需求变更条款不能为空");
-//	addNotEmptyValidatorField("penaltyPromise","违约金/赔偿责任约定不能为空");
-//	addNotEmptyValidatorField("lawTerm","法律适用条款不能为空");
-//	addNotEmptyValidatorField("knowledgeProperty","知识产权不能为空");
-//	addNotEmptyValidatorField("terminatePromise","提前终止/合同解除不能为空");
-//	addNotEmptyValidatorField("bugPromise","保修条款不能为空");
-   	
 </script>

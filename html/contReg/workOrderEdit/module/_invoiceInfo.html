@@ -57,7 +57,7 @@
 			if(!$(v).hasClass("emptyTr")){
 				var invoiceDataItem = {};
 				invoiceDataItem.wcardId = wcardId;
-				invoiceDataItem.contractNumber = contractNumber;-
+				invoiceDataItem.contractNumber = contractNumber;
 				invoiceDataItem.invoiceId = $(v).data("id");
 				invoiceDataItem.invoiceTitle = $(v).find(".invoiceTitleName").val();
 				invoiceDataItem.invoiceType = $(v).find(".invoiceTypeName").val();
@@ -73,7 +73,6 @@
 	getInvoiceDict();
 	//获取开票信息
 	getInvoiceInfo();
-	
 	
 	/*
 	 * 获取开票信息字典值
@@ -95,9 +94,35 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 
 		function successCallback(result) {
-			console.log(result);
-
-			//isCreateInvoiceTrLength = $("#invoiceTbody").find("tr").length;
+			var data = result.data;
+			if(data.length > 0){
+				if($("#invoiceTbody .emptyTr")[0] != undefined){
+					$("#invoiceTbody .emptyTr").remove();
+				};
+				isCreateInvoiceTrLength = data.length;
+				var selectHtml = "<option value=''>请选择</option>";
+				$.each(invoiceType, function(k,v) {
+					selectHtml += "<option value='"+ k +"'>"+ v +"</option>";
+				});
+				for(var i = 0; i < data.length; i++){
+					var invoiceTitleName = "invoiceTitle"+i;
+					var invoiceTypeName = "invoiceType"+i;
+					var appendHtml = "<tr data-id='"+ data[i].invoiceId +"'>"+
+										"<td><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
+										"<td class='orderNumber'></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ data[i].invoiceTitle +"' /></div></td>"+
+										"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"' >"+ selectHtml +"</select></div></td>"+
+										"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+									"</tr>";
+					$("#invoiceTbody").append(appendHtml);
+					App.initFormSelect2("."+invoiceTypeName);
+					$("select[name='"+invoiceTypeName+"']").val(data[i].invoiceType).trigger("change");
+					addNotEmptyValidatorField(invoiceTitleName,"发票抬头不能为空");
+					addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
+					addInvoiceTableSort();
+					App.checkAllFn("#invocieCheckAll","invoiceCheck");
+				};
+			}
 		}
 	}
 	/*
@@ -109,7 +134,7 @@
 		}
 		isCreateInvoiceTrLength++;
 		var invoiceTitleName = "invoiceTitle" + isCreateInvoiceTrLength;
-		var invoiceTypeName = "invoiceTypeName" + isCreateInvoiceTrLength;
+		var invoiceTypeName = "invoiceType" + isCreateInvoiceTrLength;
 		var selectHtml = "<option value=''>请选择</option>";
 		$.each(invoiceType, function(k,v) {
 			selectHtml += "<option value='"+ k +"'>"+ v +"</option>";

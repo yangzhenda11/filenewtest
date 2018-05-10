@@ -119,7 +119,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6 form-group">
-				<label for="executeDeptName" class="control-label">是否固定金额：</label>
+				<label for="isFixed" class="control-label">是否固定金额：</label>
 				<div class="valiParent">
 					<div class="ui-radio-list ui-radio-inline">
 						<label class="ui-radio">
@@ -197,7 +197,7 @@
 	function getContractOverInfo() {
 		var performanceStateInfo = performanceState;
 		var ticketStateTypeInfo = ticketStateType;
-		var postData = JSON.stringify({wcardId:wcardId});
+		var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
 		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;

@@ -28,7 +28,19 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
         {"data": "contractNumber","title": "合同编号"},
         {"data": "wcardNumber","title": "工单编号"},
-        {"data": "wcardStatus","title": "工单状态"},
+        {
+        	"data": "wcardStatus",
+        	"title": "工单状态",
+        	render: function(data, type, full, meta) {
+	            if(data=='904010'){
+	            	return "工单草稿";
+	            }else if(data=='904020'){
+	            	return "工单复核";
+	            }else if(data=='904030'){
+	            	return "合同已激活";
+	            }
+	        }
+        },
         {
 	        "data": "ctreatedDate",
 	        "title": "创建日期",
@@ -83,5 +95,11 @@ function formatDateTime(inputTime,type) {
 
 function manualCreation(){
 	var src = "/html/contReg/workOrderEdit/manualCreationEdit.html";
+	App.changePresentUrl(src);
+}
+
+//跳转到上传页面
+function jumpSanCpyQueryDetail(id){
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&id=123123123123";
 	App.changePresentUrl(src);
 }

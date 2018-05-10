@@ -77,3 +77,28 @@ function formatDateTime(inputTime,type) {
 	d = d < 10 ? ('0' + d) : d;
 	return y + '-' + m + '-' + d;
 }
+
+/**
+ * 创建工单
+ * */
+function createWorkOrder(){
+	var contractNumber = $("#contractDataSearch").val();
+	if(contractNumber==''){
+		alert("合同编号不能为空！");
+		return;
+	}else{
+		$.ajax({
+		url:serverPath + 'workOrderHandle/createWorkOrder',
+        type:"post",
+        data:{"contractNumber":contractNumber},
+        success:function(data) {
+       				if(data.status=='1'){
+       					alert("工单"+data.message+"创建成功！");
+       				}else if(data.status=='0'){
+       					alert(data.message);
+       				}
+        		}
+		});
+	}
+	
+}

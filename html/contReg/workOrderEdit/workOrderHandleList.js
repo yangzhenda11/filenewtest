@@ -85,3 +85,9 @@ function manualCreation(){
 	var src = "/html/contReg/workOrderEdit/manualCreationEdit.html";
 	App.changePresentUrl(src);
 }
+
+//跳转到上传页面
+function jumpSanCpyQueryDetail(id){
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&id=123123123123";
+	App.changePresentUrl(src);
+}

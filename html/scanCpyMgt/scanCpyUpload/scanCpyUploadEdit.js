@@ -18,6 +18,7 @@ var serverPath = config.serverPath;
 
 //页面初始化事件
 $(function() {
+	
 	if(parm.pageType == 1){
 		$(".toolbarBtn,.portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding",'0px');
@@ -28,6 +29,9 @@ $(function() {
 		//固定操作按钮在70px的高度
 		App.fixToolBars("toolbarBtnContent", 70);
 	}
+	
+	checkFileIsUpload();
+	getContractInfo();
 	
 	$.ajax({
         "type": "POST",
@@ -62,9 +66,6 @@ $(function() {
             document.getElementById('scanCpyloadTable').innerHTML=htmlstr;
         }
     });
-    
-	checkFileIsUpload();
-	getContractInfo();
 })
 
 

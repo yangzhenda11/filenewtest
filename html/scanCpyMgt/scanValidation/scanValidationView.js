@@ -247,9 +247,8 @@ function getScanValidationInfo(verifyId){
 		$("#otherPartyName").html(otherPartyName);
     	$("#ourPartyName").html(ourPartyName);
 		//pdf URL设值
-		var url = encodeURIComponent("/fileload/downloadS3?key=2091649519838216197");
-		var textPdf = encodeURIComponent("/fileload/downloadS3?key=2091649519838216197");
-		var scandocPdf = encodeURIComponent("/fileload/downloadS3?key=2091649519838216197");
+		var textPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=2133210337821589506");
+		var scandocPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=2133210337821589506");
 		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
 		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		//若有差异查询差异记录

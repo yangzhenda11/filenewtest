@@ -10,7 +10,13 @@
  * @param height 控制下拉框的展示最大高度 默认：200px
  */
 function selectOrgTree(serial, parent, orgId, callBackFunc, showType, ifRadio, width, height) {
-    new newselectOrg().orgTreeDrop(serial, parent, orgId, callBackFunc, showType, ifRadio, width, height);
+    if ($("#orgDIV" + serial).size() == 0) {
+        new newselectOrg().orgTreeDrop(serial, parent, orgId, callBackFunc, showType, ifRadio, width, height);
+    } else {
+        var parentObj = $(parent);
+        var parentOffset = $(parent).offset();
+        $("#orgDIV" + serial).slideDown("fast");
+    }
 }
 
 var initVal = {

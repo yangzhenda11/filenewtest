@@ -9,21 +9,21 @@
 		<div class="row fieldsetForm15">
 			<input type="hidden" name="promiseId" id="promiseId" value="100000" />
 			<div class="col-sm-12 form-group">
-				<label for="insurancePromise" class="control-label">施工保险条款：</label>
+				<label for="penaltyPromise" class="control-label">滞纳金/违约金约定：</label>
 				<div class="valiParent">
-					<textarea id="insurancePromise" name="insurancePromise" class="form-control" maxlength="1000"></textarea>
+					<textarea id="penaltyPromise" name="penaltyPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 			<div class="col-sm-12 form-group">
-				<label for="interestPromise" class="control-label">延期付款利息：</label>
-				<div class="valiParent">
-					<textarea id="interestPromise" name="interestPromise" class="form-control" maxlength="1000"></textarea>
-				</div>
-			</div>
-			<div class="col-sm-12 form-group">
-				<label for="securityPromise" class="control-label">违约保证金押金约定：</label>
+				<label for="securityPromise" class="control-label">履约保证金/押金约定：</label>
 				<div class="valiParent">
 					<textarea id="securityPromise" name="securityPromise" class="form-control" maxlength="1000"></textarea>
+				</div>
+			</div>
+			<div class="col-sm-12 form-group">
+				<label for="specialPromise" class="control-label">特殊付款约定：</label>
+				<div class="valiParent">
+					<textarea id="specialPromise" name="specialPromise" class="form-control" maxlength="1000"></textarea>
 				</div>
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 	 * 获取其他财务约定
 	 */
 	function getPromiseSpend(){
-		var url = serverPath + "contractOrderEditorController/getPromiseSpendId";
+		var url = serverPath + "contractOrderEditorController/getPromiseIncomeId";
 		var postData = JSON.stringify({wcardId:wcardId});
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {

@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>外部人员管理</title>
+		<title>工单编辑</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -31,17 +31,19 @@
 			<div class="portlet">
 				<div class="portlet-title">
 					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase"> 支出类-采购合同</span>
+						<span class="caption-subject bold uppercase" id="wcardType"></span>
 					</div>
 				</div>
 				<div class="portlet-body">
-					<div class="toolbarBtn">
-						<div id="toolbarBtnContent">
-							<button class="btn blue" onclick="saveContent()"><i class="iconfont icon-baocun"></i>  保存</button>
-							<button class="btn blue" onclick="saveContent()"><i class="iconfont icon-baocun"></i>  提交</button>
+					<form action="" id="workOrderContentForm">
+						<div class="toolbarBtn">
+							<div id="toolbarBtnContent">
+								<button class="btn blue" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i>  保存</button>
+								<button class="btn blue" type="submit"><i class="iconfont icon-baocun"></i>  提交</button>
+							</div>
 						</div>
-					</div>
-					<form action="" id="workOrderContent"></form>
+						<div id="workOrderContent"></div>
+					</form>
 				</div>
 			</div>
 		</div>

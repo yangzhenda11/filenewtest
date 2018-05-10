@@ -1,5 +1,9 @@
 var serverPath = parent.globalConfig.serverPath;
+
 $(function() {
+    // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
+    //     App.getCommonModal("staff", "#searchStaffName", "orgName", ["staffId", "staffOid"]);
+    // });
     var cloudSwitch;
     //查询云门户开关参数
     App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
@@ -52,32 +56,28 @@ $(function() {
                         if (c) {
                             var btnArray = new Array();
                             //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
-                            if(c.STAFF_ORG_TYPE=='F'){
-                            	if (cloudSwitch == 1) {
+                            if (c.STAFF_ORG_TYPE == 'F') {
+                                if (cloudSwitch == 1) {
                                     btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
+                                    btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
                                 }
-                            	btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
-                            	btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
-                            }else{
-                            	btnArray.push({ "name": "修改岗位", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
-                            	btnArray.push({ "name": "删除", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
+                            } else {
+                                if (cloudSwitch == 1) {
+                                    btnArray.push({ "name": "修改", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                    btnArray.push({ "name": "删除岗位", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                }
+                                btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             }
-                            
-                            
                             btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
-                            btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" }); 
-//                            btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
+                            btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
+                            //                            btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             if ("1" == c.STAFF_ORG_STATUS) {
                                 btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0)" });
                             } else {
                                 btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',1)" });
                             }
-                            context = {
-                                func: btnArray
-                            }
-                            var template = Handlebars.compile(btnModel);
-                            var html = template(context);
-                            return html;
+                            return App.getDataTableBtn(btnArray);
                         } else {
                             return '';
                         }
@@ -151,9 +151,21 @@ $(function() {
             },
             "scrollX": true
         });
-    }
+    };
 });
 
+// ;
+// (function($) {
+//     $.fn.bootstrapValidator.validators.staffOrgCheck = {
+//         html5Attributes: {
+//             message: 'message',
+//             field: 'field'
+//         },
+//         validate: function(validator, $field, options) {
+//             return true;
+//         }
+//     };
+// }(window.jQuery));
 /*
  * 请求到结果后的回调事件
  */
@@ -1158,7 +1170,7 @@ function updateInnalPersonnel(editType) {
 
     function successCallback(result) {
         layer.msg(ms, { icon: 1 });
-        searchPersonnel(true);
+        searchPersonnel(false);
         $('#modal').modal('hide');
     }
 
@@ -1180,13 +1192,13 @@ function searchPersonnel(resetPaging) {
 /*
  * 条件查询查询组织
  */
-function getStaffSearch_OrgTree(obj){
-	selectOrgTree('staffSearch_OrgTree',obj,parent.globalConfig.curCompanyId,getStaffSearch_OrgTreeId,'','1','400','300');
-	
-	function getStaffSearch_OrgTreeId(orgId, orgName, orgCode){
-		$("input[name='orgName']",$('#searchStaffForm')).val(orgName);
-		$("input[name='orgId']",$('#searchStaffForm')).val(orgId);
-	}
+function getStaffSearch_OrgTree(obj) {
+    selectOrgTree('staffSearch_OrgTree', obj, parent.globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
+
+    function getStaffSearch_OrgTreeId(orgId, orgName, orgCode) {
+        $("input[name='orgName']", $('#searchStaffForm')).val(orgName);
+        $("input[name='orgId']", $('#searchStaffForm')).val(orgId);
+    }
 }
 
 
@@ -1195,26 +1207,51 @@ function getStaffSearch_OrgTree(obj){
  * @param staffId
  * @returns
  */
-function goAddStaffOrg(staffId){
-	$("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
+function goAddStaffOrg(staffId) {
+    $("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
         $("#modalTitle").text("新增岗位");
-        App.initFormSelect2("#addStaffOrgForm");
+        //App.initFormSelect2("#addStaffOrgForm");
         $("#modal").modal("show");
-        $("input[name='staffId']",$('#addStaffOrgForm')).val(staffId);
+        $("input[name='staffId']", $('#addStaffOrgForm')).val(staffId);
         $('#addStaffOrgForm').bootstrapValidator({
             live: 'enabled',
             trigger: 'live focus blur keyup change',
             message: '校验未通过',
             container: 'popover',
             fields: {
-            	orgName: {
-                     validators: {
-                         notEmpty: {
-                             message: '请选择所属组织'
-                         }
-                     },
-                     trigger: "focus blur keyup change",
-                 }
+                orgName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择所属组织'
+                        },
+                        // staffOrgCheck: {
+                        //     message: '在该组织下已有岗位信息'
+                        // }
+                        callback: {
+                            message: '在该组织下已有岗位信息',
+                            callback: function(value, validator, $field) {
+                                var flag = true;
+                                if (value != "") {
+                                    var url = parent.globalConfig.serverPath + "staffs/staffOrgOrgId";
+                                    var staffId = $("input[name='staffId']", $('#addStaffOrgForm')).val();
+                                    var staffOrgId = $("input[name='staffOrgId']", $('#addStaffOrgForm')).val();
+                                    var orgId = $("input[name='orgId']", $('#addStaffOrgForm')).val();
+                                    App.formAjaxJson(url, 'GET', { 'staffId': staffId, 'orgId': orgId, 'staffOrgId': staffOrgId }, successCallback, null, null, null, false);
+                                }
+
+                                function successCallback(result) {
+                                    var staffOrgId = result.data ? result.data.staffOrgId : null;
+                                    if (staffOrgId) { //已存在岗位
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                }
+                                return flag;
+                            }
+                        }
+                    }
+                }
             }
         }).on('success.form.bv', function(e) {
             e.preventDefault();
@@ -1226,30 +1263,29 @@ function goAddStaffOrg(staffId){
  * 新增岗位选择组织
  * 
  */
-function addStaffOrg_OrgTree(obj){
-	selectOrgTree('staffOrgAdd_OrgTree',obj,parent.globalConfig.curCompanyId,addStaffOrg_OrgTreeId,'','1','400','300');
+function addStaffOrg_OrgTree(obj) {
+    selectOrgTree('staffOrgAdd_OrgTree', obj, parent.globalConfig.curCompanyId, addStaffOrg_OrgTreeId, '', '1', '400', '300');
 
-	function addStaffOrg_OrgTreeId(orgId, orgName, orgCode){
-		debugger;
-		$("input[name='orgName']",$('#addStaffOrgForm')).val(orgName);
-		$("input[name='orgId']",$('#addStaffOrgForm')).val(orgId);
-		var staffId = $("input[name='staffId']",$('#addStaffOrgForm')).val();
-		var staffOrgId = $("input[name='staffOrgId']",$('#addStaffOrgForm')).val();
-		var orgId = $("input[name='orgId']",$('#addStaffOrgForm')).val();
-		checkOrgId(staffId,orgId,staffOrgId);
-//		$("#addStaffOrgForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", null);
-//		$("#addStaffOrgForm").data("bootstrapValidator").validateField('orgName');
-	
-	}
+    function addStaffOrg_OrgTreeId(orgId, orgName, orgCode) {
+        // debugger;
+        $("input[name='orgName']", $('#addStaffOrgForm')).val(orgName);
+        $("input[name='orgId']", $('#addStaffOrgForm')).val(orgId);
+        var staffId = $("input[name='staffId']", $('#addStaffOrgForm')).val();
+        var staffOrgId = $("input[name='staffOrgId']", $('#addStaffOrgForm')).val();
+        var orgId = $("input[name='orgId']", $('#addStaffOrgForm')).val();
+        //手动触发orgName字段的验证
+        $("#addStaffOrgForm").data("bootstrapValidator").revalidateField('orgName');
+
+    }
 }
 /*
  * 新增||修改岗位提交
  */
-function addStaffOrg(editType){
-	debugger;
+function addStaffOrg(editType) {
+    // debugger;
     var formObj = App.getFormValues($("#addStaffOrgForm"));
     var ms = "新增成功";
-    var url = parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrg/";    
+    var url = parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrg/";
     var pushType = "POST";
     if (editType == "add") {
         formObj.createBy = parent.globalConfig.curStaffId;
@@ -1269,81 +1305,58 @@ function addStaffOrg(editType){
 
     function improperCallbacks(result) {
         $('#addStaffOrgForm').data('bootstrapValidator').resetForm();
-    }	
+    }
 
 }
 /*
  * 跳转角色复制
  */
-function goStaffOrgRoleCopy(staffOrgId){
-	debugger;
-	selectStaff('staffOrgRoleCopy',parent.globalConfig.curCompanyId,parent.globalConfig.curStaffOrgId,callBackFun,'',2);
-	
-	function callBackFun(orgId,orgCode,orgName){
-		alert('hhh');
-	}
-}
-/*
- * 查询在某个组织下是否存在岗位
- */
-function checkOrgId(staffId,orgId,staffOrgId){
-	debugger;
-    var url = parent.globalConfig.serverPath + "staffs/staffOrgOrgId";
-    App.formAjaxJson(url, 'GET', {'staffId':staffId,'orgId':orgId,'staffOrgId':staffOrgId}, successCallback, improperCallbacks);
-    function successCallback(result) {
-    	
-    }
-
-    function improperCallbacks(result) {
-    	if(result){
-    		$("#addStaffOrgForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", '在改组织下已有其他类型岗位');
-    	}else {
-    		$("#addStaffOrgForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", null);
-    		$("#addStaffOrgForm").data("bootstrapValidator").validateField('orgName');
-    	}
-    }	
+function goStaffOrgRoleCopy(staffOrgId) {
+    App.getCommonModal("staff", "#", "orgName", ["staffId", "staffOid"]);
 }
 
-function goDelStaffOrg(staffId,staffOrgId){
-	layer.confirm('确定删除改岗位么', {
+function goDelStaffOrg(staffId, staffOrgId) {
+    layer.confirm('确定删除改岗位么', {
         btn: ['确认', '取消'],
         icon: 0,
         skin: 'layer-ext-moon'
     }, function() {
         $.ajax({ //提交服务端
-            url: parent.globalConfig.serverPath + 'staffs/' + staffId + '/staffOrg/'+ staffOrgId,
+            url: parent.globalConfig.serverPath + 'staffs/' + staffId + '/staffOrg/' + staffOrgId,
             type: "DELETE",
             success: function(data) {
                 layer.alert("删除成功！", {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
+                searchPersonnel(true);
             }
         });
     });
 }
 
 /**
- * 跳转新增岗位modal
+ * 跳转编辑岗位modal
  * @param staffId
+ * @param staffOrgId
  * @returns
  */
-function goEditStaffOrg(staffId,staffOrgId){
-	$("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
+function goEditStaffOrg(staffId, staffOrgId) {
+    $("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
         $("#modalTitle").text("修改岗位");
         App.initFormSelect2("#addStaffOrgForm");
         $("#modal").modal("show");
-        $("input[name='staffId']",$('#addStaffOrgForm')).val(staffId);
-        $("input[name='staffOrgId']",$('#addStaffOrgForm')).val(staffOrgId);
-        App.formAjaxJson(parent.globalConfig.serverPath + "staffs/" + staffId+'/staffOrg/'+staffOrgId , "get", "", successCallback);
+        $("input[name='staffId']", $('#addStaffOrgForm')).val(staffId);
+        $("input[name='staffOrgId']", $('#addStaffOrgForm')).val(staffOrgId);
+        App.formAjaxJson(parent.globalConfig.serverPath + "staffs/" + staffId + '/staffOrg/' + staffOrgId, "get", "", successCallback);
 
         function successCallback(result) {
-        	debugger;
+            debugger;
             var data = result.data;
             if (null == data) {
                 layer.msg("没有查到岗位信息", { icon: 2 });
             } else {
-            	App.setFormValues("#addStaffOrgForm", data, '');
+                App.setFormValues("#addStaffOrgForm", data, '');
             }
         }
         $('#addStaffOrgForm').bootstrapValidator({
@@ -1352,38 +1365,37 @@ function goEditStaffOrg(staffId,staffOrgId){
             message: '校验未通过',
             container: 'popover',
             fields: {
-            	orgName: {
-                     validators: {
-                         notEmpty: {
-                             message: '请选择所属组织'
-                         }
-//                         callback: {
-//                             message: '在改组织下已有其他类型岗位',
-//                             callback: function(value, validator, $field) {
-//                            	 debugger;
-//                            	 var staffId = $("input[name='staffId']",$('#addStaffOrgForm')).val();
-//                                 var staffOrgId = $("input[name='staffOrgId']",$('#addStaffOrgForm')).val();
-//                                 var orgId = $("input[name='orgId']",$('#addStaffOrgForm')).val();
-//                                 var flag = true;
-//                                 if (value != "") {
-//                                     var url = parent.globalConfig.serverPath + "staffs/staffOrgOrgId";
-//                                     App.formAjaxJson(url, 'GET', {'staffId':staffId,'orgId':orgId,'staffOrgId':staffOrgId}, successCallback, successCallback);
-//                                 }
-//
-//                                 function successCallback(result) {
-//                                	 debugger;
-//                                     if (!result.data) {
-//                                         flag = true;
-//                                     } else {
-//                                         flag = false;
-//                                     }
-//                                 };
-//                                 return flag;
-//                             }
-//                         }
-                     },
-                     trigger: "focus blur keyup change",
-                 }
+                orgName: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择所属组织'
+                        },
+                        callback: {
+                            message: '在改组织下已有其他类型岗位',
+                            callback: function(value, validator, $field) {
+                                var staffId = $("input[name='staffId']", $('#addStaffOrgForm')).val();
+                                var staffOrgId = $("input[name='staffOrgId']", $('#addStaffOrgForm')).val();
+                                var orgId = $("input[name='orgId']", $('#addStaffOrgForm')).val();
+                                var flag = true;
+                                if (value != "") {
+                                    var url = parent.globalConfig.serverPath + "staffs/staffOrgOrgId";
+                                    App.formAjaxJson(url, 'GET', { 'staffId': staffId, 'orgId': orgId, 'staffOrgId': staffOrgId }, successCallback, null, null, null, false);
+                                }
+
+                                function successCallback(result) {
+                                    var staffOrgId = result.data ? result.data.staffOrgId : null;
+                                    if (staffOrgId) { //已存在岗位
+                                        flag = false;
+                                    } else {
+                                        flag = true;
+                                    }
+                                };
+                                return flag;
+                            }
+                        }
+                    },
+                    trigger: "focus blur keyup change",
+                }
             }
         }).on('success.form.bv', function(e) {
             e.preventDefault();

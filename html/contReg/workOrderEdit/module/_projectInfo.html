@@ -1,4 +1,4 @@
-<div class="form-fieldset" id="differencesThat">
+<div class="form-fieldset">
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 项目信息</span>
 		<div class="form-fieldset-tools">
@@ -16,25 +16,37 @@
 						<th>合同分摊金额</th>
 					</tr>
 				</thead>
-				<tbody id="projectInfoTbody">
-					<tr>
-						<td>121201_OU_运营公司天津市本部</td>
-						<td>1EK13EA0K03156</td>
-						<td>121201_OU_运营公司天津市本部</td>
-						<td>1800.00</td>
-					</tr>
-					
-				</tbody>
+				<tbody id="projectInfoTbody"></tbody>
 			</table>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
+	//获取项目信息
+	getProject();
 	/*
-	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * 获取项目信息
 	 */
-	function getValue_project(){
-		return {};
+	function getProject(){
+		var url = serverPath + "contractOrderEditorController/getProjectId";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			var html = "";
+			if(data.length > 0){
+				for(var i = 0; i < data.length; i++){
+					html += "<tr>"+
+							"<td>"+ data[i].projectOrganization +"</td>"+
+							"<td>"+ data[i].projectCode+"</td>"+
+							"<td>"+ data[i].projectName +"</td>"+
+							"<td>"+ data[i].shareMoney +"</td>";
+				}
+			}else{
+				html = '<tr><td colspan="4">暂无项目信息</td></tr>'
+			};
+			$("#projectInfoTbody").html(html);
+		}
 	}
 	
 </script>

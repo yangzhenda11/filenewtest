@@ -56,22 +56,18 @@ $(function() {
                         if (c) {
                             var btnArray = new Array();
                             //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
-                            if (c.STAFF_ORG_TYPE == 'F') {
-                                if (cloudSwitch == 1) {
+                            if (cloudSwitch == 1) {
+                                if (c.STAFF_ORG_TYPE == 'F') {
                                     btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
                                     btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
-                                }
-                                btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
-                            } else {
-                                if (cloudSwitch == 1) {
-                                    btnArray.push({ "name": "修改", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                } else {
+                                    btnArray.push({ "name": "调整", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
                                     btnArray.push({ "name": "删除岗位", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
                                 }
-                                btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             }
+                            btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
                             btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
-                            //                            btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             if ("1" == c.STAFF_ORG_STATUS) {
                                 btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0)" });
                             } else {
@@ -81,18 +77,6 @@ $(function() {
                         } else {
                             return '';
                         }
-                        /*var context;
-                        var html = '';
-                        html += "<button title=\"查看\" onclick=\"showStaffDetail('" + c.STAFF_ID + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-search-plus\"></i></button>";
-                        // html += "<button title=\"修改\" onclick=\"goStaffEdit('" + c.STAFF_ID + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-edit\"></i></button>";
-                        html += "<button title=\"岗位管理\" onclick=\"orgManage('" + c.STAFF_ID + "','" + c.STAFF_NAME + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-cubes\"></i></button>";
-                        html += "<button title=\"密码重置\" onclick=\"resetPasswd('" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.LOGIN_NAME + "')\" class=\"btn btn-info btn-link btn-xs\"><i class=\"fa fa-key\"></i></button>";
-                        if ("1" == c.STAFF_STATUS) {
-                            html += "<button title=\"禁用\" onclick=\"changeStaffStatus('" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.ORG_NAME + "',0)\" class=\"btn btn-success btn-link btn-xs\"><i class=\"fa fa-close\"></i></button>";
-                        } else {
-                            html += "<button title=\"启用\" onclick=\"changeStaffStatus('" + c.STAFF_ID + "','" + c.STAFF_NAME + "','" + c.ORG_NAME + "',1)\" class=\"btn btn-success btn-link btn-xs\"><i class=\"fa fa-check\"></i></button>";
-                        }
-                        return html;*/
                     }
                 },
                 {
@@ -120,7 +104,6 @@ $(function() {
                         return (c.SEX == 'M') ? '男' : '女';
                     }
                 },
-                // { "data": "PHONE", "title": "电话号码" },
                 { "data": "EMAIL", "title": "邮箱账号" },
                 { "data": "MOBIL_PHONE", "title": "手机号码" },
                 {
@@ -1039,7 +1022,7 @@ function dateRegNameChose() {
     $("#orgNameIn").on("click", function() {
         showTree('orgNameIn');
     });
-    App.formAjaxJson(parent.globalConfig.serverPath + "orgs/" + parent.globalConfig.curOrgId + "/orgTree", "get", "", successCallback);
+    App.formAjaxJson(parent.globalConfig.serverPath + "orgs/" + parent.globalConfig.curCompanyId + "/orgTree", "get", "", successCallback);
 
     function successCallback(result) {
         var data = result.data;
@@ -1264,10 +1247,11 @@ function goAddStaffOrg(staffId) {
  * 
  */
 function addStaffOrg_OrgTree(obj) {
-    selectOrgTree('staffOrgAdd_OrgTree', obj, parent.globalConfig.curCompanyId, addStaffOrg_OrgTreeId, '', '1', '400', '300');
+    //selectOrgTree('staffOrgAdd_OrgTree', obj, parent.globalConfig.curCompanyId, addStaffOrg_Callback, '', '1', '400', '300');
+    //196606 为中国联通
+    selectOrgTree('staffOrgAdd_OrgTree', obj, 196606, addStaffOrg_Callback, '', '1', '400', '300');
 
-    function addStaffOrg_OrgTreeId(orgId, orgName, orgCode) {
-        // debugger;
+    function addStaffOrg_Callback(orgId, orgName, orgCode) {
         $("input[name='orgName']", $('#addStaffOrgForm')).val(orgName);
         $("input[name='orgId']", $('#addStaffOrgForm')).val(orgId);
         var staffId = $("input[name='staffId']", $('#addStaffOrgForm')).val();
@@ -1275,7 +1259,6 @@ function addStaffOrg_OrgTree(obj) {
         var orgId = $("input[name='orgId']", $('#addStaffOrgForm')).val();
         //手动触发orgName字段的验证
         $("#addStaffOrgForm").data("bootstrapValidator").revalidateField('orgName');
-
     }
 }
 /*

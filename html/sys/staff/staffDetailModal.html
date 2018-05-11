@@ -14,7 +14,7 @@
                 <li role="presentation"><a id="permissionAnchor" href="#permission" aria-controls="permission" data-toggle="tab">权限信息</a></li>
                 <li role="presentation"><a id="datapermAnchor" href="#dataperm" aria-controls="dataperm" data-toggle="tab">数据权限信息</a></li>
             </ul>
-            <div class="tab-content" style="min-height: 220px;">
+            <div class="tab-content" style="height: 240px">
                 <div class="tab-pane fade in active" id="info">
                     <div id="infoDiv" class="form-body form-horizontal form-row-seperated">
                         <div class="col-sm-6">
@@ -101,7 +101,7 @@
                     <div id="roleDiv" class="form-body form-horizontal form-row-seperated"></div>
                 </div>
                 <div class="tab-pane fade" id="permission">
-                    <ul id="staffDetailPermtree" class="ztree container-fluid"></ul>
+                    <ul id="staffDetailPermtree" class="ztree container-fluid" style="max-height: 220px;overflow-y: auto"></ul>
                 </div>
                 <div class="tab-pane fade" id="dataperm">
                 </div>
@@ -111,4 +111,4 @@
             <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
         </div>
     </div>
-</div>
+</div>;

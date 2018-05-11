@@ -2239,6 +2239,7 @@ var App = function() {
         	return flowparam;
         },
         applyCandidateTask:function(serverPath,flowParam){
+        	var result=false;
     		$.ajax({
     			type: 'get',
     			url: serverPath+"workflowrest/applyCandidateTask",
@@ -2249,16 +2250,19 @@ var App = function() {
     			success: function(result){
     				var data = result;
     				if (data.success == 1){
-    					layer.msg(data.sign);
+    					result=true;
+    					//layer.msg(data.sign);
     				}else {
-    					layer.msg(data.sign);
-    					return;
+    					//layer.msg(data.sign);
+    					result=false;
     				} 
     			},
     			error: function(result) {
-    				layer.alert("流程参数异常，请联系管理员！", {icon: 2,title:"错误"});
+    				result=false;
+    				//layer.alert("流程参数异常，请联系管理员！", {icon: 2,title:"错误"});
     			}
     		});
+    		return result;
         }
         
         

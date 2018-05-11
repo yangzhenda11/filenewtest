@@ -100,6 +100,6 @@ function manualCreation(){
 
 //跳转到上传页面
 function jumpSanCpyQueryDetail(id){
-	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&id=123123123123";
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&id="+id;
 	App.changePresentUrl(src);
 }

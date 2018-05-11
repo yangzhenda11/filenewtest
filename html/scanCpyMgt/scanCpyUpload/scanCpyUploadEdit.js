@@ -15,6 +15,7 @@ var config = top.globalConfig;
 //console.log(config);
 var serverPath = config.serverPath;
 
+var attArray=[];
 
 //页面初始化事件
 $(function() {
@@ -42,7 +43,9 @@ $(function() {
             var cols=3;
             var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>操作</th></tr></thead><tbody>";
             for(i=1;i<=rows;i++){
-            	//console.log(i+"***"+array[i-1].storeId);
+            	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
+            		attArray.push(array[i-1]);
+            	}
             	htmlstr+="<tr>";
             	if(array[i-1].storeId!=null && array[i-1].storeId!=''){
             		htmlstr+="<td align='center'>" + i +"<input id='att"+array[i-1].attachId+"' type='hidden' value='"+array[i-1].storeId+"' /></td>";
@@ -160,15 +163,28 @@ function addAttachment(attachId){
 /**
  * 附件列表点击删除按钮删除附件
  * */
+var deleteArray=[];
 function del(attachId){
-	$("#addButton"+attachId+"").show();
-	$("#downLoadButton"+attachId+"").hide();
-	$("#delButton"+attachId+"").hide();
+	console.log(attArray);
+	if(attArray.length!=0){
+		for(var i=0;i<attArray.length;i++){
+			if(attachId==attArray[i].attachId){
+				deleteArray.push(attArray[i]);
+				attArray.splice(i,1);
+			}
+		}
+	}
 	for(var i=0;i<array.length;i++){
 		if(attachId==array[i].attachId){
+			deleteArray.push(array[i]);
 			array.splice(i,1);
 		}
 	}
+	console.log(array);
+	console.log(deleteArray);
+	$("#addButton"+attachId+"").show();
+	$("#downLoadButton"+attachId+"").hide();
+	$("#delButton"+attachId+"").hide();
 }
 
 /**
@@ -262,9 +278,28 @@ function saveAttachment(){
 	});
 }
 
+function delAttachment(){
+	$.ajax({
+		url : serverPath + 'contractUpload/delAttachment',
+        type : "post",
+        data:{"deleteArray":JSON.stringify(deleteArray)},
+        async:false,
+        success : function(data) {
+       				if(data.status=='1'){
+       					console.log("删除附件扫描件成功！");
+       				}else if(data.status=='0'){
+       					alert(data.message);
+       				}
+        		}
+	});
+}
+
 function saveContract(){
-	console.log("result====="+result);
-	console.log("array====="+array);
+	//console.log("result====="+result);
+	//console.log("array====="+array);
+	if(deleteArray.length!=0){
+		delAttachment();
+	}
 	if(JSON.stringify(result) == "{}"){
 		if($("#uploadFileNameshow").val()==''){
 			delContractText();
@@ -285,11 +320,6 @@ function saveContract(){
         		data:{"jsonStr":jsonStr,"id":id},
         		success : function(data) {
        				if(data.status=='1'){
-       					/*for(var i=0;i<array.length;i++){
-       						var str = JSON.stringify(array[i]);
-							arrayList.push(str);
-       					}
-       					console.log(arrayList)*/
        					$.ajax({
 							url : serverPath + 'contractUpload/saveAttachment',
         					type : "post",

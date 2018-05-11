@@ -123,7 +123,6 @@ function saveContent(){
 			function successCallback(result) {
 				var data = result.data;
 				setPageIdCallback(data);
-				layer.msg("保存成功");
 			}
 			
 		}
@@ -145,7 +144,7 @@ function validate() {
 		if(formSubmit){
 			var submitData = getContentValue(true);
 			if(submitData){
-				alert("提交,已验证，未提交后台");
+				//alert("提交");
 				console.log(submitData);
 			}
 		}
@@ -156,7 +155,7 @@ function validate() {
  * 页面内需声明"setPageId_"+约定各页面返回的ID值，  （约定为domain的name值即保存时的各模块key+ID）
  */
 function setPageIdCallback(data){
-	if(data != null || data != ""){
+	if(data.length > 0){
 		$.each(data, function(k,v) {
 			if(!App.isExitsFunction("setPageId_" + k)){
 				return true;

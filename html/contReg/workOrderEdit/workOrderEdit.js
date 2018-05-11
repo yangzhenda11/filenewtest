@@ -48,10 +48,6 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
-//			domObj.unshift({key:"test3",value:"module/_otherFinanceIncomeInfo.html"}) 
-//			domObj.unshift({key:"test4",value:"module/_alterationIncomeInfo.html"}) 
-//			domObj.unshift({key:"test1",value:"module/_lineChargesList.html"}) 
-//			domObj.unshift({key:"test2",value:"module/_appointReceiptInfo.html"}) 
 			setDomContent(domObj);
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})
@@ -126,7 +122,6 @@ function saveContent(){
 			function successCallback(result) {
 				var data = result.data;
 				setPageIdCallback(data);
-				layer.msg("保存成功");
 			}
 			
 		}
@@ -148,7 +143,7 @@ function validate() {
 		if(formSubmit){
 			var submitData = getContentValue(true);
 			if(submitData){
-				alert("提交,已验证，未提交后台");
+				//alert("提交");
 				console.log(submitData);
 			}
 		}
@@ -159,7 +154,7 @@ function validate() {
  * 页面内需声明"setPageId_"+约定各页面返回的ID值，  （约定为domain的name值即保存时的各模块key+ID）
  */
 function setPageIdCallback(data){
-	if(data != null || data != ""){
+	if(data.length > 0){
 		$.each(data, function(k,v) {
 			if(!App.isExitsFunction("setPageId_" + k)){
 				return true;

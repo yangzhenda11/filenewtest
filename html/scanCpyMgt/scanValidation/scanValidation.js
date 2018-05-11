@@ -42,9 +42,6 @@ function verifyProcessTrue() {
             "type": "POST",
             "url": serverPath + 'sysScanValidation/listSysScanValidationInfo',
             "data": function(d) {
-                var body = {};
-                body.start = d.start;//开始的
-                body.length = d.length;//要取的数据的
                 var formData = $("#scanValidationForm").serializeArray();//把form里面的数据序列化成数组
                 formData.forEach(function (e) {
                     d[e.name] = e.value.trim();

@@ -122,6 +122,7 @@ function saveContent(){
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
 			function successCallback(result) {
 				var data = result.data;
+				layer.msg("保存成功")
 				setPageIdCallback(data);
 			}
 			

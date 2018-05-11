@@ -73,8 +73,8 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"className": "text-center",
 			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
-				console.log(full);
-				var result = '<a href="/contractUpload/downloadContractText?id=' + full.id + '">正文下载</a>';
+				var downloadUrl = "/contractUpload/downloadContractText?id=" + full.id;
+				var result = '<a onclick="downloadFile(\''+ downloadUrl +'\')">正文下载</a>';
 				return result;
 			}
 		},
@@ -94,7 +94,14 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 		}
     ]
 });
-
+/*
+ * 下载文件
+ */
+function downloadFile(url){
+	console.log(url);
+	App.download_file(url);
+	
+}
 /*
  * 搜索点击事件
  */

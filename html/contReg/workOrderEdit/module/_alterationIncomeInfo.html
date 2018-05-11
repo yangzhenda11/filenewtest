@@ -92,7 +92,7 @@
 	function getAdjustIncom(){
 		var url = serverPath + "contractOrderEditorController/getAdjustIncomeId";
 		var postData = JSON.stringify({wcardId:wcardId});
-		//App.formAjaxJson(url, "post", postData, successCallback);
+		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			if(data){

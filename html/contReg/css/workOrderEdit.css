@@ -51,11 +51,21 @@
 }
 #invoiceTbody .form-group,
 #payeeInfoTbody .form-group,
-#payerInfoTbody .form-group {
+#payerInfoTbody .form-group,
+#incomeLinerentTable .form-group {
   margin-bottom: 0;
 }
 #invoiceTbody .form-group input,
 #payeeInfoTbody .form-group input,
-#payerInfoTbody .form-group input {
+#payerInfoTbody .form-group input,
+#incomeLinerentTable .form-group input {
   text-align: center;
+}
+#incomeLinerentTable {
+  margin-bottom: 0;
+}
+#relatedWcardNumber {
+  padding-top: 6px;
+  height: 34px;
+  display: block;
 }

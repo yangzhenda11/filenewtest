@@ -47,6 +47,9 @@
 		var incomePaData = App.getFormValues($("#appointReceiptForm"));
 		incomePaData.wcardId = wcardId;
 		incomePaData.contractNumber = contractNumber;
+		if(incomePaData.payType != "903540"){
+			incomePaData.typeOther = "";
+		}
 		return incomePaData;
 	}
 	//获取字典值
@@ -65,7 +68,7 @@
 	function getAppointReceiptInfo() {
 		var postData = JSON.stringify({wcardId:wcardId});
 		var url = serverPath + "contractOrderEditorController/getIncomePayId";
-		//App.formAjaxJson(url, "post", postData, successCallback);
+		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			if(data){

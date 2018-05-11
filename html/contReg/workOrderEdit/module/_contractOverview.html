@@ -118,40 +118,100 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 form-group">
-				<label for="isFixed" class="control-label">是否固定金额：</label>
-				<div class="valiParent">
-					<div class="ui-radio-list ui-radio-inline">
-						<label class="ui-radio">
-							是
-							<input type="radio" value="1" disabled="disabled" name="isFixed">
-							<span></span>
-						</label>
-						<label class="ui-radio">
-							否
-							<input type="radio" value="0" disabled="disabled" name="isFixed">
-							<span></span>
-						</label>
+			<div id="isOtherTypeOverview" class="hidden">
+				<div class="col-sm-6 form-group">
+					<label for="isFixed" class="control-label">是否固定金额：</label>
+					<div class="valiParent">
+						<div class="ui-radio-list ui-radio-inline">
+							<label class="ui-radio">
+								是
+								<input type="radio" value="1" disabled="disabled" name="isFixed">
+								<span></span>
+							</label>
+							<label class="ui-radio">
+								否
+								<input type="radio" value="0" disabled="disabled" name="isFixed">
+								<span></span>
+							</label>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="hidden" id="isNotFixedOver">
-				<div class="col-sm-6 form-group">
-					<label for="vatRate" class="control-label">增值税税率：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="vatRate" name="vatRate" disabled="disabled" />
+				<div id="defalutContract" class="hidden">
+					<div class="col-sm-6 form-group">
+						<label for="vatRate" class="control-label">增值税税率：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="vatRate" name="vatRate" disabled="disabled" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label for="contractValue" class="control-label">含增值税合同金额：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="contractValue" name="contractValue" disabled="disabled" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label for="contractValueNovat" class="control-label">不含增值税合同金额：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="contractValueNovat" name="contractValueNovat" disabled="disabled" />
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group">
-					<label for="contractValue" class="control-label">含增值税合同金额：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="contractValue" name="contractValue" disabled="disabled" />
+				<div id="relationshipContract" class="hidden">
+					<div class="col-sm-6 form-group">
+						<label for="relatedWcardNumber" class="control-label">关联工单编号：</label>
+						<div class="valiParent">
+							<a id="relatedWcardNumber"></a>
+						</div>
 					</div>
-				</div>
-				<div class="col-sm-6 form-group">
-					<label for="contractValueNovat" class="control-label">不含增值税合同金额：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="contractValueNovat" name="contractValueNovat" disabled="disabled" />
+					<div class="col-sm-6 form-group">
+						<label for="contractNature" class="control-label">合同性质：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="contractNature" name="contractNature" disabled="disabled" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label for="relatedContractNumber" class="control-label">关联合同编号：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="relatedContractNumber" name="relatedContractNumber" disabled="disabled" />
+						</div>
+					</div>
+					<div id="relationshipIsFixed" class="hidden">
+						<div class="col-sm-6 form-group" id="originalContractValueContent">
+							<label for="originalContractValue" class="control-label">原含增值税合同金额：</label>
+							<div class="valiParent">
+								<input type="text" class="form-control" id="originalContractValue" name="originalContractValue" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label for="contractValue" class="control-label" id="contractValueLable"></label>
+							<div class="valiParent">
+								<input type="text" class="form-control" id="contractValue" name="contractValue" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group" id="originalContractValueNovatContent">
+							<label for="originalContractValueNovat" class="control-label">原不含增值税合同金额：</label>
+							<div class="valiParent">
+								<input type="text" class="form-control" id="originalContractValueNovat" name="originalContractValueNovat" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label for="contractValueNovat" class="control-label" id="contractValueNovatLable"></label>
+							<div class="valiParent">
+								<input type="text" class="form-control" id="contractValueNovat" name="contractValueNovat" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group" id="originalVatRateContent">
+							<label for="originalVatRate" class="control-label">原增值税税率：</label>
+							<div class="valiParent">
+								<input type="text" class="form-control" id="originalVatRate" name="originalVatRate" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label for="vatRate" class="control-label" id="vatRateLable"></label>
+							<div class="valiParent">
+								<input type="text" class="form-control" id="vatRate" name="vatRate" disabled="disabled" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -171,6 +231,10 @@
 	}
 	//获取字典值
 	getContractOverviewDict();
+	//wcardTypeCode为0时其余合同，隐藏
+	if(wcardTypeCode != 0){
+		$("#isOtherTypeOverview").removeClass("hidden");
+	}
 	//获取合同基本信息
 	getContractOverInfo();
 	
@@ -201,15 +265,62 @@
 		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			var valueCallback = {'executeStatus':function(value){return performanceStateInfo[value]}}
-			App.setFormValues("#contractOverviewForm",data,valueCallback);
-			if(data.isFixed == 1){
-				$("#isNotFixedOver").removeClass("hidden");
+			var isFixed = data.isFixed;
+			var contractNature = data.contractNature;
+			var valueCallback = {
+				"executeStatus":function(value){return performanceStateInfo[value]},
+				"contractNature":function(value){
+					if(value == 2){
+						return "变更/补充";
+					}else if(value == 3){
+						return "终止解除";
+					}else if(value == 4){
+						return "续签合同";
+					}else if(value == 4){
+						return "子合同";
+					}else{
+						return "未知";
+					}
+				}
 			};
 			$("#ourPartyName").text(data.ourPartyName);
 			$("#otherPartyName").text(data.otherPartyName);
 			$("#wcardNumber").text(data.wcardNumber);
 			$("#wcardStatus").text(ticketStateTypeInfo[data.wcardStatus]);
+			if(contractNature == null || contractNature == 1){
+				$("#relationshipContract").remove();
+				if(isFixed){
+					$("#defalutContract").removeClass("hidden");
+				}
+			}else{
+				$("#defalutContract").remove();
+				$("#relationshipContract").removeClass("hidden");
+				$("#relatedWcardNumber").text("1231231")
+				if(contractNature == 2){
+					if(isFixed){
+						$("#relationshipIsFixed").removeClass("hidden");
+						$("#contractValueLable").text("变更后含增值税合同金额：");
+						$("#contractValueNovatLable").text("变更后不含增值税合同金额：");
+						$("#vatRateLable").text("变更后增值税税率：");
+					}
+				}else if(contractNature == 3){
+					if(isFixed){
+						$("#relationshipIsFixed").removeClass("hidden");
+						$("#contractValueLable").text("终止解除后含增值税合同金额：");
+						$("#contractValueNovatLable").text("终止解除后不含增值税合同金额：");
+						$("#vatRateLable").text("终止解除后增值税税率：");
+					}
+				}else{
+					if(isFixed){
+						$("#relationshipIsFixed").removeClass("hidden");
+						$("#contractValueLable").text("含增值税合同金额：");
+						$("#contractValueNovatLable").text("不含增值税合同金额：");
+						$("#vatRateLable").text("增值税税率：");
+						$("#originalContractValueContent,#originalContractValueNovatContent,#originalVatRateContent").remove();
+					}
+				}
+			};
+			App.setFormValues("#contractOverviewForm",data,valueCallback);
 		}
 	}
 	

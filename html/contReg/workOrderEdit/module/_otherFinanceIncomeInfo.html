@@ -55,7 +55,7 @@
 	function getPromiseIncome(){
 		var url = serverPath + "contractOrderEditorController/getPromiseIncomeId";
 		var postData = JSON.stringify({wcardId:wcardId});
-		//App.formAjaxJson(url, "post", postData, successCallback);
+		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			App.setFormValues("#promiseIncomeForm",data);

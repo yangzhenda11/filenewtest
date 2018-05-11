@@ -9,33 +9,35 @@
 		<div class="row">
 			<div class="portlet-body">
 				<div class="tableToobarContent">
-					<button class="btn red" type="button" onclick="addInvoiceTr()"><i class="iconfont icon-add"></i> 新增</button>
-					<button class="btn red" type="button" onclick="delectsInvoiceTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
+					<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i> 新增</button>
+					<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
 				</div>
-				<table class="table table-hover table-bordered table-striped table-align" id="incomeLinerentTable">
-					<thead>
-						<tr>
-							<th><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
-							<th>序号</th>
-							<th>产品类型</th>
-							<th>产品名称</th>
-							<th>产品属性</th>
-							<th>稽核标签</th>
-							<th>固定月租</th>
-							<th>线路数量</th>
-							<th>合计月租</th>
-							<th>一次性费用</th>
-							<th>其他费用</th>
-							<th>结算周期</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody id="incomeLinerentTbody">
-						<tr class="emptyTr">
-							<td colspan="13">暂无线路资费清单</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table table-hover table-bordered table-striped table-align" id="incomeLinerentTable" style="min-width: 1700px;">
+						<thead>
+							<tr>
+								<th><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
+								<th>序号</th>
+								<th>产品类型</th>
+								<th>产品名称</th>
+								<th>产品属性</th>
+								<th>稽核标签</th>
+								<th>固定月租</th>
+								<th>线路数量</th>
+								<th>合计月租</th>
+								<th>一次性费用</th>
+								<th>其他费用</th>
+								<th>结算周期</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="incomeLinerentTbody">
+							<tr class="emptyTr">
+								<td colspan="13">暂无线路资费清单</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -44,12 +46,12 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_incomeLinerentId(value){
+	function setPageId_incomeLinerentListId(value){
 		var valueKey = 0;
-		$.each($("#invoiceTbody tr"), function(k,v) {
+		$.each($("#incomeLinerentTbody tr"), function(k,v) {
 			if(!$(v).hasClass("emptyTr")){
 				if($(v).data("id") != undefined){
-					$(v).data("id",value[valueKey]);
+					$(v).data("id",value[linerentId]);
 					valueKey++;
 				}
 			}
@@ -59,20 +61,28 @@
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_incomeLinerent(isSubmit){
-		var invoiceDataList = [];
-		$.each($("#invoiceTbody tr"),function(k,v){
+	function getValue_incomeLinerentList(isSubmit){
+		var incomeLinerentDataList = [];
+		$.each($("#incomeLinerentTbody tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
-				var invoiceDataItem = {};
-				invoiceDataItem.wcardId = wcardId;
-				invoiceDataItem.contractNumber = contractNumber;
-				invoiceDataItem.invoiceId = $(v).data("id");
-				invoiceDataItem.invoiceTitle = $(v).find(".invoiceTitleName").val();
-				invoiceDataItem.invoiceType = $(v).find(".invoiceTypeName").val();
-				invoiceDataList.push(invoiceDataItem);
+				var incomeLinerentDataItem = {};
+				incomeLinerentDataItem.wcardId = wcardId;
+				incomeLinerentDataItem.contractNumber = contractNumber;
+				incomeLinerentDataItem.linerentId = $(v).data("id");
+				incomeLinerentDataItem.productKind = $(v).find(".productKind").val();
+				incomeLinerentDataItem.productName = $(v).find(".productName").val();
+				incomeLinerentDataItem.productAttr = $(v).find(".productAttr").val();
+				incomeLinerentDataItem.auditLabel = $(v).find(".auditLabel").val();
+				incomeLinerentDataItem.fixedMonthRent = $(v).find(".fixedMonthRent").val();
+				incomeLinerentDataItem.lineCount = $(v).find(".lineCount").val();
+				incomeLinerentDataItem.totalMonthRent = $(v).find(".totalMonthRent").val();
+				incomeLinerentDataItem.onceCost = $(v).find(".onceCost").val();
+				incomeLinerentDataItem.otherCost = $(v).find(".onceCost").val();
+				incomeLinerentDataItem.settlementFrequency = $(v).find(".settlementFrequency").val();
+				incomeLinerentDataList.push(incomeLinerentDataItem);
 			}
 		});
-		return invoiceDataList;
+		return incomeLinerentDataList;
 	}
 	//name自增基础值
 	var isCreateIncomeLinerentTrLength = 0;
@@ -89,9 +99,10 @@
 	var incomeLinerentCycle = "";
 	//获取字典select Html;
 	getIncomeLinerenDict();
-	
+	//获取线路资费信息
+	getIncomeLinerenInfo();
 	/*
-	 * 获取开票信息字典值
+	 * 获取线路资费信息字典值
 	 */
 	function getIncomeLinerenDict() {
 		App.getDictInfo(9060,getIncomeLinerentType);
@@ -126,39 +137,75 @@
 	/*
 	 * 获取开票信息
 	 */
-	function getInvoiceInfo() {
-		var url = serverPath + "contractOrderEditorController/getInvoiceId";
+	function getIncomeLinerenInfo() {
+		var url = serverPath + "contractOrderEditorController/getLinerentId";
 		var postData = JSON.stringify({wcardId:wcardId});
 		App.formAjaxJson(url, "post", postData, successCallback);
 
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				if($("#invoiceTbody .emptyTr")[0] != undefined){
-					$("#invoiceTbody .emptyTr").remove();
+				if($("#incomeLinerentTbody .emptyTr")[0] != undefined){
+					$("#incomeLinerentTbody .emptyTr").remove();
 				};
-				isCreateInvoiceTrLength = data.length;
-				var selectHtml = "<option value=''>请选择</option>";
-				$.each(invoiceType, function(k,v) {
-					selectHtml += "<option value='"+ k +"'>"+ v +"</option>";
-				});
+				isCreateIncomeLinerentTrLength = data.length;
 				for(var i = 0; i < data.length; i++){
-					var invoiceTitleName = "invoiceTitle"+i;
-					var invoiceTypeName = "invoiceType"+i;
-					var appendHtml = "<tr data-id='"+ data[i].invoiceId +"'>"+
-										"<td><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
+					var productKind = "productKind" + i;
+					var productName = "productName" + i;
+					var productAttr = "productAttr" + i;
+					var auditLabel = "auditLabel" + i;
+					var fixedMonthRent = "fixedMonthRent" + i;
+					var lineCount = "lineCount" + i;
+					var totalMonthRent = "totalMonthRent" + i;
+					var onceCost = "onceCost" + i;
+					var otherCost = "otherCost" + i;
+					var settlementFrequency = "settlementFrequency" + i;
+					var appendHtml = "<tr data-id='"+ data[i].linerentId +"' class='"+ productName +"'>"+
+										"<td><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
 										"<td class='orderNumber'></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ data[i].invoiceTitle +"' /></div></td>"+
-										"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"' >"+ selectHtml +"</select></div></td>"+
-										"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+										"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='请选择产品类型' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
+										"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
+										"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
+										"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+data[i].fixedMonthRent+"' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' value='"+data[i].lineCount+"'  /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+data[i].totalMonthRent+"' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+data[i].onceCost+"' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+data[i].otherCost+"' /></div></td>"+
+										"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
+										"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 									"</tr>";
-					$("#invoiceTbody").append(appendHtml);
-					App.initFormSelect2("."+invoiceTypeName);
-					$("select[name='"+invoiceTypeName+"']").val(data[i].invoiceType).trigger("change");
-					addNotEmptyValidatorField(invoiceTitleName,"发票抬头不能为空");
-					addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
-					addInvoiceTableSort();
-					App.checkAllFn("#invocieCheckAll","invoiceCheck");
+					$("#incomeLinerentTbody").append(appendHtml);
+					App.initFormSelect2("."+productName);
+					$("select[name='"+productKind+"']").val(data[i].productKind).trigger("change");
+					$("select[name='"+productName+"']").val(data[i].productName).trigger("change");
+					$("select[name='"+productAttr+"']").val(data[i].productAttr).trigger("change");
+					$("select[name='"+auditLabel+"']").val(data[i].auditLabel).trigger("change");
+					$("select[name='"+settlementFrequency+"']").val(data[i].settlementFrequency).trigger("change");
+					addNotEmptyValidatorField(productKind,"产品类型不能为空");
+					addNotEmptyValidatorField(productName,"产品名称不能为空");
+					addNotEmptyValidatorField(productAttr,"产品属性不能为空");
+					addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
+					addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
+					var isInteger = {
+						regexp : {
+							regexp : /^(0|[1-9][0-9]*)$/,
+							message : '请输入大于等于0的整数'
+						}
+					};
+					var isMoney = {
+						regexp : {
+							regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
+							message : '请输入正确的金额'
+						}
+					}
+				   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);
+				   	App.addValidatorField("#workOrderContentForm",fixedMonthRent,isMoney);
+				   	App.addValidatorField("#workOrderContentForm",totalMonthRent,isMoney);
+				   	App.addValidatorField("#workOrderContentForm",onceCost,isMoney);
+				   	App.addValidatorField("#workOrderContentForm",otherCost,isMoney);
+					addIncomeLinerentTableSort();
+					App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
 				};
 			}
 		}
@@ -181,55 +228,83 @@
 		var onceCost = "onceCost" + isCreateIncomeLinerentTrLength;
 		var otherCost = "otherCost" + isCreateIncomeLinerentTrLength;
 		var settlementFrequency = "settlementFrequency" + isCreateIncomeLinerentTrLength;
-		var appendHtml = "<tr data-id='100000'>"+
-							"<td><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
+		var appendHtml = "<tr data-id='100000' class='"+ productName +"'>"+
+							"<td><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
 							"<td class='orderNumber'></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' /></div></td>"+
-							"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"'>"+ selectHtml +"</select></div></td>"+
-							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+							"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='请选择产品类型' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
+							"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
+							"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
+							"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='0' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='0' /></div></td>"+
+							"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
+							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#incomeLinerentTbody").append(appendHtml);
-		App.initFormSelect2("."+invoiceTypeName);
-		addNotEmptyValidatorField(invoiceTitleName,"发票抬头不能为空");
-		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
-		addInvoiceTableSort();
+		App.initFormSelect2("."+productName);
+		addNotEmptyValidatorField(productKind,"产品类型不能为空");
+		addNotEmptyValidatorField(productName,"产品名称不能为空");
+		addNotEmptyValidatorField(productAttr,"产品属性不能为空");
+		addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
+		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
+		var isInteger = {
+			regexp : {
+				regexp : /^(0|[1-9][0-9]*)$/,
+				message : '请输入大于等于0的整数'
+			}
+		};
+		var isMoney = {
+			regexp : {
+				regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
+				message : '请输入正确的金额'
+			}
+		}
+	   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);
+	   	App.addValidatorField("#workOrderContentForm",fixedMonthRent,isMoney);
+	   	App.addValidatorField("#workOrderContentForm",totalMonthRent,isMoney);
+	   	App.addValidatorField("#workOrderContentForm",onceCost,isMoney);
+	   	App.addValidatorField("#workOrderContentForm",otherCost,isMoney);
+	   	addIncomeLinerentTableSort();
 		App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
 	}
 	/*
 	 * 批量删除表格数据
 	 */
-	function delectsInvoiceTr(){
+	function delectsIncomeLinerentTr(){
 		var checkInvoiceLength = $("#incomeLinerentTbody input[name='incomeLinerentCheck']:checked").length;
 		if(checkInvoiceLength == 0){
-			layer.msg("请勾选要删除的开票信息");
+			layer.msg("请勾选要删除的线路资费清单");
 		}else{
 			layer.confirm("是否要删除这"+checkInvoiceLength+"条数据？",{icon:7,title:"提示"},function(index){
 				layer.close(index);
 				$.each($("#incomeLinerentTbody input[name='incomeLinerentCheck']:checked"), function(k,v) {
 					$(v).parents("tr").remove();
 				});
-				addInvoiceTableSort();
+				addIncomeLinerentTableSort();
 				App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
-				addInvoiceTbodyEmptyTr();
+				addIncomeLinerentTbodyEmptyTr();
 			})
 		}
 	}
 	/*
 	 * 删除表格数据
 	 */
-	function delectInvoiceTr(dom){
+	function delectIncomeLinerentTr(dom){
 		layer.confirm("是否要删除此条数据？",{icon:7,title:"提示"},function(index){
 			layer.close(index);
 			$(dom).parents("tr").remove();
-			addInvoiceTableSort();
+			addIncomeLinerentTableSort();
 			App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
-			addInvoiceTbodyEmptyTr();
+			addIncomeLinerentTbodyEmptyTr();
 		})
 	}
 	/*
 	 * 表格数据增加序号
 	 */
-	function addInvoiceTableSort(){
+	function addIncomeLinerentTableSort(){
 		$.each($("#incomeLinerentTbody .orderNumber"), function(k,v) {
 			$(v).text(k+1);
 		});
@@ -237,10 +312,10 @@
 	/*
 	 * 若为空增加empty值
 	 */
-	function addInvoiceTbodyEmptyTr(){
-		if($("#invoiceTbody tr").length == 0){
-			var html = '<tr class="emptyTr"><td colspan="5">暂无开票信息</td></tr>';
-			$("#invoiceTbody").html(html);
+	function addIncomeLinerentTbodyEmptyTr(){
+		if($("#incomeLinerentTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="13">暂无线路资费清单</td></tr>';
+			$("#incomeLinerentTbody").html(html);
 		}
 	}
 </script>

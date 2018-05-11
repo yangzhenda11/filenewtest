@@ -170,7 +170,11 @@ function modal_passBybuss(flowParam){
 	function queryCallback(){
 		var fileInfo = getFileItemInfo();
 		$("#commomModal").modal("hide");
-		var postData = flowParam;
+		if(flowParam){
+			var postData = flowParam;
+		}else{
+			var postData = {};
+		}
 		postData.verifyId = verifyId;
 		postData.storeId = fileInfo[0].data;
 		postData.contractId = contractId;
@@ -181,7 +185,7 @@ function modal_passBybuss(flowParam){
 			});
 		}
 		function improperCallback(result){
-			parent.layer.alert(result.message,{icon:1});
+			parent.layer.alert(result.message,{icon:2});
 		}
 	}
 	App.getFileUploadModal(setting,queryCallback);

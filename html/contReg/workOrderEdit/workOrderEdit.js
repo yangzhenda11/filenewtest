@@ -4,7 +4,8 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;
-var wcardId = "123123123123";		//主键ID 工单ID         测试
+//var wcardId = "123123123123";		//主键ID 工单ID         测试	2支出
+var wcardId = "123123123333"		//主键ID 工单ID         测试	1:收入
 var contractId = null;				//合同ID
 var wcardTypeCode = null;			//合同类型		0:其他类型;1:收入-租线类;2:支出-采购类',
 var contractNumber = null;			//合同编号
@@ -48,10 +49,6 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
-//			domObj.unshift({key:"test3",value:"module/_otherFinanceIncomeInfo.html"}) 
-//			domObj.unshift({key:"test4",value:"module/_alterationIncomeInfo.html"}) 
-//			domObj.unshift({key:"test1",value:"module/_lineChargesList.html"}) 
-//			domObj.unshift({key:"test2",value:"module/_appointReceiptInfo.html"}) 
 			setDomContent(domObj);
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})

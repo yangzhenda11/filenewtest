@@ -112,7 +112,9 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			App.setFormValues("#purchaseForm",data);
+			var valueCallback = {'frameworkAgreement':function(value){return value == 1 ? "是":"否"},
+			'materialAgreement':function(value){return value == 1 ? "是":"否"}}
+			App.setFormValues("#purchaseForm",data,valueCallback);
 		}
 	}
 </script>

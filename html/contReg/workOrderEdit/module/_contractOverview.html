@@ -118,7 +118,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 form-group">
+			<div class="col-sm-6 form-group hidden" id="isFixedDiv" name="isFixedDiv">
 				<label for="isFixed" class="control-label">是否固定金额：</label>
 				<div class="valiParent">
 					<div class="ui-radio-list ui-radio-inline">
@@ -136,19 +136,19 @@
 				</div>
 			</div>
 			<div class="hidden" id="isNotFixedOver">
-				<div class="col-sm-6 form-group">
+				<div class="col-sm-6 form-group hidden" id="vatRateDiv" name="vatRateDiv">
 					<label for="vatRate" class="control-label">增值税税率：</label>
 					<div class="valiParent">
 						<input type="text" class="form-control" id="vatRate" name="vatRate" disabled="disabled" />
 					</div>
 				</div>
-				<div class="col-sm-6 form-group">
+				<div class="col-sm-6 form-group hidden" id="valiParentDiv" name="valiParentDiv">
 					<label for="contractValue" class="control-label">含增值税合同金额：</label>
 					<div class="valiParent">
 						<input type="text" class="form-control" id="contractValue" name="contractValue" disabled="disabled" />
 					</div>
 				</div>
-				<div class="col-sm-6 form-group">
+				<div class="col-sm-6 form-group hidden" id="contractValueNovatDiv" name="contractValueNovatDiv">
 					<label for="contractValueNovat" class="control-label">不含增值税合同金额：</label>
 					<div class="valiParent">
 						<input type="text" class="form-control" id="contractValueNovat" name="contractValueNovat" disabled="disabled" />
@@ -201,8 +201,15 @@
 		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
+			wcardType = data.wcardType;
+			if(wcardType == 1 || wcardType == 2){
+				$("#isFixedDiv").removeClass("hidden");
+				$("#vatRateDiv").removeClass("hidden");
+				$("#valiParentDiv").removeClass("hidden");
+				$("#contractValueNovatDiv").removeClass("hidden");
+			}
 			var valueCallback = {'executeStatus':function(value){return performanceStateInfo[value]}}
-			App.setFormValues("#contractOverviewForm",data);
+			App.setFormValues("#contractOverviewForm",data,valueCallback);
 			if(data.isFixed == 1){
 				$("#isNotFixedOver").removeClass("hidden");
 			};

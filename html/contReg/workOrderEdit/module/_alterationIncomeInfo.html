@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row fieldsetForm15" id="adjustSpendForm">
+		<div class="row fieldsetForm15" id="adjustIncomeForm">
 			<input type="hidden" name="adjustId" id="adjustId" value="100000" />
 			<div class="col-sm-12 form-group">
 				<label for="protocolAdjust" class="control-label">协议变更条款：</label>
@@ -70,32 +70,34 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_Id(value){
+	function setPageId_adjustIncomeId(value){
 		$("#adjustId").val(value);
 	}
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_(isSubmit){
-		var adjustSpendData = App.getFormValues($("#"));
-		adjustSpendData.wcardId = wcardId;
-		adjustSpendData.contractNumber = contractNumber;
-		return adjustSpendData;
+	function getValue_adjustIncome(isSubmit){
+		var adjustIncomeData = App.getFormValues($("#adjustIncomeForm"));
+		adjustIncomeData.wcardId = wcardId;
+		adjustIncomeData.contractNumber = contractNumber;
+		return adjustIncomeData;
 	}
 	
 	//获取变更管理、风险、争议、关闭、评价
-	getAdjustSpend();
+	getAdjustIncom();
 	/*
 	 * 获取变更管理、风险、争议、关闭、评价
 	 */
-	function getAdjustSpend(){
+	function getAdjustIncom(){
 		var url = serverPath + "contractOrderEditorController/getAdjustIncomeId";
 		var postData = JSON.stringify({wcardId:wcardId});
-		App.formAjaxJson(url, "post", postData, successCallback);
+		//App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			App.setFormValues("#adjustSpendForm",data);
+			if(data){
+				App.setFormValues("#adjustIncomeForm",data);
+			}
 		}
 	}
 </script>

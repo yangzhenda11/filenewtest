@@ -99,7 +99,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
  */
 function downloadFile(url){
 	console.log(url);
-	App.download_file(url);
+	App.downloadFile(url);
 	
 }
 /*

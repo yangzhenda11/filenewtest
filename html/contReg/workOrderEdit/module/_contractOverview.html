@@ -277,7 +277,7 @@
 						return "终止解除";
 					}else if(value == 4){
 						return "续签合同";
-					}else if(value == 4){
+					}else if(value == 5){
 						return "子合同";
 					}else{
 						return "未知";
@@ -296,7 +296,7 @@
 			}else{
 				$("#defalutContract").remove();
 				$("#relationshipContract").removeClass("hidden");
-				$("#relatedWcardNumber").text("1231231")
+				$("#relatedWcardNumber").text(data.relatedWcardNumber);
 				if(contractNature == 2){
 					if(isFixed){
 						$("#relationshipIsFixed").removeClass("hidden");

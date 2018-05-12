@@ -3,7 +3,7 @@ var parm = App.getPresentParm();
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-var formSubmit = false;		//主键ID 工单ID         测试	2支出
+var formSubmit = false;
 var wcardId = parm.wcardId;
 var contractId = null;				//合同ID
 var wcardTypeCode = null;			//合同类型		0:其他;1:收入-租线类;2:支出-采购类',
@@ -178,7 +178,6 @@ function addNotEmptyValidatorField(name,msg){
 function backPage(){
 	window.history.go(-1);
 }
-
 //工作流相关
 //var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 //  //手动触发表单验证

@@ -15,7 +15,7 @@
 				</div>
 			</div>
 			<div class="col-sm-3 form-group">
-				<input type="text" class="form-control" id="appointReceiptTypeOther" disabled="disabled" name="typeOther" />
+				<input type="text" class="form-control hidden" id="appointReceiptTypeOther" name="typeOther" />
 			</div>
 			<div class="col-sm-6 form-group">
 				<label for="payFrequency" class="control-label">约定收款期限：</label>
@@ -76,16 +76,17 @@
 				$("#appointReceiptTypeOther").val(data.typeOther);
 				$("#payFrequency").val(data.payFrequency);
 				$("#payCondition").val(data.payCondition);
+                $("#appointReceiptPayId").val(data.payId);
 			}
 		}
 	}
 	$("#appointPayType").on("change",function(){
 		var value = $(this).val();
 		if(value == 903540){
-			$('#appointReceiptTypeOther').attr("disabled",false);
+			$('#appointReceiptTypeOther').removeClass("hidden");
 		}else{
 			$("#appointReceiptTypeOther").val("");
-			$("#appointReceiptTypeOther").attr("disabled",true)
+			$('#appointReceiptTypeOther').addClass("hidden");
 		}
 	})
 </script>

@@ -121,7 +121,7 @@ function setUserButton(isShow,businessKey){
 }
 function addCommentByuser(businessKey){
 	//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制的流程推进，handletype=1，pathselect=1
-	var flowParam=App.getFlowParam(serverPath,businessKey,1,1);
+	var flowParam=App.getFlowParam(serverPath,businessKey,1,0);
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
 		document.getElementById("businessiframe").contentWindow.modal_passBybuss(flowParam);
 	}else{

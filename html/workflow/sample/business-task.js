@@ -4,13 +4,22 @@ $(function(){
 	parent.addCustomTab({"title":"多tab测试","url":url});
 	var url1='/html/workflow/sample/business-task-tab.html';
 	parent.addCustomTab({"title":"多tab测试1","url":url1});
-	var url2='/html/workflow/sample/business-task-tab.html';
-	parent.addCustomTab({"title":"多tab测试2","url":url2});
-	var url3='/html/workflow/sample/business-task-tab.html';
-	parent.addCustomTab({"title":"多tab测试3","url":url3});
+
 	
-	console.log(getQueryString("test"));
+	console.log('businessKey='+getQueryString("businessKey"));
+	parent.setUserButton(true,getQueryString("businessKey"))
 });
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+
+function modal_passBybuss(flowParam){
+	$.post(serverPath + "business/breakAndStartProcess", flowParam, function(data) {
+		layer.alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
+		// 成功后回调模态窗口关闭方法
+		parent.modal_close();
+	});
+}
 
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
 function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId, comment, handleType, withdraw,iscandidate){
@@ -150,7 +159,7 @@ function modal_passBybuss(flowParam){
 	var iscandidate=flowParam.iscandidate;
     
 	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
-		$.post(root + "business/pushProcess", {
+		$.post(root + "business/breakAndStartProcess", {
 			"processInstanceId" : processInstanceId,//当前流程实例
 			"taskId" : taskId,//当前任务id
 			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code

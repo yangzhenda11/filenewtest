@@ -169,16 +169,7 @@
 						$("#payeeInfoTbody").append(appendHtml);
 						addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
 						addNotEmptyValidatorField(openBank,"收款方开户银行不能为空");
-						var payeeAccountNumberField = {
-							notEmpty : {
-								message : "收款方银行账号不能为空"
-							},
-							regexp : {
-								regexp : /^[0-9]+$/,
-								message : '收款方银行账号只能输入数字'
-							}
-						}
-					   	App.addValidatorField("#workOrderContentForm",accountNumber,payeeAccountNumberField);
+						addNotEmptyValidatorField(accountNumber,"付款方银行账号不能为空");
 						App.checkAllFn("#payeeCheckAll","payeeCheck");
 					}else if(data[i].accountType == 2){
 						if($("#payerInfoTbody .emptyTr")[0] != undefined){
@@ -194,16 +185,7 @@
 						$("#payerInfoTbody").append(appendHtml);
 						addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
 						addNotEmptyValidatorField(openBank,"付款方开户银行不能为空");
-						var payerAccountNumberField = {
-							notEmpty : {
-								message : "付款方银行账号不能为空"
-							},
-							regexp : {
-								regexp : /^[0-9]+$/,
-								message : '付款方银行账号只能输入数字'
-							}
-						}
-					   	App.addValidatorField("#workOrderContentForm",accountNumber,payerAccountNumberField);
+						addNotEmptyValidatorField(accountNumber,"付款方银行账号不能为空");
 						App.checkAllFn("#payerCheckAll","payerCheck");
 					}
 				};
@@ -231,16 +213,7 @@
 		$("#payeeInfoTbody").append(appendHtml);
 		addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
 		addNotEmptyValidatorField(openBank,"收款方开户银行不能为空");
-		var payeeAccountNumberField = {
-			notEmpty : {
-				message : "收款方银行账号不能为空"
-			},
-			regexp : {
-				regexp : /^[0-9]+$/,
-				message : '收款方银行账号只能输入数字'
-			}
-		}
-	   	App.addValidatorField("#workOrderContentForm",accountNumber,payeeAccountNumberField);
+		addNotEmptyValidatorField(accountNumber,"收款方银行账号不能为空");
 		App.checkAllFn("#payeeCheckAll","payeeCheck");
 	}
 	/*
@@ -302,16 +275,7 @@
 		$("#payerInfoTbody").append(appendHtml);
 		addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
 		addNotEmptyValidatorField(openBank,"付款方开户银行不能为空");
-		var payerAccountNumberField = {
-			notEmpty : {
-				message : "付款方银行账号不能为空"
-			},
-			regexp : {
-				regexp : /^[0-9]+$/,
-				message : '付款方银行账号只能输入数字'
-			}
-		}
-	   	App.addValidatorField("#workOrderContentForm",accountNumber,payerAccountNumberField);
+		addNotEmptyValidatorField(accountNumber,"付款方银行账号不能为空");
 		App.checkAllFn("#payerCheckAll","payerCheck");
 	}
 	/*

@@ -389,7 +389,7 @@ function beforeTransfer(){
 	
 	//2，设置转派选人的参数
 	var assigneeParam = { 
-			"prov": "sd",  //省分，来自需求工单，必传
+		"prov": "sd",  //省分，来自需求工单，必传
 	}
 	parent.setAssigneeParam(assigneeParam);
 	return result;
@@ -409,13 +409,16 @@ function businessPush(){
 	}
 	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
 	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
-	App.applyCandidateTask(serverPath,flowParam);
-	//modal_passBybuss(flowParam);
+	if(App.applyCandidateTask(serverPath,flowParam)){
+		modal_passBybuss(flowParam);
+	}else{
+		alert("任务申领失败！");
+		return;
+	}
 }
 
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
 function modal_passBybuss(flowParam){
-	//typeof(tmp) == "undefined"
 	var root=serverPath;//flowParam.root
 	var taskDefinitionKey=flowParam.taskDefinitionKey
 	var assignee=flowParam.assignee
@@ -424,24 +427,32 @@ function modal_passBybuss(flowParam){
 	var comment=flowParam.comment
 	var handleType=flowParam.handleType
 	var withdraw=flowParam.withdraw
-    
-	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
-		$.post(root + "contractUpload/pushProcess", {
-			"processInstanceId" : processInstanceId,//当前流程实例
-			"taskId" : taskId,//当前任务id
-			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
-			"assignee" : assignee,//下一步参与者
-			"comment" : comment,//下一步办理意见
-			"handleType" : handleType,//处理类型，1为通过，2为回退
-			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
-			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
-			"title":""//可不传，如果需要修改待办标题则传此参数。
-		}, function(data) {
-			layer.msg(data.sign);
-			
-			// 成功后回调模态窗口关闭方法
-			parent.modal_close();   
-		});
+	
+	var postData = {
+		"processInstanceId" : processInstanceId,//当前流程实例
+		"taskId" : taskId,//当前任务id
+		"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
+		"assignee" : assignee,//下一步参与者
+		"comment" : comment,//下一步办理意见
+		"handleType" : handleType,//处理类型，1为通过，2为回退
+		"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
+		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+		"title":""//可不传，如果需要修改待办标题则传此参数。
+	};
+	var url = "contractUpload/pushProcess";
+	postData.id = id;
+	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback,improperCallback);
+	function successCallback(result) {
+		alert("提交成功！");
+		document.getElementById("saveButton").style.display = "none";
+		document.getElementById("businessPushButton").style.display = "none";
+		/*parent.layer.alert("处理成功",{icon:1},function(){
+			parent.modal_close();
+		});*/
+	};
+	function improperCallback(result){
+		parent.layer.alert(result.message,{icon:1});
+	}
 }
 
 function getQueryString(name) {

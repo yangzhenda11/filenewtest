@@ -37,6 +37,7 @@
 	 * 设置页面的id值，由保存和提交后回调
 	 */
 	function setPageId_invoiceListId(value){
+		console.log(value);
 		var valueKey = 0;
 		$.each($("#invoiceTbody tr"), function(k,v) {
 			if(!$(v).hasClass("emptyTr")){

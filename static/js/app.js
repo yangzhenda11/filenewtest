@@ -840,14 +840,17 @@ var App = function() {
 		/**
 		 * 下载文件（接收下载地址）
 		 */
-		download_file: function(url) {
-			if(typeof(download_file.iframe) == "undefined") {
+		downloadFile: function(url) {
+			console.log(download_file["iframe"]);
+			if(download_file["iframe"] == null) {
 				var iframe = document.createElement("iframe");
 				download_file.iframe = iframe;
 				document.body.appendChild(download_file.iframe);
-			}
+			};
+			download_file.iframe.innerHTML('<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">');
 			download_file.iframe.src = url;
 			download_file.iframe.style.display = "none";
+			console.log(download_file.iframe.innerHTML())
 		},
 		/*
 		 * 修改对象的key值
@@ -2239,6 +2242,7 @@ var App = function() {
         	return flowparam;
         },
         applyCandidateTask:function(serverPath,flowParam){
+        	var applyresult=false;
     		$.ajax({
     			type: 'get',
     			url: serverPath+"workflowrest/applyCandidateTask",
@@ -2249,16 +2253,19 @@ var App = function() {
     			success: function(result){
     				var data = result;
     				if (data.success == 1){
-    					layer.msg(data.sign);
+    					applyresult=true;
+    					//layer.msg(data.sign);
     				}else {
-    					layer.msg(data.sign);
-    					return;
+    					//layer.msg(data.sign);
+    					applyresult=false;
     				} 
     			},
     			error: function(result) {
-    				layer.alert("流程参数异常，请联系管理员！", {icon: 2,title:"错误"});
+    				applyresult=false;
+    				//layer.alert("流程参数异常，请联系管理员！", {icon: 2,title:"错误"});
     			}
     		});
+    		return applyresult;
         }
         
         
@@ -2338,3 +2345,5 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
+var download_file = new Object();
+download_file["iframe"] = null;

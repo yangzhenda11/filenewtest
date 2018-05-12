@@ -51,7 +51,7 @@
 		$.each($("#incomeLinerentTbody tr"), function(k,v) {
 			if(!$(v).hasClass("emptyTr")){
 				if($(v).data("id") != undefined){
-					$(v).data("id",value[linerentId]);
+					$(v).data("id",value[valueKey]);
 					valueKey++;
 				}
 			}

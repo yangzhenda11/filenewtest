@@ -443,12 +443,16 @@ function modal_passBybuss(flowParam){
 	postData.id = id;
 	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
+		alert("提交成功！");
 		document.getElementById("saveButton").style.display = "none";
 		document.getElementById("businessPushButton").style.display = "none";
-		parent.layer.alert("处理成功",{icon:1},function(){
+		/*parent.layer.alert("处理成功",{icon:1},function(){
 			parent.modal_close();
-		});
+		});*/
 	};
+	function improperCallback(result){
+		parent.layer.alert(result.message,{icon:1});
+	}
 }
 
 function getQueryString(name) {

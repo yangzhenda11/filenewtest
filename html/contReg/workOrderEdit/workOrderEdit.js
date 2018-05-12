@@ -3,11 +3,10 @@ var parm = App.getPresentParm();
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-var formSubmit = false;
-//var wcardId = "123123123123";		//主键ID 工单ID         测试	2支出
-var wcardId = "123123123333"		//主键ID 工单ID         测试	1:收入
+var formSubmit = false;		//主键ID 工单ID         测试	2支出
+var wcardId = parm.wcardId;
 var contractId = null;				//合同ID
-var wcardTypeCode = null;			//合同类型		0:其他类型;1:收入-租线类;2:支出-采购类',
+var wcardTypeCode = null;			//合同类型		0:其他;1:收入-租线类;2:支出-采购类',
 var contractNumber = null;			//合同编号
 $(function() {
 	if(parm.pageType == 1) {
@@ -40,7 +39,7 @@ function getWorkOrderInfo(){
 			}else if(wcardTypeCode == 2){
 				wcardType = "支出-采购类";
 			}else if(wcardTypeCode == 0){
-				wcardType = "其他类型";
+				wcardType = "其他";
 			};
 			for(var i = 0; i < data.length; i++){
 				var item = {
@@ -123,6 +122,7 @@ function saveContent(){
 			function successCallback(result) {
 				var data = result.data;
 				setPageIdCallback(data);
+				layer.msg("保存成功")
 			}
 			
 		}
@@ -155,15 +155,13 @@ function validate() {
  * 页面内需声明"setPageId_"+约定各页面返回的ID值，  （约定为domain的name值即保存时的各模块key+ID）
  */
 function setPageIdCallback(data){
-	if(data.length > 0){
-		$.each(data, function(k,v) {
-			if(!App.isExitsFunction("setPageId_" + k)){
-				return true;
-			};
-			var itemCallbackFn = eval('setPageId_' + k);
-			itemCallbackFn(v);
-		});
-	}
+	$.each(data, function(k,v) {
+		if(!App.isExitsFunction("setPageId_" + k)){
+			return true;
+		};
+		var itemCallbackFn = eval('setPageId_' + k);
+		itemCallbackFn(v);
+	});
 }
 /*
  * 不能为空的验证信息
@@ -176,6 +174,11 @@ function addNotEmptyValidatorField(name,msg){
 	}
    	App.addValidatorField("#workOrderContentForm",name,notEmptyValidatorField);
 }
+//返回上一页
+function backPage(){
+	window.history.go(-1);
+}
+
 //工作流相关
 //var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 //  //手动触发表单验证

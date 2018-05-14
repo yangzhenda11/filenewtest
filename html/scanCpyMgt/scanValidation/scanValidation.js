@@ -238,3 +238,14 @@ function jumpScanValidationView(verifyId){
     var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&verifyId="+verifyId;
     App.changePresentUrl(src);
 }
+/*
+ * 重置表单
+ */
+function resetValiForm(){
+	var verifyProcessStatus = $("input[name='verifyProcess']:checked").val();
+	App.resetForm('.form-horizontal');
+	if(verifyProcessStatus == 1){
+		$("input[name='verifyProcess'][value='1']").attr("checked",true);
+		$("#verifyStatus").val("9030").trigger("change");
+	}
+}

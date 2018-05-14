@@ -1,6 +1,5 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项
 var parm = App.getPresentParm();
-console.log(parm.wqdq)
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
@@ -9,6 +8,17 @@ var wcardId = parm.wcardId;
 var contractId = null;				//合同ID
 var wcardTypeCode = null;			//合同类型		0:其他;1:收入-租线类;2:支出-采购类',
 var contractNumber = null;			//合同编号
+var isEdit = 0;						//是否可以编辑
+var isApproval = 0;					//是否是合同管理员审批页面
+if(parm.isEdit == 1){
+	isEdit = 1;
+};
+if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
+	isEdit = 1;
+};
+if(parm.taskDefinitionKey == "GDQR"){
+	isApproval = 1;
+}
 $(function() {
 	if(parm.pageType == 1) {
 		$(".portlet-title").remove();

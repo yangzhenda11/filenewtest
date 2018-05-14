@@ -174,7 +174,7 @@
 			var data = result.data;
 			if(data){
 				changePostponableValidatorStatus(data.periodType,data.isPostponable);
-				$("#periodType").val(periodType).trigger('change');
+				$("#periodType").val(data.periodType).trigger('change');
 				if(data.isPostponable == 0){
 					$("input[name='isPostponable'][value=0]").prop("checked",true);
 				}else{

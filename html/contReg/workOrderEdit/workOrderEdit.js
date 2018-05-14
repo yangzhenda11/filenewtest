@@ -112,6 +112,9 @@ function getContentValue(isSubmit) {
 		return false;
 	};
 }
+/*
+ * 保存按钮点击
+ */
 function saveContent(){
 	if(formSubmit){
 		var submitData = getContentValue();
@@ -128,6 +131,29 @@ function saveContent(){
 		}
 	}
 }
+
+/*
+ * 提交按钮点击
+ */
+function submitContent(){
+	if(formSubmit){
+	//手动触发表单验证
+		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
+	    bootstrapValidator.validate();
+	    if(!bootstrapValidator.isValid()){
+	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
+	        $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
+	    	return false;
+	    }else{
+	    	var submitData = getContentValue(true);
+	    	if(submitData){
+				console.log(submitData);
+				layer.msg("模拟提交");
+			}
+    	}	
+	}
+}
+
 /*
  * 表单验证
  * 每个页面中单独往里增加内容，提交时先验证表单
@@ -139,17 +165,9 @@ function validate() {
 		message: '校验未通过',
 		container: 'popover',
 		fields: {}
-	}).on('success.form.bv', function(e) {
-		e.preventDefault();
-		if(formSubmit){
-			var submitData = getContentValue(true);
-			if(submitData){
-				//alert("提交");
-				console.log(submitData);
-			}
-		}
 	});
 }
+
 /*
  * 保存或提交后更改各模块内对于ID值得callback函数
  * 页面内需声明"setPageId_"+约定各页面返回的ID值，  （约定为domain的name值即保存时的各模块key+ID）
@@ -178,12 +196,3 @@ function addNotEmptyValidatorField(name,msg){
 function backPage(){
 	window.history.go(-1);
 }
-//工作流相关
-//var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
-//  //手动触发表单验证
-//  bootstrapValidator.validate();
-//  if(!bootstrapValidator.isValid()){
-//      layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-//      $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
-//  	return false;
-//  };

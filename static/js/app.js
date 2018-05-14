@@ -1091,6 +1091,24 @@ var App = function() {
 		    } 
 		},
 		/*
+		 * 金额三位加逗号
+		 */
+		unctionToThousands: function(count) {
+			var count = (count || 0).toString(), result = '';
+			var decimals = count.split(".")[1];
+			var num = count.split(".")[0];
+		    while (num.length > 3) {
+		        result = ',' + num.slice(-3) + result;
+		        num = num.slice(0, num.length - 3);
+		    }
+		    if (num) { result = num + result; }
+		    if(decimals == undefined){
+		    	return result;
+		    }else{
+		    	return result + "." + decimals;
+		    }
+		},
+		/*
 		 * 重置form表单
 		 */
 		resetForm:function(obj){

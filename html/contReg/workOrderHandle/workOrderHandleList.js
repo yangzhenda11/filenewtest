@@ -78,9 +78,7 @@ function searchWorkOrderHandle(retainPaging) {
 }
 
 function manualCreation(){
-	/*var src = "/html/contReg/workOrderEdit/manualCreationEdit.html";
-	App.changePresentUrl(src);*/
-	$("#manualCreationEditModal").load("manualCreationEdit.html",function(){
+	$("#manualCreationEditModal").load("_manualCreationEdit.html",function(){
 		$("#manualCreationEditModal").modal("show");
 	});
 }

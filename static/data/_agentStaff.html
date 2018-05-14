@@ -36,6 +36,43 @@
         setKey = key;
         dom = inputDom;
         $("#commomModal").modal("show");
+        //承办人树ztree配置
+        var orgsSetting = {
+			async: {
+				enable: true,
+				url: "",
+				type: "get",
+				dataType: 'json',
+				dataFilter: orgsfilter
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "orgId",
+					pIdKey: "parent_id"
+				},
+				key: {
+					name: "orgName"
+				}
+			},
+			view: {
+				dblClickExpand: false
+			},
+			callback: {
+				onAsyncError: onAsyncError,
+				onClick: onClick,
+				beforeAsync: zTreeBeforeAsync
+			}
+		};
+		
+		function orgsfilter(treeId, parentNode, responseData) {
+			var responseData = responseData.data;
+			if(responseData) {
+				return responseData;
+			} else {
+				return null;
+			}
+		}
         //配置
         var treeSetting = {
             view: {

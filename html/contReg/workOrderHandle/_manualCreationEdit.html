@@ -1,0 +1,62 @@
+<div class="modal-dialog" role="document" style="width: 60%;">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel">手工创建工单</h4>
+		</div>
+		<div class="modal-body modalForm25">
+       		<div class="col-sm-11 form-group">
+				<label for="contractNumber" class="control-label">合同编号：</label>
+					<div class="valiParent">
+						<div class="input-group">	
+						<input type="text" id="contractDataSearch" name="contractDataSearch" class="form-control"/>
+						<span class="input-group-addon" id="searchContractData" data-toggle="modal" data-target="#contractListModal"><i class="iconfont icon-search"></i></span>
+					</div>
+				</div>
+           	</div>
+           	<div class="col-sm-11 form-group">
+				<label for="contractName" class="control-label">合同名称：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="contractName" disabled="disabled" value="" />
+				</div>
+           	</div>
+           	<div class="col-sm-11 form-group">
+				<label for="unicomPartyName" class="control-label">我方主体：</label>
+				<div class="valiParent">
+					<div class="divInput" id="unicomPartyName"></div>
+				</div>
+           	</div>
+           	<div class="col-sm-11 form-group">
+				<label for="oppoPartyName" class="control-label">对方主体：</label>
+				<div class="valiParent">
+					<div class="divInput" id="oppoPartyName"></div>
+				</div>
+           	</div>
+           	<div class="col-sm-11 form-group">
+				<label for="undertakeName" class="control-label">承办人：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="undertakeName" disabled="disabled" value="" />
+				</div>
+           	</div>
+           	<div class="col-sm-11 form-group">
+				<label for="executeDeptName" class="control-label">承办部门：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="executeDeptName" disabled="disabled" value="" />
+				</div>
+           	</div>
+           	<div class="col-sm-11 form-group">
+				<label for="approveDate" class="control-label">审批通过时间：</label>
+				<div class="valiParent">
+					<input type="text" class="form-control" id="approveDate" disabled="disabled" value="" />
+				</div>
+           	</div>
+	            	
+		</div>
+		<div class="modal-footer">
+			<button type="button" onclick="createWorkOrder()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 创建</button>
+			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+		</div>
+	</div>
+</div>
+<script src="manualCreationEdit.js" type="text/javascript" charset="utf-8"></script>
+

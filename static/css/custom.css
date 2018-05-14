@@ -385,13 +385,8 @@ th.thAlignCenter{
 .defaultModalWidth{
 	width: 90%;
 }
-.defaultModalForm .form-group{
+.defaultModalForm .form-group,.modalForm25 .form-group{
 	display:table;
-}
-.defaultFieldsetForm .form-group{
-	display:table;
-	padding-left: 5px;
-	padding-right: 5px;
 }
 .defaultModalForm .form-group > label{
 	width: 30%;
@@ -402,6 +397,21 @@ th.thAlignCenter{
     display:table-cell;
     text-align: right;
 }
+
+.modalForm25 .form-group > label{
+	width: 23%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+    text-align: right;
+}
+.defaultFieldsetForm .form-group,.fieldsetForm15 .form-group{
+	display:table;
+	padding-left: 5px;
+	padding-right: 5px;
+}
 .defaultFieldsetForm .form-group > label{
 		width: 20%;
     min-height: 1px;
@@ -410,19 +420,6 @@ th.thAlignCenter{
     vertical-align:middle;    
     display:table-cell;
 }
-.defaultModalForm .form-group > .valiParent,.defaultFieldsetForm .form-group > .valiParent,.fieldsetForm15 .form-group > .valiParent{
-		width: 100%;
-		float: left;
-	  position: relative;
-    min-height: 1px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.fieldsetForm15 .form-group{
-	display:table;
-	padding-left: 5px;
-	padding-right: 5px;
-}
 .fieldsetForm15 .form-group > label{
 		width: 15%;
     min-height: 1px;
@@ -430,6 +427,22 @@ th.thAlignCenter{
     padding:0 10px 0 0;
     vertical-align:middle;    
     display:table-cell;
+}
+.defaultModalForm .form-group > .valiParent,.modalForm15 .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  position: relative;
+    min-height: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.defaultFieldsetForm .form-group > .valiParent,.fieldsetForm15 .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  position: relative;
+    min-height: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /*必填*号*/

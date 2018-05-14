@@ -11,8 +11,8 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
         "contentType":"application/json;charset=utf-8",
         "url": serverPath+'workOrderHandle/workOrderHandleList',
         "data": function(d) {//自定义传入参数
-        	d.contractNumber = $("#contractNumber").val();
-        	d.contractName = $("#contractName").val();
+        	d.contractNumber = $("#contractNumberSel").val();
+        	d.contractName = $("#contractNameSel").val();
 			d.createDateBegin = $("#create_date_begin").val();
 			d.createDateEnd = $("#create_date_end").val();
            	return JSON.stringify(d);

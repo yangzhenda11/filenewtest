@@ -78,8 +78,11 @@ function searchWorkOrderHandle(retainPaging) {
 }
 
 function manualCreation(){
-	var src = "/html/contReg/workOrderEdit/manualCreationEdit.html";
-	App.changePresentUrl(src);
+	/*var src = "/html/contReg/workOrderEdit/manualCreationEdit.html";
+	App.changePresentUrl(src);*/
+	$("#manualCreationEditModal").load("manualCreationEdit.html",function(){
+		$("#manualCreationEditModal").modal("show");
+	});
 }
 
 //跳转到上传页面

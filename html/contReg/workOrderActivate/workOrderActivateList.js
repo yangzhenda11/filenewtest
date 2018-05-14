@@ -112,6 +112,6 @@ function searchWorkOrderActivate(retainPaging) {
 
 //跳转到上传页面
 function jumpSanCpyQueryDetail(id){
-	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&isEdit=0&taskDefinitionKey=GDQR&wcardId="+id;
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
 	App.changePresentUrl(src);
 }

@@ -45,7 +45,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 	        "data": "ctreatedDate",
 	        "title": "创建日期",
 	        render: function(data, type, full, meta) {
-	            return formatDateTime(data);
+	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
 	    {
@@ -100,6 +100,6 @@ function manualCreation(){
 
 //跳转到上传页面
 function jumpSanCpyQueryDetail(id){
-	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&wcardId="+id;
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&isEdit=1&wcardId="+id;
 	App.changePresentUrl(src);
 }

@@ -43,16 +43,8 @@ function verifyProcessTrue() {
             "type": "POST",
             "url": serverPath + 'sysScanValidation/listSysScanValidationInfo',
             "data": function(d) {
-<<<<<<< HEAD
-                var formData = $("#scanValidationForm").serializeArray();//把form里面的数据序列化成数组
-                formData.forEach(function (e) {
-=======
-                var body = {};
-                body.start = d.start; //开始的
-                body.length = d.length; //要取的数据的
                 var formData = $("#scanValidationForm").serializeArray(); //把form里面的数据序列化成数组
                 formData.forEach(function(e) {
->>>>>>> 修复系统管理页面细节
                     d[e.name] = e.value.trim();
                 });
                 if ($("#contractType").data("exactSearch")) {

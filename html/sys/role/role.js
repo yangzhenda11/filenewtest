@@ -180,8 +180,9 @@ function findDetail(itemId) {
  * daiyw
  */
 function findStaff(roleId) {
+    $("#modal").empty();
+    $("#modal").modal("show");
     $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
-        $("#modal").modal("show");
         getRoleStaffTable(roleId);
     });
 }

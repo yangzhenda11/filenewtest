@@ -2,6 +2,12 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
+var ajaxObj = {
+    "url" :  serverPath + "dicts/listChildrenByDicttId",
+    "type" : "post",
+    "data" : {"dictId": 9040}
+}
+App.initAjaxSelect2("#wcardStatus",ajaxObj,"dictValue","dictLabel","请选择工单状态");
 
 /*
  * 初始化表格
@@ -13,7 +19,7 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         "url": serverPath+'workOrderQuery/workOrderQueryList',
         "data": function(d) {//自定义传入参数
         	if($("#contractType").data("exactSearch")){
-        		d.contractType = $("#contractType").data("typeId");
+        		d.contractType = $("#contractType").data("typeCode");
         	}else{
         		d.contractTypeName = $("#contractType").val();
         	};
@@ -91,14 +97,14 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
 	        "data": "ctreatedDate",
 	        "title": "创建日期",
 	        render: function(data, type, full, meta) {
-	            return formatDateTime(data);
+	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
 	    {"data": "undertakeName","title": "承办人"},
 	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
-        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
+        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"25%"},
         {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
-        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"}
+        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"25%"}
 	]
 });
 
@@ -119,7 +125,7 @@ function searchWorkOrder(retainPaging) {
 $(function(){
 	//合同类型
 	$("#searchContractType").click(function(){
-		App.getCommonModal("contractType","#contractType","typeFullname","typeId");
+		App.getCommonModal("contractType","#contractType","typeFullname","typeCode");
 	})
 	//承办人
 	$("#searchAgentStaff").click(function(){

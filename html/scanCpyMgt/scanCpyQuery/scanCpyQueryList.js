@@ -65,7 +65,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 	        "data": "approveDate",
 	        "title": "审批通过时间",
 	        render: function(data, type, full, meta) {
-	            return formatDateTime(data);
+	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
         {

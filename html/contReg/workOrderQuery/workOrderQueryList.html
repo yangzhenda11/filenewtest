@@ -7,10 +7,14 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/simple-line-icons/simple-line-icons.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 		<title></title>
 	</head>
 	<body>
@@ -23,12 +27,12 @@
 				</div>
 				<div class="portlet-body">
 					<div class="page-search">
-						<form class="form-horizontal" action="">
+						<form class="form-horizontal" action="" style="overflow: visible;">
 							<div class="row page-search-form">
 								<div class="col-sm-4">
 									<div class="input-group">
-									<span class="input-group-addon searchLableText">合同编号</span>
-									<input id="contractNumber" name="contractNumber" type="text" class="form-control"/>
+										<span class="input-group-addon searchLableText">合同编号</span>
+										<input id="contractNumber" name="contractNumber" type="text" class="form-control"/>
 									</div>
 								</div>
 								<div class="col-sm-4">
@@ -61,7 +65,9 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">工单状态</span>
-										<input type="text" id="wcardStatus" name="wcardStatus" class="form-control">
+										<div class="valiParent">
+                        					<select id="wcardStatus" data-allowSearch='5' name="wcardStatus" class="form-control"></select>
+                    					</div>
 									</div>
 								</div>
 								<div class="col-sm-4">
@@ -78,46 +84,49 @@
 										<span class="input-group-addon custorPoint" id="searchAgentStaff" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon searchLableText">工单编号</span>
-										<input type="text" id="wcardNumber" name="wcardNumber" class="form-control">
-									</div>
+								<div class="col-sm-12 page-search-more">
+									<a href="javascript:;">更多搜索 <i class="fa fa-angle-double-right"></i></a>
 								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon searchLableText">单位名称</span>
-										<input type="text" id="contractOrganitzation" name="contractOrganitzation" class="form-control">
+								<div class="page-search-moreBody">
+									<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon searchLableText">工单编号</span>
+											<input type="text" id="wcardNumber" name="wcardNumber" class="form-control">
+										</div>
 									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon searchLableText">合同审批通过日期</span>
-										<input type="text" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        class="form-control" readonly="readonly" />
-                                        <span class="input-group-addon searchLableText" >至</span>
-                                        <input type="text" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        class="form-control" readonly="readonly" />
+									<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon searchLableText">单位名称</span>
+											<input type="text" id="contractOrganitzation" name="contractOrganitzation" class="form-control">
+										</div>
 									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon searchLableText">工单创建日期</span>
-										<input type="text" id="create_date_begin" name="create_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        class="form-control" readonly="readonly" />
-                                        <span class="input-group-addon searchLableText" >至</span>
-                                        <input type="text" id="create_date_end" name="create_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        class="form-control" readonly="readonly" />
+									<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon searchLableText">合同审批通过日期</span>
+											<input type="text" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        		class="form-control" readonly="readonly" />
+                                        	<span class="input-group-addon searchLableText" >至</span>
+                                        	<input type="text" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        		class="form-control" readonly="readonly" />
+										</div>
 									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon searchLableText">签订盖章日期</span>
-										<input type="text" id="sealAndSign_date_begin" name="sealAndSign_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        class="form-control" readonly="readonly" />
-                                        <span class="input-group-addon searchLableText" >至</span>
-                                        <input type="text" id="sealAndSign_date_end" name="sealAndSign_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        class="form-control" readonly="readonly" />
+									<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon searchLableText">工单创建日期</span>
+											<input type="text" id="create_date_begin" name="create_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                       	 		class="form-control" readonly="readonly" />
+                                        	<span class="input-group-addon searchLableText" >至</span>
+                                        	<input type="text" id="create_date_end" name="create_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        		class="form-control" readonly="readonly" />
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="input-group">
+											<span class="input-group-addon searchLableText">签订盖章日期</span>
+											<input type="text" id="sealAndSign_date_begin" name="sealAndSign_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+                                        	<span class="input-group-addon searchLableText" >至</span>
+                                        	<input type="text" id="sealAndSign_date_end" name="sealAndSign_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+										</div>
 									</div>
 								</div>
 							</div>
@@ -140,14 +149,15 @@
 		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
+		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="workOrderQueryList.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

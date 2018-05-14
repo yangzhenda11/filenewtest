@@ -2363,5 +2363,3 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
-var download_file = new Object();
-download_file["iframe"] = null;

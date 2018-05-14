@@ -350,6 +350,9 @@
 		if(num == 0){
 			return "零"
 		};
+		if(num == null){
+			return ""
+		};
 		var returnValue = "人民币：";
 		returnValue += App.unctionToThousands(num);
 		returnValue += "元";

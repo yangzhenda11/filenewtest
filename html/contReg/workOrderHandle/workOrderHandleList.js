@@ -77,22 +77,6 @@ function searchWorkOrderHandle(retainPaging) {
 	}
 }
 
-
-//调整时间显示，不显示时分秒
-function formatDateTime(inputTime,type) {
-	if(inputTime){
-		var date = new Date(inputTime);
-	}else{
-		return "";
-	}
-	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
-	m = m < 10 ? ('0' + m) : m;
-	var d = date.getDate();
-	d = d < 10 ? ('0' + d) : d;
-	return y + '-' + m + '-' + d;
-}
-
 function manualCreation(){
 	var src = "/html/contReg/workOrderEdit/manualCreationEdit.html";
 	App.changePresentUrl(src);
@@ -100,6 +84,6 @@ function manualCreation(){
 
 //跳转到上传页面
 function jumpSanCpyQueryDetail(id){
-	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&isEdit=1&wcardId="+id;
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&isEdit=1&taskDefinitionKey=GDCL&wcardId="+id;
 	App.changePresentUrl(src);
 }

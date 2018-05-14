@@ -58,8 +58,13 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
 			"className": "text-center",
 			"title": "操作",
 			"render": function(data, type, full, meta) {
-				var result = '<a href="">激活</a>';
-				return result;
+				if(data) {
+					var btnArray = new Array();
+                    btnArray.push({ "name": "激活", "fn": "jumpSanCpyQueryDetail(\'"+data.wcardId+"\')","icon":"iconfont icon-add"});
+                    return App.getDataTableBtn(btnArray);
+				} else {
+					return '';
+				}
 			}
 		}
     ]
@@ -103,4 +108,10 @@ function searchWorkOrderActivate(retainPaging) {
 	} else {
 		table.ajax.reload();
 	}
+}
+
+//跳转到上传页面
+function jumpSanCpyQueryDetail(id){
+	var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&isEdit=0&taskDefinitionKey=GDQR&wcardId="+id;
+	App.changePresentUrl(src);
 }

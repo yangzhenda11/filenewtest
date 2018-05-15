@@ -1221,6 +1221,7 @@ var App = function() {
 		getDictInfo:function(code,callbackFn){
 			var postData = {"dictId": code};
 			App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, null, null, null, false);
+
 			function successCallback(result) {
 				var data = result.data;
 				var resturnData = {};
@@ -1997,8 +1998,8 @@ var App = function() {
                     if(c.isEditable){
                         var targetId = c.data + i;
                         if(c.isSelectData){
-                            var selectHtml = '<select name="' + c.data + '" class="form-control select2me" data-placeholder="'+c.selectPlaceholder+'" id="' + targetId + '" value="' + aData[c.data]
-                            + '" style="width:100%;" ';
+                            var selectHtml = '<select name="' + c.data + '" class="form-control select2me" data-placeholder="' + c.selectPlaceholder + '" id="' + targetId + '" value="' + aData[c.data] +
+                                '" style="width:100%;" ';
                             if(c.isDisabled){
                                 selectHtml += 'disabled ';
                             }
@@ -2285,9 +2286,6 @@ var App = function() {
     		});
     		return applyresult;
         }
-        
-        
-        
 	};
 }();
 

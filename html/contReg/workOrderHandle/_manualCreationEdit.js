@@ -42,7 +42,9 @@ function createWorkOrder(){
         data:{"contractNumber":contractNumber},
         success:function(data) {
        				if(data.status=='1'){
-       					alert("工单"+data.message+"创建成功！");
+       					var htmlStr = "工单"+data.message+"创建成功！<a href=''>点击查看</a>";
+       					document.getElementById('createResult').innerHTML=htmlStr;
+       					//alert("工单"+data.message+"创建成功！");
        				}else if(data.status=='0'){
        					alert(data.message);
        				}

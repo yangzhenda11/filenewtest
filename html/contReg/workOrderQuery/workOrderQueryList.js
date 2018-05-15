@@ -57,6 +57,8 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         	d.ctreatedDateEnd = $("#create_date_end").val();
 			d.approveDateBegin = $("#approve_date_begin").val();
 			d.approveDateEnd = $("#approve_date_end").val();
+			d.sealAndSignDateBegin = $("#sealAndSign_date_begin").val();
+			d.sealAndSignDateEnd = $("#sealAndSign_date_end").val();
            	return JSON.stringify(d);
         }
 	},

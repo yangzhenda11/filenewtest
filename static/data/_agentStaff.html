@@ -19,9 +19,11 @@
     </div>
 </div>
 <script type="text/javascript">
+	
     //系统全局变量获取
     var config = top.globalConfig;
     var serverPath = config.serverPath;
+    
     //全局变量
     var agentStaffTree = null;
     var textValue = null;
@@ -36,23 +38,27 @@
         setKey = key;
         dom = inputDom;
         $("#commomModal").modal("show");
+        var ajaxData = {
+        	'orgId':""
+        }
         //承办人树ztree配置
-        var orgsSetting = {
+        var treeSetting = {
 			async: {
 				enable: true,
-				url: "",
-				type: "get",
+				url: "/contractType/listUndertaker",
+				type: "post",
 				dataType: 'json',
-				dataFilter: orgsfilter
+				dataFilter: orgsfilter,
+				autoParam: ["id=orgId"]
 			},
 			data: {
 				simpleData: {
 					enable: true,
-					idKey: "orgId",
-					pIdKey: "parent_id"
+					idKey: "id",
+					pIdKey: "parentId"
 				},
 				key: {
-					name: "orgName"
+					name: "name"
 				}
 			},
 			view: {
@@ -60,58 +66,62 @@
 			},
 			callback: {
 				onAsyncError: onAsyncError,
-				onClick: onClick,
-				beforeAsync: zTreeBeforeAsync
+				onDblClick: setInputInfo
 			}
 		};
 		
 		function orgsfilter(treeId, parentNode, responseData) {
-			var responseData = responseData.data;
-			if(responseData) {
-				return responseData;
-			} else {
+			if(responseData.status == 1){
+				var data = responseData.data;
+				if(data){
+					for(var i = 0; i < data.length; i++){
+	        			if(data[i].orgType != ""){
+	        				data[i].isParent = "true";
+	        			}
+		        	};
+		        	return data;
+				}else{
+					return null;
+				}
+			}else{
+				layer.msg(responseData.message);
 				return null;
 			}
 		}
-        //配置
-        var treeSetting = {
-            view: {
-                selectedMulti: false,
-                dblClickExpand: false
-            },
-            data: {
-                simpleData: {
-                    enable: true,
-                    idKey: "id",
-                    pIdKey: "parentId"
-                },
-                key: {
-                    name: "name"
-                }
-            },
-            callback: {
-                onDblClick: setInputInfo
-            }
-        };
-        //获取数据
-        App.formAjaxJson(serverPath + "contractType/listUndertaker", "post", JSON.stringify(ajaxData), successCallback);
-
-        function successCallback(result) {
-            var data = result.data;
-            if (data != "") {
-                if (agentStaffTree) {
-                    agentStaffTree.destroy();
-                }
-                agentStaffTree = $.fn.zTree.init($("#agentStaffTree"), treeSetting, data);
-                // 默认展开第一层
-                var nodes = agentStaffTree.getNodes();
-                for (var i = 0, l = nodes.length; i < l; i++) {
-                    agentStaffTree.expandNode(nodes[i]);
-                }
-            } else {
-                layer.msg("暂无数据，请稍后重试");
-            }
-        }
+         // 获取数据
+        $.ajax({
+	        url : serverPath + 'contractType/listUndertaker',
+	        type : "post",
+	        data : {'orgId':''},
+	        success : function(result) {
+				if (result.status == 1) {
+					var data = result.data;
+		        	if (data != "") {
+		        		for(var i = 0; i < data.length; i++){
+		        			if(data[i].orgType != ""){
+		        				data[i].isParent = "true";
+		        			}
+			        	};
+		                if (agentStaffTree) {
+		                    agentStaffTree.destroy();
+		                }
+		                agentStaffTree = $.fn.zTree.init($("#agentStaffTree"), treeSetting, data);
+                 		//默认展开第一层
+			            var nodes = agentStaffTree.getNodes();
+			            for (var i = 0, l = nodes.length; i < l; i++) {
+			                agentStaffTree.expandNode(nodes[i]);
+			            }
+		            } else {
+		                layer.msg("暂无数据，请稍后重试");
+		            }
+				} else {
+					var ms = result.message;
+					layer.msg(ms);
+				};
+	        },error: function(result) {
+				layer.alert("接口错误", {icon: 2,title:"错误"});
+			}
+	    });
         //双击事件 
         function setInputInfo(event, treeId, treeNode) {
             setInputValue(treeNode);

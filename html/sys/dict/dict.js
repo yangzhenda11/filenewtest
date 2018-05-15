@@ -267,10 +267,10 @@ function dictModal(editType,dictId,dictParentId,id){
         var ajaxObj = {
         	"url" :  serverPath + "dicts/dictProvSelect",
         	"type" : "post",
-        	"data" : id,
+        	"data" : {"id":id},
         	"async" : false
         }
-        App.initAjaxSelect2("#provinceCode",ajaxObj,"provCode","provName","请选择省分编码");
+        App.initAjaxSelect2("#provinceCode",ajaxObj,"provCode","provName","请选择适用范围");
         
         
 		if(editType == "add") {

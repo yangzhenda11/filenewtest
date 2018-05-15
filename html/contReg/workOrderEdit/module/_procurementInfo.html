@@ -112,9 +112,13 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			var valueCallback = {'frameworkAgreement':function(value){return value == 1 ? "是":"否"},
-			'materialAgreement':function(value){return value == 1 ? "是":"否"}}
-			App.setFormValues("#purchaseForm",data,valueCallback);
+			if(data == null){
+				$("#purchase").remove();
+			}else{
+				var valueCallback = {'frameworkAgreement':function(value){return value == 1 ? "是":"否"},
+					'materialAgreement':function(value){return value == 1 ? "是":"否"}}
+				App.setFormValues("#purchaseForm",data,valueCallback);
+			}
 		}
 	}
 </script>

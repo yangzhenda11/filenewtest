@@ -46,9 +46,9 @@ function getWorkOrderInfo(){
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
 			if(wcardTypeCode == 1){
-				wcardType = "收入-租线类";
+				wcardType = "收入类-租线合同";
 			}else if(wcardTypeCode == 2){
-				wcardType = "支出-采购类";
+				wcardType = "支出类-采购合同";
 			}else if(wcardTypeCode == 0){
 				wcardType = "其他";
 			};

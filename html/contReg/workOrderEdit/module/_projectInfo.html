@@ -43,7 +43,7 @@
 							"<td>"+ data[i].shareMoney +"</td>";
 				}
 			}else{
-				html = '<tr><td colspan="4">暂无项目信息</td></tr>'
+				$("#project").remove();
 			};
 			$("#projectInfoTbody").html(html);
 		}

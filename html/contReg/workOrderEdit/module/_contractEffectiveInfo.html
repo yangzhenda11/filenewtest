@@ -64,12 +64,12 @@
 					<div class="ui-radio-list ui-radio-inline">
 						<label class="ui-radio">
 							是
-							<input type="radio" value="1" name="isPostponable">
+							<input type="radio" value="1" checked="checked" name="isPostponable">
 							<span></span>
 						</label>
 						<label class="ui-radio">
 							否
-							<input type="radio" value="0" checked="checked" name="isPostponable">
+							<input type="radio" value="0" name="isPostponable">
 							<span></span>
 						</label>
 					</div>
@@ -160,7 +160,7 @@
 		}
 	}
 	//设置默认展示方式
-	changePostponableValidatorStatus(905010,0);
+	changePostponableValidatorStatus(905010,1);
 	//获取合同生效信息
 	getvalidityData();
 	/*

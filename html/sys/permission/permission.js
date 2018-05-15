@@ -8,7 +8,7 @@ var serverPath = config.serverPath;
 var perPermissionTree = null;
 var curNode = null;
 $(function() {
-    parent.data_permFilter(document);
+      parent.data_permFilter(document);
     var windowHeigth = $(window).height();
     var documentHeight = $(".portlet").outerHeight();
     if (windowHeigth > documentHeight) {

@@ -9,7 +9,7 @@
 		<div class="row defaultFieldsetForm" id="contractOverviewForm">
 			<div id="contractOverViewTitle">
 				工单编号：<span id="wcardNumber"></span>	
-				工单状态：<span id="wcardStatus"></span>
+				状态：<span id="wcardStatus"></span>
 			</div>
 			<div class="col-sm-6 form-group">
 				<label for="contractNumber" class="control-label">合同编号：</label>
@@ -268,8 +268,10 @@
 			var data = result.data;
 			var isFixed = data.isFixed;
 			var contractNature = data.contractNature;
-			$("#ourPartyName").text(data.ourPartyName);
-			$("#otherPartyName").text(data.otherPartyName);
+			var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;
+			var otherPartyName = data.otherPartyName == null ? "" : data.otherPartyName;
+			$("#ourPartyName").text(ourPartyName);
+			$("#otherPartyName").text(otherPartyName);
 			$("#wcardNumber").text(data.wcardNumber);
 			$("#wcardStatus").text(ticketStateTypeInfo[data.wcardStatus]);
 			if(contractNature == null || contractNature == 1){

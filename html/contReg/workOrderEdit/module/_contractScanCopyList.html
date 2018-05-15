@@ -51,16 +51,32 @@
 	</div>
 </div>
 <script type="text/javascript">
-	//获取合同正文扫描件
-	getContarctScanCopyContractText();
-	//获取合同附件扫描件
-	getContarctScanCopyContractAttachment();
+	//获取合同扫描件ID来获取合同扫描件
+	getContractScandocId()
+	
+	/*
+	 * 获取合同扫描件ID来获取合同扫描件
+	 */
+	function getContractScandocId(){
+		var url = serverPath + 'contractOrderEditorController/getScanningID';
+		var postData = {
+			contractId : contractId
+		}
+		App.formAjaxJson(url, "get", postData, successCallback);
+		function successCallback(result) {
+			var scandocId = result.data.scandocId;
+			//获取合同正文扫描件
+			getContarctScanCopyContractText(scandocId);
+			//获取合同附件扫描件
+			getContarctScanCopyContractAttachment(scandocId);
+		}
+	}
 	/*
 	 * 获取合同正文扫描件
 	 */
-	function getContarctScanCopyContractText(){
-		var url = serverPath + 'contractScanQuery/listContractText?id=' + contractId;
-		App.formAjaxJson(url, "post", null, successCallback);
+	function getContarctScanCopyContractText(scandocId){
+		var url = serverPath + 'contractScanQuery/listContractText?id=' + scandocId;
+		App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 		function successCallback(result) {
 			var data = result.data;
 			var html = "";
@@ -77,13 +93,17 @@
 			};
 			$("#contractMainTextTbody").html(html);
 		}
+		function improperCallback(){
+			var html = '<tr><td colspan="4">暂无合同正文扫描件信息</td></tr>'
+			$("#contractMainTextTbody").html(html);
+		}
 	}
 	/*
 	 * 获取合同附件扫描件
 	 */
-	function getContarctScanCopyContractAttachment(){
-		var url = serverPath + 'contractScanQuery/listContractAttachment?id=' + contractId;
-		App.formAjaxJson(url, "post", null, successCallback);
+	function getContarctScanCopyContractAttachment(scandocId){
+		var url = serverPath + 'contractScanQuery/listContractAttachment?id=' + scandocId;
+		App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 		function successCallback(result) {
 			var data = result.data;
 			var html = "";
@@ -99,6 +119,10 @@
 				html = '<tr><td colspan="4">暂无合同附件扫描件信息</td></tr>'
 			};
 			$("#contractAppendixTbody").html(html);
+		}
+		function improperCallback(){
+			var html = '<tr><td colspan="4">暂无合同正文扫描件信息</td></tr>'
+			$("#contractMainTextTbody").html(html);
 		}
 	}	
 </script>

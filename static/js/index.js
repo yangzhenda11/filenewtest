@@ -302,7 +302,6 @@ function changePasswd() {
 }
 
 function logout() {
-    debugger;
     App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST", null, successMethod, null, null, null, false);
 
     function successMethod(result) {

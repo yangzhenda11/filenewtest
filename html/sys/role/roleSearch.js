@@ -34,7 +34,7 @@ function getRoleTable() {
                     return '<a href=\"javascript:void(0)\" onclick = "findDetail(\'' + row.roleId + '\')">' + data + '</a>';
                 }
             },
-            { "data": "orgName", title: "所属组织" },
+            // { "data": "orgName", title: "所属组织" },
             { "data": "roleDesc", title: "角色描述" },
             {
                 "data": "roleStatus",

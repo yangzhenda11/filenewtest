@@ -13,7 +13,7 @@
   background: #EEF1F5;
   top: 8px;
   bottom: 0px;
-  left: 30%;
+  left: 33%;
 }
 .permHeightBorder {
   position: absolute;
@@ -22,10 +22,6 @@
   top: 8px;
   bottom: 0px;
   left: 33%;
-}
-#dictRightShow {
-  margin-left: 5%;
-  width: 730px;
 }
 #permissionShow {
   margin-top: 20px;

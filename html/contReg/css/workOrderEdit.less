@@ -66,3 +66,42 @@
 #appointTypeOtherContent{
     height: 34px;
 }
+#feasorTreeCotent,#feasorChecked{
+    border: 1px solid #EFEFEF;
+    overflow: auto;
+    width: 45%;
+    float: left;
+}
+#feasorTreeCotent{
+    margin-top: 30px;
+}
+#feasorCheckTool{
+    width: 10%;
+    float: left;
+    button{
+        width: 65%;
+        font-size: 22px;
+        line-height: 22px;
+        margin-left: 16%; 
+        &:nth-child(1){
+            margin-top: 100px;
+        }
+        &:nth-child(2){
+            margin-top: 30px;
+        }
+    }
+}
+#feasorChecked{
+    padding: 20px;
+    .feasorItem{
+        height: 24px;
+        line-height: 24px;
+        span{
+            cursor: pointer;
+        };
+        span.feasorCheck{
+            color: #fff;
+            background: red;
+        }
+    }
+}

@@ -9,18 +9,18 @@
 		<div class="row">
 			<div class="ui-radio-list ui-radio-inline">
 				<label class="ui-radio">
-					<input type="radio" value="1" checked="" name="feasorRadio">
+					<input type="radio" value="1" checked="" name="performerType">
 					<span></span>
 					本级履行或上下级共同履行
 				</label>
 				<label class="ui-radio">
-					<input type="radio" value="2" name="feasorRadio">
+					<input type="radio" value="2" name="performerType">
 					<span></span>
 					仅有下级组织履行
 				</label>
 			</div>
 			<div class="tableToobarContent">
-				<button type="button" class="btn red">添加主要履行人</button>
+				<button type="button" class="btn red" onclick="creatFeasorTree()">添加主要履行人</button>
 				<button type="button" class="btn red marginLeft15" onclick="delectFeasor()">删除主要履行人</button>
 			</div>
 			<table class='table table-hover table-bordered table-striped table-checkable' id="feasorTable">
@@ -43,7 +43,31 @@
 	</div>
 	<!--modal-->
 	<div class="modal fade" id="feasorModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-		
+		<div class="modal-dialog" role="document" style="width: 90%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">选择履行人</h4>
+                </div>
+                <div class="modal-body">
+                	<div id="feasorTreeCotent">
+                		<ul id="feasorTree" class="ztree feasorTree"></ul>
+                	</div>
+                	<div id="feasorCheckTool">
+                		<button type="button" class="btn red">></button>
+                		<button type="button" class="btn red"><</button>
+                	</div>
+                	<div id="feasorCheckedCotent">
+                		<p>已选人员：</p>
+                		<div id="feasorChecked"></div>
+                	</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 取消</button>
+                </div>
+            </div>
+        </div>
 	</div>
 </div>
 <script type="text/javascript">
@@ -54,10 +78,140 @@
 //	function getValue_performer(isSubmit){
 //		return {};
 //	}
-
-
-	App.checkAllFn("#feasorCheckAll","feasorCheck");
-	$("input[name='feasorRadio']").on("change",function(){
+	var feasorTree = null;
+	/*
+	 * 显示选人modal，生成选人树
+	 */
+	function creatFeasorTree(){
+		var performerType = $("input[name='performerType']:checked").val();
+		$("#feasorModal").modal("show");
+		 var documentHeight = $(".page-content").height() - 225;
+    	$("#feasorTreeCotent,#feasorChecked").css("height", documentHeight);
+		initFeasorTree(performerType);
+	}
+	//生成树
+    function initFeasorTree(performerType) {
+    	if(performerType == 1){
+    		performerType = 0;
+    	}else if(performerType == 2){
+    		performerType = 1;
+    	}else{
+    		return;
+    	};
+        //选择履行人ztree树配置
+        var treeSetting = {
+			async: {
+				enable: true,
+				url: serverPath + "contractType/listPerformer",
+				type: "post",
+				dataType: 'json',
+				dataFilter: orgsfilter,
+				autoParam: ["id=orgId","executorType"]
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "parentId"
+				},
+				key: {
+					name: "name"
+				}
+			},
+			view: {
+				selectedMulti: false,
+				dblClickExpand: false
+			},
+			callback: {
+				onAsyncError: onAsyncError,
+				onDblClick: setInputInfo
+			}
+		};
+		function orgsfilter(treeId, parentNode, responseData) {
+			if(responseData.status == 1){
+				var data = responseData.data;
+				if(data){
+					for(var i = 0; i < data.length; i++){
+	        			if(data[i]["orgType"] != ""){
+	        				data[i].isParent = "true";
+	        			};
+	        			data[i].executorType = performerType;
+		        	};
+		        	return data;
+				}else{
+					return null;
+				}
+			}else{
+				layer.msg(responseData.message);
+				return null;
+			}
+		}
+         // 获取数据
+        $.ajax({
+	        url : serverPath + 'contractType/listPerformer',
+	        type : "post",
+	        data : {'orgId':'','executorType':performerType},
+	        success : function(result) {
+				if (result.status == 1) {
+					var data = result.data;
+		        	if (data != "") {
+		        		for(var i = 0; i < data.length; i++){
+		        			if(data[i]["orgType"] != ""){
+		        				data[i].isParent = "true";
+		        			};
+		        			data[i].executorType = performerType;
+			        	};
+		                if (feasorTree) {
+		                    feasorTree.destroy();
+		                }
+		                feasorTree = $.fn.zTree.init($("#feasorTree"), treeSetting, data);
+                 		//默认展开第一层
+			            var nodes = feasorTree.getNodes();
+			            for (var i = 0, l = nodes.length; i < l; i++) {
+			                feasorTree.expandNode(nodes[i]);
+			            }
+		            } else {
+		                layer.msg("暂无数据，请稍后重试");
+		            }
+				} else {
+					var ms = result.message;
+					layer.msg(ms);
+				};
+	        },
+	        error: function(result) {
+				layer.alert("接口错误", {icon: 2,title:"错误"});
+			}
+	    });
+        //双击事件 
+        function setInputInfo(event, treeId, treeNode) {
+            setInputValue(treeNode);
+        }
+    }
+    /*
+     * 判断是否选的是人员
+     */
+    function setInputValue(treeNode) {
+        if (treeNode["orgType"] == "" || treeNode["orgType"] == undefined) {
+        	var performerType = $("input[name='performerType']:checked").val();
+            if(performerType == 1){
+            	
+//          	<div id="feasorChecked"></div><div class="feasorItem">
+//              				<span>张三</span>
+//              			</div>
+            }else if(performerType == 2){
+            	
+            }
+        } else {
+            layer.msg("请选择具体的人员", {
+                icon: 2
+            })
+        }
+    }
+    
+    
+    
+    App.checkAllFn("#feasorCheckAll","feasorCheck");
+	$("input[name='performerType']").on("change",function(){
 		//if($(this).val() == 1){
 			layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示"},function(){
 				alert(1);
@@ -78,5 +232,15 @@
 				$(v).parents("tr").remove();
 			})
 		}
-	}
+	};
+	/*
+	 * 人员选择点击
+	 */
+	$(".feasorChecked").on("click","span",function(){
+		if($(this).hasClass("feasorCheck")){
+			$(this).removeClass("feasorCheck");
+		}else{
+			$(this).addClass("feasorCheck");
+		}
+	})
 </script>

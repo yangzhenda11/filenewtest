@@ -22,11 +22,12 @@ $(function(){
 		//工单处理环节将提交按钮改为“注册完成” btId：passButton   
 		parent.setUserBtName("passButton","注册完成");
 		
-		//工单处理环节将回退按钮改为“退回承办人” btId：backButton
-		parent.setUserBtName("backButton","退回承办人");
-		
 		//工单处理环节将返回待办列表改为“关闭” btId：backTolist
 		parent.setUserBtName("backTolist","关闭");
+	}
+	if(taskDefinitionKey=='GDQR'){
+		//工单处理环节将回退按钮改为“退回承办人” btId：backButton
+		parent.setUserBtName("backButton","退回承办人");
 	}
 	
 });

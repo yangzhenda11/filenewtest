@@ -38,14 +38,11 @@
         setKey = key;
         dom = inputDom;
         $("#commomModal").modal("show");
-        var ajaxData = {
-        	'orgId':""
-        }
         //承办人树ztree配置
         var treeSetting = {
 			async: {
 				enable: true,
-				url: "/contractType/listUndertaker",
+				url: serverPath + "/contractType/listUndertaker",
 				type: "post",
 				dataType: 'json',
 				dataFilter: orgsfilter,
@@ -62,6 +59,7 @@
 				}
 			},
 			view: {
+				selectedMulti: false,
 				dblClickExpand: false
 			},
 			callback: {
@@ -118,7 +116,8 @@
 					var ms = result.message;
 					layer.msg(ms);
 				};
-	        },error: function(result) {
+	        },
+	        error: function(result) {
 				layer.alert("接口错误", {icon: 2,title:"错误"});
 			}
 	    });

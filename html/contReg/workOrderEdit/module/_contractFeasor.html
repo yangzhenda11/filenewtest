@@ -136,7 +136,7 @@
 				};
 				var html = "";
 				for(var i = 0; i < data.length; i++){
-					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-staffid="'+data[i].performerStaffId+'">'+
+					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-staffid="'+data[i].performerStaffId+'" data-companyid="'+data[i].companyId+'">'+
 	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
 	    						'<td>'+data[i].performerStaffName+'</td>'+
 	    						'<td>'+data[i].performerOrgName+'</td></tr>';
@@ -328,57 +328,60 @@
     	$("#feasorModal").modal("hide");
     	if($(".feasorItem").length > 0){
     		if(performerType == 1){
-	    		layer.confirm("将删除原有的本级履行或上下级共同履行人，是否继续?",{icon:7,title:"提示"},function(index){
-	    			layer.close(index);
-	    			if($("#feasorTbody .emptyTr")[0] != undefined){
-						$("#feasorTbody .emptyTr").remove();
-					};
-	    			var html = "";
-	    			$.each($(".feasorItem"), function(k,v) {
-	    				var orgname = $(v).data("orgname");
-	    				var orgid = $(v).data("orgid");
-	    				var staffid = $(v).data("staffid");
-	    				var staffname = $(v).text();
-	    				html += '<tr data-id="100000" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
-	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
-	    						'<td>'+staffname+'</td>'+
-	    						'<td>'+orgname+'</td></tr>';
-	    			});
-	    			$("#feasorTbody").html(html);
-	    			App.checkAllFn("#feasorCheckAll","feasorCheck");
-	    		})
+    			if($("#feasorTbody .emptyTr")[0] != undefined){
+					$("#feasorTbody .emptyTr").remove();
+				};
+				var html = "";
+    			$.each($(".feasorItem"), function(k,v) {
+    				var orgname = $(v).data("orgname");
+    				var orgid = $(v).data("orgid");
+    				var staffid = $(v).data("staffid");
+    				var staffname = $(v).text();
+    				html += '<tr data-id="100000" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
+    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+    						'<td>'+staffname+'</td>'+
+    						'<td>'+orgname+'</td></tr>';
+    			});
+				if($("#feasorTbody tr").length > 0){
+					layer.confirm("将删除原有的本级履行或上下级共同履行人，是否继续?",{icon:7,title:"提示"},function(index){
+		    			layer.close(index);
+		    			$("#feasorTbody").html(html);
+		    		});
+				}else{
+					$("#feasorTbody").html(html);
+				};
+				App.checkAllFn("#feasorCheckAll","feasorCheck");
 	    	}else{
 	    		if($("#feasorTbody .emptyTr")[0] != undefined){
 					$("#feasorTbody .emptyTr").remove();
 				};
-    			var html = "";
-//  			$.each($(".feasorItem"), function(k,v) {
-//  				var companyid = $(v).data("companyid");
-//  				var companyname = $(v).data("companyname");
-//  				var orgname = $(v).data("orgname");
-//  				$.each($("#feasorTbody tr"),function(m,n){
-//						if(!$(n).hasClass("emptyTr")){
-//							var isExistCompanyid = $(n).data("companyid");
-//							var isExistName = $(n).children().eq(1).text();
-//							if(isExistCompanyid == companyid){
-//								layer.alert(companyName+"下只能选择一个主要履行人，'+"orgname+"'与'"+isExistName+"',请删除后再进行添加",{icon:2});
-//		            			isExist = true;
-//		            			return;
-//							}
-//						}
-//					});
-//  				
-//  				var orgid = $(v).data("orgid");
-//  				var staffid = $(v).data("staffid");
-//  				var staffname = $(v).text();
-//  				
-//  				html += '<tr data-id="100000" data-companyid="'+companyid+'" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
-//  						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
-//  						'<td>'+staffname+'</td>'+
-//  						'<td>'+orgname+'</td></tr>';
-//  			});
-//  			$("#feasorTbody").append(html);
-//  			App.checkAllFn("#feasorCheckAll","feasorCheck");
+    			$.each($(".feasorItem"), function(k,v) {
+    				var companyid = $(v).data("companyid");
+    				var companyName = $(v).data("companyname");
+    				var staffname = $(v).text();
+    				var isExist = false;
+    				$.each($("#feasorTbody tr"),function(m,n){
+						if(!$(n).hasClass("emptyTr")){
+							var isExistCompanyid = $(n).data("companyid");
+							var isExistName = $(n).children().eq(1).text();
+							if(isExistCompanyid == companyid){
+								layer.alert(companyName+"下只能选择一个主要履行人，选择的'"+staffname+"'与'"+isExistName+"'重复,请删除后再进行添加",{icon:2});
+		            			isExist = true;
+							}
+						}
+					});
+    				if(!isExist){
+    					var orgid = $(v).data("orgid");
+	    				var staffid = $(v).data("staffid");
+	    				var orgname = $(v).data("orgname");
+	    				var html = '<tr data-id="100000" data-companyid="'+companyid+'" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
+	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+	    						'<td>'+staffname+'</td>'+
+	    						'<td>'+orgname+'</td></tr>';
+						$("#feasorTbody").append(html);
+	    			};
+    			});
+    			App.checkAllFn("#feasorCheckAll","feasorCheck");
 	    	}
     	}
     }
@@ -395,7 +398,14 @@
     }
     
 	$("input[name='performerType']").on("change",function(){
-		layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示"},function(index){
+		layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示",cancel: function(index, layero){  
+    		var performerType = $("input[name='performerType']:checked").val();
+			if(performerType == 1){
+				$("input[name='performerType'][value=2]").prop("checked",true);
+			}else{
+				$("input[name='performerType'][value=1]").prop("checked",true);
+			}
+  }},function(index){
 			layer.close(index);
 			if($("input[name='performerType']:checked").val() == 2){
 				$("#feasorTbody").html("");
@@ -404,6 +414,13 @@
 			};
 			App.checkAllFn("#feasorCheckAll","feasorCheck");
 			addFeasorTbodyEmptyTr();
+		}, function(){  
+			var performerType = $("input[name='performerType']:checked").val();
+			if(performerType == 1){
+				$("input[name='performerType'][value=2]").prop("checked",true);
+			}else{
+				$("input[name='performerType'][value=1]").prop("checked",true);
+			}
 		})
 	});
 	/*

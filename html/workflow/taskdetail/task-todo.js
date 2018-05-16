@@ -106,7 +106,18 @@ $(function(){
 	//合同验证结果确认环节定制的“重新上传扫描件”按钮，点按钮相当于重新发起后台验证。
 	$('#userButton').hide();
 	
+	$('#userQXSPButton').hide();
 });
+
+//工单处理环节将提交按钮改为“注册完成” btId：passButton   
+//工单处理环节将回退按钮改为“退回承办人” btId：backButton
+//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+function setUserBtName(btId,btName){
+	if(btName!=null&&typeof(btName)!="undefined"&&btName.length>0){
+		$("#"+btId).html(btName);
+	}
+}
+
 //为合同扫描件验证确认环节的“重新上传扫描件”按钮定制，控制按钮显示和绑定单击事件。
 function setUserButton(isShow,businessKey){
 	if(isShow){
@@ -122,8 +133,35 @@ function setUserButton(isShow,businessKey){
 function addCommentByuser(businessKey){
 	//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制的流程推进，handletype=1，pathselect=1
 	var flowParam=App.getFlowParam(serverPath,businessKey,1,0);
+	flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
+	
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
 		document.getElementById("businessiframe").contentWindow.modal_passBybuss(flowParam);
+	}else{
+		layer.msg("网络异常，请联系管理员！");
+	}
+}
+
+//为工单处理环节的“取消审批”按钮定制，控制按钮显示和绑定单击事件。
+function setQxspButton(isShow,businessKey){
+	if(isShow){
+		$('#userQXSPButton').show();
+		$('#userQXSPButton').click(function(){
+			addCommentQxsp(businessKey);
+		});
+	}else{
+		$('#userQXSPButton').hide();
+		$("#userQXSPButton").unbind();
+	}
+}
+
+//为工单处理环节的“取消审批”按钮定制，自己提交自己，流程历史中操作类型为“取消审批”的流程推进，handletype=1，pathselect=1
+function addCommentQxsp(businessKey){
+	var flowParam=App.getFlowParam(serverPath,businessKey,8,1);
+	flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
+	
+	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
+		document.getElementById("businessiframe").contentWindow.modal_passQxsp(flowParam);
 	}else{
 		layer.msg("网络异常，请联系管理员！");
 	}

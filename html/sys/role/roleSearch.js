@@ -27,58 +27,34 @@ function getRoleTable() {
                 return d;
             }
         },
-        "columns": [/*{
-                "data": "roleId",
-                "title": "操作",
-                "className": "text-center",
-                "render": function(data, type, row, meta) {
-                    if (data) {
-                        var btnArray = new Array();
-                        //                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
-                        if (roleUpdate) {
-                            btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
-                        }
-                        if (roleDelete) {
-                            btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
-                        }
-                        if (roleUpdate) {
-                            btnArray.push({ "name": "授权", "fn": "openAddRolePerm(\'" + row.roleName + "\',\'" + data + "\')" });
-                        }
-                        if ("1" == row.roleStatus) {
-                            btnArray.push({ "name": "禁用", "fn": "changeRoleStatus(\'" + data + "\',\'" + row.roleName + "\',0)" });
-                        } else {
-                            btnArray.push({ "name": "启用", "fn": "changeRoleStatus(\'" +data + "\',\'" + row.roleName + "\',1)" });
-                        }
-                        return App.getDataTableBtn(btnArray);
-                    } else {
-                        return '';
-                    }
-                }
-            },*/
-            {
+        "columns": [{
                 "data": "roleName",
                 title: "角色名称",
                 render: function(data, type, row, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "findDetail(\'' + row.roleId + '\')">' + data + '</a>';
                 }
             },
-            { "data": "orgName", title: "所属组织" },
+            // { "data": "orgName", title: "所属组织" },
             { "data": "roleDesc", title: "角色描述" },
-            { "data": "roleStatus", title: "角色状态",
-            	render: function(a, b, c, d) {
+            {
+                "data": "roleStatus",
+                title: "角色状态",
+                render: function(a, b, c, d) {
                     return ('1' == c.roleStatus) ? '有效' : '无效';
                 }
             },
-            { "data": "roleCount", title: "授权人数", 
-            	render: function(data, type, row, meta) {
-                return '<a href=\"javascript:void(0)\" onclick = "findStaff(\'' + row.roleId + '\')">' + data + '</a>';
+            {
+                "data": "roleCount",
+                title: "授权人数",
+                render: function(data, type, row, meta) {
+                    return '<a href=\"javascript:void(0)\" onclick = "findStaff(\'' + row.roleId + '\')">' + data + '</a>';
                 }
             },
             {
                 "data": "createDate",
                 title: "添加时间",
                 render: function(data, type, row, meta) {
-                    return App.formatDateTime(data.time, "yyyy-mm-dd");
+                    return App.formatDateTime(data, "yyyy-mm-dd");
                 }
             }
         ]
@@ -133,13 +109,9 @@ function getRoleStaffTable(roleId) {
                 return d;
             }
         },
-        "columns": [
-        	{
-                "data": null,
-                "title": "人员姓名",
-                render: function(data, type, full, meta) {
-                    return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
-                }
+        "columns": [{
+                "data": "STAFF_NAME",
+                "title": "人员姓名"
             },
             { "data": "LOGIN_NAME", "title": "账号" },
             { "data": "ORG_NAME", "title": "部门名称" },
@@ -148,7 +120,7 @@ function getRoleStaffTable(roleId) {
                 "title": "岗位状态",
                 className: "text-center",
                 render: function(a, b, c, d) {
-                    return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗':'借调' ) ;
+                    return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
                 }
             },
             {
@@ -185,9 +157,9 @@ function searchRoleStaff() {
  * 重置授权人员查询条件
  * daiyw
  */
-function reset(){
-	$("#staffName").val("");
-	$("#loginName").val("");
+function reset() {
+    $("#staffName").val("");
+    $("#loginName").val("");
 }
 /*
  * 获取角色信息

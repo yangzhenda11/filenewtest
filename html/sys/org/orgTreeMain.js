@@ -12,10 +12,10 @@ $(function() {
     App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
 
     function ajaxSuccess(result) {
-        if (result.sysConfig.val == 0) {
-            $("#isShowAdd").hide();
-            $("#isShowUpdate").hide();
-            $("#isShowDel").hide();
+        if (result.sysConfig.val == 1) {
+            $("#isShowAdd").show();
+            $("#isShowUpdate").show();
+            $("#isShowDel").show();
         }
     }
     var windowHeigth = $(window).height();

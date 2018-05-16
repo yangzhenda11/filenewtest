@@ -26,6 +26,8 @@ $(function(){
 		parent.setUserBtName("backTolist","关闭");
 	}
 	if(taskDefinitionKey=='GDQR'){
+		//工单确认环节将提交按钮改为“工单激活” btId：passButton   
+		parent.setUserBtName("passButton","工单激活");
 		//工单处理环节将回退按钮改为“退回承办人” btId：backButton
 		parent.setUserBtName("backButton","退回承办人");
 	}

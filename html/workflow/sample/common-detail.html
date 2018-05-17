@@ -39,6 +39,7 @@
                         <button id="showPanel" type="button" class="btn purple" onclick="businessPush();">业务功能入口模拟流程推动的提交</button>
                         <button id="showPanel" type="button" class="btn red" onclick="pushReceiveTask();">后台自动任务模拟提交</button>
                         <button id="showPanel" type="button" class="btn red" onclick="applyCandidateTask();">后台申领任务</button>
+                        <button id="showPanel" type="button" class="btn red" onclick="startBybussType();">根据业务类型后台模拟启动流程</button>
                     </div>
                 </div>
                 <div class="form-fieldset">
@@ -111,6 +112,12 @@
                                         <option value="1">默认单选</option>
                                         <option value="2">设置为多选</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label for="businessType" class="control-label">业务类型（用于选择启动模板）：<i class="iconfont icon-mi required"></i></label>
+                                <div class="valiParent">
+                                    <input type="text" class="form-control" id="businessType" value="" />
                                 </div>
                             </div>
                         </div>

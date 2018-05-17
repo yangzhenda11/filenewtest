@@ -143,7 +143,7 @@ function addAttachment(attachId){
 		url:'contractUpload/uploadFile',	//上传地址，非空
 		maxNumber:1,//最大上传数量
 		//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
-		fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
+		//fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
 		extraData:{attachId:attachId}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
 	};
 	function queryCallback(){//点击确定执行的函数，必传。

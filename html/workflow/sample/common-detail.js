@@ -207,3 +207,35 @@ function modal_applyCandidateTask(flowParam){
 		parent.modal_close();   
 	});
 }
+function startBybussType(){
+	var businessType=$("#businessType").val();
+	if(businessType.length==0){
+		layer.msg("请填写业务类型，否则无法找到需要启动的流程模板啊！");
+		return;
+	}
+	var taskBusinessKey=$("#taskBusinessKey").val();
+	if(taskBusinessKey.length==0){
+		layer.msg("请填写业务主键！");
+		return;
+	}
+	$.ajax({
+		type: 'get',
+		url: serverPath+'business/startBybussType?businessId='+$("#taskBusinessKey").val()+'&businessType='+businessType,
+		//data: null,
+		dataType: 'json',
+		async: false,
+		contentType: "application/json",
+		success: function(result){
+			var result = result;
+			if (result.success == 1) {
+				//currentTask=result.flowdata;
+				layer.msg(result.info);
+			} else {
+				layer.msg(result.info);
+			};
+		},
+		error: function(result) {
+			layer.alert("接口错误", {icon: 2,title:"错误"});
+		}
+	});
+}

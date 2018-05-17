@@ -107,8 +107,9 @@
 }
 #feasorChecked .feasorItem span {
   cursor: pointer;
+  padding: 0 5px;
 }
 #feasorChecked .feasorItem span.feasorCheck {
   color: #fff;
-  background: red;
+  background: #af1822;
 }

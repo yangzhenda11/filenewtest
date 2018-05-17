@@ -157,7 +157,7 @@ function setQxspButton(isShow,businessKey){
 
 //为工单处理环节的“取消审批”按钮定制，自己提交自己，流程历史中操作类型为“取消审批”的流程推进，handletype=1，pathselect=1
 function addCommentQxsp(businessKey){
-	var flowParam=App.getFlowParam(serverPath,businessKey,8,1);
+	var flowParam=App.getFlowParam(serverPath,businessKey,8,1)	//1，0;
 	flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
 	
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){

@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="ui-radio-list ui-radio-inline">
 				<label class="ui-radio">
-					<input type="radio" value="1" checked="" name="performerType">
+					<input type="radio" value="1" name="performerType">
 					<span></span>
 					本级履行或上下级共同履行
 				</label>
@@ -32,10 +32,8 @@
 					</tr>
 				</thead>
 				<tbody id="feasorTbody">
-					<tr>
-						<td><label class='ui-checkbox'><input type='checkbox' name='feasorCheck'><span></span></label></td>
-						<td>李华</td>
-						<td>合同管理处</td>
+					<tr class="emptyTr">
+						<td colspan="3">暂无履行人信息</td>
 					</tr>
 				</tbody>
 			</table>
@@ -43,7 +41,7 @@
 	</div>
 	<!--modal-->
 	<div class="modal fade" id="feasorModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-		<div class="modal-dialog" role="document" style="width: 90%;">
+		<div class="modal-dialog" role="document" style="width: 80%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -54,8 +52,8 @@
                 		<ul id="feasorTree" class="ztree feasorTree"></ul>
                 	</div>
                 	<div id="feasorCheckTool">
-                		<button type="button" class="btn red">></button>
-                		<button type="button" class="btn red"><</button>
+                		<button type="button" class="btn red" onclick="setFeasorValue()">></button>
+                		<button type="button" class="btn red" onclick="delFeasorValue()"><</button>
                 	</div>
                 	<div id="feasorCheckedCotent">
                 		<p>已选人员：</p>
@@ -63,7 +61,7 @@
                 	</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+                    <button type="button" onclick="setFeasorTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
                     <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 取消</button>
                 </div>
             </div>
@@ -71,22 +69,98 @@
 	</div>
 </div>
 <script type="text/javascript">
+	var feasorTree = null;
+	var deafaultFeasorHtml = "";
+	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_performerListId(value){
+		var valueKey = 0;
+		$.each($("#feasorTbody tr"), function(k,v) {
+			if(!$(v).hasClass("emptyTr")){
+				if($(v).data("id") != undefined){
+					$(v).data("id",value[valueKey]);
+					valueKey++;
+				}
+			}
+		});
+	}
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-//	function getValue_performer(isSubmit){
-//		return {};
-//	}
-	var feasorTree = null;
+	function getValue_performerList(isSubmit){
+		var performerDataList = [];
+		$.each($("#feasorTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var performerDataItem = {};
+				var performerType = $("input[name='performerType']:checked").val();
+				performerDataItem.performerType = performerType;
+				performerDataItem.wcardId = wcardId; 
+				performerDataItem.contractNumber = contractNumber;
+				performerDataItem.performerId = $(v).data("id");
+				performerDataItem.performerOrgId = $(v).data("orgid");
+				performerDataItem.performerStaffId = $(v).data("staffid");
+				performerDataItem.performerStaffName = $(v).children().eq(1).text();
+				performerDataItem.performerOrgName = $(v).children().eq(2).text();
+				performerDataList.push(performerDataItem);
+			}
+		});
+		//当合同提交时，加校验"至少添加一条履行人信息";
+		if(isSubmit){
+			if(performerDataList.length > 0){
+				return performerDataList;
+			}else{
+				layer.alert("请至少添加一条履行人信息",{icon:2,title:"错误"});
+				return false;
+			}
+		}else{
+			return performerDataList;
+		}
+	}
+	//获取账户信息
+	getFeasorInfo();
+	/*
+	 * 获取账户信息
+	 */
+	function getFeasorInfo() {
+		var url = serverPath + "contractOrderEditorController/getPerformerId";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+
+		function successCallback(result) {
+			var data = result.data;
+			if(data.length > 0){
+				if($("#feasorTbody .emptyTr")[0] != undefined){
+					$("#feasorTbody .emptyTr").remove();
+				};
+				var html = "";
+				for(var i = 0; i < data.length; i++){
+					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-staffid="'+data[i].performerStaffId+'" data-companyid="'+data[i].companyId+'">'+
+	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+	    						'<td>'+data[i].performerStaffName+'</td>'+
+	    						'<td>'+data[i].performerOrgName+'</td></tr>';
+				};
+				if(data[0].performerType == 1){
+					$("input[name='performerType'][value=1]").attr("checked",true);
+					deafaultFeasorHtml = html;
+				}else if(data[0].performerType == 2){
+					$("input[name='performerType'][value=2]").attr("checked",true);
+				}
+    			$("#feasorTbody").html(html);
+    			App.checkAllFn("#feasorCheckAll","feasorCheck");
+			}
+		}
+	}
 	/*
 	 * 显示选人modal，生成选人树
 	 */
 	function creatFeasorTree(){
+		$("#feasorChecked").html("");
 		var performerType = $("input[name='performerType']:checked").val();
-		$("#feasorModal").modal("show");
-		 var documentHeight = $(".page-content").height() - 225;
+		var documentHeight = $(".page-content").height() - 225;
     	$("#feasorTreeCotent,#feasorChecked").css("height", documentHeight);
+		$("#feasorModal").modal("show");
 		initFeasorTree(performerType);
 	}
 	//生成树
@@ -167,9 +241,7 @@
 		                feasorTree = $.fn.zTree.init($("#feasorTree"), treeSetting, data);
                  		//默认展开第一层
 			            var nodes = feasorTree.getNodes();
-			            for (var i = 0, l = nodes.length; i < l; i++) {
-			                feasorTree.expandNode(nodes[i]);
-			            }
+			            feasorTree.expandNode(nodes[0]);
 		            } else {
 		                layer.msg("暂无数据，请稍后重试");
 		            }
@@ -181,25 +253,43 @@
 	        error: function(result) {
 				layer.alert("接口错误", {icon: 2,title:"错误"});
 			}
-	    });
-        //双击事件 
+	   	});
         function setInputInfo(event, treeId, treeNode) {
-            setInputValue(treeNode);
+            addFeasorValue(treeNode);
         }
     }
     /*
      * 判断是否选的是人员
      */
-    function setInputValue(treeNode) {
-        if (treeNode["orgType"] == "" || treeNode["orgType"] == undefined) {
+    function addFeasorValue(treeNode) {
+        if (treeNode.orgType == "" || treeNode.orgType == undefined) {
         	var performerType = $("input[name='performerType']:checked").val();
+        	var companyNode = getCompanyByOrgId(treeNode);
+        	var companyId = companyNode.id;
+        	var companyName = companyNode.name;
+        	var performerOrgId = treeNode.parentId;
+        	var performerOrgName = treeNode.fullName;
+        	var performerStaffId = treeNode.id;
             if(performerType == 1){
-            	
-//          	<div id="feasorChecked"></div><div class="feasorItem">
-//              				<span>张三</span>
-//              			</div>
+            	var html = '<div class="feasorItem" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-staffid="'+performerStaffId+'">'+
+            				'<span>'+treeNode.name+'</span>'+
+            				'</div>'
+            	$("#feasorChecked").html(html);
             }else if(performerType == 2){
-            	
+            	var isExist = false;
+            	$.each($(".feasorItem"),function(k,v){
+            		if($(v).data("companyid") == companyId){
+            			layer.alert(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加",{icon:2});
+            			isExist = true;
+            			return;
+            		}
+            	});
+            	if(!isExist){
+            		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-staffid="'+performerStaffId+'">'+
+	            				'<span>'+treeNode.name+'</span>'+
+	            				'</div>';
+            		$("#feasorChecked").append(html);
+            	};
             }
         } else {
             layer.msg("请选择具体的人员", {
@@ -207,18 +297,131 @@
             })
         }
     }
+    /*
+     * 增加右侧内容
+     */
+    function setFeasorValue(){
+    	var treeNode = feasorTree.getSelectedNodes()[0];
+        if (treeNode == undefined) {
+            layer.msg("请选择人员", {icon: 2})
+        } else {
+            addFeasorValue(treeNode);
+        }
+    }
+    /*
+     * 删除右侧内容
+     */
+    function delFeasorValue(){
+		if($(".feasorCheck").length == 0){
+			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
+		}else{
+			$.each($(".feasorCheck"), function(k,v) {
+				$(v).parent().remove();
+			});
+		}
+    }
+    /*
+     * modal确定按钮点击
+     */
+    function setFeasorTable(){
+    	var performerType = $("input[name='performerType']:checked").val();
+    	$("#feasorModal").modal("hide");
+    	if($(".feasorItem").length > 0){
+    		if(performerType == 1){
+    			if($("#feasorTbody .emptyTr")[0] != undefined){
+					$("#feasorTbody .emptyTr").remove();
+				};
+				var html = "";
+    			$.each($(".feasorItem"), function(k,v) {
+    				var orgname = $(v).data("orgname");
+    				var orgid = $(v).data("orgid");
+    				var staffid = $(v).data("staffid");
+    				var staffname = $(v).text();
+    				html += '<tr data-id="100000" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
+    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+    						'<td>'+staffname+'</td>'+
+    						'<td>'+orgname+'</td></tr>';
+    			});
+				if($("#feasorTbody tr").length > 0){
+					layer.confirm("将删除原有的本级履行或上下级共同履行人，是否继续?",{icon:7,title:"提示"},function(index){
+		    			layer.close(index);
+		    			$("#feasorTbody").html(html);
+		    		});
+				}else{
+					$("#feasorTbody").html(html);
+				};
+				App.checkAllFn("#feasorCheckAll","feasorCheck");
+	    	}else{
+	    		if($("#feasorTbody .emptyTr")[0] != undefined){
+					$("#feasorTbody .emptyTr").remove();
+				};
+    			$.each($(".feasorItem"), function(k,v) {
+    				var companyid = $(v).data("companyid");
+    				var companyName = $(v).data("companyname");
+    				var staffname = $(v).text();
+    				var isExist = false;
+    				$.each($("#feasorTbody tr"),function(m,n){
+						if(!$(n).hasClass("emptyTr")){
+							var isExistCompanyid = $(n).data("companyid");
+							var isExistName = $(n).children().eq(1).text();
+							if(isExistCompanyid == companyid){
+								layer.alert(companyName+"下只能选择一个主要履行人，选择的'"+staffname+"'与'"+isExistName+"'重复,请删除后再进行添加",{icon:2});
+		            			isExist = true;
+							}
+						}
+					});
+    				if(!isExist){
+    					var orgid = $(v).data("orgid");
+	    				var staffid = $(v).data("staffid");
+	    				var orgname = $(v).data("orgname");
+	    				var html = '<tr data-id="100000" data-companyid="'+companyid+'" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
+	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+	    						'<td>'+staffname+'</td>'+
+	    						'<td>'+orgname+'</td></tr>';
+						$("#feasorTbody").append(html);
+	    			};
+    			});
+    			App.checkAllFn("#feasorCheckAll","feasorCheck");
+	    	}
+    	}
+    }
+    /*
+     * 获取最下级公司
+     */
+    function getCompanyByOrgId(treeNode){
+    	var nodes = feasorTree.getNodeByParam("id", treeNode.parentId, null);
+    	if(nodes.orgType == 1){
+    		return nodes;
+    	}else{
+    		return getCompanyByOrgId(nodes);
+    	}
+    }
     
-    
-    
-    App.checkAllFn("#feasorCheckAll","feasorCheck");
 	$("input[name='performerType']").on("change",function(){
-		//if($(this).val() == 1){
-			layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示"},function(){
-				alert(1);
-			})
-		//}else{
-			
-		//}
+		layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示",cancel: function(index, layero){  
+    		var performerType = $("input[name='performerType']:checked").val();
+			if(performerType == 1){
+				$("input[name='performerType'][value=2]").prop("checked",true);
+			}else{
+				$("input[name='performerType'][value=1]").prop("checked",true);
+			}
+  }},function(index){
+			layer.close(index);
+			if($("input[name='performerType']:checked").val() == 2){
+				$("#feasorTbody").html("");
+			}else{
+				$("#feasorTbody").html(deafaultFeasorHtml);
+			};
+			App.checkAllFn("#feasorCheckAll","feasorCheck");
+			addFeasorTbodyEmptyTr();
+		}, function(){  
+			var performerType = $("input[name='performerType']:checked").val();
+			if(performerType == 1){
+				$("input[name='performerType'][value=2]").prop("checked",true);
+			}else{
+				$("input[name='performerType'][value=1]").prop("checked",true);
+			}
+		})
 	});
 	/*
 	 * 删除履行人
@@ -228,15 +431,29 @@
 		if(checkLength == 0){
 			layer.msg("请勾选履行人复选框进行删除")
 		}else{
-			$("input[name='feasorCheck']:checked").each(function(k,v){
-				$(v).parents("tr").remove();
+			layer.confirm("是否删除？",{icon:7,title:"删除"},function(index){
+				layer.close(index);
+				$("input[name='feasorCheck']:checked").each(function(k,v){
+					$(v).parents("tr").remove();
+				});
+				addFeasorTbodyEmptyTr();
+				App.checkAllFn("#feasorCheckAll","feasorCheck");
 			})
 		}
 	};
 	/*
+	 * 若为空增加empty值
+	 */
+	function addFeasorTbodyEmptyTr(){
+		if($("#feasorTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="3">暂无履行人信息</td></tr>';
+			$("#feasorTbody").html(html);
+		}
+	}
+	/*
 	 * 人员选择点击
 	 */
-	$(".feasorChecked").on("click","span",function(){
+	$("#feasorChecked").on("click","span",function(){
 		if($(this).hasClass("feasorCheck")){
 			$(this).removeClass("feasorCheck");
 		}else{

@@ -27,7 +27,7 @@
 	</head>
 
 	<body>
-		<div class="page-content">
+		<div class="page-content hidden">
 			<div class="portlet">
 				<div class="portlet-title">
 					<div class="caption font-dark">
@@ -38,9 +38,10 @@
 					<form action="" id="workOrderContentForm">
 						<div class="toolbarBtn">
 							<div id="toolbarBtnContent">
-								<button class="btn blue" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i>  保存</button>
-								<button class="btn blue" type="button" onclick="submitContent()"><i class="iconfont icon-baocun"></i>  注册完成</button>
-								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i>  返回</button>
+								<button class="btn blue" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i> 保存</button>
+								<button class="btn blue" type="button" onclick="submitContent()"><i class="iconfont icon-baocun"></i> 注册完成</button>
+								<button class="btn blue" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i> 返回</button>
+								<button class="btn blue hidden" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i> 取消审批</button>
 							</div>
 						</div>
 						<div id="workOrderContent"></div>

@@ -6,30 +6,30 @@ var serverPath = config.serverPath;
 var formSubmit = false;
 var wcardId = parm.wcardId;
 var contractId = null;				//合同ID
-var wcardTypeCode = null;			//合同类型		0:其他;1:收入-租线类;2:支出-采购类',
+var wcardTypeCode = null;			//合同类型
 var contractNumber = null;			//合同编号
-var isEdit = 0;						//是否可以编辑
-var isApproval = 0;					//是否是合同管理员审批页面
-if(parm.isEdit == 1){
-	isEdit = 1;
-};
+var isEdit = false;						//是否可以编辑
+
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-	isEdit = 1;
+	isEdit = true;
 };
-if(parm.taskDefinitionKey == "GDQR"){
-	isApproval = 1;
-}
+
 $(function() {
 	if(parm.pageType == 1) {
 		$(".portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding", '0px');
 		$(".portlet").css("cssText", "border:none !important;padding:0px");
+		$(".toolbarBtn").remove();
 		$(".page-content").removeClass("hidden");
-	} else {
+	} else if(parm.pageType == 2) {
+		$(".page-content").removeClass("hidden");
+		//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 70);
+	} else if(parm.pageType == 0) {
+		$(".toolbarBtn").remove();
 		$(".page-content").removeClass("hidden");
 	};
-	//固定操作按钮在70px的高度
-	App.fixToolBars("toolbarBtnContent", 70);
+	
 	getWorkOrderInfo();
 })
 /*
@@ -45,6 +45,11 @@ function getWorkOrderInfo(){
 			contractId = data[0].contractId;
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
+			if(data[0].wcardProcess == 2 && data[0].wcardStatus == 900){
+				$("#cancelApprovedBtn").removeClass("hidden");
+			}else{
+				$("#cancelApprovedBtn").remove();
+			};
 			if(wcardTypeCode == 1){
 				wcardType = "收入类-租线合同";
 			}else if(wcardTypeCode == 2){

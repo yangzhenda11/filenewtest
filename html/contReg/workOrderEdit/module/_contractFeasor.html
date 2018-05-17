@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row">
+		<div class="row" id="contractFeasorContent">
 			<div class="ui-radio-list ui-radio-inline">
 				<label class="ui-radio">
 					<input type="radio" value="1" checked="checked" name="performerType">
@@ -19,7 +19,7 @@
 					仅有下级组织履行
 				</label>
 			</div>
-			<div class="tableToobarContent">
+			<div class="tableToobarContent hidden" id="contractFeasorToolbar">
 				<button type="button" class="btn red" onclick="creatFeasorTree()">添加主要履行人</button>
 				<button type="button" class="btn red marginLeft15" onclick="delectFeasor()">删除主要履行人</button>
 			</div>
@@ -118,6 +118,7 @@
 			return performerDataList;
 		}
 	}
+
 	//获取履行人信息
 	getFeasorInfo();
 	/*
@@ -146,7 +147,16 @@
 				};
     			$("#feasorTbody").html(html);
     			App.checkAllFn("#feasorCheckAll","feasorCheck");
-			}
+			};
+			/*
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(!isEdit){
+				$("#contractFeasorContent").find("input,select").attr("disabled","disabled");
+				$("#contractFeasorToolbar").remove();
+			}else{
+				$("#contractFeasorToolbar").removeClass("hidden");
+			};
 		}
 	}
 	/*

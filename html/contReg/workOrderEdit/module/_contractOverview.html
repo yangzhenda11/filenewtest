@@ -228,6 +228,12 @@
 		contractOverData.contractId = contractId;
 		return contractOverData;
 	}
+	/*
+	 * isEdit 判断页面是否只能查看
+	 */
+	if(!isEdit){
+		$("#contractOverviewForm").find("input,select").attr("disabled","disabled");
+	};
 	//获取字典值
 	getContractOverviewDict();
 	//wcardTypeCode为0时其余合同，隐藏
@@ -367,9 +373,11 @@
 	 * 跳转新页面
 	 */
 	function jumpContractOverview(id){
-		alert(id);
 		var href = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=0&askFlag=yb&taskDefinitionKey=GDQR&wcardId="+id;
-		top.showSubpageTab(href,"工单查看")
+		layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			top.showSubpageTab(href,"工单查看");
+		});
 	}
 	/*
 	 * 金额信息RP样式生成

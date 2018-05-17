@@ -77,7 +77,12 @@
 		adjustSpendData.contractNumber = contractNumber;
 		return adjustSpendData;
 	}
-	
+	/*
+	 * isEdit 判断页面是否只能查看
+	 */
+	if(!isEdit){
+		$("#adjustSpendForm").find("textarea").attr("disabled","disabled");
+	};
 	//获取变更管理、风险、争议、关闭、评价
 	getAdjustSpend();
 	/*

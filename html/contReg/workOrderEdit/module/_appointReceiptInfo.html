@@ -52,6 +52,12 @@
 		}
 		return incomePaData;
 	}
+	/*
+	 * isEdit 判断页面是否只能查看
+	 */
+	if(!isEdit){
+		$("#appointReceiptForm").find("input,select").attr("disabled","disabled");
+	};
 	//获取字典值
 	var ajaxObj = {
     	"url" :  serverPath + "dicts/listChildrenByDicttId",

@@ -22,12 +22,25 @@ $(function() {
 		$(".toolbarBtn").remove();
 		$(".page-content").removeClass("hidden");
 	} else if(parm.pageType == 2) {
+		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
+			$("#toolbarBtnContent button").addClass("hidden");
+			$(".saveBtn,.register,.closeBtn").removeClass("hidden");
+		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+			$("#toolbarBtnContent button").addClass("hidden");
+			$(".sendBackBtn,.activateBtn,.closeBtn").removeClass("hidden");
+		};
 		$(".page-content").removeClass("hidden");
 		//固定操作按钮在70px的高度
 		App.fixToolBars("toolbarBtnContent", 70);
 	} else if(parm.pageType == 0) {
 		$(".toolbarBtn").remove();
 		$(".page-content").removeClass("hidden");
+	} else if(parm.pageType == 4) {
+		$("#toolbarBtnContent button").addClass("hidden");
+		$(".closeBtn").removeClass("hidden");
+		$(".page-content").removeClass("hidden");
+		//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 70);
 	};
 	
 	getWorkOrderInfo();
@@ -45,11 +58,17 @@ function getWorkOrderInfo(){
 			contractId = data[0].contractId;
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
-			if(data[0].wcardProcess == 2 && data[0].wcardStatus == 900){
-				$("#cancelApprovedBtn").removeClass("hidden");
+			if(isEdit== true && data[0].wcardProcess == 2 && data[0].wcardStatus == 904020){
+				if(parm.pageType == 1){
+					$("#cancelApprovedBtn").removeClass("hidden");
+				}
+				if(parm.pageType == 2){
+					$("#cancelApprovedBtn").removeClass("hidden");
+				}
 			}else{
 				$("#cancelApprovedBtn").remove();
 			};
+			
 			if(wcardTypeCode == 1){
 				wcardType = "收入类-租线合同";
 			}else if(wcardTypeCode == 2){
@@ -169,7 +188,12 @@ function submitContent(){
     	}	
 	}
 }
-
+/*
+ * 取消审批点击
+ */
+function cancelApproved(){
+	$("#pinfoContentModal").modal("show");
+}
 /*
  * 表单验证
  * 每个页面中单独往里增加内容，提交时先验证表单

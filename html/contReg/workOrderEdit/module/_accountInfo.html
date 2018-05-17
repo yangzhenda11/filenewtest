@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                	<div class="tableToobarContent">
+                	<div class="tableToobarContent hidden" id="payeeInforToolbar">
                 		<button class="btn red" type="button" onclick="addPayeeTr()"><i class="iconfont icon-add"></i> 新增</button>
                 		<button class="btn red" type="button" onclick="delectsPayeeTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
                 	</div>    	
@@ -25,7 +25,7 @@
 								<th>收款方账户名称</th>
 								<th>收款方银行账号</th>
 								<th>收款方开户银行</th>
-								<th>操作</th>
+								<th class="payeeEdit">操作</th>
 							</tr>
 						</thead>
 						<tbody id="payeeInfoTbody">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                	<div class="tableToobarContent">
+                	<div class="tableToobarContent hidden" id="payerInforToolbar">
                 		<button class="btn red" type="button" onclick="addPayerTr()"><i class="iconfont icon-add"></i> 新增</button>
                 		<button class="btn red" type="button" onclick="delectsPayerTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
                 	</div>    	
@@ -54,7 +54,7 @@
 								<th>付款方账户名称</th>
 								<th>付款方银行账号</th>
 								<th>付款方开户银行</th>
-								<th>操作</th>
+								<th class="payerEdit">操作</th>
 							</tr>
 						</thead>
 						<tbody id="payerInfoTbody">
@@ -164,7 +164,7 @@
 											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' /></div></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' /></div></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' /></div></td>"+
-											"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
+											"<td class='payeeEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 										"</tr>";
 						$("#payeeInfoTbody").append(appendHtml);
 						addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
@@ -180,7 +180,7 @@
 											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' /></div></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' /></div></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' /></div></td>"+
-											"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
+											"<td class='payerEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
 										"</tr>";
 						$("#payerInfoTbody").append(appendHtml);
 						addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
@@ -189,6 +189,15 @@
 						App.checkAllFn("#payerCheckAll","payerCheck");
 					}
 				};
+			};
+			/*
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(!isEdit){
+				$("#accountListContent").find("input,select").attr("disabled","disabled");
+				$("#payeeInforToolbar,#payerInforToolbar,.payeeEdit,.payerEdit").remove();
+			}else{
+				$("#payeeInforToolbar,#payerInforToolbar").removeClass("hidden");
 			}
 		}
 	}

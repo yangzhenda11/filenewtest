@@ -38,9 +38,11 @@
 					<form action="" id="workOrderContentForm">
 						<div class="toolbarBtn">
 							<div id="toolbarBtnContent">
-								<button class="btn blue" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i> 保存</button>
-								<button class="btn blue" type="button" onclick="submitContent()"><i class="iconfont icon-baocun"></i> 注册完成</button>
-								<button class="btn blue" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i> 返回</button>
+								<button class="btn blue saveBtn" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i> 保存</button>
+								<button class="btn blue register" type="button" onclick="submitContent()"><i class="iconfont icon-baocun"></i> 注册完成</button>
+								<button class="btn blue sendBackBtn" type="button" onclick="sendBack()"><i class="iconfont icon-baocun"></i> 退回合同承办人</button>
+								<button class="btn blue activateBtn" type="button" onclick="activateContract()"><i class="iconfont icon-baocun"></i> 激活合同</button>
+								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i> 关闭</button>
 								<button class="btn blue hidden" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i> 取消审批</button>
 							</div>
 						</div>
@@ -50,6 +52,23 @@
 			</div>
 		</div>
 		<!--modal-->
+		<div class="modal fade" id="pinfoContentModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">退回原因</h4>
+	                </div>
+	                <div class="modal-body">
+                		<textarea name="pinfoContent" class="form-control" id="pinfoContent" rows="5" cols=""></textarea>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" onclick="setPinfoContent()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 取消</button>
+	                </div>
+	            </div>
+	        </div>
+		</div>
 		<!--modal-->
 		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>

@@ -6,9 +6,9 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row">
+		<div class="row" id="invoiceInfoContent">
 			<div class="portlet-body">
-				<div class="tableToobarContent">
+				<div class="tableToobarContent hidden" id="invoiceInfoToolbar">
 					<button class="btn red" type="button" onclick="addInvoiceTr()"><i class="iconfont icon-add"></i> 新增</button>
 					<button class="btn red" type="button" onclick="delectsInvoiceTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
 				</div>
@@ -19,7 +19,7 @@
 							<th>序号</th>
 							<th>发票抬头</th>
 							<th>开票类型</th>
-							<th>操作</th>
+							<th class="invoiceTableEdit">操作</th>
 						</tr>
 					</thead>
 					<tbody id="invoiceTbody">
@@ -112,7 +112,7 @@
 										"<td class='orderNumber'></td>"+
 										"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ data[i].invoiceTitle +"' /></div></td>"+
 										"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"' >"+ selectHtml +"</select></div></td>"+
-										"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+										"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
 									"</tr>";
 					$("#invoiceTbody").append(appendHtml);
 					App.initFormSelect2("."+invoiceTypeName);
@@ -122,7 +122,16 @@
 					addInvoiceTableSort();
 					App.checkAllFn("#invocieCheckAll","invoiceCheck");
 				};
-			}
+			};
+			/*
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(!isEdit){
+				$("#invoiceInfoContent").find("input,select").attr("disabled","disabled");
+				$("#invoiceInfoToolbar,.invoiceTableEdit").remove();
+			}else{
+				$("#invoiceInfoToolbar").removeClass("hidden");
+			};
 		}
 	}
 	/*

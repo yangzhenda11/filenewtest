@@ -6,10 +6,10 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row">
+		<div class="row" id="contractFeasorContent">
 			<div class="ui-radio-list ui-radio-inline">
 				<label class="ui-radio">
-					<input type="radio" value="1" name="performerType">
+					<input type="radio" value="1" checked="checked" name="performerType">
 					<span></span>
 					本级履行或上下级共同履行
 				</label>
@@ -19,7 +19,7 @@
 					仅有下级组织履行
 				</label>
 			</div>
-			<div class="tableToobarContent">
+			<div class="tableToobarContent hidden" id="contractFeasorToolbar">
 				<button type="button" class="btn red" onclick="creatFeasorTree()">添加主要履行人</button>
 				<button type="button" class="btn red marginLeft15" onclick="delectFeasor()">删除主要履行人</button>
 			</div>
@@ -96,7 +96,7 @@
 				var performerDataItem = {};
 				var performerType = $("input[name='performerType']:checked").val();
 				performerDataItem.performerType = performerType;
-				performerDataItem.wcardId = wcardId; 
+				performerDataItem.wcardId = wcardId;
 				performerDataItem.contractNumber = contractNumber;
 				performerDataItem.performerId = $(v).data("id");
 				performerDataItem.performerOrgId = $(v).data("orgid");
@@ -118,10 +118,11 @@
 			return performerDataList;
 		}
 	}
-	//获取账户信息
+
+	//获取履行人信息
 	getFeasorInfo();
 	/*
-	 * 获取账户信息
+	 * 获取履行人信息
 	 */
 	function getFeasorInfo() {
 		var url = serverPath + "contractOrderEditorController/getPerformerId";
@@ -131,9 +132,6 @@
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				if($("#feasorTbody .emptyTr")[0] != undefined){
-					$("#feasorTbody .emptyTr").remove();
-				};
 				var html = "";
 				for(var i = 0; i < data.length; i++){
 					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-staffid="'+data[i].performerStaffId+'" data-companyid="'+data[i].companyId+'">'+
@@ -146,10 +144,19 @@
 					deafaultFeasorHtml = html;
 				}else if(data[0].performerType == 2){
 					$("input[name='performerType'][value=2]").attr("checked",true);
-				}
+				};
     			$("#feasorTbody").html(html);
     			App.checkAllFn("#feasorCheckAll","feasorCheck");
-			}
+			};
+			/*
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(!isEdit){
+				$("#contractFeasorContent").find("input,select").attr("disabled","disabled");
+				$("#contractFeasorToolbar").remove();
+			}else{
+				$("#contractFeasorToolbar").removeClass("hidden");
+			};
 		}
 	}
 	/*
@@ -206,7 +213,7 @@
 				var data = responseData.data;
 				if(data){
 					for(var i = 0; i < data.length; i++){
-	        			if(data[i]["orgType"] != ""){
+	        			if(data[i].orgType != ""){
 	        				data[i].isParent = "true";
 	        			};
 	        			data[i].executorType = performerType;
@@ -230,7 +237,7 @@
 					var data = result.data;
 		        	if (data != "") {
 		        		for(var i = 0; i < data.length; i++){
-		        			if(data[i]["orgType"] != ""){
+		        			if(data[i].orgType != ""){
 		        				data[i].isParent = "true";
 		        			};
 		        			data[i].executorType = performerType;
@@ -281,7 +288,7 @@
             		if($(v).data("companyid") == companyId){
             			layer.alert(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加",{icon:2});
             			isExist = true;
-            			return;
+            			return false;
             		}
             	});
             	if(!isExist){
@@ -351,7 +358,7 @@
 					$("#feasorTbody").html(html);
 				};
 				App.checkAllFn("#feasorCheckAll","feasorCheck");
-	    	}else{
+	    	}else if(performerType == 2){
 	    		if($("#feasorTbody .emptyTr")[0] != undefined){
 					$("#feasorTbody .emptyTr").remove();
 				};
@@ -367,6 +374,7 @@
 							if(isExistCompanyid == companyid){
 								layer.alert(companyName+"下只能选择一个主要履行人，选择的'"+staffname+"'与'"+isExistName+"'重复,请删除后再进行添加",{icon:2});
 		            			isExist = true;
+		            			return false;
 							}
 						}
 					});
@@ -451,7 +459,7 @@
 		}
 	}
 	/*
-	 * 人员选择点击
+	 * 人员选择点击	事件委托
 	 */
 	$("#feasorChecked").on("click","span",function(){
 		if($(this).hasClass("feasorCheck")){

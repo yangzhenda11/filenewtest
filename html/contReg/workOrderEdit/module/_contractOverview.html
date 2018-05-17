@@ -160,9 +160,7 @@
 				<div id="relationshipContract" class="hidden">
 					<div class="col-sm-6 form-group">
 						<label for="relatedWcardNumber" class="control-label">关联工单编号：</label>
-						<div class="valiParent">
-							<a id="relatedWcardNumber"></a>
-						</div>
+						<div class="valiParent" id="relatedWcardNumber"></div>
 					</div>
 					<div class="col-sm-6 form-group">
 						<label for="contractNature" class="control-label">合同性质：</label>
@@ -230,6 +228,12 @@
 		contractOverData.contractId = contractId;
 		return contractOverData;
 	}
+	/*
+	 * isEdit 判断页面是否只能查看
+	 */
+	if(!isEdit){
+		$("#contractOverviewForm").find("input,select").attr("disabled","disabled");
+	};
 	//获取字典值
 	getContractOverviewDict();
 	//wcardTypeCode为0时其余合同，隐藏
@@ -282,8 +286,12 @@
 			}else{
 				$("#defalutContract").remove();
 				$("#relationshipContract").removeClass("hidden");
-				var relatedWcardNumber = data.relatedWcardNumber == null ? "暂无关联工单编号" : data.relatedWcardNumber;
-				$("#relatedWcardNumber").text(relatedWcardNumber);
+				var relatedWcardNumber = data.relatedWcardNumber
+				if(relatedWcardNumber == null){
+					$("#relatedWcardNumber").html("<a>暂无关联工单编号</a>");
+				}else{
+					setRelatedWcardNumber(relatedWcardNumber)
+				};
 				if(contractNature == 2){
 					if(isFixed){
 						$("#relationshipIsFixed").removeClass("hidden");
@@ -344,6 +352,32 @@
 			}; 
 			App.setFormValues("#contractOverviewForm",data,valueCallback);
 		}
+	}
+	/*
+	 * 加载关联工单合同编号
+	 */
+	function setRelatedWcardNumber(relatedWcardNumber){
+		App.formAjaxJson(serverPath + "contractOrderEditorController/listDomainInfo", "post", JSON.stringify({relatedWcardNumber:relatedWcardNumber}), successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			if(data.length > 0){
+				var id = data[0].wcardId;
+				var href = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=0&wcardId="+id;
+				$("#relatedWcardNumber").html("<a onclick='jumpContractOverview(\""+id+"\")'>"+relatedWcardNumber+"</a>");
+			}else{
+				$("#relatedWcardNumber").html("<a>暂无关联工单编号</a>");
+			};
+		}
+	}
+	/*
+	 * 跳转新页面
+	 */
+	function jumpContractOverview(id){
+		var href = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=0&askFlag=yb&taskDefinitionKey=GDQR&wcardId="+id;
+		layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			top.showSubpageTab(href,"工单查看");
+		});
 	}
 	/*
 	 * 金额信息RP样式生成

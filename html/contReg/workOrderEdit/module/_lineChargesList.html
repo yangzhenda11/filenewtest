@@ -6,9 +6,9 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row">
+		<div class="row" id="lineChargesListContent">
 			<div class="portlet-body">
-				<div class="tableToobarContent">
+				<div class="tableToobarContent hidden" id="lineChargesListToolbar">
 					<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i> 新增</button>
 					<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
 				</div>
@@ -28,7 +28,7 @@
 								<th>一次性费用</th>
 								<th>其他费用</th>
 								<th>结算周期</th>
-								<th>操作</th>
+								<th class="lineChargesTableEdit">操作</th>
 							</tr>
 						</thead>
 						<tbody id="incomeLinerentTbody">
@@ -173,7 +173,7 @@
 										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+data[i].onceCost+"' /></div></td>"+
 										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+data[i].otherCost+"' /></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
-										"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
+										"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 									"</tr>";
 					$("#incomeLinerentTbody").append(appendHtml);
 					App.initFormSelect2("."+productName);
@@ -207,7 +207,16 @@
 					addIncomeLinerentTableSort();
 					App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
 				};
-			}
+			};
+			/*
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(!isEdit){
+				$("#lineChargesListContent").find("input,select").attr("disabled","disabled");
+				$("#lineChargesListToolbar,.lineChargesTableEdit").remove();
+			}else{
+				$("#lineChargesListContent").removeClass("hidden");
+			};
 		}
 	}
 	/*

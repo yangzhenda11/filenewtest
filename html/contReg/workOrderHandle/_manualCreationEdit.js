@@ -12,6 +12,7 @@ $(function(){
 
 $('#commomModal').on('hide.bs.modal',function(){
 	if($("#contractDataSearch").data("exactSearch")){
+		$("#contractId").val($("#contractDataSearch").data("contractId"));
         $("#contractName").val($("#contractDataSearch").data("contractName"));
         if($("#contractDataSearch").data("unicomPartyName")!=null){
         	var unicomStr = $("#contractDataSearch").data("unicomPartyName").toString();
@@ -32,6 +33,7 @@ $('#commomModal').on('hide.bs.modal',function(){
  * */
 function createWorkOrder(){
 	var contractNumber = $("#contractDataSearch").val();
+	var contractId = $("#contractId").val();
 	if(contractNumber==''){
 		alert("合同编号不能为空！");
 		return;
@@ -39,7 +41,7 @@ function createWorkOrder(){
 		$.ajax({
 		url:serverPath + 'workOrderHandle/createWorkOrder',
         type:"post",
-        data:{"contractNumber":contractNumber},
+        data:{"contractNumber":contractNumber,"contractId":contractId},
         success:function(data) {
        				if(data.status=='1'){
        					var htmlStr = "工单"+data.message+"创建成功！<a href=''>点击查看</a>";

@@ -160,7 +160,7 @@ function addCommentQxsp(businessKey){
 	var flowParam=App.getFlowParam(serverPath,businessKey,8,1)	//1，0;
 	flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
 	
-	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
+	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passQxsp)=="function"){
 		document.getElementById("businessiframe").contentWindow.modal_passQxsp(flowParam);
 	}else{
 		layer.msg("网络异常，请联系管理员！");

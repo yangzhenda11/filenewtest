@@ -29,7 +29,7 @@ $(function() {
 			parent.setUserBtName("backTolist","关闭");
 		}else if(parm.taskDefinitionKey == "GDQR"){
 			//工单确认环节将提交按钮改为“工单激活” btId：passButton   
-			parent.setUserBtName("passButton","工单激活");
+			parent.setUserBtName("passButton","激活合同");
 			//工单处理环节将回退按钮改为“退回承办人” btId：backButton
 			parent.setUserBtName("backButton","退回承办人");
 		};
@@ -77,7 +77,7 @@ function beforePushProcess(pass){
 	        $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
-	    	var submitData = getContentValue(true);
+	    	var submitData = getContentValue(true,false);
 	    	if(!submitData){
 				return false
 			};
@@ -115,16 +115,36 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"wcardId":wcardId,
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
-	var datas = getContentValue(true);
-	postData = $.extend(postData, datas);
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
-	function successCallback(result) {
-		parent.layer.alert("注册成功！",{icon:1},function(){
-			parent.modal_close();
-		});
-	}
-	function improperCallback(result){
-		parent.layer.alert(result.message,{icon:2});
+	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){
+		var datas = getContentValue(true);
+		postData = $.extend(postData, datas);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		function successCallback(result) {
+			var data = result.data;
+			if(data.success == "000"){
+				parent.layer.alert(data.message,{icon:2});
+			}else{
+				parent.layer.alert("注册成功！",{icon:1},function(){
+					parent.modal_close();
+				});
+			}
+		}
+		function improperCallback(result){
+			parent.layer.alert(result.message,{icon:2});
+		}
+	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){
+		var pinfoContent = $('#comment', parent.document).val();
+		postData.pinfoContent = pinfoContent;
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		function successCallback(result) {
+			var data = result.data;
+			parent.layer.alert("退回成功！",{icon:1},function(){
+				parent.modal_close();
+			});
+		}
+		function improperCallback(result){
+			parent.layer.alert(result.message,{icon:2});
+		}
 	}
 }
 //取消审批
@@ -258,7 +278,7 @@ function loadComplete() {
  * 若都无错误进行下一步操作
  * isSubmit == true 子页面会收到此参数进行逻辑上的判断
  */
-function getContentValue(isSubmit) {
+function getContentValue(isSubmit,isBack) {
 	var submitData = {};
 	var isPass = true;
     //各页面返回信息验证
@@ -268,7 +288,7 @@ function getContentValue(isSubmit) {
 			return true;
 		};
 		var itemFn = eval('getValue_' + targetObj);
-		var itemValue = itemFn(isSubmit);
+		var itemValue = itemFn(isSubmit,isBack);
 		if(itemValue){
 			submitData[targetObj] = itemValue;
 		}else{

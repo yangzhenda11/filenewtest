@@ -135,8 +135,9 @@
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
+	 * isBack 回退时特殊验证
 	 */
-	function getValue_validity(isSubmit){
+	function getValue_validity(isSubmit,isBack){
 		var validityData = App.getFormValues($("#validityForm"));
 		var undertakerCommitmentValue = $("input[name='undertakerCommitment']:checked").val();
 		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();

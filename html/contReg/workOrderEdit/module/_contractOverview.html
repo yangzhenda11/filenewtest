@@ -226,6 +226,7 @@
 		var contractOverData = App.getFormValues($("#contractOverviewForm"));
 		contractOverData.wcardId = wcardId;
 		contractOverData.contractId = contractId;
+		contractOverData.isFixed = $("input[name='isFixed']:checked").val();
 		return contractOverData;
 	}
 	/*

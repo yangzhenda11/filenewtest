@@ -105,26 +105,11 @@
 	 * 获取线路资费信息字典值
 	 */
 	function getIncomeLinerenDict() {
-		App.getDictInfo(9060,getIncomeLinerentType);
-		function getIncomeLinerentType(result){
-			incomeLinerentType = createIncomeLinerenDictHtml(result);
-		};
-		App.getDictInfo(9070,getIncomeLinerentName);
-		function getIncomeLinerentName(result){
-			incomeLinerentName = createIncomeLinerenDictHtml(result);
-		};
-		App.getDictInfo(9080,getIncomeLinerentProp);
-		function getIncomeLinerentProp(result){
-			incomeLinerentProp = createIncomeLinerenDictHtml(result);
-		};
-		App.getDictInfo(9090,getIncomeLinerentLable);
-		function getIncomeLinerentLable(result){
-			incomeLinerentLable = createIncomeLinerenDictHtml(result);
-		};
-		App.getDictInfo(9015,getIncomeLinerentCycle);
-		function getIncomeLinerentCycle(result){
-			incomeLinerentCycle = createIncomeLinerenDictHtml(result);
-		};
+		incomeLinerentType = createIncomeLinerenDictHtml(App.getDictInfo(9060));
+		incomeLinerentName = createIncomeLinerenDictHtml(App.getDictInfo(9070));
+		incomeLinerentProp = createIncomeLinerenDictHtml(App.getDictInfo(9080));
+		incomeLinerentLable = createIncomeLinerenDictHtml(App.getDictInfo(9090));
+		incomeLinerentCycle = createIncomeLinerenDictHtml(App.getDictInfo(9015));
 	};
 	function createIncomeLinerenDictHtml(data){
 		var selectHtml = "<option value=''>请选择</option>";
@@ -215,7 +200,7 @@
 				$("#lineChargesListContent").find("input,select").attr("disabled","disabled");
 				$("#lineChargesListToolbar,.lineChargesTableEdit").remove();
 			}else{
-				$("#lineChargesListContent").removeClass("hidden");
+				$("#lineChargesListToolbar").removeClass("hidden");
 			};
 		}
 	}

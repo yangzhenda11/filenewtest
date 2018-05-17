@@ -252,14 +252,8 @@
 	 * 合同履行现状	performanceState
 	 */
 	function getContractOverviewDict() {
-		App.getDictInfo(9040,getTicketStateType);
-		function getTicketStateType(result){
-			ticketStateType = result;
-		}
-		App.getDictInfo(9010,getPerformanceState);
-		function getPerformanceState(result){
-			performanceState = result;
-		}
+		ticketStateType = App.getDictInfo(9040);
+		performanceState = App.getDictInfo(9010);
 	}
 	/*
 	 * 获取合同基本信息

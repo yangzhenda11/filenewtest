@@ -135,9 +135,8 @@
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
-	 * isBack 回退时特殊验证
 	 */
-	function getValue_validity(isSubmit,isBack){
+	function getValue_validity(isSubmit){
 		var validityData = App.getFormValues($("#validityForm"));
 		var undertakerCommitmentValue = $("input[name='undertakerCommitment']:checked").val();
 		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
@@ -154,11 +153,21 @@
 			validityData.adminCommitment = 0;
 		};
 		if(isSubmit && validityData.undertakerCommitment == 0){
-			layer.alert("请勾选承办人确认信息",{icon:2,title:"错误"});
+			layer.alert("请勾选承办人确认信息!",{icon:2,title:"错误"});
 			return false;
 		}else{
 			return validityData;
 		}
+	}
+	/*
+	 * isEdit 判断页面是否只能查看
+	 */
+	if(!isEdit){
+		$("#validityForm").find("input,select").attr("disabled","disabled");
+	};
+	if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+		$("#adminCommitmentContent").removeClass("hidden");
+		$("input[name=adminCommitment]").attr("disabled",false);
 	}
 	//设置默认展示方式
 	changePostponableValidatorStatus(905010,1);
@@ -182,6 +191,11 @@
 					$("input[name='isPostponable'][value=1]").prop("checked",true);
 				};
 				App.setFormValues("#validityForm",data);
+				if($("input[name=adminCommitment][value=1]:checked")){
+					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+						$("#adminCommitmentContent").removeClass("hidden");
+					}
+				}
 			}
 		}
 	}

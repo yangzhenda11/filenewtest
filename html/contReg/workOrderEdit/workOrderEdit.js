@@ -77,7 +77,7 @@ function beforePushProcess(pass){
 	        $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
-	    	var submitData = getContentValue(true,false);
+	    	var submitData = getContentValue(true);
 	    	if(!submitData){
 				return false
 			};
@@ -112,12 +112,12 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"handleType" : handleType,//处理类型，1为通过，2为回退
 		"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
-		"wcardId":wcardId,
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
 	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){
 		var datas = getContentValue(true);
 		postData = $.extend(postData, datas);
+		postData.wcardId = wcardId;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 		function successCallback(result) {
 			var data = result.data;
@@ -135,6 +135,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){
 		var pinfoContent = $('#comment', parent.document).val();
 		postData.pinfoContent = pinfoContent;
+		postData.busiId = wcardId;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 		function successCallback(result) {
 			var data = result.data;
@@ -144,6 +145,32 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		}
 		function improperCallback(result){
 			parent.layer.alert(result.message,{icon:2});
+		}
+	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){
+		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		if(adminCommitmentValue == 1){
+			postData.adminCommitment = 1;
+		}else{
+			postData.adminCommitment = 0;
+		};
+		if(postData.adminCommitment == 0){
+			parent.layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
+			return false;
+		}else{
+			parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+				parent.layer.close(index);
+				postData.wcardId = wcardId;
+				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+				function successCallback(result) {
+					var data = result.data;
+					parent.layer.alert("激活成功！",{icon:1},function(){
+						parent.modal_close();
+					});
+				}
+				function improperCallback(result){
+					parent.layer.alert(result.message,{icon:2});
+				}
+			});
 		}
 	}
 }
@@ -159,8 +186,9 @@ function modal_passQxsp(flowParam){
 		postData.wcardId = wcardId;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 		function successCallback(result) {
-			parent.layer.alert("取消成功。",{icon:1},function(){
-				//parent.modal_close();
+			parent.layer.alert("取消成功。",{icon:1},function(index){
+				parent.layer.close(index);
+				window.location.reload();
 			});
 		}
 		function improperCallback(result){
@@ -197,7 +225,126 @@ function modal_return(root, processInstanceId, taskId){
 		parent.modal_close();
 	});
 }
-
+/*
+ * 注册按钮点击
+ */
+function submitContent(){
+	if(formSubmit){
+		//手动触发表单验证
+		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
+	    bootstrapValidator.validate();
+	    if(!bootstrapValidator.isValid()){
+	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
+	        $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
+	    	return false;
+	    }else{
+	    	var submitData = getContentValue(true);
+	    	if(submitData){
+				console.log(submitData);
+				layer.msg("模拟提交");
+			}
+    	}	
+	}else{
+		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
+}
+/*
+ * 激活按钮点击
+ */
+function activateContract(){
+	if(formSubmit){
+		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		if(adminCommitmentValue == 1){
+			var adminCommitment = 1;
+		}else{
+			var adminCommitment = 0;
+		};
+		if(adminCommitment == 0){
+			layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
+			return false;
+		}else{
+			parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+				layer.close(index);
+				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
+				postData.adminCommitment = adminCommitment;
+				postData.wcardId = wcardId;
+				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+				function successCallback(result) {
+					var data = result.data;
+					layer.alert("激活成功！",{icon:1},function(){
+						backPage();
+					});
+				}
+				function improperCallback(result){
+					layer.alert(result.message,{icon:2});
+				}
+			});
+		}
+	}else{
+		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
+}
+/*
+ * 取消审批点击
+ */
+function cancelApproved(){
+	if(formSubmit){
+		layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1);
+			flowParam.wcardId = wcardId;
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
+			function successCallback(result) {
+				layer.alert("取消成功。",{icon:1},function(index){
+					layer.close(index);
+					window.location.reload();
+				});
+			}
+			function improperCallback(result){
+				layer.alert(result.message,{icon:2});
+			}
+		});
+	}else{
+		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
+}
+/*
+ * 退回点击
+ */
+function sendBack(){
+	if(formSubmit){
+		$("#pinfoContentModal").modal("show");
+	}else{
+		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
+}
+/*
+ * 退回确定点击
+ */
+function setPinfoContent(){
+	var pinfoContent = $("#pinfoContent").val();
+	if(pinfoContent == ""){
+		layer.alert("请输入退回原因");
+	}else{
+		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
+		flowParam.pinfoContent = pinfoContent;
+		flowParam.busiId = wcardId;
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		function successCallback(result) {
+			var data = result.data;
+			layer.alert("退回成功！",{icon:1},function(){
+				backPage();
+			});
+		}
+		function improperCallback(result){
+			layer.alert(result.message,{icon:2});
+		}
+	};
+}
 
 /*
  * 请求工单模块，获取基本信息及各模块的url
@@ -278,7 +425,7 @@ function loadComplete() {
  * 若都无错误进行下一步操作
  * isSubmit == true 子页面会收到此参数进行逻辑上的判断
  */
-function getContentValue(isSubmit,isBack) {
+function getContentValue(isSubmit) {
 	var submitData = {};
 	var isPass = true;
     //各页面返回信息验证
@@ -288,7 +435,7 @@ function getContentValue(isSubmit,isBack) {
 			return true;
 		};
 		var itemFn = eval('getValue_' + targetObj);
-		var itemValue = itemFn(isSubmit,isBack);
+		var itemValue = itemFn(isSubmit);
 		if(itemValue){
 			submitData[targetObj] = itemValue;
 		}else{
@@ -319,59 +466,6 @@ function saveContent(){
 			}
 		}
 	}
-}
-
-/*
- * 提交按钮点击
- */
-function submitContent(){
-	if(formSubmit){
-	//手动触发表单验证
-		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
-	    bootstrapValidator.validate();
-	    if(!bootstrapValidator.isValid()){
-	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
-	    	return false;
-	    }else{
-	    	var submitData = getContentValue(true);
-	    	if(submitData){
-				console.log(submitData);
-				layer.msg("模拟提交");
-			}
-    	}	
-	}
-}
-/*
- * 取消审批点击
- */
-function cancelApproved(){
-	layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
-		layer.close(index);
-		var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1);
-		flowParam.wcardId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
-		function successCallback(result) {
-			layer.alert("取消成功。",{icon:1},function(){
-				//parent.modal_close();
-			});
-		}
-		function improperCallback(result){
-			layer.alert(result.message,{icon:2});
-		}
-	});
-}
-/*
- * 退回确定点击
- */
-function setPinfoContent(){
-	var pinfoContent = $("#pinfoContent").val();
-	if(pinfoContent == ""){
-		layer.alert("请输入取消审批")
-	}else{
-		setPinfoContentFlowParam.pinfoContent = pinfoContent;
-	};
-	
 }
 /*
  * 表单验证

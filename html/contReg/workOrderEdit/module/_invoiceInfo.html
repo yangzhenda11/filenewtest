@@ -79,10 +79,7 @@
 	 * 开票类型   invoiceType
 	 */
 	function getInvoiceDict() {
-		App.getDictInfo(9025,getInvoiceType);
-		function getInvoiceType(result){
-			invoiceType = result;
-		}
+		invoiceType = App.getDictInfo(9025);
 	}
 	
 	/*

@@ -234,6 +234,6 @@ function modal_passQxsp(flowParam){
 		layer.msg(data.sign);
 		
 		// 成功后回调模态窗口关闭方法
-		parent.modal_close();   
+		parent.modal_close();
 	});
 }

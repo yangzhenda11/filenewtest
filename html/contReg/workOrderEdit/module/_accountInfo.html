@@ -104,7 +104,7 @@
 			if(havePayeeInfo){
 				return accountDataList;
 			}else{
-				layer.alert("请至少填写一项收款方信息",{icon:2,title:"错误"});
+				layer.msg("请至少填写一项收款方信息");
 				return false;
 			}
 		}else{

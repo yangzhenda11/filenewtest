@@ -153,11 +153,21 @@
 			validityData.adminCommitment = 0;
 		};
 		if(isSubmit && validityData.undertakerCommitment == 0){
-			layer.alert("请勾选承办人确认信息",{icon:2,title:"错误"});
+			layer.msg("请勾选承办人确认信息!");
 			return false;
 		}else{
 			return validityData;
 		}
+	}
+	/*
+	 * isEdit 判断页面是否只能查看
+	 */
+	if(!isEdit){
+		$("#validityForm").find("input,select").attr("disabled","disabled");
+	};
+	if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+		$("#adminCommitmentContent").removeClass("hidden");
+		$("input[name=adminCommitment]").attr("disabled",false);
 	}
 	//设置默认展示方式
 	changePostponableValidatorStatus(905010,1);
@@ -181,6 +191,11 @@
 					$("input[name='isPostponable'][value=1]").prop("checked",true);
 				};
 				App.setFormValues("#validityForm",data);
+				if($("input[name=adminCommitment][value=1]:checked")){
+					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+						$("#adminCommitmentContent").removeClass("hidden");
+					}
+				}
 			}
 		}
 	}

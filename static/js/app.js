@@ -1216,20 +1216,22 @@ var App = function() {
 			})
 		},
 		/*
-		 * 全选全不选
+		 * 获取字典信息
 		 */
-		getDictInfo:function(code,callbackFn){
+		getDictInfo:function(code){
 			var postData = {"dictId": code};
+			var resturnData = {};
 			App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, null, null, null, false);
 
 			function successCallback(result) {
 				var data = result.data;
-				var resturnData = {};
+				
 				for(var i = 0; i < data.length; i++){
 					resturnData[data[i].dictValue] = data[i].dictLabel
 				};
-				callbackFn(resturnData);
-			}
+				
+			};
+			return resturnData;
 		},
 		/**
          * datatable render 文本信息 btnArray 内容：

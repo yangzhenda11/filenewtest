@@ -122,6 +122,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		var datas = getContentValue(true);
 		postData = $.extend(postData, datas);
 		postData.wcardId = wcardId;
+		postData.wcardType = wcardTypeCode;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 		function successCallback(result) {
 			var data = result.data;
@@ -274,6 +275,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;
+	postData.wcardType = wcardTypeCode;
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
@@ -391,12 +393,12 @@ function sendBack(){
 function setPinfoContent(){
 	var pinfoContent = $("#pinfoContent").val();
 	if(pinfoContent == ""){
-		layer.alert("请输入退回原因");
+		layer.msg("请输入退回原因");
 	}else{
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
 		function successCallback(result) {
 			var data = result.data;
 			layer.alert("退回成功！",{icon:1},function(){

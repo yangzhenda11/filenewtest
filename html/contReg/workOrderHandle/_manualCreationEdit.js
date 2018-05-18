@@ -35,7 +35,7 @@ function createWorkOrder(){
 	var contractNumber = $("#contractDataSearch").val();
 	var contractId = $("#contractId").val();
 	if(contractNumber==''){
-		alert("合同编号不能为空！");
+		layer.alert("合同编号不能为空！",{icon:2,title:"错误"});
 		return;
 	}else{
 		$.ajax({
@@ -48,7 +48,7 @@ function createWorkOrder(){
        					document.getElementById('createResult').innerHTML=htmlStr;
        					//alert("工单"+data.message+"创建成功！");
        				}else if(data.status=='0'){
-       					alert(data.message);
+       					layer.msg(data.message);
        				}
         		}
 		});

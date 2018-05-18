@@ -12,25 +12,25 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
         "url": serverPath+'contractScanQuery/contractScanQueryList',
         "data": function(d) {//自定义传入参数
         	if($("#oppoPartyName").data("exactSearch")){
-        		d.oppoPartyId = $("#oppoPartyName").data("oppoPartyId");
+        		d.oppoPartyId = $("#oppoPartyName").data("partnerId");
         	}else{
         		d.oppoPartyName = $("#oppoPartyName").val();
         	};
         	
         	if($("#unicomPartyName").data("exactSearch")){
-        		d.unicomPartyId = $("#unicomPartyName").data("unicomPartyId");
+        		d.unicomPartyId = $("#unicomPartyName").data("partnerId");
         	}else{
         		d.unicomPartyName = $("#unicomPartyName").val();
         	};
         	
         	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("undertakeId");
+        		d.undertakerId = $("#undertakeName").data("id");
         	}else{
         		d.undertakeName = $("#undertakeName").val();
         	};
         	
         	if($("#executeDeptName").data("exactSearch")){
-        		d.executeDeptId = $("#executeDeptName").data("executeDeptId");
+        		d.executeDeptId = $("#executeDeptName").data("orgId");
         	}else{
         		d.executeDeptName = $("#executeDeptName").val();
         	};
@@ -74,7 +74,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
 				var downloadUrl = "/contractUpload/downloadContractText?id=" + full.id;
-				var result = '<a href="'+downloadUrl+'"  target="_blank">正文下载</a>';
+				var result = '<a href="'+downloadUrl+'"">正文下载</a>';
 				return result;
 			}
 		},
@@ -111,19 +111,19 @@ function searchContractUpload(retainPaging) {
 $(function(){
 	//对方主体
 	$("#searchOppoParty").click(function(){
-		App.getCommonModal("otherSubject","#oppoPartyName","oppoPartyName","oppoPartyId");
+		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
 	})
 	//我方主体
 	$("#searchUnicomParty").click(function(){
-		App.getCommonModal("ourSubject","#unicomPartyName","unicomPartyName","unicomPartyId");
+		App.getCommonModal("ourSubject","#unicomPartyName","partnerName","partnerId");
 	})
 	//承办人
 	$("#searchUndertaker").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","undertakeName","undertakeId");
+		App.getCommonModal("agentStaff","#undertakeName","name","id");
 	})
 	//承办部门
 	$("#searchexecuteDept").click(function(){
-		App.getCommonModal("agentDepartment","#executeDeptName","executeDeptName","executeDeptId");
+		App.getCommonModal("agentDepartment","#executeDeptName","orgName","orgId");
 	})
 	
 	

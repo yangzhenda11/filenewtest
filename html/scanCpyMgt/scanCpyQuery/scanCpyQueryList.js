@@ -47,6 +47,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
     	//增加序号列
         {"data" : null,
          "title":"序号",
+         "className": "text-center",
 		"render" : function(data, type, full, meta){
 						return meta.row + 1;
 				   }

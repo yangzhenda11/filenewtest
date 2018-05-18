@@ -153,7 +153,7 @@
 			validityData.adminCommitment = 0;
 		};
 		if(isSubmit && validityData.undertakerCommitment == 0){
-			layer.alert("请勾选承办人确认信息!",{icon:2,title:"错误"});
+			layer.msg("请勾选承办人确认信息!");
 			return false;
 		}else{
 			return validityData;

@@ -198,7 +198,12 @@ function modal_passQxsp(flowParam){
 }
 //保存回调业务侧实现的方法。
 function modal_save(){
-	saveContent();
+	if(parm.taskDefinitionKey == "GDCL"){
+		saveContent();
+	}else{
+		parent.layer.msg("当前环节不需要保存");
+	}
+	
 }
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作。
 function beforeTransfer(){
@@ -264,7 +269,7 @@ function activateContract(){
 			layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
 			return false;
 		}else{
-			parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+			layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 				layer.close(index);
 				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 				postData.adminCommitment = adminCommitment;
@@ -345,7 +350,15 @@ function setPinfoContent(){
 		}
 	};
 }
-
+/*
+ * 
+ */
+function srolloOffect(el){
+	console.log($(el).offset().top)
+	$('.page-content').animate({
+		scrollTop:$(el).offset().top
+	},1500)
+}
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */

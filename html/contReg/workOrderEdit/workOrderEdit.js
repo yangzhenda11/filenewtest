@@ -11,6 +11,8 @@ var contractNumber = null;			//合同编号
 var isEdit = false;						//是否可以编辑
 var isCancelApproved = false;			//是否为退回状态
 
+var curStaffOrgId = config.curStaffId;
+
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 	isEdit = true;
 };
@@ -246,19 +248,66 @@ function submitContent(){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        $($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(submitData){
-				console.log(submitData);
-				layer.msg("模拟提交");
+	    		var flowKey = "Contractproject2Process";
+	    		var linkcode = "GDCL";
+	    		var prov = "sd";
+	    		var callbackFun = "submitContentPost";
+	    		var staffSelectType = 1;
+	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 			}
     	}	
 	}else{
 		layer.alert("页面加载失败",{icon:2,title:"错误"});
 		return false;
 	}
+}
+/*
+ * 工单注册后台提交
+ */
+function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
+	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
+	postData.assignee = STAFF_ORG_ID;
+	postData.wcardId = wcardId;
+	var datas = getContentValue(true);
+	postData = $.extend(postData, datas);
+	$("#PandJstaffiframetask").modal("hide");
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data.success == "000"){
+			layer.alert(data.message,{icon:2});
+		}else{
+			layer.alert("注册成功！",{icon:1},function(){
+				backPage();
+			});
+		}
+	}
+	function improperCallback(result){
+		layer.alert(result.message,{icon:2});
+	}
+}
+/*
+ * 调出选人页面（参考工作流）
+ */
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
+	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
+    $("#PandJstaffiframetask").load(frameSrc,function() {
+    	$("#PandJstaffiframetask").modal('show');
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
+			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+			$(".checkall").click(function () {
+			      var check = $(this).prop("checked");
+			      $(".checkchild").prop("checked", check);
+			});
+		})
+    });
 }
 /*
  * 激活按钮点击
@@ -367,7 +416,7 @@ function srolloOffect(el,isSpecial){
 	var scrollTopValue = v + $(el).offset().top - 120;
 	$('.page-content').animate({
 		scrollTop:scrollTopValue
-	},500)
+	},300)
 }
 /*
  * 请求工单模块，获取基本信息及各模块的url
@@ -443,7 +492,6 @@ function loadComplete() {
 	App.init();
 	validate();
 	getBusiProcessInfoID()
-	
 };
 /*
  * 加载意见
@@ -451,9 +499,7 @@ function loadComplete() {
 function getBusiProcessInfoID(){
 	var url = serverPath + "contractOrderEditorController/getBusiProcessInfoID";
 		App.formAjaxJson(url, "get", {wcardId:wcardId}, successCallback);
-
 		function successCallback(result) {
-			console.log(result);
 			var data = result.data;
 			if(data.length > 0){
 				var busiProcess = "";

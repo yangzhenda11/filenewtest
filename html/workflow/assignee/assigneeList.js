@@ -160,4 +160,4 @@ function addMultiStaff(){
 	  ids=ids.substring(0,ids.length-1);
 	  names=names.substring(0,names.length-1);
 	  eval(funName+"(\'"+ids+"\',\'"+names+"\')");
-	}
+}

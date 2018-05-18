@@ -122,7 +122,7 @@ function verifyProcessTrue() {
                 "className": "text-center",
                 "title": "验证日期",
                 render: function(data, type, full, meta) {
-                    return App.formatDateTime(data, "yyyy-MM-dd");
+                    return data.substr(0,10);
                 }
             }
 

@@ -64,6 +64,19 @@
 				invoiceDataList.push(invoiceDataItem);
 			}
 		});
+		//当合同总览中"固定金额"为"是"时，加校验"至少有一条开票信息";
+		var isFixedValue = $("input[name='isFixed']:checked").val();
+		if(isSubmit && isFixedValue == 1){
+			if(invoiceDataList.length > 0){
+				return invoiceDataList;
+			}else{
+				layer.msg("请至少填写一项开票信息");
+				srolloOffect("#invoiceInfoContent");
+				return false;
+			}
+		}else{
+			return accountDataList;
+		}
 		return invoiceDataList;
 	}
 	//name自增基础值

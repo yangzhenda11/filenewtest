@@ -154,6 +154,7 @@
 		};
 		if(isSubmit && validityData.undertakerCommitment == 0){
 			layer.msg("请勾选承办人确认信息!");
+			srolloOffect("#undertakerCommitmentContent");
 			return false;
 		}else{
 			return validityData;

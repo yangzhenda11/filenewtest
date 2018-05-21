@@ -72,7 +72,9 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-	//手动触发表单验证
+		//删除多于表格内的数据
+		removeMoreThanTablecontent();
+		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
@@ -262,7 +264,7 @@ function submitContent(){
 	    		var prov = "sd";
 	    		var callbackFun = "submitContentPost";
 	    		var staffSelectType = 1;
-	    		//jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
+	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 			}
     	}	
 	}else{

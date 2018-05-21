@@ -96,6 +96,12 @@
 			delete tableItem.contractNumber;
 			delete tableItem.linerentId;
 			delete tableItem.wcardId;
+			if(tableItem.onceCost == 0){
+				delete tableItem.onceCost;
+			};
+			if(tableItem.otherCost == 0){
+				delete tableItem.otherCost;
+			};
 			$.each(tableItem, function(k,v) {
 				if(v){
 					isEmpty = false;

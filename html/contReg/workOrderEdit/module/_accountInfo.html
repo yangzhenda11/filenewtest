@@ -10,7 +10,7 @@
 			<div class="portlet" id="payeeAccountInfo">
                 <div class="portlet-title ">
                     <div class="caption font-dark">
-                        <span class="caption-subject bold uppercase"><i class="iconfont icon-mi required"></i>收款方账号信息</span>
+                        <span class="caption-subject bold uppercase">收款方账号信息</span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -22,9 +22,9 @@
                     	<thead>
 							<tr>
 								<th class="payerEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
-								<th>收款方账户名称</th>
-								<th>收款方银行账号</th>
-								<th>收款方开户银行</th>
+								<th><i class="iconfont icon-mi required"></i>收款方账户名称</th>
+								<th><i class="iconfont icon-mi required"></i>收款方银行账号</th>
+								<th><i class="iconfont icon-mi required"></i>收款方开户银行</th>
 								<th class="payeeEdit">操作</th>
 							</tr>
 						</thead>
@@ -204,9 +204,9 @@
 						};
 						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
 											"<td class='payerEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' maxlength='100' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' maxlength='100' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' maxlength='100' /></div></td>"+
 											"<td class='payeeEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 										"</tr>";
 						$("#payeeInfoTbody").append(appendHtml);
@@ -220,9 +220,9 @@
 						};
 						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
 											"<td class='payerEdit'><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' maxlength='100' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' maxlength='100' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' maxlength='100' /></div></td>"+
 											"<td class='payerEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
 										"</tr>";
 						$("#payerInfoTbody").append(appendHtml);
@@ -257,9 +257,9 @@
 		var openBank = "openBank" + isCreateAccountTrLength;
 		var appendHtml = "<tr data-id='100000'>"+
 							"<td><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' maxlength='100' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' maxlength='100' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' maxlength='100' /></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#payeeInfoTbody").append(appendHtml);
@@ -319,9 +319,9 @@
 		var openBank = "openBank" + isCreateAccountTrLength;
 		var appendHtml = "<tr data-id='100000'>"+
 							"<td><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' maxlength='100' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' maxlength='100' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' maxlength='100' /></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#payerInfoTbody").append(appendHtml);

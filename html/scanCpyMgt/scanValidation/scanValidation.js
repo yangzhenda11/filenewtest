@@ -91,17 +91,17 @@ function verifyProcessTrue() {
                     return '<a href=\"javascript:void(0)\" onclick = "jumpScanValidationView(\'' + data.verifyId + '\')">' + data.contractNumber + '</a>';
                 }
             },
-            { "data": "contractName", "title": "合同名称", "className": "whiteSpaceNormal", "width": "35%" },
+            { "data": "contractName", "title": "合同名称", "className": "whiteSpaceNormal", "width": "15%" },
             { "data": "typeName", "title": "合同类型", "className": "whiteSpaceNormal", "width": "10%" },
-            { "data": "ourPartyName", "title": "我方主体", "className": "whiteSpaceNormal", "width": "10%" },
-            { "data": "otherPartyName", "title": "对方主体", "className": "whiteSpaceNormal", "width": "10%" },
+            { "data": "ourPartyName", "title": "我方主体", "className": "whiteSpaceNormal", "width": "15%" },
+            { "data": "otherPartyName", "title": "对方主体", "className": "whiteSpaceNormal", "width": "15%" },
             { "data": "executeDeptName", "title": "承办部门", "className": "whiteSpaceNormal", "width": "10%" },
-            { "data": "undertakeName", "title": "承办人", "className": "whiteSpaceNormal", "width": "10%" },
+            { "data": "undertakeName", "title": "承办人", "className": "whiteSpaceNormal", "width": "5%" },
             {
                 "data": "verifyStatus",
                 "title": "合同验证状态",
                 "className": "whiteSpaceNormal",
-                "width": "10%",
+                "width": "5%",
                 "render": function(data, type, full, meta) {
                     if (data == 903010) {
                         return '草稿';
@@ -183,27 +183,25 @@ function verifyProcessFalse() {
             },
             {
                 "data": "contractNumber",
-                "className": "whiteSpaceNormal",
+                "className": "whiteSpaceNormal text-center",
                 "width": "3%",
-                "className": "whiteSpaceNormal",
-                "width": "5%",
                 "title": "序号",
                 "render": function(data, type, full, meta) {
                     return meta.row + 1;
                 }
             },
             { "data": "contractNumber", "title": "合同编号", "className": "whiteSpaceNormal", "width": "10%" },
-            { "data": "contractName", "title": "合同名称", "className": "whiteSpaceNormal", "width": "25%" },
+            { "data": "contractName", "title": "合同名称", "className": "whiteSpaceNormal", "width": "15%" },
             { "data": "typeName", "title": "合同类型", "className": "whiteSpaceNormal", "width": "10%" },
             { "data": "ourPartyName", "title": "我方主体", "className": "whiteSpaceNormal", "width": "10%" },
             { "data": "otherPartyName", "title": "对方主体", "className": "whiteSpaceNormal", "width": "10%" },
-            { "data": "executeDeptName", "title": "承办部门", "className": "whiteSpaceNormal", "width": "10%" },
-            { "data": "undertakeName", "title": "承办人", "className": "whiteSpaceNormal", "width": "10%" },
+            { "data": "executeDeptName", "title": "承办部门", "className": "whiteSpaceNormal", "width": "5%" },
+            { "data": "undertakeName", "title": "承办人", "className": "whiteSpaceNormal", "width": "5%" },
             {
                 "data": "verifyStatus",
                 "title": "合同验证状态",
                 "className": "whiteSpaceNormal",
-                "width": "10%",
+                "width": "5%",
                 "render": function(data, type, full, meta) {
                     if (data == 903010) {
                         return '草稿';
@@ -218,7 +216,7 @@ function verifyProcessFalse() {
                     }
                 }
             },
-            { "data": "verifyVersion", "className": "whiteSpaceNormal", "width": "10%", "title": "版本号" }
+            { "data": "verifyVersion", "className": "whiteSpaceNormal", "width": "5%", "title": "版本号" }
         ]
     });
 }

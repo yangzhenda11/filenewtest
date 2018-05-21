@@ -505,6 +505,9 @@ table .ui-radio,table .ui-checkbox{
 	margin: 0;
 	height: 14px;
 }
+table i{
+	font-weight: normal;
+}
 body{
 	overflow: hidden;
 }

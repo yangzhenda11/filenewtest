@@ -35,6 +35,8 @@ $(function() {
 			parent.setUserBtName("passButton","激活合同");
 			//工单处理环节将回退按钮改为“退回承办人” btId：backButton
 			parent.setUserBtName("backButton","退回承办人");
+			//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+			parent.setUserBtName("backTolist","关闭");
 		};
 	} else if(parm.pageType == 2) {
 		wcardId = parm.wcardId;
@@ -585,6 +587,10 @@ function saveContent(){
 	if(formSubmit){
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
+		//手动触发表单特定的验证项
+		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('lineCount');
+	    //bootstrapValidator.validate();
+	    //console.log(bootstrapValidator.isValid());
 		var submitData = getContentValue();
 		if(submitData){
 			console.log(submitData);
@@ -593,7 +599,7 @@ function saveContent(){
 			function successCallback(result) {
 				var data = result.data;
 				setPageIdCallback(data);
-				layer.msg("保存成功")
+				layer.msg("保存成功");
 			}
 		}
 	}
@@ -636,19 +642,7 @@ function addNotEmptyValidatorField(name,msg){
 	}
    	App.addValidatorField("#workOrderContentForm",name,notEmptyValidatorField);
 }
-function indexOf(arr, item) {
-// 用原型判断indexOf是否存在
-  if (Array.prototype.indexOf){
-      return arr.indexOf(item);
-  } else { // 是在IE
-      for (var i = 0; i < arr.length; i++){
-          if (arr[i] === item){ //表示数组里面有这个元素
-              return i; // 返回相应的下标
-          }
-      }
-  }     
-  return -1; // 找不到返回-1
-}
+
 //返回上一页
 function backPage(){
 	window.history.go(-1);

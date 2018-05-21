@@ -593,7 +593,7 @@ function saveContent(){
 			function successCallback(result) {
 				var data = result.data;
 				setPageIdCallback(data);
-				layer.msg("保存成功")
+				layer.msg("保存成功");
 			}
 		}
 	}
@@ -636,19 +636,7 @@ function addNotEmptyValidatorField(name,msg){
 	}
    	App.addValidatorField("#workOrderContentForm",name,notEmptyValidatorField);
 }
-function indexOf(arr, item) {
-// 用原型判断indexOf是否存在
-  if (Array.prototype.indexOf){
-      return arr.indexOf(item);
-  } else { // 是在IE
-      for (var i = 0; i < arr.length; i++){
-          if (arr[i] === item){ //表示数组里面有这个元素
-              return i; // 返回相应的下标
-          }
-      }
-  }     
-  return -1; // 找不到返回-1
-}
+
 //返回上一页
 function backPage(){
 	window.history.go(-1);

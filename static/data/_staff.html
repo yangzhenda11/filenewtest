@@ -73,7 +73,6 @@
         App.formAjaxJson(serverPath + "orgs/" + config.curCompanyId + "/staffTree", "get", JSON.stringify(ajaxData), successCallback);
 
         function successCallback(result) {
-            debugger;
             var data = result.data;
             if (data != "") {
                 if (staffTree) {
@@ -119,7 +118,6 @@
      * 设置input框的值setKey >> data-key
      */
     function setInputValue(treeNode) {
-        debugger;
         if (treeNode.isParent == false) {
             // if (setKey != undefined) {
             //     if ($.isArray(setKey)) {

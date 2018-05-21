@@ -110,9 +110,9 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
 	        }
 	    },
 	    {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width": "5%"},
-//	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
+	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
         {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
-//      {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
+        {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"}
 	]
 });

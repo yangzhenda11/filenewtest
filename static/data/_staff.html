@@ -130,15 +130,24 @@
             //         $(dom).data(setKey, treeNode[setKey]);
             //     }
             // };
+            App.formAjaxJson(parent.globalConfig.serverPath + "staffs/editStaffRoleByCopy/" + $("#roleCopyFrom").val() + "/" + treeNode.staffOid, "get", null, successCallback, improperCallbacks);
 
-            layer.alert("角色已复制给" + treeNode.orgName + "\n\t后台未实现！！！", {
-                time: 1500,
-                icon: 6
-            });
-            // $(dom).data("exactSearch", true);
-            // $(dom).val(treeNode[textValue]);
-            // $(dom).attr("title", treeNode[textValue]);
-            $("#commomModal").modal("hide");
+            function successCallback(result) {
+                layer.alert(result.message, {
+                    time: 1500,
+                    icon: 6
+                });
+                // $(dom).data("exactSearch", true);
+                // $(dom).val(treeNode[textValue]);
+                // $(dom).attr("title", treeNode[textValue]);
+                $("#commomModal").modal("hide");
+            }
+
+            function improperCallbacks(result) {
+                layer.alert(result.message, {
+                    icon: 5
+                });
+            }
         } else {
             layer.msg("请选择具体的人员", {
                 icon: 2

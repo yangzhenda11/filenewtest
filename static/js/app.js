@@ -1148,7 +1148,7 @@ var App = function() {
 	                    allowClear:allowClearFlag
 	                };
 	                if(allowSearch == undefined){
-	                	options.minimumResultsForSearch = 1;
+	                	options.minimumResultsForSearch = -1;
 	                }
 	                $(this).select2(options);
 	            })
@@ -1176,7 +1176,7 @@ var App = function() {
                 	options.allowClear = true;
                 }
                 if(allowSearch == undefined){
-                	options.minimumResultsForSearch = 1;
+                	options.minimumResultsForSearch = -1;
                 }
                 if(promptInfo){
                 	options.placeholder=promptInfo;

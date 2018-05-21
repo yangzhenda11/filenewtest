@@ -67,17 +67,19 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         {"data" : null,
          "title":"序号",
          "className": "text-center",
+         "width": "3%",
 		"render" : function(data, type, full, meta){
-						return meta.row + 1;
-				   }
+				return meta.row + 1;
+		   }
 		},
-        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-        {"data": "contractNumber","title": "合同编号"},
-        {"data": "contractTypeName","title": "合同类型"},
+        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},
+        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
+        {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "15%"},
         {
 			"data": "wcardNumber",
-			"className": "text-center",
+			"className":"whiteSpaceNormal",
 			"title": "工单编号",
+			"width": "10%",
 			"render": function(data, type, full, meta) {
 				var result = '<a href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
 				return result;
@@ -86,6 +88,8 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         {
         	"data": "wcardStatus",
         	"title": "工单状态",
+        	"width": "5%",
+        	"className":"whiteSpaceNormal",
         	render: function(data, type, full, meta) {
 	            if(data=='904010'){
 	            	return "工单草稿";
@@ -99,15 +103,17 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         {
 	        "data": "ctreatedDate",
 	        "title": "创建日期",
+	        "width": "5%",
+	        "className":"whiteSpaceNormal",
 	        render: function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
-	    {"data": "undertakeName","title": "承办人"},
-	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
-        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"25%"},
-        {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
-        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"25%"}
+	    {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width": "5%"},
+//	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
+        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
+//      {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
+        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"}
 	]
 });
 

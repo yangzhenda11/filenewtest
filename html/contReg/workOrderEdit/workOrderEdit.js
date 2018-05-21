@@ -583,6 +583,8 @@ function removeMoreThanTablecontent(){
  */
 function saveContent(){
 	if(formSubmit){
+		//删除多于表格内的数据
+		removeMoreThanTablecontent();
 		var submitData = getContentValue();
 		if(submitData){
 			console.log(submitData);

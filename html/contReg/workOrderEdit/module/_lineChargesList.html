@@ -16,7 +16,7 @@
 					<table class="table table-hover table-bordered table-striped table-align" id="incomeLinerentTable" style="min-width: 1700px;">
 						<thead>
 							<tr>
-								<th><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
+								<th class="lineChargesTableEdit"><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
 								<th>序号</th>
 								<th>产品类型</th>
 								<th>产品名称</th>
@@ -84,6 +84,34 @@
 		});
 		return incomeLinerentDataList;
 	}
+	/*
+	 * 去除多于的行
+	 */
+	function removeMorethan_incomeLinerentList(){
+		var tableValue = getValue_incomeLinerentList();
+		var emptyList = [];
+		for(var i = 0; i < tableValue.length; i++){
+			var tableItem = tableValue[i];
+			var isEmpty = true;
+			delete tableItem.contractNumber;
+			delete tableItem.linerentId;
+			delete tableItem.wcardId;
+			$.each(tableItem, function(k,v) {
+				if(v){
+					isEmpty = false;
+					return false;
+				}
+			});
+			if(isEmpty){
+				emptyList.push(i);
+			}
+		};
+		$.each(emptyList, function(m,n) {
+			var index = n - m;
+			$("#incomeLinerentTbody tr").eq(index).remove();
+		});
+		addIncomeLinerentTbodyEmptyTr();
+	}
 	//name自增基础值
 	var isCreateIncomeLinerentTrLength = 0;
 	
@@ -146,7 +174,7 @@
 					var otherCost = "otherCost" + i;
 					var settlementFrequency = "settlementFrequency" + i;
 					var appendHtml = "<tr data-id='"+ data[i].linerentId +"' class='"+ productName +"'>"+
-										"<td><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
+										"<td class='lineChargesTableEdit'><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
 										"<td class='orderNumber'></td>"+
 										"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='请选择产品类型' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
@@ -173,12 +201,18 @@
 					addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
 					addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
 					var isInteger = {
+						notEmpty : {
+							message : "输入项不能为空"
+						},
 						regexp : {
 							regexp : /^(0|[1-9][0-9]*)$/,
 							message : '请输入大于等于0的整数'
 						}
 					};
 					var isMoney = {
+						notEmpty : {
+							message : "输入项不能为空"
+						},
 						regexp : {
 							regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
 							message : '请输入正确的金额'
@@ -245,12 +279,18 @@
 		addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
 		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
 		var isInteger = {
+			notEmpty : {
+				message : "输入项不能为空"
+			},
 			regexp : {
 				regexp : /^(0|[1-9][0-9]*)$/,
 				message : '请输入大于等于0的整数'
 			}
 		};
 		var isMoney = {
+			notEmpty : {
+				message : "输入项不能为空"
+			},
 			regexp : {
 				regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
 				message : '请输入正确的金额'

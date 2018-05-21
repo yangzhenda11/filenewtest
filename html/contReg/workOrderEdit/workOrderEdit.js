@@ -60,7 +60,7 @@ $(function() {
 		//固定操作按钮在70px的高度
 		App.fixToolBars("toolbarBtnContent", 70);
 	};
-	
+	//获取工单的url信息
 	getWorkOrderInfo();
 })
 /*
@@ -244,6 +244,8 @@ function modal_return(root, processInstanceId, taskId){
  */
 function submitContent(){
 	if(formSubmit){
+		//删除多于表格内的数据
+		removeMoreThanTablecontent();
 		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
@@ -260,7 +262,7 @@ function submitContent(){
 	    		var prov = "sd";
 	    		var callbackFun = "submitContentPost";
 	    		var staffSelectType = 1;
-	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
+	    		//jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 			}
     	}	
 	}else{
@@ -554,10 +556,25 @@ function getContentValue(isSubmit) {
 		}
 	});
 	if(isPass){
+		submitData.wcardId = wcardId;
 		return submitData;
 	}else{
 		return false;
 	};
+}
+/*
+ * 去除表格内多于的行
+ */
+function removeMoreThanTablecontent(){
+    //各页面返回信息验证
+	$('.form-wrapper').each(function(index, wrapperItem) {
+		var targetObj = $(wrapperItem).data('target');
+		if(!App.isExitsFunction("removeMorethan_" + targetObj)){
+			return true;
+		};
+		var itemFn = eval('removeMorethan_' + targetObj);
+		itemFn();
+	});
 }
 /*
  * 保存按钮点击
@@ -614,6 +631,19 @@ function addNotEmptyValidatorField(name,msg){
 		}
 	}
    	App.addValidatorField("#workOrderContentForm",name,notEmptyValidatorField);
+}
+function indexOf(arr, item) {
+// 用原型判断indexOf是否存在
+  if (Array.prototype.indexOf){
+      return arr.indexOf(item);
+  } else { // 是在IE
+      for (var i = 0; i < arr.length; i++){
+          if (arr[i] === item){ //表示数组里面有这个元素
+              return i; // 返回相应的下标
+          }
+      }
+  }     
+  return -1; // 找不到返回-1
 }
 //返回上一页
 function backPage(){

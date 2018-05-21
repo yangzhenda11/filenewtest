@@ -160,16 +160,6 @@
 			return validityData;
 		}
 	}
-	/*
-	 * isEdit 判断页面是否只能查看
-	 */
-	if(!isEdit){
-		$("#validityForm").find("input,select").attr("disabled","disabled");
-	};
-	if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-		$("#adminCommitmentContent").removeClass("hidden");
-		$("input[name=adminCommitment]").attr("disabled",false);
-	}
 	//设置默认展示方式
 	changePostponableValidatorStatus(905010,1);
 	//获取合同生效信息
@@ -192,10 +182,20 @@
 					$("input[name='isPostponable'][value=1]").prop("checked",true);
 				};
 				App.setFormValues("#validityForm",data);
-				if($("input[name=adminCommitment][value=1]:checked")){
-					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+				if($("input[name='adminCommitment']:checked").val()){
+					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "yb"){
 						$("#adminCommitmentContent").removeClass("hidden");
 					}
+				};
+				/*
+				 * isEdit 判断页面是否只能查看
+				 */
+				if(!isEdit){
+					$("#validityForm").find("input,select").attr("disabled","disabled");
+				}
+				if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+					$("#adminCommitmentContent").removeClass("hidden");
+					$("input[name='adminCommitment']").attr("disabled",false);
 				}
 			}
 		}

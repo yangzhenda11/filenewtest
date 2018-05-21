@@ -770,8 +770,12 @@ var App = function() {
 						improperCallback(result);
 					};
 				},
-				error: function(result) {//401
-					layer.alert("接口错误", {icon: 2,title:"错误"});
+				error: function(result) {
+					layer.alert("接口错误", {icon: 2,title:"错误"},function(){
+		        		if(result.status == 401){
+		        			top.window.location.href = "/login.html";
+		        		}
+		        	});
 					errorCallback(result);
 				}
 			});
@@ -841,16 +845,13 @@ var App = function() {
 		 * 下载文件（接收下载地址）
 		 */
 		downloadFile: function(url) {
-			console.log(download_file["iframe"]);
 			if(download_file["iframe"] == null) {
 				var iframe = document.createElement("iframe");
 				download_file.iframe = iframe;
 				document.body.appendChild(download_file.iframe);
 			};
-			download_file.iframe.innerHTML('<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">');
 			download_file.iframe.src = url;
 			download_file.iframe.style.display = "none";
-			console.log(download_file.iframe.innerHTML())
 		},
 		/*
 		 * 修改对象的key值
@@ -970,7 +971,11 @@ var App = function() {
 		        	}
 		        }else{
 		        	loadEnd();
-		        	layer.msg("接口错误");
+		        	layer.alert("接口错误", {icon: 2,title:"错误"},function(){
+		        		if(xhr.status == 401){
+		        			top.window.location.href = "/login.html";
+		        		}
+		        	});
 		        }
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';

@@ -1295,6 +1295,7 @@ function addStaffOrg(editType) {
  * 跳转角色复制
  */
 function goStaffOrgRoleCopy(staffOrgId) {
+    $("#roleCopyFrom").val(staffOrgId);
     App.getCommonModal("staff", "#", "orgName", ["staffId", "staffOid"]);
 }
 

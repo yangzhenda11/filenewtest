@@ -1099,7 +1099,8 @@ var App = function() {
 		 * 金额三位加逗号
 		 */
 		unctionToThousands: function(count) {
-			var count = (count || 0).toString(), result = '';
+            var count = (count || 0).toString(),
+                result = '';
 			var decimals = count.split(".")[1];
 			var num = count.split(".")[0];
 		    while (num.length > 3) {

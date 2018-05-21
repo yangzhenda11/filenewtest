@@ -35,6 +35,8 @@ $(function() {
 			parent.setUserBtName("passButton","激活合同");
 			//工单处理环节将回退按钮改为“退回承办人” btId：backButton
 			parent.setUserBtName("backButton","退回承办人");
+			//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+			parent.setUserBtName("backTolist","关闭");
 		};
 	} else if(parm.pageType == 2) {
 		wcardId = parm.wcardId;
@@ -585,6 +587,10 @@ function saveContent(){
 	if(formSubmit){
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
+		//手动触发表单特定的验证项
+		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('lineCount');
+	    //bootstrapValidator.validate();
+	    //console.log(bootstrapValidator.isValid());
 		var submitData = getContentValue();
 		if(submitData){
 			console.log(submitData);

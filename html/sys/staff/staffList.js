@@ -1,6 +1,7 @@
 var serverPath = parent.globalConfig.serverPath;
 
 $(function() {
+	console.log(selectL2R);
     // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
     //     App.getCommonModal("staff", "#searchStaffName", "orgName", ["staffId", "staffOid"]);
     // });
@@ -176,7 +177,7 @@ function searchStaff(retainPaging) {
  * @param {登录名} loginName 
  */
 function resetPasswd(staffId, staffName, loginName) {
-    layer.confirm('确定重置' + staffName + '的密码吗?', {
+    layer.confirm('确定重置' + staffName + '的密码为123456吗?', {
         btn: ['重置', '取消'],
         icon: 0,
         skin: 'layer-ext-moon'
@@ -185,10 +186,7 @@ function resetPasswd(staffId, staffName, loginName) {
             url: parent.globalConfig.serverPath + 'staffs/' + staffId + "/passwd/" + loginName,
             type: "PUT",
             success: function(data) {
-                layer.alert("用户" + staffName + "的密码重置成功，新密码为" + data.data, {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
+                layer.msg("用户" + staffName + "的密码重置成功，新密码为" + data.data);
             }
         });
     });
@@ -211,10 +209,7 @@ function changeStaffStatus(staffOrgId, staffName, staffOrgStatus) {
                 "type": "PUT",
                 "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
                 success: function(data) {
-                    layer.alert("启用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    layer.msg("启用成功");
                     searchStaff(true);
                 }
             });
@@ -229,10 +224,7 @@ function changeStaffStatus(staffOrgId, staffName, staffOrgStatus) {
                 "type": "PUT",
                 "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
                 success: function(data) {
-                    layer.alert("禁用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    layer.msg("禁用成功");
                     searchStaff(true);
                 }
             });
@@ -694,6 +686,24 @@ function setEditForm(data) {
     validate("edit");
 }
 
+function checkLoginNameFun(){
+	var loginName = $('#loginName').val();
+	var flag;
+	if('' == loginName){
+		return;
+	}
+	App.formAjaxJson(parent.globalConfig.serverPath + "staffs/checkLoginName/" + loginName, "get", "", successCallback, null, null, null, false);
+	function successCallback(result) {
+		console.log(result.data);
+        if (result.data==null) {
+            flag=true;
+        }else{
+        	flag=false;
+        }
+    };
+    return flag;
+}
+
 /*
  * 表单验证
  */
@@ -718,8 +728,8 @@ function validate(editType) {
                         regexp: {
                             regexp: /^[a-zA-Z0-9_\-\.]+$/,
                             message: '用户名由数字字母-_和.组成'
-                        },
-                        callback: {
+                        }
+                        /*callback: {
                             message: '此账号已存在',
                             callback: function(value, validator, $field) {
                                 var flag = true;
@@ -737,7 +747,7 @@ function validate(editType) {
                                 };
                                 return flag;
                             }
-                        }
+                        }*/
                     }
                 },
                 passwd: {
@@ -1132,34 +1142,40 @@ function hideMenu(dom) {
  * 新增||修改提交
  */
 function updateInnalPersonnel(editType) {
-    var formObj = App.getFormValues($("#staffForm"));
-    var ms = "新增成功";
-    var url = parent.globalConfig.serverPath + "staffs/addStaff";
-    var pushType = "POST";
-    if (editType == "add") {
-        formObj.createBy = parent.globalConfig.curStaffId;
-        formObj.updateBy = parent.globalConfig.curStaffId;
-        formObj.orgId = $("#orgNameIn").data("id");
-        formObj.staffKind = 1;
-        delete formObj.staffId;
-    } else {
-        formObj.updateBy = parent.globalConfig.curStaffId;
-        formObj.orgId = $("#orgNameIn").data("id");
-        ms = "修改成功";
-        url = parent.globalConfig.serverPath + "staffs/updateStaff";
-        pushType = "PUT";
-    }
-    App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
+	if(checkLoginNameFun()){
+		var formObj = App.getFormValues($("#staffForm"));
+    	var ms = "新增成功";
+    	var url = parent.globalConfig.serverPath + "staffs/addStaff";
+    	var pushType = "POST";
+    	if (editType == "add") {
+        	formObj.createBy = parent.globalConfig.curStaffId;
+        	formObj.updateBy = parent.globalConfig.curStaffId;
+        	formObj.orgId = $("#orgNameIn").data("id");
+        	formObj.staffKind = 1;
+        	delete formObj.staffId;
+    	} else {
+        	formObj.updateBy = parent.globalConfig.curStaffId;
+        	formObj.orgId = $("#orgNameIn").data("id");
+        	ms = "修改成功";
+        	url = parent.globalConfig.serverPath + "staffs/updateStaff";
+        	pushType = "PUT";
+    	}
+    	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
 
-    function successCallback(result) {
-        layer.msg(ms, { icon: 1 });
-        searchPersonnel(false);
-        $('#modal').modal('hide');
-    }
+    	function successCallback(result) {
+        	layer.msg(ms, { icon: 1 });
+        	searchPersonnel(false);
+        	$('#modal').modal('hide');
+    	}
 
-    function improperCallbacks(result) {
-        $('#staffForm').data('bootstrapValidator').resetForm();
-    }
+    	function improperCallbacks(result) {
+        	$('#staffForm').data('bootstrapValidator').resetForm();
+    	}
+	}else{
+		alert("此账号已存在");
+		return;
+	}
+    
 }
 /*
  * 搜索点击事件
@@ -1265,7 +1281,7 @@ function addStaffOrg_OrgTree(obj) {
  * 新增||修改岗位提交
  */
 function addStaffOrg(editType) {
-    // debugger;
+    //debugger;
     var formObj = App.getFormValues($("#addStaffOrgForm"));
     var ms = "新增成功";
     var url = parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrg/";
@@ -1300,7 +1316,7 @@ function goStaffOrgRoleCopy(staffOrgId) {
 }
 
 function goDelStaffOrg(staffId, staffOrgId) {
-    layer.confirm('确定删除改岗位么', {
+    layer.confirm('确定删除该借调岗位吗？', {
         btn: ['确认', '取消'],
         icon: 0,
         skin: 'layer-ext-moon'
@@ -1355,7 +1371,7 @@ function goEditStaffOrg(staffId, staffOrgId) {
                             message: '请选择所属组织'
                         },
                         callback: {
-                            message: '在改组织下已有其他类型岗位',
+                            message: '该组织下已有其他类型岗位',
                             callback: function(value, validator, $field) {
                                 var staffId = $("input[name='staffId']", $('#addStaffOrgForm')).val();
                                 var staffOrgId = $("input[name='staffOrgId']", $('#addStaffOrgForm')).val();

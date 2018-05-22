@@ -228,6 +228,7 @@ function getScanValidationInfo(verifyId){
 	}
 	App.formAjaxJson(serverPath + "sysScanValidation/getSysScanValidationId", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
+		console.log(result);
 		var data = result.data;
 		$("#verifyState").text(associateCodeInfo[data.verifyStatus]);
 		$("#contratVersion").text(data.verifyVersion);
@@ -251,10 +252,19 @@ function getScanValidationInfo(verifyId){
 		$("#otherPartyName").html(otherPartyName);
     	$("#ourPartyName").html(ourPartyName);
 		//pdf URL设值
-		var textPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=2133210337821589506");
-		var scandocPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=2133210337821589506");
-		$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
-		$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		if(data.textPdf){
+			var textPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.textPdf);
+			$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+		}else{
+			clearInterval(interval1);
+		};
+		if(data.scandocPdf){
+			var scandocPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.scandocPdf);
+			console.log(scandocPdf);
+			$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+		}else{
+			clearInterval(interval2);
+		};
 		//若有差异查询差异记录
 		if(isDifferences){
 			if(parm.pageType == 1 && parm.taskFlag == "db" && isLeader == false){
@@ -385,12 +395,11 @@ function creatDiffTbodyHtml(data,k){
  */
 $("#differenceTbody").on("click","tr",function(el){
 	console.log(this)
-	alert("textpageno="+$(this).data("textpageno"));
-//	var textpageno = $(this).data("textpageno");
-//	document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.page = textpageno;	
-//	pdfApiSearch("textPdfContent",$(this).children().eq(1));
-//	document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.page = textpageno;
-//	pdfApiSearch("scandocPdfContent",$(this).children().eq(2));
+	var textpageno = $(this).data("textpageno");
+	document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.page = textpageno;	
+	pdfApiSearch("textPdfContent",$(this).children().eq(1));
+	document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.page = textpageno;
+	pdfApiSearch("scandocPdfContent",$(this).children().eq(2));
 })
 /*
  * pdf搜索

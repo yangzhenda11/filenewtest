@@ -200,8 +200,9 @@ function modal_passQxsp(flowParam){
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 		function successCallback(result) {
 			parent.layer.alert("取消成功。",{icon:1},function(index){
-				parent.layer.close(index);
-				window.location.reload();
+				//parent.layer.close(index);
+				//window.location.reload();
+				parent.modal_close();
 			});
 		}
 		function improperCallback(result){

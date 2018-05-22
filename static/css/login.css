@@ -29,8 +29,8 @@ input,button{outline: none !important;}
 /*.login-form-body .form-group .form-control.code{ padding-left: 12px;}
 .login-form-body .login-yanzheng{max-width: 100%; height: 42px; margin-right: -25px; border-radius: 4px;}
 .login-remember{ color:#fff;}
-.checkbox label{display:block;width:200px;text-align:left;}
-.login-copyright{ width:100%; text-align:center; position:fixed; bottom:10px; color:#999; color:#AEB4B4; font-size:12px;}*/
+.checkbox label{display:block;width:200px;text-align:left;}*/
+.login-copyright{ width:100%; text-align:center; position:fixed; bottom:10px; color:#999; color:#AEB4B4; font-size:12px;}
 
 @media all and (max-width: 1200px) {
 	.login-title h1 { font-size: 26px;}

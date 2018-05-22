@@ -83,7 +83,7 @@ function beforePushProcess(pass){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        parent.layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0]);
 	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
@@ -254,7 +254,7 @@ function submitContent(){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0]);
 	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
@@ -418,9 +418,16 @@ function setPinfoContent(){
 /*
  * 滚动到相应位置高度
  */
-function srolloOffect(el,isSpecial){
+function srolloOffect(el){
 	var v = $(".page-content").scrollTop();
-	var scrollTopValue = v + $(el).offset().top - 150;
+	if($(el).parents("#incomeLinerentTbody")[0]){
+		var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
+		console.log(scrollLeftValue);
+		if(scrollLeftValue > 0){
+			$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
+		}
+	}
+	var scrollTopValue = v + $(el).offset().top - 200;
 	$('.page-content').animate({
 		scrollTop:scrollTopValue
 	},300)

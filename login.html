@@ -14,46 +14,45 @@
 		<link rel="stylesheet" type="text/css" href="static/css/iconfont/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="static/css/login.css?v=3" />
 		<link href="static/img/favicon.png" rel="bookmark" type="image/x-icon" />
-	    <link href="static/img/favicon.png" rel="icon" type="image/x-icon" />
-	    <link href="static/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
+		<link href="static/img/favicon.png" rel="icon" type="image/x-icon" />
+		<link href="static/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
 	</head>
 
 	<body>
-		<div class="row">
-			<div class="col-sm-12 login-bg">
-				<img src="static/img/login-top.png" />
-			</div>
-			<div class="login-content">
-				<div class="col-xs-12 content-redbg">
-					<div class="container">
-						<div class="row">
-							<div class="col-sm-12 col-md-12">
-								<div class="col-sm-3 col-md-3">
-									<div class="logo-bg">
-										<img src="static/img/logo1.png" alt="中国联通" />
-									</div>
+		<div class="col-sm-12 login-bg">
+			<img src="static/img/login-top.png" />
+		</div>
+		<div class="login-content">
+			<div class="col-xs-12 content-redbg">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12 col-md-12">
+							<div class="col-sm-3 col-md-3">
+								<div class="logo-bg">
+									<img src="static/img/logo1.png" alt="中国联通" />
 								</div>
-								<div class="col-sm-5 col-md-4 text-center login-title">
-									<h2>中国联通</h2>
-									<h1>合同商务与履行管理系统</h1>
-								</div>
-								<div class="col-sm-4 col-md-4">
-									<form autocomplete="off" class="form-horizontal login-form-body">
-										<div class="row">
-											<div class="col-sm-8 col-md-8">
-												<div class="form-group">
-													<i class="iconfont">&#xe636;</i>
-													<input type="text" name="username" tabIndex="1" class="form-control" id="username" placeholder="登录名" onFocus="this.value=''">
-												</div>
-												<div class="form-group">
-													<i class="iconfont">&#xe8b2;</i>
-													<input type="password" name="password" tabIndex="2" class="form-control" id="password" placeholder="密码" onFocus="this.value=''">
-												</div>
+							</div>
+							<div class="col-sm-5 col-md-4 text-center login-title">
+								<h2>中国联通</h2>
+								<h1>合同商务与履行管理系统</h1>
+							</div>
+							<div class="col-sm-4 col-md-4">
+								<form autocomplete="off" class="form-horizontal login-form-body">
+									<div class="row">
+										<div class="col-sm-8 col-md-8">
+											<div class="form-group">
+												<i class="iconfont">&#xe636;</i>
+												<input type="text" name="username" tabIndex="1" class="form-control" id="username" placeholder="登录名" onFocus="this.value=''">
 											</div>
-											<div class="col-sm-4 col-md-4">
-												<button type="button" tabIndex="4" onclick="javascript:login();" class="btn btn-block primary login-btn"><i class="iconfont">&#xe637;</i> 登录</button>
+											<div class="form-group">
+												<i class="iconfont">&#xe8b2;</i>
+												<input type="password" name="password" tabIndex="2" class="form-control" id="password" placeholder="密码" onFocus="this.value=''">
 											</div>
-											<!--<div class="col-sm-12 col-md-12">
+										</div>
+										<div class="col-sm-4 col-md-4">
+											<button type="button" tabIndex="4" onclick="javascript:login();" class="btn btn-block primary login-btn"><i class="iconfont">&#xe637;</i> 登录</button>
+										</div>
+										<!--<div class="col-sm-12 col-md-12">
 												<div class="row">
 													<div class="col-sm-6 col-md-4">
 														<div class="form-group">
@@ -72,16 +71,15 @@
 													</div>
 												</div>
 											</div>-->
-										</div>
-									</form>
-								</div>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-12 text-center content-graybg"></div>
-				<!--<p class="login-copyright">技术支持&nbsp;&nbsp;联通&nbsp;</p>-->
 			</div>
+			<div class="col-sm-12 col-md-12 text-center content-graybg"></div>
+			<!--<p class="login-copyright">技术支持&nbsp;&nbsp;联通&nbsp;</p>-->
 		</div>
 	</body>
 	<!--[if lt IE 9]>
@@ -107,11 +105,17 @@
 					if(data.status == 1) {
 						window.location.href = "/index.html";
 					} else {
-						layer.alert(data.message,{title:"登录错误",icon:2});
+						layer.alert(data.message, {
+							title: "登录错误",
+							icon: 2
+						});
 					}
 				},
-				error:function(){
-					layer.alert("系统无响应，请稍后再试",{title:"登录错误",icon:2});
+				error: function() {
+					layer.alert("系统无响应，请稍后再试", {
+						title: "登录错误",
+						icon: 2
+					});
 				}
 			});
 		}

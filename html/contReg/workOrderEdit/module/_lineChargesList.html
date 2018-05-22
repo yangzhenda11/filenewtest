@@ -12,8 +12,8 @@
 					<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i> 新增</button>
 					<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
 				</div>
-				<div class="table-responsive">
-					<table class="table table-hover table-bordered table-striped table-align" id="incomeLinerentTable" style="min-width: 1700px;">
+				<div class="table-responsive" id="incomeLinerentTableContent">
+					<table class="table table-hover table-bordered table-striped table-align" style="min-width: 1700px;" id="incomeLinerentTable">
 						<thead>
 							<tr>
 								<th class="lineChargesTableEdit"><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
@@ -190,6 +190,11 @@
 					var onceCost = "onceCost" + i;
 					var otherCost = "otherCost" + i;
 					var settlementFrequency = "settlementFrequency" + i;
+					var fixedMonthRentV = data[i].fixedMonthRent == null ? "" : data[i].fixedMonthRent;
+					var lineCountV = data[i].lineCount == null ? "" : data[i].lineCount;
+					var totalMonthRentV = data[i].totalMonthRent == null ? "" : data[i].totalMonthRent;
+					var onceCostV = data[i].onceCost == null ? "" : data[i].onceCost;
+					var otherCostV = data[i].otherCost == null ? "" : data[i].otherCost;
 					var appendHtml = "<tr data-id='"+ data[i].linerentId +"' class='"+ productName +"'>"+
 										"<td class='lineChargesTableEdit'><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
 										"<td class='orderNumber'></td>"+
@@ -197,11 +202,11 @@
 										"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+data[i].fixedMonthRent+"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' value='"+data[i].lineCount+"' maxlength='10'  /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+data[i].totalMonthRent+"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+data[i].onceCost+"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+data[i].otherCost+"' maxlength='20' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+ fixedMonthRentV +"' maxlength='20' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' value='"+lineCountV+"' maxlength='10'  /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+totalMonthRentV+"' maxlength='20' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+onceCostV+"' maxlength='20' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+otherCostV+"' maxlength='20' /></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
 										"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 									"</tr>";

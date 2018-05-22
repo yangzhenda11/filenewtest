@@ -1,6 +1,7 @@
 var serverPath = parent.globalConfig.serverPath;
 
 $(function() {
+	console.log(selectL2R);
     // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
     //     App.getCommonModal("staff", "#searchStaffName", "orgName", ["staffId", "staffOid"]);
     // });

@@ -341,7 +341,7 @@ function addComment(pass){
 			//$("#comment").val("不同意");
 			$("#handleType").val(2);
 		}		
-		refreshLink();
+		refreshLink(pass);
 		
 	// $("#out-footer").hide();
 		// $("#in-footer").show();
@@ -455,8 +455,8 @@ function addCommentForTurn(){
 }
 
 //环节下拉列表
-function refreshLink(){
-	
+function refreshLink(pass){
+	var processDefinitionKey = $("#processDefinitionKey").val();
 	var taskId = $("#taskId").val();
 	var handleType = $("#handleType").val();
 	var isHistoryBack = $('#isHistoryBack').val(); //该环节在进行回退的时候是否进行历史记录进行匹配
@@ -481,16 +481,30 @@ function refreshLink(){
 				$.each(link, function(i, obj){
 					$("#link").append("<option value='" + obj.value + "'>" + obj.label + "</option>");
 				});
-				// 最后一环节无需通过时无需选择环节与处理人
-				if (link.length == 0 || (link.length == 1 && "END" == link[0].value.split(",")[2])) {
-					//$("#linkDiv").hide();
+				if(pass){
+					// 最后一环节无需通过时无需选择环节与处理人
+					if (link.length == 0 || (link.length == 1 && "END" == link[0].value.split(",")[2])) {
+						//$("#linkDiv").hide();
+						$("#assigneeDiv").hide();
+					} else {
+						$("#linkDiv").show();
+					}
+				}else{
+					//回退隐藏处理人，自动后台根据审批历史获取
 					$("#assigneeDiv").hide();
-				} else {
-					$("#linkDiv").show();
-					$("#assigneeDiv").show();
 					// 刷新人员
-					// refreshAssignee(serverPath, processDefinitionKey, $("#link").val().split(",")[0]);	
+					refreshAssignee(serverPath, processDefinitionKey, $("#link").val().split(",")[0]);
 				}
+				// 最后一环节无需通过时无需选择环节与处理人
+//				if (link.length == 0 || (link.length == 1 && "END" == link[0].value.split(",")[2])) {
+//					//$("#linkDiv").hide();
+//					$("#assigneeDiv").hide();
+//				} else {
+//					$("#linkDiv").show();
+//					$("#assigneeDiv").show();
+//					// 刷新人员
+//					refreshAssignee(serverPath, processDefinitionKey, $("#link").val().split(",")[0]);	
+//				}
 				if(link.length>0){
 					//是否显示推荐人
 					if($('#isUseReferenceMan').val() == 'true'){
@@ -507,21 +521,24 @@ function refreshLink(){
 // 20170417起变动，工作流公共模块不参与业务系统待办处理人筛选，由业务系统自行控制
 //人员下拉列表
 function refreshAssignee(serverPath, processDefinitionKey, taskDefinitionKey){
-	
+	var handleType = $("#handleType").val();
 	// 获取实例ID环节LINK_ID
 	var processInstanceId = $("#processInstanceId").val();
 	
-	$.post(serverPath + "workflowrest/assignee/" + processDefinitionKey + "/" + taskDefinitionKey + "/" + processInstanceId,
+	$.post(serverPath + "workflowrest/assignee/" + processDefinitionKey + "/" + taskDefinitionKey + "/" + processInstanceId+"/"+handleType,
 		function(data) {
 			var success = data.retCode;
 			// 返回成功即继续处理，不成功报原因
 			if (success == 1){
-				var assignee = data.dataRows;
+				var obj = data.dataRows;
 				
-				$("#assignee").empty();
-				$.each(assignee, function(i, obj){
-					$("#assignee").append("<option value='" + obj.value + "'>" + obj.label + "</option>");	
-				});					
+				$("#assigneeName").val();
+				$("#assignee").val();
+				$("#assigneeName").val(obj[0].label);
+				$("#assignee").val(obj[0].value);
+//				$.each(assignee, function(i, obj){
+//					$("#assignee").append("<option value='" + obj.value + "'>" + obj.label + "</option>");	
+//				});					
 			} else if (success == 0){
 				alert(data.retValue);
 			}

@@ -29,8 +29,7 @@ See https://github.com/adobe-type-tools/cmap-resources
     <title>PDF.js viewer</title>
 
 
-    <link rel="stylesheet" href="viewer.css">
-	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="viewer.css?v=1">
 
 
 <!-- This snippet is used in production (included from viewer.html) -->
@@ -155,8 +154,8 @@ See https://github.com/adobe-type-tools/cmap-resources
         </div>  <!-- secondaryToolbar -->
 
         <div class="toolbar">
-          <div id="toolbarContainer" class="hidden">
-            <div id="toolbarViewer">
+          <div id="toolbarContainer">
+            <div id="toolbarViewer" class="hidden">
               <div id="toolbarViewerLeft">
                 <button id="sidebarToggle" class="toolbarButton" title="Toggle Sidebar" tabindex="11" data-l10n-id="toggle_sidebar">
                   <span data-l10n-id="toggle_sidebar_label">Toggle Sidebar</span>

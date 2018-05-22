@@ -25,19 +25,21 @@ $(function() {
 		$(".portlet").css("cssText", "border:none !important;padding:0px");
 		$(".toolbarBtn").remove();
 		$(".page-content").removeClass("hidden");
-		if(parm.taskDefinitionKey == "GDCL"){
-			//工单处理环节将提交按钮改为“注册完成” btId：passButton   
-			parent.setUserBtName("passButton","注册完成");
-			//工单处理环节将返回待办列表改为“关闭” btId：backTolist
-			parent.setUserBtName("backTolist","关闭");
-		}else if(parm.taskDefinitionKey == "GDQR"){
-			//工单确认环节将提交按钮改为“工单激活” btId：passButton   
-			parent.setUserBtName("passButton","激活合同");
-			//工单处理环节将回退按钮改为“退回承办人” btId：backButton
-			parent.setUserBtName("backButton","退回承办人");
-			//工单处理环节将返回待办列表改为“关闭” btId：backTolist
-			parent.setUserBtName("backTolist","关闭");
-		};
+		if(parm.taskFlag == "db"){
+			if(parm.taskDefinitionKey == "GDCL"){
+				//工单处理环节将提交按钮改为“注册完成” btId：passButton   
+				parent.setUserBtName("passButton","注册完成");
+				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+				parent.setUserBtName("backTolist","关闭");
+			}else if(parm.taskDefinitionKey == "GDQR"){
+				//工单确认环节将提交按钮改为“工单激活” btId：passButton   
+				parent.setUserBtName("passButton","激活合同");
+				//工单处理环节将回退按钮改为“退回承办人” btId：backButton
+				parent.setUserBtName("backButton","退回承办人");
+				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+				parent.setUserBtName("backTolist","关闭");
+			};
+		}
 	} else if(parm.pageType == 2) {
 		wcardId = parm.wcardId;
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
@@ -81,13 +83,21 @@ function beforePushProcess(pass){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        parent.layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0]);
 	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(!submitData){
 				return false
+			};
+    	};
+    	if(parm.taskDefinitionKey == "GDQR" && pass == true){
+    		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+			if(adminCommitmentValue == null){
+				parent.layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
+				srolloOffect("#adminCommitmentContent");
+				return false;
 			};
     	}
 	}else{
@@ -156,35 +166,23 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			parent.layer.alert(result.message,{icon:2});
 		}
 	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){
-		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
-		if(adminCommitmentValue == 1){
-			var adminCommitment = 1;
-		}else{
-			var adminCommitment = 0;
-		};
-		if(adminCommitment == 0){
-			parent.layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
-			srolloOffect("#adminCommitmentContent");
-			return false;
-		}else{
-			parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
-				parent.layer.close(index);
-				postData.validity = {};
-				postData.validity.adminCommitment = adminCommitment;
-				postData.validity.validityId = $("#validityId").val();
-				postData.wcardId = wcardId;
-				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
-				function successCallback(result) {
-					var data = result.data;
-					parent.layer.alert("激活成功！",{icon:1},function(){
-						parent.modal_close();
-					});
-				}
-				function improperCallback(result){
-					parent.layer.alert(result.message,{icon:2});
-				}
-			});
-		}
+		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+			parent.layer.close(index);
+			postData.validity = {};
+			postData.validity.adminCommitment = 1;
+			postData.validity.validityId = $("#validityId").val();
+			postData.wcardId = wcardId;
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			function successCallback(result) {
+				var data = result.data;
+				parent.layer.alert("激活成功！",{icon:1},function(){
+					parent.modal_close();
+				});
+			}
+			function improperCallback(result){
+				parent.layer.alert(result.message,{icon:2});
+			}
+		});
 	}
 }
 //取消审批
@@ -200,8 +198,9 @@ function modal_passQxsp(flowParam){
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 		function successCallback(result) {
 			parent.layer.alert("取消成功。",{icon:1},function(index){
-				parent.layer.close(index);
-				window.location.reload();
+				//parent.layer.close(index);
+				//window.location.reload();
+				parent.modal_close();
 			});
 		}
 		function improperCallback(result){
@@ -255,7 +254,7 @@ function submitContent(){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0]);
 	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
@@ -419,9 +418,16 @@ function setPinfoContent(){
 /*
  * 滚动到相应位置高度
  */
-function srolloOffect(el,isSpecial){
+function srolloOffect(el){
 	var v = $(".page-content").scrollTop();
-	var scrollTopValue = v + $(el).offset().top - 120;
+	if($(el).parents("#incomeLinerentTbody")[0]){
+		var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
+		console.log(scrollLeftValue);
+		if(scrollLeftValue > 0){
+			$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
+		}
+	}
+	var scrollTopValue = v + $(el).offset().top - 200;
 	$('.page-content').animate({
 		scrollTop:scrollTopValue
 	},300)
@@ -588,9 +594,14 @@ function saveContent(){
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
 		//手动触发表单特定的验证项
-		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('lineCount');
-	    //bootstrapValidator.validate();
+		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
 	    //console.log(bootstrapValidator.isValid());
+//	    if(!bootstrapValidator.isValid()){
+//	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
+//	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+//	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
+//	    	return false;
+//	    };
 		var submitData = getContentValue();
 		if(submitData){
 			console.log(submitData);

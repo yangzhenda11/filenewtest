@@ -204,15 +204,15 @@
 						};
 						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
 											"<td class='payerEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' maxlength='100' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' maxlength='100' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' maxlength='100' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' maxlength='240' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' maxlength='40' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' maxlength='240' /></div></td>"+
 											"<td class='payeeEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 										"</tr>";
 						$("#payeeInfoTbody").append(appendHtml);
-						addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
-						addNotEmptyValidatorField(openBank,"收款方开户银行不能为空");
-						addNotEmptyValidatorField(accountNumber,"付款方银行账号不能为空");
+						addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户");
+						addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
+						addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
 						App.checkAllFn("#payeeCheckAll","payeeCheck");
 					}else if(data[i].accountType == 2){
 						if($("#payerInfoTbody .emptyTr")[0] != undefined){
@@ -220,15 +220,15 @@
 						};
 						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
 											"<td class='payerEdit'><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' maxlength='100' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' maxlength='100' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' maxlength='100' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' maxlength='240' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' maxlength='40' /></div></td>"+
+											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' maxlength='240' /></div></td>"+
 											"<td class='payerEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
 										"</tr>";
 						$("#payerInfoTbody").append(appendHtml);
-						addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
-						addNotEmptyValidatorField(openBank,"付款方开户银行不能为空");
-						addNotEmptyValidatorField(accountNumber,"付款方银行账号不能为空");
+						addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户");
+						addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
+						addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
 						App.checkAllFn("#payerCheckAll","payerCheck");
 					}
 				};
@@ -257,15 +257,15 @@
 		var openBank = "openBank" + isCreateAccountTrLength;
 		var appendHtml = "<tr data-id='100000'>"+
 							"<td><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' maxlength='100' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' maxlength='100' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' maxlength='100' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' maxlength='240' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' maxlength='40' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' maxlength='240' /></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#payeeInfoTbody").append(appendHtml);
-		addNotEmptyValidatorField(accountName,"收款方账户名称不能为空");
-		addNotEmptyValidatorField(openBank,"收款方开户银行不能为空");
-		addNotEmptyValidatorField(accountNumber,"收款方银行账号不能为空");
+		addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户");
+		addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
+		addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
 		App.checkAllFn("#payeeCheckAll","payeeCheck");
 	}
 	/*
@@ -319,15 +319,15 @@
 		var openBank = "openBank" + isCreateAccountTrLength;
 		var appendHtml = "<tr data-id='100000'>"+
 							"<td><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' maxlength='100' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' maxlength='100' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' maxlength='100' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' maxlength='240' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' maxlength='40' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' maxlength='240' /></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#payerInfoTbody").append(appendHtml);
-		addNotEmptyValidatorField(accountName,"付款方账户名称不能为空");
-		addNotEmptyValidatorField(openBank,"付款方开户银行不能为空");
-		addNotEmptyValidatorField(accountNumber,"付款方银行账号不能为空");
+		addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户");
+		addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
+		addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
 		App.checkAllFn("#payerCheckAll","payerCheck");
 	}
 	/*

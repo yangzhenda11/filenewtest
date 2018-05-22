@@ -294,7 +294,10 @@ function changePasswd() {
 
         function passwdCallback(result) {
             if (result.data) {
-                alert("修改成功");
+                layer.msg("修改成功",{
+                	icon: 1,
+                	time: 4000
+                });
                 logout();
             }
         }

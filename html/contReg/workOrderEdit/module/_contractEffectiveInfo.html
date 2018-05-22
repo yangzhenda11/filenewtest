@@ -93,31 +93,31 @@
 				<div class="col-sm-6 form-group hidden" id="effectConditionDiv">
 					<label for="effectCondition" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="effectCondition" name="effectCondition" maxlength="1000" />
+						<input type="text" class="form-control" id="effectCondition" name="effectCondition" maxlength="2000" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group hidden" id="effectPeriodDiv">
 					<label for="effectPeriod" class="control-label"><i class="iconfont icon-mi required"></i>协议期限：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="effectPeriod" name="effectPeriod" maxlength="1000" />
+						<input type="text" class="form-control" id="effectPeriod" name="effectPeriod" maxlength="2000" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group hidden" id="postponeConditionDiv">
 					<label for="postponeCondition" class="control-label"><i class="iconfont icon-mi required"></i>顺延条件：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="postponeCondition" name="postponeCondition" maxlength="1000" />
+						<input type="text" class="form-control" id="postponeCondition" name="postponeCondition" maxlength="2000" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group hidden" id="postponePeriodDiv">
 					<label for="postponePeriod" class="control-label"><i class="iconfont icon-mi required"></i>顺延时限：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="postponePeriod" name="postponePeriod" maxlength="1000" />
+						<input type="text" class="form-control" id="postponePeriod" name="postponePeriod" maxlength="2000" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group hidden" id="expiryConditionDiv">
 					<label for="expiryCondition" class="control-label"><i class="iconfont icon-mi required"></i>满足终止：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="expiryCondition" name="expiryCondition" maxlength="1000" />
+						<input type="text" class="form-control" id="expiryCondition" name="expiryCondition" maxlength="2000" />
 					</div>
 				</div>
 			</div>
@@ -246,9 +246,9 @@
 	addNotEmptyValidatorField("partyZSignDate","对方签约日期不能为空");
 	addNotEmptyValidatorField("effectiveDate","生效日期不能为空");
 	addNotEmptyValidatorField("expiryDate","终止日期不能为空");
-	addNotEmptyValidatorField("effectCondition","生效条件不能为空");
-	addNotEmptyValidatorField("effectPeriod","协议期限不能为空");
-	addNotEmptyValidatorField("postponeCondition","顺延条件不能为空");
-	addNotEmptyValidatorField("postponePeriod","顺延时限不能为空");
-	addNotEmptyValidatorField("expiryCondition","满足终止不能为空");
+	addNotEmptyValidatorField("effectCondition","请输入不超过2000个字符的生效条件");
+	addNotEmptyValidatorField("effectPeriod","请输入不超过2000个字符的协议期限");
+	addNotEmptyValidatorField("postponeCondition","请输入不超过2000个字符的顺延条件");
+	addNotEmptyValidatorField("postponePeriod","请输入不超过2000个字符的顺延时限");
+	addNotEmptyValidatorField("expiryCondition","请输入不超过2000个字符的满足终止条件");
 </script>

@@ -424,7 +424,7 @@ function setPinfoContent(){
  */
 function srolloOffect(el,isSpecial){
 	var v = $(".page-content").scrollTop();
-	var scrollTopValue = v + $(el).offset().top - 120;
+	var scrollTopValue = v + $(el).offset().top - 150;
 	$('.page-content').animate({
 		scrollTop:scrollTopValue
 	},300)

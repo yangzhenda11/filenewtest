@@ -147,14 +147,14 @@
 					var appendHtml = "<tr data-id='"+ data[i].invoiceId +"'>"+
 										"<td class='invoiceTableEdit'><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
 										"<td class='orderNumber'></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ data[i].invoiceTitle +"' maxlength='50' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ data[i].invoiceTitle +"' maxlength='240' /></div></td>"+
 										"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"' >"+ selectHtml +"</select></div></td>"+
 										"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
 									"</tr>";
 					$("#invoiceTbody").append(appendHtml);
 					App.initFormSelect2("."+invoiceTypeName);
 					$("select[name='"+invoiceTypeName+"']").val(data[i].invoiceType).trigger("change");
-					addNotEmptyValidatorField(invoiceTitleName,"发票抬头不能为空");
+					addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
 					addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
 					addInvoiceTableSort();
 					App.checkAllFn("#invocieCheckAll","invoiceCheck");
@@ -188,13 +188,13 @@
 		var appendHtml = "<tr data-id='100000'>"+
 							"<td><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
 							"<td class='orderNumber'></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' maxlength='50' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' maxlength='240' /></div></td>"+
 							"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"'>"+ selectHtml +"</select></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#invoiceTbody").append(appendHtml);
 		App.initFormSelect2("."+invoiceTypeName);
-		addNotEmptyValidatorField(invoiceTitleName,"发票抬头不能为空");
+		addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
 		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
 		addInvoiceTableSort();
 		App.checkAllFn("#invocieCheckAll","invoiceCheck");

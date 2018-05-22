@@ -186,11 +186,11 @@
 										"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+data[i].fixedMonthRent+"' maxlength='15' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+data[i].fixedMonthRent+"' maxlength='20' /></div></td>"+
 										"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' value='"+data[i].lineCount+"' maxlength='10'  /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+data[i].totalMonthRent+"' maxlength='15' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+data[i].onceCost+"' maxlength='15' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+data[i].otherCost+"' maxlength='15' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+data[i].totalMonthRent+"' maxlength='20' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+data[i].onceCost+"' maxlength='20' /></div></td>"+
+										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+data[i].otherCost+"' maxlength='20' /></div></td>"+
 										"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
 										"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 									"</tr>";
@@ -208,7 +208,7 @@
 					addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
 					var isInteger = {
 						notEmpty : {
-							message : "输入项不能为空"
+							message : "请输入不超过10个字符的整数"
 						},
 						regexp : {
 							regexp : /^(0|[1-9][0-9]*)$/,
@@ -217,7 +217,7 @@
 					};
 					var isMoney = {
 						notEmpty : {
-							message : "输入项不能为空"
+							message : "请输入不超过20个字符的金额"
 						},
 						regexp : {
 							regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
@@ -269,11 +269,11 @@
 							"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' maxlength='15' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' maxlength='20' /></div></td>"+
 							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' maxlength='10' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' maxlength='15' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='0' maxlength='15' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='0' maxlength='15' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='0' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='0' maxlength='20' /></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 						"</tr>";
@@ -286,7 +286,7 @@
 		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
 		var isInteger = {
 			notEmpty : {
-				message : "输入项不能为空"
+				message : "请输入不超过10个字符的整数"
 			},
 			regexp : {
 				regexp : /^(0|[1-9][0-9]*)$/,
@@ -295,7 +295,7 @@
 		};
 		var isMoney = {
 			notEmpty : {
-				message : "输入项不能为空"
+				message : "请输入不超过20个字符的金额"
 			},
 			regexp : {
 				regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,

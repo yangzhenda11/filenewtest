@@ -113,3 +113,28 @@
   color: #fff;
   background: #af1822;
 }
+#workOrderMenu {
+  list-style: none;
+  position: fixed;
+  right: 10px;
+  bottom: -10px;
+}
+#workOrderMenu li {
+  width: 30px;
+  height: 30px;
+  display: block;
+  text-align: center;
+  line-height: 30px;
+  margin-bottom: 5px;
+  color: #ccc;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#workOrderMenu li i {
+  font-size: 18px;
+}
+#workOrderMenu li:hover {
+  background: #ccc;
+  color: #fff;
+}

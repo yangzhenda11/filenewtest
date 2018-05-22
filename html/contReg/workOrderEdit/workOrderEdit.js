@@ -422,7 +422,6 @@ function srolloOffect(el){
 	var v = $(".page-content").scrollTop();
 	if($(el).parents("#incomeLinerentTbody")[0]){
 		var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
-		console.log(scrollLeftValue);
 		if(scrollLeftValue > 0){
 			$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
 		}
@@ -488,7 +487,7 @@ function setDomContent(domObj) {
 	for(var i = 0; i < domObj.length; i++){
 		var k = domObj[i].key;
 		var v = domObj[i].value;
-		var domHtml = '<div id="' + k + '" class="form-wrapper" data-target="' + k + '">';
+		var domHtml = '<div id="' + k + '" class="form-wrapper" data-target="' + k + '"></div>';
 		$("#workOrderContent").append(domHtml);
 		$("#" + k + "").load(v + "?" + App.timestamp(), function() {
 			loadFlag++;
@@ -505,7 +504,8 @@ function loadComplete() {
 	formSubmit = true;
 	App.init();
 	validate();
-	getBusiProcessInfoID()
+	getBusiProcessInfoID();
+	setSpeedyJump();
 };
 /*
  * 加载意见
@@ -540,6 +540,17 @@ function getBusiProcessInfoID(){
 				}
 			}
 		}
+}
+/*
+ * 设置快捷跳转
+ */
+function setSpeedyJump(){
+//	$.each(array, function() {
+//		
+//	});
+	//workOrderMenu
+	//$("[data-toggle='tooltip']").tooltip();
+//	<li data-placement="left" data-toggle="tooltip" title="123"><i class="iconfont icon-pingjia"></i></li>
 }
 /*
  * 获取表单信息

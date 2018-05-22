@@ -1,180 +1,46 @@
-/* Cubic Bezier Transition */
-button{
-	
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition-delay: 99999s;
+    -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
 }
-.user-login-5 {
-	min-height: 100vh;
-}
+body{background: #fff;}
+input,button{outline: none !important;}
+.login-content{ position: absolute; top: 40%; left: 0; right: 0;}
+.login-bg{background: url(../img/login-top-bg.png) no-repeat center center; position: absolute; left: 0; top: 0; height: 40%; background-size:cover; overflow: hidden;width: 100%;text-align: center;}
+.login-bg img{width:35%;height: 100%;}
+.content-redbg{ background: #de262b; padding-top: 30px; padding-bottom: 10px;}
+.content-graybg{ background: #444444; height: 45px;}
+.logo-bg{ background: url(../img/logo-bg.png) no-repeat; width: 174px; position: absolute; z-index: 99; top: -120px; left:100px; padding: 130px 5px 230px 5px;}
+.logo-bg img{ width: 100%; height: 100%;}
+.login-title{ color: #fff;}
+.login-title h2{ margin-top: 5px;}
+.login-title h1{ font-size: 32px;}
+.login-form-body .checkbox, .login-form-body .checkbox-inline, .login-form-body .radio, .login-form-body .radio-inline{ padding-top:0px}
+.login-form-body .form-group .form-control{ padding: 10px 12px;line-height:22px;height:42px; padding-left: 40px;}
+.login-form-body .form-group{ position: relative;}
+.login-form-body .form-group i{ position: absolute;left: 10px; top: 5px; color: #fdab29; font-size: 22px;}
+.login-btn{ font-size:20px; padding-top:12px; padding-bottom:12px;background: #fdab29;color: #fff;}
+.login-btn:hover{ color: #fff;}
+.login-btn:focus{ color: #fff;}
+.login-btn:active{ color: #fff;}
+.login-btn i{ display:block; font-size:32px;}
+/*.login-form-body .form-group .form-control.code{ padding-left: 12px;}
+.login-form-body .login-yanzheng{max-width: 100%; height: 42px; margin-right: -25px; border-radius: 4px;}
+.login-remember{ color:#fff;}
+.checkbox label{display:block;width:200px;text-align:left;}
+.login-copyright{ width:100%; text-align:center; position:fixed; bottom:10px; color:#999; color:#AEB4B4; font-size:12px;}*/
 
-.user-login-5 .bs-reset {
-	margin: 0;
-	padding: 0;
+@media all and (max-width: 1200px) {
+	.login-title h1 { font-size: 26px;}
+	.logo-bg{left:0px}
 }
-
-.user-login-5 .text-right {
-	text-align: right;
+@media all and (max-width: 992px) {
+	.login-title h1 { font-size: 26px;}
+	.login-form-body .login-yanzheng{ margin-right:0}
 }
-
-.user-login-5 .login-bg {
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	min-height: 100vh;
-}
-
-.user-login-5 .login-logo {
-	position: absolute;
-	top: 2.5em;
-	left: 2.5em;
-}
-
-.user-login-5 .login-logo.login-6 {
-	top: 80px;
-	left: 80px;
-}
-
-.user-login-5 .login-container {
-	position: relative;
-	min-height: 100vh;
-}
-
-.user-login-5 .login-container>.login-content,
-.user-login-5 .login-container .login-social,
-.user-login-5 .login-container .login-copyright {
-	padding: 0 80px;
-}
-
-.user-login-5 .login-container>.login-content {
-	margin-top: 10%;
-}
-
-.user-login-5 .login-container>.login-content>h1 {
-	font-size: 30px;
-	font-weight: 300;
-	color: #4e5a64;
-}
-
-.user-login-5 .login-container>.login-content p {
-	color: #a0a9b4;
-	font-size: 15px;
-	line-height: 22px;
-}
-
-.user-login-5 .login-container>.login-content>.login-form {
-	margin-top: 80px;
-	color: #a4aab2;
-	font-size: 13px;
-}
-
-.user-login-5 .login-container>.login-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	padding-bottom: 10px;
-}
-
-.user-login-5 .login-container>.login-footer .login-copyright {
-	padding-left: 0;
-	margin-top: 6px;
-}
-
-.user-login-5 .login-container>.login-footer .login-copyright>p {
-	margin: 0;
-	font-size: 13px;
-	color: #a9b5be;
-}
-
-.user-login-5 .alert {
-	margin-top: -60px;
-}
-
-.user-login-5 .form-group.has-error {
-	border-bottom: 2px solid #ed6b75 !important;
-}
-
-.user-login-5 .form-group.valid {
-	border-bottom: 1px solid #a0a9b4 !important;
-}
-
-@media (max-width: 1365px) {
-	.user-login-5 .login-logo.login-6 {
-		top: 40px;
-		left: 40px;
-	}
-	.user-login-5 .login-container>.login-content,
-	.user-login-5 .login-container .login-social,
-	.user-login-5 .login-container .login-copyright {
-		padding: 0 40px;
-	}
-	.user-login-5 .login-container .login-social {
-		padding-right: 0;
-	}
-	.user-login-5 .login-container .login-copyright {
-		padding-left: 0;
-	}
-}
-
-@media (max-width: 1023px) {
-	.user-login-5 {
-		min-height: 50vh;
-	}
-	.user-login-5 .mt-login-5-bsfix {
-		width: 100%;
-	}
-	.user-login-5 .login-bg {
-		min-height: 50vh;
-	}
-	.user-login-5 .login-logo.login-6 {
-		position: relative;
-		margin: 0 0 40px 0;
-	}
-	.user-login-5 .login-container {
-		min-height: 50vh;
-	}
-	.user-login-5 .login-container>.login-content {
-		margin-top: 60px;
-	}
-	.user-login-5 .login-container>.login-content .login-form {
-		margin-top: 40px;
-	}
-	.user-login-5 .login-container .rem-password {
-		margin-bottom: 1em;
-	}
-	.user-login-5 .login-container>.login-footer {
-		position: relative;
-		margin-top: 40px;
-		padding-bottom: 0;
-	}
-	.user-login-5 .login-container>.login-footer .login-social li {
-		margin-right: 0.5em;
-	}
-	.user-login-5 .alert {
-		margin-top: -20px;
-	}
-}
-
-@media (min-width: 900px) {
-	.user-login-5 .login-container>.login-content .login-form {
-		width: 380px;
-	}
-}
-
-@media (max-width: 640px) {
-	.user-login-5 .login-container>.login-content .text-right {
-		text-align: left;
-	}
-}
-
-.form-code {
-	position: relative;
-}
-
-.form-code input {
-	width: auto;
-	display: inline-block;
-}
-
-.form-code .form-code-img {
-	display: inline-block;
-	padding-left: 10px;
+@media all and (max-width: 768px) {
+	.logo-bg{display: none;}
+	.content-graybg{display: none;}
 }

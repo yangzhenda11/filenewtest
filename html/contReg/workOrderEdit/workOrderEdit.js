@@ -588,9 +588,14 @@ function saveContent(){
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
 		//手动触发表单特定的验证项
-		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('lineCount');
-	    //bootstrapValidator.validate();
+		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
 	    //console.log(bootstrapValidator.isValid());
+//	    if(!bootstrapValidator.isValid()){
+//	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
+//	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
+//	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
+//	    	return false;
+//	    };
 		var submitData = getContentValue();
 		if(submitData){
 			console.log(submitData);

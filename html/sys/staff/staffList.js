@@ -211,10 +211,7 @@ function changeStaffStatus(staffOrgId, staffName, staffOrgStatus) {
                 "type": "PUT",
                 "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
                 success: function(data) {
-                    layer.alert("启用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    layer.msg("启用成功");
                     searchStaff(true);
                 }
             });
@@ -229,10 +226,7 @@ function changeStaffStatus(staffOrgId, staffName, staffOrgStatus) {
                 "type": "PUT",
                 "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
                 success: function(data) {
-                    layer.alert("禁用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    layer.msg("禁用成功");
                     searchStaff(true);
                 }
             });

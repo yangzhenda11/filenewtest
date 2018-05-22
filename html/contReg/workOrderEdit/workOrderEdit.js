@@ -91,6 +91,14 @@ function beforePushProcess(pass){
 	    	if(!submitData){
 				return false
 			};
+    	};
+    	if(parm.taskDefinitionKey == "GDQR" && pass == true){
+    		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+			if(adminCommitmentValue == null){
+				parent.layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
+				srolloOffect("#adminCommitmentContent");
+				return false;
+			};
     	}
 	}else{
 		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
@@ -158,35 +166,23 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			parent.layer.alert(result.message,{icon:2});
 		}
 	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){
-		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
-		if(adminCommitmentValue == 1){
-			var adminCommitment = 1;
-		}else{
-			var adminCommitment = 0;
-		};
-		if(adminCommitment == 0){
-			parent.layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
-			srolloOffect("#adminCommitmentContent");
-			return false;
-		}else{
-			parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
-				parent.layer.close(index);
-				postData.validity = {};
-				postData.validity.adminCommitment = adminCommitment;
-				postData.validity.validityId = $("#validityId").val();
-				postData.wcardId = wcardId;
-				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
-				function successCallback(result) {
-					var data = result.data;
-					parent.layer.alert("激活成功！",{icon:1},function(){
-						parent.modal_close();
-					});
-				}
-				function improperCallback(result){
-					parent.layer.alert(result.message,{icon:2});
-				}
-			});
-		}
+		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+			parent.layer.close(index);
+			postData.validity = {};
+			postData.validity.adminCommitment = 1;
+			postData.validity.validityId = $("#validityId").val();
+			postData.wcardId = wcardId;
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			function successCallback(result) {
+				var data = result.data;
+				parent.layer.alert("激活成功！",{icon:1},function(){
+					parent.modal_close();
+				});
+			}
+			function improperCallback(result){
+				parent.layer.alert(result.message,{icon:2});
+			}
+		});
 	}
 }
 //取消审批

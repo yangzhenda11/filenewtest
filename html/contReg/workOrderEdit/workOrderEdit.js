@@ -25,19 +25,21 @@ $(function() {
 		$(".portlet").css("cssText", "border:none !important;padding:0px");
 		$(".toolbarBtn").remove();
 		$(".page-content").removeClass("hidden");
-		if(parm.taskDefinitionKey == "GDCL"){
-			//工单处理环节将提交按钮改为“注册完成” btId：passButton   
-			parent.setUserBtName("passButton","注册完成");
-			//工单处理环节将返回待办列表改为“关闭” btId：backTolist
-			parent.setUserBtName("backTolist","关闭");
-		}else if(parm.taskDefinitionKey == "GDQR"){
-			//工单确认环节将提交按钮改为“工单激活” btId：passButton   
-			parent.setUserBtName("passButton","激活合同");
-			//工单处理环节将回退按钮改为“退回承办人” btId：backButton
-			parent.setUserBtName("backButton","退回承办人");
-			//工单处理环节将返回待办列表改为“关闭” btId：backTolist
-			parent.setUserBtName("backTolist","关闭");
-		};
+		if(parm.taskFlag == "db"){
+			if(parm.taskDefinitionKey == "GDCL"){
+				//工单处理环节将提交按钮改为“注册完成” btId：passButton   
+				parent.setUserBtName("passButton","注册完成");
+				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+				parent.setUserBtName("backTolist","关闭");
+			}else if(parm.taskDefinitionKey == "GDQR"){
+				//工单确认环节将提交按钮改为“工单激活” btId：passButton   
+				parent.setUserBtName("passButton","激活合同");
+				//工单处理环节将回退按钮改为“退回承办人” btId：backButton
+				parent.setUserBtName("backButton","退回承办人");
+				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
+				parent.setUserBtName("backTolist","关闭");
+			};
+		}
 	} else if(parm.pageType == 2) {
 		wcardId = parm.wcardId;
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){

@@ -259,7 +259,8 @@ function getScanValidationInfo(verifyId){
 			clearInterval(interval1);
 		};
 		if(data.scandocPdf){
-			var textPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.scandocPdf);
+			var scandocPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.scandocPdf);
+			console.log(scandocPdf);
 			$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 		}else{
 			clearInterval(interval2);

@@ -37,7 +37,7 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         	};
         	
         	if($("#agentStaff").data("exactSearch")){
-        		d.undertakerId = $("#agentStaff").data("id");
+        		d.undertakerId = $("#agentStaff").data("staffOrgId");
         	}else{
         		d.undertakeName = $("#agentStaff").val();
         	};
@@ -139,7 +139,7 @@ $(function(){
 	})
 	//承办人
 	$("#searchAgentStaff").click(function(){
-		App.getCommonModal("agentStaff","#agentStaff","name","id");
+		App.getCommonModal("agentStaff","#agentStaff","name","staffOrgId");
 	})
 	//承办部门
 	$("#searchAgentDepartment").click(function(){

@@ -39,7 +39,7 @@ function getRoleTable() {
                             btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
                         }
                         if (roleDelete) {
-                            btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\')" });
+                            btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\',\'" + row.roleName + "\')" });
                         }
                         if (roleUpdate) {
                             btnArray.push({ "name": "授权", "fn": "openAddRolePerm(\'" + row.roleName + "\',\'" + data + "\')" });
@@ -94,7 +94,7 @@ function getRoleTable() {
  */
 function changeRoleStatus(roleId, roleName, roleStatus) {
     if (1 === roleStatus) {
-        layer.confirm("确认启用" + roleName + "吗？", {
+        layer.confirm("确定启用角色" + roleName + "吗？", {
             btn: ['启用', '取消'],
             icon: 0,
             skin: 'layer-ext-moon'
@@ -103,16 +103,13 @@ function changeRoleStatus(roleId, roleName, roleStatus) {
                 "type": "PUT",
                 "url": serverPath + 'roles/' + roleId + "/status/" + roleStatus,
                 success: function(data) {
-                    layer.alert("启用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                    $('#searchRoleTable').DataTable().ajax.reload(null, false);
+                    layer.msg("启用成功");
+                    searchRole(true);
                 }
             });
         });
     } else {
-        layer.confirm("确认禁用" + roleName + "吗？", {
+        layer.confirm("确定禁用角色" + roleName + "吗？", {
             btn: ['禁用', '取消'],
             icon: 0,
             skin: 'layer-ext-moon'
@@ -121,11 +118,8 @@ function changeRoleStatus(roleId, roleName, roleStatus) {
                 "type": "PUT",
                 "url": parent.globalConfig.serverPath + 'roles/' + roleId + "/status/" + roleStatus,
                 success: function(data) {
-                    layer.alert("禁用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                    $('#searchRoleTable').DataTable().ajax.reload(null, false);
+                    layer.alert("禁用成功");
+                    searchRole(true);
                 }
             });
         });
@@ -135,8 +129,8 @@ function changeRoleStatus(roleId, roleName, roleStatus) {
  * 删除某个角色
  * @param {角色id} roleId 
  */
-function deleteDetail(roleId) {
-    layer.confirm('确定删除该角色？', {
+function deleteDetail(roleId,roleName) {
+    layer.confirm('确定删除'+roleName+'角色吗？', {
         icon: 3,
         title: '删除角色'
     }, function(index) {
@@ -172,6 +166,9 @@ function searchRole(retainPaging) {
 function findDetail(itemId) {
     $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalDetail", function() {
         $("#modal").modal("show");
+        var documentHeight = $(".page-content").height() - 190;
+		$("#roleDeatilModal").css("height",documentHeight);
+		$("#rolePermissionDetailTreeCon").css("max-height",documentHeight-130);
         getRoleInfo(itemId, "detail");
     });
 }
@@ -180,10 +177,12 @@ function findDetail(itemId) {
  * daiyw
  */
 function findStaff(roleId) {
-    $("#modal").empty();
-    $("#modal").modal("show");
-    $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
-        getRoleStaffTable(roleId);
+     $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
+    	$("#modal").modal("show");
+    	$("#roleStaffTableContent").height($(".page-content").height() - 250);
+    	$('#modal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
+			getRoleStaffTable(roleId);
+		})
     });
 }
 /**
@@ -192,6 +191,7 @@ function findStaff(roleId) {
  */
 function getRoleStaffTable(roleId) {
     App.initDataTables('#searchRoleStaffTable', "#submitBtn", {
+    	scrollY:$(".page-content").height() - 340,
         "ajax": {
             "type": "GET",
             "url": serverPath + 'roles/searchRoleStaff',
@@ -207,7 +207,7 @@ function getRoleStaffTable(roleId) {
                 "data": null,
                 "title": "人员姓名",
                 render: function(data, type, full, meta) {
-                    return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
+                    return '<a href=\"javascript:void(0)\">' + data.STAFF_NAME + '</a>';
                 }
             },
             { "data": "LOGIN_NAME", "title": "账号" },

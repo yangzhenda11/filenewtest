@@ -10,7 +10,7 @@
 
 <body>
     <div id="modalEdit">
-        <div class="modal-dialog defaultModalWidth" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="rolePermForm" action="" class="form-horizontal">
                     <div class="modal-header">
@@ -20,9 +20,9 @@
                     <div class="modal-body defaultModalForm" style="height: 320px;">
                         <input type="hidden" name="roleId" id="roleId">
                         <input type="hidden" name="staffId" id="staffId">
-                        <div class="form-group col-sm-11">
-                            <label class="control-label" for="roleDesc">角色权限</label>
-                            <div class="col-sm-9" id="rolePermissions" style="height: 260px;overflow: auto;">
+                        <div class="form-group col-sm-12">
+                            <label class="control-label" for="roleDesc" style="width: 15%;">角色权限</label>
+                            <div class="col-sm-12" id="rolePermissions" style="height: 260px;overflow: auto;">
                                 <ul id="rolePermissionTree" class="ztree"></ul>
                             </div>
                         </div>

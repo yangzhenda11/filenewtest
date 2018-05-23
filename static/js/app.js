@@ -752,7 +752,6 @@ var App = function() {
 			var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
 			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
-			console.log(animation)
 			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? emptyFn : errorCallbacks;
 			$.ajax({
 				type: type,
@@ -773,11 +772,13 @@ var App = function() {
 					};
 				},
 				error: function(result) {
-					layer.alert("接口错误", {icon: 2,title:"错误"},function(){
-		        		if(result.status == 401){
+					if(result.status == 401){
+		        		layer.alert("登录超时，请重新登录", {icon: 2,title:"错误"},function(){
 		        			top.window.location.href = "/login.html";
-		        		}
-		        	});
+		        		});
+	        		}else{
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        		};
 					errorCallback(result);
 				}
 			});
@@ -973,11 +974,13 @@ var App = function() {
 		        	}
 		        }else{
 		        	loadEnd();
-		        	layer.alert("接口错误", {icon: 2,title:"错误"},function(){
-		        		if(xhr.status == 401){
+		        	if(xhr.status == 401){
+		        		layer.alert("登录超时，请重新登录", {icon: 2,title:"错误"},function(){
 		        			top.window.location.href = "/login.html";
-		        		}
-		        	});
+		        		});
+	        		}else{
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        		}
 		        }
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';
@@ -2343,7 +2346,6 @@ function loadEnd(){
 	layer.close(layerIndex);
 }
 $(document).ajaxStart(function(a){
-	console.log(a);
 	loadStart();
 })
 $(document).ajaxStop(function(){

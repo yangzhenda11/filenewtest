@@ -194,7 +194,7 @@ function data_permFilter(obj) {
     for (var i = 0; i < e.length; i++) {
         if ($(e[i]).data('permcheck') != "") {
             if ($.inArray($(e[i]).data('permcheck'), permissions) < 0) {
-                e[i].remove();
+                $(e[i]).remove();
             } else {
                 $(e[i]).removeClass("hidden");
 

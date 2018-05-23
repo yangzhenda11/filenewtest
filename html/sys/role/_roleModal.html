@@ -10,7 +10,7 @@
 
 <body>
     <div id="modalEdit">
-        <div class="modal-dialog defaultModalWidth" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="roleForm" action="" class="form-horizontal">
                     <div class="modal-header">
@@ -81,15 +81,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">角色详情</h4>
+                    <h4 class="modal-title">角色信息</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="roleDeatilModal">
                     <!-- <ul class="nav nav-tabs modalDetailTab">
                         <li class="active">
                             <a href="#roleInfo" data-toggle="tab">角色信息</a>
                         </li>
                     </ul> -->
-                    <div class="tab-content modalDetailCon">
+                    <div class="tab-content">
                         <div class="tab-pane fade in active" id="roleInfo">
                             <div class="col-sm-6">
                                 <div class="col-sm-4 form-control-static align-right">角色名称：</div>
@@ -114,7 +114,7 @@
                             <div class="col-sm-6" style="height: 34px;">&nbsp;</div>
                             <div class="col-sm-6">
                                 <div class="col-sm-4 align-right form-control-static">角色拥有的权限：</div>
-                                <div class="col-sm-8 form-control-static" style="max-height: 120px;overflow: auto;">
+                                <div id="rolePermissionDetailTreeCon" class="col-sm-8 form-control-static" style="overflow: auto;">
                                     <ul id="rolePermissionDetailTree" class="ztree" style="padding-top: 0;"></ul>
                                 </div>
                             </div>

@@ -987,6 +987,23 @@ var App = function() {
 			return oTable;
 		},
 		/*
+		 * 获取datatable的当前页数，和每页的个数
+		 */
+		getDatatablePaging:function(el){
+            var oTable = $(el).dataTable();
+            var oSettings = oTable.fnSettings();
+            // 获取页码值
+            var pageStart = oSettings._iDisplayStart;
+            //获取页面分割长度
+            var pageLength = oSettings._iDisplayLength;
+            var returnObj = {
+            	pageStart : pageStart,
+            	pageLength : pageLength,
+            	nowPage : pageStart/pageLength + 1
+            }
+            return returnObj;
+		},
+		/*
 		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
 		 * @param {String} el 表单容器选择器
 		 * @param {JSON} formData 表单项的值

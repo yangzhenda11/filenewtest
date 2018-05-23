@@ -32,7 +32,6 @@ function getTreeInfo(code) {
 		}
 	}
 }
-
 /*
  * 表格初始化
  */

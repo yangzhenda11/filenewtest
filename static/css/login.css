@@ -7,6 +7,7 @@ input:-webkit-autofill:active {
 }
 body{background: #fff;}
 input,button{outline: none !important;}
+.alert-danger{margin-bottom: 10px;}
 .login-content{ position: absolute; top: 40%; left: 0; right: 0;}
 .login-bg{background: url(../img/login-top-bg.png) no-repeat center center; position: absolute; left: 0; top: 0; height: 40%; background-size:cover; overflow: hidden;width: 100%;text-align: center;}
 .login-bg img{width:35%;height: 100%;}

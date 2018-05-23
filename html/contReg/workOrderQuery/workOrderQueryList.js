@@ -69,7 +69,8 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
          "className": "text-center",
          "width": "3%",
 		"render" : function(data, type, full, meta){
-				return meta.row + 1;
+				var start = App.getDatatablePaging("#workOrderQueryTable").pageStart;
+				return start + meta.row + 1;
 		   }
 		},
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},

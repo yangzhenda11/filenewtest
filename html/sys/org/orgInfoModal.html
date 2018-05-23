@@ -40,7 +40,7 @@
                                 <input type="text" id="fullName" class="form-control" name="fullName" maxlength="120" placeholder="组织全称">
                             </div>
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <div class="col-sm-6 form-group" id="orgCodeContent">
                             <label for="orgCode" class="control-label">组织编码<i class="iconfont icon-mi required"></i></label>
                             <div class="valiParent">
                                 <input type="text" id="orgCode" class="form-control" name="orgCode" placeholder="组织编码" maxlength="30">
@@ -61,7 +61,7 @@
                         <div class="col-sm-6 form-group">
                             <label for="orgStatus" class="control-label">状态<i class="iconfont icon-mi required"></i></label>
                             <div class="valiParent">
-                                <select class="form-control select2me" name="orgStatus" id="orgStatus">
+                                <select class="form-control select2me" data-allowClear="false" name="orgStatus" id="orgStatus">
 										<option value="1" selected>有效</option>
 										<option value="0">无效</option>
 								</select>

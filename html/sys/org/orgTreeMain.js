@@ -255,7 +255,7 @@ function delOu(ouName) {
 function validate(editType) {
     $('#orgForm').bootstrapValidator({
         live: 'enabled',
-        trigger: 'live focus blur keyup change',
+        trigger: 'live focus blur change',
         message: '校验未通过',
         container: 'popover',
         fields: {
@@ -273,6 +273,13 @@ function validate(editType) {
                     }
                 }
             },
+            orgType:{
+            	validators: {
+                    notEmpty: {
+                        message: '请选择组织类型'
+                    }
+                }
+            },
             orgCode: {
                 validators: {
                     notEmpty: {
@@ -283,15 +290,29 @@ function validate(editType) {
                         callback: function(value, validator, $field) {
                             var flag = true;
                             if (value != "") {
-                                App.formAjaxJson(serverPath + "orgs/checkOrgCode/" + value, "get", "", successCallback, null, null, null, false);
+                                App.formAjaxJson(serverPath + "orgs/checkOrgCode/" + value, "get", "", successCallback, null, null, false, false);
                             }
-
                             function successCallback(result) {
-                                var orgId = curNode.orgId;
-                                if (!result.data || result.data.orgId == orgId) {
-                                    flag = true;
-                                } else {
-                                    flag = false;
+                                if(editType == "add"){
+                                	var orgCode = curNode.orgCode;
+                                	if (result.data) {
+                                		if(orgCode == value){
+  											$("#orgCodeContent").find("small[data-bv-validator='callback']").html("请以父节点编码为前缀输入组织编码");
+                                		}else{
+                                			$("#orgCodeContent").find("small[data-bv-validator='callback']").html("此组织编码已存在");
+                                		}
+	                                    flag = false;
+	                                } else {
+	                                    flag = true;
+	                                }
+                                }else if(editType == "edit"){
+                                	var orgId = curNode.orgId;
+                                	if (!result.data || result.data.orgId == orgId) {
+                                		$("#orgCodeContent").find("small[data-bv-validator='callback']").html("此组织编码已存在");
+	                                    flag = true;
+	                                } else {
+	                                    flag = false;
+	                                }
                                 }
                             };
                             return flag;

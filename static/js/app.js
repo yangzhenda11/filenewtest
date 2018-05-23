@@ -1161,8 +1161,10 @@ var App = function() {
 	            $(dom).find(".select2me").each(function(){
 	                var allowClearFlag = $(this).attr('data-allowClear');
 	                var allowSearch = $(this).attr('data-allowSearch');
-	                if(allowClearFlag != false){
+	                if(allowClearFlag != "false"){
 	                	allowClearFlag = true;
+	                }else{
+	                	allowClearFlag = false;
 	                }
 	                options = {
 	                    placeholder:"请选择",
@@ -1195,8 +1197,10 @@ var App = function() {
                 };
                 var allowClearFlag = $(dom).attr('data-allowClear');
                 var allowSearch = $(dom).attr('data-allowSearch');
-                if(allowClearFlag != false){
+                if(allowClearFlag != "false"){
                 	options.allowClear = true;
+                }else{
+                	allowClearFlag = false;
                 }
                 if(allowSearch == undefined){
                 	options.minimumResultsForSearch = -1;

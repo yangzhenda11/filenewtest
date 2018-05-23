@@ -294,12 +294,9 @@ function changePasswd() {
 
         function passwdCallback(result) {
             if (result.data) {
-                layer.msg("修改成功",{
-                	icon: 1,
-                	time: 4000
-                });
-                logout();
-            }
+	            alert("修改成功");
+	            logout();
+	        }
         }
     }
 }

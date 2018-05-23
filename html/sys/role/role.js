@@ -266,7 +266,7 @@ function editDetail(itemId) {
     $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
         App.initFormSelect2("#roleForm");
         var ajaxObj = {
-            "url": serverPath + "dicts/dictProvSelect",
+            "url": serverPath + "roles/listRoleSphere",
             "type": "post",
             "data": { id: null },
             "async": false
@@ -327,7 +327,7 @@ function openAddModal() {
     $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
         App.initFormSelect2("#roleForm");
         var ajaxObj = {
-            "url": serverPath + "dicts/dictProvSelect",
+            "url": serverPath + "roles/listRoleSphere",
             "type": "post",
             "data": { id: null },
             "async": false

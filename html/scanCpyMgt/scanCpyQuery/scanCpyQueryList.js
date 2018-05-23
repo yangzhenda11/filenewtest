@@ -74,7 +74,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"className": "text-center",
 			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
-				var downloadUrl = serverPath+"/contractUpload/downloadContractText?id=" + full.id;
+				var downloadUrl = serverPath+"contractUpload/downloadContractText?id=" + full.id;
 				var result = '<a href="'+downloadUrl+'"">正文下载</a>';
 				return result;
 			}

@@ -105,10 +105,9 @@
 		                }
 		                agentStaffTree = $.fn.zTree.init($("#agentStaffTree"), treeSetting, data);
                  		//默认展开第一层
-			            var nodes = agentStaffTree.getNodes();
-			            for (var i = 0, l = nodes.length; i < l; i++) {
-			                agentStaffTree.expandNode(nodes[i]);
-			            }
+                 		// 默认展开第一层
+						var nodes = agentStaffTree.getNodes();
+			            agentStaffTree.expandNode(nodes[0]);
 		            } else {
 		                layer.msg("暂无数据，请稍后重试");
 		            }

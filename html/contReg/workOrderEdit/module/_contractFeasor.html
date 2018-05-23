@@ -228,7 +228,7 @@
 				return null;
 			}
 		}
-         // 获取数据
+        // 获取第一层数据
         $.ajax({
 	        url : serverPath + 'contractType/listPerformer',
 	        type : "post",
@@ -272,11 +272,12 @@
     function addFeasorValue(treeNode) {
         if (treeNode.orgType == "" || treeNode.orgType == undefined) {
         	var performerType = $("input[name='performerType']:checked").val();
-        	var companyNode = getCompanyByOrgId(treeNode);
+        	var companyNode = getCompanyByOrgId(treeNode)[0];
+        	var firstOrgNode = getCompanyByOrgId(treeNode)[1];
         	var companyId = companyNode.id;
         	var companyName = companyNode.name;
-        	var performerOrgId = treeNode.parentId;
-        	var performerOrgName = treeNode.fullName;
+        	var performerOrgId = firstOrgNode.id;
+        	var performerOrgName = firstOrgNode.fullName;
         	var performerStaffId = treeNode.id;
             if(performerType == 1){
             	var html = '<div class="feasorItem" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-staffid="'+performerStaffId+'">'+
@@ -400,7 +401,7 @@
     function getCompanyByOrgId(treeNode){
     	var nodes = feasorTree.getNodeByParam("id", treeNode.parentId, null);
     	if(nodes.orgType == 1){
-    		return nodes;
+    		return [nodes,treeNode];
     	}else{
     		return getCompanyByOrgId(nodes);
     	}

@@ -749,9 +749,10 @@ var App = function() {
 			var data = data || "";
 			var dataType = dataType || "json";
 			var async = asyncs == null ? true : asyncs;
-			//var animation = animations == null ? true : animations;
+			var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
 			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
+			console.log(animation)
 			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? emptyFn : errorCallbacks;
 			$.ajax({
 				type: type,
@@ -759,6 +760,7 @@ var App = function() {
 				data: data,
 				dataType: dataType,
 				async: async,
+				global:animation,
 				contentType: "application/json",
 				success: function(result){
 					var result = result;
@@ -2340,7 +2342,8 @@ function loadStart(){
 function loadEnd(){
 	layer.close(layerIndex);
 }
-$(document).ajaxStart(function(){
+$(document).ajaxStart(function(a){
+	console.log(a);
 	loadStart();
 })
 $(document).ajaxStop(function(){

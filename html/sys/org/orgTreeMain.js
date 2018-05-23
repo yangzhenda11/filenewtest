@@ -7,6 +7,7 @@ var serverPath = config.serverPath;
 // 组织树对象 当前处理树的node
 var orgTree = null;
 var curNode = null;
+var  openFramework = 0;
 $(function() {
     //查询云门户开关参数
     App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
@@ -16,6 +17,7 @@ $(function() {
             $("#isShowAdd").show();
             $("#isShowUpdate").show();
             $("#isShowDel").show();
+            openFramework = 111;
         }
     }
     var windowHeigth = $(window).height();
@@ -43,7 +45,12 @@ function showOrg(orgId) {
     /**成功回调函数 */
     function ajaxSuccess(result) {
         /**根据返回结果给表单赋值 */
-        App.setFindValue($("#orgShow"), result.data, { 'orgStatus': function(value) { return value == '1' ? "有效" : "无效" }, "orgType": orgTypeCallback });
+        App.setFindValue($("#orgShow"), result.data,
+            {
+                "orgName":function(value) {return result.data.orgStatus == '1' ? value : value +"(停用)" },
+                'orgStatus': function(value) { return value == '1' ? "有效" : "无效" },
+                "orgType": orgTypeCallback
+            });
         /**表单赋值时的回调函数 */
         function orgTypeCallback(data) {
             var value = "";
@@ -71,7 +78,25 @@ function delOrg() {
         layer.alert("根组织禁止删除", { icon: 2, title: "删除节点" });
         return;
     }
-    layer.confirm('确定删除<span style="color:red;margin:0 5px;">' + curNode.orgName + '</span>及其子节点?', {
+    var staffsTrue = false;
+    App.formAjaxJson(parent.globalConfig.serverPath + "orgs/"+curNode.orgId+"/staffs/list", "GET", null, ajaxSuccessTrue,null,null,null,false);
+
+    function ajaxSuccessTrue(result) {
+        console.info(result);
+        console.info(result.data);
+        if(result.data != null && result.data.length > 0){
+            staffsTrue = true;
+            console.info("------------");
+        }
+        console.info(result.data.length);
+    }
+    var confirmInfo = '';
+    if(!staffsTrue){
+        confirmInfo = '确定删除<span style="color:red;margin:0 5px;">' + curNode.orgName + '</span>及其子节点?';
+    }else {
+        confirmInfo = '当前组织下存在未失效的人员，确定删除<span style="color:red;margin:0 5px;">' + curNode.orgName + '</span>及其子节点?？';
+    }console.info(confirmInfo);
+    layer.confirm(confirmInfo, {
         icon: 3,
         title: '删除节点'
     }, function(index) {
@@ -91,6 +116,7 @@ function delOrg() {
     })
 }
 // 添加组织页面
+var orgIdOode = false;
 function addOrg() {
     if (!curNode) {
         layer.alert("请选择父节点", { icon: 2, title: "添加节点" });
@@ -192,7 +218,7 @@ function searchOu() {
             App.initDataTables('#ouTable', {
                 ajax: {
                     "type": "GET", //请求方式
-                    "url": serverPath + 'orgs/selectOuByOrgCode/' + curNode.orgCode, //请求路径
+                    "url": serverPath + 'orgs/selectOuByOrgCode/' + curNode.orgCode //请求路径
                 },
                 "columns": [{
                         "data": null,
@@ -283,17 +309,25 @@ function validate(editType) {
                         callback: function(value, validator, $field) {
                             var flag = true;
                             if (value != "") {
-                                App.formAjaxJson(serverPath + "orgs/checkOrgCode/" + value, "get", "", successCallback, null, null, null, false);
+                                App.formAjaxJson(serverPath + "orgs/checkOrgCode/" + value, "get", "", successCallback, null, null, false, false);
                             }
 
                             function successCallback(result) {
                                 var orgId = curNode.orgId;
-                                if (!result.data || result.data.orgId == orgId) {
-                                    flag = true;
-                                } else {
-                                    flag = false;
+                                if(result.data != null){
+                                    if(result.data.orgId != null){
+                                        flag = false;
+                                        if(editType == 'add'){
+                                            if(result.data.orgId == orgId){console.info("66666666666666666666666");
+                                                orgIdOode = true;
+                                                flag = false;
+                                            }
+                                        }
+                                    } else {
+                                        flag = true;
+                                    }
                                 }
-                            };
+                            }
                             return flag;
                         }
                     }
@@ -407,6 +441,6 @@ function orgsfilter(treeId, parentNode, responseData) {
  * ztree异步加载之前
  */
 function zTreeBeforeAsync(treeId, treeNode) {
-    orgTree.setting.async.url = config.serverPath + "orgs/" + treeNode.orgId + "/children";
+    orgTree.setting.async.url = config.serverPath + "orgs/" + treeNode.orgId + "/children?openFramework="+openFramework;
     return true;
 }

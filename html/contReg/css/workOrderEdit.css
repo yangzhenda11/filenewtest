@@ -24,6 +24,20 @@
 /*
  * 工单编辑
  */
+.contractPortletTitle {
+  float: right;
+}
+.contractPortletPageTitle {
+  position: relative;
+  bottom: -15px;
+  right: 20px;
+}
+.wcardNumber {
+  margin-right: 15px;
+}
+#flowLable {
+  margin-right: 15px;
+}
 .defaultFieldsetForm .form-group > .otherPartyParent {
   width: 85%;
 }
@@ -36,18 +50,6 @@
 .table-align td,
 .table-align th {
   text-align: center;
-}
-#contractOverviewForm {
-  position: relative;
-  padding-top: 20px;
-}
-#contractOverViewTitle {
-  position: absolute;
-  right: 20px;
-  top: -10px;
-}
-#wcardNumber {
-  margin-right: 15px;
 }
 #invoiceTbody .form-group,
 #payeeInfoTbody .form-group,
@@ -115,8 +117,9 @@
 }
 #workOrderMenu {
   list-style: none;
+  padding-left: 120px;
   position: fixed;
-  right: 10px;
+  right: 16px;
   bottom: -10px;
 }
 #workOrderMenu li {
@@ -130,11 +133,19 @@
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 5px;
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
 }
 #workOrderMenu li i {
-  font-size: 18px;
+  font-size: 20px;
 }
 #workOrderMenu li:hover {
   background: #ccc;
   color: #fff;
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  opacity: 1;
 }

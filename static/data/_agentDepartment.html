@@ -109,11 +109,6 @@
 			if(responseData.status == 1){
 				var data = responseData.data;
 				if(data){
-					for(var i = 0; i < data.length; i++){
-	        			if(data[i].orgType != ""){
-	        				data[i].isParent = "true";
-	        			}
-		        	};
 		        	return data;
 				}else{
 					return null;
@@ -132,11 +127,6 @@
 				if (result.status == 1) {
 					var data = result.data;
 		        	if (data != "") {
-		        		for(var i = 0; i < data.length; i++){
-		        			if(data[i].orgType != ""){
-		        				data[i].isParent = "true";
-		        			}
-			        	};
 			        	if(agentDepartmentTree){
 							agentDepartmentTree.destroy();
 						}

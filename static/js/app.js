@@ -773,7 +773,7 @@ var App = function() {
 				},
 				error: function(result) {
 					if(result.status == 401){
-		        		layer.alert("登录超时，请重新登录", {icon: 2,title:"错误"},function(){
+		        		layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时"},function(){
 		        			top.window.location.href = "/login.html";
 		        		});
 	        		}else{
@@ -975,7 +975,7 @@ var App = function() {
 		        }else{
 		        	loadEnd();
 		        	if(xhr.status == 401){
-		        		layer.alert("登录超时，请重新登录", {icon: 2,title:"错误"},function(){
+		        		layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时"},function(){
 		        			top.window.location.href = "/login.html";
 		        		});
 	        		}else{

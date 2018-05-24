@@ -114,6 +114,7 @@
 			var data = result.data;
 			if(data == null){
 				$("#purchase").remove();
+				setSpeedyJump();
 			}else{
 				var valueCallback = {'frameworkAgreement':function(value){return value == 1 ? "是":"否"},
 					'materialAgreement':function(value){return value == 1 ? "是":"否"}}

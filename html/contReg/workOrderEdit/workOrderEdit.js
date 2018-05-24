@@ -27,11 +27,13 @@ $(function() {
 		$(".page-content").removeClass("hidden");
 		if(parm.taskFlag == "db"){
 			if(parm.taskDefinitionKey == "GDCL"){
+				$("#flowLable").text("工单处理");
 				//工单处理环节将提交按钮改为“注册完成” btId：passButton   
 				parent.setUserBtName("passButton","注册完成");
 				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
 				parent.setUserBtName("backTolist","关闭");
 			}else if(parm.taskDefinitionKey == "GDQR"){
+				$("#flowLable").text("工单确认");
 				//工单确认环节将提交按钮改为“工单激活” btId：passButton   
 				parent.setUserBtName("passButton","激活合同");
 				//工单处理环节将回退按钮改为“退回承办人” btId：backButton
@@ -39,9 +41,16 @@ $(function() {
 				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
 				parent.setUserBtName("backTolist","关闭");
 			};
+		}else{
+			if(parm.taskDefinitionKey == "GDCL"){
+				$("#flowLable").text("工单处理");
+			}else if(parm.taskDefinitionKey == "GDQR"){
+				$("#flowLable").text("工单确认");
+			};
 		}
 	} else if(parm.pageType == 2) {
 		wcardId = parm.wcardId;
+		$("#flowNote").remove();
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 			$("#toolbarBtnContent button").addClass("hidden");
 			$(".saveBtn,.register,.closeBtn").removeClass("hidden");
@@ -54,10 +63,11 @@ $(function() {
 		App.fixToolBars("toolbarBtnContent", 70);
 	} else if(parm.pageType == 0) {
 		wcardId = parm.wcardId;
-		$(".toolbarBtn").remove();
+		$(".toolbarBtn,#flowNote").remove();
 		$(".page-content").removeClass("hidden");
 	} else if(parm.pageType == 4) {
 		wcardId = parm.wcardId;
+		$("#flowNote").remove();
 		$("#toolbarBtnContent button").addClass("hidden");
 		$(".closeBtn").removeClass("hidden");
 		$(".page-content").removeClass("hidden");
@@ -83,7 +93,7 @@ function beforePushProcess(pass){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        parent.layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0]);
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
 	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
@@ -254,7 +264,7 @@ function submitContent(){
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
 	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0]);
+	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
 	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
@@ -418,15 +428,24 @@ function setPinfoContent(){
 /*
  * 滚动到相应位置高度
  */
-function srolloOffect(el){
-	var v = $(".page-content").scrollTop();
-	if($(el).parents("#incomeLinerentTbody")[0]){
-		var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
-		if(scrollLeftValue > 0){
-			$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
+function srolloOffect(el,srolloParm){
+	var scrollTopParm = 200;
+	if(srolloParm == 1){
+		if($(el).parents("#incomeLinerentTbody")[0]){
+			var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
+			if(scrollLeftValue > 0){
+				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
+			}
+		}
+	}else if(srolloParm == 2){
+		if(parm.pageType == 1) {
+			scrollTopParm = 0;
+		}else{
+			scrollTopParm = 50;
 		}
 	}
-	var scrollTopValue = v + $(el).offset().top - 200;
+	var v = $(".page-content").scrollTop();
+	var scrollTopValue = v + $(el).offset().top - scrollTopParm;
 	$('.page-content').animate({
 		scrollTop:scrollTopValue
 	},300)
@@ -475,7 +494,11 @@ function getWorkOrderInfo(){
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})
 		};
-		$("#wcardType").text(wcardType);
+		if(parm.pageType == 1) {
+			$("#flowTitle").text(wcardType);
+		}else{
+			$("#wcardType").text(wcardType);
+		};
 	}
 }
 /*
@@ -545,12 +568,15 @@ function getBusiProcessInfoID(){
  * 设置快捷跳转
  */
 function setSpeedyJump(){
-//	$.each(array, function() {
-//		
-//	});
-	//workOrderMenu
-	//$("[data-toggle='tooltip']").tooltip();
-//	<li data-placement="left" data-toggle="tooltip" title="123"><i class="iconfont icon-pingjia"></i></li>
+	var data = titleIconList[wcardTypeCode];
+	var html = "";
+	$.each(data, function(k,v) {
+		if($(v.jumpId)[0]){
+			html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
+		}
+	});
+	$("#workOrderMenu").html(html);
+	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
 }
 /*
  * 获取表单信息

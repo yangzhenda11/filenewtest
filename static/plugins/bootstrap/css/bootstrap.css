@@ -1703,8 +1703,8 @@ pre {
 @media (min-width: 768px) {
   .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left; }
-  .col-sm-1 {
-    width: 8.33333%; }
+  /*.col-sm-1 {
+    width: 8.33333%; }*/
   .col-sm-2 {
     width: 16.66667%; }
   .col-sm-3 {
@@ -1782,7 +1782,7 @@ pre {
   .col-sm-offset-0 {
     margin-left: 0%; }
   .col-sm-offset-1 {
-    margin-left: 8.33333%; }
+    margin-left: 13.33333%; }
   .col-sm-offset-2 {
     margin-left: 16.66667%; }
   .col-sm-offset-3 {
@@ -5944,9 +5944,9 @@ button.close {
     background-color: #fff; }
 
 .btn-warning.btn-outline {
-  color: #f0a55b;
-  background-color: #FFF;
-  border-color: #f0a55b; }
+  color: #FFF;
+  background-color: #e54d42;
+  border-color: #e54d42; }
   .btn-warning.btn-outline:focus, .btn-warning.btn-outline.focus {
     color: #fff;
     background-color: #f0a55b;
@@ -5981,8 +5981,8 @@ button.close {
     background-color: #fff; }
 
 .btn-danger.btn-outline {
-  color: #e54d42;
-  background-color: #FFF;
+  color: #FFF;
+  background-color: #e54d42;
   border-color: #e54d42; }
   .btn-danger.btn-outline:focus, .btn-danger.btn-outline.focus {
     color: #fff;

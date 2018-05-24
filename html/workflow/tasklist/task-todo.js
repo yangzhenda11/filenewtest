@@ -1,7 +1,7 @@
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
-var curStaffOrgId=config.curStaffOrgId;
-var curStaffId=config.curStaffId;
+var curStaffOrgId = config.curStaffOrgId;
+var curStaffId = config.curStaffId;
 $(function(){
 	// 加载表格
 	$("#currentId").val(curStaffOrgId);

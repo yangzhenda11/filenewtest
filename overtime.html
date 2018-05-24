@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" type="text/css" href="static/plugins/bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="static/css/iconfont/iconfont.css" />
+		<script src="static/css/iconfont/iconfont.js" type="text/javascript" charset="utf-8"></script>
 		<link href="static/img/favicon.png" rel="bookmark" type="image/x-icon" />
 		<link href="static/img/favicon.png" rel="icon" type="image/x-icon" />
 		<link href="static/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
@@ -20,10 +20,22 @@
 				text-align: center;
 				margin-top: 10%;
 			}
-			p{
+			p span{
 				font-size: 16px;
 				margin-top: 20px;
 				color: red;
+				margin-left: 10px;
+			}
+			.icon {
+			   width: 1em; height: 1em;
+			   vertical-align: -0.15em;
+			   fill: currentColor;
+			   overflow: hidden;
+			}
+			.overtimeIcon{
+				position: relative;
+				top: 10px;
+				font-size: 50px;
 			}
 		</style>
 	</head>
@@ -31,7 +43,12 @@
 	<body>
 		<div class="col-sm-12 content">
 			<img src="static/img/overtime.gif" />
-			<p><i class="iconfont icon-mi required"></i>您的会话已经超时，请重新从门户登录合同系统。</p>
+			<p>
+				<svg class="icon overtimeIcon" aria-hidden="true">
+				  	<use xlink:href="#icon-task-overtime"></use>
+				</svg>
+				<span>您的会话已经超时，请重新从门户登录合同系统。</span>
+			</p>
 		</div>
 	</body>
 	<!--[if lt IE 9]>

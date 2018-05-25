@@ -82,20 +82,16 @@ function delOrg() {
     App.formAjaxJson(parent.globalConfig.serverPath + "orgs/"+curNode.orgId+"/staffs/list", "GET", null, ajaxSuccessTrue,null,null,null,false);
 
     function ajaxSuccessTrue(result) {
-        console.info(result);
-        console.info(result.data);
         if(result.data != null && result.data.length > 0){
             staffsTrue = true;
-            console.info("------------");
         }
-        console.info(result.data.length);
     }
     var confirmInfo = '';
     if(!staffsTrue){
         confirmInfo = '确定删除<span style="color:red;margin:0 5px;">' + curNode.orgName + '</span>及其子节点?';
     }else {
         confirmInfo = '当前组织下存在未失效的人员，确定删除<span style="color:red;margin:0 5px;">' + curNode.orgName + '</span>及其子节点?？';
-    }console.info(confirmInfo);
+    }
     layer.confirm(confirmInfo, {
         icon: 3,
         title: '删除节点'
@@ -220,7 +216,7 @@ function searchOu() {
                 "type": "get",
                 "async": false
             }
-            App.initAjaxSelect2("#ouList", ajaxObj2, "id", "ouName");
+            App.initAjaxSelect2("#ouList", ajaxObj2, "ouShortCode", "ouName");
             $('#modal').off("shown.bs.modal").on('shown.bs.modal', function () {
                 App.initDataTables('#ouTable', {
                     scrollY:$(".page-content").height() - 340,
@@ -255,15 +251,14 @@ function searchOu() {
 }
 //添加ou
 function addOu() {
-    var ouId = $("#ouList").val();
+    var ouShortCode = $("#ouList").val();
+    var orgCode = curNode.orgCode;
     var ouName = $("#ouList").find("option:selected").text();
-    console.info(ouId);
-    console.info(ouName);
-    if(ouId == ''){
+    if(ouShortCode == ''){
         layer.msg("请选择ou组织列表", { icon: 5});
         return;
     }
-    App.formAjaxJson(serverPath + "orgs/addOu/" + ouName + "/" + ouId, "POST", "", successCallback)
+    App.formAjaxJson(serverPath + "orgs/addOu/" + ouName + "/" + orgCode+"/" + ouShortCode, "POST", "", successCallback);
 
     function successCallback(result) {
         if (result.data.orgCode == null) {

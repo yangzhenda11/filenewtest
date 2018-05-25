@@ -176,7 +176,7 @@ function pushReceiveTask(){
 				};
 			},
 			error: function(result) {
-				layer.alert("接口错误", {icon: 2,title:"错误"});
+				App.ajaxErrorCallback(result);
 			}
 		});
 	console.log(currentTask);
@@ -235,7 +235,7 @@ function startBybussType(){
 			};
 		},
 		error: function(result) {
-			layer.alert("接口错误", {icon: 2,title:"错误"});
+			App.ajaxErrorCallback(result);
 		}
 	});
 }

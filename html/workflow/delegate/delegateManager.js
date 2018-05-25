@@ -148,6 +148,7 @@ function updateStatus(acthId,status,endTime,startTime,ownerId,flowKey){
 			},
 			error:function(e){
 				alert(title+"时信息异常："+e);
+				App.ajaxErrorCallback(e);
 			}
 		})
 	}
@@ -332,6 +333,7 @@ function addTaskDelegateEntity(){
 		},
 		error:function(e){
 			alert("添加信息时异常："+e);
+			App.ajaxErrorCallback(e);
 		}
 	})
     	
@@ -355,6 +357,7 @@ function getSelectFlowKey(){
 		},
 		error:function(e){
 			alert("获取类型下拉数据时信息异常："+e);
+			App.ajaxErrorCallback(e);
 		}
 	})
 	

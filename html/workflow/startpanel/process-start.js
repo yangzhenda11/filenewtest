@@ -164,19 +164,21 @@ function getProcessDefinitionKey(businesscode){
 	
 	$.ajax({  
         type : "post",  
-         url : serverPath + "workflowrest/getprocessDefinitionKey/" + businesscode,  
-         //data : ,  
-         async : false,  
-         success : function(data){  
-             var success = data.retCode;
-             // 返回成功即继续处理，不成功报原因
-             if(success == 1){
-                 var processDefinitionKey = data.dataRows[0].processDefinitionKey;
-                 $('#processDefinitionKey').val(processDefinitionKey);
-             }else if(success == 0){
-                 layer.msg(data.retVal,{time:3000});
-             } 
-         }  
+     	url : serverPath + "workflowrest/getprocessDefinitionKey/" + businesscode,
+        async : false,
+        success : function(data){
+            var success = data.retCode;
+            // 返回成功即继续处理，不成功报原因
+            if(success == 1){
+                var processDefinitionKey = data.dataRows[0].processDefinitionKey;
+                $('#processDefinitionKey').val(processDefinitionKey);
+            }else if(success == 0){
+                layer.msg(data.retVal,{time:3000});
+           	}
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
     }); 
 }
 function setPathSelect(pathSelect){

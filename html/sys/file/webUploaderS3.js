@@ -63,7 +63,10 @@ function downloadUrl(data){
             }
             var table = $('#uploadTable').DataTable();
         	table.ajax.reload();
-        }
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
     });
 }
 
@@ -84,7 +87,10 @@ function deleteFile(data){
         	alert(data.message);
         	var table = $('#uploadTable').DataTable();
         	table.ajax.reload();
-        }
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
     });
 }
 /*

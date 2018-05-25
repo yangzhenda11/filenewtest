@@ -107,34 +107,26 @@ function changeRoleStatus(roleId, roleName, roleStatus) {
     if (1 === roleStatus) {
         layer.confirm("确定启用角色" + roleName + "吗？", {
             btn: ['启用', '取消'],
-            icon: 0,
-            skin: 'layer-ext-moon'
+            icon: 0
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": serverPath + 'roles/' + roleId + "/status/" + roleStatus,
-                success: function(data) {
-                    layer.msg("启用成功");
-                    searchRole(true);
-                }
-            });
+        	App.formAjaxJson(serverPath + 'roles/' + roleId + "/status/" + roleStatus, "PUT", null, successCallback);
         });
     } else {
         layer.confirm("确定禁用角色" + roleName + "吗？", {
             btn: ['禁用', '取消'],
-            icon: 0,
-            skin: 'layer-ext-moon'
+            icon: 0
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'roles/' + roleId + "/status/" + roleStatus,
-                success: function(data) {
-                    layer.msg("禁用成功");
-                    searchRole(true);
-                }
-            });
+            App.formAjaxJson(serverPath + 'roles/' + roleId + "/status/" + roleStatus, "PUT", null, successCallback);
         });
-    }
+    };
+    function successCallback(result) {
+    	var ms = "禁用成功";
+		if(roleStatus == 1){
+			ms = "启用成功";
+		};
+		layer.msg(ms);
+        searchRole(true);
+	}
 }
 /**
  * 删除某个角色

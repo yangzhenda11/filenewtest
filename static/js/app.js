@@ -776,7 +776,7 @@ var App = function() {
 						if(top.globalConfig.loginSwitchSuccess == 0){
 							top.window.location.href = "/overtime.html";
 						}else{
-							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时"},function(){
+							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 			        			top.window.location.href = "/login.html";
 			        		});
 						}
@@ -786,6 +786,20 @@ var App = function() {
 					errorCallback(result);
 				}
 			});
+		},
+		//使用$.ajax中错误的回调事件
+		ajaxErrorCallback: function(result){
+			if(result.status == 401){
+				if(top.globalConfig.loginSwitchSuccess == 0){
+					top.window.location.href = "/overtime.html";
+				}else{
+					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+	        			top.window.location.href = "/login.html";
+	        		});
+				}
+    		}else{
+    			layer.alert("接口错误", {icon: 2,title:"错误"});
+    		};
 		},
 		//datatable中button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
 		startLoading: function(el){
@@ -982,7 +996,7 @@ var App = function() {
 		        		if(top.globalConfig.loginSwitchSuccess == 0){
 							top.window.location.href = "/overtime.html";
 						}else{
-							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时"},function(){
+							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 			        			top.window.location.href = "/login.html";
 			        		});
 						}
@@ -2296,7 +2310,7 @@ var App = function() {
         				};
         			},
         			error: function(result) {
-        				layer.alert("接口错误", {icon: 2,title:"错误"});
+        				App.ajaxErrorCallback(result);
         			}
         		});
         	}
@@ -2315,15 +2329,13 @@ var App = function() {
     				var data = result;
     				if (data.success == 1){
     					applyresult=true;
-    					//layer.msg(data.sign);
     				}else {
-    					//layer.msg(data.sign);
     					applyresult=false;
     				} 
     			},
     			error: function(result) {
     				applyresult=false;
-    				//layer.alert("流程参数异常，请联系管理员！", {icon: 2,title:"错误"});
+    				App.ajaxErrorCallback(result);
     			}
     		});
     		return applyresult;

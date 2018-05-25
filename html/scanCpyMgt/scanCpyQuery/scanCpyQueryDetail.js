@@ -7,76 +7,71 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 
 $(function() {
-	$.ajax({
-        "type": "POST",
-        contentType: "application/json",
-        dataType: "json",
-        "url": serverPath+'contractScanQuery/listContractText?id='+id,
-        "success": function(data) {
-            var array=data.data;
-            var rows=array.length;
-            var cols=4;
-            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>上传日期</th><th style='text-align:center;'>上传人</th></tr></thead><tbody>";
-            for(i=1;i<=rows;i++){
-            	htmlstr+="<tr>";
-            	htmlstr+="<td align='center'>" + i +"</td>";
-            	htmlstr+="<td align='center'><a href='"+serverPath+"contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
-            	htmlstr+="<td align='center'>" + formatDateTime(array[i-1].ctreatedDate) +"</td>";
-            	htmlstr+="<td align='center'>" + array[i-1].createdByName +"</td>";
-            	htmlstr+="</tr>";
-            }
-            htmlstr+="</tbody></table>";
-            document.getElementById('contractTextTable').innerHTML=htmlstr;
-        }
-    });
-    
-    $.ajax({
-        "type": "POST",
-        "url": serverPath+'contractScanQuery/listContractAttachment?id='+id,
-        "success": function(data) {
-            var array=data.data;
-            var rows=array.length;
-            var cols=4;
-            var htmlstr="<table class='table table-hover table-bordered table-striped'><thead><tr><th style='text-align:center;'>序号</th><th style='text-align:center;'>文件列表</th><th style='text-align:center;'>上传日期</th><th style='text-align:center;'>上传人</th></tr></thead><tbody>";
-            for(i=1;i<=rows;i++){
-            	htmlstr+="<tr>";
-            	htmlstr+="<td align='center'>" + i +"</td>";
-            	htmlstr+="<td align='center'><a href='"+serverPath+"contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
-            	htmlstr+="<td align='center'>" + formatDateTime(array[i-1].ctreatedDate) +"</td>";
-            	htmlstr+="<td align='center'>" + array[i-1].createdByName +"</td>";
-            	htmlstr+="</tr>";
-            }
-            htmlstr+="</tbody></table>";
-            document.getElementById('contractAttachmentTable').innerHTML=htmlstr;
-        }
-    });
+	//获取合同正文扫描件
+    App.formAjaxJson(serverPath+'contractScanQuery/listContractText?id='+id, "POST", null, listContractTextSuccess);
+
+    function listContractTextSuccess(result) {
+		var data = result.data;
+		if(data.length > 0){
+			var contractTextTbodyHtml = "";
+			$.each(data, function(k,v) {
+				contractTextTbodyHtml += "<tr>"+
+										"<td>" + (k+1) +"</td>"+
+										"<td><a href='"+serverPath+"contractUpload/downloadS3?key1="+v.storeIdDisplay+"'>"+v.displayName+"</td>"+
+										"<td>" + App.formatDateTime(v.ctreatedDate,"yyyy-MM-dd") +"</td>"+
+										"<td>" + v.createdByName +"</td>"+
+										"<tr>";
+			});
+			$("#contractTextTbody").html(contractTextTbodyHtml);
+		}
+	}
 	
+	//获取合同附件扫描件
+    App.formAjaxJson(serverPath+'contractScanQuery/listContractAttachment?id='+id, "POST", null, listContractAttachmentSuccess);
+
+    function listContractAttachmentSuccess(result) {
+		var data = result.data;
+		if(data.length > 0){
+			var contractAttachmentTbodyHtml = "";
+			$.each(data, function(k,v) {
+				contractAttachmentTbodyHtml += "<tr>"+
+										"<td>" + (k+1) +"</td>"+
+										"<td><a href='"+serverPath+"contractUpload/downloadS3?key1="+v.storeIdDisplay+"'>"+v.displayName+"</td>"+
+										"<td>" + App.formatDateTime(v.ctreatedDate,"yyyy-MM-dd") +"</td>"+
+										"<td>" + v.createdByName +"</td>"+
+										"<tr>";
+			});
+			$("#contractAttachmentTbody").html(contractAttachmentTbodyHtml);
+		}
+	};
 	getContractInfo();
 })
 
 function getContractInfo(){
-	var url = serverPath + 'contractUpload/getContractById?id='+id;
 	$.ajax({
-		url : url,
+		url : serverPath + 'contractUpload/getContractById?id='+id,
         type : "post",
-        success : function(data) {
-        	$("#contractNumber").val(data.data.contractNumber);
-        	$("#undertakeName").val(data.data.undertakeName);
-        	$("#undertakePhone").val(data.data.undertakePhone);
-        	$("#undertakeMobile").val(data.data.undertakeMobile);
-        	$("#contractName").val(data.data.contractName);
-        	$("#executeDeptName").val(data.data.executeDeptName);
-        	$("#unicomPartyName").text(data.data.unicomPartyName);
-        	$("#oppoPartyName").text(data.data.oppoPartyName);
-        	
-        	var contractType=data.data.contractType;
-        	var label=document.getElementById("contractType");
-			label.innerText=contractType;
-			$("#contractType").html(contractType);
-        }
+        success : function(result) {
+        	var data = result.data;
+        	$("#contractNumber").val(data.contractNumber);
+        	$("#undertakeName").val(data.undertakeName);
+        	$("#undertakePhone").val(data.undertakePhone);
+        	$("#undertakeMobile").val(data.undertakeMobile);
+        	$("#contractName").val(data.contractName);
+        	$("#executeDeptName").val(data.executeDeptName);
+        	$("#unicomPartyName").text(data.unicomPartyName);
+        	$("#oppoPartyName").text(data.oppoPartyName);
+			$("#contractType").html(data.contractType);
+        },
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
-
+//返回上一页
+function backPage(){
+	window.history.go(-1);
+}
 /*App.initDataTables('#contractTextTable', {
 	ajax: {
         "type": "POST",
@@ -139,23 +134,3 @@ function getContractInfo(){
         return nRow;
     },
 });*/
-
-//调整时间显示，不显示时分秒
-function formatDateTime(inputTime,type) {
-	if(inputTime){
-		var date = new Date(inputTime);
-	}else{
-		return "";
-	}
-	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
-	m = m < 10 ? ('0' + m) : m;
-	var d = date.getDate();
-	d = d < 10 ? ('0' + d) : d;
-	return y + '-' + m + '-' + d;
-}
-
-//返回上一页
-function backPage(){
-	window.history.go(-1);
-}

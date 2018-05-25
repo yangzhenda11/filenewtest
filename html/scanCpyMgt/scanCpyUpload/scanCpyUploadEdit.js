@@ -1,7 +1,6 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
-console.log(parm);
-var id;
+var id = null;
 if(parm.pageType==1){
 	id = parm.businessKey;
 }else if(parm.pageType==2){
@@ -127,13 +126,6 @@ function downLoad(attachId){
 	attachId = $("#att"+attachId+"").val();
 	//alert(attachId);
 	window.location.href="/contractUpload/downloadS3?key1="+attachId;
-	/*$.ajax({
-        url : serverPath + 'contractUpload/downloadAttachment',
-        type : "GET",
-        data : {id:attachId},
-        success : function(data) {
-        }
-    });*/
 }
 
 var array=[];

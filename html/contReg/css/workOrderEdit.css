@@ -47,10 +47,6 @@
 .tableToobarContent {
   margin-bottom: 10px;
 }
-.table-align td,
-.table-align th {
-  text-align: center;
-}
 #invoiceTbody .form-group,
 #payeeInfoTbody .form-group,
 #payerInfoTbody .form-group,

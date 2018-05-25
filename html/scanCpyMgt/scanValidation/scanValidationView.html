@@ -8,7 +8,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>合同扫描件上传</title>
+		<title>合同扫描件验证</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -203,6 +203,14 @@
 		</div>
 		<!--modal-->
 		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+		<!--[if lt IE 9]>
+			<script src="/static/plugins/html5shiv.min.js"></script>
+			<script src="/static/plugins/respond.min.js"></script>
+			<script src="/static/plugins/ie8.fix.min.js"></script>
+		![endif]-->
+		<!--[if lte IE 8]>
+			<script src="/static/plugins/selectivizr-min.js"></script>
+		<![endif]-->	
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
@@ -213,7 +221,6 @@
 		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="scanValidationView.js" type="text/javascript" charset="utf-8"></script>
-
 	</body>
 
 </html>

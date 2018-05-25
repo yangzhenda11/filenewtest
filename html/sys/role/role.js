@@ -6,12 +6,23 @@ var orgNameTree; //组织树
 $(function() {
         parent.data_permFilter(document);
         getRoleTable();
+    provinceCodeTree();
     })
     /*
      * 查询到角色列表
      */
 var roleUpdate = parent.data_tpFilter("sys:role:update");
 var roleDelete = parent.data_tpFilter("sys:role:delete");
+
+function provinceCodeTree() {
+    var ajaxObj = {
+        "url": serverPath + "roles/listRoleSphere",
+        "type": "post",
+        "data": { id: null },
+        "async": false
+    }
+    App.initAjaxSelect2("#provCode", ajaxObj, "provCode", "provName", "请选择省分编码");
+}
 
 function getRoleTable() {
     App.initDataTables('#searchRoleTable', "#submitBtn", {
@@ -20,7 +31,7 @@ function getRoleTable() {
             "url": serverPath + 'roles/',
             "data": function(d) { // 查询参数
                 d.roleName = $('#sysRoleName').val();
-                d.orgName = $("#sysOrgName").val();
+                d.provCode = $("#provCode").val();
                 d.staffOrgId = config.curStaffOrgId;
                 d.companyId = config.curCompanyId;
                 d.roleStatus = 1;
@@ -96,34 +107,26 @@ function changeRoleStatus(roleId, roleName, roleStatus) {
     if (1 === roleStatus) {
         layer.confirm("确定启用角色" + roleName + "吗？", {
             btn: ['启用', '取消'],
-            icon: 0,
-            skin: 'layer-ext-moon'
+            icon: 0
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": serverPath + 'roles/' + roleId + "/status/" + roleStatus,
-                success: function(data) {
-                    layer.msg("启用成功");
-                    searchRole(true);
-                }
-            });
+        	App.formAjaxJson(serverPath + 'roles/' + roleId + "/status/" + roleStatus, "PUT", null, successCallback);
         });
     } else {
         layer.confirm("确定禁用角色" + roleName + "吗？", {
             btn: ['禁用', '取消'],
-            icon: 0,
-            skin: 'layer-ext-moon'
+            icon: 0
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'roles/' + roleId + "/status/" + roleStatus,
-                success: function(data) {
-                    layer.alert("禁用成功");
-                    searchRole(true);
-                }
-            });
+            App.formAjaxJson(serverPath + 'roles/' + roleId + "/status/" + roleStatus, "PUT", null, successCallback);
         });
-    }
+    };
+    function successCallback(result) {
+    	var ms = "禁用成功";
+		if(roleStatus == 1){
+			ms = "启用成功";
+		};
+		layer.msg(ms);
+        searchRole(true);
+	}
 }
 /**
  * 删除某个角色
@@ -167,8 +170,8 @@ function findDetail(itemId) {
     $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalDetail", function() {
         $("#modal").modal("show");
         var documentHeight = $(".page-content").height() - 190;
-		$("#roleDeatilModal").css("height",documentHeight);
-		$("#rolePermissionDetailTreeCon").css("max-height",documentHeight-130);
+		//$("#roleDeatilModal").css("height",documentHeight);
+		//$("#rolePermissionDetailTreeCon").css("max-height",documentHeight-120);
         getRoleInfo(itemId, "detail");
     });
 }
@@ -421,7 +424,21 @@ function loadPerTree(itemId) {
  * 编辑/新增
  */
 function updateRoleValue(editType) {
-    debugger;
+    var roleTrue = false;
+    if (editType == "add") {
+        var roleName = $("#roleName").val();
+        var data = { roleName: roleName };
+        App.formAjaxJson(serverPath + 'roles/getRoleNameInt', "GET",data, successCallbackTrueRole,null,null,null,false);
+        function successCallbackTrueRole(result) {
+            if (result.data > 0){
+                roleTrue = true;
+            }
+        }
+    }
+    if(roleTrue){
+        layer.msg("角色名称已存在", { icon: 5});
+        return;
+    }
     var formObj = App.getFormValues($("#roleForm"));
     var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
     var permId = '';

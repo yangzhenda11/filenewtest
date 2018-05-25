@@ -798,6 +798,7 @@ function initData(){
 		},
 		error:function(e){
 			alert("获取数据异常"+e);
+			App.ajaxErrorCallback(e);
 		}
 	});
 }
@@ -1070,6 +1071,9 @@ function checkifdone(){
 				result=true;
 				window.top.alertModel(data.info);
 			}
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
 		}
 	});
 	return result;

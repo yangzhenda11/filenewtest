@@ -176,7 +176,7 @@ function pushReceiveTask(){
 				};
 			},
 			error: function(result) {
-				layer.alert("接口错误", {icon: 2,title:"错误"});
+				App.ajaxErrorCallback(result);
 			}
 		});
 	console.log(currentTask);
@@ -232,6 +232,28 @@ function startBybussType(){
 				layer.msg(result.info);
 			} else {
 				layer.msg(result.info);
+			};
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+	});
+}
+function startFlowAuto(){
+	$.ajax({
+		type: 'get',
+		url: serverPath+'workflowrest/startFlowAuto',
+		//data: null,
+		dataType: 'json',
+		async: false,
+		contentType: "application/json",
+		success: function(result){
+			var result = result;
+			if (result.success == 1) {
+				//currentTask=result.flowdata;
+				layer.msg(result.msg);
+			} else {
+				layer.msg(result.msg);
 			};
 		},
 		error: function(result) {

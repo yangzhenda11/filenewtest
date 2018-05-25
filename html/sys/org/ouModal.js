@@ -45,6 +45,7 @@ $(function() {
                         }
                     },
                     { "data": "ou_name", "title": "OU组织名称" },
+                    { "data": "ou_short_code", "title": "OU组织简码" }
                 ],
                 "columnDefs": [{ // 所有列默认值
                         render: $.fn.dataTable.render.ellipsis(22, true),

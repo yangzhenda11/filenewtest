@@ -321,6 +321,32 @@ button:focus{
 .paddingL0{
 	padding-left: 0;
 }
+
+/*
+ * table下的ui-radio ui-checkbox
+ */
+table .ui-radio,table .ui-checkbox{
+	padding-left: 20px;
+	margin: 0;
+	height: 14px;
+}
+table i{
+	font-weight: normal;
+}
+body{
+	overflow: hidden;
+}
+/*
+ * 表格内文本不折行时添加此元素
+ */
+.whiteSpaceNormal{
+	white-space:normal !important;
+	word-break: break-all !important;
+}
+/*table全部字段居中*/
+.table-align td,.table-align th{
+    text-align: center;
+}
 /*th居中*/
 th.thAlignCenter{
 	text-align: center;
@@ -467,13 +493,8 @@ th.thAlignCenter{
 	/*width: 150px;
 	text-align: left;*/
 }
-/*
- * 表格内文本不折行时添加此元素
- */
-.whiteSpaceNormal{
-	white-space:normal !important;
-	word-break: break-all !important;
-}
+
+
 /*
  * 放上显示手势图标
  */
@@ -496,18 +517,4 @@ th.thAlignCenter{
     line-height: 22px;
 }
 
-/*
- * table下的ui-radio ui-checkbox
- */
-table .ui-radio,table .ui-checkbox{
-	padding-left: 20px;
-	margin: 0;
-	height: 14px;
-}
-table i{
-	font-weight: normal;
-}
-body{
-	overflow: hidden;
-}
 

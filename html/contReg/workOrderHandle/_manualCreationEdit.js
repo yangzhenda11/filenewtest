@@ -39,18 +39,21 @@ function createWorkOrder(){
 		return;
 	}else{
 		$.ajax({
-		url:serverPath + 'workOrderHandle/createWorkOrder',
-        type:"post",
-        data:{"contractNumber":contractNumber,"contractId":contractId},
-        success:function(data) {
-       				if(data.status=='1'){
-       					var htmlStr = "工单"+data.message+"创建成功！<a href=''>点击查看</a>";
-       					document.getElementById('createResult').innerHTML=htmlStr;
-       					//alert("工单"+data.message+"创建成功！");
-       				}else if(data.status=='0'){
-       					layer.msg(data.message);
-       				}
-        		}
+			url:serverPath + 'workOrderHandle/createWorkOrder',
+	        type:"post",
+	        data:{"contractNumber":contractNumber,"contractId":contractId},
+	        success:function(data) {
+   				if(data.status=='1'){
+   					var htmlStr = "工单"+data.message+"创建成功！<a href=''>点击查看</a>";
+   					document.getElementById('createResult').innerHTML=htmlStr;
+   					//alert("工单"+data.message+"创建成功！");
+   				}else if(data.status=='0'){
+   					layer.msg(data.message);
+   				}
+    		},
+    		error: function(result) {
+				App.ajaxErrorCallback(result);
+			}
 		});
 	}
 	

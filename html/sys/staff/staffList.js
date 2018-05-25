@@ -1,7 +1,6 @@
 var serverPath = parent.globalConfig.serverPath;
 
 $(function() {
-	console.log(selectL2R);
     // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
     //     App.getCommonModal("staff", "#searchStaffName", "orgName", ["staffId", "staffOid"]);
     // });
@@ -182,13 +181,10 @@ function resetPasswd(staffId, staffName, loginName) {
         icon: 0,
         skin: 'layer-ext-moon'
     }, function() {
-        $.ajax({ //提交服务端
-            url: parent.globalConfig.serverPath + 'staffs/' + staffId + "/passwd/" + loginName,
-            type: "PUT",
-            success: function(data) {
-                layer.msg("用户" + staffName + "的密码重置成功，新密码为" + data.data);
-            }
-        });
+    	App.formAjaxJson(serverPath + 'staffs/' + staffId + "/passwd/" + loginName, "PUT", null, successCallback);
+    	function successCallback(result){
+    		layer.msg("用户" + staffName + "的密码重置成功，新密码为" + result.data);
+    	}
     });
 }
 /**
@@ -205,14 +201,7 @@ function changeStaffStatus(staffOrgId, staffName, staffOrgStatus, orgName) {
             icon: 0,
             skin: 'layer-ext-moon'
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
-                success: function(data) {
-                    layer.msg("启用成功");
-                    searchStaff(true);
-                }
-            });
+        	App.formAjaxJson(serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus, "PUT", null, successCallback);
         });
     } else {
         layer.confirm("确认禁用" + staffName + "在"+orgName+"部门的岗位吗？", {
@@ -220,16 +209,17 @@ function changeStaffStatus(staffOrgId, staffName, staffOrgStatus, orgName) {
             icon: 0,
             skin: 'layer-ext-moon'
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus,
-                success: function(data) {
-                    layer.msg("禁用成功");
-                    searchStaff(true);
-                }
-            });
+        	App.formAjaxJson(serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus, "PUT", null, successCallback);
         });
     }
+    function successCallback(result) {
+    	var ms = "禁用成功";
+		if(staffOrgStatus == 1){
+			ms = "启用成功";
+		};
+		layer.msg(ms);
+        searchStaff(true);
+	}
 }
 var orgTypeSet = {
     "F": "主岗",
@@ -530,20 +520,12 @@ function saveStaffOrgRoles() {
     var result = selectL2R.getResult('#selectL2R-ul').toString();
     var staffOrgId = $("#selectedStaffOrgId").val();
     var obj = { "roleIds": result, "staffOrgId": staffOrgId, "createBy": parent.globalConfig.curStaffId };
-    $.ajax({ //提交服务端
-        "type": "PUT",
-        "url": parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrgs/" + staffOrgId + "/staffRoles?t=" + App.timestamp(),
-        "contentType": "application/json",
-        "data": JSON.stringify(obj),
-        success: function(data) {
-            /*layer.alert("保存成功", {
-                icon: 0,
-                skin: 'layer-ext-moon'
-            });*/
-           layer.msg("保存成功!");
-            $('#roleModal').modal("hide");
-        }
-    });
+    var url = serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrgs/" + staffOrgId + "/staffRoles?t=" + App.timestamp();
+    App.formAjaxJson(url, "PUT", JSON.stringify(obj), successCallback);
+	function successCallback(result){
+		layer.msg("保存成功!");
+        $('#roleModal').modal("hide");
+	}
     // $.ajax({
     //     "url": serverPath + "/staffs/" + staffId + "/staffOrgs/" + staffOrgId + "/staffRoles",
     //     //    	"data":{'roleIds':all,'staffOrgId':staffOrgId,'createBy':curStaffId},
@@ -601,19 +583,7 @@ function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
             icon: 0,
             skin: 'layer-ext-moon'
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'staffs/' + parent.globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus,
-                "data": JSON.stringify(obj),
-                "contentType": "application/json",
-                success: function(data) {
-                    layer.alert("启用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                    $('#searchStaffOrgTable').DataTable().ajax.reload(null, false);
-                }
-            });
+        	App.formAjaxJson(serverPath + 'staffs/' + parent.globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus, "PUT", JSON.stringify(obj), successCallback);
         });
     } else {
         layer.confirm("确认禁用岗位:" + orgName + "吗？", {
@@ -621,21 +591,17 @@ function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
             icon: 0,
             skin: 'layer-ext-moon'
         }, function() {
-            $.ajax({ //提交服务端
-                "type": "PUT",
-                "url": parent.globalConfig.serverPath + 'staffs/' + parent.globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus,
-                "data": JSON.stringify(obj),
-                "contentType": "application/json",
-                success: function(data) {
-                    layer.alert("禁用成功", {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                    $('#searchStaffOrgTable').DataTable().ajax.reload(null, false);
-                }
-            });
+        	App.formAjaxJson(serverPath + 'staffs/' + parent.globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus, "PUT", JSON.stringify(obj), successCallback);
         });
     }
+    function successCallback(result) {
+    	var ms = "禁用成功";
+		if(staffOrgStatus == 1){
+			ms = "启用成功";
+		};
+		layer.msg(ms);
+        $('#searchStaffOrgTable').DataTable().ajax.reload(null, false);
+	}
 }
 /*
  * 新增人员点击事件
@@ -1323,17 +1289,12 @@ function goDelStaffOrg(staffId, staffOrgId) {
         icon: 0,
         skin: 'layer-ext-moon'
     }, function() {
-        $.ajax({ //提交服务端
-            url: parent.globalConfig.serverPath + 'staffs/' + staffId + '/staffOrg/' + staffOrgId,
-            type: "DELETE",
-            success: function(data) {
-                layer.alert("删除成功！", {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-                searchPersonnel(true);
-            }
-        });
+    	App.formAjaxJson(serverPath + 'staffs/' + staffId + '/staffOrg/' + staffOrgId, "DELETE", null, successCallback);
+
+	    function successCallback(result) {
+			layer.alert("删除成功！", {icon: 0});
+            searchPersonnel(true);
+		}
     });
 }
 

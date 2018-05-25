@@ -348,11 +348,24 @@ function saveContract(){
 function beforePushProcess(pass){
 	var result=true;
 	//1，业务侧的校验，校验不通过则返回false
+	var url = serverPath + 'contractUpload/validateContractStatus?id='+id;
+	$.ajax({
+		url : url,
+        type : "post",
+        success : function(data) {
+			if(data.count!=0){
+				result=false;
+				layer.msg(data.message);
+			}else{
+				result=true;
+			}
+        }
+	});
 	
 	//2,设置下一步选人的参数，用于匹配通用规则选人。
 	var assigneeParam = { 
-			"prov": "sd",  //省分，来自需求工单，必传
-			}
+		"prov": "sd",  //省分，来自需求工单，必传
+	}
 	parent.setAssigneeParam(assigneeParam);
 	
 	//3,设置路由值，默认为0，对于有分支的场景需要单独设置路由值
@@ -412,7 +425,11 @@ function businessPush(){
 	if(App.applyCandidateTask(serverPath,flowParam)){
 		modal_passBybuss(flowParam);
 	}else{
-		alert("任务申领失败！");
+		layer.alert("任务申领失败", {
+            icon: 0,
+            skin: 'layer-ext-moon'
+        });
+		//alert("任务申领失败！");
 		return;
 	}
 }

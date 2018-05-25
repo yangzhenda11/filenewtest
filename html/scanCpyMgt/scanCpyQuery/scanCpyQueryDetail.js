@@ -1,16 +1,16 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
-console.log(parm);
 var id = parm.id;
 
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-console.log("serverPath="+serverPath);
 
 $(function() {
 	$.ajax({
         "type": "POST",
+        contentType: "application/json",
+        dataType: "json",
         "url": serverPath+'contractScanQuery/listContractText?id='+id,
         "success": function(data) {
             var array=data.data;

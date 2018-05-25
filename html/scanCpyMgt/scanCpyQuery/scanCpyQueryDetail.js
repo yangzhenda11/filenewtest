@@ -1,16 +1,16 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
-console.log(parm);
 var id = parm.id;
 
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
-
 $(function() {
 	$.ajax({
         "type": "POST",
+        contentType: "application/json",
+        dataType: "json",
         "url": serverPath+'contractScanQuery/listContractText?id='+id,
         "success": function(data) {
             var array=data.data;
@@ -20,7 +20,7 @@ $(function() {
             for(i=1;i<=rows;i++){
             	htmlstr+="<tr>";
             	htmlstr+="<td align='center'>" + i +"</td>";
-            	htmlstr+="<td align='center'><a href='/contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
+            	htmlstr+="<td align='center'><a href='"+serverPath+"contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
             	htmlstr+="<td align='center'>" + formatDateTime(array[i-1].ctreatedDate) +"</td>";
             	htmlstr+="<td align='center'>" + array[i-1].createdByName +"</td>";
             	htmlstr+="</tr>";
@@ -41,7 +41,7 @@ $(function() {
             for(i=1;i<=rows;i++){
             	htmlstr+="<tr>";
             	htmlstr+="<td align='center'>" + i +"</td>";
-            	htmlstr+="<td align='center'><a href='/contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
+            	htmlstr+="<td align='center'><a href='"+serverPath+"contractUpload/downloadS3?key1="+array[i-1].storeIdDisplay+"'>"+array[i-1].displayName+"</td>";
             	htmlstr+="<td align='center'>" + formatDateTime(array[i-1].ctreatedDate) +"</td>";
             	htmlstr+="<td align='center'>" + array[i-1].createdByName +"</td>";
             	htmlstr+="</tr>";

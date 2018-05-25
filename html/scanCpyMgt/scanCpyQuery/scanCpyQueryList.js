@@ -24,7 +24,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
         	};
         	
         	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("id");
+        		d.undertakerId = $("#undertakeName").data("staffOrgId");
         	}else{
         		d.undertakeName = $("#undertakeName").val();
         	};
@@ -74,7 +74,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"className": "text-center",
 			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
-				var downloadUrl = "/contractUpload/downloadContractText?id=" + full.id;
+				var downloadUrl = serverPath+"contractUpload/downloadContractText?id=" + full.id;
 				var result = '<a href="'+downloadUrl+'"">正文下载</a>';
 				return result;
 			}
@@ -120,7 +120,7 @@ $(function(){
 	})
 	//承办人
 	$("#searchUndertaker").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","name","id");
+		App.getCommonModal("agentStaff","#undertakeName","name","staffOrgId");
 	})
 	//承办部门
 	$("#searchexecuteDept").click(function(){

@@ -23,8 +23,8 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
          "title":"序号",
          "className": "text-center",
 		"render" : function(data, type, full, meta){
-						return meta.row + 1;
-				   }
+				return meta.row + 1;
+		   }
 		},
 		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
         {"data": "contractNumber","title": "合同编号"},

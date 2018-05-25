@@ -39,34 +39,6 @@
 			</table>
 		</div>
 	</div>
-	<!--modal-->
-	<div class="modal fade" id="feasorModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-		<div class="modal-dialog" role="document" style="width: 80%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">选择履行人</h4>
-                </div>
-                <div class="modal-body">
-                	<div id="feasorTreeCotent">
-                		<ul id="feasorTree" class="ztree feasorTree"></ul>
-                	</div>
-                	<div id="feasorCheckTool">
-                		<button type="button" class="btn red" onclick="setFeasorValue()">></button>
-                		<button type="button" class="btn red" onclick="delFeasorValue()"><</button>
-                	</div>
-                	<div id="feasorCheckedCotent">
-                		<p>已选人员：</p>
-                		<div id="feasorChecked"></div>
-                	</div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="setFeasorTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
-                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 取消</button>
-                </div>
-            </div>
-        </div>
-	</div>
 </div>
 <script type="text/javascript">
 	var feasorTree = null;
@@ -168,7 +140,6 @@
 		var performerType = $("input[name='performerType']:checked").val();
 		var documentHeight = $(".page-content").height() - 225;
     	$("#feasorTreeCotent,#feasorChecked").css("height", documentHeight);
-		$("#feasorModal").modal("show");
 		initFeasorTree(performerType);
 	}
 	//生成树
@@ -228,13 +199,14 @@
 				return null;
 			}
 		}
-         // 获取数据
+        // 获取第一层数据
         $.ajax({
 	        url : serverPath + 'contractType/listPerformer',
 	        type : "post",
 	        data : {'orgId':'','executorType':performerType},
 	        success : function(result) {
 				if (result.status == 1) {
+					$("#feasorModal").modal("show");
 					var data = result.data;
 		        	if (data != "") {
 		        		for(var i = 0; i < data.length; i++){
@@ -272,11 +244,12 @@
     function addFeasorValue(treeNode) {
         if (treeNode.orgType == "" || treeNode.orgType == undefined) {
         	var performerType = $("input[name='performerType']:checked").val();
-        	var companyNode = getCompanyByOrgId(treeNode);
+        	var companyNode = getCompanyByOrgId(treeNode)[0];
+        	var firstOrgNode = getCompanyByOrgId(treeNode)[1];
         	var companyId = companyNode.id;
         	var companyName = companyNode.name;
-        	var performerOrgId = treeNode.parentId;
-        	var performerOrgName = treeNode.fullName;
+        	var performerOrgId = firstOrgNode.id;
+        	var performerOrgName = firstOrgNode.fullName;
         	var performerStaffId = treeNode.id;
             if(performerType == 1){
             	var html = '<div class="feasorItem" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-staffid="'+performerStaffId+'">'+
@@ -400,7 +373,7 @@
     function getCompanyByOrgId(treeNode){
     	var nodes = feasorTree.getNodeByParam("id", treeNode.parentId, null);
     	if(nodes.orgType == 1){
-    		return nodes;
+    		return [nodes,treeNode];
     	}else{
     		return getCompanyByOrgId(nodes);
     	}

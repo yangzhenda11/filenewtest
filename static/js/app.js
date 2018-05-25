@@ -749,7 +749,7 @@ var App = function() {
 			var data = data || "";
 			var dataType = dataType || "json";
 			var async = asyncs == null ? true : asyncs;
-			//var animation = animations == null ? true : animations;
+			var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
 			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
 			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? emptyFn : errorCallbacks;
@@ -759,6 +759,7 @@ var App = function() {
 				data: data,
 				dataType: dataType,
 				async: async,
+				global:animation,
 				contentType: "application/json",
 				success: function(result){
 					var result = result;
@@ -771,11 +772,17 @@ var App = function() {
 					};
 				},
 				error: function(result) {
-					layer.alert("接口错误", {icon: 2,title:"错误"},function(){
-		        		if(result.status == 401){
-		        			top.window.location.href = "/login.html";
-		        		}
-		        	});
+					if(result.status == 401){
+						if(top.globalConfig.loginSwitchSuccess == 0){
+							top.window.location.href = "/overtime.html";
+						}else{
+							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时"},function(){
+			        			top.window.location.href = "/login.html";
+			        		});
+						}
+	        		}else{
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        		};
 					errorCallback(result);
 				}
 			});
@@ -971,15 +978,38 @@ var App = function() {
 		        	}
 		        }else{
 		        	loadEnd();
-		        	layer.alert("接口错误", {icon: 2,title:"错误"},function(){
-		        		if(xhr.status == 401){
-		        			top.window.location.href = "/login.html";
-		        		}
-		        	});
+		        	if(xhr.status == 401){
+		        		if(top.globalConfig.loginSwitchSuccess == 0){
+							top.window.location.href = "/overtime.html";
+						}else{
+							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时"},function(){
+			        			top.window.location.href = "/login.html";
+			        		});
+						}
+	        		}else{
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        		}
 		        }
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';
 			return oTable;
+		},
+		/*
+		 * 获取datatable的当前页数，和每页的个数
+		 */
+		getDatatablePaging:function(el){
+            var oTable = $(el).dataTable();
+            var oSettings = oTable.fnSettings();
+            // 获取页码值
+            var pageStart = oSettings._iDisplayStart;
+            //获取页面分割长度
+            var pageLength = oSettings._iDisplayLength;
+            var returnObj = {
+            	pageStart : pageStart,
+            	pageLength : pageLength,
+            	nowPage : pageStart/pageLength + 1
+            }
+            return returnObj;
 		},
 		/*
 		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
@@ -1139,8 +1169,10 @@ var App = function() {
 	            $(dom).find(".select2me").each(function(){
 	                var allowClearFlag = $(this).attr('data-allowClear');
 	                var allowSearch = $(this).attr('data-allowSearch');
-	                if(allowClearFlag != false){
+	                if(allowClearFlag != "false"){
 	                	allowClearFlag = true;
+	                }else{
+	                	allowClearFlag = false;
 	                }
 	                options = {
 	                    placeholder:"请选择",
@@ -1173,8 +1205,10 @@ var App = function() {
                 };
                 var allowClearFlag = $(dom).attr('data-allowClear');
                 var allowSearch = $(dom).attr('data-allowSearch');
-                if(allowClearFlag != false){
+                if(allowClearFlag != "false"){
                 	options.allowClear = true;
+                }else{
+                	allowClearFlag = false;
                 }
                 if(allowSearch == undefined){
                 	options.minimumResultsForSearch = -1;
@@ -2340,7 +2374,7 @@ function loadStart(){
 function loadEnd(){
 	layer.close(layerIndex);
 }
-$(document).ajaxStart(function(){
+$(document).ajaxStart(function(a){
 	loadStart();
 })
 $(document).ajaxStop(function(){

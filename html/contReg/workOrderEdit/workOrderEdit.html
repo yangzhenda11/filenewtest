@@ -5,7 +5,6 @@
 <html lang="en">
 	<!--<![endif]-->
 	<!-- BEGIN HEAD -->
-
 	<head>
 		<meta charset="UTF-8">
 		<title>工单编辑</title>
@@ -14,7 +13,7 @@
 		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css?v=1"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
@@ -33,17 +32,28 @@
 					<div class="caption font-dark">
 						<span class="caption-subject bold uppercase" id="wcardType"></span>
 					</div>
+					<div class="hidden contractPortletTitle">
+						工单编号：<span class="wcardNumber"></span>	
+						状态：<span class="wcardStatus"></span>
+					</div>
 				</div>
 				<div class="portlet-body">
 					<form action="" id="workOrderContentForm">
 						<div class="toolbarBtn">
 							<div id="toolbarBtnContent">
 								<button class="btn blue saveBtn" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i> 保存</button>
-								<button class="btn blue register" type="button" onclick="submitContent()"><i class="iconfont icon-baocun"></i> 注册完成</button>
+								<button class="btn blue register" type="button" onclick="submitContent()"><i class="iconfont icon-tijiao1"></i> 注册完成</button>
 								<button class="btn blue sendBackBtn" type="button" onclick="sendBack()"><i class="iconfont icon-chehui"></i> 退回合同承办人</button>
-								<button class="btn blue activateBtn" type="button" onclick="activateContract()"><i class="iconfont icon-baocun"></i> 激活合同</button>
+								<button class="btn blue activateBtn" type="button" onclick="activateContract()"><i class="iconfont icon-tijiao1"></i> 激活合同</button>
 								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i> 关闭</button>
 								<button class="btn blue hidden" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i> 取消审批</button>
+							</div>
+						</div>
+						<div id="flowNote" class="note note-info">
+                        	<span><span class="label label-info" id="flowLable"></span><span id="flowTitle"></span></span>
+                        	<div class="hidden contractPortletTitle">
+								工单编号：<span class="wcardNumber"></span>	
+								状态：<span class="wcardStatus"></span>
 							</div>
 						</div>
 						<div id="workOrderContent"></div>
@@ -52,7 +62,35 @@
 				</div>
 			</div>
 		</div>
-		<!--modal-->
+		<!--选择履行人modal-->
+		<div class="modal fade" id="feasorModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document" style="width: 80%;">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">选择履行人</h4>
+	                </div>
+	                <div class="modal-body">
+	                	<div id="feasorTreeCotent">
+	                		<ul id="feasorTree" class="ztree feasorTree"></ul>
+	                	</div>
+	                	<div id="feasorCheckTool">
+	                		<button type="button" class="btn red" onclick="setFeasorValue()">></button>
+	                		<button type="button" class="btn red" onclick="delFeasorValue()"><</button>
+	                	</div>
+	                	<div id="feasorCheckedCotent">
+	                		<p>已选人员：</p>
+	                		<div id="feasorChecked"></div>
+	                	</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" onclick="setFeasorTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 取消</button>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<!--退回原因modal-->
 		<div class="modal fade" id="pinfoContentModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
 	            <div class="modal-content">
@@ -95,6 +133,7 @@
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/ChinaNumToEnglishNum.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="_jumpIconList.js" type="text/javascript" charset="utf-8"></script>
 		<script src="workOrderEdit.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 

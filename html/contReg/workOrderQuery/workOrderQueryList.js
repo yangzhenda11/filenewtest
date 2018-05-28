@@ -115,7 +115,14 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
         {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"}
-	]
+	],
+	"columnDefs": [{
+   		"createdCell": function (td, cellData, rowData, row, col) {
+         	if ( col > 0 ) {
+           		$(td).attr("title", $(td).text())
+         	}
+   		}
+ 	}]
 });
 
 
@@ -170,18 +177,3 @@ $(function(){
 		$(this).data("exactSearch",false);
 	})
 })
-
-//调整时间显示，不显示时分秒
-function formatDateTime(inputTime,type) {
-	if(inputTime){
-		var date = new Date(inputTime);
-	}else{
-		return "";
-	}
-	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
-	m = m < 10 ? ('0' + m) : m;
-	var d = date.getDate();
-	d = d < 10 ? ('0' + d) : d;
-	return y + '-' + m + '-' + d;
-}

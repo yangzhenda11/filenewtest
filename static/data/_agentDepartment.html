@@ -30,45 +30,6 @@
     //设置树的高度
 	var documentHeight = $(".page-content").height() - 190;
 	$("#agentDepartmentTree").css("height",documentHeight);
-	//生成树
-	function initAgentDepartmentTree(inputDom,value,key,ajaxData) {
-		
-		//配置
-		var treeSetting = {
-			view: {
-				selectedMulti: false,
-				dblClickExpand: false
-			},
-			data: {
-				simpleData: {
-					enable: true,
-					idKey: "orgId",
-					pIdKey: "parentId"
-				},
-				key: {
-					name: "orgName"
-				}
-			},
-			callback: {
-				onDblClick: setInputInfo
-			}
-		};
-		//获取数据
-		App.formAjaxJson(serverPath + "contractType/listExecuteDept", "post", JSON.stringify(ajaxData), successCallback);
-
-		function successCallback(result) {
-			var data = result.data;
-			if(data != "") {
-				
-			}else{
-				layer.msg("暂无数据，请稍后重试");
-			}
-		}
-		//双击事件 
-		function setInputInfo(event, treeId, treeNode) {
-			setInputValue(treeNode);
-		}
-	}
     //生成树
     function initAgentDepartmentTree(inputDom, value, key, ajaxData) {
         textValue = value;
@@ -143,7 +104,7 @@
 				};
 	        },
 	        error: function(result) {
-				layer.alert("接口错误", {icon: 2,title:"错误"});
+				App.ajaxErrorCallback(result);
 			}
 	    });
         //双击事件 

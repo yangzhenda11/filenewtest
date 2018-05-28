@@ -126,7 +126,14 @@ function verifyProcessTrue() {
                 }
             }
 
-        ]
+        ],
+		"columnDefs": [{
+	   		"createdCell": function (td, cellData, rowData, row, col) {
+	         	if ( col > 0 ) {
+	           		$(td).attr("title", $(td).text())
+	         	}
+	   		}
+	 	}]
     });
 }
 
@@ -217,7 +224,14 @@ function verifyProcessFalse() {
                 }
             },
             { "data": "verifyVersion", "className": "whiteSpaceNormal", "width": "5%", "title": "版本号" }
-        ]
+        ],
+		"columnDefs": [{
+	   		"createdCell": function (td, cellData, rowData, row, col) {
+	         	if ( col > 1 ) {
+	           		$(td).attr("title", $(td).text())
+	         	}
+	   		}
+	 	}]
     });
 }
 

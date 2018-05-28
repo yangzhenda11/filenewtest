@@ -93,7 +93,14 @@
 					"data": "partyName",
 					"title": "对方主体名称"
 				}
-			]
+			],
+			"columnDefs": [{
+	       		"createdCell": function (td, cellData, rowData, row, col) {
+		         	if ( col > 0 ) {
+		           		$(td).attr("title", $(td).text())
+		         	}
+	       		}
+	     	}]
 		});
 		//行点击事件  
 		$('#contractDataTable tbody').on('click', 'tr', function() {

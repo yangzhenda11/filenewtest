@@ -340,6 +340,13 @@ function saveContract(){
 function beforePushProcess(pass){
 	var result=true;
 	//1，业务侧的校验，校验不通过则返回false
+	if($("#uploadFileNameshow").val()==''){
+		layer.alert("请上传合同正文扫描件！", {
+            icon: 0,
+            skin: 'layer-ext-moon'
+        });
+		return;
+	}
 	var url = serverPath + 'contractUpload/validateContractStatus?id='+id;
 	$.ajax({
 		url : url,
@@ -402,7 +409,7 @@ function beforeTransfer(){
 
 
 function businessPush(){
-	if(JSON.stringify(result) == "{}" && $("#uploadFileName").val()==''){
+	if($("#uploadFileNameshow").val()==''){
 		alert("请上传合同正文扫描件！");
 		return;
 	}

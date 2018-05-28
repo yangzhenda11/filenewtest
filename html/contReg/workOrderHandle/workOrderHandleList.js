@@ -63,7 +63,14 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 				}
 			}
 		}
-    ]
+    ],
+	"columnDefs": [{
+   		"createdCell": function (td, cellData, rowData, row, col) {
+         	if ( col > 0 ) {
+           		$(td).attr("title", $(td).text())
+         	}
+   		}
+ 	}]
 });
 
 /*

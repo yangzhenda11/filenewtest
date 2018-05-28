@@ -66,7 +66,10 @@ $(function() {
             }
             htmlstr+="</tbody></table>";
             document.getElementById('scanCpyloadTable').innerHTML=htmlstr;
-        }
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
     });
 })
 
@@ -90,7 +93,10 @@ function checkFileIsUpload(){
 				$("#uploadFile_div2").hide();
     			$("#uploadFile_div1").show();
 			}
-        }
+       },
+       error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
 
@@ -113,7 +119,10 @@ function getContractInfo(){
         	var label=document.getElementById("contractType");
 			label.innerText=contractType;
 			$("#contractType").html(contractType);
-        }
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
 
@@ -232,11 +241,14 @@ function saveContractText(){
         data:{"jsonStr":jsonStr,"id":id},
         success : function(data) {
        		if(data.status=='1'){
-       			alert(data.message);
+       			layer.msg(data.message);
        		}else if(data.status=='0'){
-       			alert(data.message);
+       			layer.msg(data.message);
        		}
-       	}
+       	},
+       	error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
 
@@ -249,9 +261,12 @@ function delContractText(){
        		if(data.status=='1'){
        			//alert("保存成功！");
        		}else if(data.status=='0'){
-       			alert(data.message);
+       			layer.msg(data.message);
        		}
-        }
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
 
@@ -261,12 +276,15 @@ function saveAttachment(){
         type : "post",
         data:{"strArray":JSON.stringify(array)},
         success : function(data) {
-       				if(data.status=='1'){
-       					alert("保存成功！");
-       				}else if(data.status=='0'){
-       					alert(data.message);
-       				}
-        		}
+			if(data.status=='1'){
+				layer.msg("保存成功！");
+			}else if(data.status=='0'){
+				layer.msg(data.message);
+			}
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
 
@@ -277,12 +295,15 @@ function delAttachment(){
         data:{"deleteArray":JSON.stringify(deleteArray)},
         async:false,
         success : function(data) {
-       				if(data.status=='1'){
-       					console.log("删除附件扫描件成功！");
-       				}else if(data.status=='0'){
-       					alert(data.message);
-       				}
-        		}
+			if(data.status=='1'){
+				console.log("删除附件扫描件成功！");
+			}else if(data.status=='0'){
+				layer.msg(data.message);
+			}
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 }
 
@@ -297,7 +318,7 @@ function saveContract(){
 			delContractText();
 		}
 		if(array.length==0){
-			alert("保存成功！");
+			layer.msg("保存成功！");
 		}else{
        		saveAttachment();
 		}
@@ -318,14 +339,17 @@ function saveContract(){
         					data:{"strArray":JSON.stringify(array)},
         					success : function(data) {
        							if(data.status=='1'){
-       								alert("保存成功！");
+       								layer.msg("保存成功！");
        							}else if(data.status=='0'){
-       								alert(data.message);
+       								layer.msg(data.message);
        							}
-        					}	
+        					},
+        					error: function(result) {
+								App.ajaxErrorCallback(result);
+							}
 						});
        				}else if(data.status=='0'){
-       					alert(data.message);
+       					layer.msg(data.message);
        				}
         		}
 			});
@@ -340,6 +364,13 @@ function saveContract(){
 function beforePushProcess(pass){
 	var result=true;
 	//1，业务侧的校验，校验不通过则返回false
+	if($("#uploadFileNameshow").val()==''){
+		layer.alert("请上传合同正文扫描件！", {
+            icon: 0,
+            skin: 'layer-ext-moon'
+        });
+		return;
+	}
 	var url = serverPath + 'contractUpload/validateContractStatus?id='+id;
 	$.ajax({
 		url : url,
@@ -351,7 +382,10 @@ function beforePushProcess(pass){
 			}else{
 				result=true;
 			}
-        }
+       	},
+       	error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
 	});
 	
 	//2,设置下一步选人的参数，用于匹配通用规则选人。
@@ -402,8 +436,8 @@ function beforeTransfer(){
 
 
 function businessPush(){
-	if(JSON.stringify(result) == "{}" && $("#uploadFileName").val()==''){
-		alert("请上传合同正文扫描件！");
+	if($("#uploadFileNameshow").val()==''){
+		layer.msg("请上传合同正文扫描件！");
 		return;
 	}
 	var taskBusinessKey=id;
@@ -452,7 +486,7 @@ function modal_passBybuss(flowParam){
 	postData.id = id;
 	App.formAjaxJson(serverPath + url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
-		alert("提交成功！");
+		parent.layer.alert("提交成功!",{icon:1});
 		document.getElementById("saveButton").style.display = "none";
 		document.getElementById("businessPushButton").style.display = "none";
 		/*parent.layer.alert("处理成功",{icon:1},function(){

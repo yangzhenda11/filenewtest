@@ -288,6 +288,10 @@
 .toolbars-content{
 	position: absolute;
 }
+.page-search .select2-selection{
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
 /*
  * 预定义字段
  */

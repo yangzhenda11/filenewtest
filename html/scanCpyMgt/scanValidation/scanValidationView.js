@@ -255,15 +255,19 @@ function getScanValidationInfo(verifyId){
 		if(data.textPdf){
 			var textPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.textPdf);
 			$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+			interval1 = setInterval('loadTextPdf()', 500);
 		}else{
-			clearInterval(interval1);
+			var doc = document.getElementById("textPdfContent").contentDocument || document.frames["textPdfContent"].document;
+        	doc.body.innerHTML = "<div style='color:red;text-align:center'>不存在可加载pdf的url</div>";
 		};
 		if(data.scandocPdf){
 			var scandocPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.scandocPdf);
 			console.log(scandocPdf);
 			$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+			interval2 = setInterval('loadScandocPdf()', 500);
 		}else{
-			clearInterval(interval2);
+			var doc = document.getElementById("scandocPdfContent").contentDocument || document.frames["scandocPdfContent"].document;
+        	doc.body.innerHTML = "<div style='color:red;text-align:center'>不存在可加载pdf的url</div>";
 		};
 		//若有差异查询差异记录
 		if(isDifferences){
@@ -505,7 +509,7 @@ function validationResultView(isDifferences){
 /*
  * 检测两个文档是否加载完成
  */
-var interval1 = setInterval('loadTextPdf()', 500);
+
 function loadTextPdf() {
 	if(document.getElementById("textPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval1);
@@ -516,7 +520,7 @@ function loadTextPdf() {
 		});
 	}
 }
-var interval2 = setInterval('loadScandocPdf()', 500);
+
 function loadScandocPdf() {
 	if(document.getElementById("scandocPdfContent").contentWindow.PDFViewerApplication.pdfDocument != null) {
 		clearInterval(interval2);

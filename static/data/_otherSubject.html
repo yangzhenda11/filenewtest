@@ -83,7 +83,14 @@
 					"className":"whiteSpaceNormal",
 					"width":"50%"
 				}
-			]
+			],
+			"columnDefs": [{
+	       		"createdCell": function (td, cellData, rowData, row, col) {
+		         	if ( col > 0 ) {
+		           		$(td).attr("title", $(td).text())
+		         	}
+	       		}
+	     	}]
 		});
 		//行点击事件  
 		$('#otherSubjectTable tbody').on('click', 'tr', function() {

@@ -545,8 +545,7 @@ var App = function() {
                     placeholder:"全部",
                     language:'zh-CN',
                     width:'100%',
-                    allowClear:allowClearFlag,
-                    style:"border:none"
+                    allowClear:allowClearFlag
                 };
                 if(allowSearch == undefined){
             	 	options.minimumResultsForSearch = -1;

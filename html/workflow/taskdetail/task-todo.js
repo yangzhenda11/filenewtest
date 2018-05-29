@@ -595,14 +595,14 @@ function pushProcess(){
 	} else {
 		taskDefinitionKey = link.split(",")[0];
 	}
-	if(!$("#assigneeDiv").is(":hidden")){
+	//if(!$("#assigneeDiv").is(":hidden")){
 		assignee = $("#assignee").val();
 		
 		if(assignee == null || assignee == '') {
 			layer.msg('请选择处理人！');
 			return;
 		}
-	}
+	//}
 	
 	var comment = $("#comment").val();
 	if(comment.length == 0) {

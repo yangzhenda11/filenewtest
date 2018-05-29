@@ -377,8 +377,8 @@ function beforePushProcess(pass){
         type : "post",
         success : function(data) {
 			if(data.count!=0){
-				result=false;
 				layer.msg(data.message);
+				result=false;
 			}else{
 				result=true;
 			}
@@ -406,6 +406,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		$.post(root + "contractUpload/pushProcess", {
 			"processInstanceId" : processInstanceId,//当前流程实例
 			"taskId" : taskId,//当前任务id
+			"id" : id,
 			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
 			"assignee" : assignee,//下一步参与者
 			"comment" : comment,//下一步办理意见
@@ -414,10 +415,12 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 			"title":""//可不传，如果需要修改待办标题则传此参数。
 		}, function(data) {
-			layer.msg(data.sign);
-			
-			// 成功后回调模态窗口关闭方法
-			parent.modal_close();   
+			if(data.status=="1"){
+				// 成功后回调模态窗口关闭方法
+				parent.modal_close();
+			}else{
+				layer.msg(data.message);
+			}	   
 		});
 }
 

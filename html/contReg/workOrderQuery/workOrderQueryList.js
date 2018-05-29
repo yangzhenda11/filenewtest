@@ -161,19 +161,19 @@ $(function(){
 		App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 	})
 	
-	$("#contractType").on("input",function(){
+	$("#contractType").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#agentStaff").on("input",function(){
+	$("#agentStaff").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#agentDepartment").on("input",function(){
+	$("#agentDepartment").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#ourSubject").on("input",function(){
+	$("#ourSubject").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#otherSubject").on("input",function(){
+	$("#otherSubject").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
 })

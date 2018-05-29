@@ -51,7 +51,7 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
 	        "data": "ctreatedDate",
 	        "title": "创建日期",
 	        render: function(data, type, full, meta) {
-	            return formatDateTime(data);
+	            return App.formatDateTime(data,"yyyy-mm-dd");
 	        }
 	    },
 	    {
@@ -86,25 +86,11 @@ $(function(){
 		App.getCommonModal("agentStaff","#undertakeName","name","id");
 	})
 	
-	$("#undertakeName").on("input",function(){
+	$("#undertakeName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
 })
 
-//调整时间显示，不显示时分秒
-function formatDateTime(inputTime,type) {
-	if(inputTime){
-		var date = new Date(inputTime);
-	}else{
-		return "";
-	}
-	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
-	m = m < 10 ? ('0' + m) : m;
-	var d = date.getDate();
-	d = d < 10 ? ('0' + d) : d;
-	return y + '-' + m + '-' + d;
-}
 
 /*
  * 搜索点击事件

@@ -135,16 +135,16 @@ $(function(){
 	})
 	
 	
-	$("#oppoPartyName").on("input",function(){
+	$("#oppoPartyName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#unicomPartyName").on("input",function(){
+	$("#unicomPartyName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#undertakeName").on("input",function(){
+	$("#undertakeName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#executeDeptName").on("input",function(){
+	$("#executeDeptName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
 })
@@ -153,19 +153,4 @@ $(function(){
 function jumpSanCpyQueryDetail(id){
 	var src = "/html/scanCpyMgt/scanCpyQuery/scanCpyQueryDetail.html?id="+id;
 	App.changePresentUrl(src);
-}
-
-//调整时间显示，不显示时分秒
-function formatDateTime(inputTime,type) {
-	if(inputTime){
-		var date = new Date(inputTime);
-	}else{
-		return "";
-	}
-	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
-	m = m < 10 ? ('0' + m) : m;
-	var d = date.getDate();
-	d = d < 10 ? ('0' + d) : d;
-	return y + '-' + m + '-' + d;
 }

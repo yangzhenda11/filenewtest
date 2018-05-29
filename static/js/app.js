@@ -1169,14 +1169,18 @@ var App = function() {
 		resetForm:function(obj){
             var form = $(obj).closest('form');
             form[0].reset();
-            form.find('input[type=text]').data("id","")
-            form.find('input[type=text]').data("exactSearch","");
+            //form.find('input[type=text]').data("id","");
             form.find('.select2me').trigger("change");
-            form.find('input[data-initData]').each(function(){
-                var initEl = $(this);
-                var initVal = initEl.attr('data-initData');
-                if('undefined' !== typeof initVal )initEl.attr("value",initVal);
+            form.find('input[type=text]').each(function(){
+                if($(this).data("exactSearch") == true){
+                	$(this).data("exactSearch",false);
+                }
             })
+//          form.find('input[data-initData]').each(function(){
+//              var initEl = $(this);
+//              var initVal = initEl.attr('data-initData');
+//              if('undefined' !== typeof initVal )initEl.attr("value",initVal);
+//          })
         },
 		/*
 		 * 表单内静态select2内容的初始化

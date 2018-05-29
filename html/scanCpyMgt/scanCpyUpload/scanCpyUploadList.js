@@ -123,13 +123,13 @@ $(function(){
 	$("#searchOtherSubject").click(function(){
 		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
 	})
-	$("#contractTypeName").on("input",function(){
+	$("#contractTypeName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#undertakeName").on("input",function(){
+	$("#undertakeName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	$("#oppoPartyName").on("input",function(){
+	$("#oppoPartyName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
 })

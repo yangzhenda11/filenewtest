@@ -17,18 +17,18 @@ $("#searchAgentDepartment").click(function() {
 $("#searchOtherSubject").click(function() {
     App.getCommonModal("otherSubject", "#otherSubject", "partnerName", "partnerId");
 })
-$("#contractType").on("input", function() {
+$("#contractType").on("change", function() {
     $(this).data("exactSearch", false);
 })
-$("#agentStaff").on("input", function() {
+$("#agentStaff").on("change", function() {
     $(this).data("exactSearch", false);
 })
-$("#agentDepartment").on("input", function() {
+$("#agentDepartment").on("change", function() {
     $(this).data("exactSearch", false);
 })
-$("#otherSubject").on("input", function() {
-        $(this).data("exactSearch", false);
-    })
+$("#otherSubject").on("change", function() {
+    $(this).data("exactSearch", false);
+})
     /** ----------------------------查询弹框的js-end-------------------------------------- */
     /*******************************进行分页查询数据-start******************************************* */
     /*

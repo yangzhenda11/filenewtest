@@ -128,7 +128,7 @@
 			$("#searchOtherSubject").click(function(){
 				App.getCommonModal("otherSubject","#otherSubject","partnerName","partnerId");
 			})
-			$("#otherSubject").on("input",function(){
+			$("#otherSubject").on("change",function(){
 				$(this).data("exactSearch",false);
 			});
 			function fileUpload(){

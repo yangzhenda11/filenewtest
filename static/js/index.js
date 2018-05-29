@@ -58,6 +58,8 @@ $(document).ready(function() {
         //消息定时器，20s查询一次
         setMessageTipNumber();
         var messageInterval = setInterval(setMessageTipNumber, 20000);
+        //请求用户信息成功后加载待办列表
+        $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
     }
     function improperCallback(result) {
         layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
@@ -260,7 +262,7 @@ $("#fullScreen").on("click", function() {
         document.mozFullScreenEnabled ||
         document.msFullscreenEnabled
     if (!fullscreenEnabled) {
-        layer.msg("当前浏览器暂不支持全屏操作", { icon: 2 });
+        layer.msg("当前浏览器不支持全屏操作", { icon: 2 });
         return false;
     };
     var fullscreenElement =

@@ -68,6 +68,8 @@
 					contractTypeTree.destroy();
 				}
 				contractTypeTree = $.fn.zTree.init($("#contractTypeTree"), treeSetting, data);
+				var nodes = contractTypeTree.getNodes();
+	            contractTypeTree.expandNode(nodes[0]);
 			}else{
 				layer.msg("暂无数据，请稍后重试");
 			}

@@ -41,24 +41,32 @@
 </div>
 <script type="text/javascript">
 	//系统全局变量获取
-	var config = top.globalConfig;
-	var serverPath = config.serverPath;
-	var setDom = null;
-	var documentHeight = 0;
+	var serverPath = top.globalConfig.serverPath;
+	var _documentHeight = 0;
+	var _dom = null,_showInputKey=null,_setKey=null,_ajaxData=null;
 	//初始化表格
-	function initContractDataSearch(dom, textValue, setKey, ajaxData) {
+	function initContractDataSearch(dom, showInputKey, setKey, ajaxData) {
 		$("#commomModal").modal("show");
-		documentHeight = $(".page-content").height() - 340;
-		$("#contractTableDom").css("height",documentHeight + 90);
-		$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
-			getContractData(dom, textValue, setKey, ajaxData);
-		})
+		_documentHeight = $(".page-content").height() - 340;
+		_dom = dom;
+		_showInputKey = showInputKey;
+		_setKey = setKey;
+		_ajaxData = ajaxData;
+		$("#contractTableDom").css("height",_documentHeight + 90);
 	}
-	
-	function getContractData(dom, textValue, setKey, ajaxData) {
-		setDom = dom;
+	//modal全部显示后的回调
+	$('#commomModal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
+		getContractData();
+	})
+	/*
+	 * 加载datatable表格
+	 */
+	function getContractData() {
+		if(App.isIE9() || App.isIE8()){
+			_documentHeight = "";
+		}
 		App.initDataTables('#contractDataTable', "#searchBtnM", {
-			scrollY:documentHeight,
+			scrollY:_documentHeight,
 			ajax: {
 				"type": "post",
 				"contentType": "application/json",
@@ -66,16 +74,16 @@
 				"data": function(d) {
 					d.contractName = $("input[name='contractName']").val().trim();
 					d.contractNumber = $("input[name='contractNumber']").val().trim();
-					var parm = $.extend({}, ajaxData, d);
+					var parm = $.extend({}, _ajaxData, d);
 					return JSON.stringify(parm);
 				}
 			},
 			"columns": [{
-					"data": textValue,
+					"data": "contractId",
 					"className": "text-center radioCheck",
 					"title": "操作",
 					"render": function(data, type, full, meta) {
-						var radioHtml = "<label class='ui-radio'><input type='radio' value = '" + data + "' name='checkRadio'><span></span></label>";
+						var radioHtml = "<label class='ui-radio'><input type='radio' name='checkRadio'><span></span></label>";
 						return radioHtml;
 					}
 				},
@@ -93,22 +101,18 @@
 					"data": "partyName",
 					"title": "对方主体名称"
 				}
-			]
+			],
+			"columnDefs": [{
+	       		"createdCell": function (td, cellData, rowData, row, col) {
+		         	if ( col > 0 ) {
+		           		$(td).attr("title", $(td).text())
+		         	}
+	       		}
+	     	}]
 		});
 		//行点击事件  
 		$('#contractDataTable tbody').on('click', 'tr', function() {
 			$(this).find("input[name='checkRadio']").prop("checked", true);
-			//获取选择行的内容
-			var data = $('#contractDataTable').DataTable().row(this).data();
-			if(setKey != undefined){
-				if($.isArray(setKey)){
-					$.each(setKey, function(k,v) {
-						$(dom).data(v,data[v]);
-					});
-				}else{
-					$(dom).data(setKey,data[setKey]);
-				}
-			};
 		});
 	}
 	//搜索点击事件
@@ -118,13 +122,24 @@
 	}
 	//点击确定页面dom元素选择值
 	function checkContractData() {
-		var checkRadio = $("#contractDataTable").find("input[name='checkRadio']:checked");
-		if(checkRadio.length == 0){
+		//获取选择行的内容
+		var checkedRadio = $("#contractDataTable").find("input[name='checkRadio']:checked");
+		if(checkedRadio.length == 0){
 			layer.msg("请选择一项合同",{icon:2})
 		}else{
-			var checkValue = checkRadio.val();
-			$(setDom).val(checkValue);
-			$(setDom).data("exactSearch",true);
+			var trIndex = $("input[name='checkRadio']:checked").parents("tr").index();
+			var checkedTrData = $('#contractDataTable').DataTable().row(trIndex).data();
+			if(_setKey != undefined){
+				if($.isArray(_setKey)){
+					$.each(_setKey, function(k,v) {
+						$(_dom).data(v,checkedTrData[v]);
+					});
+				}else{
+					$(_dom).data(_setKey,checkedTrData[_setKey]);
+				}
+			};
+			$(_dom).val(checkedTrData[_showInputKey]);
+			$(_dom).data("exactSearch",true);
 			$("#commomModal").modal("hide");
 		}
 	}

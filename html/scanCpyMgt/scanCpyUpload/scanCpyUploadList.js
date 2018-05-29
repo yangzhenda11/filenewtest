@@ -85,8 +85,14 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
 				}
 			}
 		},
-    ]
-    
+    ],
+	"columnDefs": [{
+   		"createdCell": function (td, cellData, rowData, row, col) {
+         	if ( col > 0 ) {
+           		$(td).attr("title", $(td).text())
+         	}
+   		}
+ 	}]
 });
 
 //跳转到上传页面

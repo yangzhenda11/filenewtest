@@ -909,7 +909,7 @@ var App = function() {
 				"serverSide": true,					//开启服务器请求模式
 				"searching":false,
 				"scrollX": true,
-				"scrollCollapse": false,
+				"scrollCollapse": true,
 				"sScrollX": "100%",
 				"sScrollXInner": "100%",
 				"bAutoWidth": true,
@@ -981,6 +981,11 @@ var App = function() {
 				"ajax":{
 					beforSend:App.startLoading(btn)
 				}
+//				"columnDefs": [{
+//		       		"createdCell": function (td, cellData, rowData, row, col) {
+//		           		$(td).attr("title", cellData)
+//		       		}
+//		     	}]
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);

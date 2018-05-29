@@ -12,7 +12,7 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
         "url": serverPath+'workOrderActivate/workOrderActivateList',
         "data": function(d) {//自定义传入参数
         	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("staffOrgId");
+        		d.undertakerId = $("#undertakeName").data("id");
         	}else{
         		d.undertakeName = $("#undertakeName").val();
         	};
@@ -68,7 +68,14 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
 				}
 			}
 		}
-    ]
+    ],
+	"columnDefs": [{
+   		"createdCell": function (td, cellData, rowData, row, col) {
+         	if ( col > 0 ) {
+           		$(td).attr("title", $(td).text())
+         	}
+   		}
+ 	}]
 });
 
 
@@ -76,7 +83,7 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
 $(function(){
 	//承办人
 	$("#searchUndertaker").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","name","staffOrgId");
+		App.getCommonModal("agentStaff","#undertakeName","name","id");
 	})
 	
 	$("#undertakeName").on("input",function(){

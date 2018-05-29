@@ -4,14 +4,14 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;
-var wcardId = null;
+var wcardId = null;					//工单主键ID
 var contractId = null;				//合同ID
 var wcardTypeCode = null;			//合同类型
 var contractNumber = null;			//合同编号
-var isEdit = false;						//是否可以编辑
-var isCancelApproved = false;			//是否为退回状态
+var isEdit = false;					//是否可以编辑
+var isCancelApproved = false;		//是否为退回状态
 
-var curStaffOrgId = config.curStaffId;
+var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
 
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 	isEdit = true;
@@ -116,8 +116,8 @@ function beforePushProcess(pass){
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。
 	var assigneeParam = { 
-			"prov": "sd",  //省分，来自需求工单，必传
-			}
+		"prov": "sd",  //省分，来自需求工单，必传
+	}
 	parent.setAssigneeParam(assigneeParam);
 	
 	//3,设置路由值

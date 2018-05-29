@@ -57,7 +57,7 @@ $(document).ready(function() {
         };
         //消息定时器，20s查询一次
         setMessageTipNumber();
-        var messageInterval = setInterval(setMessageTipNumber, 20000);
+        //var messageInterval = setInterval(setMessageTipNumber, 20000);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
     }

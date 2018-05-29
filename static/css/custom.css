@@ -217,7 +217,7 @@
 .sclapy_nav big{font-size:16px;color:#777777;margin-left:-5px;display:inline;}
 /*侧边滚动-结束  */
 /*modal.css*/
-.modal {
+/*.modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -271,7 +271,7 @@
 }
 .modal-backdrop.in:nth-last-of-type(7) {
 	z-index: 1066 !important;
-}
+}*/
 /*modal.css*/
 
 

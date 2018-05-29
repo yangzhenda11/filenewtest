@@ -32,7 +32,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
         {
         	"data": "wcardStatus",
         	"title": "工单状态",
-        	render: function(data, type, full, meta) {
+        	"render": function(data, type, full, meta) {
 	            if(data=='904010'){
 	            	return "工单草稿";
 	            }else if(data=='904020'){

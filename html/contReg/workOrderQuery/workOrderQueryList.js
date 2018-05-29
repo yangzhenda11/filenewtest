@@ -91,7 +91,7 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         	"title": "工单状态",
         	"width": "5%",
         	"className":"whiteSpaceNormal",
-        	render: function(data, type, full, meta) {
+        	"render": function(data, type, full, meta) {
 	            if(data=='904010'){
 	            	return "工单草稿";
 	            }else if(data=='904020'){
@@ -106,11 +106,11 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
 	        "title": "创建日期",
 	        "width": "5%",
 	        "className":"whiteSpaceNormal",
-	        render: function(data, type, full, meta) {
+	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
-	    {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width": "5%"},
+	    {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width": "6%"},
 	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
         {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
         {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},

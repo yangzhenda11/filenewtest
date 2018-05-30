@@ -1,0 +1,60 @@
+<div class="form-fieldset">
+	<div class="form-fieldset-title">
+		<span><i class="iconfont icon-layers"></i> 合同扫描件</span>
+		<div class="form-fieldset-tools">
+			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+	<div class="form-fieldset-body">
+		<div class="row defaultFieldsetForm" id="validityForm">
+			qwd
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_scanCpyUploadId(value){
+		
+	}
+
+	/*
+	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
+	 */
+	function getValue_scanCpyUpload(isSubmit){
+		var validityData = App.getFormValues($("#validityForm"));
+		var undertakerCommitmentValue = $("input[name='undertakerCommitment']:checked").val();
+		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		validityData.wcardId = wcardId;
+		validityData.contractNumber = contractNumber;
+		if(undertakerCommitmentValue == 1){
+			validityData.undertakerCommitment = 1;
+		}else{
+			validityData.undertakerCommitment = 0;
+		};
+		if(isSubmit && validityData.undertakerCommitment == 0){
+			layer.msg("请勾选承办人确认信息!");
+			srolloOffect("#undertakerCommitmentContent");
+			return false;
+		}else{
+			return validityData;
+		}
+	}
+	
+	//获取合同扫描件信息
+	//getScanCpyUploadData();
+	/*
+	 * 获取合同扫描件信息
+	 */
+	function getScanCpyUploadData(){
+		var url = serverPath + "contractOrderEditorController/getValidityId";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			
+		}
+	}
+	
+</script>

@@ -332,6 +332,7 @@ var orgsSetting = {
 		url: "",
 		type: "get",
 		dataType: 'json',
+		global: false,
 		dataFilter: orgsfilter
 	},
 	data: {

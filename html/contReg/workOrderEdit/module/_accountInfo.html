@@ -22,9 +22,9 @@
                     	<thead>
 							<tr>
 								<th class="payerEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
-								<th><i class="iconfont icon-mi required"></i>收款方账户名称</th>
-								<th><i class="iconfont icon-mi required"></i>收款方银行账号</th>
-								<th><i class="iconfont icon-mi required"></i>收款方开户银行</th>
+								<th class="isRequiredIcon">收款方账户名称</th>
+								<th class="isRequiredIcon">收款方银行账号</th>
+								<th class="isRequiredIcon">收款方开户银行</th>
 								<th class="payeeEdit">操作</th>
 							</tr>
 						</thead>
@@ -191,6 +191,7 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 
 		function successCallback(result) {
+			setRequiredIcon();
 			var data = result.data;
 			if(data.length > 0){
 				isCreateAccountTrLength = data.length;

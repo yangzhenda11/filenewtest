@@ -151,6 +151,6 @@ $(function(){
 
 //跳转展示列表页面
 function jumpSanCpyQueryDetail(id){
-	var src = "/html/scanCpyMgt/scanCpyQuery/scanCpyQueryDetail.html?id="+id;
+	var src = "./scanCpyQueryDetail.html?id="+id;
 	App.changePresentUrl(src);
 }

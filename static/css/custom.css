@@ -304,9 +304,6 @@
 .align-left{
     text-align: left;
 }
-.padding-tb-8{
-		padding-top: 8px;
-}
 button:focus{
 		outline: none !important;
 }
@@ -324,6 +321,13 @@ button:focus{
 }
 .paddingL0{
 	padding-left: 0;
+}
+.padding-tb-8{
+	padding-top: 8px;
+}
+.paddingLR0 {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /*

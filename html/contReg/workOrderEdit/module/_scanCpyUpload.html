@@ -6,8 +6,29 @@
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row defaultFieldsetForm" id="validityForm">
-			qwd
+		<div class="row" id="scanCpyUploadForm">
+			<div class="col-sm-6 form-group" id="uploadFile_div1">
+				<label for="contractText" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+				<div class="col-sm-7">
+					<input type="text" class="form-control paddingR0" id="contractText" value="" />
+				</div>
+				<div class="col-sm-2">
+					<button class="btn red" onclick="fileUpload()">添加</button>
+				</div>			
+			</div>
+			<div class="col-sm-12 cluesRed">
+				提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
+			</div>
+			<div class="col-sm-12 clues">
+				合同附件扫描件：
+			</div>
+			<div class="col-sm-12 cluesRed">
+				提示：合同合同附件扫描件支持上传多种格式文件，可针对附件名依次上传对应扫描件。
+			</div>
+			<div class="col-sm-12" id="contractAttachment">
+				<table id="contractAttachmentTable" class="table table-hover table-bordered table-striped table-align">
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

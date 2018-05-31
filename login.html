@@ -14,7 +14,7 @@
 		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" type="text/css" href="static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="static/css/iconfont/iconfont.css" />
-		<link rel="stylesheet" type="text/css" href="static/css/login.css?v=2" />
+		<link rel="stylesheet" type="text/css" href="static/css/login.css" />
 		<link href="static/img/favicon.png" rel="bookmark" type="image/x-icon" />
 		<link href="static/img/favicon.png" rel="icon" type="image/x-icon" />
 		<link href="static/img/favicon.png" rel="shortcut icon" type="image/x-icon" />
@@ -55,25 +55,6 @@
 										<div class="col-sm-4 col-md-4">
 											<button type="button" tabIndex="4" onclick="javascript:login();" class="btn btn-block primary login-btn"><i class="iconfont">&#xe637;</i> 登录</button>
 										</div>
-										<!--<div class="col-sm-12 col-md-12">
-												<div class="row">
-													<div class="col-sm-6 col-md-4">
-														<div class="form-group">
-															<input type="text" tabIndex="3" name="captcha" id="captcha" class="form-control code" placeholder="验证码" value="" onFocus="this.value=''">
-														</div>
-													</div>
-													<div class="col-sm-6 col-md-4">
-														<img alt="验证码" id="captchaImg" src="/small-contract/frm/captcha" onclick="reflashCaptcha();" class="login-yanzheng">
-													</div>
-													<div class="col-sm-12 col-md-4">
-														<div class="checkbox login-remember" style="padding-top:12px;">
-															<label>
-																<input type="checkbox" id="checkbox" name="checkbox">记住密码 
-															</label>
-														</div>
-													</div>
-												</div>
-											</div>-->
 									</div>
 								</form>
 							</div>
@@ -82,13 +63,15 @@
 				</div>
 			</div>
 			<div class="col-sm-12 col-md-12 text-center content-graybg"></div>
-			<!--<p class="login-copyright">技术支持&nbsp;&nbsp;联通&nbsp;</p>-->
 		</div>
 	</body>
 	<!--[if lt IE 9]>
-	  <script src="static/plugins/html5shiv.min.js"></script>
-	  <script src="static/plugins/respond.min.js"></script>
-	  <script src="static/plugins/ie8.fix.min.js"></script>
+	  	<script src="static/plugins/html5shiv.min.js"></script>
+	  	<script src="static/plugins/respond.min.js"></script>
+	  	<script src="static/plugins/ie8.fix.min.js"></script>
+	<![endif]-->
+    <!--[if lte IE 8]>
+		<script src="static/plugins/selectivizr-min.js"></script>
 	<![endif]-->
 	<!--基础依赖-->
 	<script src="static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
@@ -98,7 +81,7 @@
 		document.onkeydown = function (event) {
 	        var e = event || window.event;
 	        if (e && e.keyCode == 13) {
-	            login();
+	            $('button').click();
 	        }
 	    }; 
 		function login() {
@@ -120,7 +103,7 @@
 					dataType: "json",
 					success: function(data) {
 						if(data.status == 1) {
-							window.location.href = "/index.html";
+							window.location.href = "./index.html";
 						} else {
 							showError(data.message);
 						}

@@ -82,7 +82,7 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
 			"title": "工单编号",
 			"width": "10%",
 			"render": function(data, type, full, meta) {
-				var result = '<a href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
+				var result = '<a href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
 				return result;
 			}
 		},

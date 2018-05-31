@@ -134,7 +134,7 @@ function backPage(){
 function downLoad(attachId){
 	attachId = $("#att"+attachId+"").val();
 	//alert(attachId);
-	window.location.href="/contractUpload/downloadS3?key1="+attachId;
+	window.location.href = serverPath + "contractUpload/downloadS3?key1="+attachId;
 }
 
 var array=[];

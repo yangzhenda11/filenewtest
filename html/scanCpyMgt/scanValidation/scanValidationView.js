@@ -254,7 +254,7 @@ function getScanValidationInfo(verifyId){
 		//pdf URL设值
 		if(data.textPdf){
 			var textPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.textPdf);
-			$("#textPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+textPdf);
+			$("#textPdfContent").attr("src", "../../../static/plugins/pdf/web/viewer.html?file="+textPdf);
 			interval1 = setInterval('loadTextPdf()', 500);
 		}else{
 			var doc = document.getElementById("textPdfContent").contentDocument || document.frames["textPdfContent"].document;
@@ -263,7 +263,7 @@ function getScanValidationInfo(verifyId){
 		if(data.scandocPdf){
 			var scandocPdf = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + data.scandocPdf);
 			console.log(scandocPdf);
-			$("#scandocPdfContent").attr("src", "/static/plugins/pdf/web/viewer.html?file="+scandocPdf);
+			$("#scandocPdfContent").attr("src", "../../../static/plugins/pdf/web/viewer.html?file="+scandocPdf);
 			interval2 = setInterval('loadScandocPdf()', 500);
 		}else{
 			var doc = document.getElementById("scandocPdfContent").contentDocument || document.frames["scandocPdfContent"].document;

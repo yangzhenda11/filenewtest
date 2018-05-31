@@ -490,6 +490,11 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
+			var addDemo = {
+				key:"scanCpyUpload",
+				value:"module/_scanCpyUpload.html"
+			};
+			//domObj.unshift(addDemo);
 			setDomContent(domObj);
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})
@@ -527,7 +532,9 @@ function loadComplete() {
 	formSubmit = true;
 	App.init();
 	validate();
+	//加载意见
 	getBusiProcessInfoID();
+	//加载快捷跳转
 	setSpeedyJump();
 };
 /*
@@ -577,6 +584,20 @@ function setSpeedyJump(){
 	});
 	$("#workOrderMenu").html(html);
 	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
+}
+/*
+ * 当不为其他类型工单时基本信息“固定金额”为是时，开票信息和账号信息(收款方)加*号
+ */
+function setRequiredIcon(){
+	if(wcardTypeCode != 0){
+		var isFixedValue = $("input[name='isFixed']:checked").val();
+		if(isFixedValue == 1){
+			$(".isRequiredIcon").each(function(){
+				var addRequiredIconHtml = '<i class="iconfont icon-mi required"></i>' + $(this).text();
+				$(this).html(addRequiredIconHtml);
+			})
+		}
+	}
 }
 /*
  * 获取表单信息

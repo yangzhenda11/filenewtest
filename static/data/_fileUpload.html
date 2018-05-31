@@ -38,7 +38,7 @@
 		</div>
 			<div class="modal-body fileUploadModalForm">
                 <div class="form-group col-sm-12">
-                    <label for="partnerCode" class="control-label">文件<i class="iconfont icon-mi required"></i></label>
+                    <label for="partnerCode" class="control-label">文件</label>
                     <div class="valiParent">
                         <input type="file" id="uploadFileName" name="fileName" />
                     </div>
@@ -81,7 +81,7 @@
 	var serverPath = config.serverPath;
 	var successCallback = null;
 	var maxNumeber = 999;
-	var saveObj = {};
+	var fileCommonUploadObj = {};
 	var flag = 1;
 	function setParm(setting,queryCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
@@ -101,7 +101,6 @@
 			displayName:""
 		};
 		if(setting.extraData){
-			var settingExtraData
 			$.each(setting.extraData, function(k,v) {
 				extraData[k] = v;
 			});
@@ -172,7 +171,7 @@
 					var html = '<tr><td>'+ fileValue[i].name +
 					'</td><td><button type="button" data-name="'+fileValue[i].name+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
 					$("#uploadSuccessFile").append(html);
-					saveObj[keys] = data.response.data;
+					fileCommonUploadObj[keys] = data.response.data;
 				};
 		    	layer.msg(data.response.message);
 		    	$("#uploadFileName").fileinput('reset');
@@ -185,7 +184,7 @@
 	 * 列表内删除
 	 */
 	$("table").on("click",".fileItem",function(el){
-		delete saveObj[$(this).data("keys")];
+		delete fileCommonUploadObj[$(this).data("keys")];
 		$(this).parent().parent().remove();
 		if($("#uploadSuccessFile").children().length == 1){
 			$(".defaultTr").removeClass("hidden");
@@ -199,7 +198,7 @@
     	$(".fileItem").each(function(index,element){
     		var itemInfo = {
     			name:$(element).data("name"),
-    			data:saveObj[$(element).data("keys")]
+    			data:fileCommonUploadObj[$(element).data("keys")]
     		};
     		fileInfo.push(itemInfo);
     	});

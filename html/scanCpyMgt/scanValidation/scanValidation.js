@@ -271,7 +271,7 @@ $("input[name=verifyProcess]").on("click", function() {
      */
     //跳转到上传页面
 function jumpScanValidationView(verifyId) {
-    var src = "/html/scanCpyMgt/scanValidation/scanValidationView.html?pageType=2&verifyId=" + verifyId;
+    var src = "./scanValidationView.html?pageType=2&verifyId=" + verifyId;
     App.changePresentUrl(src);
 }
 /*

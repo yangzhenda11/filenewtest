@@ -329,6 +329,9 @@ button:focus{
   padding-left: 0;
   padding-right: 0;
 }
+.fullWidth{
+	width: 100%;
+}
 
 /*
  * table下的ui-radio ui-checkbox

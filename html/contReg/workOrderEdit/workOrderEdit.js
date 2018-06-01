@@ -3,22 +3,25 @@ var parm = App.getPresentParm();
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-var formSubmit = false;
+var formSubmit = false;				//全局加载成功标识位
 var wcardId = null;					//工单主键ID
 var contractId = null;				//合同ID
 var wcardTypeCode = null;			//合同类型
 var contractNumber = null;			//合同编号
-var isEdit = false;					//是否可以编辑
-var isCancelApproved = false;		//是否为退回状态
+var isEdit = false;					//是否可以编辑标识位
+var isCancelApproved = false;		//是否为退回状态标识位
 
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
 
+/*
+ * 页面是待办且为工单处理时才可以编辑
+ */
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 	isEdit = true;
 };
 
 $(function() {
-	if(parm.pageType == 1) {
+	if(parm.pageType == 1) {		//工作流页面进入
 		wcardId = parm.businessKey;
 		$(".portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding", '0px');
@@ -48,45 +51,40 @@ $(function() {
 				$("#flowLable").text("工单确认");
 			};
 		}
-	} else if(parm.pageType == 2) {
+	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$("#toolbarBtnContent button").addClass("hidden");
-			$(".saveBtn,.register,.closeBtn").removeClass("hidden");
+			$(".sendBackBtn,.activateBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$("#toolbarBtnContent button").addClass("hidden");
-			$(".sendBackBtn,.activateBtn,.closeBtn").removeClass("hidden");
+			$(".saveBtn,.register,.cancelApprovedBtn").remove();
 		};
 		$(".page-content").removeClass("hidden");
-		//固定操作按钮在70px的高度
-		App.fixToolBars("toolbarBtnContent", 70);
-	} else if(parm.pageType == 0) {
+		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
+	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
 		$(".toolbarBtn,#flowNote").remove();
 		$(".page-content").removeClass("hidden");
-	} else if(parm.pageType == 4) {
+	} else if(parm.pageType == 4) {		//工单查询页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
-		$("#toolbarBtnContent button").addClass("hidden");
-		$(".closeBtn").removeClass("hidden");
+		$("#toolbarBtnContent button").not(".closeBtn").remove();
 		$(".page-content").removeClass("hidden");
-		//固定操作按钮在70px的高度
-		App.fixToolBars("toolbarBtnContent", 70);
+		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
 	};
-	//获取工单的url信息
+	//请求工单模块，获取基本信息及各模块的url
 	getWorkOrderInfo();
 })
 /*
  * 工作流相关
  */
-//通过或退回回调的方法
+//通过或退回回调的方法@工作流
 function beforePushProcess(pass){
 	var result = true;
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		//删除多于表格内的数据
+		//删除表格内多余的数据
 		removeMoreThanTablecontent();
 		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
@@ -94,7 +92,6 @@ function beforePushProcess(pass){
 	    if(!bootstrapValidator.isValid()){
 	        parent.layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
 	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
-	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
 	    	var submitData = getContentValue(true);
@@ -142,7 +139,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
-	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){
+	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){		//工单注册点击@工作流
 		var datas = getContentValue(true);
 		postData = $.extend(postData, datas);
 		postData.wcardId = wcardId;
@@ -161,7 +158,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		function improperCallback(result){
 			parent.layer.alert(result.message,{icon:2});
 		}
-	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){
+	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){		//工单退回点击@工作流
 		var pinfoContent = $('#comment', parent.document).val();
 		postData.pinfoContent = pinfoContent;
 		postData.busiId = wcardId;
@@ -175,7 +172,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		function improperCallback(result){
 			parent.layer.alert(result.message,{icon:2});
 		}
-	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){
+	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){		//工单激活点击@工作流
 		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 			parent.layer.close(index);
 			postData.validity = {};
@@ -195,7 +192,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		});
 	}
 }
-//取消审批
+//工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(flowParam){
 		var postData = flowParam;
@@ -218,7 +215,7 @@ function modal_passQxsp(flowParam){
 		}
 	});
 }
-//保存回调业务侧实现的方法。
+//保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(parm.taskDefinitionKey == "GDCL"){
 		saveContent();
@@ -227,7 +224,7 @@ function modal_save(){
 	}
 	
 }
-//转派前回调业务侧实现的方法，业务进行必要的校验等操作。
+//转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
 function beforeTransfer(){
 	var result=true;
 	//1,业务侧的校验
@@ -239,7 +236,7 @@ function beforeTransfer(){
 	parent.setAssigneeParam(assigneeParam);
 	return result;
 }
-//撤回代码示例，业务界面需要实现，可以拼接业务参数到后台，数据的更新和流程的撤回放在业务侧方法里，保持事务同步。
+//撤回代码示例，业务界面需要实现，可以拼接业务参数到后台，数据的更新和流程的撤回放在业务侧方法里，保持事务同步@工作流
 function modal_return(root, processInstanceId, taskId){
 	//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
 	
@@ -253,11 +250,11 @@ function modal_return(root, processInstanceId, taskId){
 	});
 }
 /*
- * 注册按钮点击
+ * 注册按钮点击@功能页面
  */
 function submitContent(){
 	if(formSubmit){
-		//删除多于表格内的数据
+		//删除表格内多余的数据
 		removeMoreThanTablecontent();
 		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
@@ -265,7 +262,6 @@ function submitContent(){
 	    if(!bootstrapValidator.isValid()){
 	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
 	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
-	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 	    	return false;
 	    }else{
 	    	var submitData = getContentValue(true);
@@ -284,7 +280,7 @@ function submitContent(){
 	}
 }
 /*
- * 工单注册后台提交
+ * 工单注册后台提交@功能页面
  */
 function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
 	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
@@ -327,7 +323,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
     });
 }
 /*
- * 激活按钮点击
+ * 激活按钮点击@功能页面
  */
 function activateContract(){
 	if(formSubmit){
@@ -367,7 +363,7 @@ function activateContract(){
 	}
 }
 /*
- * 取消审批点击
+ * 取消审批点击@功能页面
  */
 function cancelApproved(){
 	if(formSubmit){
@@ -392,7 +388,7 @@ function cancelApproved(){
 	}
 }
 /*
- * 退回点击
+ * 退回点击@功能页面
  */
 function sendBack(){
 	if(formSubmit){
@@ -403,7 +399,7 @@ function sendBack(){
 	}
 }
 /*
- * 退回确定点击
+ * 退回确定点击@功能页面
  */
 function setPinfoContent(){
 	var pinfoContent = $("#pinfoContent").val();
@@ -425,31 +421,7 @@ function setPinfoContent(){
 		}
 	};
 }
-/*
- * 滚动到相应位置高度
- */
-function srolloOffect(el,srolloParm){
-	var scrollTopParm = 200;
-	if(srolloParm == 1){
-		if($(el).parents("#incomeLinerentTbody")[0]){
-			var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
-			if(scrollLeftValue > 0){
-				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
-			}
-		}
-	}else if(srolloParm == 2){
-		if(parm.pageType == 1) {
-			scrollTopParm = 0;
-		}else{
-			scrollTopParm = 50;
-		}
-	}
-	var v = $(".page-content").scrollTop();
-	var scrollTopValue = v + $(el).offset().top - scrollTopParm;
-	$('.page-content').animate({
-		scrollTop:scrollTopValue
-	},300)
-}
+
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
@@ -475,7 +447,6 @@ function getWorkOrderInfo(){
 			}else{
 				$("#cancelApprovedBtn").remove();
 			};
-			
 			if(wcardTypeCode == 1){
 				wcardType = "收入类-租线合同";
 			}else if(wcardTypeCode == 2){
@@ -530,7 +501,9 @@ function setDomContent(domObj) {
  */
 function loadComplete() {
 	formSubmit = true;
+	//页面元素初始化
 	App.init();
+	//加载验证壳
 	validate();
 	//加载意见
 	getBusiProcessInfoID();
@@ -542,34 +515,59 @@ function loadComplete() {
  */
 function getBusiProcessInfoID(){
 	var url = serverPath + "contractOrderEditorController/getBusiProcessInfoID";
-		App.formAjaxJson(url, "get", {wcardId:wcardId}, successCallback);
-		function successCallback(result) {
-			var data = result.data;
-			if(data.length > 0){
-				var busiProcess = "";
-				var o = 0;
-				for(var i = data.length-1; i >= 0; i--){
-					o++;
-					var createdName = data[i].createdName == null ? "" : data[i].createdName;
-					if(data[i].createdType == 1){
-						if(data[i].pinfoContent == "取消审批"){
-							busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  取消审批  ("+data[i].ctreatedDate+")</p>";
-						}else{
-							busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  申报意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
-						};
+	App.formAjaxJson(url, "get", {wcardId:wcardId}, successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data.length > 0){
+			var busiProcess = "";
+			var o = 0;
+			for(var i = data.length-1; i >= 0; i--){
+				o++;
+				var createdName = data[i].createdName == null ? "" : data[i].createdName;
+				if(data[i].createdType == 1){
+					if(data[i].pinfoContent == "取消审批"){
+						busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  取消审批  ("+data[i].ctreatedDate+")</p>";
 					}else{
-						busiProcess += "<p>【"+ o +"】  合同管理员-"+createdName+"  审核意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
-					}
-				};
-				var html = '<div class="form-fieldset"><div class="form-fieldset-title"><span><i class="iconfont icon-layers"></i> 工单处理意见</span><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
-					'<div class="row">'+busiProcess+'</div></div></div>';
-				if(isCancelApproved && parm.taskFlag == "db"){
-					$("#workOrderContent").prepend(html);
+						busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  申报意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
+					};
 				}else{
-					$("#workOrderContent").append(html);
+					busiProcess += "<p>【"+ o +"】  合同管理员-"+createdName+"  审核意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
 				}
+			};
+			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><span><i class="iconfont icon-layers"></i> 工单处理意见</span><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
+				'<div class="row">'+busiProcess+'</div></div></div>';
+			if(isCancelApproved && parm.taskFlag == "db"){
+				$("#workOrderContent").prepend(html);
+			}else{
+				$("#workOrderContent").append(html);
 			}
 		}
+	}
+}
+/*
+ * 滚动到相应位置高度
+ */
+function srolloOffect(el,srolloParm){
+	var scrollTopParm = 200;
+	if(srolloParm == 1){
+		if($(el).parents("#incomeLinerentTbody")[0]){
+			var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
+			if(scrollLeftValue > 0){
+				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
+			}
+		}
+	}else if(srolloParm == 2){
+		if(parm.pageType == 1) {
+			scrollTopParm = 0;
+		}else{
+			scrollTopParm = 50;
+		}
+	}
+	var v = $(".page-content").scrollTop();
+	var scrollTopValue = v + $(el).offset().top - scrollTopParm;
+	$('.page-content').animate({
+		scrollTop:scrollTopValue
+	},300)
 }
 /*
  * 设置快捷跳转
@@ -586,7 +584,7 @@ function setSpeedyJump(){
 	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
 }
 /*
- * 当不为其他类型工单时基本信息“固定金额”为是时，开票信息和账号信息(收款方)加*号
+ * 当不为其他类型工单时基本信息“固定金额”为是时，开票信息和账号信息(收款方)加*号@共同函数
  */
 function setRequiredIcon(){
 	if(wcardTypeCode != 0){
@@ -607,7 +605,7 @@ function setRequiredIcon(){
  */
 function getContentValue(isSubmit) {
 	var submitData = {};
-	var isPass = true;
+	var isPass = false;
     //各页面返回信息验证
 	$('.form-wrapper').each(function(index, wrapperItem) {
 		var targetObj = $(wrapperItem).data('target');
@@ -634,7 +632,7 @@ function getContentValue(isSubmit) {
  * 去除表格内多于的行
  */
 function removeMoreThanTablecontent(){
-    //各页面返回信息验证
+    //各页面执行相应的方法，若页面无方法跳过
 	$('.form-wrapper').each(function(index, wrapperItem) {
 		var targetObj = $(wrapperItem).data('target');
 		if(!App.isExitsFunction("removeMorethan_" + targetObj)){
@@ -673,19 +671,6 @@ function saveContent(){
 		}
 	}
 }
-/*
- * 表单验证
- * 每个页面中单独往里增加内容，提交时先验证表单
- */
-function validate() {
-	$('#workOrderContentForm').bootstrapValidator({
-		live: 'enabled',
-		trigger: 'live focus blur keyup change',
-		message: '校验未通过',
-		container: 'popover',
-		fields: {}
-	});
-}
 
 /*
  * 保存或提交后更改各模块内对于ID值得callback函数
@@ -700,6 +685,21 @@ function setPageIdCallback(data){
 		itemCallbackFn(v);
 	});
 }
+
+/*
+ * 表单验证
+ * 每个页面中单独往里增加内容，提交时先验证表单
+ */
+function validate() {
+	$('#workOrderContentForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup change',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {}
+	});
+}
+
 /*
  * 不能为空的验证信息
  */

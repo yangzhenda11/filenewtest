@@ -7,14 +7,12 @@
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row" id="scanCpyUploadForm">
-			<div class="col-sm-6 form-group" id="uploadFile_div1">
+			<div class="col-sm-6 form-group">
 				<label for="contractText" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
-				<div class="col-sm-7">
-					<input type="text" class="form-control paddingR0" id="contractText" value="" />
-				</div>
+				<div class="col-sm-7 paddingR0" id="contractText"></div>
 				<div class="col-sm-2">
-					<button class="btn red" onclick="fileUpload()">添加</button>
-				</div>			
+					<button id="contractTextUploadBtn" class="btn red fullWidth">添加</button>
+				</div>
 			</div>
 			<div class="col-sm-12 cluesRed">
 				提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
@@ -27,6 +25,14 @@
 			</div>
 			<div class="col-sm-12" id="contractAttachment">
 				<table id="contractAttachmentTable" class="table table-hover table-bordered table-striped table-align">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>文件列表</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="contractAttachmentTbody"></tbody>
 				</table>
 			</div>
 		</div>
@@ -36,46 +42,119 @@
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
-	function setPageId_scanCpyUploadId(value){
-		
+	function setPageId_scanCpyUploadId(value) {
+
 	}
 
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_scanCpyUpload(isSubmit){
+	function getValue_scanCpyUpload(isSubmit) {
 		var validityData = App.getFormValues($("#validityForm"));
 		var undertakerCommitmentValue = $("input[name='undertakerCommitment']:checked").val();
 		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 		validityData.wcardId = wcardId;
 		validityData.contractNumber = contractNumber;
-		if(undertakerCommitmentValue == 1){
+		if(undertakerCommitmentValue == 1) {
 			validityData.undertakerCommitment = 1;
-		}else{
+		} else {
 			validityData.undertakerCommitment = 0;
 		};
-		if(isSubmit && validityData.undertakerCommitment == 0){
+		if(isSubmit && validityData.undertakerCommitment == 0) {
 			layer.msg("请勾选承办人确认信息!");
 			srolloOffect("#undertakerCommitmentContent");
 			return false;
-		}else{
+		} else {
 			return validityData;
 		}
 	}
-	
+
 	//获取合同扫描件信息
 	//getScanCpyUploadData();
 	/*
 	 * 获取合同扫描件信息
 	 */
-	function getScanCpyUploadData(){
+	function getScanCpyUploadData() {
 		var url = serverPath + "contractOrderEditorController/getValidityId";
-		var postData = JSON.stringify({wcardId:wcardId});
+		var postData = JSON.stringify({
+			wcardId: wcardId
+		});
 		App.formAjaxJson(url, "post", postData, successCallback);
+
 		function successCallback(result) {
-			
+
 		}
 	}
+//	var contractTextHtml = '<a href="/contractUpload/downloadS3?key1='+data.storeId+'">'+fileName+'</a>';
+//	$("#contractText").html(contractTextHtml);
+//	var contractTextHtml = '<input type="text" disabled="disabled" class="form-control" id="contractText" />'
+//	$("#contractText").html(contractTextHtml);
+	$("#contractTextUploadBtn").on("click",function(){
+		var isUploadcontractText = $("#contractTextUpload").data("isUploadcontractText");
+		if(isUploadcontractText){
+			alert("删除")
+		}else{
+			var uploadObj = {
+				title : "合同正文扫描件上传",
+				
+			}
+			addContractFile();
+		}
+	})
 	
+	
+	/*
+	 * 上传文件
+	 */
+	function addContractFile(attachId){
+		var setting = {
+			title : "文件上传",
+			url:'contractUpload/uploadFile',	//上传地址，非空
+			maxNumber:1,//最大上传数量
+			//uploadAsync : false, //ajax提交是否异步提交，参数:false|true，默认为true,可为空
+			fileExtensions:["pdf"],//上传文件类型，参数:["pdf"]多个["pdf","doc"]，默认不控制，可为空
+			extraData:{attachId:attachId}//上传时额外附加的参数,业务为正文扫描件上传时要求加displayname字段，可为空
+		};
+		function queryCallback(){//点击确定执行的函数，必传。
+			var fileInfo = getFileItemInfo();//可以在此获取上传列表的内容，通过内置getFileItem获取；
+			$("#commomModal").modal("hide");//模态框关闭
+			
+		}
+		App.getFileUploadModal(setting,queryCallback);
+	}
+	//查询该合同下是否上传了扫描件
+	function checkFileIsUpload() {
+		var url = serverPath + "contractOrderEditorController/getValidityId";
+		var postData = JSON.stringify({
+			wcardId: wcardId
+		});
+		App.formAjaxJson(url, "post", postData, successCallback);
+
+		function successCallback(result) {
+
+		}
+		var url = serverPath + 'contractUpload/checkFileIsUpload?id=' + id;
+		$.ajax({
+			url: url,
+			type: "post",
+			success: function(data) {
+				if(data.count == 1) {
+					//console.log(data);
+					var fileName = data.contractNumber + "正文扫描件.pdf";
+					var htmlstr = "<div class='col-sm-12 control-label paddingLR0'><a href='/contractUpload/downloadS3?key1=" + data.storeId + "'>" + fileName + "</a></div>";
+					document.getElementById('fileNameDiv').innerHTML = htmlstr;
+					$("#uploadFileNameshow").val(fileName);
+					$("#uploadFile_div2").show();
+					$("#uploadFile_div1").hide();
+				} else {
+					$("#uploadFile_div2").hide();
+					$("#uploadFile_div1").show();
+				}
+			},
+			error: function(result) {
+				App.ajaxErrorCallback(result);
+			}
+		});
+	}
 </script>

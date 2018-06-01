@@ -4,6 +4,7 @@
 .cluesRed {
   color: red;
   padding-left: 32px;
+  margin-top: -8px;
 }
 .required {
   color: red;
@@ -140,4 +141,7 @@
   -moz-opacity: 1;
   -khtml-opacity: 1;
   opacity: 1;
+}
+#contractAttachment {
+  margin-top: 20px;
 }

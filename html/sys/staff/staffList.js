@@ -67,6 +67,7 @@ $(function() {
                             }
                             btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
+                            btnArray.push({ "name": "权限配置", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
                             btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
                             if ("1" == c.STAFF_ORG_STATUS) {
                                 btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0,\'" + c.ORG_NAME + "\')" });
@@ -512,6 +513,7 @@ function staffOrgRoleManage(staffOrgId, orgName) {
 //     });
 
 // })
+
 
 
 function saveStaffOrgRoles() {
@@ -1226,6 +1228,63 @@ function goAddStaffOrg(staffId) {
         });
     });
 }
+
+/**
+ * 跳转权限配置modal
+ * @param staffOrgId
+ * @returns
+ */
+function permissionConfiguration(staffOrgId) {
+    $("#modal").load("permissionConfigurationModal.html?" + App.timestamp() + " #modalPermission", function() {
+        $("#modalTitle").text("权限配置");
+        $("#modalStaffOrgId").val(staffOrgId);
+        //$("#modal").modal("show");
+        getPermission(staffOrgId);
+        var dataPermType = $("input[name='dataPermType']:checked").val();
+	});
+}
+//获取配置信息
+function getPermission(staffOrgId){
+    App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffOrgId, "get", "", successCallback);
+    function successCallback(result) {
+        var data = result.data;
+        if(data){
+        	if(data.hasOwnProperty("data_perm_type")){
+	        	$("input[name='dataPermType'][value='"+data.data_perm_type+"']").attr("checked","checked");
+	        	$("#saveradio2").removeClass("hide");
+	        	$("#saveradio1").addClass("hide");
+	        }
+        }
+		$("#modal").modal("show");
+    }
+}
+//权限配置保存
+function savePermission1(){
+	var dataPermType = $("input[name='dataPermType']:checked").val();
+	var createdBy = parent.globalConfig.curStaffId;
+	var updatedBy = parent.globalConfig.curStaffId;
+	var staffOrgId = $("#modalStaffOrgId").val();
+    var obj = { "staffOrgId": staffOrgId, "dataPermType":dataPermType,"createdBy":createdBy,"updatedBy":updatedBy};
+    var url = parent.globalConfig.serverPath + "staffs/addPermission";
+    App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+	function successCallback(result){
+		layer.msg("配置成功!");
+        $('#modal').modal("hide");
+	}
+}
+function savePermission2(){
+	var dataPermType = $("input[name='dataPermType']:checked").val();
+	var updatedBy = parent.globalConfig.curStaffId;
+	var staffOrgId = $("#modalStaffOrgId").val();
+    var obj = { "staffOrgId": staffOrgId, "dataPermType":dataPermType,"updatedBy":updatedBy};
+    var url = parent.globalConfig.serverPath + "staffs/updatePermission";
+    App.formAjaxJson(url, "PUT", JSON.stringify(obj), successCallback);
+	function successCallback(result){
+		layer.msg("配置成功!");
+        $('#modal').modal("hide");
+	}
+}
+
 /*
  * 新增岗位选择组织
  * 

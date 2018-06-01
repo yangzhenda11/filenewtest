@@ -1238,39 +1238,29 @@ function permissionConfiguration(staffOrgId) {
     $("#modal").load("permissionConfigurationModal.html?" + App.timestamp() + " #modalPermission", function() {
         $("#modalTitle").text("权限配置");
         $("#modalStaffOrgId").val(staffOrgId);
-        $("#modal").modal("show");
-       /* getInfo(staffOrgId);*/
+        //$("#modal").modal("show");
+        getPermission(staffOrgId);
         var dataPermType = $("input[name='dataPermType']:checked").val();
         if(dataPermType == null){
-        	$("#saveradio1").removeClass("hide");
+        	$("#saveradio2").removeClass("hide");
         }else{
         	$("#saveradio1").removeClass("hide");
         }
 	});
 }
-/*
- * 获取权限配置信息详情
- */
-/*function getInfor(staffId) {
-	var dataPermType = $("input[name='dataPermType']:checked").val();
-	var createdBy = parent.globalConfig.curStaffId;
-	var updatedBy = parent.globalConfig.curStaffId;
-	var staffOrgId = $("#modalStaffOrgId").val();
-	var obj = { "staffOrgId": staffOrgId, "dataPermType":dataPermType,"createdBy":createdBy,"updatedBy":updatedBy};
-	var url = parent.globalConfig.serverPath + "staffs/getPermission";
-    App.formAjaxJson(url, "GET", JSON.stringify(obj), successCallback);
+//获取配置信息
+function getPermission(staffOrgId){
+    App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffOrgId, "get", "", successCallback);
     function successCallback(result) {
         var data = result.data;
-        setEditPermission(data);
+        if(data){
+        	if(data.hasOwnProperty("data_perm_type")){
+	        	$("input[name='dataPermType'][value='"+data.data_perm_type+"']").attr("checked","checked");
+	        };
+        }
+		$("#modal").modal("show");
     }
-}*/
-/*
- * 填充权限配置
- */
-/*function setEditPermission(data) {
-    $('#modal').modal('show');
-    App.setFormValues("#staffForm", data, valueCallback);
-}*/
+}
 //权限配置保存
 function savePermission1(){
 	var dataPermType = $("input[name='dataPermType']:checked").val();

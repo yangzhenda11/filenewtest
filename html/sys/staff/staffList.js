@@ -1241,11 +1241,6 @@ function permissionConfiguration(staffOrgId) {
         //$("#modal").modal("show");
         getPermission(staffOrgId);
         var dataPermType = $("input[name='dataPermType']:checked").val();
-        if(dataPermType == null){
-        	$("#saveradio2").removeClass("hide");
-        }else{
-        	$("#saveradio1").removeClass("hide");
-        }
 	});
 }
 //获取配置信息
@@ -1256,7 +1251,9 @@ function getPermission(staffOrgId){
         if(data){
         	if(data.hasOwnProperty("data_perm_type")){
 	        	$("input[name='dataPermType'][value='"+data.data_perm_type+"']").attr("checked","checked");
-	        };
+	        	$("#saveradio2").removeClass("hide");
+	        	$("#saveradio1").addClass("hide");
+	        }
         }
 		$("#modal").modal("show");
     }

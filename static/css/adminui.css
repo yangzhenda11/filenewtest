@@ -23,7 +23,7 @@ body {
   width: device-width; }
 @-ms-viewport {
   width: device-width; }
-@-o-viewport {ui-radio > input:disabled ~ span
+@-o-viewport {
   width: device-width; }
 @viewport {
   width: device-width; }

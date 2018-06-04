@@ -67,8 +67,8 @@ $(function() {
                             }
                             btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
                             btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
-                            btnArray.push({ "name": "数据权限", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
                             btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
+                            btnArray.push({ "name": "数据权限", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
                             if ("1" == c.STAFF_ORG_STATUS) {
                                 btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0,\'" + c.ORG_NAME + "\')" });
                             } else {

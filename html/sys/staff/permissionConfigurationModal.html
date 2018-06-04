@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>人员弹出框</title>
+    <title>数据权限</title>
 </head>
 
 <body>
@@ -21,32 +21,36 @@
                     	<input type="hidden" name="staffId" id="staffId" value="" />
                     	<input type="hidden" name="staffOrgId" id="modalStaffOrgId" value="" />
                         <div class="col-sm-10 form-group">
+                        	<label  class="control-label">数据权限级别：</label>
                             <div class="valiParent">
-                                <div class="ui-radio-list ui-radio-inline" style="padding-left: 30%;">
+                            	
+                                <div class="ui-radio-list ui-radio-inline" >
+                                	
                                     <label class="ui-radio">
 										本人
-										<input type="radio" value="0" name="dataPermType">
+										<input type="radio" value="0" name="dataPermType" checked="checked">
 										<span></span>
 									</label>
                                     <label class="ui-radio">
-										本部门
+										部门
 										<input type="radio" value="1" name="dataPermType">
 										<span></span>
 									</label>
+									
 									<label class="ui-radio">
-										本公司
+										公司
 										<input type="radio" value="2" name="dataPermType">
 										<span></span>
 									</label>
 									<br>
 									<label class="ui-radio">
-										本省
+										省分
 										<input type="radio" value="3" name="dataPermType">
 										<span></span>
 									</label>
 									<label class="ui-radio">
 										全集团
-										<input type="radio" value="4" name="dataPermType">
+										<input type="radio" value="4" name="dataPermType" disabled="disabled" style="background-color: #ABBAC3;">
 										<span></span>
 									</label>
                                 </div>

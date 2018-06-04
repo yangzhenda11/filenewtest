@@ -696,7 +696,7 @@ function setRequiredIcon(){
  */
 function getContentValue(isSubmit) {
 	var submitData = {};
-	var isPass = false;
+	var isPass = true;
     //各页面返回信息验证
 	$('.form-wrapper').each(function(index, wrapperItem) {
 		var targetObj = $(wrapperItem).data('target');
@@ -749,6 +749,7 @@ function saveContent(){
 //	    	return false;
 //	    };
 	var submitData = getContentValue();
+	console.log(submitData);
 	if(submitData){
 		console.log(submitData);
 		var postData = JSON.stringify(submitData);

@@ -23,7 +23,7 @@ body {
   width: device-width; }
 @-ms-viewport {
   width: device-width; }
-@-o-viewport {
+@-o-viewport {ui-radio > input:disabled ~ span
   width: device-width; }
 @viewport {
   width: device-width; }
@@ -2668,7 +2668,7 @@ Custom color buttons
     opacity: 0.6 ;
     filter: alpha(opacity=60) ;
     pointer-events: none;
-    background: #FAFAFA; }
+    background: #ececec; }
   .ui-radio > span,
   .ui-checkbox > span {
     border: 1px solid #d9d9d9;

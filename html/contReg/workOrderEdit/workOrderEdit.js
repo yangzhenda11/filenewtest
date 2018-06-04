@@ -5,8 +5,9 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
 var wcardId = null;					//工单主键ID
+var wcardStatus = null;				//工单状态，对应字典9040
+var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
 var contractId = null;				//合同ID
-var wcardTypeCode = null;			//合同类型
 var contractNumber = null;			//合同编号
 var isEdit = false;					//是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
@@ -84,6 +85,10 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(1);
+		if(!wcardCanSubmit){
+			return false;
+		};
 		//删除表格内多余的数据
 		removeMoreThanTablecontent();
 		//手动触发表单验证
@@ -194,66 +199,119 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 }
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
-	if(flowParam){
-		var postData = flowParam;
+	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(1);
+		if(!wcardCanSubmit){
+			return false;
+		};
+		if(flowParam){
+			var postData = flowParam;
+		}else{
+			var postData = {};
+		};
+		parent.layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
+			parent.layer.close(index);
+			postData.wcardId = wcardId;
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			function successCallback(result) {
+				parent.layer.alert("取消成功。",{icon:1},function(index){
+					//parent.layer.close(index);
+					//window.location.reload();
+					parent.modal_close();
+				});
+			}
+			function improperCallback(result){
+				parent.layer.alert(result.message,{icon:2});
+			}
+		});
 	}else{
-		var postData = {};
-	};
-	parent.layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
-		parent.layer.close(index);
-		postData.wcardId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
-		function successCallback(result) {
-			parent.layer.alert("取消成功。",{icon:1},function(index){
-				//parent.layer.close(index);
-				//window.location.reload();
-				parent.modal_close();
-			});
-		}
-		function improperCallback(result){
-			parent.layer.alert(result.message,{icon:2});
-		}
-	});
+		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
 }
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
-	if(parm.taskDefinitionKey == "GDCL"){
-		saveContent();
+	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(1);
+		if(!wcardCanSubmit){
+			return false;
+		};
+		if(parm.taskDefinitionKey == "GDCL"){
+			saveContent();
+		}else{
+			parent.layer.msg("当前环节不需要保存");
+		}
 	}else{
-		parent.layer.msg("当前环节不需要保存");
+		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
 	}
-	
 }
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
 function beforeTransfer(){
-	var result=true;
-	//1,业务侧的校验
-	
-	//2，设置转派选人的参数
-	var assigneeParam = { 
-			"prov": "sd",  //省分，来自需求工单，必传
+	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(1);
+		if(!wcardCanSubmit){
+			return false;
+		};
+		var result=true;
+		//1,业务侧的校验
+		
+		//2，设置转派选人的参数
+		var assigneeParam = { 
+				"prov": "sd",  //省分，来自需求工单，必传
+		}
+		parent.setAssigneeParam(assigneeParam);
+		return result;
+	}else{
+		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
 	}
-	parent.setAssigneeParam(assigneeParam);
-	return result;
 }
 //撤回代码示例，业务界面需要实现，可以拼接业务参数到后台，数据的更新和流程的撤回放在业务侧方法里，保持事务同步@工作流
 function modal_return(root, processInstanceId, taskId){
-	//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
-	
-	$.post(root + "business/withdrawProcess", {
-		"processInstanceId" : processInstanceId,//流程实例
-		"taskId" : taskId //任务id
-	}, function(data) {
-		alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
-		// 成功后回调模态窗口关闭方法
-		parent.modal_close();
-	});
+	if(formSubmit){
+		//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
+		var wcardCanSubmit = checkWcardStatus(1);
+		if(!wcardCanSubmit){
+			return false;
+		};
+		$.post(root + "business/withdrawProcess", {
+			"processInstanceId" : processInstanceId,//流程实例
+			"taskId" : taskId //任务id
+		}, function(data) {
+			alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
+			// 成功后回调模态窗口关闭方法
+			parent.modal_close();
+		});
+	}else{
+		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
+}
+/*
+ * 保存按钮点击@功能页面
+ */
+function saveBtnClick(){
+	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(2);
+		if(!wcardCanSubmit){
+			return false;
+		};
+		saveContent();
+	}else{
+		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		return false;
+	}
 }
 /*
  * 注册按钮点击@功能页面
  */
 function submitContent(){
 	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(2);
+		if(!wcardCanSubmit){
+			return false;
+		};
 		//删除表格内多余的数据
 		removeMoreThanTablecontent();
 		//手动触发表单验证
@@ -327,6 +385,10 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
  */
 function activateContract(){
 	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(2);
+		if(!wcardCanSubmit){
+			return false;
+		};
 		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 		if(adminCommitmentValue == 1){
 			var adminCommitment = 1;
@@ -367,6 +429,10 @@ function activateContract(){
  */
 function cancelApproved(){
 	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(2);
+		if(!wcardCanSubmit){
+			return false;
+		};
 		layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
 			layer.close(index);
 			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1);
@@ -392,6 +458,10 @@ function cancelApproved(){
  */
 function sendBack(){
 	if(formSubmit){
+		var wcardCanSubmit = checkWcardStatus(2);
+		if(!wcardCanSubmit){
+			return false;
+		};
 		$("#pinfoContentModal").modal("show");
 	}else{
 		layer.alert("页面加载失败",{icon:2,title:"错误"});
@@ -399,7 +469,7 @@ function sendBack(){
 	}
 }
 /*
- * 退回确定点击@功能页面
+ * 退回确定按钮点击@功能页面
  */
 function setPinfoContent(){
 	var pinfoContent = $("#pinfoContent").val();
@@ -421,6 +491,30 @@ function setPinfoContent(){
 		}
 	};
 }
+/*
+ * 检查当前工单是否处于作废(wcardStatus=904090)或作废申请中(wcardStatus=904080)
+ * 处于这两种状态下不能进行下一步操作，返回false
+ * parm 1:工作流  2：功能页面
+ */
+function checkWcardStatus(parm){
+	if(wcardStatus == 904090){
+		if(parm == 1){
+			parent.layer.alert('当前工单处于"作废"状态，不能进行下一步操作！',{icon:2});
+		}else if(parm == 2){
+			layer.alert('当前工单处于"作废"状态，不能进行下一步操作！',{icon:2});
+		};
+		return false;
+	}else if(wcardStatus == 904080){
+		if(parm == 1){
+			parent.layer.alert('当前工单处于"作废申请中"状态，不能进行下一步操作！',{icon:2});
+		}else if(parm == 2){
+			layer.alert('当前工单处于"作废申请中"状态，不能进行下一步操作！',{icon:2});
+		};
+		return false;
+	}else{
+		return true;
+	}
+}
 
 /*
  * 请求工单模块，获取基本信息及各模块的url
@@ -435,7 +529,8 @@ function getWorkOrderInfo(){
 			contractId = data[0].contractId;
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
-			if(isEdit== true && data[0].wcardProcess == 2 && data[0].wcardStatus == 904020){
+			wcardStatus = data[0].wcardStatus;
+			if(isEdit== true && data[0].wcardProcess == 2 && wcardStatus == 904020){
 				isCancelApproved = true;
 				if(parm.pageType == 1){
 					//显示取消审批按钮
@@ -470,11 +565,7 @@ function getWorkOrderInfo(){
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})
 		};
-		if(parm.pageType == 1) {
-			$("#flowTitle").text(wcardType);
-		}else{
-			$("#wcardType").text(wcardType);
-		};
+		$(".wcardType").text(wcardType);
 	}
 }
 /*
@@ -646,28 +737,26 @@ function removeMoreThanTablecontent(){
  * 保存按钮点击
  */
 function saveContent(){
-	if(formSubmit){
-		//删除多于表格内的数据
-		removeMoreThanTablecontent();
-		//手动触发表单特定的验证项
-		//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
-	    //console.log(bootstrapValidator.isValid());
+	//删除多于表格内的数据
+	removeMoreThanTablecontent();
+	//手动触发表单特定的验证项
+	//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
+    //console.log(bootstrapValidator.isValid());
 //	    if(!bootstrapValidator.isValid()){
 //	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
 //	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
 //	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 //	    	return false;
 //	    };
-		var submitData = getContentValue();
-		if(submitData){
-			console.log(submitData);
-			var postData = JSON.stringify(submitData);
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
-			function successCallback(result) {
-				var data = result.data;
-				setPageIdCallback(data);
-				layer.msg("保存成功");
-			}
+	var submitData = getContentValue();
+	if(submitData){
+		console.log(submitData);
+		var postData = JSON.stringify(submitData);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			setPageIdCallback(data);
+			layer.msg("保存成功");
 		}
 	}
 }

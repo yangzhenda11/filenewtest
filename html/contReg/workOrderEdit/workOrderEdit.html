@@ -31,7 +31,7 @@
 			<div class="portlet">
 				<div class="portlet-title">
 					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase" id="wcardType"></span>
+						<span class="caption-subject bold uppercase wcardType"></span>
 					</div>
 					<div class="hidden contractPortletTitle">
 						工单编号：<span class="wcardNumber"></span>	
@@ -42,7 +42,7 @@
 					<form action="" id="workOrderContentForm">
 						<div class="toolbarBtn">
 							<div id="toolbarBtnContent">
-								<button class="btn blue saveBtn" type="button" onclick="saveContent()"><i class="iconfont icon-baocun"></i> 保存</button>
+								<button class="btn blue saveBtn" type="button" onclick="saveBtnClick()"><i class="iconfont icon-baocun"></i> 保存</button>
 								<button class="btn blue register" type="button" onclick="submitContent()"><i class="iconfont icon-tijiao1"></i> 注册完成</button>
 								<button class="btn blue sendBackBtn" type="button" onclick="sendBack()"><i class="iconfont icon-chehui"></i> 退回合同承办人</button>
 								<button class="btn blue activateBtn" type="button" onclick="activateContract()"><i class="iconfont icon-tijiao1"></i> 激活合同</button>
@@ -51,7 +51,7 @@
 							</div>
 						</div>
 						<div id="flowNote" class="note note-info">
-                        	<span><span class="label label-info" id="flowLable"></span><span id="flowTitle"></span></span>
+                        	<span><span class="label label-info" id="flowLable"></span><span class="wcardType"></span></span>
                         	<div class="hidden contractPortletTitle">
 								工单编号：<span class="wcardNumber"></span>	
 								状态：<span class="wcardStatus"></span>

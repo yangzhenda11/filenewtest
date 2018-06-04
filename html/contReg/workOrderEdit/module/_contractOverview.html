@@ -261,6 +261,7 @@
 		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
+			contractStatus = data.contractStatus;
 			var isFixed = data.isFixed;
 			var contractNature = data.contractNature;
 			var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;

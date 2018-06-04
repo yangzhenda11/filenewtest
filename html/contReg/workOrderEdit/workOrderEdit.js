@@ -5,10 +5,10 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
 var wcardId = null;					//工单主键ID
-var wcardStatus = null;				//工单状态，对应字典9040
 var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
 var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
+var contractStatus = null;			//合同状态，1、 已审批，2、 作废，3、 作废申请中
 var isEdit = false;					//是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
 
@@ -85,7 +85,7 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(1);
+		var wcardCanSubmit = checkContractStatus(1);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -200,7 +200,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(1);
+		var wcardCanSubmit = checkContractStatus(1);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -232,7 +232,7 @@ function modal_passQxsp(flowParam){
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(1);
+		var wcardCanSubmit = checkContractStatus(1);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -249,7 +249,7 @@ function modal_save(){
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
 function beforeTransfer(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(1);
+		var wcardCanSubmit = checkContractStatus(1);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -271,7 +271,7 @@ function beforeTransfer(){
 function modal_return(root, processInstanceId, taskId){
 	if(formSubmit){
 		//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
-		var wcardCanSubmit = checkWcardStatus(1);
+		var wcardCanSubmit = checkContractStatus(1);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -293,7 +293,7 @@ function modal_return(root, processInstanceId, taskId){
  */
 function saveBtnClick(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(2);
+		var wcardCanSubmit = checkContractStatus(2);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -308,7 +308,7 @@ function saveBtnClick(){
  */
 function submitContent(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(2);
+		var wcardCanSubmit = checkContractStatus(2);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -385,7 +385,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
  */
 function activateContract(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(2);
+		var wcardCanSubmit = checkContractStatus(2);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -429,7 +429,7 @@ function activateContract(){
  */
 function cancelApproved(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(2);
+		var wcardCanSubmit = checkContractStatus(2);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -458,7 +458,7 @@ function cancelApproved(){
  */
 function sendBack(){
 	if(formSubmit){
-		var wcardCanSubmit = checkWcardStatus(2);
+		var wcardCanSubmit = checkContractStatus(2);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -492,28 +492,30 @@ function setPinfoContent(){
 	};
 }
 /*
- * 检查当前工单是否处于作废(wcardStatus=904090)或作废申请中(wcardStatus=904080)
+ * 检查当前工单是否处于作废(contractStatus=2)或作废申请中(contractStatus=3)
  * 处于这两种状态下不能进行下一步操作，返回false
  * parm 1:工作流  2：功能页面
  */
-function checkWcardStatus(parm){
-	if(wcardStatus == 904090){
-		if(parm == 1){
-			parent.layer.alert('当前工单处于"作废"状态，不能进行下一步操作！',{icon:2});
-		}else if(parm == 2){
-			layer.alert('当前工单处于"作废"状态，不能进行下一步操作！',{icon:2});
-		};
+function checkContractStatus(parm){
+	if(contractStatus == null){
+		showLayerErrorMsg(parm,'当前合同状态未知，请稍后操作！');
 		return false;
-	}else if(wcardStatus == 904080){
-		if(parm == 1){
-			parent.layer.alert('当前工单处于"作废申请中"状态，不能进行下一步操作！',{icon:2});
-		}else if(parm == 2){
-			layer.alert('当前工单处于"作废申请中"状态，不能进行下一步操作！',{icon:2});
-		};
+	}else if(contractStatus == 2){
+		showLayerErrorMsg(parm,'当前合同处于"作废"状态，不能进行下一步操作！');
+		return false;
+	}else if(contractStatus == 3){
+		showLayerErrorMsg(parm,'当前合同处于"作废申请中"状态，不能进行下一步操作！');
 		return false;
 	}else{
 		return true;
-	}
+	};
+}
+function showLayerErrorMsg(parm,ms){
+	if(parm == 1){
+		parent.layer.alert(ms,{icon:2});
+	}else if(parm == 2){
+		layer.alert(ms,{icon:2});
+	};
 }
 
 /*
@@ -529,7 +531,6 @@ function getWorkOrderInfo(){
 			contractId = data[0].contractId;
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
-			wcardStatus = data[0].wcardStatus;
 			if(isEdit== true && data[0].wcardProcess == 2 && wcardStatus == 904020){
 				isCancelApproved = true;
 				if(parm.pageType == 1){
@@ -749,9 +750,7 @@ function saveContent(){
 //	    	return false;
 //	    };
 	var submitData = getContentValue();
-	console.log(submitData);
 	if(submitData){
-		console.log(submitData);
 		var postData = JSON.stringify(submitData);
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
 		function successCallback(result) {

@@ -86,16 +86,14 @@
                					<div class="col-sm-6 form-group">
 									<label for="executeDeptName" class="control-label">我方主体：</label>
 									<div class="valiParent">
-										<div class="divInput" id="unicomPartyName" style="line-height: 25px;">
-										<!--<input type="text" class="form-control" id="unicomPartyName" disabled="disabled" value="" />-->
+										<div class="divInput" id="unicomPartyName">
 										</div>
 									</div>
                					</div>
                					<div class="col-sm-6 form-group">
 									<label for="oppoPartyName" class="control-label" >对方主体：</label>
 									<div class="valiParent">
-										<div class="divInput" id="oppoPartyName" style="line-height: 25px;">
-										<!--<input type="text" class="form-control" id="oppoPartyName" disabled="disabled" value="" />-->
+										<div class="divInput" id="oppoPartyName">
 										</div>
 									</div>
                					</div>
@@ -111,38 +109,34 @@
                			</div>
                			<div class="form-fieldset-body">
                				<div class="row">
-               					<!--<input type="text" class="form-control" id="delUploadStoreId" value="" />
-               					<input type="text" class="form-control" id="uploadStoreId" value="" />-->
-               					<div class="col-sm-6 form-group" id="uploadFile_div1">
-               						<label for="proCode" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
-               						<div class="col-sm-7">
-										<input type="text" class="form-control" id="uploadFileNameshow" value="" />
+               					<div class="col-sm-6 form-group">
+									<label for="contractText" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+									<div class="col-sm-7 paddingR0" id="contractText"></div>
+									<div class="col-sm-2">
+										<button id="contractTextUploadBtn" class="btn red fullWidth"></button>
 									</div>
-               						<div class="col-sm-2">
-										<button class="btn red" onclick="fileUpload()">添加</button>
-									</div>			
-               					</div>
-               					<div class="col-sm-6 form-group" id="uploadFile_div2" style="display: none;">
-               						<label for="proCode" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
-               						<div class="col-sm-7" id="fileNameDiv">
-               							<!--<label for="proCode" class="col-sm-12 control-label paddingLR0" id="fileName"></label>-->
-               						</div>
-               						<div class="col-sm-2" id="delButton" >
-               							<button class="btn red" onclick="delScan()">删除</button>
-               						</div>
-               					</div>
-               					<div class="col-sm-12 cluesRed">
-               						提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
-               					</div>
-               					<div class="col-sm-12 clues">
-               						合同附件扫描件：
-               					</div>
-               					<div class="col-sm-12 cluesRed">
-               						提示：合同合同附件扫描件支持上传多种格式文件，可针对附件名依次上传对应扫描件。
-               					</div>
-               					<div class="col-sm-12" id="scanCpyloadTable">
-               						<!--<table id="scanCpyloadTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>-->
-               					</div>
+								</div>
+								<div class="col-sm-12 cluesRed">
+									提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
+								</div>
+								<div class="col-sm-12 clues">
+									合同附件扫描件：
+								</div>
+								<div class="col-sm-12 cluesRed">
+									提示：合同合同附件扫描件支持上传多种格式文件，可针对附件名依次上传对应扫描件。
+								</div>
+								<div class="col-sm-12" id="contractAttachment">
+									<table id="contractAttachmentTable" class="table table-hover table-bordered table-striped table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>文件列表</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody id="contractAttachmentTbody"></tbody>
+									</table>
+								</div>
                				</div>
                			</div>
                		</div>

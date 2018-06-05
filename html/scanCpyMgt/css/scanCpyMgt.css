@@ -1,15 +1,19 @@
+#approveDateBegin {
+  padding: 0px 0px;
+}
+#approveDateEnd {
+  padding: 0px 0px;
+}
 .clues {
   padding: 20px 32px;
 }
 .cluesRed {
   color: red;
   padding-left: 32px;
+  margin-top: -8px;
 }
-#approveDateBegin {
-  padding: 0px 0px;
-}
-#approveDateEnd {
-  padding: 0px 0px;
+#contractAttachment {
+  margin-top: 20px;
 }
 #scandocPdfContent,
 #textPdfContent {

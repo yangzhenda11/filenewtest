@@ -60,44 +60,43 @@ $(document).ready(function() {
         //var messageInterval = setInterval(setMessageTipNumber, 20000);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
+        //获取用户分页信息
+	    App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", { staffOrgId: globalConfig.curStaffOrgId, code: "config_page_size" }, configSuccess, configImproper, configError, null, false);
+	
+	    function configSuccess(result) {
+	        if (result.data != "") {
+	            globalConfig.curConfigs.configPagelengthMenu = result.data;
+	        } else {
+	            globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	        }
+	    }
+	    function configImproper(result) {
+	        globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	    }
+	    function configError(result) {
+	        globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	    }
+	    
+	    //获取用户登录方式
+	    App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get",null, loginSwitchSuccess, null, null, null, false);
+	
+	    function loginSwitchSuccess(result) {
+	        if (result.data != "") {
+	            globalConfig.loginSwitchSuccess = result.data;
+	        } else {
+	            globalConfig.loginSwitchSuccess = 1;
+	        }
+	    }
     }
     function improperCallback(result) {
         layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
-            window.location.href = "/login.html";
+            window.location.href = "login.html";
         });
     }
     function errorCallback(result) {
         layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
-            window.location.href = "/login.html";
+            window.location.href = "login.html";
         });
-    }
-    
-    //获取用户分页信息
-    App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", { staffOrgId: globalConfig.curStaffOrgId, code: "config_page_size" }, configSuccess, configImproper, configError, null, false);
-
-    function configSuccess(result) {
-        if (result.data != "") {
-            globalConfig.curConfigs.configPagelengthMenu = result.data;
-        } else {
-            globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
-        }
-    }
-    function configImproper(result) {
-        globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
-    }
-    function configError(result) {
-        globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
-    }
-    
-    //获取用户登录方式
-    App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get",null, loginSwitchSuccess, null, null, null, false);
-
-    function loginSwitchSuccess(result) {
-        if (result.data != "") {
-            globalConfig.loginSwitchSuccess = result.data;
-        } else {
-            globalConfig.loginSwitchSuccess = 1;
-        }
     }
 });
 
@@ -213,14 +212,16 @@ function changePasswd() {
         }
     }
 }
-
+/*
+ * 退出登录
+ */
 function logout() {
-    App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST", null, successMethod, null, null, null, false);
-
+    App.formAjaxJson(globalConfig.serverPath + "staffs/removeStaffCache", "POST", null, successMethod);
     function successMethod(result) {
-        if (result.status) {
-            window.location.href = result.data;
-        }
+        App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST", null, successCallback);
+	    function successCallback(result) {
+	        window.location.href = result.data;
+	    }
     }
 }
 /*

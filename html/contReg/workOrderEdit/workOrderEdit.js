@@ -517,7 +517,6 @@ function showLayerErrorMsg(parm,ms){
 		layer.alert(ms,{icon:2});
 	};
 }
-
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
@@ -601,6 +600,10 @@ function loadComplete() {
 	getBusiProcessInfoID();
 	//加载快捷跳转
 	setSpeedyJump();
+	//增加事件委托，input失去焦点时检查是否maxLength超长
+	$("#workOrderContentForm").on("blur","input,textarea",function(){
+		checkMaxLength(this);
+	});
 };
 /*
  * 加载意见
@@ -800,7 +803,37 @@ function addNotEmptyValidatorField(name,msg){
 	}
    	App.addValidatorField("#workOrderContentForm",name,notEmptyValidatorField);
 }
-
+/*
+ * 获取字符串长度（汉字算两个字符，字母数字算一个）
+ */
+function getByteLen(val) {
+	var len = 0;
+	for (var i = 0; i < val.length; i++) {
+	    var a = val.charAt(i);
+	    if (a.match(/[^\x00-\xff]/ig) != null) {//\x00-\xff→GBK双字节编码范围
+            len += 2;
+        }
+        else {
+            len += 1;
+        }
+    }
+    return len;
+}
+/*
+ * 失去焦点时的触发事件，检查是否超长
+ */
+function checkMaxLength(dom){
+	var len = getByteLen($(dom).val());
+	var maxLength = $(dom).attr("maxlength");
+	if(maxLength < len){
+		if(parm.pageType == 1){
+			parent.layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符",{icon:2,title:"错误"});
+		}
+		if(parm.pageType == 2){
+			layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符",{icon:2,title:"错误"});
+		}
+	}
+}
 //返回上一页
 function backPage(){
 	window.history.go(-1);

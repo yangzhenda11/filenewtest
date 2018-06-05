@@ -13,7 +13,7 @@
 					<span></span>
 					本级履行或上下级共同履行
 				</label>
-				<label class="ui-radio">
+				<label class="ui-radio hidden" id="performerType2">
 					<input type="radio" value="2" name="performerType">
 					<span></span>
 					仅有下级组织履行
@@ -91,7 +91,12 @@
 			return performerDataList;
 		}
 	}
-
+	/*
+	 * 如果
+	 */
+	if(config.mainOrgFlag != 0){
+		$("#performerType2").removeClass("hidden");
+	}
 	//获取履行人信息
 	getFeasorInfo();
 	/*

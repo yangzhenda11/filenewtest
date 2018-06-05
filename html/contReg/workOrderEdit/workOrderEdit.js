@@ -531,7 +531,7 @@ function getWorkOrderInfo(){
 			contractId = data[0].contractId;
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
-			if(isEdit== true && data[0].wcardProcess == 2 && wcardStatus == 904020){
+			if(isEdit== true && data[0].wcardProcess == 2 && data[0].wcardStatus == 904020){
 				isCancelApproved = true;
 				if(parm.pageType == 1){
 					//显示取消审批按钮

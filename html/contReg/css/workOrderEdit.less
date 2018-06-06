@@ -62,16 +62,16 @@
 #appointTypeOtherContent{
     height: 34px;
 }
-#feasorTreeCotent,#feasorChecked{
+#feasorTreeCotent,#feasorChecked,#customerManagerCotent,#customerManagerChecked{
     border: 1px solid #EFEFEF;
     overflow: auto;
     width: 45%;
     float: left;
 }
-#feasorTreeCotent{
+#feasorTreeCotent,#customerManagerCotent{
     margin-top: 30px;
 }
-#feasorCheckTool{
+#feasorCheckTool,#customerManagerCheckTool{
     width: 10%;
     float: left;
     button{
@@ -87,16 +87,16 @@
         }
     }
 }
-#feasorChecked{
+#feasorChecked,#customerManagerChecked{
     padding: 20px;
-    .feasorItem{
+    .feasorItem,.customerManagerItem{
         height: 24px;
         line-height: 24px;
         span{
             cursor: pointer;
             padding: 0 5px;
         };
-        span.feasorCheck{
+        span.feasorCheck,span.customerManagerCheck{
             color: #fff;
             background: #af1822;
         }

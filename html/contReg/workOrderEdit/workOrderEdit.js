@@ -18,7 +18,7 @@ var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
  * 页面是待办且为工单处理时才可以编辑
  */
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-	isEdit = true;
+	isEdit = false;
 };
 
 $(function() {
@@ -827,10 +827,10 @@ function checkMaxLength(dom){
 	var maxLength = $(dom).attr("maxlength");
 	if(maxLength < len){
 		if(parm.pageType == 1){
-			parent.layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符",{icon:2,title:"错误"});
+			parent.layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符！",{icon:2,title:"错误"});
 		}
 		if(parm.pageType == 2){
-			layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符",{icon:2,title:"错误"});
+			layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符！",{icon:2,title:"错误"});
 		}
 	}
 }

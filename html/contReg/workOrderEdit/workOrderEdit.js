@@ -18,7 +18,7 @@ var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
  * 页面是待办且为工单处理时才可以编辑
  */
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-	isEdit = false;
+	isEdit = true;
 };
 
 $(function() {

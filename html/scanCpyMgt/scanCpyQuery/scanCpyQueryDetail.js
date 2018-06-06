@@ -13,16 +13,18 @@ $(function() {
     function listContractTextSuccess(result) {
 		var data = result.data;
 		if(data.length > 0){
-			var contractTextTbodyHtml = "";
-			$.each(data, function(k,v) {
-				contractTextTbodyHtml += "<tr>"+
-										"<td>" + (k+1) +"</td>"+
-										"<td><a href='"+serverPath+"contractUpload/downloadS3?key1="+v.storeIdDisplay+"'>"+v.displayName+"</td>"+
-										"<td>" + App.formatDateTime(v.ctreatedDate,"yyyy-MM-dd") +"</td>"+
-										"<td>" + v.createdByName +"</td>"+
-										"<tr>";
-			});
-			$("#contractTextTbody").html(contractTextTbodyHtml);
+			var html = "";
+			for(var i = 0; i < data.length; i++){
+				html += "<tr>"+"<td>"+ (i+1) +"</td>";
+				if(data[i].storeIdDisplay){
+					html += "<td><a href='/contractUpload/downloadS3?key1="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
+				}else{
+					html += "<td>"+ data[i].displayName+"</td>";
+				};
+				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+						"<td>"+ data[i].createdByName +"</td></tr>";
+			}
+			$("#contractTextTbody").html(html);
 		}
 	}
 	
@@ -32,16 +34,18 @@ $(function() {
     function listContractAttachmentSuccess(result) {
 		var data = result.data;
 		if(data.length > 0){
-			var contractAttachmentTbodyHtml = "";
-			$.each(data, function(k,v) {
-				contractAttachmentTbodyHtml += "<tr>"+
-										"<td>" + (k+1) +"</td>"+
-										"<td><a href='"+serverPath+"contractUpload/downloadS3?key1="+v.storeIdDisplay+"'>"+v.displayName+"</td>"+
-										"<td>" + App.formatDateTime(v.ctreatedDate,"yyyy-MM-dd") +"</td>"+
-										"<td>" + v.createdByName +"</td>"+
-										"<tr>";
-			});
-			$("#contractAttachmentTbody").html(contractAttachmentTbodyHtml);
+			var html = "";
+			for(var i = 0; i < data.length; i++){
+				html += "<tr>"+"<td>"+ (i+1) +"</td>";
+				if(data[i].storeIdDisplay){
+					html += "<td><a href='/contractUpload/downloadS3?key1="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
+				}else{
+					html += "<td>"+ data[i].displayName+"</td>";
+				};
+				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+						"<td>"+ data[i].createdByName +"</td></tr>";
+			}
+			$("#contractAttachmentTbody").html(html);
 		}
 	};
 	getContractInfo();

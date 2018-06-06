@@ -22,6 +22,8 @@ var globalConfig = {
    	provCode : null,
    	/**登录来源1:系统登录 0:云门户登录 */
    	loginSwitchSuccess : null,
+   	/**是否属于本部：0不属于，1属于 */
+   	mainOrgFlag : null,
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
@@ -32,7 +34,6 @@ $(document).ready(function() {
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
 
     function successCallback(result) {
-    	console.log(result);
         var data = result.data;
         globalConfig.provCode = data.provCode;
         globalConfig.curStaffId = data.staffId;
@@ -40,9 +41,7 @@ $(document).ready(function() {
         globalConfig.curStaffOrgId = data.staffOrgId;
         globalConfig.curOrgId = data.orgId;
         globalConfig.curCompanyId = data.companyId;
-        //globalConfig.curStaff = data.staff;
-        //globalConfig.curOrg = data.org;
-        // globalConfig.curStaffOrg = data.mainStaffOrg;
+        globalConfig.mainOrgFlag = data.mainOrgFlag;
         globalConfig.permissions = data.permissions;
         ace_menus = data.menus;
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
@@ -55,11 +54,6 @@ $(document).ready(function() {
                 }
             }
         };
-        //消息定时器，20s查询一次
-        setMessageTipNumber();
-        //var messageInterval = setInterval(setMessageTipNumber, 20000);
-        //请求用户信息成功后加载待办列表
-        $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
         //获取用户分页信息
 	    App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", { staffOrgId: globalConfig.curStaffOrgId, code: "config_page_size" }, configSuccess, configImproper, configError, null, false);
 	
@@ -87,6 +81,11 @@ $(document).ready(function() {
 	            globalConfig.loginSwitchSuccess = 1;
 	        }
 	    }
+	    //消息定时器，20s查询一次
+        setMessageTipNumber();
+        //var messageInterval = setInterval(setMessageTipNumber, 20000);
+        //请求用户信息成功后加载待办列表
+        $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
     }
     function improperCallback(result) {
         layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
@@ -225,7 +224,7 @@ function logout() {
     }
 }
 /*
- * 代码数量查询
+ * 待办数量查询
  */
 function setMessageTipNumber(){
 	var messageIntervalData = {

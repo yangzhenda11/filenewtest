@@ -43,7 +43,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var scandocId = null;
+	var scanCpyUploadScanDocId = null;
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
@@ -84,10 +84,12 @@
 		}
 		App.formAjaxJson(url, "get", postData, successCallback);
 		function successCallback(result) {
-			scandocId = result.data.scandocId;
-			if(scandocId){
+			scanCpyUploadScanDocId = result.data.scandocId;
+			if(scanCpyUploadScanDocId){
 				//获取合同正文和附件列表
-				getReplenishContractInfo(scandocId);
+				getReplenishContractInfo(scanCpyUploadScanDocId);
+			}else{
+				layer.msg("获取不到合同扫描件信息主键ID")
 			}
 		}
 	}
@@ -264,21 +266,7 @@
 		};
 		obj.attachDoc = contractAttachmentList;
 		obj.uploadStatus = uploadStatus;
-		obj.scandocId = scandocId;
+		obj.scandocId = scanCpyUploadScanDocId;
 		return obj;
-	}
-	/*
-	 * 保存方法
-	 */
-	function saveContractUpload(){
-		var data = getContractUploadInfo(1);
-		console.log(data);
-	}
-	/*
-	 * 提交方法
-	 */
-	function pushContractUpload(){
-		var data = getContractUploadInfo(3);
-		console.log(data);
 	}
 </script>

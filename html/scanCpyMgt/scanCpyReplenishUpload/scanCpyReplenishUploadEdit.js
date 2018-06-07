@@ -198,10 +198,18 @@ function getContractUploadInfo(uploadStatus){
 			contractAttachmentList.push(contractAttachmentItem);
 		};
 	});
-	obj.bodyDoc = {
-		attachId : $("#contractText").data("attachid"),
-		storeId : $("#contractText").data("storeid")
-	};
+	var bodyDocStoreId = $("#contractText").data("storeid");
+	if(bodyDocStoreId){
+		obj.bodyDoc = {
+			attachId : $("#contractText").data("attachid"),
+			storeId : bodyDocStoreId
+		};
+	}else{
+		obj.bodyDoc = {
+			attachId : "",
+			storeId : ""
+		};
+	}
 	obj.attachDoc = contractAttachmentList;
 	obj.uploadStatus = uploadStatus;
 	obj.scandocId = scandocId;

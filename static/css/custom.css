@@ -153,9 +153,9 @@
 /* 调整搜索区域的宽度自适应-结束  */
 
 /* 设置表格内部的disabled按钮为灰色-开始 */
-.table .btn.disabled, .table .btn[disabled] {
+/*.table .btn.disabled, .table .btn[disabled] {
     color: #777 !important;
-}
+}*/
 /* 设置表格内部的disabled按钮为灰色-结束 */
 
 /*强制换行-开始*/

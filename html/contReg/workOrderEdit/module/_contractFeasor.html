@@ -26,7 +26,7 @@
 			<table class='table table-hover table-bordered table-striped table-checkable' id="feasorTable">
 				<thead>
 					<tr>
-						<th><label class='ui-checkbox'><input type='checkbox' name='feasorCheckAll' id="feasorCheckAll"><span></span></label></th>
+						<th class="feasorCheckbox"><label class='ui-checkbox'><input type='checkbox' name='feasorCheckAll' id="feasorCheckAll"><span></span></label></th>
 						<th>主要履行人</th>
 						<th>主要履行人所属组织</th>
 					</tr>
@@ -113,7 +113,7 @@
 				var html = "";
 				for(var i = 0; i < data.length; i++){
 					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-staffid="'+data[i].performerStaffId+'" data-companyid="'+data[i].companyId+'">'+
-	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+	    						'<td class="feasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
 	    						'<td>'+data[i].performerStaffName+'</td>'+
 	    						'<td>'+data[i].performerOrgName+'</td></tr>';
 				};
@@ -131,7 +131,7 @@
 			 */
 			if(!isEdit){
 				$("#contractFeasorContent").find("input,select").attr("disabled","disabled");
-				$("#contractFeasorToolbar").remove();
+				$("#contractFeasorToolbar,.feasorCheckbox").remove();
 			}else{
 				$("#contractFeasorToolbar").removeClass("hidden");
 			};
@@ -324,7 +324,7 @@
     				var staffid = $(v).data("staffid");
     				var staffname = $(v).text();
     				html += '<tr data-id="100000" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
-    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+    						'<td class="feasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
     						'<td>'+staffname+'</td>'+
     						'<td>'+orgname+'</td></tr>';
     			});
@@ -362,7 +362,7 @@
 	    				var staffid = $(v).data("staffid");
 	    				var orgname = $(v).data("orgname");
 	    				var html = '<tr data-id="100000" data-companyid="'+companyid+'" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
-	    						'<td><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
+	    						'<td class="feasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
 	    						'<td>'+staffname+'</td>'+
 	    						'<td>'+orgname+'</td></tr>';
 						$("#feasorTbody").append(html);

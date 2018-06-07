@@ -211,14 +211,27 @@ function getContractUploadInfo(uploadStatus){
  */
 function saveContractUpload(){
 	var data = getContractUploadInfo(1);
-	console.log(data);
+	var url = serverPath + "contractUpload/saveReplenishContractInfo";
+	App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
+	function successCallback(result) {
+		layer.msg("保存成功");
+	}
 }
 /*
  * 提交方法
  */
 function pushContractUpload(){
 	var data = getContractUploadInfo(3);
-	console.log(data);
+	if(data.bodyDoc.storeId == "" || data.bodyDoc.storeId == undefined){
+		layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
+	}else{
+		var url = serverPath + "contractUpload/saveReplenishContractInfo";
+		App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
+		function successCallback(result) {
+			layer.msg("提交成功");
+			backPage();
+		}
+	}
 }
 //返回上一页
 function backPage(){

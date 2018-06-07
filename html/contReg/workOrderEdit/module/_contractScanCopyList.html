@@ -45,7 +45,7 @@
 								<th>上传人</th>
 							</tr>
 						</thead>
-						<tbody id="contractAttachmentTbody">
+						<tbody id="contractAttachmentDocTbody">
 							<tr><td colspan="4">暂无合同附件扫描件信息</td></tr>
 						</tbody>
 					</table>
@@ -121,7 +121,7 @@
 					html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
 							"<td>"+ data[i].createdByName +"</td></tr>";
 				}
-				$("#contractAttachmentTbody").html(html);
+				$("#contractAttachmentDocTbody").html(html);
 			}
 		}
 	}	

@@ -1,7 +1,7 @@
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项，站定为type值区分
 var parm = App.getPresentParm();
 var id = parm.id;
-
+App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;

@@ -3277,11 +3277,11 @@ Customized Bootstrap Modal
   .modal.in .page-loading {
     display: none; }
 
-.modal-open {
+/*.modal-open {
   overflow-y: auto !important; }
 
 .modal-open-noscroll {
-  overflow-y: hidden !important; }
+  overflow-y: hidden !important; }*/
 
 .modal-backdrop {
   border: 0;

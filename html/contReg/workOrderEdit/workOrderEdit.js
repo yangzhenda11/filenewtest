@@ -556,11 +556,6 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
-			var addDemo = {
-				key:"scanCpyUpload",
-				value:"module/_scanCpyUpload.html"
-			};
-			//domObj.unshift(addDemo);
 			setDomContent(domObj);
 		}else{
 			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})

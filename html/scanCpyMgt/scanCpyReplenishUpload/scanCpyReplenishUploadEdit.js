@@ -71,16 +71,17 @@ function setBodyDocData(bodyDocData){
 		var bodyDocHtml = "";
 		if(bodyDocData.storeId == "" || bodyDocData.storeId == null){
 			$("#contractTextUploadBtn").text("添加");
-			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />'
+			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
+			$("#contractText").data("storeid","");
 		}else{
 			$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
+			$("#contractText").data("storeid",bodyDocData.storeId);
 			bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
 		};
 		$("#contractText").html(bodyDocHtml);
 		$("#contractText").data("attachid",bodyDocData.attachId);
 		$("#contractText").data("displayname",bodyDocData.displayName);
-		$("#contractText").data("storeid",bodyDocData.storeId);
 	}else{
 		layer.msg("正文扫描件为空");
 	}
@@ -132,7 +133,7 @@ function setAttachDocData(bodyDocData){
 		for(var i = 0; i < bodyDocData.length; i++){
 			var bodyDocItem = bodyDocData[i];
 			var btnHtml = "";
-			if(bodyDocItem.storeId == "" || bodyDocData.storeId == null){
+			if(bodyDocItem.storeId == "" || bodyDocItem.storeId == null){
 				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
 				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';
 			}else{
@@ -197,10 +198,18 @@ function getContractUploadInfo(uploadStatus){
 			contractAttachmentList.push(contractAttachmentItem);
 		};
 	});
-	obj.bodyDoc = {
-		attachId : $("#contractText").data("attachid"),
-		storeId : $("#contractText").data("storeid")
-	};
+	var bodyDocStoreId = $("#contractText").data("storeid");
+	if(bodyDocStoreId){
+		obj.bodyDoc = {
+			attachId : $("#contractText").data("attachid"),
+			storeId : bodyDocStoreId
+		};
+	}else{
+		obj.bodyDoc = {
+			attachId : "",
+			storeId : ""
+		};
+	}
 	obj.attachDoc = contractAttachmentList;
 	obj.uploadStatus = uploadStatus;
 	obj.scandocId = scandocId;

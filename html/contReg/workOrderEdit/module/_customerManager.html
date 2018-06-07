@@ -70,7 +70,7 @@
 				return customerManagerList;
 			}else{
 				layer.msg("请至少添加一条客户经理信息");
-				srolloOffect("#contractFeasorContent");
+				srolloOffect("#contractFeasorContent",2);
 				return false;
 			}
 		}else{
@@ -298,7 +298,7 @@
 	function delectCustomerManager(){
 		var checkLength = $("input[name='customerManagerCheck']:checked").length;
 		if(checkLength == 0){
-			layer.msg("请勾选履行人复选框进行删除")
+			layer.msg("请勾选客户经理复选框进行删除")
 		}else{
 			layer.confirm("是否删除？",{icon:7,title:"删除"},function(index){
 				layer.close(index);

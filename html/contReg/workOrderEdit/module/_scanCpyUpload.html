@@ -53,14 +53,11 @@
 			var contractScanCopyUploadData = getContractUploadInfo(3);
 			if(contractScanCopyUploadData){
 				if(contractScanCopyUploadData.bodyDoc.storeId){
-					if(parm.pageType == 1) {
-						parent.layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
-					}else{
-						layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
-					}
-					return false;
-				}else{
 					return contractScanCopyUploadData;
+				}else{
+					showLayerErrorMsg("请上传合同正文扫描件后进行提交。");
+					srolloOffect("#contractScanCopyUpload");
+					return false;
 				}
 			}else{
 				return false;
@@ -280,7 +277,8 @@
 				storeId : bodyDocStoreId
 			};
 		}else if(bodyDocStoreId == undefined){
-			layer.msg("合同正文扫描件信息为空");
+			showLayerErrorMsg("合同正文扫描件信息为空。");
+			srolloOffect("#contractScanCopyUpload");
 			return false;
 		}else{
 			obj.bodyDoc = {

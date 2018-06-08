@@ -85,7 +85,7 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(1);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -95,25 +95,25 @@ function beforePushProcess(pass){
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
-	        parent.layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
+	    	showLayerErrorMsg("当前工单表单校验未通过，请检查");
 	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
 	    	return false;
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(!submitData){
-				return false
+				return false;
 			};
     	};
     	if(parm.taskDefinitionKey == "GDQR" && pass == true){
     		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 			if(adminCommitmentValue == null){
-				parent.layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
+				showLayerErrorMsg("请勾选合同管理员确认信息!");
 				srolloOffect("#adminCommitmentContent");
 				return false;
 			};
     	}
 	}else{
-		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败！");
 		return false;
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。
@@ -153,7 +153,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		function successCallback(result) {
 			var data = result.data;
 			if(data.success == "000"){
-				parent.layer.alert(data.message,{icon:2});
+				showLayerErrorMsg(data.message);
 			}else{
 				parent.layer.alert("注册成功！",{icon:1},function(){
 					parent.modal_close();
@@ -161,7 +161,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			}
 		}
 		function improperCallback(result){
-			parent.layer.alert(result.message,{icon:2});
+			showLayerErrorMsg(result.message);
 		}
 	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){		//工单退回点击@工作流
 		var pinfoContent = $('#comment', parent.document).val();
@@ -175,7 +175,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			});
 		}
 		function improperCallback(result){
-			parent.layer.alert(result.message,{icon:2});
+			showLayerErrorMsg(result.message);
 		}
 	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){		//工单激活点击@工作流
 		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
@@ -192,7 +192,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 				});
 			}
 			function improperCallback(result){
-				parent.layer.alert(result.message,{icon:2});
+				showLayerErrorMsg(result.message);
 			}
 		});
 	}
@@ -200,7 +200,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(1);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -221,18 +221,18 @@ function modal_passQxsp(flowParam){
 				});
 			}
 			function improperCallback(result){
-				parent.layer.alert(result.message,{icon:2});
+				showLayerErrorMsg(result.message);
 			}
 		});
 	}else{
-		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(1);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -242,14 +242,14 @@ function modal_save(){
 			parent.layer.msg("当前环节不需要保存");
 		}
 	}else{
-		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
 function beforeTransfer(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(1);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -263,7 +263,7 @@ function beforeTransfer(){
 		parent.setAssigneeParam(assigneeParam);
 		return result;
 	}else{
-		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -271,7 +271,7 @@ function beforeTransfer(){
 function modal_return(root, processInstanceId, taskId){
 	if(formSubmit){
 		//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
-		var wcardCanSubmit = checkContractStatus(1);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -284,7 +284,7 @@ function modal_return(root, processInstanceId, taskId){
 			parent.modal_close();
 		});
 	}else{
-		parent.layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -293,13 +293,13 @@ function modal_return(root, processInstanceId, taskId){
  */
 function saveBtnClick(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(2);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
 		saveContent();
 	}else{
-		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -308,7 +308,7 @@ function saveBtnClick(){
  */
 function submitContent(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(2);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -318,7 +318,7 @@ function submitContent(){
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
-	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
+	    	showLayerErrorMsg("当前工单表单校验未通过，请检查");
 	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
 	    	return false;
 	    }else{
@@ -333,7 +333,7 @@ function submitContent(){
 			}
     	}	
 	}else{
-		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -352,7 +352,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	function successCallback(result) {
 		var data = result.data;
 		if(data.success == "000"){
-			layer.alert(data.message,{icon:2});
+			showLayerErrorMsg(data.message);
 		}else{
 			layer.alert("注册成功！",{icon:1},function(){
 				backPage();
@@ -360,7 +360,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 		}
 	}
 	function improperCallback(result){
-		layer.alert(result.message,{icon:2});
+		showLayerErrorMsg(result.message);
 	}
 }
 /*
@@ -385,7 +385,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
  */
 function activateContract(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(2);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -396,7 +396,7 @@ function activateContract(){
 			var adminCommitment = 0;
 		};
 		if(adminCommitment == 0){
-			layer.alert("请勾选合同管理员确认信息!",{icon:2,title:"错误"});
+			showLayerErrorMsg("请勾选合同管理员确认信息");
 			srolloOffect("#adminCommitmentContent");
 			return false;
 		}else{
@@ -415,12 +415,12 @@ function activateContract(){
 					});
 				}
 				function improperCallback(result){
-					layer.alert(result.message,{icon:2});
+					showLayerErrorMsg(result.message);
 				}
 			});
 		}
 	}else{
-		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg(result.message);
 		return false;
 	}
 }
@@ -429,7 +429,7 @@ function activateContract(){
  */
 function cancelApproved(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(2);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -445,11 +445,11 @@ function cancelApproved(){
 				});
 			}
 			function improperCallback(result){
-				layer.alert(result.message,{icon:2});
+				showLayerErrorMsg(result.message);
 			}
 		});
 	}else{
-		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -458,13 +458,13 @@ function cancelApproved(){
  */
 function sendBack(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(2);
+		var wcardCanSubmit = checkContractStatus(0);
 		if(!wcardCanSubmit){
 			return false;
 		};
 		$("#pinfoContentModal").modal("show");
 	}else{
-		layer.alert("页面加载失败",{icon:2,title:"错误"});
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -487,36 +487,29 @@ function setPinfoContent(){
 			});
 		}
 		function improperCallback(result){
-			layer.alert(result.message,{icon:2});
+			showLayerErrorMsg(result.message);
 		}
 	};
 }
 /*
  * 检查当前工单是否处于作废(contractStatus=2)或作废申请中(contractStatus=3)
  * 处于这两种状态下不能进行下一步操作，返回false
- * parm 1:工作流  2：功能页面
  */
-function checkContractStatus(parm){
+function checkContractStatus(){
 	if(contractStatus == null){
-		showLayerErrorMsg(parm,'当前合同状态未知，请稍后操作！');
+		showLayerErrorMsg('当前合同状态未知，请稍后操作！');
 		return false;
 	}else if(contractStatus == 2){
-		showLayerErrorMsg(parm,'当前合同处于"作废"状态，不能进行下一步操作！');
+		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作！');
 		return false;
 	}else if(contractStatus == 3){
-		showLayerErrorMsg(parm,'当前合同处于"作废申请中"状态，不能进行下一步操作！');
+		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作！');
 		return false;
 	}else{
 		return true;
 	};
 }
-function showLayerErrorMsg(parm,ms){
-	if(parm == 1){
-		parent.layer.alert(ms,{icon:2});
-	}else if(parm == 2){
-		layer.alert(ms,{icon:2});
-	};
-}
+
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
@@ -558,7 +551,7 @@ function getWorkOrderInfo(){
 			};
 			setDomContent(domObj);
 		}else{
-			layer.alert("当前工单暂无信息",{icon:2,title:"错误"})
+			showLayerErrorMsg("当前工单暂无信息");
 		};
 		$(".wcardType").text(wcardType);
 	}
@@ -658,6 +651,18 @@ function srolloOffect(el,srolloParm){
 	$('.page-content').animate({
 		scrollTop:scrollTopValue
 	},300)
+}
+/*
+ * 提示错误信息
+ * 工作流页面parm.pageType == 1为父级页面提示异常
+ * 其余当前页面提示异常
+ */
+function showLayerErrorMsg(ms){
+	if(parm.pageType == 1){
+		parent.layer.alert(ms,{icon:2});
+	}else{
+		layer.alert(ms,{icon:2});
+	}
 }
 /*
  * 设置快捷跳转
@@ -821,12 +826,7 @@ function checkMaxLength(dom){
 	var len = getByteLen($(dom).val());
 	var maxLength = $(dom).attr("maxlength");
 	if(maxLength < len){
-		if(parm.pageType == 1){
-			parent.layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符！",{icon:2,title:"错误"});
-		}
-		if(parm.pageType == 2){
-			layer.alert("输入字段超长，请输入不超过"+maxLength+"个的字符！",{icon:2,title:"错误"});
-		}
+		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个的字符！");
 	}
 }
 //返回上一页

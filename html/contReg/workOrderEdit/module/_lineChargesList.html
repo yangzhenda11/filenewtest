@@ -82,18 +82,7 @@
 				incomeLinerentDataList.push(incomeLinerentDataItem);
 			}
 		});
-		//校验"至少有一条线路资费信息";
-		if(isSubmit){
-			if(incomeLinerentDataList.length > 0){
-				return incomeLinerentDataList;
-			}else{
-				layer.msg("请至少填写一条线路资费信息");
-				srolloOffect("#lineChargesListContent");
-				return false;
-			}
-		}else{
-			return incomeLinerentDataList;
-		}
+		return incomeLinerentDataList;
 	}
 	/*
 	 * 去除多于的行

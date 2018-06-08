@@ -245,7 +245,7 @@ function pushContractUpload(){
 				var backPageTimer = setTimeout('backPage()',1000);
 			}
 		}else{
-			layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
+			layer.msg("请上传合同正文扫描件后进行提交");
 		}
 	}
 }

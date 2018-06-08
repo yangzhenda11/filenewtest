@@ -277,8 +277,7 @@
 				storeId : bodyDocStoreId
 			};
 		}else if(bodyDocStoreId == undefined){
-			showLayerErrorMsg("合同正文扫描件信息为空。");
-			srolloOffect("#contractScanCopyUpload");
+			layer.msg("合同正文扫描件信息为空");
 			return false;
 		}else{
 			obj.bodyDoc = {

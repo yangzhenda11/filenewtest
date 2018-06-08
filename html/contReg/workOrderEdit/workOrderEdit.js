@@ -107,13 +107,13 @@ function beforePushProcess(pass){
     	if(parm.taskDefinitionKey == "GDQR" && pass == true){
     		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 			if(adminCommitmentValue == null){
-				showLayerErrorMsg("请勾选合同管理员确认信息!");
+				showLayerErrorMsg("请勾选合同管理员确认信息");
 				srolloOffect("#adminCommitmentContent");
 				return false;
 			};
     	}
 	}else{
-		showLayerErrorMsg("页面加载失败！");
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。
@@ -149,7 +149,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData = $.extend(postData, datas);
 		postData.wcardId = wcardId;
 		postData.wcardType = wcardTypeCode;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			if(data.success == "000"){
@@ -160,22 +160,16 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 				});
 			}
 		}
-		function improperCallback(result){
-			showLayerErrorMsg(result.message);
-		}
 	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){		//工单退回点击@工作流
 		var pinfoContent = $('#comment', parent.document).val();
 		postData.pinfoContent = pinfoContent;
 		postData.busiId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			parent.layer.alert("退回成功！",{icon:1},function(){
 				parent.modal_close();
 			});
-		}
-		function improperCallback(result){
-			showLayerErrorMsg(result.message);
 		}
 	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){		//工单激活点击@工作流
 		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
@@ -184,15 +178,12 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
 			function successCallback(result) {
 				var data = result.data;
 				parent.layer.alert("激活成功！",{icon:1},function(){
 					parent.modal_close();
 				});
-			}
-			function improperCallback(result){
-				showLayerErrorMsg(result.message);
 			}
 		});
 	}
@@ -212,16 +203,13 @@ function modal_passQxsp(flowParam){
 		parent.layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
 			parent.layer.close(index);
 			postData.wcardId = wcardId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback);
 			function successCallback(result) {
 				parent.layer.alert("取消成功。",{icon:1},function(index){
 					//parent.layer.close(index);
 					//window.location.reload();
 					parent.modal_close();
 				});
-			}
-			function improperCallback(result){
-				showLayerErrorMsg(result.message);
 			}
 		});
 	}else{
@@ -239,7 +227,7 @@ function modal_save(){
 		if(parm.taskDefinitionKey == "GDCL"){
 			saveContent();
 		}else{
-			parent.layer.msg("当前环节不需要保存");
+			showLayerErrorMsg("当前环节不需要保存");
 		}
 	}else{
 		showLayerErrorMsg("页面加载失败");
@@ -348,7 +336,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data.success == "000"){
@@ -358,9 +346,6 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 				backPage();
 			});
 		}
-	}
-	function improperCallback(result){
-		showLayerErrorMsg(result.message);
 	}
 }
 /*
@@ -407,15 +392,12 @@ function activateContract(){
 				postData.validity.adminCommitment = adminCommitment;
 				postData.validity.validityId = $("#validityId").val();
 				postData.wcardId = wcardId;
-				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
 				function successCallback(result) {
 					var data = result.data;
 					layer.alert("激活成功！",{icon:1},function(){
 						backPage();
 					});
-				}
-				function improperCallback(result){
-					showLayerErrorMsg(result.message);
 				}
 			});
 		}
@@ -437,15 +419,12 @@ function cancelApproved(){
 			layer.close(index);
 			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1);
 			flowParam.wcardId = wcardId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
 			function successCallback(result) {
 				layer.alert("取消成功。",{icon:1},function(index){
 					layer.close(index);
 					window.location.reload();
 				});
-			}
-			function improperCallback(result){
-				showLayerErrorMsg(result.message);
 			}
 		});
 	}else{
@@ -479,15 +458,12 @@ function setPinfoContent(){
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			layer.alert("退回成功！",{icon:1},function(){
 				backPage();
 			});
-		}
-		function improperCallback(result){
-			showLayerErrorMsg(result.message);
 		}
 	};
 }
@@ -658,11 +634,12 @@ function srolloOffect(el,srolloParm){
  * 其余当前页面提示异常
  */
 function showLayerErrorMsg(ms){
-	if(parm.pageType == 1){
-		parent.layer.alert(ms,{icon:2});
-	}else{
-		layer.alert(ms,{icon:2});
-	}
+	layer.msg(ms);
+//	if(parm.pageType == 1){
+//		parent.layer.alert(ms,{icon:2});
+//	}else{
+//		layer.alert(ms,{icon:2});
+//	}
 }
 /*
  * 设置快捷跳转

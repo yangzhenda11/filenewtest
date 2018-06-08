@@ -183,6 +183,12 @@
 				};
 				App.setFormValues("#validityForm",data);
 				/*
+				 * isEdit 判断页面是否只能查看
+				 */
+				if(!isEdit){
+					$("#validityForm").find("input,select").attr("disabled","disabled");
+				};
+				/*
 				 * 判断合同管理员确认区域显示
 				 * 逻辑1.当为工单确认为待办时显示
 				 * 2.当为工单确认为已办时 勾选时显示
@@ -195,12 +201,6 @@
 				if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 					$("#adminCommitmentContent").removeClass("hidden");
 					$("input[name='adminCommitment']").attr("disabled",false);
-				}
-				/*
-				 * isEdit 判断页面是否只能查看
-				 */
-				if(!isEdit){
-					$("#validityForm").find("input,select").attr("disabled","disabled");
 				}
 			}
 		}

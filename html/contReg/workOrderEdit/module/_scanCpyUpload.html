@@ -51,15 +51,27 @@
 	function getValue_contractScanCopyUpload(isSubmit) {
 		if(isSubmit){
 			var contractScanCopyUploadData = getContractUploadInfo(3);
-			if(data.bodyDoc.storeId == "" || data.bodyDoc.storeId == undefined){
-				layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
-				return false;
+			if(contractScanCopyUploadData){
+				if(contractScanCopyUploadData.bodyDoc.storeId){
+					if(parm.pageType == 1) {
+						parent.layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
+					}else{
+						layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
+					}
+					return false;
+				}else{
+					return contractScanCopyUploadData;
+				}
 			}else{
-				return contractScanCopyUploadData;
-			}
+				return false;
+			};
 		}else{
 			var contractScanCopyUploadData = getContractUploadInfo(3);
-			return contractScanCopyUploadData;
+			if(contractScanCopyUploadData){
+				return contractScanCopyUploadData;
+			}else{
+				return false;
+			};
 		}
 	}
 	/*
@@ -89,7 +101,8 @@
 				//获取合同正文和附件列表
 				getReplenishContractInfo(scanCpyUploadScanDocId);
 			}else{
-				layer.msg("获取不到合同扫描件信息主键ID")
+				layer.msg("获取不到合同扫描件信息主键ID");
+				$("#contractTextUploadBtn").attr("disabled","disabled");
 			}
 		}
 	}
@@ -108,7 +121,8 @@
 				//设置附件扫描件html
 				setAttachDocData(data.attachDoc);
 			}else{
-				layer.msg("暂无数据");
+				layer.msg("暂无合同扫描件数据");
+				$("#contractTextUploadBtn").attr("disabled","disabled");
 			}
 		}
 	}
@@ -118,21 +132,22 @@
 	function setBodyDocData(bodyDocData){
 		if(bodyDocData){
 			var bodyDocHtml = "";
-			if(bodyDocData.storeId == "" || bodyDocData.storeId == null){
-				$("#contractTextUploadBtn").text("添加");
-				bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
-				$("#contractText").data("storeid","");
-			}else{
+			if(bodyDocData.storeId){
 				$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
 				$("#contractTextUploadBtn").text("删除");
 				$("#contractText").data("storeid",bodyDocData.storeId);
 				bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
+			}else{
+				$("#contractTextUploadBtn").text("添加");
+				bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
+				$("#contractText").data("storeid","");
 			};
 			$("#contractText").html(bodyDocHtml);
 			$("#contractText").data("attachid",bodyDocData.attachId);
 			$("#contractText").data("displayname",bodyDocData.displayName);
 		}else{
-			layer.msg("正文扫描件为空");
+			layer.msg("获取不到合同正文扫描件信息");
+			$("#contractTextUploadBtn").attr("disabled","disabled");
 		}
 	}
 	/*
@@ -175,20 +190,18 @@
 	 * 设置附件扫描件html
 	 */
 	function setAttachDocData(bodyDocData){
-		var bodyDocHtml = "";
-		if(bodyDocData.length == 0){
-			bodyDocHtml = '<tr class="emptyTr"><td colspan="3">暂无合同附件扫描件信息</td></tr>';
-		}else{
-			var btnHtml = "";
+		if(bodyDocData.length > 0){
+			var bodyDocHtml = "";
 			if(scanCpyUploadFormIsEdit){
 				for(var i = 0; i < bodyDocData.length; i++){
 					var bodyDocItem = bodyDocData[i];
-					if(bodyDocItem.storeId == "" || bodyDocItem.storeId == null){
-						btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
-						bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';
-					}else{
+					var btnHtml = "";
+					if(bodyDocItem.storeId){
 						btnHtml = '<a href="/contractUpload/downloadS3?key1='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 						bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.storeId+'">';
+					}else{
+						btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
+						bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';
 					};
 					bodyDocHtml += '<td>'+(i+1)+'</td>'+
 									'<td>'+bodyDocItem.displayName+'</td>'+
@@ -199,10 +212,10 @@
 				for(var i = 0; i < bodyDocData.length; i++){
 					var bodyDocItem = bodyDocData[i];
 					bodyDocHtml += '<tr><td>'+ (i+1) +'</td><td>'+bodyDocItem.displayName+'</td>';
-					if(bodyDocItem.storeId == "" || bodyDocItem.storeId == null){
-						bodyDocHtml += '<td></td></tr>';
-					}else{
+					if(bodyDocItem.storeId){
 						bodyDocHtml += '<td><a href="/contractUpload/downloadS3?key1='+bodyDocItem.storeId+'">查看</a></td></tr>';
+					}else{
+						bodyDocHtml += '<td></td></tr>';
 					};
 				}
 			}
@@ -266,6 +279,9 @@
 				attachId : $("#contractText").data("attachid"),
 				storeId : bodyDocStoreId
 			};
+		}else if(bodyDocStoreId == undefined){
+			layer.msg("合同正文扫描件信息为空");
+			return false;
 		}else{
 			obj.bodyDoc = {
 				attachId : "",

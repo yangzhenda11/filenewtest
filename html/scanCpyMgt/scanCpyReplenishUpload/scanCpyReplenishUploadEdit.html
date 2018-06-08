@@ -111,9 +111,11 @@
                				<div class="row">
                					<div class="col-sm-6 form-group">
 									<label for="contractText" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
-									<div class="col-sm-7 paddingR0" id="contractText"></div>
+									<div class="col-sm-7 paddingR0" id="contractText">
+										<input type="text" disabled="disabled" class="form-control" />
+									</div>
 									<div class="col-sm-2">
-										<button type="button" id="contractTextUploadBtn" class="btn red fullWidth"></button>
+										<button type="button" id="contractTextUploadBtn" class="btn red fullWidth">添加</button>
 									</div>
 								</div>
 								<div class="col-sm-12 cluesRed">
@@ -134,7 +136,9 @@
 												<th class="col-sm-3">操作</th>
 											</tr>
 										</thead>
-										<tbody id="contractAttachmentTbody"></tbody>
+										<tbody id="contractAttachmentTbody">
+											<tr class="emptyTr"><td colspan="3">暂无合同附件扫描件信息</td></tr>
+										</tbody>
 									</table>
 								</div>
                				</div>

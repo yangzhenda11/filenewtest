@@ -60,6 +60,7 @@ function getReplenishContractInfo(){
 			setAttachDocData(data.attachDoc);
 		}else{
 			layer.msg("暂无数据");
+			$("#contractTextUploadBtn").attr("disabled","disabled");
 		}
 	}
 }
@@ -69,21 +70,22 @@ function getReplenishContractInfo(){
 function setBodyDocData(bodyDocData){
 	if(bodyDocData){
 		var bodyDocHtml = "";
-		if(bodyDocData.storeId == "" || bodyDocData.storeId == null){
-			$("#contractTextUploadBtn").text("添加");
-			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
-			$("#contractText").data("storeid","");
-		}else{
+		if(bodyDocData.storeId){
 			$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",bodyDocData.storeId);
 			bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
+		}else{
+			$("#contractTextUploadBtn").text("添加");
+			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
+			$("#contractText").data("storeid","");
 		};
 		$("#contractText").html(bodyDocHtml);
 		$("#contractText").data("attachid",bodyDocData.attachId);
 		$("#contractText").data("displayname",bodyDocData.displayName);
 	}else{
-		layer.msg("正文扫描件为空");
+		layer.msg("获取不到合同正文扫描件信息");
+		$("#contractTextUploadBtn").attr("disabled","disabled");
 	}
 }
 /*
@@ -126,19 +128,17 @@ $("#contractTextUploadBtn").on("click",function(){
  * 设置附件扫描件html
  */
 function setAttachDocData(bodyDocData){
-	var bodyDocHtml = "";
-	if(bodyDocData.length == 0){
-		bodyDocHtml = '<tr class="emptyTr"><td colspan="3">暂无合同附件扫描件信息</td></tr>';
-	}else{
+	if(bodyDocData.length > 0){
+		var bodyDocHtml = "";
 		for(var i = 0; i < bodyDocData.length; i++){
 			var bodyDocItem = bodyDocData[i];
 			var btnHtml = "";
-			if(bodyDocItem.storeId == "" || bodyDocItem.storeId == null){
-				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
-				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';
-			}else{
+			if(bodyDocItem.storeId){
 				btnHtml = '<a href="/contractUpload/downloadS3?key1='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.storeId+'">';
+			}else{
+				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
+				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';
 			};
 			bodyDocHtml += '<td>'+(i+1)+'</td>'+
 						'<td>'+bodyDocItem.displayName+'</td>'+
@@ -204,6 +204,9 @@ function getContractUploadInfo(uploadStatus){
 			attachId : $("#contractText").data("attachid"),
 			storeId : bodyDocStoreId
 		};
+	}else if(bodyDocStoreId == undefined){
+		layer.msg("合同正文扫描件信息为空");
+		return false;
 	}else{
 		obj.bodyDoc = {
 			attachId : "",
@@ -220,10 +223,12 @@ function getContractUploadInfo(uploadStatus){
  */
 function saveContractUpload(){
 	var data = getContractUploadInfo(1);
-	var url = serverPath + "contractUpload/saveReplenishContractInfo";
-	App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
-	function successCallback(result) {
-		layer.msg("保存成功");
+	if(data){
+		var url = serverPath + "contractUpload/saveReplenishContractInfo";
+		App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
+		function successCallback(result) {
+			layer.msg("保存成功");
+		}
 	}
 }
 /*
@@ -231,14 +236,16 @@ function saveContractUpload(){
  */
 function pushContractUpload(){
 	var data = getContractUploadInfo(3);
-	if(data.bodyDoc.storeId == "" || data.bodyDoc.storeId == undefined){
-		layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
-	}else{
-		var url = serverPath + "contractUpload/saveReplenishContractInfo";
-		App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
-		function successCallback(result) {
-			layer.msg("提交成功");
-			backPage();
+	if(data){
+		if(data.bodyDoc.storeId){
+			var url = serverPath + "contractUpload/saveReplenishContractInfo";
+			App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
+			function successCallback(result) {
+				layer.msg("提交成功");
+				var backPageTimer = setTimeout('backPage()',1000);
+			}
+		}else{
+			layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
 		}
 	}
 }

@@ -31,7 +31,7 @@
 				</div>
 				<div class="portlet-body">
 					<div class="page-search">
-						<form class="form-horizontal" action="">
+						<form id="searchForm" class="form-horizontal" action="">
 							<div class="row page-search-form">
 								<div class="col-sm-4">
 									<div class="input-group">
@@ -88,7 +88,17 @@
 							<div class="page-search-action">
 								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchContractUpload();"><i class="iconfont icon-search"></i> 查询</button>
 								<button type="button" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow" ><i class="iconfont icon-reset"></i> 清空</button>
+								<button type="button" id="exportBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="exportContractUpload();"><i class="iconfont icon-search"></i> 导出</button>
+								<button type="button" id="importBtn" class="btn btn-block yellow"  onclick="importContract();"><i class="iconfont icon-search"></i> 导出</button>
 							</div>
+						</form>
+					</div>
+					<div id="importBox">
+						<form id="importForm" action="" method="post" enctype="multipart/form-data"
+							  class="form-search" style="padding-left:20px;text-align:center;" ><br/>
+							<input id="uploadFile" name="file" type="file" style="width:330px"/><br/><br/>　　
+							<input id="importfileBtn" class="btn btn-block red" type="button" data-loading-text="加载中.." onclick="importContractUpload();" value="   导    入   "/>
+							<a href="#">下载模板</a>
 						</form>
 					</div>
 					<!--查询列表展示-->

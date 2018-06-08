@@ -85,7 +85,7 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -200,7 +200,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -232,7 +232,7 @@ function modal_passQxsp(flowParam){
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -249,7 +249,7 @@ function modal_save(){
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
 function beforeTransfer(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -271,7 +271,7 @@ function beforeTransfer(){
 function modal_return(root, processInstanceId, taskId){
 	if(formSubmit){
 		//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -293,7 +293,7 @@ function modal_return(root, processInstanceId, taskId){
  */
 function saveBtnClick(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -308,7 +308,7 @@ function saveBtnClick(){
  */
 function submitContent(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -385,7 +385,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
  */
 function activateContract(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -420,7 +420,7 @@ function activateContract(){
 			});
 		}
 	}else{
-		showLayerErrorMsg(result.message);
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 }
@@ -429,7 +429,7 @@ function activateContract(){
  */
 function cancelApproved(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};
@@ -458,7 +458,7 @@ function cancelApproved(){
  */
 function sendBack(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus(0);
+		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
 		};

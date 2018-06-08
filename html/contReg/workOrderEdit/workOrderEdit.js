@@ -59,7 +59,7 @@ $(function() {
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 			$(".sendBackBtn,.activateBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".saveBtn,.register,.cancelApprovedBtn").remove();
+			$(".register,.cancelApprovedBtn").remove();
 		};
 		$(".page-content").removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
@@ -105,6 +105,20 @@ function beforePushProcess(pass){
 				return false;
 			};
     	};
+    	if($("#contractScanCopyUpload")[0]){
+    		if(pass == true){
+	    		if(!submitData.contractScanCopyUpload.bodyDoc.storeId){
+	    			if(parm.taskDefinitionKey == "GDQR"){
+	    				var ms = "请上传合同正文扫描件后进行工单激活";
+	    			}else{
+	    				var ms = "请上传合同正文扫描件后进行工单注册";
+	    			}
+					showLayerErrorMsg(ms);
+					srolloOffect("#contractScanCopyUpload");
+					return false;
+				}
+	    	}
+    	}
     	if(parm.taskDefinitionKey == "GDQR" && pass == true){
     		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 			if(adminCommitmentValue == null){
@@ -225,11 +239,7 @@ function modal_save(){
 		if(!wcardCanSubmit){
 			return false;
 		};
-		if(parm.taskDefinitionKey == "GDCL"){
-			saveContent();
-		}else{
-			showLayerErrorMsg("当前环节不需要保存");
-		}
+		saveContent();
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -313,6 +323,13 @@ function submitContent(){
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(submitData){
+	    		if($("#contractScanCopyUpload")[0]){
+		    		if(!submitData.contractScanCopyUpload.bodyDoc.storeId){
+						showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
+						srolloOffect("#contractScanCopyUpload");
+						return false;
+					}
+		    	}
 	    		var flowKey = "Contractproject2Process";
 	    		var linkcode = "GDCL";
 	    		var prov = "sd";
@@ -320,7 +337,7 @@ function submitContent(){
 	    		var staffSelectType = 1;
 	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 			}
-    	}	
+    	}
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -381,27 +398,35 @@ function activateContract(){
 		}else{
 			var adminCommitment = 0;
 		};
+		if($("#contractScanCopyUpload")[0]){
+			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
+			if(!scanCopyUploadData.bodyDoc.storeId){
+				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
+				srolloOffect("#contractScanCopyUpload");
+				return false;
+			};
+    	};
 		if(adminCommitment == 0){
 			showLayerErrorMsg("请勾选合同管理员确认信息");
 			srolloOffect("#adminCommitmentContent");
 			return false;
-		}else{
-			layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
-				layer.close(index);
-				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
-				postData.validity = {};
-				postData.validity.adminCommitment = adminCommitment;
-				postData.validity.validityId = $("#validityId").val();
-				postData.wcardId = wcardId;
-				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
-				function successCallback(result) {
-					var data = result.data;
-					layer.alert("激活成功！",{icon:1},function(){
-						backPage();
-					});
-				}
-			});
-		}
+		};
+		layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
+			postData.validity = {};
+			postData.contractScanCopyUpload = scanCopyUploadData;
+			postData.validity.adminCommitment = adminCommitment;
+			postData.validity.validityId = $("#validityId").val();
+			postData.wcardId = wcardId;
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
+			function successCallback(result) {
+				var data = result.data;
+				layer.alert("激活成功！",{icon:1},function(){
+					backPage();
+				});
+			}
+		});
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -655,14 +680,18 @@ function srolloOffect(el,srolloParm){
  * 其余当前页面提示异常
  */
 function showLayerErrorMsg(ms,isAlert){
-	if(isAlert){
-		if(parm.pageType == 1){
+	if(parm.pageType == 1){
+		if(isAlert){
 			parent.layer.alert(ms,{icon:2});
 		}else{
-			layer.alert(ms,{icon:2});
+			parent.layer.msg(ms);
 		}
 	}else{
-		layer.msg(ms);
+		if(isAlert){
+			layer.alert(ms,{icon:2});
+		}else{
+			layer.msg(ms);
+		}
 	}
 }
 /*

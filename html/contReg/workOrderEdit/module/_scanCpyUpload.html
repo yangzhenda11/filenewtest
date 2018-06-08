@@ -51,24 +51,13 @@
 	function getValue_contractScanCopyUpload(isSubmit) {
 		if(isSubmit){
 			var contractScanCopyUploadData = getContractUploadInfo(3);
-			if(contractScanCopyUploadData){
-				if(contractScanCopyUploadData.bodyDoc.storeId){
-					return contractScanCopyUploadData;
-				}else{
-					showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
-					srolloOffect("#contractScanCopyUpload");
-					return false;
-				}
-			}else{
-				return false;
-			};
 		}else{
-			var contractScanCopyUploadData = getContractUploadInfo(3);
-			if(contractScanCopyUploadData){
-				return contractScanCopyUploadData;
-			}else{
-				return false;
-			};
+			var contractScanCopyUploadData = getContractUploadInfo(1);
+		};
+		if(contractScanCopyUploadData){
+			return contractScanCopyUploadData;
+		}else{
+			return false;
 		}
 	}
 	/*

@@ -265,7 +265,7 @@
             	var isExist = false;
             	$.each($(".feasorItem"),function(k,v){
             		if($(v).data("companyid") == companyId){
-            			layer.alert(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加",{icon:2});
+            			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
             			isExist = true;
             			return false;
             		}
@@ -351,7 +351,7 @@
 							var isExistCompanyid = $(n).data("companyid");
 							var isExistName = $(n).children().eq(1).text();
 							if(isExistCompanyid == companyid){
-								layer.alert(companyName+"下只能选择一个主要履行人，选择的'"+staffname+"'与'"+isExistName+"'重复,请删除后再进行添加",{icon:2});
+								showLayerErrorMsg(companyName+"下只能选择一个主要履行人，选择的'"+staffname+"'与'"+isExistName+"'重复,请删除后再进行添加");
 		            			isExist = true;
 		            			return false;
 							}

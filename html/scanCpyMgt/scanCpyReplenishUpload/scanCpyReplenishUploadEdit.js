@@ -71,7 +71,7 @@ function setBodyDocData(bodyDocData){
 	if(bodyDocData){
 		var bodyDocHtml = "";
 		if(bodyDocData.storeId){
-			$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
+			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",bodyDocData.storeId);
 			bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
@@ -98,7 +98,7 @@ $("#contractTextUploadBtn").on("click",function(){
 			layer.close(index);
 			var bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
 			$("#contractText").data("storeid","");
-			$("#contractText").removeClass("contractDocSty").addClass("col-sm-7");
+			$("#contractText").removeClass("contractDocSty").addClass("col-sm-4");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("添加");
 		});
@@ -116,7 +116,7 @@ $("#contractTextUploadBtn").on("click",function(){
 			var fileInfo = getFileItemInfo()[0].data;
 			$("#commomModal").modal("hide");
 			var bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+fileInfo.storeId+'">'+fileInfo.displayName+'</a>';
-			$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
+			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",fileInfo.storeId);

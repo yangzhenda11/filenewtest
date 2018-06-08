@@ -10,6 +10,7 @@ var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
 var contractStatus = null;			//合同状态，1、 已审批，2、 作废，3、 作废申请中
 var isEdit = false;					//是否可以编辑标识位
+var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
 
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
@@ -473,13 +474,13 @@ function setPinfoContent(){
  */
 function checkContractStatus(){
 	if(contractStatus == null){
-		showLayerErrorMsg('当前合同状态未知，请稍后操作！');
+		showLayerErrorMsg('当前合同状态未知，请稍后操作');
 		return false;
 	}else if(contractStatus == 2){
-		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作！');
+		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作');
 		return false;
 	}else if(contractStatus == 3){
-		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作！');
+		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作');
 		return false;
 	}else{
 		return true;
@@ -489,6 +490,7 @@ function checkContractStatus(){
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
+var getContractOrderBaseInfoData = null;
 function getWorkOrderInfo(){
 	App.formAjaxJson(serverPath + "contractOrderEditorController/listDomainInfo", "post", JSON.stringify({wcardId:wcardId}), successCallback);
 	function successCallback(result) {
@@ -525,7 +527,26 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
-			setDomContent(domObj);
+			var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
+			App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, contractBaseInfoCallback);
+			function contractBaseInfoCallback(result) {
+				getContractOrderBaseInfoData = result;
+				contractStatus = result.data.contractStatus;
+				if(contractStatus == null){
+					showLayerErrorMsg('当前合同状态未知，请稍后操作',true);
+					isEdit = false;
+					fileUploadEdit = false;
+				}else if(contractStatus == 2){
+					showLayerErrorMsg('当前合同处于"作废"状态，不能进行操作',true);
+					isEdit = false;
+					fileUploadEdit = false;
+				}else if(contractStatus == 3){
+					showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行操作',true);
+					isEdit = false;
+					fileUploadEdit = false;
+				}
+				setDomContent(domObj);
+			};
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
 		};
@@ -633,13 +654,16 @@ function srolloOffect(el,srolloParm){
  * 工作流页面parm.pageType == 1为父级页面提示异常
  * 其余当前页面提示异常
  */
-function showLayerErrorMsg(ms){
-	layer.msg(ms);
-//	if(parm.pageType == 1){
-//		parent.layer.alert(ms,{icon:2});
-//	}else{
-//		layer.alert(ms,{icon:2});
-//	}
+function showLayerErrorMsg(ms,isAlert){
+	if(isAlert){
+		if(parm.pageType == 1){
+			parent.layer.alert(ms,{icon:2});
+		}else{
+			layer.alert(ms,{icon:2});
+		}
+	}else{
+		layer.msg(ms);
+	}
 }
 /*
  * 设置快捷跳转

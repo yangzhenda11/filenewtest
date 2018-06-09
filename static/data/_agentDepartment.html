@@ -58,7 +58,7 @@
 			},
 			view: {
 				selectedMulti: false,
-				dblClickExpand: false
+				//dblClickExpand: false
 			},
 			callback: {
 				onAsyncError: onAsyncError,
@@ -122,7 +122,7 @@
 		}
 	}
 	/*
-	 * 判断是否选的是部门
+	 * 判断是否选的是部门非部门展开下一级
 	 * 设置input框的值setKey >> data-key
 	 */
 	function setInputValue(treeNode){
@@ -140,8 +140,6 @@
 			$(dom).val(treeNode[textValue]);
 			$(dom).attr("title",treeNode[textValue]);
 			$("#commomModal").modal("hide");
-		}else{
-			layer.msg("请选择部门",{icon:2});
 		}
 	}
 </script>

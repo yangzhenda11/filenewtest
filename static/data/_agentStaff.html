@@ -60,7 +60,7 @@
 			},
 			view: {
 				selectedMulti: false,
-				dblClickExpand: false
+				//dblClickExpand: false
 			},
 			callback: {
 				onAsyncError: onAsyncError,
@@ -155,10 +155,6 @@
             $(dom).val(treeNode[textValue]);
             $(dom).attr("title", treeNode[textValue]);
             $("#commomModal").modal("hide");
-        } else {
-            layer.msg("请选择具体的人员", {
-                icon: 2
-            })
         }
     }
 </script>

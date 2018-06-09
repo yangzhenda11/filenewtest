@@ -21,7 +21,7 @@ $(function() {
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
-				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate,"yyyy-MM-dd") +"</td>"+
 						"<td>"+ data[i].createdByName +"</td></tr>";
 			}
 			$("#contractTextTbody").html(html);
@@ -42,7 +42,7 @@ $(function() {
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
-				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate,"yyyy-MM-dd") +"</td>"+
 						"<td>"+ data[i].createdByName +"</td></tr>";
 			}
 			$("#contractAttachmentTbody").html(html);

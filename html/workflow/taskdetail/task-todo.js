@@ -12,7 +12,24 @@ $(function(){
 	// 载入流转历史
 	loadHistoicFlow(serverPath, processInstanceId);
 	// 流程图展示
-	$('#diagramImg').attr('src', serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random()));
+	//$('#diagramImg').attr('src', serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random()));
+	var imgurl=serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random());
+	var xhr = new XMLHttpRequest();    
+    xhr.open("get", imgurl, true);
+    xhr.responseType = "blob";
+    xhr.onload = function() {
+        if (this.status == 200) {
+            var blob = this.response;
+            var img = document.createElement("img");
+            img.onload = function(e) {
+              window.URL.revokeObjectURL(img.src); 
+            };
+            img.src = window.URL.createObjectURL(blob);
+　　　　　　　$("#diagramImgdiv").html(img);
+        } 
+    } 
+    xhr.send();
+	
 	
 	// 是否为会签节点
 	var isCounterSign = $('#isCounterSign').val();

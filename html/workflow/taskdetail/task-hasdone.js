@@ -11,8 +11,24 @@ $(function(){
 	// 载入流转历史
 	loadHistoicFlow(serverPath, processInstanceId);
 	// 流程图展示
-	$('#diagramImgForDone').attr('src', serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random()));
-	
+	//$('#diagramImgForDone').attr('src', serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random()));
+	var imgurl=serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random());
+	var xhr = new XMLHttpRequest();    
+    xhr.open("get", imgurl, true);
+    xhr.responseType = "blob";
+    xhr.onload = function() {
+        if (this.status == 200) {
+            var blob = this.response;
+            var img = document.createElement("img");
+            img.onload = function(e) {
+              window.URL.revokeObjectURL(img.src); 
+            };
+            img.src = window.URL.createObjectURL(blob);
+　　　　　　　$("#diagramImgForDonediv").html(img);
+        } 
+    } 
+    xhr.send();
+    
 	// 处理撤回按钮显隐
 	var canWithDraw = $('#canWithDrawForDone').val();
 	console.log('canWithDraw='+canWithDraw);

@@ -405,20 +405,20 @@ function activateContract(){
 		if(!wcardCanSubmit){
 			return false;
 		};
-		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
-		if(adminCommitmentValue == 1){
-			var adminCommitment = 1;
-		}else{
-			var adminCommitment = 0;
-		};
 		if($("#contractScanCopyUpload")[0]){
 			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
 			if(!scanCopyUploadData.bodyDoc.storeId){
 				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
 				srolloOffect("#contractScanCopyUpload");
 				return false;
-			};
+			}
     	};
+    	var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		if(adminCommitmentValue == 1){
+			var adminCommitment = 1;
+		}else{
+			var adminCommitment = 0;
+		};
 		if(adminCommitment == 0){
 			showLayerErrorMsg("请勾选合同管理员确认信息");
 			srolloOffect("#adminCommitmentContent");
@@ -722,7 +722,7 @@ function setSpeedyJump(){
 	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
 }
 /*
- * 当不为其他类型工单时基本信息“固定金额”为是时，开票信息和账号信息(收款方)加*号@共同函数
+ * 当不为其他类型工单时基本信息"固定金额"为"是"时，开票信息和账号信息(收款方)加*号
  */
 function setRequiredIcon(){
 	if(wcardTypeCode != 0){
@@ -781,11 +781,25 @@ function removeMoreThanTablecontent(){
 	});
 }
 /*
- * 保存按钮点击
+ * 保存操作
  */
 function saveContent(){
-	//删除多于表格内的数据
-	removeMoreThanTablecontent();
+	if(parm.taskDefinitionKey == "GDQR"){
+		var submitData = {};
+		submitData.wcardId = wcardId;
+		submitData.validity = getValue_validity();
+		if($("#contractScanCopyUpload")[0]){
+			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
+    	};
+		saveContentPost(submitData);
+	}else{
+		//删除多于表格内的数据
+		removeMoreThanTablecontent();
+		var submitData = getContentValue();
+		if(submitData){
+			saveContentPost(submitData);
+		}
+	};
 	//手动触发表单特定的验证项
 	//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
     //console.log(bootstrapValidator.isValid());
@@ -795,18 +809,17 @@ function saveContent(){
 //	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 //	    	return false;
 //	    };
-	var submitData = getContentValue();
-	if(submitData){
-		var postData = JSON.stringify(submitData);
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback, improperCallback);
-		function successCallback(result) {
-			var data = result.data;
-			setPageIdCallback(data);
-			layer.msg("保存成功");
-		}
-		function improperCallback(result){
-			showLayerErrorMsg(result.message);
-		}
+}
+/*
+ * 保存提交后台
+ */
+function saveContentPost(data){
+	var postData = JSON.stringify(data);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		setPageIdCallback(data);
+		layer.msg("保存成功");
 	}
 }
 

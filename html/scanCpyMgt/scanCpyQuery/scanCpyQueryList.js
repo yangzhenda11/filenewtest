@@ -120,14 +120,6 @@ function exportContractUpload(){
 	$("#searchForm").submit();
     $("#searchForm").attr("action",'');
 }
-function importContractUpload(){
-    $("#importForm").attr("action",serverPath+'contractScanQuery/importContract');
-    $("#importForm").submit();
-    $("#importForm").attr("action",'');
-}
-function importContract(){
-    $("#importBox").attr("display: block;");
-}
 
 //点击iconfont弹出模态框事件
 $(function(){

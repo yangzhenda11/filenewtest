@@ -101,13 +101,15 @@
 		if(setting.fileExtensions){
 			fileExtensions = setting.fileExtensions;
 		};
-		var extraData = {
-			displayName:""
-		};
-		if(setting.extraData){
-			$.each(setting.extraData, function(k,v) {
-				extraData[k] = v;
-			});
+		if(setting.isUploadFile == false){
+			var extraData = {};
+		}else{
+			var extraData = {displayName:""};
+			if(setting.extraData){
+				$.each(setting.extraData, function(k,v) {
+					extraData[k] = v;
+				})
+			}
 		};
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
 	}

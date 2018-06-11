@@ -31,7 +31,6 @@
 			</div>
 			<button class="btn red" onclick="fileUpload()">文件上传导入</button>
 			<button class="btn red" onclick="ajaxSubmit()">ajaxSubmit提交导入</button>
-			<!--<button class="btn red" onclick="ajaxSunmitfileUpload()">ajaxSubmit上传文件</button>-->
 		</div>
 		<!--modal-->
 		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
@@ -55,29 +54,7 @@
 	                </form>
 	            </div>
 	        </div>
-	    </div>
-	    <div class="modal fade" id="fileUpload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content tableBody">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal">×</button>
-	                    <span class="modal_title">ajaxsubmit</span>
-	                </div>
-	                <form id='fileUploadssss' action='' method='post' enctype="multipart/form-data">
-	                    <div class="demo">
-	                        <div class="btn">
-	                            <label class="searchText" id="upload"  for="customerLists">请上传文件:</label>
-	                            <input type="file" name="file" id="file" value="" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-	                        </div>
-	                        <input type="hidden" name="displayName" id="displayName" value="" />
-	                    </div>
-	                    <div style="text-align: center;margin-bottom: 30px;margin-top: 10px;">
-	                        <input type="button" class="affirm" onclick="filesubmit()" value="导入"/>
-	                    </div>
-	                </form>
-	            </div>
-	        </div>
-	    </div>
+	   </div>
 		<!--[if lt IE 9]>
 	  		<script src="../../../static/plugins/html5shiv.min.js"></script>
 	  		<script src="../../../static/plugins/respond.min.js"></script>

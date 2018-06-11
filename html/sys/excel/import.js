@@ -12,7 +12,6 @@ function fileUpload(){
 		title : "文件上传导入测试",
 		isUploadFile: false,
 		url:'contractScanQuery/importContract',
-		//url:'fileload/uploadFileS3',
 		maxNumber:1,
 		//fileExtensions:['pdf']
 	};
@@ -37,26 +36,6 @@ function gosubmit(){
         success: function(result) {
            	console.log(result);
            	$('#upload').html('上传成功');
-        },
-        error: function(xhr) {
-        	console.log(result)
-        }
-    })
-}
-function ajaxSunmitfileUpload(){
-	$("#fileUpload").modal("show");
-}
-function filesubmit(){
-	$("#fileUploadssss").ajaxSubmit({
-        dataType: 'json',
-        url: serverPath + 'fileload/uploadFileS3',
-        resetForm: "true",
-        timeout: 7000,
-        beforeSend: function() {
-            $('#upload').html('上传中..');
-        },
-        success: function(result) {
-           	console.log(result)
         },
         error: function(xhr) {
         	console.log(result)

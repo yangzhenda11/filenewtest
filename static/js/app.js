@@ -862,17 +862,27 @@ var App = function() {
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
 		},
-		/**
-		 * 下载文件（接收下载地址）
-		 */
-		downloadFile: function(url) {
-			if(download_file["iframe"] == null) {
-				var iframe = document.createElement("iframe");
-				download_file.iframe = iframe;
-				document.body.appendChild(download_file.iframe);
-			};
-			download_file.iframe.src = url;
-			download_file.iframe.style.display = "none";
+		/** 
+		 * param 将要转为URL参数字符串的对象 
+		 * key URL参数字符串的前缀 
+		 * encode true/false 不进行URL编码,默认为true 
+		 *  
+		 * return URL参数字符串 
+		 */  
+		urlEncode : function (param, key, encode) {  
+		  	if(param==null) return '';  
+		  	var paramStr = '';  
+		  	var t = typeof (param);  
+		  	if (t == 'string' || t == 'number' || t == 'boolean') {  
+		    	paramStr += '&' + key + '=' + ((encode==null||encode) ? param : encodeURIComponent(param));  
+		  	} else {  
+		    	for (var i in param) {  
+		      	var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);  
+		      	paramStr += App.urlEncode(param[i], k, encode);  
+		    	}  
+		  	};
+		  	paramStr = paramStr.replace("&","?");
+		  	return paramStr;
 		},
 		/*
 		 * 修改对象的key值

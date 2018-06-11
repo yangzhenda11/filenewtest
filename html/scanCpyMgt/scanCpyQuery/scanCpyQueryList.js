@@ -11,35 +11,8 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
         "contentType":"application/json;charset=utf-8",
         "url": serverPath+'contractScanQuery/contractScanQueryList',
         "data": function(d) {//自定义传入参数
-        	if($("#oppoPartyName").data("exactSearch")){
-        		d.oppoPartyId = $("#oppoPartyName").data("partnerId");
-        	}else{
-        		d.oppoPartyName = $("#oppoPartyName").val();
-        	};
-        	
-        	if($("#unicomPartyName").data("exactSearch")){
-        		d.unicomPartyId = $("#unicomPartyName").data("partnerId");
-        	}else{
-        		d.unicomPartyName = $("#unicomPartyName").val();
-        	};
-        	
-        	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("staffOrgId");
-        	}else{
-        		d.undertakeName = $("#undertakeName").val();
-        	};
-        	
-        	if($("#executeDeptName").data("exactSearch")){
-        		d.executeDeptId = $("#executeDeptName").data("orgId");
-        	}else{
-        		d.executeDeptName = $("#executeDeptName").val();
-        	};
-        	
-        	d.contractId = config.contractId;
-        	d.contractNumber = $("#contractNumber").val();
-        	d.contractName = $("#contractName").val();
-			d.approveDateBegin = $("#approve_date_begin").val();
-			d.approveDateEnd = $("#approve_date_end").val();
+        	var searchParmData = getSearchParm();
+        	d = $.extend(d,searchParmData);
            	return JSON.stringify(d);
         }
     },
@@ -115,11 +88,49 @@ function searchContractUpload(retainPaging) {
 	}
 }
 
-function exportContractUpload(){
-	$("#searchForm").attr("action",serverPath+'contractScanQuery/contractExportList');
-	$("#searchForm").submit();
-    $("#searchForm").attr("action",'');
+//导出合同扫描件Excel
+function exportScanCpyList(){
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'contractScanQuery/contractExportList' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
 }
+
+/*
+ * 获取查询参数
+ */
+function getSearchParm(){
+	var searchData = {
+		contractNumber : $("#contractNumber").val().trim(),
+		contractName : $("#contractName").val().trim(),
+		approveDateBegin : $("#approve_date_begin").val().trim(),
+		approveDateEnd : $("#approve_date_end").val().trim()
+	};
+	if($("#oppoPartyName").data("exactSearch")){
+		searchData.oppoPartyId = $("#oppoPartyName").data("partnerId");
+	}else{
+		searchData.oppoPartyName = $("#oppoPartyName").val().trim();
+	};
+	
+	if($("#unicomPartyName").data("exactSearch")){
+		searchData.unicomPartyId = $("#unicomPartyName").data("partnerId");
+	}else{
+		searchData.unicomPartyName = $("#unicomPartyName").val().trim();
+	};
+	
+	if($("#undertakeName").data("exactSearch")){
+		searchData.undertakerId = $("#undertakeName").data("staffOrgId");
+	}else{
+		searchData.undertakeName = $("#undertakeName").val().trim();
+	};
+	
+	if($("#executeDeptName").data("exactSearch")){
+		searchData.executeDeptId = $("#executeDeptName").data("orgId");
+	}else{
+		searchData.executeDeptName = $("#executeDeptName").val().trim();
+	};
+	return searchData;
+}
+
 
 //点击iconfont弹出模态框事件
 $(function(){
@@ -139,8 +150,6 @@ $(function(){
 	$("#searchexecuteDept").click(function(){
 		App.getCommonModal("agentDepartment","#executeDeptName","orgName","orgId");
 	})
-	
-	
 	$("#oppoPartyName").on("change",function(){
 		$(this).data("exactSearch",false);
 	})

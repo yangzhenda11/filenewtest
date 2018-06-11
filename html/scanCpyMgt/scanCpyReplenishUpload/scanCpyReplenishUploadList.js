@@ -114,3 +114,12 @@ $("#undertakeName").on("change",function(){
 $("#oppoPartyName").on("change",function(){
 	$(this).data("exactSearch",false);
 })
+
+/**
+ * 导出excel方法
+ * */
+function exportResultExcel(){
+	$("#searchForm").attr("action",serverPath+'contractUpload/exportResultExcel');
+	$("#searchForm").submit();
+    $("#searchForm").attr("action",'');
+}

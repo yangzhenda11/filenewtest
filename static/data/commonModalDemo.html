@@ -85,6 +85,7 @@
 							<button class="btn red" onclick="fileUpload()">选择</button>
 						</div>
 					</div>
+					<button class="btn red" onclick="fileImport()">文件导入</button>
 				</div>
 			</div>
 		</div>
@@ -148,6 +149,18 @@
 					$("#fileUpload").val(fileInfo[0].name)
 				}
 				App.getFileUploadModal(setting,queryCallback);
+			}
+			function fileImport(){
+				var setting = {
+					title : "文件导入测试",
+					url:'fileload/uploadFileS3',
+					fileExtensions:['pdf'],				//导入文件类型
+					extraData:{test:123,test2:456}		//导入时额外附加的参数
+				};
+				function successCallback(){
+					$("#commomModal").modal("hide");
+				}
+				App.getFileImportModal(setting,queryCallback);
 			}
 		</script>
 	</body>

@@ -255,100 +255,93 @@
 	 * 获取合同基本信息
 	 */
 	function getContractOverInfo() {
-		var performanceStateInfo = performanceState;
-		var ticketStateTypeInfo = ticketStateType;
-		var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
-		App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, successCallback);
-		function successCallback(result) {
-			var data = result.data;
-			contractStatus = data.contractStatus;
-			var isFixed = data.isFixed;
-			var contractNature = data.contractNature;
-			var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;
-			var otherPartyName = data.otherPartyName == null ? "" : data.otherPartyName;
-			$("#ourPartyName").text(ourPartyName);
-			$("#otherPartyName").text(otherPartyName);
-			if(parm.pageType != 1) {
-				$(".contractPortletTitle").addClass("contractPortletPageTitle");
+		var data = getContractOrderBaseInfoData.data;
+		var isFixed = data.isFixed;
+		var contractNature = data.contractNature;
+		var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;
+		var otherPartyName = data.otherPartyName == null ? "" : data.otherPartyName;
+		$("#ourPartyName").text(ourPartyName);
+		$("#otherPartyName").text(otherPartyName);
+		if(parm.pageType != 1) {
+			$(".contractPortletTitle").addClass("contractPortletPageTitle");
+		};
+		$(".wcardNumber").text(data.wcardNumber);
+		$(".wcardStatus").text(ticketStateType[data.wcardStatus]);
+		$(".contractPortletTitle").removeClass("hidden");
+		if(contractNature == null || contractNature == 1){
+			$("#relationshipContract").remove();
+			if(isFixed){
+				$("#defalutContract").removeClass("hidden");
+			}
+		}else{
+			$("#defalutContract").remove();
+			$("#relationshipContract").removeClass("hidden");
+			var relatedWcardNumber = data.relatedWcardNumber
+			if(relatedWcardNumber == null){
+				$("#relatedWcardNumber").html("<a>暂无关联工单编号</a>");
+			}else{
+				setRelatedWcardNumber(relatedWcardNumber)
 			};
-			$(".wcardNumber").text(data.wcardNumber);
-			$(".wcardStatus").text(ticketStateTypeInfo[data.wcardStatus]);
-			$(".contractPortletTitle").removeClass("hidden");
-			if(contractNature == null || contractNature == 1){
-				$("#relationshipContract").remove();
+			if(contractNature == 2){
 				if(isFixed){
-					$("#defalutContract").removeClass("hidden");
+					$("#relationshipIsFixed").removeClass("hidden");
+					$("#contractValueLable").text("变更后含增值税合同金额：");
+					$("#contractValueNovatLable").text("变更后不含增值税合同金额：");
+					$("#vatRateLable").text("变更后增值税税率：");
+				}
+			}else if(contractNature == 3){
+				if(isFixed){
+					$("#relationshipIsFixed").removeClass("hidden");
+					$("#contractValueLable").text("终止解除后含增值税合同金额：");
+					$("#contractValueNovatLable").text("终止解除后不含增值税合同金额：");
+					$("#vatRateLable").text("终止解除后增值税税率：");
 				}
 			}else{
-				$("#defalutContract").remove();
-				$("#relationshipContract").removeClass("hidden");
-				var relatedWcardNumber = data.relatedWcardNumber
-				if(relatedWcardNumber == null){
-					$("#relatedWcardNumber").html("<a>暂无关联工单编号</a>");
-				}else{
-					setRelatedWcardNumber(relatedWcardNumber)
-				};
-				if(contractNature == 2){
-					if(isFixed){
-						$("#relationshipIsFixed").removeClass("hidden");
-						$("#contractValueLable").text("变更后含增值税合同金额：");
-						$("#contractValueNovatLable").text("变更后不含增值税合同金额：");
-						$("#vatRateLable").text("变更后增值税税率：");
-					}
-				}else if(contractNature == 3){
-					if(isFixed){
-						$("#relationshipIsFixed").removeClass("hidden");
-						$("#contractValueLable").text("终止解除后含增值税合同金额：");
-						$("#contractValueNovatLable").text("终止解除后不含增值税合同金额：");
-						$("#vatRateLable").text("终止解除后增值税税率：");
-					}
-				}else{
-					if(isFixed){
-						$("#relationshipIsFixed").removeClass("hidden");
-						$("#contractValueLable").text("含增值税合同金额：");
-						$("#contractValueNovatLable").text("不含增值税合同金额：");
-						$("#vatRateLable").text("增值税税率：");
-						$("#originalContractValueContent,#originalContractValueNovatContent,#originalVatRateContent").remove();
-					}
+				if(isFixed){
+					$("#relationshipIsFixed").removeClass("hidden");
+					$("#contractValueLable").text("含增值税合同金额：");
+					$("#contractValueNovatLable").text("不含增值税合同金额：");
+					$("#vatRateLable").text("增值税税率：");
+					$("#originalContractValueContent,#originalContractValueNovatContent,#originalVatRateContent").remove();
 				}
-			};
-			var valueCallback = {
-				"executeStatus":function(value){return performanceStateInfo[value]},
-				"contractNature":function(value){
-					if(value == 2){
-						return "变更/补充";
-					}else if(value == 3){
-						return "终止解除";
-					}else if(value == 4){
-						return "续签合同";
-					}else if(value == 5){
-						return "子合同";
-					}else{
-						return "未知";
-					}
-				},
-				"vatRate":function(value){
-					return value + "%";
-				},
-				"originalVatRate":function(value){
-					return value + "%";
-				},
-				"contractValue":function(value){
-					return createMoneyStyle(value);
-				},
-				"contractValueNovat":function(value){
-					return createMoneyStyle(value);
-				},
-				"originalContractValue":function(value){
-					return createMoneyStyle(value);
-				},
-				"originalContractValueNovat":function(value){
-					return createMoneyStyle(value);
+			}
+		};
+		var valueCallback = {
+			"executeStatus":function(value){return performanceState[value]},
+			"contractNature":function(value){
+				if(value == 2){
+					return "变更/补充";
+				}else if(value == 3){
+					return "终止解除";
+				}else if(value == 4){
+					return "续签合同";
+				}else if(value == 5){
+					return "子合同";
+				}else{
+					return "未知";
 				}
-			}; 
-			App.setFormValues("#contractOverviewForm",data,valueCallback);
-			setRequiredIcon();
-		}
+			},
+			"vatRate":function(value){
+				return value + "%";
+			},
+			"originalVatRate":function(value){
+				return value + "%";
+			},
+			"contractValue":function(value){
+				return createMoneyStyle(value);
+			},
+			"contractValueNovat":function(value){
+				return createMoneyStyle(value);
+			},
+			"originalContractValue":function(value){
+				return createMoneyStyle(value);
+			},
+			"originalContractValueNovat":function(value){
+				return createMoneyStyle(value);
+			}
+		}; 
+		App.setFormValues("#contractOverviewForm",data,valueCallback);
+		setRequiredIcon();
 	}
 	/*
 	 * 加载关联工单合同编号

@@ -71,7 +71,7 @@ function setBodyDocData(bodyDocData){
 	if(bodyDocData){
 		var bodyDocHtml = "";
 		if(bodyDocData.storeId){
-			$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
+			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",bodyDocData.storeId);
 			bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
@@ -98,7 +98,7 @@ $("#contractTextUploadBtn").on("click",function(){
 			layer.close(index);
 			var bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
 			$("#contractText").data("storeid","");
-			$("#contractText").removeClass("contractDocSty").addClass("col-sm-7");
+			$("#contractText").removeClass("contractDocSty").addClass("col-sm-4");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("添加");
 		});
@@ -110,13 +110,14 @@ $("#contractTextUploadBtn").on("click",function(){
 			url: 'contractUpload/uploadFile',
 			maxNumber:1,
 			fileExtensions:["pdf"],
+			explain:'<i class="iconfont icon-mi required"></i>正文大小不能超过？M。（具体大小待确定）。</br>',
 			extraData:{attachId:attachId,displayName:displayName}
 		};
 		function queryCallback(){
 			var fileInfo = getFileItemInfo()[0].data;
 			$("#commomModal").modal("hide");
 			var bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+fileInfo.storeId+'">'+fileInfo.displayName+'</a>';
-			$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
+			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",fileInfo.storeId);
@@ -245,7 +246,7 @@ function pushContractUpload(){
 				var backPageTimer = setTimeout('backPage()',1000);
 			}
 		}else{
-			layer.alert("请上传合同正文扫描件后进行提交。",{icon:2,title:"错误"});
+			layer.msg("请上传合同正文扫描件后进行提交");
 		}
 	}
 }

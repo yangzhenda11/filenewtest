@@ -74,6 +74,8 @@
 				getContarctScanCopyContractText(scandocId);
 				//获取合同附件扫描件
 				getContarctScanCopyContractAttachment(scandocId);
+			}else{
+				layer.msg("获取合同扫描件主键ID失败");
 			}
 		}
 	}
@@ -94,7 +96,7 @@
 					}else{
 						html += "<td>"+ data[i].displayName+"</td>";
 					};
-					html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+					html += "<td>"+ App.formatDateTime(data[i].ctreatedDate,"yyyy-MM-dd") +"</td>"+
 							"<td>"+ data[i].createdByName +"</td></tr>";
 				}
 				$("#contractMainTextTbody").html(html);
@@ -118,7 +120,7 @@
 					}else{
 						html += "<td>"+ data[i].displayName+"</td>";
 					};
-					html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+					html += "<td>"+ App.formatDateTime(data[i].ctreatedDate,"yyyy-MM-dd") +"</td>"+
 							"<td>"+ data[i].createdByName +"</td></tr>";
 				}
 				$("#contractAttachmentDocTbody").html(html);

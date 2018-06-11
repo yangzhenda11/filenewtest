@@ -1,11 +1,8 @@
 <style type="text/css">
-	#fileUploadModalBody{
-		overflow: auto;
-	}
-	.fileUploadModalForm .form-group{
+	.fileImportModalBody .form-group{
 		display:table;
 	}
-	.fileUploadModalForm .form-group > label{
+	.fileImportModalBody .form-group > label{
 		width: 18%;
 	    min-height: 1px;
 	    line-height: 16px;
@@ -14,7 +11,7 @@
 	    display:table-cell;
 	    text-align: right;
 	}
-	.fileUploadModalForm .form-group > .valiParent{
+	.fileImportModalBody .form-group > .valiParent{
 		width: 100%;
 		float: left;
 	  	position: relative;
@@ -26,7 +23,7 @@
 		background: #e8dcdc;
 		pointer-events:none
 	}
-	.fileUploadModalForm table{
+	.fileImportModalBody table{
 		margin-bottom: 10px;
 	}
 	.align-center{
@@ -39,38 +36,23 @@
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="modal-title" id="fileUploadModalLabel"></h4>
 		</div>
-			<div class="modal-body fileUploadModalForm" id="fileUploadModalBody">
-                <div class="form-group col-sm-12">
-                    <label for="partnerCode" class="control-label">文件</label>
-                    <div class="valiParent">
-                        <input type="file" id="uploadFileName" name="fileName" />
-                    </div>
-                </div>
-               	<div class="form-group col-sm-12">
-                    <label for="partnerCode" class="control-label">上传说明</label>
-                    <div class="valiParent" id="fileUpliadExplain" style="color: red;">
-                        <i class="iconfont icon-mi required"></i>删除上传成功文件列表中的文件，此文档不做上传处理。</br>
-                    </div>
-                </div>
-                <div class="form-group col-sm-12">
-                    <label for="partnerCode">上传成功文件</label>
-                    <table class="table table-hover table-bordered table-striped align-center">
-                        <thead>
-							<tr>
-								<th class="align-center">文件名</th>
-								<th class="align-center">操作</th>
-							</tr>
-						</thead>
-						<tbody id="uploadSuccessFile">
-							<tr class="defaultTr">
-								<td colspan="2">暂无文件</td>
-							</tr>
-						</tbody>
-                    </table>
-                </div>
-           </div>
+		<div class="modal-body fileImportModalBody">
+			<form id='fileImportModalForm' action='' method='post' enctype="multipart/form-data">
+	            <div class="form-group col-sm-12">
+	                <label for="partnerCode" class="control-label">文件</label>
+	                <div class="valiParent">
+	                    <input type="file" name="file" id="file" value="" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+	                </div>
+	            </div>
+	           	<div class="form-group col-sm-12">
+	                <label for="partnerCode" class="control-label">上传说明</label>
+	                <div class="valiParent" id="fileUpliadExplain" style="color: red;">
+	                    <i class="iconfont icon-mi required"></i>删除上传成功文件列表中的文件，此文档不做上传处理。</br>
+	                </div>
+	            </div>
+           	</form>
+       </div>
 		<div class="modal-footer">
-			<button type="button" onclick="getFileUploadInfo()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 确定</button>
 			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
 		</div>
 	</div>
@@ -80,22 +62,14 @@
 	//系统全局变量获取
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
-	var successCallback = null;
-	var maxNumeber = 999;
-	var fileCommonUploadObj = {};
-	var flag = 1;
-	var fileUploadModalBodyHeight = $(".page-content").height() - 185;
-	$("#fileUploadModalBody").css("max-height", fileUploadModalBodyHeight);
-	function setParm(setting,queryCallback){
-		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
+	var successFn = null;
+	function setParm(setting,successCallback){
+		var fileUploadModalLabel = setting.title == undefined ? "文件导入" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
-		$("#fileUpliadExplain").append(setting.explain);
 		$("#commomModal").modal("show");
-		if(setting.maxNumber){
-			maxNumeber = setting.maxNumber;
-		}
+		
 		var emptyFn = function(){};
-		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
+		successFn = successCallback == null || successCallback == "" ? emptyFn : successCallback;
 		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
 		var fileExtensions = [];
 		if(setting.fileExtensions){
@@ -113,23 +87,29 @@
 		};
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
 	}
-	$("#uploadFileName").on("click",function(){
-		if($(".fileItem").length >= maxNumeber){
-			layer.msg("最多上传"+maxNumeber+"个文件，若继续上传请先删除文件！",{icon:2,time:4000});
-			return false;
-		}
-	})
+	
 	/*
-	 * 事件委托绑定
-	 */
-	$("#uploadSuccessFile").on("click",".fileItem",function(){
-		$(".fileItem").removeClass("listActived");
-		$(this).addClass("listActived");
-	})
-	/*
-	 * 文件上传
+	 * 文件导入上床
 	 */
 	function initFileUpload(url,uploadAsync,fileExtensions,extraData){
+		$("#myupload").ajaxSubmit({
+	        dataType: 'json',
+	        url: serverPath + url,
+	        resetForm: "true",
+	        timeout: 30000,
+	        beforeSend: function() {
+	            $('#upload').html('上传中..');
+	        },
+	        success: function(result) {
+	           	console.log(result);
+	           	$('#upload').html('上传成功');
+	        },
+	        error: function(xhr) {
+	        	console.log(result)
+	        }
+	    })
+		
+		
 		$("#uploadFileName").fileinput({
 	        language: 'zh', 
 	        uploadUrl: serverPath + url,
@@ -180,39 +160,5 @@
 	    	}
 	    }
 	}
-	/*
-	 * 列表内删除
-	 */
-	$("table").on("click",".fileItem",function(el){
-		delete fileCommonUploadObj[$(this).data("keys")];
-		$(this).parent().parent().remove();
-		if($("#uploadSuccessFile").children().length == 1){
-			$(".defaultTr").removeClass("hidden");
-		}
-	})
-    /*
-     * 获取列表内内容
-     */
-    function getFileItemInfo(){
-    	var fileInfo = [];
-    	$(".fileItem").each(function(index,element){
-    		var itemInfo = {
-    			name:$(element).data("name"),
-    			data:fileCommonUploadObj[$(element).data("keys")]
-    		};
-    		fileInfo.push(itemInfo);
-    	});
-    	return fileInfo;
-    }
-    /*
-     * 点击确定执行的方法
-     */
-    function getFileUploadInfo(){
-    	var fileUploadItem = getFileItemInfo();
-    	if(fileUploadItem.length == 0){
-    		layer.msg("请先点击上传按钮上传文件后再执行该操作！",{icon:2,time:3000})
-    	}else{
-    		successCallback();
-    	}
-    }
+	
 </script>

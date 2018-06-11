@@ -7,13 +7,13 @@
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row" id="scanCpyUploadForm">
-			<div class="col-sm-6 form-group">
-				<label for="contractText" class="col-sm-3 control-label paddingLR0"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
-				<div class="col-sm-7 paddingR0" id="contractText">
+			<div class="col-sm-12 form-group">
+				<label for="contractText" class="col-sm-1 control-label"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+				<div class="col-sm-4 paddingR0" id="contractText">
 					<input type="text" disabled="disabled" class="form-control" />
 				</div>
-				<div class="col-sm-2">
-					<button type="button" id="contractTextUploadBtn" class="btn red fullWidth">添加</button>
+				<div class="col-sm-1">
+					<button type="button" id="contractTextUploadBtn" class="btn red">添加</button>
 				</div>
 			</div>
 			<div class="col-sm-12 cluesRed">
@@ -51,30 +51,19 @@
 	function getValue_contractScanCopyUpload(isSubmit) {
 		if(isSubmit){
 			var contractScanCopyUploadData = getContractUploadInfo(3);
-			if(contractScanCopyUploadData){
-				if(contractScanCopyUploadData.bodyDoc.storeId){
-					return contractScanCopyUploadData;
-				}else{
-					showLayerErrorMsg("请上传合同正文扫描件后进行提交。");
-					srolloOffect("#contractScanCopyUpload");
-					return false;
-				}
-			}else{
-				return false;
-			};
 		}else{
-			var contractScanCopyUploadData = getContractUploadInfo(3);
-			if(contractScanCopyUploadData){
-				return contractScanCopyUploadData;
-			}else{
-				return false;
-			};
+			var contractScanCopyUploadData = getContractUploadInfo(1);
+		};
+		if(contractScanCopyUploadData){
+			return contractScanCopyUploadData;
+		}else{
+			return false;
 		}
 	}
 	/*
-	 * 当为查询进入及已办进入是设为不可编辑
+	 * 当为查询进入、已办进入、合同退回或者退回申请中时 为不可编辑
 	 */
-	if(parm.pageType == 0 || parm.pageType == 4 || parm.taskFlag == "yb"){
+	if(parm.pageType == 0 || parm.pageType == 4 || parm.taskFlag == "yb" || fileUploadEdit == false){
 		$("#contractTextUploadBtn").attr("disabled","disabled");
 		var scanCpyUploadFormIsEdit = false;
 	}else{
@@ -130,7 +119,7 @@
 		if(bodyDocData){
 			var bodyDocHtml = "";
 			if(bodyDocData.storeId){
-				$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
+				$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 				$("#contractTextUploadBtn").text("删除");
 				$("#contractText").data("storeid",bodyDocData.storeId);
 				bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
@@ -157,7 +146,7 @@
 				layer.close(index);
 				var bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
 				$("#contractText").data("storeid","");
-				$("#contractText").removeClass("contractDocSty").addClass("col-sm-7");
+				$("#contractText").removeClass("contractDocSty").addClass("col-sm-4");
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("添加");
 			});
@@ -169,13 +158,14 @@
 				url: 'contractUpload/uploadFile',
 				maxNumber:1,
 				fileExtensions:["pdf"],
+				explain:'<i class="iconfont icon-mi required"></i>正文大小不能超过？M。（具体大小待确定）。</br>',
 				extraData:{attachId:attachId,displayName:displayName}
 			};
 			function queryCallback(){
 				var fileInfo = getFileItemInfo()[0].data;
 				$("#commomModal").modal("hide");
 				var bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+fileInfo.storeId+'">'+fileInfo.displayName+'</a>';
-				$("#contractText").removeClass("col-sm-7").addClass("contractDocSty");
+				$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("删除");
 				$("#contractText").data("storeid",fileInfo.storeId);
@@ -277,8 +267,7 @@
 				storeId : bodyDocStoreId
 			};
 		}else if(bodyDocStoreId == undefined){
-			showLayerErrorMsg("合同正文扫描件信息为空。");
-			srolloOffect("#contractScanCopyUpload");
+			layer.msg("合同正文扫描件信息为空");
 			return false;
 		}else{
 			obj.bodyDoc = {

@@ -10,6 +10,7 @@ var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
 var contractStatus = null;			//合同状态，1、 已审批，2、 作废，3、 作废申请中
 var isEdit = false;					//是否可以编辑标识位
+var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
 
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
@@ -58,7 +59,7 @@ $(function() {
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 			$(".sendBackBtn,.activateBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".saveBtn,.register,.cancelApprovedBtn").remove();
+			$(".register,.cancelApprovedBtn").remove();
 		};
 		$(".page-content").removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
@@ -104,16 +105,30 @@ function beforePushProcess(pass){
 				return false;
 			};
     	};
+    	if($("#contractScanCopyUpload")[0]){
+    		if(pass == true){
+	    		if(!submitData.contractScanCopyUpload.bodyDoc.storeId){
+	    			if(parm.taskDefinitionKey == "GDQR"){
+	    				var ms = "请上传合同正文扫描件后进行工单激活";
+	    			}else{
+	    				var ms = "请上传合同正文扫描件后进行工单注册";
+	    			}
+					showLayerErrorMsg(ms);
+					srolloOffect("#contractScanCopyUpload");
+					return false;
+				}
+	    	}
+    	}
     	if(parm.taskDefinitionKey == "GDQR" && pass == true){
     		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 			if(adminCommitmentValue == null){
-				showLayerErrorMsg("请勾选合同管理员确认信息!");
+				showLayerErrorMsg("请勾选合同管理员确认信息");
 				srolloOffect("#adminCommitmentContent");
 				return false;
 			};
     	}
 	}else{
-		showLayerErrorMsg("页面加载失败！");
+		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。
@@ -149,7 +164,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData = $.extend(postData, datas);
 		postData.wcardId = wcardId;
 		postData.wcardType = wcardTypeCode;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
 			if(data.success == "000"){
@@ -167,7 +182,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		var pinfoContent = $('#comment', parent.document).val();
 		postData.pinfoContent = pinfoContent;
 		postData.busiId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
 			parent.layer.alert("退回成功！",{icon:1},function(){
@@ -181,10 +196,11 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 			parent.layer.close(index);
 			postData.validity = {};
+			postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
 				var data = result.data;
 				parent.layer.alert("激活成功！",{icon:1},function(){
@@ -212,7 +228,7 @@ function modal_passQxsp(flowParam){
 		parent.layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
 			parent.layer.close(index);
 			postData.wcardId = wcardId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
 				parent.layer.alert("取消成功。",{icon:1},function(index){
 					//parent.layer.close(index);
@@ -236,11 +252,7 @@ function modal_save(){
 		if(!wcardCanSubmit){
 			return false;
 		};
-		if(parm.taskDefinitionKey == "GDCL"){
-			saveContent();
-		}else{
-			parent.layer.msg("当前环节不需要保存");
-		}
+		saveContent();
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -324,6 +336,13 @@ function submitContent(){
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(submitData){
+	    		if($("#contractScanCopyUpload")[0]){
+		    		if(!submitData.contractScanCopyUpload.bodyDoc.storeId){
+						showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
+						srolloOffect("#contractScanCopyUpload");
+						return false;
+					}
+		    	}
 	    		var flowKey = "Contractproject2Process";
 	    		var linkcode = "GDCL";
 	    		var prov = "sd";
@@ -331,7 +350,7 @@ function submitContent(){
 	    		var staffSelectType = 1;
 	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 			}
-    	}	
+    	}
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -348,7 +367,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data.success == "000"){
@@ -358,9 +377,6 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 				backPage();
 			});
 		}
-	}
-	function improperCallback(result){
-		showLayerErrorMsg(result.message);
 	}
 }
 /*
@@ -389,7 +405,15 @@ function activateContract(){
 		if(!wcardCanSubmit){
 			return false;
 		};
-		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		if($("#contractScanCopyUpload")[0]){
+			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
+			if(!scanCopyUploadData.bodyDoc.storeId){
+				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
+				srolloOffect("#contractScanCopyUpload");
+				return false;
+			}
+    	};
+    	var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 		if(adminCommitmentValue == 1){
 			var adminCommitment = 1;
 		}else{
@@ -399,26 +423,23 @@ function activateContract(){
 			showLayerErrorMsg("请勾选合同管理员确认信息");
 			srolloOffect("#adminCommitmentContent");
 			return false;
-		}else{
-			layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
-				layer.close(index);
-				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
-				postData.validity = {};
-				postData.validity.adminCommitment = adminCommitment;
-				postData.validity.validityId = $("#validityId").val();
-				postData.wcardId = wcardId;
-				App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
-				function successCallback(result) {
-					var data = result.data;
-					layer.alert("激活成功！",{icon:1},function(){
-						backPage();
-					});
-				}
-				function improperCallback(result){
-					showLayerErrorMsg(result.message);
-				}
-			});
-		}
+		};
+		layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
+			postData.validity = {};
+			postData.contractScanCopyUpload = scanCopyUploadData;
+			postData.validity.adminCommitment = adminCommitment;
+			postData.validity.validityId = $("#validityId").val();
+			postData.wcardId = wcardId;
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
+			function successCallback(result) {
+				var data = result.data;
+				layer.alert("激活成功！",{icon:1},function(){
+					backPage();
+				});
+			}
+		});
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -437,15 +458,12 @@ function cancelApproved(){
 			layer.close(index);
 			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1);
 			flowParam.wcardId = wcardId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
 			function successCallback(result) {
 				layer.alert("取消成功。",{icon:1},function(index){
 					layer.close(index);
 					window.location.reload();
 				});
-			}
-			function improperCallback(result){
-				showLayerErrorMsg(result.message);
 			}
 		});
 	}else{
@@ -479,15 +497,12 @@ function setPinfoContent(){
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback,improperCallback);
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			layer.alert("退回成功！",{icon:1},function(){
 				backPage();
 			});
-		}
-		function improperCallback(result){
-			showLayerErrorMsg(result.message);
 		}
 	};
 }
@@ -497,13 +512,13 @@ function setPinfoContent(){
  */
 function checkContractStatus(){
 	if(contractStatus == null){
-		showLayerErrorMsg('当前合同状态未知，请稍后操作！');
+		showLayerErrorMsg('当前合同状态未知，请稍后操作');
 		return false;
 	}else if(contractStatus == 2){
-		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作！');
+		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作');
 		return false;
 	}else if(contractStatus == 3){
-		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作！');
+		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作');
 		return false;
 	}else{
 		return true;
@@ -513,6 +528,7 @@ function checkContractStatus(){
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
+var getContractOrderBaseInfoData = null;
 function getWorkOrderInfo(){
 	App.formAjaxJson(serverPath + "contractOrderEditorController/listDomainInfo", "post", JSON.stringify({wcardId:wcardId}), successCallback);
 	function successCallback(result) {
@@ -549,7 +565,36 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
-			setDomContent(domObj);
+			var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
+			App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, contractBaseInfoCallback);
+			function contractBaseInfoCallback(result) {
+				getContractOrderBaseInfoData = result;
+				contractStatus = result.data.contractStatus;
+				if(contractStatus == 1){
+					setDomContent(domObj);
+				}else{
+					isEdit = false;
+					fileUploadEdit = false;
+					if(contractStatus == 2){
+						var ms = '当前合同处于"作废"状态，不能进行操作';
+					}else if(contractStatus == 3){
+						var ms = '当前合同处于"作废申请中"状态，请稍后操作';
+					}else if(contractStatus == null){
+						var ms = '当前合同状态未知，请稍后操作';
+					};
+					if(parm.pageType == 1){
+						parent.layer.alert(ms,{icon:2,title:"状态错误",closeBtn:0},function(index){
+							parent.layer.close(index);
+							setDomContent(domObj);
+						});
+					}else{
+						layer.alert(ms,{icon:2,title:"状态错误",closeBtn:0},function(index){
+							layer.close(index);
+							setDomContent(domObj);
+						});
+					}
+				}
+			};
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
 		};
@@ -659,9 +704,9 @@ function srolloOffect(el,srolloParm){
  */
 function showLayerErrorMsg(ms){
 	if(parm.pageType == 1){
-		parent.layer.alert(ms,{icon:2});
+		parent.layer.msg(ms);
 	}else{
-		layer.alert(ms,{icon:2});
+		layer.msg(ms);
 	}
 }
 /*
@@ -679,7 +724,7 @@ function setSpeedyJump(){
 	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
 }
 /*
- * 当不为其他类型工单时基本信息“固定金额”为是时，开票信息和账号信息(收款方)加*号@共同函数
+ * 当不为其他类型工单时基本信息"固定金额"为"是"时，开票信息和账号信息(收款方)加*号
  */
 function setRequiredIcon(){
 	if(wcardTypeCode != 0){
@@ -738,11 +783,25 @@ function removeMoreThanTablecontent(){
 	});
 }
 /*
- * 保存按钮点击
+ * 保存操作
  */
 function saveContent(){
-	//删除多于表格内的数据
-	removeMoreThanTablecontent();
+	if(parm.taskDefinitionKey == "GDQR"){
+		var submitData = {};
+		submitData.wcardId = wcardId;
+		submitData.validity = getValue_validity();
+		if($("#contractScanCopyUpload")[0]){
+			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
+    	};
+		saveContentPost(submitData);
+	}else{
+		//删除多于表格内的数据
+		removeMoreThanTablecontent();
+		var submitData = getContentValue();
+		if(submitData){
+			saveContentPost(submitData);
+		}
+	};
 	//手动触发表单特定的验证项
 	//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
     //console.log(bootstrapValidator.isValid());
@@ -752,15 +811,17 @@ function saveContent(){
 //	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
 //	    	return false;
 //	    };
-	var submitData = getContentValue();
-	if(submitData){
-		var postData = JSON.stringify(submitData);
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
-		function successCallback(result) {
-			var data = result.data;
-			setPageIdCallback(data);
-			layer.msg("保存成功");
-		}
+}
+/*
+ * 保存提交后台
+ */
+function saveContentPost(data){
+	var postData = JSON.stringify(data);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		setPageIdCallback(data);
+		layer.msg("保存成功");
 	}
 }
 

@@ -862,17 +862,32 @@ var App = function() {
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
 		},
-		/**
-		 * 下载文件（接收下载地址）
-		 */
-		downloadFile: function(url) {
-			if(download_file["iframe"] == null) {
-				var iframe = document.createElement("iframe");
-				download_file.iframe = iframe;
-				document.body.appendChild(download_file.iframe);
-			};
-			download_file.iframe.src = url;
-			download_file.iframe.style.display = "none";
+		/** 
+		 * 对象转为get参数方法
+		 * param 将要转为URL参数字符串的对象 
+		 * key URL参数字符串的前缀 
+		 * encode true/false 不进行URL编码,默认为true 
+		 *  
+		 * return URL参数字符串 
+		 */  
+		urlEncode : function (param, key, encode) {  
+		  	if(param==null) return '';  
+		  	var paramStr = App.urlEncodeFn(param, key, encode);  
+		  	paramStr = paramStr.replace("&","?");
+		  	return paramStr;
+		},
+		urlEncodeFn : function (param, key, encode) {   
+		  	var paramStr = '';  
+		  	var t = typeof (param);  
+		  	if (t == 'string' || t == 'number' || t == 'boolean') {  
+		    	paramStr += '&' + key + '=' + ((encode==null||encode) ? param : encodeURIComponent(param));  
+		  	} else {  
+		    	for (var i in param) {  
+		      	var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);  
+		      	paramStr += App.urlEncodeFn(param[i], k, encode);  
+		    	}  
+		  	};
+		  	return paramStr;
 		},
 		/*
 		 * 修改对象的key值
@@ -1427,6 +1442,18 @@ var App = function() {
 		 */
 		getFileUploadModal : function(setting,queryCallback){
 			$("#commomModal").load("/static/data/_fileUpload.html?" + App.timestamp(),function(){
+				setParm(setting,queryCallback);
+			})
+		},
+		/*
+		 * 加载文件导入公共模态框
+		 * 页面中需加入一个id为commomModal的div,即:
+         * '<div class="commom fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
+         * setting:配置参数
+         * queryCallback:点击确定执行的方法
+		 */
+		getFileImportModal : function(setting,queryCallback){
+			$("#commomModal").load("/static/data/_fileImport.html?" + App.timestamp(),function(){
 				setParm(setting,queryCallback);
 			})
 		},

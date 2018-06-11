@@ -21,7 +21,7 @@ $(function() {
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
-				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate,"yyyy-MM-dd") +"</td>"+
 						"<td>"+ data[i].createdByName +"</td></tr>";
 			}
 			$("#contractTextTbody").html(html);
@@ -42,7 +42,7 @@ $(function() {
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
-				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate) +"</td>"+
+				html += "<td>"+ App.formatDateTime(data[i].ctreatedDate,"yyyy-MM-dd") +"</td>"+
 						"<td>"+ data[i].createdByName +"</td></tr>";
 			}
 			$("#contractAttachmentTbody").html(html);
@@ -76,65 +76,3 @@ function getContractInfo(){
 function backPage(){
 	window.history.go(-1);
 }
-/*App.initDataTables('#contractTextTable', {
-	ajax: {
-        "type": "POST",
-        "url": serverPath+'contractScanQuery/listContractText',
-        "data": function(d) {
-            d.id = id;
-            return d;
-        }
-    },
-    "columns": [
-    	{"data": "","title": "序号"},
-    	{"data": null,"title": "文件列表",
-            render: function(data, type, full, meta) {
-                //return '<a href="javascript:void(0);" onclick="showScan(\'' + data + '\')">'+full.displayName+'</a>';
-                return '<a href="/contractUpload/downloadS3?key1=' + full.storeIdDisplay + '">'+full.displayName+'</a>';
-            }
-        },
-    	{
-	        "data": "ctreatedDate",
-	        "title": "上传日期",
-	        render: function(data, type, full, meta) {
-	            return formatDateTime(data);
-	        }
-	    },
-    	{"data": "createdByName","title": "上传人"},
-    ],
-    "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-        $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
-        return nRow;
-    },
-});*/
-
-/*App.initDataTables('#contractAttachmentTable', {
-	ajax: {
-        "type": "POST",
-        "url": serverPath+'contractScanQuery/listContractAttachment',
-        "data": function(d) {
-            d.id = id;
-            return d;
-        }
-    },
-    "columns": [
-    	{"data": "","title": "序号"},
-    	{"data": null,"title": "文件列表",
-            render: function(data, type, full, meta) {
-                return '<a href="/contractUpload/downloadS3?key1=' + full.storeIdDisplay + '">'+full.displayName+'</a>';
-            }
-        },
-    	{
-	        "data": "ctreatedDate",
-	        "title": "上传日期",
-	        render: function(data, type, full, meta) {
-	            return formatDateTime(data);
-	        }
-	    },
-    	{"data": "createdByName","title": "上传人"},
-    ],
-    "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-        $("td:first", nRow).html(iDisplayIndex +1);//设置序号位于第一列，并顺次加一
-        return nRow;
-    },
-});*/

@@ -110,6 +110,7 @@ $("#contractTextUploadBtn").on("click",function(){
 			url: 'contractUpload/uploadFile',
 			maxNumber:1,
 			fileExtensions:["pdf"],
+			explain:'<i class="iconfont icon-mi required"></i>正文大小不能超过？M。（具体大小待确定）。</br>',
 			extraData:{attachId:attachId,displayName:displayName}
 		};
 		function queryCallback(){

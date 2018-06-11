@@ -570,20 +570,30 @@ function getWorkOrderInfo(){
 			function contractBaseInfoCallback(result) {
 				getContractOrderBaseInfoData = result;
 				contractStatus = result.data.contractStatus;
-				if(contractStatus == null){
-					showLayerErrorMsg('当前合同状态未知，请稍后操作',true);
+				if(contractStatus == 1){
+					setDomContent(domObj);
+				}else{
 					isEdit = false;
 					fileUploadEdit = false;
-				}else if(contractStatus == 2){
-					showLayerErrorMsg('当前合同处于"作废"状态，不能进行操作',true);
-					isEdit = false;
-					fileUploadEdit = false;
-				}else if(contractStatus == 3){
-					showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行操作',true);
-					isEdit = false;
-					fileUploadEdit = false;
+					if(contractStatus == 2){
+						var ms = '当前合同处于"作废"状态，不能进行操作';
+					}else if(contractStatus == 3){
+						var ms = '当前合同处于"作废申请中"状态，请稍后操作';
+					}else if(contractStatus == null){
+						var ms = '当前合同状态未知，请稍后操作';
+					};
+					if(parm.pageType == 1){
+						parent.layer.alert(ms,{icon:2,title:"状态错误",closeBtn:0},function(index){
+							parent.layer.close(index);
+							setDomContent(domObj);
+						});
+					}else{
+						layer.alert(ms,{icon:2,title:"状态错误",closeBtn:0},function(index){
+							layer.close(index);
+							setDomContent(domObj);
+						});
+					}
 				}
-				setDomContent(domObj);
 			};
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
@@ -692,19 +702,11 @@ function srolloOffect(el,srolloParm){
  * 工作流页面parm.pageType == 1为父级页面提示异常
  * 其余当前页面提示异常
  */
-function showLayerErrorMsg(ms,isAlert){
+function showLayerErrorMsg(ms){
 	if(parm.pageType == 1){
-		if(isAlert){
-			parent.layer.alert(ms,{icon:2});
-		}else{
-			parent.layer.msg(ms);
-		}
+		parent.layer.msg(ms);
 	}else{
-		if(isAlert){
-			layer.alert(ms,{icon:2});
-		}else{
-			layer.msg(ms);
-		}
+		layer.msg(ms);
 	}
 }
 /*

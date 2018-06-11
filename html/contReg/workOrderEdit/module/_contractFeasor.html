@@ -381,14 +381,7 @@
     }
     
 	$("input[name='performerType']").on("change",function(){
-		layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示",cancel: function(index, layero){  
-    		var performerType = $("input[name='performerType']:checked").val();
-			if(performerType == 1){
-				$("input[name='performerType'][value=2]").prop("checked",true);
-			}else{
-				$("input[name='performerType'][value=1]").prop("checked",true);
-			}
-  }},function(index){
+		layer.confirm("如果改变履行方式，将删除所有已选的主要履行人！",{icon:7,title:"提示",closeBtn:0},function(index){
 			layer.close(index);
 			if($("input[name='performerType']:checked").val() == 2){
 				$("#feasorTbody").html("");

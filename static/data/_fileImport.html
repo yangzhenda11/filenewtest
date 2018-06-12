@@ -29,6 +29,45 @@
 	#scheduleDiv {
 		margin: 10px 0 20px 0;
 	}
+	
+	.fileImportChoose {
+		padding: 4px 10px;
+		height: 32px;
+		line-height: 24px;
+		position: relative;
+		cursor: pointer;
+		color: #888;
+		background: #fafafa;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		overflow: hidden;
+		display: inline-block;
+		*display: inline;
+		*zoom: 1
+	}
+	
+	.fileImportChoose input {
+		position: absolute;
+		font-size: 100px;
+		right: 0;
+		top: 0;
+		opacity: 0;
+		filter: alpha(opacity=0);
+		cursor: pointer
+	}
+	
+	.fileImportChoose:hover {
+		color: #444;
+		background: #eee;
+		border-color: #ccc;
+		text-decoration: none
+	}
+	#fileImportName{
+		color: #337ab7;
+	}
+	.fileImportBtn{
+		margin: 0 10px;
+	}
 </style>
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
@@ -41,13 +80,21 @@
 				<div class="form-group col-sm-12">
 					<label for="partnerCode" class="control-label">文件</label>
 					<div class="valiParent">
-						<input type="file" name="file" id="file" value="" accept="" />
+						<a class="fileImportChoose" id="fileImportChoose">
+							<input type="file" name="file" id="file" accept="" />点击选择文件
+						</a>
+						<div id="fileImportResult" class="hidden">
+							<a id="fileImportName"></a>
+							<button type="button" class="btn red fileImportBtn" onclick="fileImportPost()">导入</button>
+							<button type="button" class="btn red" onclick="resetFileImport()">删除</button>
+						</div>
+						
 					</div>
 				</div>
 				<div class="form-group col-sm-12 hidden" id="scheduleDiv">
 					<label for="partnerCode" class="control-label">进度</label>
 					<div class="valiParent">
-						<div class="progress">
+						<div class="progress" id="scheduleProgress">
 							<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="schedule"></div>
 						</div>
 					</div>
@@ -62,81 +109,140 @@
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
-			<button type="button" class="btn btn-default btn-circle" onclick="start()"><i class="iconfont icon-close"></i> 开始</button>
-			<button type="button" class="btn btn-default btn-circle" onclick="endSucess()"><i class="iconfont icon-close"></i> 成功</button>
-			<button type="button" class="btn btn-default btn-circle" onclick="endError()"><i class="iconfont icon-close"></i> 失败</button>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	function start() {
-		$("#scheduleDiv").removeClass("hidden");
-		$("#schedule").css("width", "5%");
-		startProgerss(1000);
-	}
-
-	function endSucess() {
-		//$("#progress-bar-success")
-		scheduleAnimate(100);
-	}
-
-	function endError() {
-
-	}
-
-	//进度条的控制 
-	function startProgerss() {
-		var scheduleLen = 5;
-		run();
-		function run() {
-			scheduleLen += Math.ceil((Math.random() * 10));
-			$("#schedule").css("width", scheduleLen+"%");
-			$("#schedule").text(scheduleLen+"%");
-			if(scheduleLen < 90){
-				//var timer = setTimeout(run, 100);
-			}
-		}
-	}
-
 	//系统全局变量获取
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
-
-	function setParm(setting, successCallback) {
+	var fileImportCallback = null;
+	var fileImportUrl = '';
+	var fileImportPostfix = null;
+	/*
+	 * 检测选择文件按钮点击
+	 */
+	$(".fileImportChoose").on("change","input[type='file']",function(){
+	    var filePath=$(this).val();
+	    var flag = false;
+	    if(filePath){
+	    	if(fileImportPostfix){
+	    		$.each(fileImportPostfix,function(k,v){
+	    			if(filePath.indexOf("."+v) != -1){
+	    				flag = true;
+	    				return true;
+	    			}
+	    		})
+	    	}else{
+	    		flag = true;
+	    	};
+	    	if(flag){
+	    		var arr=filePath.split('\\');
+		        var fileName=arr[arr.length-1];
+		        $("#fileImportChoose").addClass("hidden");
+		        $("#fileImportResult").removeClass("hidden");
+		        $("#fileImportName").html(fileName);
+	    	}else{
+	    		var typeText = "";
+	    		$.each(fileImportPostfix,function(k,v){
+	    			typeText += "."+v +"，"; 
+	    		})
+	    		typeText = typeText.substring(0,typeText.length-1);
+	    		layer.alert("请选择"+typeText+"格式的文件",{title:"格式错误",icon:2});
+				return false;
+	    	}
+	    }
+	})
+	//设置参数
+	function setParm(setting, callback) {
 		var fileUploadModalLabel = setting.title == undefined ? "文件导入" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#commomModal").modal("show");
 		var emptyFn = function() {};
-		var successFn = successCallback == null || successCallback == "" ? emptyFn : successCallback;
-		if(setting.accept) {
-			alert(setting.accept);
+		fileImportCallback = callback == null || callback == "" ? emptyFn : callback;
+		fileImportUrl = setting.url;
+		if(setting.postfix){
+			fileImportPostfix = setting.postfix;
 		}
-		//var accept = setting.uploadAsync == undefined ? true : setting.uploadAsync;
-		var fileExtensions = [];
-
-		//initFileUpload(setting.url,successFn);
+		if(setting.accept) {
+			$("#file").attr("accept", setting.accept);
+		};
+		if(setting.extraData) {
+			$.each(setting.extraData, function(k, v) {
+				var html = '<input type="hidden" name="' + k + '" value="' + v + '" />';
+				$("#fileImportModalForm").append(html);
+			});
+		};
 	}
-
 	/*
 	 * 文件导入上传
 	 */
-	function initFileUpload(url, successFn) {
+	function fileImportPost() {
 		$("#fileImportModalForm").ajaxSubmit({
 			dataType: 'json',
-			url: serverPath + url,
+			url: serverPath + fileImportUrl,
 			resetForm: "true",
 			timeout: 30000,
 			beforeSend: function() {
-				$('#upload').html('上传中..');
+				//resetProgerss();
 			},
 			success: function(result) {
-				console.log(result);
-				$('#upload').html('上传成功');
+				resetFileImport();
+				fileImportCallback(result);
 			},
-			error: function(xhr) {
-				console.log(result)
+			error: function(result) {
+				App.ajaxErrorCallback(result);
 			}
 		})
 	}
+	/*
+	 * 文件重置
+	 */
+	function resetFileImport(){
+		$("#fileImportChoose").removeClass("hidden");
+		$("#fileImportResult").addClass("hidden");
+		$("#file").val("");
+		$("#fileImportName").html("");
+	}
+	
+//	var scheduleLen = null;
+//	var progersstimer = null;
+//
+//	function resetProgerss() {
+//		scheduleLen = 8;
+//		$("#schedule").css("width", "8%");
+//		$("#scheduleDiv").removeClass("hidden progress-bar-success progress-bar-danger");
+//		startProgerss();
+//	}
+//	//进度条开始控制 
+//	function startProgerss() {
+//		scheduleLen += 1;
+//		$("#schedule").css("width", scheduleLen + "%");
+//		$("#schedule").text("导入中");
+//		if(scheduleLen < 95) {
+//			progersstimer = setTimeout(startProgerss, 30);
+//		}
+//	}
+//	//进度条结束控制 
+//	function endProgerss(parm) {
+//		clearTimeout(progersstimer);
+//		runEndProgerss();
+//
+//		function runEndProgerss() {
+//			scheduleLen += 1;
+//			$("#schedule").css("width", scheduleLen + "%");
+//			if(scheduleLen < 100) {
+//				endProgersstimer = setTimeout(runEndProgerss, 10);
+//			} else {
+//				if(parm) {
+//					$("#schedule").text("导入成功");
+//					$("#schedule").addClass("progress-bar-success");
+//				} else {
+//					$("#schedule").text("导入失败");
+//					$("#schedule").addClass("progress-bar-danger");
+//				}
+//			}
+//		}
+//	}
 </script>

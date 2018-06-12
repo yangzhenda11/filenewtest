@@ -1452,9 +1452,9 @@ var App = function() {
          * setting:配置参数
          * queryCallback:点击确定执行的方法
 		 */
-		getFileImportModal : function(setting,queryCallback){
+		getFileImportModal : function(setting,callback){
 			$("#commomModal").load("/static/data/_fileImport.html?" + App.timestamp(),function(){
-				setParm(setting,queryCallback);
+				setParm(setting,callback);
 			})
 		},
 		/*

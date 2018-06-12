@@ -155,7 +155,8 @@
 				var setting = {
 					title : "文件导入测试",
 					url:'fileload/uploadFileS3',
-					//accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",				//导入文件类型
+					accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",				//导入文件类型
+					postfix: ["xlsx","xls"],
 					extraData:{test:123,test2:456}		//导入时额外附加的参数
 				};
 				function successCallback(){

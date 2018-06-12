@@ -11,6 +11,8 @@
 				<div class="tableToobarContent hidden" id="lineChargesListToolbar">
 					<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i> 新增</button>
 					<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
+					<button class="btn red" type="button" onclick=""><i class="iconfont icon-export"></i> 下载模板</button>
+					<button class="btn red" type="button" onclick="lineChargestFileImport()"><i class="iconfont icon-import"></i> 导入</button>
 				</div>
 				<div class="table-responsive" id="incomeLinerentTableContent">
 					<table class="table table-hover table-bordered table-striped table-align" style="min-width: 1700px;" id="incomeLinerentTable">
@@ -362,5 +364,59 @@
 			var html = '<tr class="emptyTr"><td colspan="13">暂无线路资费清单</td></tr>';
 			$("#incomeLinerentTbody").html(html);
 		}
+	}
+	/*
+	 * 线路资费导入
+	 */
+	function lineChargestFileImport(){
+		var isAddLineChargestData = false;
+		$.each($("#incomeLinerentTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				if($(v).data("id") == 100000){
+					isAddLineChargestData = true;
+					return true;
+				}
+			}
+		});
+		if(isAddLineChargestData){
+			if(parm.pageType == 1){
+				parent.layer.confirm("当前已手动新增过线路资费信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
+				  	parent.layer.close(index);
+				}, function(index){
+				  	parent.layer.close(index);
+				  	setLineChargestFileImport();
+				});
+			}else{
+				layer.confirm("当前已手动新增过线路资费信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
+				  	layer.close(index);
+				}, function(index){
+				  	layer.close(index);
+				  	setLineChargestFileImport();
+				});
+			}
+		}else{
+			setLineChargestFileImport();
+		}
+		
+	}
+	function setLineChargestFileImport(){
+		var setting = {
+			title: "线路资费信息导入",
+			url: 'contractOrderEditorController/importContractLinerentExcel',
+			postfix: ["xlsx","xls"],
+			accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",				//导入文件类型
+			extraData: {wcardId:wcardId,contractNumber:contractNumber}
+		};
+		function callback(result){
+			if(result.status == 1){
+				showLayerErrorMsg(result.message);
+				getIncomeLinerenInfo();
+			}else if(result.status == 3010){
+				showLayerErrorMsg(result.message);
+			}else{
+				showLayerErrorMsg(result.message,true);
+			}
+		}
+		App.getFileImportModal(setting,callback);
 	}
 </script>

@@ -166,9 +166,7 @@
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				if($("#incomeLinerentTbody .emptyTr")[0] != undefined){
-					$("#incomeLinerentTbody .emptyTr").remove();
-				};
+				$("#incomeLinerentTbody").html("");
 				isCreateIncomeLinerentTrLength = data.length;
 				for(var i = 0; i < data.length; i++){
 					var productKind = "productKind" + i;

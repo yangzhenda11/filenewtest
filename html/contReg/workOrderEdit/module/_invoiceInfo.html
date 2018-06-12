@@ -135,9 +135,7 @@
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				if($("#invoiceTbody .emptyTr")[0] != undefined){
-					$("#invoiceTbody .emptyTr").remove();
-				};
+				$("#invoiceTbody").html("");
 				isCreateInvoiceTrLength = data.length;
 				var selectHtml = "<option value=''>请选择</option>";
 				$.each(invoiceType, function(k,v) {

@@ -27,25 +27,8 @@ function initScanCpyReplenishUploadTable(){
 	        "contentType":"application/json;charset=utf-8",
 	        "url": serverPath+'contractUpload/oldContractUploadList',
 	        "data": function(d) {
-	        	if($("#contractTypeName").data("exactSearch")){
-	        		d.typeId = $("#contractTypeName").data("typeId");
-	        	}else{
-	        		d.contractTypeName = $("#contractTypeName").val();
-	        	};
-	        	if($("#undertakeName").data("exactSearch")){
-	        		d.undertakerId = $("#undertakeName").data("id");
-	        	}else{
-	        		d.undertakeName = $("#undertakeName").val();
-	        	};
-	        	if($("#oppoPartyName").data("exactSearch")){
-	        		d.oppoPartyId = $("#oppoPartyName").data("partnerId");
-	        	}else{
-	        		d.oppoPartyName = $("#oppoPartyName").val();
-	        	};
-	        	d.contractNumber = $("#contractNumber").val();
-	        	d.contractName = $("#contractName").val();
-				d.approveDateBegin = $("#approveDateBegin").val();
-				d.approveDateEnd = $("#approveDateEnd").val();
+	        	var searchParmData = getSearchParm();
+        		d = $.extend(d,searchParmData);
 				return JSON.stringify(d);
 	        }
 	    },

@@ -11,10 +11,8 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
         "contentType":"application/json;charset=utf-8",
         "url": serverPath+'workOrderHandle/workOrderHandleList',
         "data": function(d) {//自定义传入参数
-        	d.contractNumber = $("#contractNumberSel").val();
-        	d.contractName = $("#contractNameSel").val();
-			d.createDateBegin = $("#create_date_begin").val();
-			d.createDateEnd = $("#create_date_end").val();
+			var searchParmData = getSearchParm();
+        	d = $.extend(d,searchParmData);
            	return JSON.stringify(d);
         }
     },
@@ -95,4 +93,24 @@ function manualCreation(){
 function jumpSanCpyQueryDetail(id){
 	var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
 	App.changePresentUrl(src);
+}
+
+/*
+ * 获取查询参数
+ */
+function getSearchParm(){
+	var searchData = {
+		contractNumber : $("#contractNumberSel").val().trim(),
+        contractName : $("#contractNameSel").val().trim(),
+		createDateBegin : $("#create_date_begin").val().trim(),
+		createDateEnd : $("#create_date_end").val().trim()
+	};
+	return searchData;
+}
+
+//导出合同扫描件Excel
+function exportResultExcel(){
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'workOrderHandle/workOrderHandleExportList' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
 }

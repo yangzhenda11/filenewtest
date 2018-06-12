@@ -351,6 +351,7 @@ function openAddModal() {
         }
         App.initAjaxSelect2("#provinceCode", ajaxObj, "provCode", "provName", "请选择适用范围");
 		App.initAjaxSelect2("#roleBaseTypeCode", ajaxRoleType, "roleNo", "roleName", "请选择角色类型");
+		$("#roleBaseTypeCode").val("0").trigger("change");
         $("#editModalTitle").text("添加角色");
         $("#modal").modal("show");
         loadPerTree();

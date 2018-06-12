@@ -111,6 +111,7 @@
 				})
 			}
 		};
+		alert(JSON.stringify(extraData))
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
 	}
 	$("#uploadFileName").on("click",function(){
@@ -173,6 +174,7 @@
 					$("#uploadSuccessFile").append(html);
 					fileCommonUploadObj[keys] = data.response.data;
 				};
+				alert(JSON.stringify(fileCommonUploadObj))
 		    	layer.msg(data.response.message);
 		    	$("#uploadFileName").fileinput('reset');
 	    	}else{

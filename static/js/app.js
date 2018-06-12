@@ -870,13 +870,13 @@ var App = function() {
 		 *  
 		 * return URL参数字符串 
 		 */  
-		urlEncode : function (param, key, encode) {  
-		  	if(param==null) return '';  
+		urlEncode: function (param, key, encode) {  
+		  	if(!param) return '';  
 		  	var paramStr = App.urlEncodeFn(param, key, encode);  
 		  	paramStr = paramStr.replace("&","?");
 		  	return paramStr;
 		},
-		urlEncodeFn : function (param, key, encode) {   
+		urlEncodeFn: function (param, key, encode) {   
 		  	var paramStr = '';  
 		  	var t = typeof (param);  
 		  	if (t == 'string' || t == 'number' || t == 'boolean') {  

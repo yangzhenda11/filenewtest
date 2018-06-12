@@ -19,16 +19,6 @@
 	    padding-left: 10px;
 	    padding-right: 10px;
 	}
-	.aDisable{
-		background: #e8dcdc;
-		pointer-events:none
-	}
-	.fileImportModalBody table{
-		margin-bottom: 10px;
-	}
-	.align-center{
-		text-align: center;
-	}
 </style>
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
@@ -41,7 +31,7 @@
 	            <div class="form-group col-sm-12">
 	                <label for="partnerCode" class="control-label">文件</label>
 	                <div class="valiParent">
-	                    <input type="file" name="file" id="file" value="" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+	                    <input type="file" name="file" id="file" value="" accept=""/>
 	                </div>
 	            </div>
 	           	<div class="form-group col-sm-12">
@@ -62,37 +52,26 @@
 	//系统全局变量获取
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
-	var successFn = null;
 	function setParm(setting,successCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件导入" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#commomModal").modal("show");
-		
 		var emptyFn = function(){};
-		successFn = successCallback == null || successCallback == "" ? emptyFn : successCallback;
-		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
+		var successFn = successCallback == null || successCallback == "" ? emptyFn : successCallback;
+		if(setting.accept){
+			alert(setting.accept);
+		}
+		//var accept = setting.uploadAsync == undefined ? true : setting.uploadAsync;
 		var fileExtensions = [];
-		if(setting.fileExtensions){
-			fileExtensions = setting.fileExtensions;
-		};
-		if(setting.isUploadFile == false){
-			var extraData = {};
-		}else{
-			var extraData = {displayName:""};
-			if(setting.extraData){
-				$.each(setting.extraData, function(k,v) {
-					extraData[k] = v;
-				})
-			}
-		};
-		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
+		
+		//initFileUpload(setting.url,successFn);
 	}
 	
 	/*
 	 * 文件导入上床
 	 */
-	function initFileUpload(url,uploadAsync,fileExtensions,extraData){
-		$("#myupload").ajaxSubmit({
+	function initFileUpload(url,successFn){
+		$("#fileImportModalForm").ajaxSubmit({
 	        dataType: 'json',
 	        url: serverPath + url,
 	        resetForm: "true",
@@ -107,58 +86,7 @@
 	        error: function(xhr) {
 	        	console.log(result)
 	        }
-	    })
-		
-		
-		$("#uploadFileName").fileinput({
-	        language: 'zh', 
-	        uploadUrl: serverPath + url,
-	        uploadAsync: uploadAsync,
-	        allowedFileExtensions: fileExtensions,
-	        maxFileSize: 51200,
-	       	maxFileCount: 1,
-	       	dropZoneEnabled: false,
-	       	//showPreview : false,
-	        slugCallback: function (filename) {
-	        	if($(".kv-fileinput-error").css("display") == "block"){
-	        		$(".fileinput-upload-button").addClass("aDisable");
-	        		$(".fileinput-upload-button").attr("title","禁止上传");
-	        	}else{
-	        		$(".fileinput-upload-button").removeClass("aDisable");
-	        		$(".fileinput-upload-button").attr("title","点击上传");
-	        	}
-	            return filename;
-	        },
-	        uploadExtraData: function(previewId, index) {
-				return extraData;							//额外参数
-			}
-	    });
-	    // 异步上传成功结果处理
-	    $("#uploadFileName").on("fileuploaded", function (event, data) {
-	    	parseResult(data);
-	    });
-	    // 同步上传成功结果处理
-	    $("#uploadFileName").on("filebatchuploadsuccess", function (event, data) {
-	    	parseResult(data);
-	    });
-	    function parseResult(data){
-	    	var fileValue = data.files;
-	    	if(data.response.status == 1){
-	    		flag++;
-	    		$(".defaultTr").addClass("hidden");
-				for(var i = 0; i < fileValue.length; i++){
-					var keys = "fileSave" + flag + i;
-					var html = '<tr><td>'+ fileValue[i].name +
-					'</td><td><button type="button" data-name="'+fileValue[i].name+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
-					$("#uploadSuccessFile").append(html);
-					fileCommonUploadObj[keys] = data.response.data;
-				};
-		    	layer.msg(data.response.message);
-		    	$("#uploadFileName").fileinput('reset');
-	    	}else{
-	    		layer.alert(data.response.message,{icon:2,title:"错误"});
-	    	}
-	    }
+	   })
 	}
 	
 </script>

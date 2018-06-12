@@ -18,47 +18,8 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         "contentType":"application/json;charset=utf-8",
         "url": serverPath+'workOrderQuery/workOrderQueryList',
         "data": function(d) {//自定义传入参数
-        	if($("#contractType").data("exactSearch")){
-        		d.contractType = $("#contractType").data("typeCode");
-        	}else{
-        		d.contractTypeName = $("#contractType").val();
-        	};
-        	
-        	if($("#otherSubject").data("exactSearch")){
-        		d.oppoPartyId = $("#otherSubject").data("partnerId");
-        	}else{
-        		d.oppoPartyName = $("#otherSubject").val();
-        	};
-        	
-        	if($("#ourSubject").data("exactSearch")){
-        		d.unicomPartyId = $("#ourSubject").data("partnerId");
-        	}else{
-        		d.unicomPartyName = $("#ourSubject").val();
-        	};
-        	
-        	if($("#agentStaff").data("exactSearch")){
-        		d.undertakerId = $("#agentStaff").data("staffOrgId");
-        	}else{
-        		d.undertakeName = $("#agentStaff").val();
-        	};
-        	
-        	if($("#agentDepartment").data("exactSearch")){
-        		d.executeDeptId = $("#agentDepartment").data("orgId");
-        	}else{
-        		d.executeDeptName = $("#agentDepartment").val();
-        	};
-        	
-        	d.contractNumber = $("#contractNumber").val();
-        	d.contractName = $("#contractName").val();
-        	d.wcardStatus = $("#wcardStatus").val();
-        	d.wcardNumber = $("#wcardNumber").val();
-        	d.contractOrganitzation = $("#contractOrganitzation").val();
-        	d.ctreatedDateBegin = $("#create_date_begin").val();
-        	d.ctreatedDateEnd = $("#create_date_end").val();
-			d.approveDateBegin = $("#approve_date_begin").val();
-			d.approveDateEnd = $("#approve_date_end").val();
-			d.sealAndSignDateBegin = $("#sealAndSign_date_begin").val();
-			d.sealAndSignDateEnd = $("#sealAndSign_date_end").val();
+        	var searchParmData = getSearchParm();
+        	d = $.extend(d,searchParmData);
            	return JSON.stringify(d);
         }
 	},
@@ -177,3 +138,59 @@ $(function(){
 		$(this).data("exactSearch",false);
 	})
 })
+
+/*
+ * 获取查询参数
+ */
+function getSearchParm(){
+	var searchData = {
+		contractNumber : $("#contractNumber").val().trim();
+    	contractName : $("#contractName").val().trim();
+    	wcardStatus : $("#wcardStatus").val().trim();
+    	wcardNumber : $("#wcardNumber").val().trim();
+    	contractOrganitzation : $("#contractOrganitzation").val().trim();
+    	ctreatedDateBegin : $("#create_date_begin").val().trim();
+    	ctreatedDateEnd : $("#create_date_end").val().trim();
+		approveDateBegin : $("#approve_date_begin").val().trim();
+		approveDateEnd : $("#approve_date_end").val().trim();
+		sealAndSignDateBegin : $("#sealAndSign_date_begin").val().trim();
+		sealAndSignDateEnd : $("#sealAndSign_date_end").val().trim();
+	};
+	if($("#contractType").data("exactSearch")){
+		searchData.contractType = $("#contractType").data("typeCode");
+	}else{
+		searchData.contractTypeName = $("#contractType").val().trim();
+	};
+	
+	if($("#otherSubject").data("exactSearch")){
+		searchData.oppoPartyId = $("#otherSubject").data("partnerId");
+	}else{
+		searchData.oppoPartyName = $("#otherSubject").val().trim();
+	};
+	
+	if($("#ourSubject").data("exactSearch")){
+		searchData.unicomPartyId = $("#ourSubject").data("partnerId");
+	}else{
+		searchData.unicomPartyName = $("#ourSubject").val().trim();
+	};
+	
+	if($("#agentStaff").data("exactSearch")){
+		searchData.undertakerId = $("#agentStaff").data("staffOrgId");
+	}else{
+		searchData.undertakeName = $("#agentStaff").val().trim();
+	};
+	
+	if($("#agentDepartment").data("exactSearch")){
+		searchData.executeDeptId = $("#agentDepartment").data("orgId");
+	}else{
+		searchData.executeDeptName = $("#agentDepartment").val().trim();
+	};
+	return searchData;
+}
+
+//导出合同扫描件Excel
+function exportResultExcel(){
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'workOrderQuery/workOrderQueryExpoetList' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
+}

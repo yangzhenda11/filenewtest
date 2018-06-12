@@ -11,15 +11,8 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
         "contentType":"application/json;charset=utf-8",
         "url": serverPath+'workOrderActivate/workOrderActivateList',
         "data": function(d) {//自定义传入参数
-        	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("id");
-        	}else{
-        		d.undertakeName = $("#undertakeName").val();
-        	};
-        	d.contractNumber = $("#contractNumber").val();
-        	d.contractName = $("#contractName").val();
-			d.createDateBegin = $("#create_date_begin").val();
-			d.createDateEnd = $("#create_date_end").val();
+        	var searchParmData = getSearchParm();
+        	d = $.extend(d,searchParmData);
            	return JSON.stringify(d);
         }
     },
@@ -108,4 +101,29 @@ function searchWorkOrderActivate(retainPaging) {
 function jumpSanCpyQueryDetail(id){
 	var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
 	App.changePresentUrl(src);
+}
+
+/*
+ * 获取查询参数
+ */
+function getSearchParm(){
+	var searchData = {
+		contractNumber : $("#contractNumber").val().trim(),
+        contractName : $("#contractName").val().trim(),
+		createDateBegin : $("#create_date_begin").val().trim(),
+		createDateEnd : $("#create_date_end").val().trim()
+	};
+	if($("#undertakeName").data("exactSearch")){
+        searchData.undertakerId = $("#undertakeName").data("id");
+    }else{
+        searchData.undertakeName = $("#undertakeName").val().trim();
+    };
+    return searchData;
+}
+
+//导出合同扫描件Excel
+function exportResultExcel(){
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'workOrderActivate/workOrderActivateExportList' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
 }

@@ -164,7 +164,7 @@
 			function queryCallback(){
 				var fileInfo = getFileItemInfo()[0].data;
 				$("#commomModal").modal("hide");
-				var bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+fileInfo.storeId+'">'+fileInfo.displayName+'</a>';
+				var bodyDocHtml =  '<a href="/contractUpload/downloadS3?key1='+fileInfo.storeId+'">'+displayName+'</a>';
 				$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("删除");

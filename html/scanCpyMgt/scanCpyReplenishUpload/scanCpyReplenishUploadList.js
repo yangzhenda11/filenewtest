@@ -6,10 +6,10 @@ $(function(){
 	 * 点击iconfont弹出模态框事件
 	 */
 	$("#searchContractType").click(function() {
-		App.getCommonModal("contractType", "#contractTypeName","typeFullname","typeId");
+		App.getCommonModal("contractType", "#contractTypeName","typeFullname","typeCode");
 	})
 	$("#searchUndertakerName").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","name","id");
+		App.getCommonModal("agentStaff","#undertakeName","name","staffOrgId");
 	})
 	$("#searchOtherSubject").click(function(){
 		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
@@ -109,12 +109,12 @@ function getSearchParm(){
 		approveDateEnd : $("#approveDateEnd").val().trim()
 	};
 	if($("#contractTypeName").data("exactSearch")){
-	    searchData.typeId = $("#contractTypeName").data("typeId");
+	    searchData.typeCode = $("#contractTypeName").data("typeCode");
 	}else{
 	    searchData.contractTypeName = $("#contractTypeName").val().trim();
 	};
 	if($("#undertakeName").data("exactSearch")){
-	    searchData.undertakerId = $("#undertakeName").data("id");
+	    searchData.undertakerId = $("#undertakeName").data("staffOrgId");
 	}else{
 	    searchData.undertakeName = $("#undertakeName").val().trim();
 	};

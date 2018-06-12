@@ -42,3 +42,19 @@ function gosubmit(){
         }
     })
 }
+function fileImport(){
+	var setting = {
+		title : "文件导入测试",
+		url:'contractScanQuery/importContract',
+		accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",				//导入文件类型
+		extraData:{test:123,test2:456}		//导入时额外附加的参数
+	};
+	function callback(result){
+		if(result.status == 1){
+			layer.msg(result.data);
+		}else{
+			layer.msg(result.message);
+		}
+	}
+	App.getFileImportModal(setting,callback);
+}

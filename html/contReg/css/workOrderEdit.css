@@ -170,3 +170,6 @@
   -khtml-opacity: 1;
   opacity: 1;
 }
+.tableToobarContent button {
+  margin-right: 5px;
+}

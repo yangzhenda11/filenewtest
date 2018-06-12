@@ -48,19 +48,10 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
 			}
 		},
         {
-        	"data": "wcardStatus",
+        	"data": "wcardStatusStr",
         	"title": "工单状态",
         	"width": "5%",
-        	"className":"whiteSpaceNormal",
-        	"render": function(data, type, full, meta) {
-	            if(data=='904010'){
-	            	return "工单草稿";
-	            }else if(data=='904020'){
-	            	return "工单复核";
-	            }else if(data=='904030'){
-	            	return "合同已激活";
-	            }
-	        }
+        	"className":"whiteSpaceNormal"
         },
         {
 	        "data": "ctreatedDate",

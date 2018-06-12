@@ -27,19 +27,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
         {"data": "contractNumber","title": "合同编号"},
         {"data": "wcardNumber","title": "工单编号"},
-        {
-        	"data": "wcardStatus",
-        	"title": "工单状态",
-        	"render": function(data, type, full, meta) {
-	            if(data=='904010'){
-	            	return "工单草稿";
-	            }else if(data=='904020'){
-	            	return "工单复核";
-	            }else if(data=='904030'){
-	            	return "合同已激活";
-	            }
-	        }
-        },
+        {"data": "wcardStatusStr","title": "工单状态"},
         {
 	        "data": "ctreatedDate",
 	        "title": "创建日期",

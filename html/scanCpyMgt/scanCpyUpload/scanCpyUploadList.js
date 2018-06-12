@@ -13,6 +13,8 @@ App.initDataTables('#searchContractTable', "#submitBtn", {
         "data": function(d) {//自定义传入参数
         	if($("#contractTypeName").data("exactSearch")){
         		d.typeId = $("#contractTypeName").data("typeId");
+        		d.typeCode = $("#contractTypeName").data("typeCode");
+        		d.ParentCode = $("#contractTypeName").data("ParentCode");
         	}else{
         		d.contractTypeName = $("#contractTypeName").val();
         	};

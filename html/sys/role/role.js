@@ -32,6 +32,7 @@ function getRoleTable() {
             "data": function(d) { // 查询参数
                 d.roleName = $('#sysRoleName').val();
                 d.provCode = $("#provCode").val();
+                d.roleBaseTypeCode = $("#roleBaseTypeCode").val();
                 d.staffOrgId = config.curStaffOrgId;
                 d.companyId = config.curCompanyId;
                 d.roleStatus = 1;
@@ -274,8 +275,14 @@ function editDetail(itemId) {
             "data": { id: null },
             "async": false
         }
+        var ajaxRoleType = {
+            "url": serverPath + "roles/getRoleType",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
         App.initAjaxSelect2("#provinceCode", ajaxObj, "provCode", "provName", "请选择省分编码");
-
+		App.initAjaxSelect2("#roleBaseTypeCode", ajaxRoleType, "roleNo", "roleName", "请选择角色类型");
         $("#editModalTitle").text("编辑角色信息");
         $("#modal").modal("show");
         getRoleInfo(itemId, "edit");
@@ -318,6 +325,7 @@ function getRoleInfo(id, type) {
             $("#orgNameTree").attr("title", result.data.orgName);
             $("#orgNameTree").data("orgCode", result.data.orgId);
             $("#orgNameTree").data("provCode", result.data.provCode);
+            $("#roleBaseTypeCode").data("roleBaseTypeCode", result.data.roleBaseTypeCode);
             loadPerTree(id);
         }
     }
@@ -335,8 +343,14 @@ function openAddModal() {
             "data": { id: null },
             "async": false
         }
-        App.initAjaxSelect2("#provinceCode", ajaxObj, "provCode", "provName", "请选择省分编码");
-
+        var ajaxRoleType = {
+            "url": serverPath + "roles/getRoleType",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
+        App.initAjaxSelect2("#provinceCode", ajaxObj, "provCode", "provName", "请选择适用范围");
+		App.initAjaxSelect2("#roleBaseTypeCode", ajaxRoleType, "roleNo", "roleName", "请选择角色类型");
         $("#editModalTitle").text("添加角色");
         $("#modal").modal("show");
         loadPerTree();
@@ -663,8 +677,10 @@ function onClick(event, treeId, treeNode) {
     var selectName = nodes[0].orgName;
     var orgCode = nodes[0].orgCode;
     var provCode = nodes[0].provCode;
+   // var roleBaseTypeCode = nodes[0].roleBaseTypeCode;
     $("input[name=" + treeId + "]").data("orgCode", orgCode);
     $("input[name=" + treeId + "]").data("provCode", provCode);
+   // $("input[name=" + treeId + "]").data("roleBaseTypeCode", roleBaseTypeCode);
     $("input[name=" + treeId + "]").val(selectName);
     $("input[name=" + treeId + "]").attr("title", selectName);
     if (treeId == "orgName") {

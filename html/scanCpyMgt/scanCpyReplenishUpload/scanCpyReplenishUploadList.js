@@ -118,8 +118,33 @@ $("#oppoPartyName").on("change",function(){
 /**
  * 导出excel方法
  * */
+function getSearchParm(){
+	var searchData = {
+		contractNumber : $("#contractNumber").val().trim(),
+		contractName : $("#contractName").val().trim(),
+		approveDateBegin : $("#approveDateBegin").val().trim(),
+		approveDateEnd : $("#approveDateEnd").val().trim()
+	};
+	if($("#contractTypeName").data("exactSearch")){
+	    searchData.typeId = $("#contractTypeName").data("typeId");
+	}else{
+	    searchData.contractTypeName = $("#contractTypeName").val().trim();
+	};
+	if($("#undertakeName").data("exactSearch")){
+	    searchData.undertakerId = $("#undertakeName").data("id");
+	}else{
+	    searchData.undertakeName = $("#undertakeName").val().trim();
+	};
+	if($("#oppoPartyName").data("exactSearch")){
+	    searchData.oppoPartyId = $("#oppoPartyName").data("partnerId");
+	}else{
+	    searchData.oppoPartyName = $("#oppoPartyName").val().trim();
+	};
+	return searchData;
+}
+
 function exportResultExcel(){
-	$("#searchForm").attr("action",serverPath+'contractUpload/exportResultExcel');
-	$("#searchForm").submit();
-    $("#searchForm").attr("action",'');
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'contractUpload/exportResultExcel' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
 }

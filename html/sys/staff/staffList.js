@@ -649,7 +649,7 @@ function setEditForm(data) {
     $('#modal').modal('show');
     var valueCallback = { 'hireDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") } }
     App.setFormValues("#staffForm", data, valueCallback);
-    $("#orgNameIn").attr("title", data.orgName);
+    $("#orgName").attr("title", data.orgName);
     $("#orgNameIn").data("id", data.orgId);
     dateRegNameChose();
     validate("edit");

@@ -411,6 +411,7 @@
 			if(result.status == 1){
 				showLayerErrorMsg(result.message);
 				getIncomeLinerenInfo();
+				$("#commomModal").modal("hide");
 			}else if(result.status == 3010){
 				showLayerErrorMsg(result.message);
 			}else{

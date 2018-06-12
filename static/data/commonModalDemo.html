@@ -109,6 +109,7 @@
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap-fileinput/formdata.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$("#searchContractType").click(function(){
@@ -154,13 +155,13 @@
 				var setting = {
 					title : "文件导入测试",
 					url:'fileload/uploadFileS3',
-					fileExtensions:['pdf'],				//导入文件类型
+					//accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",				//导入文件类型
 					extraData:{test:123,test2:456}		//导入时额外附加的参数
 				};
 				function successCallback(){
 					$("#commomModal").modal("hide");
 				}
-				App.getFileImportModal(setting,queryCallback);
+				App.getFileImportModal(setting,successCallback);
 			}
 		</script>
 	</body>

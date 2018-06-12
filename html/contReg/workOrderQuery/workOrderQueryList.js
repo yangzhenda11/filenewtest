@@ -144,17 +144,17 @@ $(function(){
  */
 function getSearchParm(){
 	var searchData = {
-		contractNumber : $("#contractNumber").val().trim();
-    	contractName : $("#contractName").val().trim();
-    	wcardStatus : $("#wcardStatus").val().trim();
-    	wcardNumber : $("#wcardNumber").val().trim();
-    	contractOrganitzation : $("#contractOrganitzation").val().trim();
-    	ctreatedDateBegin : $("#create_date_begin").val().trim();
-    	ctreatedDateEnd : $("#create_date_end").val().trim();
-		approveDateBegin : $("#approve_date_begin").val().trim();
-		approveDateEnd : $("#approve_date_end").val().trim();
-		sealAndSignDateBegin : $("#sealAndSign_date_begin").val().trim();
-		sealAndSignDateEnd : $("#sealAndSign_date_end").val().trim();
+		contractNumber : $("#contractNumber").val().trim(),
+    	contractName : $("#contractName").val().trim(),
+    	wcardStatus : $("#wcardStatus").val().trim(),
+    	wcardNumber : $("#wcardNumber").val().trim(),
+    	contractOrganitzation : $("#contractOrganitzation").val().trim(),
+    	ctreatedDateBegin : $("#create_date_begin").val().trim(),
+    	ctreatedDateEnd : $("#create_date_end").val().trim(),
+		approveDateBegin : $("#approve_date_begin").val().trim(),
+		approveDateEnd : $("#approve_date_end").val().trim(),
+		sealAndSignDateBegin : $("#sealAndSign_date_begin").val().trim(),
+		sealAndSignDateEnd : $("#sealAndSign_date_end").val().trim(),
 	};
 	if($("#contractType").data("exactSearch")){
 		searchData.contractType = $("#contractType").data("typeCode");

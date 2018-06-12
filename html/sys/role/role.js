@@ -514,6 +514,13 @@ function validate(type) {
                 },
                 trigger: "focus blur keyup change",
             },
+            roleBaseTypeCode: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择角色类型'
+                    }
+                }
+            },
             roleDesc: {
                 validators: {
                     stringLength: {

@@ -107,11 +107,11 @@ $("#contractTextUploadBtn").on("click",function(){
 		var displayName = $("#contractText").data("displayname");
 		var setting = {
 			title : "正文上传",
-			url: 'contractUpload/uploadFile',
+			url: 'fileload/uploadFileS3',
 			maxNumber:1,
 			fileExtensions:["pdf"],
 			explain:'<i class="iconfont icon-mi required"></i>正文大小不能超过？M。（具体大小待确定）。</br>',
-			extraData:{attachId:attachId,displayName:displayName}
+			extraData:{displayName:displayName}
 		};
 		function queryCallback(){
 			var fileInfo = getFileItemInfo()[0].data;
@@ -168,9 +168,9 @@ $("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){
 	var attachId = $(this).parents("tr").data("attachid");
 	var setting = {
 		title : "附件上传",
-		url: 'contractUpload/uploadFile',
-		maxNumber:1,
-		extraData:{attachId:attachId}
+		url: 'fileload/uploadFileS3',
+		maxNumber:1
+		//extraData:{attachId:attachId}
 	};
 	function queryCallback(){
 		var fileInfo = getFileItemInfo()[0].data;

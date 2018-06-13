@@ -1342,7 +1342,7 @@ var App = function() {
             return content;
         },
         /*
-         * 获取当前ifreamutl参数
+         * 获取当前url参数
          */
         getPresentParm : function(isUrl){
         	var persentUrl = window.location.href;

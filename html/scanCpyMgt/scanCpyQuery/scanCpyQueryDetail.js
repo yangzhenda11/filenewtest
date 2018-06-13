@@ -7,6 +7,9 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 
 $(function() {
+	//获取合同信息
+	getContractInfo();
+	
 	//获取合同正文扫描件
     App.formAjaxJson(serverPath+'contractScanQuery/listContractText?id='+id, "POST", null, listContractTextSuccess);
 
@@ -17,7 +20,7 @@ $(function() {
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
 				if(data[i].storeIdDisplay){
-					html += "<td><a href='"+serverPath+"contractUpload/downloadS3?key1="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
+					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
@@ -38,7 +41,7 @@ $(function() {
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
 				if(data[i].storeIdDisplay){
-					html += "<td><a href='"+serverPath+"contractUpload/downloadS3?key1="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
+					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
@@ -48,16 +51,16 @@ $(function() {
 			$("#contractAttachmentTbody").html(html);
 		}
 	};
-	getContractInfo();
 })
-
+/*
+ * 获取合同信息
+ */
 function getContractInfo(){
-	$.ajax({
-		url : serverPath + 'contractUpload/getContractById?id='+id,
-        type : "post",
-        success : function(result) {
-        	var data = result.data;
-        	$("#contractNumber").val(data.contractNumber);
+	App.formAjaxJson(serverPath + "contractUpload/getContractById?id="+id, "post", null, successCallback);
+	function successCallback(result){
+		var data = result.data;
+		if(data){
+			$("#contractNumber").val(data.contractNumber);
         	$("#undertakeName").val(data.undertakeName);
         	$("#undertakePhone").val(data.undertakePhone);
         	$("#undertakeMobile").val(data.undertakeMobile);
@@ -65,12 +68,11 @@ function getContractInfo(){
         	$("#executeDeptName").val(data.executeDeptName);
         	$("#unicomPartyName").text(data.unicomPartyName);
         	$("#oppoPartyName").text(data.oppoPartyName);
-			$("#contractType").html(data.contractType);
-        },
-		error: function(result) {
-			App.ajaxErrorCallback(result);
+			$("#contractType").text(data.contractType);
+		}else{
+			layer.msg("合同基本信息为空，请联系管理员");
 		}
-	});
+	}
 }
 //返回上一页
 function backPage(){

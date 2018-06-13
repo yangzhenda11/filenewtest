@@ -18,11 +18,9 @@
 	<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 	<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 	<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
-	<link rel="stylesheet" type="text/css" href="../css/scanCpyMgt.css"/>
 	<title>补传扫描件</title>
 </head>
 <body>
-	<input type="hidden" id="contractId" class="form-control">
 	<div class="page-content">
 			<div class="portlet">
 				<div class="portlet-title">
@@ -68,11 +66,11 @@
 									</div>
 								</div>
 								<div class="col-sm-4">
-									<div class="input-group">
+									<div class="input-group data-input-group">
 										<span class="input-group-addon searchLableText">审批通过日期</span>
 										<input type="text" id="approveDateBegin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
-                                        <span class="input-group-addon searchLableText" >-</span>
+                                        <span class="input-group-addon searchLableText" >至</span>
                                         <input type="text" id="approveDateEnd" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
 									</div>

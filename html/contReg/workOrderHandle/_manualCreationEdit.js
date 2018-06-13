@@ -48,7 +48,6 @@ function createWorkOrder(){
    					var msgStr = msg.split(",");
    					var htmlStr = "工单"+msgStr[0]+"创建成功！<a href='../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+msgStr[1]+"'>点击查看</a>";
    					document.getElementById('createResult').innerHTML=htmlStr;
-   					//alert("工单"+data.message+"创建成功！");
    				}else if(data.status=='0'){
    					layer.msg(data.message);
    				}

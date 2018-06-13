@@ -200,6 +200,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
+			postData.contractId = contractId;
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
 				var data = result.data;
@@ -432,6 +433,7 @@ function activateContract(){
 			postData.validity.adminCommitment = adminCommitment;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
+			postData.contractId = contractId;
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
 			function successCallback(result) {
 				var data = result.data;
@@ -860,7 +862,24 @@ function validate() {
 		fields: {}
 	});
 }
-
+/*
+ * 下载模板
+ */
+function exmportTemplate(parm){
+	var postData = {
+		templateCode: parm
+	};
+	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "get", postData, successCallback);
+	function successCallback(result) {
+		var key = result.data.fileStoreId;
+		if(key){
+			var url = serverPath + 'fileload/downloadS3?key='+key;
+    		location.href = encodeURI(url);	
+		}else{
+			showLayerErrorMsg("暂无该模板");
+		}
+	}
+}
 /*
  * 不能为空的验证信息
  */

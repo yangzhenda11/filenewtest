@@ -2352,6 +2352,32 @@ var App = function() {
         	}
         	return flowparam;
         },
+        checkFlow:function(serverPath,businessId,businessType){
+        	var checkDate=null;
+        	if(businessType.length==0){
+        		layer.msg("请填写业务类型，否则无法准确校验是哪个模板！");
+        		return;
+        	}
+        	if(businessId.length==0){
+        		layer.msg("请填写业务主键，否则无法确定需要校验哪一个业务！");
+        		return;
+        	}
+    		$.ajax({
+    			type: 'get',
+    			url: serverPath+'workflowrest/checkFlow?businessType='+businessType+'&businessId='+businessId,
+    			//data: null,
+    			dataType: 'json',
+    			async: false,
+    			contentType: "application/json",
+    			success: function(result){
+    				checkDate = result;
+    			},
+    			error: function(result) {
+    				layer.alert("接口错误", {icon: 2,title:"错误"});
+    			}
+    		});
+        	return checkDate;
+        },
         applyCandidateTask:function(serverPath,flowParam){
         	var applyresult=false;
     		$.ajax({

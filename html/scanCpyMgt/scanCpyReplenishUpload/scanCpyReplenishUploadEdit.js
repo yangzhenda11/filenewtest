@@ -29,19 +29,24 @@ $(function() {
  * 获取合同基本信息
  */
 function getContractInfo(){
-	var url = serverPath + "contractUpload/getContractById?id=" + scandocId;
+	var url = serverPath + "contractUpload/getContractById?id=" + 1;
 	App.formAjaxJson(url, "post", null, successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		$("#contractNumber").val(data.contractNumber);
-    	$("#undertakeName").val(data.undertakeName);
-    	$("#undertakePhone").val(data.undertakePhone);
-    	$("#undertakeMobile").val(data.undertakeMobile);
-    	$("#contractName").val(data.contractName);
-    	$("#executeDeptName").val(data.executeDeptName);
-    	$("#unicomPartyName").text(data.unicomPartyName);
-    	$("#oppoPartyName").text(data.oppoPartyName);
-    	$("#contractType").text(data.contractType);
+		if(data){
+			$("#contractNumber").val(data.contractNumber);
+	    	$("#undertakeName").val(data.undertakeName);
+	    	$("#undertakePhone").val(data.undertakePhone);
+	    	$("#undertakeMobile").val(data.undertakeMobile);
+	    	$("#contractName").val(data.contractName);
+	    	$("#executeDeptName").val(data.executeDeptName);
+	    	$("#unicomPartyName").text(data.unicomPartyName);
+	    	$("#oppoPartyName").text(data.oppoPartyName);
+	    	$("#contractType").text(data.contractType);
+		}else{
+			layer.msg("暂无合同信息");
+		}
+
 	}
 } 
 /*

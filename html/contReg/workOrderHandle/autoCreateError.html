@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
+	<head>
+		<meta charset="UTF-8">
+		<title>工单编辑</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
+	</head>
+
+	<body>
+		<div class="page-content hidden">
+			<div class="portlet">
+				<div class="portlet-body">
+					<div id="flowNote" class="note note-info">
+                    	<span><span class="label label-info" style="margin-right: 10px;">工单创建</span>工单自动创建失败，请手动点击尝试创建。</span>
+                    	<div class="hidden contractPortletTitle">
+							工单编号：<span class="wcardNumber"></span>	
+							状态：<span class="wcardStatus"></span>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 创建生效合同结构化数据工单</span>
+						</div>
+						<div class="form-fieldset-body">
+							<form action="" id="contractBaseInfo">
+							<div class="row defaultFieldsetForm">
+								<div class="col-sm-6 form-group">
+									<label for="contractNumber" class="control-label">合同编号：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="contractNumber" disabled="" />
+										<input type="hidden" class="form-control" name="contractId" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="contractName" class="control-label">合同名称：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="contractName" disabled=""  />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="unicomPartyName" class="control-label">我方主体：</label>
+									<div class="valiParent">
+										<div id="unicomPartyName" class="divInput"></div>
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="partyName" class="control-label">对方主体：</label>
+									<div class="valiParent otherPartyParent">
+										<div id="partyName" class="divInput"></div>
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="undertakeName" class="control-label">承办人：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="undertakeName" disabled=""  />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="executeDeptName" class="control-label">承办部门：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="executeDeptName" disabled=""  />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="approveDate" class="control-label">审批通过时间：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="approveDate" disabled=""  />
+									</div>
+								</div>
+								<div class="col-sm-12 form-group align-center">
+									<button type="button" class="btn red sm-12-btn"><span class="letterSpace">创</span>建</button>
+								</div><!--letter-spacing-->
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--[if lt IE 9]>
+		  	<script src="../../../static/plugins/html5shiv.min.js"></script>
+		  	<script src="../../../static/plugins/respond.min.js"></script>
+		  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="../../../static/plugins/selectivizr-min.js"></script>
+		<![endif]-->
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="autoCreateError.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

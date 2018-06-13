@@ -298,6 +298,9 @@
 .overflow-hidden{
 		overflow: hidden;
 }
+.align-center{
+	text-align: center;
+}
 .align-right{
     text-align: right;
 }
@@ -332,6 +335,13 @@ button:focus{
 .fullWidth{
 	width: 100%;
 }
+.sm-12-btn{
+	width: 200px;
+	text-align: center;
+}
+.sm-12-btn .letterSpace{
+	margin-right: 15px;
+}
 /*
  * 日期数据居中且无padding
  */
@@ -353,17 +363,7 @@ button:focus{
 	text-align: center;
 	cursor: pointer;
 }
-/*八个字*/
-.data-input-group3 span{
-	padding-left: 5px;
-	padding-right: 5px;
-}
-.data-input-group3 input{
-	padding-left: 0;
-	padding-right: 0;
-	text-align: center;
-	cursor: pointer;
-}
+
 /*
  * 工具栏按钮间隙
  */

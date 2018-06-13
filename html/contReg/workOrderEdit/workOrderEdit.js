@@ -869,12 +869,15 @@ function exmportTemplate(parm){
 	var postData = {
 		templateCode: parm
 	};
-	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "get", postData, successCallback);
 	function successCallback(result) {
-		var key = result.data;
-		alert(key);
-//		var url = serverPath + '/fileload/downloadS3?key=2237776161376641037';
-//  	location.href = encodeURI(url);
+		var key = result.data.fileStoreId;
+		if(key){
+			var url = serverPath + 'fileload/downloadS3?key='+key;
+    		location.href = encodeURI(url);	
+		}else{
+			showLayerErrorMsg("暂无该模板");
+		}
 	}
 }
 /*

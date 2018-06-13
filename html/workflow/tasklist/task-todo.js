@@ -122,7 +122,7 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
         	var fn = "";
         	if(currentId == assignee){
         		disabled = "";
-        		title = "";
+        		buttontitle = "";
         		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
         		context =
         		{

@@ -261,3 +261,30 @@ function startFlowAuto(){
 		}
 	});
 }
+function checkFlow(){
+	var processInstanceId="";
+	var buttontitle=$("#businessType").val();
+	if(businessType.length==0){
+		layer.msg("请填写业务类型，否则无法准确校验是哪个模板！");
+		return;
+	}
+	var businessId=$("#taskBusinessKey").val();
+	if(businessId.length==0){
+		layer.msg("请填写业务主键，否则无法确定需要校验哪一个业务！");
+		return;
+	}
+	var checkDate=App.checkFlow(serverPath,businessId,businessType);
+	
+	if (checkDate.success == 1) {
+		alert("允许创建工单，工单创建失败的流程实例id为："+checkDate.processInstanceId);
+		//1，先把工单创建失败的流程推下去
+		var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
+		modal_passBybuss(flowParam);
+		//2,启动新的流程
+		startBybussType();
+	} else {
+		alert(result.info);
+	};
+
+	
+}

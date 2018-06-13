@@ -74,7 +74,7 @@ function setBodyDocData(bodyDocData){
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",bodyDocData.storeId);
-			bodyDocHtml =  '<a href="'+serverPath+'contractUpload/downloadS3?key1='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
+			bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
 		}else{
 			$("#contractTextUploadBtn").text("添加");
 			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
@@ -107,16 +107,16 @@ $("#contractTextUploadBtn").on("click",function(){
 		var displayName = $("#contractText").data("displayname");
 		var setting = {
 			title : "正文上传",
-			url: 'contractUpload/uploadFile',
+			url: 'fileload/uploadFileS3',
 			maxNumber:1,
 			fileExtensions:["pdf"],
 			explain:'<i class="iconfont icon-mi required"></i>正文大小不能超过？M。（具体大小待确定）。</br>',
-			extraData:{attachId:attachId,displayName:displayName}
+			extraData:{displayName:displayName}
 		};
 		function queryCallback(){
 			var fileInfo = getFileItemInfo()[0].data;
 			$("#commomModal").modal("hide");
-			var bodyDocHtml =  '<a href="'+serverPath+'contractUpload/downloadS3?key1='+fileInfo+'">'+displayName+'</a>';
+			var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">'+displayName+'</a>';
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("删除");
@@ -135,7 +135,7 @@ function setAttachDocData(bodyDocData){
 			var bodyDocItem = bodyDocData[i];
 			var btnHtml = "";
 			if(bodyDocItem.storeId){
-				btnHtml = '<a href="'+serverPath+'contractUpload/downloadS3?key1='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+				btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.storeId+'">';
 			}else{
 				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
@@ -168,15 +168,20 @@ $("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){
 	var attachId = $(this).parents("tr").data("attachid");
 	var setting = {
 		title : "附件上传",
-		url: 'contractUpload/uploadFile',
-		maxNumber:1,
-		extraData:{attachId:attachId}
+		url: 'fileload/uploadFileS3',
+		maxNumber:1
+		//extraData:{attachId:attachId}
 	};
 	function queryCallback(){
 		var fileInfo = getFileItemInfo()[0].data;
 		$("#commomModal").modal("hide");
+<<<<<<< HEAD
 		var btnHtml = '<a href="'+serverPath+'contractUpload/downloadS3?key1='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 		dom.parents("tr").data("storeid",fileInfo);
+=======
+		var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+		dom.parents("tr").data("storeid",fileInfo.storeId);
+>>>>>>> fec4a384b630665f0873ba785f6beb6023442b4a
 		dom.parent("td").html(btnHtml);
 	}
 	App.getFileUploadModal(setting,queryCallback);

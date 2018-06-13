@@ -18,7 +18,6 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
-		<link rel="stylesheet" type="text/css" href="../css/workOrderActivate.css"/>
 		<title>工单激活</title>
 	</head>
 	<body>
@@ -50,11 +49,11 @@
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">承办人</span>
 										<input type="text" id="undertakeName" name="undertakeName" class="form-control"/>
-										<span class="input-group-addon" id="searchUndertaker" ><i class="iconfont icon-search"></i></span>
+										<span class="input-group-addon custorPoint" id="searchUndertaker" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
 								<div class="col-sm-4">
-									<div class="input-group">
+									<div class="input-group data-input-group2">
 										<span class="input-group-addon searchLableText">创建日期</span>
 										<input type="text" id="create_date_begin" name="create_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
@@ -70,7 +69,7 @@
 							</div>
 						</form>
 					</div>
-					<div class="toolbars" id="addBtn">
+					<div class="toolbars">
 						<button type="button" class="btn blue" onclick="exportResultExcel();"><i class="iconfont icon-export"></i> 导出Excel</button>
 					</div>
 					<table id="workOrderActivateListTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>

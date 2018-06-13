@@ -18,8 +18,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
-		<link rel="stylesheet" type="text/css" href="../css/workOrderHandle.css"/>
-		<title></title>
+		<title>工单处理</title>
 	</head>
 	<body>
 		<div class="page-content">
@@ -46,7 +45,7 @@
 									</div>
 								</div>
 								<div class="col-sm-4">
-									<div class="input-group">
+									<div class="input-group data-input-group2">
 										<span class="input-group-addon searchLableText">创建日期</span>
 										<input type="text" id="create_date_begin" name="create_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
@@ -55,7 +54,6 @@
                                         class="form-control" readonly="readonly" />
 									</div>
 								</div>
-								
 							</div>
 							<div class="page-search-action">
 								<div class="input-group">
@@ -65,7 +63,7 @@
 							</div>
 						</form>
 					</div>
-					<div class="toolbars" id="addBtn">
+					<div class="toolbars">
 						<button type="button" class="btn blue" onclick="manualCreation();"><i class="iconfont icon-add"></i>手工创建</button>
 						<button type="button" class="btn blue" onclick="exportResultExcel();"><i class="iconfont icon-export"></i> 导出Excel</button>
 					</div>

@@ -116,7 +116,7 @@ $("#contractTextUploadBtn").on("click",function(){
 		function queryCallback(){
 			var fileInfo = getFileItemInfo()[0].data;
 			$("#commomModal").modal("hide");
-			var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">'+displayName+'</a>';
+			var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">'+displayName+'</a>';
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("删除");
@@ -175,13 +175,8 @@ $("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){
 	function queryCallback(){
 		var fileInfo = getFileItemInfo()[0].data;
 		$("#commomModal").modal("hide");
-<<<<<<< HEAD
-		var btnHtml = '<a href="'+serverPath+'contractUpload/downloadS3?key1='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+		var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 		dom.parents("tr").data("storeid",fileInfo);
-=======
-		var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
-		dom.parents("tr").data("storeid",fileInfo.storeId);
->>>>>>> fec4a384b630665f0873ba785f6beb6023442b4a
 		dom.parent("td").html(btnHtml);
 	}
 	App.getFileUploadModal(setting,queryCallback);

@@ -22,27 +22,70 @@
 	<body>
 		<div class="page-content hidden">
 			<div class="portlet">
-				<div class="portlet-title">
-					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase wcardType"></span>
-					</div>
-					<div class="hidden contractPortletTitle">
-						工单编号：<span class="wcardNumber"></span>	
-						状态：<span class="wcardStatus"></span>
-					</div>
-				</div>
 				<div class="portlet-body">
-					<form action="" id="workOrderContentForm">
-						<div id="flowNote" class="note note-info">
-                        	<span><span class="label label-info" id="flowLable"></span><span class="wcardType"></span></span>
-                        	<div class="hidden contractPortletTitle">
-								工单编号：<span class="wcardNumber"></span>	
-								状态：<span class="wcardStatus"></span>
+					<div id="flowNote" class="note note-info">
+                    	<span><span class="label label-info" id="flowLable">工单创建</span>工单自动创建失败，请手动点击尝试创建</span>
+                    	<div class="hidden contractPortletTitle">
+							工单编号：<span class="wcardNumber"></span>	
+							状态：<span class="wcardStatus"></span>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 创建生效合同结构化数据工单</span>
+							<div class="form-fieldset-tools">
+								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 							</div>
 						</div>
-						<div id="workOrderContent"></div>
-				        <ul id="workOrderMenu"></ul>
-					</form>
+						<div class="form-fieldset-body">
+							<form action="" id="contractBaseInfo">
+							<div class="row defaultFieldsetForm">
+								<div class="col-sm-6 form-group">
+									<label for="contractNumber" class="control-label">合同编号：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="contractNumber" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="contractName" class="control-label">合同名称：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="contractName" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="ourPartyName" class="control-label">我方主体：</label>
+									<div class="valiParent">
+										<div id="ourPartyName" class="divInput"></div>
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="otherPartyName" class="control-label">对方主体：</label>
+									<div class="valiParent otherPartyParent">
+										<div id="otherPartyName" class="divInput"></div>
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="executeDeptName" class="control-label">承办人：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="executeDeptName" name="executeDeptName" disabled="disabled" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="executeDeptName" class="control-label">承办部门：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="executeDeptName" name="executeDeptName" disabled="disabled" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="executeDeptName" class="control-label">审批通过时间：</label>
+									<div class="valiParent">
+										<input type="text" class="form-control" name="approveDate" disabled="disabled" />
+									</div>
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

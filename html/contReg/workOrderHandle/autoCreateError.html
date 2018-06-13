@@ -39,8 +39,8 @@
 								<div class="col-sm-6 form-group">
 									<label for="contractNumber" class="control-label">合同编号：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" name="contractNumber" disabled="" />
-										<input type="hidden" class="form-control" name="contractId" />
+										<input type="text" class="form-control" id="contractNumber" name="contractNumber" disabled="" />
+										<input type="hidden" class="form-control" id="contractId" name="contractId" />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
@@ -80,8 +80,8 @@
 									</div>
 								</div>
 								<div class="col-sm-12 form-group align-center">
-									<button type="button" class="btn red sm-12-btn"><span class="letterSpace">创</span>建</button>
-								</div><!--letter-spacing-->
+									<button type="button" onclick="createWorkOrder()" class="btn red sm-12-btn"><span class="letterSpace">创</span>建</button>
+								</div>
 							</div>
 							</form>
 						</div>

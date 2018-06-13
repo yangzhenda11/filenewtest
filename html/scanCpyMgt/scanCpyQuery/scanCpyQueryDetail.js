@@ -56,29 +56,23 @@ $(function() {
  * 获取合同信息
  */
 function getContractInfo(){
-	$.ajax({
-		url : serverPath + 'contractUpload/getContractById?id='+id,
-        type : "post",
-        success : function(result) {
-        	var data = result.data;
-        	if(data){
-        		$("#contractNumber").val(data.contractNumber);
-	        	$("#undertakeName").val(data.undertakeName);
-	        	$("#undertakePhone").val(data.undertakePhone);
-	        	$("#undertakeMobile").val(data.undertakeMobile);
-	        	$("#contractName").val(data.contractName);
-	        	$("#executeDeptName").val(data.executeDeptName);
-	        	$("#unicomPartyName").text(data.unicomPartyName);
-	        	$("#oppoPartyName").text(data.oppoPartyName);
-				$("#contractType").html(data.contractType);
-        	}else{
-        		layer.msg("暂无合同信息");
-        	}
-        },
-		error: function(result) {
-			App.ajaxErrorCallback(result);
+	App.formAjaxJson(serverPath + "contractUpload/getContractById?id="+id, "post", null, successCallback);
+	function successCallback(result){
+		var data = result.data;
+		if(data){
+			$("#contractNumber").val(data.contractNumber);
+        	$("#undertakeName").val(data.undertakeName);
+        	$("#undertakePhone").val(data.undertakePhone);
+        	$("#undertakeMobile").val(data.undertakeMobile);
+        	$("#contractName").val(data.contractName);
+        	$("#executeDeptName").val(data.executeDeptName);
+        	$("#unicomPartyName").text(data.unicomPartyName);
+        	$("#oppoPartyName").text(data.oppoPartyName);
+			$("#contractType").html(data.contractType);
+		}else{
+			layer.msg("合同基本信息为空，请联系管理员");
 		}
-	});
+	}
 }
 //返回上一页
 function backPage(){

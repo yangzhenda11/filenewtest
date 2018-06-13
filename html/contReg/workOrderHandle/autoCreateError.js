@@ -4,9 +4,8 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var isLoad = false;					//全局加载成功标识位
-var wcardId = parm.businessKey;			//工单主键ID
-var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
-
+var id = parm.businessKey;			//工单主键ID
+console.log(parm);
 
 $(function() {
 	if(parm.pageType == 1) {		//工作流页面进入

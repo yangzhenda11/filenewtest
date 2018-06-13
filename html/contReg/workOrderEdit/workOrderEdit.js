@@ -869,7 +869,7 @@ function exmportTemplate(parm){
 	var postData = {
 		templateCode: parm
 	};
-	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "get", postData, successCallback);
 	function successCallback(result) {
 		var key = result.data;
 		alert(key);

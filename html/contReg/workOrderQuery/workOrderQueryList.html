@@ -20,8 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
-		<link rel="stylesheet" type="text/css" href="../css/workOrderQuery.css"/>
-		<title></title>
+		<title>工单综合查询</title>
 	</head>
 	<body>
 		<div class="page-content">
@@ -107,17 +106,7 @@
 										</div>
 									</div>
 									<div class="col-sm-4">
-										<div class="input-group">
-											<span class="input-group-addon searchLableText">合同审批通过日期</span>
-											<input type="text" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        		class="form-control" readonly="readonly" />
-                                        	<span class="input-group-addon searchLableText" >至</span>
-                                        	<input type="text" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                        		class="form-control" readonly="readonly" />
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="input-group">
+										<div class="input-group data-input-group">
 											<span class="input-group-addon searchLableText">工单创建日期</span>
 											<input type="text" id="create_date_begin" name="create_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                        	 		class="form-control" readonly="readonly" />
@@ -127,11 +116,21 @@
 										</div>
 									</div>
 									<div class="col-sm-4">
-										<div class="input-group">
+										<div class="input-group data-input-group">
 											<span class="input-group-addon searchLableText">签订盖章日期</span>
 											<input type="text" id="sealAndSign_date_begin" name="sealAndSign_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
                                         	<span class="input-group-addon searchLableText" >至</span>
                                         	<input type="text" id="sealAndSign_date_end" name="sealAndSign_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+										</div>
+									</div>
+									<div class="col-sm-5">
+										<div class="input-group data-input-group2">
+											<span class="input-group-addon searchLableText">合同审批通过日期</span>
+											<input type="text" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        		class="form-control" readonly="readonly" />
+                                        	<span class="input-group-addon searchLableText" >至</span>
+                                        	<input type="text" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        		class="form-control" readonly="readonly" />
 										</div>
 									</div>
 								</div>

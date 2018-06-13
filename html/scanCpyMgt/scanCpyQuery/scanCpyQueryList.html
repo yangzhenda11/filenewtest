@@ -18,7 +18,6 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
-		<link rel="stylesheet" type="text/css" href="../css/scanCpyQuery.css"/>
 		<title>合同扫描件查询</title>
 	</head>
 	<body>
@@ -50,36 +49,36 @@
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">对方主体</span>
 										<input type="text" id="oppoPartyName" name="oppoPartyName" class="form-control"/>
-										<span class="input-group-addon" id="searchOppoParty" ><i class="iconfont icon-search"></i></span>
+										<span class="input-group-addon custorPoint" id="searchOppoParty" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">我方主体</span>
 										<input type="text" id="unicomPartyName" name="unicomPartyName" class="form-control"/>
-										<span class="input-group-addon" id="searchUnicomParty" ><i class="iconfont icon-search"></i></span>
+										<span class="input-group-addon custorPoint" id="searchUnicomParty" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">承办部门</span>
 										<input type="text" id="executeDeptName" name="executeDeptName" class="form-control"/>
-										<span class="input-group-addon" id="searchexecuteDept" ><i class="iconfont icon-search"></i></span>
+										<span class="input-group-addon custorPoint" id="searchexecuteDept" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">承办人</span>
 										<input type="text" id="undertakeName" name="undertakeName" class="form-control"/>
-										<span class="input-group-addon" id="searchUndertaker" ><i class="iconfont icon-search"></i></span>
+										<span class="input-group-addon custorPoint" id="searchUndertaker" ><i class="iconfont icon-search"></i></span>
 									</div>
 								</div>
 								<div class="col-sm-4">
-									<div class="input-group">
+									<div class="input-group data-input-group">
 										<span class="input-group-addon searchLableText">审批通过日期</span>
 										<input type="text" id="approve_date_begin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
-                                        <span class="input-group-addon searchLableText" >-</span>
+                                        <span class="input-group-addon searchLableText" >至</span>
                                         <input type="text" id="approve_date_end" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
                                         class="form-control" readonly="readonly" />
 									</div>

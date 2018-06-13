@@ -94,7 +94,7 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
 		}
 	},
 	columns: [// 对应列
-		{"data": "title","title":"待办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(20, true)},
+		{"data": "title","title":"待办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(30, true)},
         {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
         {"data": "name","title":"环节名称",className: "text-center"},
         {"data": "createTime","title":"接收时间",className: "text-center", 

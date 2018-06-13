@@ -295,8 +295,14 @@
 /*
  * 预定义字段
  */
+.col-offset-5{
+	margin-left: 5%;
+}
 .overflow-hidden{
 		overflow: hidden;
+}
+.align-center{
+	text-align: center;
 }
 .align-right{
     text-align: right;
@@ -332,7 +338,41 @@ button:focus{
 .fullWidth{
 	width: 100%;
 }
+.sm-12-btn{
+	width: 200px;
+	text-align: center;
+}
+.sm-12-btn .letterSpace{
+	margin-right: 15px;
+}
+/*
+ * 日期数据居中且无padding
+ */
+/*六个字*/
+.data-input-group span{
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.data-input-group input{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
+/*四个字*/
+.data-input-group2 input{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
 
+/*
+ * 工具栏按钮间隙
+ */
+.toolbars button{
+	margin-right: 8px;
+}
 /*
  * table下的ui-radio ui-checkbox
  */

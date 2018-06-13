@@ -26,7 +26,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 				   }
 		},
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-        {"data": "contractNumber","title": "合同编号"},
+        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"15%"},
         {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"13%"},
         {"data": "undertakerId","bVisible":false,"title": "承办人"},
         {"data": "undertakeName","title": "承办人"},
@@ -47,7 +47,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"className": "text-center",
 			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
-				var downloadUrl = serverPath+"contractUpload/downloadContractText?id=" + full.id;
+				var downloadUrl = serverPath+"downloadRedirect/downloadContractText?id=" + full.id;
 				var result = '<a href="'+downloadUrl+'"">正文下载</a>';
 				return result;
 			}

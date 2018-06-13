@@ -1245,7 +1245,7 @@ function permissionConfiguration(staffOrgId) {
 }
 //获取配置信息
 function getPermission(staffOrgId){
-    App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffOrgId, "get", "", successCallback);
+    App.formAjaxJson(parent.globalConfig.serverPath +'staffs/staffOrgId' + staffOrgId, "get", "", successCallback);
     function successCallback(result) {
         var data = result.data;
         if(data){

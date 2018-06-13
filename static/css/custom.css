@@ -332,7 +332,14 @@ button:focus{
 .fullWidth{
 	width: 100%;
 }
-
+/*
+ * 日期数据居中且无padding
+ */
+.dataInput{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+}
 /*
  * table下的ui-radio ui-checkbox
  */

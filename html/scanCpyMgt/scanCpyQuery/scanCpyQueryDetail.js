@@ -19,7 +19,7 @@ $(function() {
 			var html = "";
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
-				if(data[i].storeIdDisplay){
+				if(data[i].storeIdDisplay && data[i].storeIdDisplay != "0"){
 					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
@@ -40,7 +40,7 @@ $(function() {
 			var html = "";
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
-				if(data[i].storeIdDisplay){
+				if(data[i].storeIdDisplay && data[i].storeIdDisplay != "0"){
 					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";

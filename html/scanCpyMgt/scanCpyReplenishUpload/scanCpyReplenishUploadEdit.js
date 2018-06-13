@@ -75,7 +75,7 @@ function getReplenishContractInfo(){
 function setBodyDocData(bodyDocData){
 	if(bodyDocData){
 		var bodyDocHtml = "";
-		if(bodyDocData.storeId){
+		if(bodyDocData.storeId && bodyDocData.storeId != "0"){
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",bodyDocData.storeId);
@@ -139,7 +139,7 @@ function setAttachDocData(bodyDocData){
 		for(var i = 0; i < bodyDocData.length; i++){
 			var bodyDocItem = bodyDocData[i];
 			var btnHtml = "";
-			if(bodyDocItem.storeId){
+			if(bodyDocItem.storeId && bodyDocItem.storeId != "0"){
 				btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.storeId+'">';
 			}else{

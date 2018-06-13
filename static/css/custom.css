@@ -295,6 +295,9 @@
 /*
  * 预定义字段
  */
+.col-offset-5{
+	margin-left: 5%;
+}
 .overflow-hidden{
 		overflow: hidden;
 }

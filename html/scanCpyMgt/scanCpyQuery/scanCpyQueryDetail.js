@@ -68,7 +68,7 @@ function getContractInfo(){
         	$("#executeDeptName").val(data.executeDeptName);
         	$("#unicomPartyName").text(data.unicomPartyName);
         	$("#oppoPartyName").text(data.oppoPartyName);
-			$("#contractType").html(data.contractType);
+			$("#contractType").text(data.contractType);
 		}else{
 			layer.msg("合同基本信息为空，请联系管理员");
 		}

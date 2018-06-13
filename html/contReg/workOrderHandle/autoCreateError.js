@@ -18,7 +18,7 @@ $(function() {
  * 获取合同信息
  */
 function getContractBaseInfo(){
-	App.formAjaxJson(serverPath + "contractBaseInfo/getContractById?id="+1, "post", null, successCallback);
+	App.formAjaxJson(serverPath + "contractBaseInfo/getContractById?id="+contractId, "post", null, successCallback);
 	function successCallback(result){
 		var data = result.data;
 		if(data){

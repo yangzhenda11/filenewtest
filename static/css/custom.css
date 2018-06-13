@@ -353,17 +353,7 @@ button:focus{
 	text-align: center;
 	cursor: pointer;
 }
-/*八个字*/
-.data-input-group3 span{
-	padding-left: 5px;
-	padding-right: 5px;
-}
-.data-input-group3 input{
-	padding-left: 0;
-	padding-right: 0;
-	text-align: center;
-	cursor: pointer;
-}
+
 /*
  * 工具栏按钮间隙
  */

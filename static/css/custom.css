@@ -335,10 +335,40 @@ button:focus{
 /*
  * 日期数据居中且无padding
  */
-.dataInput{
+/*六个字*/
+.data-input-group span{
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.data-input-group input{
 	padding-left: 0;
 	padding-right: 0;
 	text-align: center;
+	cursor: pointer;
+}
+/*四个字*/
+.data-input-group2 input{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
+/*八个字*/
+.data-input-group3 span{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.data-input-group3 input{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
+/*
+ * 工具栏按钮间隙
+ */
+.toolbars button{
+	margin-right: 8px;
 }
 /*
  * table下的ui-radio ui-checkbox

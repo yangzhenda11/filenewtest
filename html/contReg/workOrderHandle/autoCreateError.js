@@ -1,11 +1,10 @@
-//当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项
+//当前页面参数获取
 var parm = App.getPresentParm();
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var isLoad = false;					//全局加载成功标识位
 var id = parm.businessKey;			//主键ID
-console.log(parm);
 
 $(function() {
 	$(".page-content,.portlet-body").css("padding", '0px');
@@ -25,6 +24,10 @@ function getContractBaseInfo(){
 		if(data){
 			var valueCallback = {'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
 			App.setFormValues("#contractBaseInfo",data,valueCallback);
+			var unicomPartyName = data.unicomPartyName == null ? "" : data.unicomPartyName;
+			var partyName = data.partyName == null ? "" : data.partyName;
+			$("#unicomPartyName").text(unicomPartyName);
+			$("#partyName").text(partyName);
 		}else{
 			parent.layer.msg("合同基本信息为空，请联系管理员");
 		}

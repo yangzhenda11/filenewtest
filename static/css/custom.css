@@ -298,6 +298,9 @@
 .overflow-hidden{
 		overflow: hidden;
 }
+.align-center{
+	text-align: center;
+}
 .align-right{
     text-align: right;
 }
@@ -331,6 +334,13 @@ button:focus{
 }
 .fullWidth{
 	width: 100%;
+}
+.sm-12-btn{
+	width: 200px;
+	text-align: center;
+}
+.sm-12-btn .letterSpace{
+	margin-right: 15px;
 }
 /*
  * 日期数据居中且无padding

@@ -16,7 +16,6 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/workOrderEdit.css"/>
 	</head>
 
 	<body>
@@ -24,7 +23,7 @@
 			<div class="portlet">
 				<div class="portlet-body">
 					<div id="flowNote" class="note note-info">
-                    	<span><span class="label label-info" id="flowLable">工单创建</span>工单自动创建失败，请手动点击尝试创建</span>
+                    	<span><span class="label label-info" style="margin-right: 10px;">工单创建</span>工单自动创建失败，请手动点击尝试创建。</span>
                     	<div class="hidden contractPortletTitle">
 							工单编号：<span class="wcardNumber"></span>	
 							状态：<span class="wcardStatus"></span>
@@ -33,9 +32,6 @@
 					<div class="form-fieldset">
 						<div class="form-fieldset-title">
 							<span><i class="iconfont icon-layers"></i> 创建生效合同结构化数据工单</span>
-							<div class="form-fieldset-tools">
-								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
-							</div>
 						</div>
 						<div class="form-fieldset-body">
 							<form action="" id="contractBaseInfo">
@@ -43,45 +39,49 @@
 								<div class="col-sm-6 form-group">
 									<label for="contractNumber" class="control-label">合同编号：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" name="contractNumber" />
+										<input type="text" class="form-control" name="contractNumber" disabled="" />
+										<input type="hidden" class="form-control" name="contractId" />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
 									<label for="contractName" class="control-label">合同名称：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" name="contractName" />
+										<input type="text" class="form-control" name="contractName" disabled=""  />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="ourPartyName" class="control-label">我方主体：</label>
+									<label for="unicomPartyName" class="control-label">我方主体：</label>
 									<div class="valiParent">
-										<div id="ourPartyName" class="divInput"></div>
+										<div id="unicomPartyName" class="divInput"></div>
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="otherPartyName" class="control-label">对方主体：</label>
+									<label for="partyName" class="control-label">对方主体：</label>
 									<div class="valiParent otherPartyParent">
-										<div id="otherPartyName" class="divInput"></div>
+										<div id="partyName" class="divInput"></div>
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="executeDeptName" class="control-label">承办人：</label>
+									<label for="undertakeName" class="control-label">承办人：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" id="executeDeptName" name="executeDeptName" disabled="disabled" />
+										<input type="text" class="form-control" name="undertakeName" disabled=""  />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
 									<label for="executeDeptName" class="control-label">承办部门：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" id="executeDeptName" name="executeDeptName" disabled="disabled" />
+										<input type="text" class="form-control" name="executeDeptName" disabled=""  />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="executeDeptName" class="control-label">审批通过时间：</label>
+									<label for="approveDate" class="control-label">审批通过时间：</label>
 									<div class="valiParent">
-										<input type="text" class="form-control" name="approveDate" disabled="disabled" />
+										<input type="text" class="form-control" name="approveDate" disabled=""  />
 									</div>
 								</div>
+								<div class="col-sm-12 form-group align-center">
+									<button type="button" class="btn red sm-12-btn"><span class="letterSpace">创</span>建</button>
+								</div><!--letter-spacing-->
 							</div>
 							</form>
 						</div>
@@ -89,8 +89,6 @@
 				</div>
 			</div>
 		</div>
-    	<!--公共modal-->
-    	<div class="modal fade" id="commomModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
 		  	<script src="../../../static/plugins/html5shiv.min.js"></script>
 		  	<script src="../../../static/plugins/respond.min.js"></script>
@@ -104,17 +102,7 @@
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
-		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/ChinaNumToEnglishNum.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="autoCreateError.js" type="text/javascript" charset="utf-8"></script>
 	</body>

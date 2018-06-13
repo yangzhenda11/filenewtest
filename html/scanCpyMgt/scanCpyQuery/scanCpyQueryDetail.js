@@ -7,6 +7,9 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 
 $(function() {
+	//获取合同信息
+	getContractInfo();
+	
 	//获取合同正文扫描件
     App.formAjaxJson(serverPath+'contractScanQuery/listContractText?id='+id, "POST", null, listContractTextSuccess);
 
@@ -48,24 +51,29 @@ $(function() {
 			$("#contractAttachmentTbody").html(html);
 		}
 	};
-	getContractInfo();
 })
-
+/*
+ * 获取合同信息
+ */
 function getContractInfo(){
 	$.ajax({
 		url : serverPath + 'contractUpload/getContractById?id='+id,
         type : "post",
         success : function(result) {
         	var data = result.data;
-        	$("#contractNumber").val(data.contractNumber);
-        	$("#undertakeName").val(data.undertakeName);
-        	$("#undertakePhone").val(data.undertakePhone);
-        	$("#undertakeMobile").val(data.undertakeMobile);
-        	$("#contractName").val(data.contractName);
-        	$("#executeDeptName").val(data.executeDeptName);
-        	$("#unicomPartyName").text(data.unicomPartyName);
-        	$("#oppoPartyName").text(data.oppoPartyName);
-			$("#contractType").html(data.contractType);
+        	if(data){
+        		$("#contractNumber").val(data.contractNumber);
+	        	$("#undertakeName").val(data.undertakeName);
+	        	$("#undertakePhone").val(data.undertakePhone);
+	        	$("#undertakeMobile").val(data.undertakeMobile);
+	        	$("#contractName").val(data.contractName);
+	        	$("#executeDeptName").val(data.executeDeptName);
+	        	$("#unicomPartyName").text(data.unicomPartyName);
+	        	$("#oppoPartyName").text(data.oppoPartyName);
+				$("#contractType").html(data.contractType);
+        	}else{
+        		layer.msg("暂无合同信息");
+        	}
         },
 		error: function(result) {
 			App.ajaxErrorCallback(result);

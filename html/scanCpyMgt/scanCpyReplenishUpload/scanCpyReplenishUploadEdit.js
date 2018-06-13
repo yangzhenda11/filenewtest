@@ -29,19 +29,24 @@ $(function() {
  * 获取合同基本信息
  */
 function getContractInfo(){
-	var url = serverPath + "contractUpload/getContractById?id=" + scandocId;
+	var url = serverPath + "contractUpload/getContractById?id=" + 1;
 	App.formAjaxJson(url, "post", null, successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		$("#contractNumber").val(data.contractNumber);
-    	$("#undertakeName").val(data.undertakeName);
-    	$("#undertakePhone").val(data.undertakePhone);
-    	$("#undertakeMobile").val(data.undertakeMobile);
-    	$("#contractName").val(data.contractName);
-    	$("#executeDeptName").val(data.executeDeptName);
-    	$("#unicomPartyName").text(data.unicomPartyName);
-    	$("#oppoPartyName").text(data.oppoPartyName);
-    	$("#contractType").text(data.contractType);
+		if(data){
+			$("#contractNumber").val(data.contractNumber);
+	    	$("#undertakeName").val(data.undertakeName);
+	    	$("#undertakePhone").val(data.undertakePhone);
+	    	$("#undertakeMobile").val(data.undertakeMobile);
+	    	$("#contractName").val(data.contractName);
+	    	$("#executeDeptName").val(data.executeDeptName);
+	    	$("#unicomPartyName").text(data.unicomPartyName);
+	    	$("#oppoPartyName").text(data.oppoPartyName);
+	    	$("#contractType").text(data.contractType);
+		}else{
+			layer.msg("暂无合同信息");
+		}
+
 	}
 } 
 /*
@@ -175,13 +180,8 @@ $("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){
 	function queryCallback(){
 		var fileInfo = getFileItemInfo()[0].data;
 		$("#commomModal").modal("hide");
-<<<<<<< HEAD
-		var btnHtml = '<a href="'+serverPath+'contractUpload/downloadS3?key1='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
-		dom.parents("tr").data("storeid",fileInfo);
-=======
 		var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 		dom.parents("tr").data("storeid",fileInfo.storeId);
->>>>>>> fec4a384b630665f0873ba785f6beb6023442b4a
 		dom.parent("td").html(btnHtml);
 	}
 	App.getFileUploadModal(setting,queryCallback);

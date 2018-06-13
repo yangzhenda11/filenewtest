@@ -31,14 +31,14 @@
 	}
 	
 	.fileImportChoose {
-		padding: 4px 10px;
+		padding: 4px 15px;
 		height: 32px;
 		line-height: 24px;
 		position: relative;
 		cursor: pointer;
-		color: #888;
-		background: #fafafa;
-		border: 1px solid #ddd;
+		color: #fff;
+		background: #e43a45;
+		border: 1px solid #e43a45;
 		border-radius: 4px;
 		overflow: hidden;
 		display: inline-block;
@@ -57,9 +57,9 @@
 	}
 	
 	.fileImportChoose:hover {
-		color: #444;
-		background: #eee;
-		border-color: #ccc;
+		color: #fff;
+		background: #e43a45;
+		border-color: #e43a45;
 		text-decoration: none
 	}
 	#fileImportName{
@@ -67,6 +67,17 @@
 	}
 	.fileImportBtn{
 		margin: 0 10px;
+	}
+	
+	.chooseImportFile{
+		border-color: #2e6da4;
+		color: #fff;
+		background: #337ab7;
+	}
+	.chooseImportFile:hover{
+		border-color: #2e6da4;
+		color: #fff;
+		background: #337ab7;
 	}
 </style>
 <div class="modal-dialog" role="document">
@@ -86,11 +97,25 @@
 						<div id="fileImportResult" class="hidden">
 							<a id="fileImportName"></a>
 							<button type="button" class="btn red fileImportBtn" onclick="fileImportPost()">导入</button>
-							<button type="button" class="btn red" onclick="resetFileImport()">删除</button>
+							<button type="button" class="btn yellow" onclick="resetFileImport()">重置</button>
 						</div>
 						
 					</div>
 				</div>
+				<!--<div class="form-group col-sm-12">
+					<label for="partnerCode" class="control-label">文件</label>
+					<div class="valiParent">
+						<div class="input-group">
+							<input type="text" id="fileInput" name="fileInput" disabled="disabled" class="form-control">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-repeat"></i>  重置</span>
+							<span class="input-group-addon"><i class="glyphicon glyphicon-upload"></i>  导入</span>
+							<div class="input-group-addon btn chooseImportFile"><i class="glyphicon glyphicon-folder-open"></i> 选择文件
+							<input type="file" name="file" id="file" class="hidden" accept="" />
+							</div>
+						</div>
+						
+					</div>
+				</div>-->
 				<div class="form-group col-sm-12 hidden" id="scheduleDiv">
 					<label for="partnerCode" class="control-label">进度</label>
 					<div class="valiParent">

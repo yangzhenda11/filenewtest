@@ -135,9 +135,7 @@
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				if($("#invoiceTbody .emptyTr")[0] != undefined){
-					$("#invoiceTbody .emptyTr").remove();
-				};
+				$("#invoiceTbody").html("");
 				isCreateInvoiceTrLength = data.length;
 				var selectHtml = "<option value=''>请选择</option>";
 				$.each(invoiceType, function(k,v) {
@@ -253,15 +251,55 @@
 	 * 开票信息导入
 	 */
 	function invoiceFileImport(){
+		var isAddInvoiceData = false;
+		$.each($("#invoiceTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				if($(v).data("id") == 100000){
+					isAddInvoiceData = true;
+					return true;
+				}
+			}
+		});
+		if(isAddInvoiceData){
+			if(parm.pageType == 1){
+				parent.layer.confirm("当前已手动新增过开票信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
+				  	parent.layer.close(index);
+				}, function(index){
+				  	parent.layer.close(index);
+				  	setInvoiceFileImport();
+				});
+			}else{
+				layer.confirm("当前已手动新增过开票信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
+				  	layer.close(index);
+				}, function(index){
+				  	layer.close(index);
+				  	setInvoiceFileImport();
+				});
+			}
+		}else{
+			setInvoiceFileImport();
+		}
+		
+	}
+	function setInvoiceFileImport(){
 		var setting = {
 			title: "开票信息导入",
 			url: 'contractOrderEditorController/importContractInvoiceExcel',
+			postfix: ["xlsx","xls"],
 			accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",				//导入文件类型
 			extraData: {wcardId:wcardId,contractNumber:contractNumber}
 		};
-		function successCallback(){
-			$("#commomModal").modal("hide");
+		function callback(result){
+			if(result.status == 1){
+				showLayerErrorMsg(result.message);
+				getInvoiceInfo();
+				$("#commomModal").modal("hide");
+			}else if(result.status == 3010){
+				showLayerErrorMsg(result.message);
+			}else{
+				showLayerErrorMsg(result.message,true);
+			}
 		}
-		App.getFileImportModal(setting,successCallback);
+		App.getFileImportModal(setting,callback);
 	}
 </script>

@@ -74,7 +74,7 @@ function setBodyDocData(bodyDocData){
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
 			$("#contractText").data("storeid",bodyDocData.storeId);
-			bodyDocHtml =  '<a href="/fileload/downloadS3?key='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
+			bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
 		}else{
 			$("#contractTextUploadBtn").text("添加");
 			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
@@ -116,7 +116,7 @@ $("#contractTextUploadBtn").on("click",function(){
 		function queryCallback(){
 			var fileInfo = getFileItemInfo()[0].data;
 			$("#commomModal").modal("hide");
-			var bodyDocHtml =  '<a href="/fileload/downloadS3?key='+fileInfo.storeId+'">'+displayName+'</a>';
+			var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">'+displayName+'</a>';
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractText").html(bodyDocHtml);
 			$("#contractTextUploadBtn").text("删除");
@@ -135,7 +135,7 @@ function setAttachDocData(bodyDocData){
 			var bodyDocItem = bodyDocData[i];
 			var btnHtml = "";
 			if(bodyDocItem.storeId){
-				btnHtml = '<a href="/fileload/downloadS3?key='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+				btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.storeId+'">';
 			}else{
 				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
@@ -175,7 +175,7 @@ $("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){
 	function queryCallback(){
 		var fileInfo = getFileItemInfo()[0].data;
 		$("#commomModal").modal("hide");
-		var btnHtml = '<a href="/fileload/downloadS3?key='+fileInfo.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+		var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 		dom.parents("tr").data("storeid",fileInfo.storeId);
 		dom.parent("td").html(btnHtml);
 	}

@@ -702,11 +702,19 @@ function srolloOffect(el,srolloParm){
  * 工作流页面parm.pageType == 1为父级页面提示异常
  * 其余当前页面提示异常
  */
-function showLayerErrorMsg(ms){
-	if(parm.pageType == 1){
-		parent.layer.msg(ms);
+function showLayerErrorMsg(ms,isAlert){
+	if(isAlert){
+		if(parm.pageType == 1){
+			parent.layer.alert(ms,{icon:2,title:"错误"});
+		}else{
+			layer.alert(ms,{icon:2,title:"错误"});
+		}
 	}else{
-		layer.msg(ms);
+		if(parm.pageType == 1){
+			parent.layer.msg(ms);
+		}else{
+			layer.msg(ms);
+		}
 	}
 }
 /*

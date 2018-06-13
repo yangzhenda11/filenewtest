@@ -17,7 +17,7 @@ $(function() {
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
 				if(data[i].storeIdDisplay){
-					html += "<td><a href='/fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
+					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};
@@ -38,7 +38,7 @@ $(function() {
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
 				if(data[i].storeIdDisplay){
-					html += "<td><a href='/fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
+					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].storeIdDisplay+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};

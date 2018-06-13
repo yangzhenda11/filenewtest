@@ -29,7 +29,7 @@ $(function() {
  * 获取合同基本信息
  */
 function getContractInfo(){
-	var url = serverPath + "contractUpload/getContractById?id=" + 1;
+	var url = serverPath + "contractUpload/getContractById?id=" + scandocId;
 	App.formAjaxJson(url, "post", null, successCallback);
 	function successCallback(result) {
 		var data = result.data;

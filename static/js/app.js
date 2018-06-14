@@ -2373,7 +2373,7 @@ var App = function() {
     				checkDate = result;
     			},
     			error: function(result) {
-    				layer.alert("接口错误", {icon: 2,title:"错误"});
+    				App.ajaxErrorCallback(result);
     			}
     		});
         	return checkDate;

@@ -28,13 +28,13 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
         {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"15%"},
         {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"13%"},
-        {"data": "undertakerId","bVisible":false,"title": "承办人"},
+//      {"data": "undertakerId","bVisible":false,"title": "承办人"},
         {"data": "undertakeName","title": "承办人"},
-        {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
+//      {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
         {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
-        {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
+//      {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"},
-		{"data": "id","bVisible":false,"title": "id"},
+//		{"data": "id","bVisible":false,"title": "id"},
         {
 	        "data": "approveDate",
 	        "title": "审批通过时间",
@@ -69,7 +69,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
     ],
 	"columnDefs": [{
    		"createdCell": function (td, cellData, rowData, row, col) {
-         	if ( col > 0 ) {
+         	if ( col > 0 && col < 9) {
            		$(td).attr("title", $(td).text())
          	}
    		}

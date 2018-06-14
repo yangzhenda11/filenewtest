@@ -216,7 +216,7 @@ function getContractUploadInfo(uploadStatus){
 	}else{
 		obj.bodyDoc = {
 			attachId : "",
-			storeId : ""
+			bodyDocStoreId : ""
 		};
 	}
 	obj.attachDoc = contractAttachmentList;

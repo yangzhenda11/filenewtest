@@ -1,8 +1,3 @@
-//主页面参数获取，判断是否为门户,若为门户加载全局信息
-var parentParm = App.getPresentParm(false,true);
-if(parentParm.pageType == 3){
-	App.getUserBaseInfo();
-}
 //系统的全局变量获取
 var parm = App.getPresentParm();
 var config = top.globalConfig;

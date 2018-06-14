@@ -612,14 +612,18 @@ function pushProcess(){
 	} else {
 		taskDefinitionKey = link.split(",")[0];
 	}
-	//if(!$("#assigneeDiv").is(":hidden")){
+//	if(!$("#assigneeDiv").is(":hidden")){
 		assignee = $("#assignee").val();
 		
-		if(assignee == null || assignee == '') {
-			layer.msg('请选择处理人！');
+//		if(assignee == null || assignee == '') {
+//			layer.msg('请选择处理人！');
+//			return;
+//		}
+//	}
+	if((assignee == null || assignee.length == 0||assignee=='')&&(taskDefinitionKey!='endevent1')) {
+			layer.msg('请选择处理人！',{time:1000});
 			return;
-		}
-	//}
+	}
 	
 	var comment = $("#comment").val();
 	if(comment.length == 0) {

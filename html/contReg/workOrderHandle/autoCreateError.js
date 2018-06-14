@@ -4,6 +4,11 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var isLoad = false;					//全局加载成功标识位
 var contractId = parm.businessKey;			//主键ID
+//隐藏保存和通过按钮
+parent.showOrhideButton("saveButton",false);
+parent.showOrhideButton("passButton",false);
+//增加创建按钮
+parent.addCustomBt("cjgdButton","创建","createWorkOrder");
 $(function() {
 	$(".page-content,.portlet-body").css("padding", '0px');
 	$(".portlet").css("cssText", "border:none !important;padding:0px");
@@ -21,17 +26,16 @@ function getContractBaseInfo(){
 		var data = result.data;
 		if(data){
 			isLoad = true;
-			var valueCallback = {'unicomPartyName':function(value){
-				value = value.replace(",","\n");
-				return value;
-			},'unicomPartyName':function(value){
-				value = value.replace(",","\n");
-				return value;
-			},
-				'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+			var valueCallback = {'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
 			App.setFormValues("#contractBaseInfo",data,valueCallback);
-			var unicomPartyName = data.unicomPartyName == null ? "" : data.unicomPartyName;
-			var partyName = data.partyName == null ? "" : data.partyName;
+			var unicomPartyName = "";
+			var partyName = "";
+			if(data.unicomPartyName){
+				unicomPartyName = data.unicomPartyName.replace(",","\n");
+			};
+			if(data.partyName){
+				partyName = data.partyName.replace(",","\n");
+			};
 			$("#unicomPartyName").html(unicomPartyName);
 			$("#partyName").html(partyName);
 		}else{

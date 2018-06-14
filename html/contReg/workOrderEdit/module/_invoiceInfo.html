@@ -9,7 +9,7 @@
 		<div class="row" id="invoiceInfoContent">
 			<div class="portlet-body">
 				<div class="tableToobarContent hidden" id="invoiceInfoToolbar">
-					<button class="btn red" type="button" onclick="addInvoiceTr()"><i class="iconfont icon-add"></i> 新增</button>
+					<button class="btn red" type="button" onclick="addInvoiceTableTr()"><i class="iconfont icon-add"></i> 新增</button>
 					<button class="btn red" type="button" onclick="delectsInvoiceTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
 					<button class="btn red" type="button" onclick="exmportTemplate('workcard_invoice')"><i class="iconfont icon-export"></i> 下载模板</button>
 					<button class="btn red" type="button" onclick="invoiceFileImport()"><i class="iconfont icon-import"></i> 导入</button>
@@ -112,6 +112,7 @@
 	var isCreateInvoiceTrLength = 0;
 	//获取开票信息字典值
 	var invoiceType = new Object();
+	var invoiceTypeSelectHtml = "";
 	getInvoiceDict();
 	//获取开票信息
 	getInvoiceInfo();
@@ -122,6 +123,10 @@
 	 */
 	function getInvoiceDict() {
 		invoiceType = App.getDictInfo(9025);
+		invoiceTypeSelectHtml = "<option value=''>请选择</option>";
+		$.each(invoiceType, function(k,v) {
+			invoiceTypeSelectHtml += "<option value='"+ k +"'>"+ v +"</option>";
+		});
 	}
 	
 	/*
@@ -135,29 +140,8 @@
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				$("#invoiceTbody").html("");
-				isCreateInvoiceTrLength = data.length;
-				var selectHtml = "<option value=''>请选择</option>";
-				$.each(invoiceType, function(k,v) {
-					selectHtml += "<option value='"+ k +"'>"+ v +"</option>";
-				});
 				for(var i = 0; i < data.length; i++){
-					var invoiceTitleName = "invoiceTitle"+i;
-					var invoiceTypeName = "invoiceType"+i;
-					var appendHtml = "<tr data-id='"+ data[i].invoiceId +"'>"+
-										"<td class='invoiceTableEdit'><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
-										"<td class='orderNumber'></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ data[i].invoiceTitle +"' maxlength='240' /></div></td>"+
-										"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"' >"+ selectHtml +"</select></div></td>"+
-										"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
-									"</tr>";
-					$("#invoiceTbody").append(appendHtml);
-					App.initFormSelect2("."+invoiceTypeName);
-					$("select[name='"+invoiceTypeName+"']").val(data[i].invoiceType).trigger("change");
-					addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
-					addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
-					addInvoiceTableSort();
-					App.checkAllFn("#invocieCheckAll","invoiceCheck");
+					addInvoiceTableTr(data[i]);
 				};
 			};
 			/*
@@ -172,28 +156,33 @@
 		}
 	}
 	/*
-	 * 新增点击
+	 * 增加处理
 	 */
-	function addInvoiceTr(){
+	function addInvoiceTableTr(data){
 		if($("#invoiceTbody .emptyTr")[0] != undefined){
 			$("#invoiceTbody .emptyTr").remove();
+		};
+		var invoiceId = "100000";
+		var invoiceTitleVal = '';
+		if(data){
+			invoiceId = data.invoiceId ? data.invoiceId : "100000";
+			invoiceTitleVal = data.invoiceTitle;
 		}
 		isCreateInvoiceTrLength++;
 		var invoiceTitleName = "invoiceTitle" + isCreateInvoiceTrLength;
 		var invoiceTypeName = "invoiceType" + isCreateInvoiceTrLength;
-		var selectHtml = "<option value=''>请选择</option>";
-		$.each(invoiceType, function(k,v) {
-			selectHtml += "<option value='"+ k +"'>"+ v +"</option>";
-		});
-		var appendHtml = "<tr data-id='100000'>"+
-							"<td><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
+		var appendHtml = "<tr data-id='"+invoiceId+"'>"+
+							"<td class='invoiceTableEdit'><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
 							"<td class='orderNumber'></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' maxlength='240' /></div></td>"+
-							"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"'>"+ selectHtml +"</select></div></td>"+
-							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='请输入发票抬头' value='"+ invoiceTitleVal +"' maxlength='240' /></div></td>"+
+							"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='请选择发票类型' name='"+ invoiceTypeName +"'>"+ invoiceTypeSelectHtml +"</select></div></td>"+
+							"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#invoiceTbody").append(appendHtml);
 		App.initFormSelect2("."+invoiceTypeName);
+		if(data){
+			$("select[name='"+invoiceTypeName+"']").val(data.invoiceType).trigger("change");
+		}
 		addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
 		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
 		addInvoiceTableSort();
@@ -251,37 +240,6 @@
 	 * 开票信息导入
 	 */
 	function invoiceFileImport(){
-		var isAddInvoiceData = false;
-		$.each($("#invoiceTbody tr"),function(k,v){
-			if(!$(v).hasClass("emptyTr")){
-				if($(v).data("id") == 100000){
-					isAddInvoiceData = true;
-					return true;
-				}
-			}
-		});
-		if(isAddInvoiceData){
-			if(parm.pageType == 1){
-				parent.layer.confirm("当前已手动新增过开票信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
-				  	parent.layer.close(index);
-				}, function(index){
-				  	parent.layer.close(index);
-				  	setInvoiceFileImport();
-				});
-			}else{
-				layer.confirm("当前已手动新增过开票信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
-				  	layer.close(index);
-				}, function(index){
-				  	layer.close(index);
-				  	setInvoiceFileImport();
-				});
-			}
-		}else{
-			setInvoiceFileImport();
-		}
-		
-	}
-	function setInvoiceFileImport(){
 		var setting = {
 			title: "开票信息导入",
 			url: 'contractOrderEditorController/importContractInvoiceExcel',
@@ -291,8 +249,14 @@
 		};
 		function callback(result){
 			if(result.status == 1){
-				showLayerErrorMsg(result.message);
-				getInvoiceInfo();
+				var data = result.data;
+				var length = data.length;
+				if(length > 0){
+					for(var i = 0; i < length; i++){
+						addInvoiceTableTr(data[i]);
+					}
+				};
+				layer.msg("成功导入"+length+"条开票信息");
 				$("#commomModal").modal("hide");
 			}else if(result.status == 3010){
 				showLayerErrorMsg(result.message);

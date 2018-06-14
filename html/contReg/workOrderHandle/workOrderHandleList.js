@@ -52,7 +52,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
     ],
 	"columnDefs": [{
    		"createdCell": function (td, cellData, rowData, row, col) {
-         	if ( col > 0 ) {
+         	if ( col > 0 && col < 6) {
            		$(td).attr("title", $(td).text())
          	}
    		}

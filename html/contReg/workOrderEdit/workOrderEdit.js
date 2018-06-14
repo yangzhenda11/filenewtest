@@ -798,8 +798,15 @@ function removeMoreThanTablecontent(){
 function saveContent(){
 	if(parm.taskDefinitionKey == "GDQR"){
 		var submitData = {};
+		var adminCommitment = $("input[name='adminCommitment']:checked").val();
+		if(!adminCommitment){
+			adminCommitment = 0;
+		};
 		submitData.wcardId = wcardId;
-		submitData.validity = getValue_validity();
+		submitData.validity = {};
+		submitData.validity.adminCommitment = adminCommitment;
+		submitData.validity.validityId = $("#validityId").val();
+		submitData.validity.contractNumber = contractNumber;
 		if($("#contractScanCopyUpload")[0]){
 			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
     	};

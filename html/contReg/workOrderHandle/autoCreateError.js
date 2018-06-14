@@ -18,21 +18,33 @@ $(function() {
  * 获取合同信息
  */
 function getContractBaseInfo(){
-	App.formAjaxJson(serverPath + "contractBaseInfo/getContractById?id="+contractId, "post", null, successCallback);
-	function successCallback(result){
-		var data = result.data;
-		if(data){
-			isLoad = true;
-			var valueCallback = {'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
-			App.setFormValues("#contractBaseInfo",data,valueCallback);
-			var unicomPartyName = data.unicomPartyName == null ? "" : data.unicomPartyName;
-			var partyName = data.partyName == null ? "" : data.partyName;
-			$("#unicomPartyName").text(unicomPartyName);
-			$("#partyName").text(partyName);
-		}else{
-			parent.layer.msg("合同基本信息为空，请联系管理员");
+	$.ajax({
+		url:serverPath + "contractBaseInfo/getContractById?id="+contractId,
+        type:"post",
+        //data:{"contractNumber":$("#contractNumber").val(),"contractId":$("#contractId").val()},
+        success:function(data) {
+			console.log(data);
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
 		}
-	}
+	});
+	
+//	App.formAjaxJson(serverPath + "contractBaseInfo/getContractById?id="+contractId, "post", null, successCallback);
+//	function successCallback(result){
+//		var data = result.data;
+//		if(data){
+//			isLoad = true;
+//			var valueCallback = {'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+//			App.setFormValues("#contractBaseInfo",data,valueCallback);
+//			var unicomPartyName = data.unicomPartyName == null ? "" : data.unicomPartyName;
+//			var partyName = data.partyName == null ? "" : data.partyName;
+//			$("#unicomPartyName").text(unicomPartyName);
+//			$("#partyName").text(partyName);
+//		}else{
+//			parent.layer.msg("合同基本信息为空，请联系管理员");
+//		}
+//	}
 }
 /*
  * 创建工单
@@ -42,7 +54,7 @@ function createWorkOrder(){
 		$.ajax({
 			url:serverPath + 'workOrderHandle/createWorkOrder',
 	        type:"post",
-	        data:{"contractNumber":$("#contractNumber").val(),"contractId":$("#contractId").val()},
+	        //data:{"contractNumber":$("#contractNumber").val(),"contractId":$("#contractId").val()},
 	        success:function(data) {
    				if(data.status=='1'){
    					var msg = data.message;

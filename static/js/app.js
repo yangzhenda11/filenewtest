@@ -2465,10 +2465,26 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 //			settings.url = settings.url + "&testData=testData";
 //		}
 	}else{
-//		var parameter = JSON.parse(settings.data);
-//		parameter.testdata = "testdata";
-//		settings.data = JSON.stringify(parameter);
-		
+//		var contentType = settings.contentType;
+//		var data = settings.data;
+//		if(contentType.search("application/x-www-form-urlencoded") != -1){
+//			if(data){
+//				var parameter = data + "&draw=2";
+//			}else{
+//				var parameter = JSON.stringify({draw:2})
+//			}
+//			settings.data = parameter;
+//			return;
+//		}else if(contentType.search("application/json") != -1){
+//			if(data){
+//				var parameter = JSON.parse(settings.data);
+//				parameter.draw = "2";
+//			}else{
+//				var parameter = {draw:2};
+//			}
+//			settings.data = JSON.stringify(parameter);
+//			return;
+//		}
 	}	
 });
 /*

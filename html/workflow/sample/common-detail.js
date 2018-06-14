@@ -263,9 +263,9 @@ function startFlowAuto(){
 }
 function checkFlow(){
 	var processInstanceId="";
-	var buttontitle=$("#businessType").val();
-	if(businessType.length==0){
-		layer.msg("请填写业务类型，否则无法准确校验是哪个模板！");
+	var businessTypeNew=$("#businessTypeNew").val();
+	if(businessTypeNew.length==0){
+		layer.msg("请填写需要校验的业务类型，否则无法准确校验是哪个模板！");
 		return;
 	}
 	var businessId=$("#taskBusinessKey").val();
@@ -273,18 +273,46 @@ function checkFlow(){
 		layer.msg("请填写业务主键，否则无法确定需要校验哪一个业务！");
 		return;
 	}
-	var checkDate=App.checkFlow(serverPath,businessId,businessType);
+	var checkDate=App.checkFlow(serverPath,businessId,businessTypeNew);
 	
 	if (checkDate.success == 1) {
 		alert("允许创建工单，工单创建失败的流程实例id为："+checkDate.processInstanceId);
 		//1，先把工单创建失败的流程推下去
-		var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
-		modal_passBybuss(flowParam);
-		//2,启动新的流程
-		startBybussType();
+		var flowParam=App.getFlowParam(serverPath,businessId,1,0);
+		modal_pushAndStart(flowParam);
 	} else {
 		alert(result.info);
 	};
+}
 
-	
+//点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
+function modal_pushAndStart(flowParam){
+	//typeof(tmp) == "undefined"
+	var root=serverPath;//flowParam.root
+	var taskDefinitionKey=flowParam.taskDefinitionKey;
+	var assignee=flowParam.assignee;
+	var processInstanceId=flowParam.processInstanceId;
+	var taskId=flowParam.taskId;
+	var comment=flowParam.comment;
+	var handleType=flowParam.handleType;
+	var withdraw=flowParam.withdraw;
+	var iscandidate=flowParam.iscandidate;
+    
+	//alert( "目标任务定义：" + taskDefinitionKey + "_目标受理人：" + assignee + "_流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId + "_审批意见：" + comment + "_处理方式：" + handleType + "_是否可回撤" + withdraw);
+		$.post(root + "business/pushProcess", {
+			"processInstanceId" : processInstanceId,//当前流程实例
+			"taskId" : taskId,//当前任务id
+			"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
+			"assignee" : assignee,//下一步参与者
+			"comment" : comment,//下一步办理意见
+			"handleType" : handleType,//处理类型，1为通过，2为回退
+			"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
+			"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+			"title":"",//可不传，如果需要修改待办标题则传此参数。
+			"iscandidate":iscandidate //是否是多候选人的抢单环节
+		}, function(data) {
+			alert(data.sign);
+			//2,启动新的流程
+			startBybussType();
+		});
 }

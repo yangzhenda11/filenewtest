@@ -121,7 +121,7 @@
 		addIncomeLinerentTbodyEmptyTr();
 	}
 	//name自增基础值
-	var isCreateIncomeLinerentTrLength = 0;
+	var isCreateLinerLen = 0;
 	
 	//产品类型字典html
 	var incomeLinerentType = "";
@@ -169,73 +169,7 @@
 				$("#incomeLinerentTbody").html("");
 				isCreateIncomeLinerentTrLength = data.length;
 				for(var i = 0; i < data.length; i++){
-					var productKind = "productKind" + i;
-					var productName = "productName" + i;
-					var productAttr = "productAttr" + i;
-					var auditLabel = "auditLabel" + i;
-					var fixedMonthRent = "fixedMonthRent" + i;
-					var lineCount = "lineCount" + i;
-					var totalMonthRent = "totalMonthRent" + i;
-					var onceCost = "onceCost" + i;
-					var otherCost = "otherCost" + i;
-					var settlementFrequency = "settlementFrequency" + i;
-					var fixedMonthRentV = data[i].fixedMonthRent == null ? "" : data[i].fixedMonthRent;
-					var lineCountV = data[i].lineCount == null ? "" : data[i].lineCount;
-					var totalMonthRentV = data[i].totalMonthRent == null ? "" : data[i].totalMonthRent;
-					var onceCostV = data[i].onceCost == null ? "" : data[i].onceCost;
-					var otherCostV = data[i].otherCost == null ? "" : data[i].otherCost;
-					var appendHtml = "<tr data-id='"+ data[i].linerentId +"' class='"+ productName +"'>"+
-										"<td class='lineChargesTableEdit'><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
-										"<td class='orderNumber'></td>"+
-										"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='请选择产品类型' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
-										"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
-										"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
-										"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+ fixedMonthRentV +"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' value='"+lineCountV+"' maxlength='10'  /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+totalMonthRentV+"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+onceCostV+"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+otherCostV+"' maxlength='20' /></div></td>"+
-										"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
-										"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
-									"</tr>";
-					$("#incomeLinerentTbody").append(appendHtml);
-					App.initFormSelect2("."+productName);
-					$("select[name='"+productKind+"']").val(data[i].productKind).trigger("change");
-					$("select[name='"+productName+"']").val(data[i].productName).trigger("change");
-					$("select[name='"+productAttr+"']").val(data[i].productAttr).trigger("change");
-					$("select[name='"+auditLabel+"']").val(data[i].auditLabel).trigger("change");
-					$("select[name='"+settlementFrequency+"']").val(data[i].settlementFrequency).trigger("change");
-					addNotEmptyValidatorField(productKind,"产品类型不能为空");
-					addNotEmptyValidatorField(productName,"产品名称不能为空");
-					addNotEmptyValidatorField(productAttr,"产品属性不能为空");
-					addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
-					addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
-					var isInteger = {
-						notEmpty : {
-							message : "请输入不超过10个字符的整数"
-						},
-						regexp : {
-							regexp : /^(0|[1-9][0-9]*)$/,
-							message : '请输入大于等于0的整数'
-						}
-					};
-					var isMoney = {
-						notEmpty : {
-							message : "请输入不超过20个字符的金额"
-						},
-						regexp : {
-							regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
-							message : '请输入正确的金额'
-						}
-					}
-				   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);
-				   	App.addValidatorField("#workOrderContentForm",fixedMonthRent,isMoney);
-				   	App.addValidatorField("#workOrderContentForm",totalMonthRent,isMoney);
-				   	App.addValidatorField("#workOrderContentForm",onceCost,isMoney);
-				   	App.addValidatorField("#workOrderContentForm",otherCost,isMoney);
-					addIncomeLinerentTableSort();
-					App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
+					addIncomeLinerentTr(data[i]);
 				};
 			};
 			/*
@@ -250,40 +184,62 @@
 		}
 	}
 	/*
-	 * 新增点击
+	 * 增加处理
 	 */
-	function addIncomeLinerentTr(){
+	function addIncomeLinerentTr(data){
 		if($("#incomeLinerentTbody .emptyTr")[0] != undefined){
 			$("#incomeLinerentTbody .emptyTr").remove();
 		}
-		isCreateIncomeLinerentTrLength++;
-		var productKind = "productKind" + isCreateIncomeLinerentTrLength;
-		var productName = "productName" + isCreateIncomeLinerentTrLength;
-		var productAttr = "productAttr" + isCreateIncomeLinerentTrLength;
-		var auditLabel = "auditLabel" + isCreateIncomeLinerentTrLength;
-		var fixedMonthRent = "fixedMonthRent" + isCreateIncomeLinerentTrLength;
-		var lineCount = "lineCount" + isCreateIncomeLinerentTrLength;
-		var totalMonthRent = "totalMonthRent" + isCreateIncomeLinerentTrLength;
-		var onceCost = "onceCost" + isCreateIncomeLinerentTrLength;
-		var otherCost = "otherCost" + isCreateIncomeLinerentTrLength;
-		var settlementFrequency = "settlementFrequency" + isCreateIncomeLinerentTrLength;
-		var appendHtml = "<tr data-id='100000' class='"+ productName +"'>"+
-							"<td><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
+		isCreateLinerLen++;
+		var productKind = "productKind" + isCreateLinerLen;
+		var productName = "productName" + isCreateLinerLen;
+		var productAttr = "productAttr" + isCreateLinerLen;
+		var auditLabel = "auditLabel" + isCreateLinerLen;
+		var fixedMonthRent = "fixedMonthRent" + isCreateLinerLen;
+		var lineCount = "lineCount" + isCreateLinerLen;
+		var totalMonthRent = "totalMonthRent" + isCreateLinerLen;
+		var onceCost = "onceCost" + isCreateLinerLen;
+		var otherCost = "otherCost" + isCreateLinerLen;
+		var settlementFrequency = "settlementFrequency" + isCreateLinerLen;
+		var linerentId = "100000";
+		var fixedMonthRentVal = "";
+		var lineCountVal = "";
+		var totalMonthRentVal = "";
+		var onceCostVal = "0";
+		var otherCostVal = "0";
+		if(data){
+			linerentId = data.linerentId ? data.linerentId : "100000";
+			fixedMonthRentVal = data.fixedMonthRent ? data.fixedMonthRent : "";
+			lineCountVal = data.lineCount ? data.lineCount : "";
+			totalMonthRentVal = data.totalMonthRent ? data.totalMonthRent : "";
+			onceCostVal = data.onceCost ? data.onceCost : "0";
+			otherCostVal = data.otherCost ? data.otherCost : "0";
+		}
+		
+		var appendHtml = "<tr data-id='"+ linerentId +"' class='"+ productName +"'>"+
+							"<td class='lineChargesTableEdit'><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
 							"<td class='orderNumber'></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='请选择产品类型' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='请选择产品名称' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='请选择产品属性' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me auditLabel' data-placeholder='请选择稽核标签' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' maxlength='20' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' maxlength='10' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' maxlength='20' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='0' maxlength='20' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='0' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='请输入固定月租' value='"+fixedMonthRentVal+"' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='请输入线路数量' value='"+lineCountVal+"' maxlength='10' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='请输入合计月租' value='"+totalMonthRentVal+"' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='请输入一次性费用' value='"+onceCostVal+"' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='请输入其他费用' value='"+otherCostVal+"' maxlength='20' /></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='请选择结算周期' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
-							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
+							"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#incomeLinerentTbody").append(appendHtml);
 		App.initFormSelect2("."+productName);
+		if(data){
+			$("select[name='"+productKind+"']").val(data.productKind).trigger("change");
+			$("select[name='"+productName+"']").val(data.productName).trigger("change");
+			$("select[name='"+productAttr+"']").val(data.productAttr).trigger("change");
+			$("select[name='"+auditLabel+"']").val(data.auditLabel).trigger("change");
+			$("select[name='"+settlementFrequency+"']").val(data.settlementFrequency).trigger("change");
+		}
 		addNotEmptyValidatorField(productKind,"产品类型不能为空");
 		addNotEmptyValidatorField(productName,"产品名称不能为空");
 		addNotEmptyValidatorField(productAttr,"产品属性不能为空");
@@ -367,37 +323,6 @@
 	 * 线路资费导入
 	 */
 	function lineChargestFileImport(){
-		var isAddLineChargestData = false;
-		$.each($("#incomeLinerentTbody tr"),function(k,v){
-			if(!$(v).hasClass("emptyTr")){
-				if($(v).data("id") == 100000){
-					isAddLineChargestData = true;
-					return true;
-				}
-			}
-		});
-		if(isAddLineChargestData){
-			if(parm.pageType == 1){
-				parent.layer.confirm("当前已手动新增过线路资费信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
-				  	parent.layer.close(index);
-				}, function(index){
-				  	parent.layer.close(index);
-				  	setLineChargestFileImport();
-				});
-			}else{
-				layer.confirm("当前已手动新增过线路资费信息，请先保存后再进行导入。",{icon:7,title:"提示",btn: ['确定', '直接导入']}, function(index, layero){
-				  	layer.close(index);
-				}, function(index){
-				  	layer.close(index);
-				  	setLineChargestFileImport();
-				});
-			}
-		}else{
-			setLineChargestFileImport();
-		}
-		
-	}
-	function setLineChargestFileImport(){
 		var setting = {
 			title: "线路资费信息导入",
 			url: 'contractOrderEditorController/importContractLinerentExcel',
@@ -407,8 +332,14 @@
 		};
 		function callback(result){
 			if(result.status == 1){
-				showLayerErrorMsg(result.message);
-				getIncomeLinerenInfo();
+				var data = result.data;
+				var length = data.length;
+				if(length > 0){
+					for(var i = 0; i < length; i++){
+						addInvoiceTableTr(data[i]);
+					}
+				};
+				layer.msg("成功导入"+length+"条线路资费信息");
 				$("#commomModal").modal("hide");
 			}else if(result.status == 3010){
 				showLayerErrorMsg(result.message);

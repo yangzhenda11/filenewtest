@@ -21,12 +21,19 @@ function getContractBaseInfo(){
 		var data = result.data;
 		if(data){
 			isLoad = true;
-			var valueCallback = {'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+			var valueCallback = {'unicomPartyName':function(value){
+				value = value.replace(",","\n");
+				return value;
+			},'unicomPartyName':function(value){
+				value = value.replace(",","\n");
+				return value;
+			},
+				'approveDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
 			App.setFormValues("#contractBaseInfo",data,valueCallback);
 			var unicomPartyName = data.unicomPartyName == null ? "" : data.unicomPartyName;
 			var partyName = data.partyName == null ? "" : data.partyName;
-			$("#unicomPartyName").text(unicomPartyName);
-			$("#partyName").text(partyName);
+			$("#unicomPartyName").html(unicomPartyName);
+			$("#partyName").html(partyName);
 		}else{
 			parent.layer.msg("合同基本信息为空，请联系管理员");
 		}

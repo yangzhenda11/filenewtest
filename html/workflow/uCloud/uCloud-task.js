@@ -44,8 +44,8 @@ function getTaskInfo(){
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
-		//data:,
 		async:false,
+		global:false,
 		success:function(result){
 			if (result.success == 1) {
 				taskData=result.taskInfo;

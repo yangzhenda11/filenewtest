@@ -1,11 +1,14 @@
-//当前页面参数获取
-var parm = App.getPresentParm();
+//主页面参数获取，判断是否为门户,若为门户加载全局信息
+var parentParm = App.getPresentParm(false,true);
+if(parentParm.pageType == 3){
+	App.getUserBaseInfo();
+}
 //系统的全局变量获取
+var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var isLoad = false;					//全局加载成功标识位
 var contractId = parm.businessKey;			//主键ID
-
 $(function() {
 	$(".page-content,.portlet-body").css("padding", '0px');
 	$(".portlet").css("cssText", "border:none !important;padding:0px");

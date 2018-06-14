@@ -32,7 +32,13 @@ $(function(){
 		parent.setUserBtName("backButton","退回承办人");
 	}
 	
+	parent.addCustomBt("cjgdButton","创建工单","creatGd")
+	
 });
+function creatGd(){
+	alert("创建工单哦，你点了我要消失了哦！");
+	parent.showOrhideButton("cjgdButton",false);
+}
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;

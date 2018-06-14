@@ -126,6 +126,24 @@ $(function(){
 	$('#userQXSPButton').hide();
 });
 
+//业务上添加自定义的按钮
+function addCustomBt(btId,btName,callBackName){
+	if(!$("#"+btId)[0]){
+		var insertHtml='<button id="'+btId+'" type="button" class="btn btn-success">'+btName+'</button>';
+	   	$('#out-footers').find('button').eq(0).before(insertHtml);
+		$('#'+btId).click(function(){
+			eval('document.getElementById("businessiframe").contentWindow.'+callBackName+"()");
+		});
+	}
+}
+//true显示，false隐藏
+function showOrhideButton(btId,isShow){
+	if(isShow){
+		$('#'+btId).show();
+	}else{
+		$('#'+btId).hide();
+	}
+}
 //工单处理环节将提交按钮改为“注册完成” btId：passButton   
 //工单处理环节将回退按钮改为“退回承办人” btId：backButton
 //工单处理环节将返回待办列表改为“关闭” btId：backTolist

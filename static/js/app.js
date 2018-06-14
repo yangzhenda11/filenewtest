@@ -1344,8 +1344,12 @@ var App = function() {
         /*
          * 获取当前url参数
          */
-        getPresentParm : function(isUrl){
-        	var persentUrl = window.location.href;
+        getPresentParm : function(isUrl,isTop){
+        	if(isTop){
+        		var persentUrl = top.window.location.href;
+        	}else{
+        		var persentUrl = window.location.href;
+        	};
         	if(persentUrl[persentUrl.length-1] == "#"){
         		persentUrl = persentUrl.substring(0,persentUrl.length - 1);
         	};
@@ -2271,6 +2275,38 @@ var App = function() {
             window.top.showSubpageTab(url,title);
         },
         /**
+         * 云门户获取用户基本信息
+         * serverPath为:'/''
+         * */
+        getUserBaseInfo: function(){
+        	//获取用户基本信息
+		    App.formAjaxJson("/myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
+		
+		    function successCallback(result) {
+		        var data = result.data;
+		        var globalConfig = {};
+		        globalConfig.provCode = data.provCode;
+		        globalConfig.curStaffId = data.staffId;
+		        globalConfig.curStaffName = data.staffName;
+		        globalConfig.curStaffOrgId = data.staffOrgId;
+		        globalConfig.curOrgId = data.orgId;
+		        globalConfig.curCompanyId = data.companyId;
+		        globalConfig.mainOrgFlag = data.mainOrgFlag;
+    			globalConfig.staticPath = "/",
+    			globalConfig.serverPath = "/",
+		        top.globalConfig = globalConfig;
+		    }
+		    function improperCallback(result) {
+		        layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 });
+		    }
+		    function errorCallback(result) {
+		        layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 });
+		    }
+        },
+        openPageTab:function(url,title){
+            window.top.showSubpageTab(url,title);
+        },
+        /**
          * 打开框架页面标签页
          * @param url 打开标签页的路径
          * @param title 标签页显示的标题
@@ -2373,7 +2409,7 @@ var App = function() {
     				checkDate = result;
     			},
     			error: function(result) {
-    				layer.alert("接口错误", {icon: 2,title:"错误"});
+    				App.ajaxErrorCallback(result);
     			}
     		});
         	return checkDate;
@@ -2465,10 +2501,26 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 //			settings.url = settings.url + "&testData=testData";
 //		}
 	}else{
-//		var parameter = JSON.parse(settings.data);
-//		parameter.testdata = "testdata";
-//		settings.data = JSON.stringify(parameter);
-		
+//		var contentType = settings.contentType;
+//		var data = settings.data;
+//		if(contentType.search("application/x-www-form-urlencoded") != -1){
+//			if(data){
+//				var parameter = data + "&draw=2";
+//			}else{
+//				var parameter = JSON.stringify({draw:2})
+//			}
+//			settings.data = parameter;
+//			return;
+//		}else if(contentType.search("application/json") != -1){
+//			if(data){
+//				var parameter = JSON.parse(settings.data);
+//				parameter.draw = "2";
+//			}else{
+//				var parameter = {draw:2};
+//			}
+//			settings.data = JSON.stringify(parameter);
+//			return;
+//		}
 	}	
 });
 /*

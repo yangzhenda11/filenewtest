@@ -38,8 +38,8 @@ function initScanCpyReplenishUploadTable(){
 					return meta.row + 1;
 				}
 			},
-	        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-	        {"data": "contractNumber","title": "合同编号"},
+	        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"20%"},
+	        {"data": "contractNumber","title": "合同编号","width":"10%"},
 	        {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"15%"},
 	        {"data": "undertakeName","title": "承办人"},
 	        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
@@ -66,7 +66,7 @@ function initScanCpyReplenishUploadTable(){
 	    ],
 		"columnDefs": [{
 	   		"createdCell": function (td, cellData, rowData, row, col) {
-	         	if ( col > 0 ) {
+	         	if ( col > 0 && col < 8) {
 	           		$(td).attr("title", $(td).text())
 	         	}
 	   		}

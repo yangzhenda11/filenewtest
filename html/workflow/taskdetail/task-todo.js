@@ -819,6 +819,7 @@ function initData(){
 		type:"POST",
 		data:$("#taskToDoDetail").serializeArray(),
 		async:false,
+		//global:false,
 		success:function(data){
 			$('#isCounterSign').val(data.isCounterSign);
 			$('#startLink').val(data.startLink);
@@ -1137,3 +1138,52 @@ function setStaffSelectType(staffSelectType){
 	}
 }
 
+
+//云门户推送新增待办
+function addPending(){
+	debugger;
+	var pendingCode = "hx-"+$("#taskId").val()+$("#loginName").val();
+	var aa = $("#assignee").val();
+	var bb = $("#assigneename").val();
+	$.ajax({
+		url : serverPath+"/uCloudController/addPending",
+		data : {
+			  'pendingCode':pendingCode,
+			  'pendingTitle':$("#title").val(),	        //待办标题
+			  'pendingUserID':$("#assignee").val(),
+			  'pendingURL':"URL待定",                             //待办信息URL
+			  'pendingStatus':"0",	                        //待办状态
+			  'pendingLevel':"0",	                            //待办等级,0.普通，1.重要，2加急
+			  'pendingCityCode':$("#wprov").val(),	                        //省分代码
+			  'pendingSourceUserID':$("#loginName").val(),	                    //待办信息上一步处理人邮件前缀
+			  'pendingSource':$("#staffName").val(),	                            //待办信息来源
+			  'pendingNote':"na038",	                            //待办所属系统简称
+			  'processInstanceId':$("#processInstanceId").val()
+		},
+		dataType : "JSON",
+		type : "POST"
+	});
+}
+
+//云门户待办更新推送
+function updatependingstatus(){
+	
+	$.ajax({
+		url : serverPath+"/uCloudController/updatependingstatus",
+		data : {
+			"pendingCode": "测试001" ,  //测试用
+			"pendingCode": "",
+			"pendingStatus":"",
+			"lastUpdateDate":"",
+			"pendingURL":"",
+			"pendingDate":"",
+			"pendingTitle":"",
+			"pendingSourceUserID":"",
+			"pendingSource":"",
+			"pendingLevel":"",
+			"pendingNote":""
+		},
+		dataType : "JSON",
+		type : "POST"
+	});
+} 

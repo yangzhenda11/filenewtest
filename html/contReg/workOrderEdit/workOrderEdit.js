@@ -107,7 +107,7 @@ function beforePushProcess(pass){
     	};
     	if($("#contractScanCopyUpload")[0]){
     		if(pass == true){
-	    		if(!submitData.contractScanCopyUpload.bodyDoc.storeId){
+	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
 	    			if(parm.taskDefinitionKey == "GDQR"){
 	    				var ms = "请上传合同正文扫描件后进行工单激活";
 	    			}else{
@@ -338,7 +338,7 @@ function submitContent(){
 	    	var submitData = getContentValue(true);
 	    	if(submitData){
 	    		if($("#contractScanCopyUpload")[0]){
-		    		if(!submitData.contractScanCopyUpload.bodyDoc.storeId){
+		    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
 						showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
 						srolloOffect("#contractScanCopyUpload");
 						return false;
@@ -408,7 +408,7 @@ function activateContract(){
 		};
 		if($("#contractScanCopyUpload")[0]){
 			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
-			if(!scanCopyUploadData.bodyDoc.storeId){
+			if(!scanCopyUploadData.bodyDoc.bodyDocStoreId){
 				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
 				srolloOffect("#contractScanCopyUpload");
 				return false;

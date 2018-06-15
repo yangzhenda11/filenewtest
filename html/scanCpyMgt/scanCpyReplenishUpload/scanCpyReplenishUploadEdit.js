@@ -243,7 +243,7 @@ function saveContractUpload(){
 function pushContractUpload(){
 	var data = getContractUploadInfo(3);
 	if(data){
-		if(data.bodyDoc.storeId){
+		if(data.bodyDoc.bodyDocStoreId){
 			var url = serverPath + "contractUpload/saveReplenishContractInfo";
 			App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
 			function successCallback(result) {

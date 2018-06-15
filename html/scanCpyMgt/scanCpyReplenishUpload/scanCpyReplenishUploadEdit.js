@@ -75,11 +75,11 @@ function getReplenishContractInfo(){
 function setBodyDocData(bodyDocData){
 	if(bodyDocData){
 		var bodyDocHtml = "";
-		if(bodyDocData.storeId){
+		if(bodyDocData.bodyDocStoreId){
 			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 			$("#contractTextUploadBtn").text("删除");
-			$("#contractText").data("storeid",bodyDocData.storeId);
-			bodyDocHtml =  '<a href="'+serverPath+'downloadRedirect/downloadFile?storeId='+bodyDocData.storeId+'">'+bodyDocData.displayName+'</a>';
+			$("#contractText").data("storeid",bodyDocData.bodyDocStoreId);
+			bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocData.bodyDocStoreId+'">'+bodyDocData.displayName+'</a>';
 		}else{
 			$("#contractTextUploadBtn").text("添加");
 			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
@@ -139,9 +139,9 @@ function setAttachDocData(bodyDocData){
 		for(var i = 0; i < bodyDocData.length; i++){
 			var bodyDocItem = bodyDocData[i];
 			var btnHtml = "";
-			if(bodyDocItem.storeId){
-				btnHtml = '<a href="'+serverPath+'downloadRedirect/downloadFile?storeId='+bodyDocItem.storeId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
-				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.storeId+'">';
+			if(bodyDocItem.bodyDocStoreId){
+				btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocItem.bodyDocStoreId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.bodyDocStoreId+'">';
 			}else{
 				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
 				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';

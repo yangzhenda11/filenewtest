@@ -585,6 +585,8 @@ function getWorkOrderInfo(){
 						var ms = '当前合同处于"作废"状态，不能进行操作';
 					}else if(contractStatus == 3){
 						var ms = '当前合同处于"作废申请中"状态，请稍后操作';
+					}else if(contractStatus == 8){
+						var ms = '当前合同处于"履行中"状态，不行操作';
 					}else if(contractStatus == null){
 						var ms = '当前合同状态未知，请稍后操作';
 					};

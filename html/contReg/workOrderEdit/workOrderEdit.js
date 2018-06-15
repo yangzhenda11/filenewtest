@@ -814,13 +814,13 @@ function saveContent(){
 		if($("#contractScanCopyUpload")[0]){
 			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
     	};
-		saveContentPost(submitData);
+		saveContentPost(submitData,2);
 	}else{
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
 		var submitData = getContentValue();
 		if(submitData){
-			saveContentPost(submitData);
+			saveContentPost(submitData,1);
 		}
 	};
 	//手动触发表单特定的验证项
@@ -836,9 +836,14 @@ function saveContent(){
 /*
  * 保存提交后台
  */
-function saveContentPost(data){
+function saveContentPost(data,type){
 	var postData = JSON.stringify(data);
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
+	if(type == 1){
+		var url = serverPath + "contractOrderEditorController/saveOrderEditorInfo";
+	}else{
+		var url = serverPath + "contractOrderEditorController/saveOrderEditorApprovalInfo"
+	}
+	App.formAjaxJson(url, "post", postData, successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		setPageIdCallback(data);

@@ -110,7 +110,7 @@
 			html += "<td>"+ App.formatDateTime(bodyDocData.updatedDate,"yyyy-MM-dd") +"</td>"+
 					"<td>"+ (bodyDocData.updatedByName == null ? "":bodyDocData.updatedByName) +"</td></tr>";
 			
-			$("#contractTextTbody").html(html);
+			$("#contractMainTextTbody").html(html);
 		}else{
 			layer.msg("获取不到合同正文扫描件信息");
 			$("#contractTextUploadBtn").attr("disabled","disabled");
@@ -132,7 +132,7 @@
 				html += "<td>"+ App.formatDateTime(data[i].updatedDate,"yyyy-MM-dd") +"</td>"+
 						"<td>"+ (data[i].updatedByName == null ? "":data[i].updatedByName) +"</td></tr>";
 			}
-			$("#contractAttachmentTbody").html(html);
+			$("#contractAttachmentDocTbody").html(html);
 		}
 	}	
 </script>

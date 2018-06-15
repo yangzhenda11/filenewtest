@@ -215,7 +215,7 @@ function getContractUploadInfo(uploadStatus){
 		return false;
 	}else{
 		obj.bodyDoc = {
-			attachId : "",
+			attachId : $("#contractText").data("attachid"),
 			bodyDocStoreId : ""
 		};
 	}

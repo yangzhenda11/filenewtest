@@ -196,7 +196,9 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 			parent.layer.close(index);
 			postData.validity = {};
-			postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
+			if($("#contractScanCopyUpload")[0]){
+	    		postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
+	    	};
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -429,7 +431,9 @@ function activateContract(){
 			layer.close(index);
 			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 			postData.validity = {};
-			postData.contractScanCopyUpload = scanCopyUploadData;
+			if($("#contractScanCopyUpload")[0]){
+				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);;
+	    	};
 			postData.validity.adminCommitment = adminCommitment;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;

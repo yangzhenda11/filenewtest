@@ -156,7 +156,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"comment" : comment,//下一步办理意见
 		"handleType" : handleType,//处理类型，1为通过，2为回退
 		"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
-		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+		//"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
 	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){		//工单注册点击@工作流
@@ -735,7 +735,7 @@ function setSpeedyJump(){
 	var html = "";
 	$.each(data, function(k,v) {
 		if($(v.jumpId)[0]){
-			html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
+			html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" data-container="body" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
 		}
 	});
 	$("#workOrderMenu").html(html);

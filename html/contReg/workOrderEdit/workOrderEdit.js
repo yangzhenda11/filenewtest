@@ -107,16 +107,16 @@ function beforePushProcess(pass){
     	};
     	if($("#contractScanCopyUpload")[0]){
     		if(pass == true){
-	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
-	    			if(parm.taskDefinitionKey == "GDQR"){
-	    				var ms = "请上传合同正文扫描件后进行工单激活";
-	    			}else{
-	    				var ms = "请上传合同正文扫描件后进行工单注册";
-	    			}
-					showLayerErrorMsg(ms);
-					srolloOffect("#contractScanCopyUpload");
-					return false;
-				}
+//	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
+//	    			if(parm.taskDefinitionKey == "GDQR"){
+//	    				var ms = "请上传合同正文扫描件后进行工单激活";
+//	    			}else{
+//	    				var ms = "请上传合同正文扫描件后进行工单注册";
+//	    			}
+//					showLayerErrorMsg(ms);
+//					srolloOffect("#contractScanCopyUpload");
+//					return false;
+//				}
 	    	}
     	}
     	if(parm.taskDefinitionKey == "GDQR" && pass == true){
@@ -337,13 +337,13 @@ function submitContent(){
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(submitData){
-	    		if($("#contractScanCopyUpload")[0]){
-		    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
-						showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
-						srolloOffect("#contractScanCopyUpload");
-						return false;
-					}
-		    	}
+//	    		if($("#contractScanCopyUpload")[0]){
+//		    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
+//						showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
+//						srolloOffect("#contractScanCopyUpload");
+//						return false;
+//					}
+//		    	}
 	    		var flowKey = "Contractproject2Process";
 	    		var linkcode = "GDCL";
 	    		var prov = "sd";
@@ -406,14 +406,14 @@ function activateContract(){
 		if(!wcardCanSubmit){
 			return false;
 		};
-		if($("#contractScanCopyUpload")[0]){
-			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
-			if(!scanCopyUploadData.bodyDoc.bodyDocStoreId){
-				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
-				srolloOffect("#contractScanCopyUpload");
-				return false;
-			}
-    	};
+//		if($("#contractScanCopyUpload")[0]){
+//			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
+//			if(!scanCopyUploadData.bodyDoc.bodyDocStoreId){
+//				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
+//				srolloOffect("#contractScanCopyUpload");
+//				return false;
+//			}
+//  	};
     	var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 		if(adminCommitmentValue == 1){
 			var adminCommitment = 1;

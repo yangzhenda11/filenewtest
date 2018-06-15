@@ -164,6 +164,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData = $.extend(postData, datas);
 		postData.wcardId = wcardId;
 		postData.wcardType = wcardTypeCode;
+		postData.contractName = $("#contractName").val();
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
@@ -367,6 +368,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;
 	postData.wcardType = wcardTypeCode;
+	postData.contractName = $("#contractName").val();
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
@@ -586,7 +588,7 @@ function getWorkOrderInfo(){
 					}else if(contractStatus == 3){
 						var ms = '当前合同处于"作废申请中"状态，请稍后操作';
 					}else if(contractStatus == 8){
-						var ms = '当前合同处于"履行中"状态，不行操作';
+						var ms = '当前合同处于"履行中"状态，不能操作';
 					}else if(contractStatus == null){
 						var ms = '当前合同状态未知，请稍后操作';
 					};
@@ -739,6 +741,11 @@ function setSpeedyJump(){
 	$("#workOrderMenu").html(html);
 	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
 }
+$("#workOrderMenu").hover(function(){
+	$(this).css("padding-left","120px");
+},function(){
+	$(this).css("padding-left","0");
+})
 /*
  * 当不为其他类型工单时基本信息"固定金额"为"是"时，开票信息和账号信息(收款方)加*号
  */

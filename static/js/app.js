@@ -772,7 +772,6 @@ var App = function() {
 					};
 				},
 				error: function(result) {
-					console.log(result);
 					if(result.status == 401){
 						if(top.globalConfig.loginSwitchSuccess == 0){
 							top.window.location.href = "/overtime.html";
@@ -790,7 +789,6 @@ var App = function() {
 		},
 		//使用$.ajax中错误的回调事件
 		ajaxErrorCallback: function(result){
-			console.log(result);
 			if(result.status == 401){
 				if(top.globalConfig.loginSwitchSuccess == 0){
 					top.window.location.href = "/overtime.html";
@@ -1006,8 +1004,7 @@ var App = function() {
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
-		   	}).on('xhr.dt', function ( e, settings, json, xhr ) {
-		   		console.log(xhr);
+		   }).on('xhr.dt', function ( e, settings, json, xhr ) {
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
@@ -2298,6 +2295,7 @@ var App = function() {
     			globalConfig.staticPath = "/",
     			globalConfig.serverPath = "/",
 		        top.globalConfig = globalConfig;
+		        
 		    }
 		    function improperCallback(result) {
 		        layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 });

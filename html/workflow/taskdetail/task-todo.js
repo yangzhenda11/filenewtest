@@ -214,7 +214,7 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 		// 返回成功即继续处理，不成功报原因
 		if (success == 1){
 			// 获取url串及后续参数并赋值给公共参数对象
-			var url = serverPath + data.dataRows[0].url;
+			var url = data.dataRows[0].url;
 			//$('#param').val(url.substring(url.indexOf("?") + 1));
 			$('#param').val(data.dataRows[0].param);
 			// 环节类型赋值
@@ -248,7 +248,7 @@ function loadCustomTabs(serverPath, param, processDefinitionId, taskDefinitionKe
 				for ( var i = 0; i < data.dataRows.length; i++) {
 					
 					var name = data.dataRows[i].name;
-					var url = serverPath + "" + data.dataRows[i].url + "?" + param;
+					var url =  data.dataRows[i].url + "?" + param;
 					
 					var tabName = "custom_tab" + (i + 1);
 					var divName = "custom_div" + (i + 1);
@@ -1139,10 +1139,10 @@ function setStaffSelectType(staffSelectType){
 }
 
 
-//云门户推送新增待办
+/*//云门户推送新增待办
 function addPending(){
 	debugger;
-	var pendingCode = "hx-"+$("#taskId").val()+$("#loginName").val();
+	var pendingCode = "ECM2-"+processInstanceId;//到了后台最好再拼接上新的taskid，ECM2-502501-502518
 	var aa = $("#assignee").val();
 	var bb = $("#assigneename").val();
 	$.ajax({
@@ -1150,15 +1150,17 @@ function addPending(){
 		data : {
 			  'pendingCode':pendingCode,
 			  'pendingTitle':$("#title").val(),	        //待办标题
-			  'pendingUserID':$("#assignee").val(),
-			  'pendingURL':"URL待定",                             //待办信息URL
-			  'pendingStatus':"0",	                        //待办状态
+			  'pendingUserID':$("#assignee").val(), //待办人UserID
+			  //待办信息URL http://localhost/html/workflow/uCloud/uCloud-task.html?processInstanceId=502501&taskId=502518&businessId=111&pageType=3
+			  //taskId（新待办的id）和businessId前台获取不到，这个到了后台根据流程实例获取就行
+			  'pendingURL':serverPath+"html/workflow/uCloud/uCloud-task.html?processInstanceId="+processInstanceId+"&pageType=3",      
+			  'pendingStatus':"0",	                        //待办状态 0:待办
 			  'pendingLevel':"0",	                            //待办等级,0.普通，1.重要，2加急
-			  'pendingCityCode':$("#wprov").val(),	                        //省分代码
-			  'pendingSourceUserID':$("#loginName").val(),	                    //待办信息上一步处理人邮件前缀
-			  'pendingSource':$("#staffName").val(),	                            //待办信息来源
+			  'pendingCityCode':"",	                        //省分代码,山东是sd，这里最后后台根据处理人获取下。
+			  'pendingSourceUserID':"",	        //待办信息上一步处理人邮件前缀 ，其实就是当前登录人，这个只能后台去获取了。
+			  'pendingSource':"",	            //上一步处理人的姓名，就是当前登录人呗
 			  'pendingNote':"na038",	                            //待办所属系统简称
-			  'processInstanceId':$("#processInstanceId").val()
+			  'processInstanceId':processInstanceId
 		},
 		dataType : "JSON",
 		type : "POST"
@@ -1187,3 +1189,4 @@ function updatependingstatus(){
 		type : "POST"
 	});
 } 
+*/

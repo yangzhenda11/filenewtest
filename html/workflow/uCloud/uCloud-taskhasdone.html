@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
+
+    <head>
+		<meta charset="UTF-8">
+		<title>云门户已办跳转界面</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<link rel="stylesheet" type="text/css" href="../css/workflow.css" />
+    </head>
+
+    <body>
+        <div class="page-content" id="searchContentForDone">
+        	<div class="loadEffect">
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+			<div class="textValue">正在努力为您跳转中，请稍候..........</div>
+            <div style="display: none;">
+                <!-- 当前登录人岗位ID -->
+                <input type="hidden" id="currentIdForDone" name="currentId" />
+                <form id="taskHasDoneDetail">
+                    <input type="text" id="taskIdForDone" name="taskId" /> 
+                    <input type="text" id="taskDefinitionKeyForDone" name="taskDefinitionKey" /> 
+                    <input type="text" id="nameForDone"name="name" /> 
+                    <input type="text" id="processInstanceIdForDone" name="processInstanceId" /> 
+                    <input type="text" id="titleForDone" name="title" /> 
+                    <input type="text" id="processDefinitionIdForDone" name="processDefinitionId" /> 
+                    <input type="text" id="processDefinitionKeyForDone" name="processDefinitionKey" /> 
+                    <input type="text" id="executionIdForDone" name="executionId" /> 
+                    <input type="text" id="assigneeIdForDone" name="assigneeId" />
+                </form>
+            </div>
+        </div>
+        <div id="goTaskToDoDetailForDone"></div>
+        
+		<!--[if lt IE 9]>
+		<script src="../../../static/plugins/html5shiv.min.js"></script>
+		<script src="../../../static/plugins/respond.min.js"></script>
+		<script src="../../../static/plugins/ie8.fix.min.js"></script>
+	<![endif]-->
+		<!--[if lte IE 8]>
+		<script src="../../../static/plugins/selectivizr-min.js"></script>
+	<![endif]-->
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
+		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/date-format.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+        <script src="uCloud-taskhasdone" type="text/javascript" charset="utf-8"></script>
+    </body>
+
+</html>

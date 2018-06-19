@@ -52,7 +52,7 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 		// 返回成功即继续处理，不成功报原因
 		if (success == 1){
 			// 获取url串及后续参数并赋值给公共参数对象
-			var url = serverPath + "" + data.dataRows[0].url;
+			var url = data.dataRows[0].url;
 			//$('#paramForDone').val(url.substring(url.indexOf("?") + 1));
 			$('#paramForDone').val(data.dataRows[0].param);
 			
@@ -86,7 +86,7 @@ function loadCustomTabs(serverPath, param, processDefinitionId, taskDefinitionKe
 				for ( var i = 0; i < data.dataRows.length; i++) {
 					
 					var name = data.dataRows[i].name;
-					var url = serverPath + "" + data.dataRows[i].url + "?" + param;
+					var url =  data.dataRows[i].url + "?" + param;
 					
 					var tabName = "custom_tab" + (i + 1);
 					var divName = "custom_div" + (i + 1);

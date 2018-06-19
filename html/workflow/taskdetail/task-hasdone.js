@@ -1,3 +1,5 @@
+var parm = App.getPresentParm();
+var pageType=parm.pageType;
 $(function(){
 	initData();
 	var processDefinitionId = $('#processDefinitionIdForDone').val();
@@ -40,7 +42,9 @@ $(function(){
 		$('#returnButtonForDone').hide();
 		//$('#returnButtonForDone').addClass('disabled'); 
 	}
-	
+	if(pageType=='3'){
+		$("#returnListForDone").html("关闭");
+	}
 });
 
 //根据任务ID获取实际任务办理页面的路径并load到主DIV
@@ -177,14 +181,32 @@ function returnProcess(){
 
 //提供业务主页用户关闭模态窗口的按钮
 function modal_close(){
-	returnListForDone();
+	if(pageType=='3'){
+		window.close();
+	}else{
+		returnListForDone();
+	}
 }
 
 function returnListForDone(){
-	serarchForDone();
-	$("#goTaskToDoDetailForDone").hide();
-	$("#businessForDone").show();
-	$("#searchContentForDone").show();
+	if(pageType=='3'){
+		//FF中需要修改配置window.close方法才能有作用，为了不需要用户去手动修改，所以用一个空白页面显示并且让后退按钮失效
+		//Opera浏览器旧版本(小于等于12.16版本)内核是Presto，window.close方法有作用，但页面不是关闭只是跳转到空白页面，后退按钮有效，也需要特殊处理
+
+		var userAgent = navigator.userAgent;
+		if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Presto") != -1) {
+		    window.location.replace("about:blank");
+		} else {
+		    window.opener = null;
+		    window.open("", "_self");
+		    window.close();
+		}
+	}else{
+		serarchForDone();
+		$("#goTaskToDoDetailForDone").hide();
+		$("#businessForDone").show();
+		$("#searchContentForDone").show();
+	}
 }
 
 function initData(){ 

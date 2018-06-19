@@ -10,8 +10,17 @@ $(function(){
 });
 
 //“查看”按钮触发事件
-function handleTaskForDone(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
+function handleTaskForDone(taskInfo) {
+	var id=taskInfo.taskId;
+	var taskDefinitionKey=taskInfo.taskDefinitionKey;
+	var name=taskInfo.linkName;
+	var processInstanceId=taskInfo.processInstanceId;
+	var title=taskInfo.title;
+	var processDefinitionId=taskInfo.processDefinitionId;
+	var processDefinitionKey=taskInfo.processDefinitionKey;
+	var executionId=taskInfo.executionId;
+	var assignee=taskInfo.assignee;
+	
 	$('#taskIdForDone').val(id);
 	$('#taskDefinitionKeyForDone').val(taskDefinitionKey);
 	// 环节名称
@@ -39,7 +48,7 @@ function getTaskInfoHasdone(){
 		success:function(result){
 			if (result.success == 1) {
 				taskHasdoneData=result.taskInfo;
-				handleTaskToDo(taskHasdoneData)
+				handleTaskForDone(taskHasdoneData)
 			} else {
 				layer.msg(result.info);
 			};

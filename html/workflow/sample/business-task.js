@@ -1,3 +1,5 @@
+var parm = App.getPresentParm();
+var taskFlag=parm.taskFlag;
 $(function(){
 	//调用流程公共js添加tab示例
 	var url='/html/workflow/sample/business-task-tab.html';
@@ -31,8 +33,9 @@ $(function(){
 		//工单处理环节将回退按钮改为“退回承办人” btId：backButton
 		parent.setUserBtName("backButton","退回承办人");
 	}
-	
-	parent.addCustomBt("cjgdButton","创建工单","creatGd")
+	if(taskFlag=='db'){
+		parent.addCustomBt("cjgdButton","创建工单","creatGd")
+	}
 	
 });
 function creatGd(){

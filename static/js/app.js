@@ -772,6 +772,7 @@ var App = function() {
 					};
 				},
 				error: function(result) {
+					console.log(result);
 					if(result.status == 401){
 						if(top.globalConfig.loginSwitchSuccess == 0){
 							top.window.location.href = "/overtime.html";
@@ -789,6 +790,7 @@ var App = function() {
 		},
 		//使用$.ajax中错误的回调事件
 		ajaxErrorCallback: function(result){
+			console.log(result);
 			if(result.status == 401){
 				if(top.globalConfig.loginSwitchSuccess == 0){
 					top.window.location.href = "/overtime.html";
@@ -1005,6 +1007,7 @@ var App = function() {
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
 		   	}).on('xhr.dt', function ( e, settings, json, xhr ) {
+		   		console.log(xhr);
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){

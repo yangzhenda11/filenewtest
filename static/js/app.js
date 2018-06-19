@@ -1010,7 +1010,15 @@ var App = function() {
 		   		console.log(xhr);
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
-		        	if(xhr.responseJSON.status != 1){
+		        	if(xhr.responseJSON.status == 401){
+		        		if(top.globalConfig.loginSwitchSuccess == 0){
+							top.window.location.href = "/overtime.html";
+						}else{
+							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+			        			top.window.location.href = "/login";
+			        		});
+						}
+		        	}else if(xhr.responseJSON.status != 1){
 		        		layer.alert(xhr.responseJSON.message,{icon:2,title:"错误"});
 		        	}
 		        }else{

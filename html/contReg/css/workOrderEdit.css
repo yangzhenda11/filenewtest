@@ -138,7 +138,6 @@
 }
 #workOrderMenu {
   list-style: none;
-  padding-left: 120px;
   position: fixed;
   right: 16px;
   bottom: -10px;

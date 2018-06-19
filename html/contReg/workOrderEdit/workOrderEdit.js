@@ -156,7 +156,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		"comment" : comment,//下一步办理意见
 		"handleType" : handleType,//处理类型，1为通过，2为回退
 		"withdraw" : withdraw,//是否可以撤回，此为环节配置的撤回。
-		"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
+		//"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
 	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){		//工单注册点击@工作流
@@ -164,6 +164,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		postData = $.extend(postData, datas);
 		postData.wcardId = wcardId;
 		postData.wcardType = wcardTypeCode;
+		postData.contractName = $("#contractName").val();
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
@@ -196,7 +197,9 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		parent.layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 			parent.layer.close(index);
 			postData.validity = {};
-			postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
+			if($("#contractScanCopyUpload")[0]){
+	    		postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
+	    	};
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -365,6 +368,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;
 	postData.wcardType = wcardTypeCode;
+	postData.contractName = $("#contractName").val();
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
@@ -429,7 +433,9 @@ function activateContract(){
 			layer.close(index);
 			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 			postData.validity = {};
-			postData.contractScanCopyUpload = scanCopyUploadData;
+			if($("#contractScanCopyUpload")[0]){
+				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);;
+	    	};
 			postData.validity.adminCommitment = adminCommitment;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -581,6 +587,8 @@ function getWorkOrderInfo(){
 						var ms = '当前合同处于"作废"状态，不能进行操作';
 					}else if(contractStatus == 3){
 						var ms = '当前合同处于"作废申请中"状态，请稍后操作';
+					}else if(contractStatus == 8){
+						var ms = '当前合同处于"履行中"状态，不能操作';
 					}else if(contractStatus == null){
 						var ms = '当前合同状态未知，请稍后操作';
 					};
@@ -727,12 +735,17 @@ function setSpeedyJump(){
 	var html = "";
 	$.each(data, function(k,v) {
 		if($(v.jumpId)[0]){
-			html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
+			html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" data-container="body" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
 		}
 	});
 	$("#workOrderMenu").html(html);
 	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
 }
+$("#workOrderMenu").hover(function(){
+	$(this).css("padding-left","120px");
+},function(){
+	$(this).css("padding-left","0");
+})
 /*
  * 当不为其他类型工单时基本信息"固定金额"为"是"时，开票信息和账号信息(收款方)加*号
  */
@@ -810,13 +823,13 @@ function saveContent(){
 		if($("#contractScanCopyUpload")[0]){
 			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
     	};
-		saveContentPost(submitData);
+		saveContentPost(submitData,2);
 	}else{
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
 		var submitData = getContentValue();
 		if(submitData){
-			saveContentPost(submitData);
+			saveContentPost(submitData,1);
 		}
 	};
 	//手动触发表单特定的验证项
@@ -832,9 +845,14 @@ function saveContent(){
 /*
  * 保存提交后台
  */
-function saveContentPost(data){
+function saveContentPost(data,type){
 	var postData = JSON.stringify(data);
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorInfo", "post", postData, successCallback);
+	if(type == 1){
+		var url = serverPath + "contractOrderEditorController/saveOrderEditorInfo";
+	}else{
+		var url = serverPath + "contractOrderEditorController/saveOrderEditorApprovalInfo"
+	}
+	App.formAjaxJson(url, "post", postData, successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		setPageIdCallback(data);

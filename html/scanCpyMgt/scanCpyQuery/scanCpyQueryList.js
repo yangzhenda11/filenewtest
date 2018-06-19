@@ -47,8 +47,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 			"className": "text-center",
 			"title": "快捷下载",
 			"render": function(data, type, full, meta) {
-				var downloadUrl = serverPath+"downloadRedirect/downloadContractText?id=" + full.id+"&fileType=905510";
-				var result = '<a href="'+downloadUrl+'"">正文下载</a>';
+				var result = '<a onclick="getScanCpyConract(\''+full.id+'\')">正文下载</a>';
 				return result;
 			}
 		},
@@ -168,4 +167,23 @@ $(function(){
 function jumpSanCpyQueryDetail(id){
 	var src = "./scanCpyQueryDetail.html?id="+id;
 	App.changePresentUrl(src);
+}
+/*
+ * 获取正文下载的key
+ */
+function getScanCpyConract(id){
+	var url = serverPath + "contractScanQuery/downloadContractText";
+	var postData = {
+		id: id,
+		fileType: "905510"
+	};
+	App.formAjaxJson(url, "get", postData, successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data){
+			window.location.href = serverPath+'fileload/downloadS3?key=' + data;
+		}else{
+			layer.msg("获取不到下载key值！");
+		}
+	}
 }

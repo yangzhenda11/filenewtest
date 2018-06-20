@@ -151,6 +151,14 @@
 	    $("#uploadFileName").on("filebatchuploadsuccess", function (event, data) {
 	    	parseResult(data);
 	    });
+	    //异步上传错误结果处理
+	    $('#uploadFileName').on("fileerror", function(event, data, msg) {
+			console.log("错误");
+		});
+		//同步上传错误结果处理
+		$('#uploadFileName').on("filebatchuploaderror", function(event, data, msg) {
+			console.log("错误");
+		});
 	    function parseResult(data){
 	    	var fileValue = data.files;
 	    	if(data.response.status == 1){

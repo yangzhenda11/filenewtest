@@ -762,7 +762,6 @@ var App = function() {
 				global:animation,
 				contentType: "application/json",
 				success: function(result){
-					console.log(result);
 					var result = result;
 					if (result.status == 1) {
 						successCallback(result);
@@ -773,7 +772,11 @@ var App = function() {
 					};
 				},
 				error: function(result) {
-					if(result.status == 401){
+					if(result.responseText.indexOf("会话已经超时") != -1){
+						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+		        			top.window.location.href = "/login";
+		        		});
+					}else if(result.status == 401){
 						if(top.globalConfig.loginSwitchSuccess == 0){
 							top.window.location.href = "/overtime.html";
 						}else{
@@ -790,7 +793,11 @@ var App = function() {
 		},
 		//使用$.ajax中错误的回调事件
 		ajaxErrorCallback: function(result){
-			if(result.status == 401){
+			if(result.responseText.indexOf("会话已经超时") != -1){
+				layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+        			top.window.location.href = "/login";
+        		});
+			}else if(result.status == 401){
 				if(top.globalConfig.loginSwitchSuccess == 0){
 					top.window.location.href = "/overtime.html";
 				}else{
@@ -1005,27 +1012,28 @@ var App = function() {
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
-		   }).on('xhr.dt', function ( e, settings, json, xhr ) {
+		  }).on('xhr.dt', function ( e, settings, json, xhr ) {
 	        	App.stopLoading(btn);
-		        if(xhr.status == 200){
-		        	console.log(xhr);
+	        	loadEnd();
+	        	if(xhr.responseText.indexOf("会话已经超时") != -1){
+					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+	        			top.window.location.href = "/login";
+	        		});
+				}else if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
 		        		layer.alert(xhr.responseJSON.message,{icon:2,title:"错误"});
 		        	}
+		       	}else if(xhr.status == 401){
+		       		if(top.globalConfig.loginSwitchSuccess == 0){
+						top.window.location.href = "/overtime.html";
+					}else{
+						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+		        			top.window.location.href = "/login.html";
+		        		});
+					}
 		        }else{
-		        	loadEnd();
-		        	if(xhr.status == 401){
-		        		if(top.globalConfig.loginSwitchSuccess == 0){
-							top.window.location.href = "/overtime.html";
-						}else{
-							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-			        			top.window.location.href = "/login.html";
-			        		});
-						}
-	        		}else{
-	        			layer.alert("接口错误", {icon: 2,title:"错误"});
-	        		}
-		        }
+        			layer.alert("接口错误", {icon: 2,title:"错误"});
+        		}
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';
 			return oTable;
@@ -2452,7 +2460,11 @@ function resolveResult(result,code){
  * ztree异步加载失败事件
  */
 function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-	if(XMLHttpRequest.status == 401){
+	if(XMLHttpRequest.responseText.indexOf("会话已经超时") != -1){
+		layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
+			top.window.location.href = "/login";
+		});
+	}else if(XMLHttpRequest.status == 401){
 		if(top.globalConfig.loginSwitchSuccess == 0){
 			top.window.location.href = "/overtime.html";
 		}else{
@@ -2462,7 +2474,7 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
 		}
 	}else{
 		layer.alert("接口错误", {icon: 2,title:"错误"});
-	}
+	};
 }
 /*
  * 全局ajax事件

@@ -762,6 +762,7 @@ var App = function() {
 				global:animation,
 				contentType: "application/json",
 				success: function(result){
+					console.log(result);
 					var result = result;
 					if (result.status == 1) {
 						successCallback(result);
@@ -1007,6 +1008,7 @@ var App = function() {
 		   }).on('xhr.dt', function ( e, settings, json, xhr ) {
 	        	App.stopLoading(btn);
 		        if(xhr.status == 200){
+		        	console.log(xhr);
 		        	if(xhr.responseJSON.status != 1){
 		        		layer.alert(xhr.responseJSON.message,{icon:2,title:"错误"});
 		        	}
@@ -1447,6 +1449,18 @@ var App = function() {
 		 */
 		getFileUploadModal : function(setting,queryCallback){
 			$("#commomModal").load("/static/data/_fileUpload.html?" + App.timestamp(),function(){
+				setParm(setting,queryCallback);
+			})
+		},
+		/*
+		 * 加载文件上传公共模态框
+		 * 页面中需加入一个id为commomModal的div,即:
+         * '<div class="commom fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>'
+         * setting:配置参数
+         * queryCallback:点击确定执行的方法
+		 */
+		getAjaxFileUploadModal : function(setting,queryCallback){
+			$("#commomModal").load("/static/data/_ajaxFileupload.html?" + App.timestamp(),function(){
 				setParm(setting,queryCallback);
 			})
 		},

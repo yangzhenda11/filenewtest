@@ -92,7 +92,7 @@
 					<label for="partnerCode" class="control-label">文件</label>
 					<div class="valiParent">
 						<a class="fileImportChoose" id="fileImportChoose">
-							<input type="file" name="file" id="file" accept="" />点击选择文件
+							<input type="file" name="file" id="importFileInput" accept="" />点击选择文件
 						</a>
 						<div id="fileImportResult" class="hidden">
 							<a id="fileImportName"></a>
@@ -110,7 +110,7 @@
 							<span class="input-group-addon"><i class="glyphicon glyphicon-repeat"></i>  重置</span>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-upload"></i>  导入</span>
 							<div class="input-group-addon btn chooseImportFile"><i class="glyphicon glyphicon-folder-open"></i> 选择文件
-							<input type="file" name="file" id="file" class="hidden" accept="" />
+							<input type="file" name="file" id="importFileInput" class="hidden" accept="" />
 							</div>
 						</div>
 						
@@ -148,36 +148,46 @@
 	/*
 	 * 检测选择文件按钮点击
 	 */
-	$(".fileImportChoose").on("change","input[type='file']",function(){
+	$("#importFileInput").on("change",function(){
 	    var filePath=$(this).val();
-	    var flag = false;
 	    if(filePath){
-	    	if(fileImportPostfix){
-	    		$.each(fileImportPostfix,function(k,v){
-	    			if(filePath.indexOf("."+v) != -1){
-	    				flag = true;
-	    				return true;
-	    			}
-	    		})
-	    	}else{
-	    		flag = true;
-	    	};
-	    	if(flag){
-	    		var arr=filePath.split('\\');
-		        var fileName=arr[arr.length-1];
-		        $("#fileImportChoose").addClass("hidden");
-		        $("#fileImportResult").removeClass("hidden");
-		        $("#fileImportName").html(fileName);
-	    	}else{
-	    		var typeText = "";
+			var tempFileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
+			var fileName = tempFileName.split(".");
+			var reg = fileName[fileName.length-1];
+			var flag = false;
+			//判断是否含有特殊字符
+			var regEn = /[`~!@#$%^&*+<>?:"{},.\/;'[\]]/im,
+		    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
+			if(regEn.test(fileName[0]) || regCn.test(fileName[0])) {
+				layer.alert("名称不能包含特殊字符",{title:"格式错误",icon:2});
+				$("#importFileInput").val("");
+			    return false;
+			}
+			//循环遍历附件类型
+			if(fileImportPostfix.length == 0){
+				flag = true;
+			}
+			for(var i = 0;i<fileImportPostfix.length;i++){
+				if(fileImportPostfix[i].toLowerCase() == reg.toLowerCase()){
+					flag = true;
+					break;
+				}
+			};
+			if(!flag){
+				var typeText = "";
 	    		$.each(fileImportPostfix,function(k,v){
 	    			typeText += "."+v +"，"; 
 	    		})
 	    		typeText = typeText.substring(0,typeText.length-1);
+	    		$("#importFileInput").val("");
 	    		layer.alert("请选择"+typeText+"格式的文件",{title:"格式错误",icon:2});
 				return false;
-	    	}
-	    }
+			}else{
+				$("#fileImportChoose").addClass("hidden");
+		        $("#fileImportResult").removeClass("hidden");
+		        $("#fileImportName").html(tempFileName);
+			}
+	   	}
 	})
 	//设置参数
 	function setParm(setting, callback) {
@@ -191,7 +201,7 @@
 			fileImportPostfix = setting.postfix;
 		}
 		if(setting.accept) {
-			$("#file").attr("accept", setting.accept);
+			$("#importFileInput").attr("accept", setting.accept);
 		};
 		if(setting.extraData) {
 			$.each(setting.extraData, function(k, v) {
@@ -227,7 +237,7 @@
 	function resetFileImport(){
 		$("#fileImportChoose").removeClass("hidden");
 		$("#fileImportResult").addClass("hidden");
-		$("#file").val("");
+		$("#importFileInput").val("");
 		$("#fileImportName").html("");
 	}
 	

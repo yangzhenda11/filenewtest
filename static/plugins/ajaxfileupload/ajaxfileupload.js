@@ -1,16 +1,6 @@
 
 jQuery.extend({
-	 handleError: function( s, xhr, status, e )      {
-         // If a local callback was specified, fire it  
-    	 if ( s.error ) {  
-             s.error.call( s.context || s, xhr, status, e );  
-    	 }  
-    	
-    	 // Fire the global callback  
-    	 if ( s.global ) {  
-              (s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );  
-    	 }  
-    },
+	
 
     createUploadIframe: function(id, uri)
 	{
@@ -82,7 +72,7 @@ jQuery.extend({
             jQuery.event.trigger("ajaxSend", [xml, s]);
         // Wait for a response to come back
         var uploadCallback = function(isTimeout)
-		{
+		{			
 			var io = document.getElementById(frameId);
             try 
 			{				
@@ -112,13 +102,6 @@ jQuery.extend({
                         // process the data (runs the xml through httpData regardless of callback)
                         var data = jQuery.uploadHttpData( xml, s.dataType );    
                         // If a local callback was specified, fire it and pass it the data
-                        
-                        console.log()
-                        
-                        if(xml.responseText.indexOf('MaxUploadSizeExceededException') != -1){
-                        	throw new error("arguments are not numbers");
-                        }
-                        
                         if ( s.success )
                             s.success( data, status );
     
@@ -129,13 +112,8 @@ jQuery.extend({
                         jQuery.handleError(s, xml, status);
                 } catch(e) 
 				{
-                	var retMessage = e.message;
-                		
-            		if( retMessage == 'Unexpected identifier' || retMessage == 'error is not defined'){
-            			 status = "error";
-                         jQuery.handleError(s, xml, status, e);
-            		}
-                   
+                    status = "error";
+                    jQuery.handleError(s, xml, status, e);
                 }
 
                 // The request was completed
@@ -203,31 +181,33 @@ jQuery.extend({
         return {abort: function () {}};	
 
     },
-   
 
     uploadHttpData: function( r, type ) {
         var data = !type;
-        //data = type == "xml" || data ? r.responseXML : r.responseText;
-        if(data==(type=="xml"||type==data)) {
-        	data = r.responseXML;
-        }else{
-        	data = r.responseText;
-        }
+        data = type == "xml" || data ? r.responseXML : r.responseText;
         // If the type is "script", eval it in global context
         if ( type == "script" )
             jQuery.globalEval( data );
         // Get the JavaScript object, if JSON is used.
         if ( type == "json" )
-        
-        {
-        	data = jQuery.parseJSON(jQuery(data).text());
-        }
-       
+            eval( "data = " + data );
+        	//data=jQuery.parseJSON(jQuery(data).text());
         // evaluate scripts within html
         if ( type == "html" )
             jQuery("<div>").html(data).evalScripts();
 
         return data;
-    }
-})
+    },
+    
+    handleError: function( s, xhr, status, e ) 	{
+        // If a local callback was specified, fire it
+            if ( s.error ) {
+                s.error.call( s.context || s, xhr, status, e );
+            }
 
+            // Fire the global callback
+            if ( s.global ) {
+                (s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );
+            }
+        }
+})

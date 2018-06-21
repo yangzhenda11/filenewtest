@@ -205,11 +205,12 @@ function changePasswd() {
  * 退出登录
  */
 function logout() {
+	clearAllCookie();
     App.formAjaxJson(globalConfig.serverPath + "staffs/removeStaffCache", "POST", null, successMethod);
     function successMethod(result) {
-        App.formAjaxJson(globalConfig.serverPath + "cloud/logout", "POST", null, successCallback);
+        App.formAjaxJson(globalConfig.serverPath + "logout", "POST", null, successCallback);
 	    function successCallback(result) {
-	        window.location.href = result.data;
+	        window.location.href = "login.html";
 	    }
     }
 }
@@ -218,13 +219,12 @@ function logout() {
  */
 function clearAllCookie() {  
     var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
-    if(keys) {  
+    if(keys) {
         for(var i = keys.length; i--;){
-        	console.log(keys)
+			document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
         }
-            //document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
-    }  
-}  
+    }
+}
 /*
  * 待办数量查询
  */

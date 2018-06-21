@@ -322,7 +322,6 @@
         },
         callback: {
             onAsyncError: onAsyncError,
-            beforeClick: beforeClick,
             onClick: onClick,
             beforeAsync: zTreeBeforeAsync
         }
@@ -331,7 +330,13 @@
     function orgsfilter(treeId, parentNode, responseData) {
         var responseData = responseData.data;
         if (responseData) {
-            return responseData;
+        	var returnData = [];
+        	for(var i = 0; i < responseData.length; i++){
+        		if(responseData[i].orgType == 1){
+        			returnData.push(responseData[i]);
+        		}
+        	}
+            return returnData;
         } else {
             return null;
         }

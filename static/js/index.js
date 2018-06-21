@@ -176,11 +176,7 @@ function updatePasswd() {
             });
     }
 }
-$("#loginInfoCon").hover(function(){
-	$("#user-menu").show();
-},function(){
-	$("#user-menu").hide();
-})
+
 function changePasswd() {
     debugger;
     App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),
@@ -199,7 +195,7 @@ function changePasswd() {
 
         function passwdCallback(result) {
             if (result.data) {
-	            alert("修改成功");
+	            layer.msg("修改成功");
 	            logout();
 	        }
         }
@@ -217,6 +213,18 @@ function logout() {
 	    }
     }
 }
+/*
+ * 清除cookie
+ */
+function clearAllCookie() {  
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
+    if(keys) {  
+        for(var i = keys.length; i--;){
+        	console.log(keys)
+        }
+            //document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
+    }  
+}  
 /*
  * 待办数量查询
  */
@@ -247,6 +255,13 @@ function hideNavbar() {
     $('body').addClass('hideNavbar');
     $hidemenu.show();
 }
+//用户信息划过显示
+$("#loginInfoCon").hover(function(){
+	$("#user-menu").show();
+},function(){
+	$("#user-menu").hide();
+})
+
 /*
  * 全屏实现
  */

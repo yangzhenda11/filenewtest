@@ -1015,7 +1015,7 @@ var App = function() {
 		  }).on('xhr.dt', function ( e, settings, json, xhr ) {
 	        	App.stopLoading(btn);
 	        	loadEnd();
-	        	if(xhr.responseText.indexOf("会话已经超时") != -1){
+	        	if(xhr.responseText.indexOf("会话已经超时") != -1 && xhr.responseJSON == null){
 					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 	        			top.window.location.href = "/login";
 	        		});

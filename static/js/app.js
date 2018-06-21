@@ -761,18 +761,22 @@ var App = function() {
 				async: async,
 				global:animation,
 				contentType: "application/json",
-				success: function(result){
-					var result = result;
-					if (result.status == 1) {
-						successCallback(result);
-					} else {
-						var ms = result.message;
-						layer.msg(ms);
-						improperCallback(result);
-					};
+				success: function(data,con,xhr){
+					if(xhr.status == 200){
+						var result = data;
+						if (result.status == 1) {
+							successCallback(result);
+						} else {
+							var ms = result.message;
+							layer.msg(ms);
+							improperCallback(result);
+						};
+					}else{
+						successCallback("");
+					}
 				},
 				error: function(result) {
-					if(result.responseText.indexOf("会话已经超时") != -1){
+					if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 		        			top.window.location.href = "/login";
 		        		});
@@ -793,7 +797,7 @@ var App = function() {
 		},
 		//使用$.ajax中错误的回调事件
 		ajaxErrorCallback: function(result){
-			if(result.responseText.indexOf("会话已经超时") != -1){
+			if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 				layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
         			top.window.location.href = "/login";
         		});
@@ -2459,7 +2463,7 @@ function resolveResult(result,code){
  * ztree异步加载失败事件
  */
 function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-	if(XMLHttpRequest.responseText.indexOf("会话已经超时") != -1){
+	if(XMLHttpRequest.responseText.indexOf("会话已经超时") != -1 && XMLHttpRequest.responseJSON == null){
 		layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 			top.window.location.href = "/login";
 		});

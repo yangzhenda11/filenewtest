@@ -593,12 +593,12 @@ function getWorkOrderInfo(){
 						var ms = '当前合同状态未知，请稍后操作';
 					};
 					if(parm.pageType == 1){
-						parent.layer.alert(ms,{icon:2,title:"状态错误",closeBtn:0},function(index){
+						parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
 							parent.layer.close(index);
 							setDomContent(domObj);
 						});
-					}else{
-						layer.alert(ms,{icon:2,title:"状态错误",closeBtn:0},function(index){
+					}else if(parm.pageType == 2){
+						layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
 							layer.close(index);
 							setDomContent(domObj);
 						});

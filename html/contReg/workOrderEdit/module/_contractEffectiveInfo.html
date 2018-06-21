@@ -216,12 +216,26 @@
 		var selectValue = $(this).val();
 		var checkValue = $("input[name='isPostponable']:checked").val();
 		changePostponableValidatorStatus(selectValue,checkValue);
+		resetEffectiveValidator();
 	});
 	$("input[name='isPostponable']").on("change",function(){
 		var selectValue = $("#periodType").val();
 		var checkValue = $(this).val();
 		changePostponableValidatorStatus(selectValue,checkValue);
+		resetEffectiveValidator();
 	});
+	/*
+	 * 选择时重置验证
+	 */
+	function resetEffectiveValidator(){
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("effectiveDate", "NOT_VALIDATED", null );
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("expiryDate", "NOT_VALIDATED", null );
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("effectCondition", "NOT_VALIDATED", null );
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("effectPeriod", "NOT_VALIDATED", null );
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("postponeCondition", "NOT_VALIDATED", null );
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("postponePeriod", "NOT_VALIDATED", null );
+		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("expiryCondition", "NOT_VALIDATED", null );
+	}
 	/*
 	 *	有效期和是否顺延现实和隐藏
 	 */

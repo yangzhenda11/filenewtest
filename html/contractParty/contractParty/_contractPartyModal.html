@@ -493,7 +493,7 @@
         $("input[name=" + treeId + "]").val(nameAll.join(","));
         if (treeId == "otherTree") {
             $("#contractEditForm").data("bootstrapValidator").updateStatus("otherTree", "NOT_VALIDATED", null);
-            //$("#contractEditForm").data("bootstrapValidator").validateField('otherTree');
+            $("#contractEditForm").data("bootstrapValidator").validateField('otherTree');
         }
     }
 </script>

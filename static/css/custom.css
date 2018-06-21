@@ -282,6 +282,9 @@
  * 右侧若加工具栏样式，两层DIV  .toolbars-position>.toolbars-content
  * 浮动布局
  */
+#user-menu{
+	margin-top: 4px;
+}
 .toolbars-position{
 	position: relative;
 }

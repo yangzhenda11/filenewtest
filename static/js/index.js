@@ -176,7 +176,11 @@ function updatePasswd() {
             });
     }
 }
-
+$("#loginInfoCon").hover(function(){
+	$("#user-menu").show();
+},function(){
+	$("#user-menu").hide();
+})
 function changePasswd() {
     debugger;
     App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),

@@ -31,7 +31,7 @@ var ace_menus = null;
 
 $(document).ready(function() {
 	//获取用户基本信息
-    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, errorCallback, null, false);
+    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
 
     function successCallback(result) {
         var data = result.data;
@@ -86,28 +86,6 @@ $(document).ready(function() {
         //var messageInterval = setInterval(setMessageTipNumber, 20000);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
-    }
-    function improperCallback(result) {
-    	if(result.responseText.indexOf("会话已经超时") != -1){
-			layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-    			top.window.location.href = "/login";
-    		});
-		}else{
-			 layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
-	            window.location.href = "login.html";
-	        });
-		}
-    }
-    function errorCallback(result) {
-    	if(result.responseText.indexOf("会话已经超时") != -1){
-			layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-    			top.window.location.href = "/login";
-    		});
-		}else{
-			 layer.alert("用户信息获取失败，请重新登录或联系管理员", { icon: 2, title: "错误", closeBtn: 0 }, function(index) {
-	            window.location.href = "login.html";
-	        });
-		}
     }
 });
 

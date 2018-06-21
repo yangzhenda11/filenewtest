@@ -1192,7 +1192,6 @@ var App = function() {
 		 * 重置form表单
 		 */
 		resetForm:function(obj){
-			alert(obj)
             var form = $(obj).closest('form');
             form[0].reset();
             //form.find('input[type=text]').data("id","");

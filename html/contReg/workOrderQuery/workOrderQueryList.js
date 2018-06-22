@@ -82,11 +82,28 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
  * 搜索点击事件
  */
 function searchWorkOrder(retainPaging) {
-	var table = $('#workOrderQueryTable').DataTable();
-	if(retainPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
+	var ctreatedDateBegin = $("#create_date_begin").val().trim();
+    var ctreatedDateEnd = $("#create_date_end").val().trim();
+	var approveDateBegin = $("#approve_date_begin").val().trim();
+	var approveDateEnd = $("#approve_date_end").val().trim();
+	var sealAndSignDateBegin = $("#sealAndSign_date_begin").val().trim();
+	var sealAndSignDateEnd = $("#sealAndSign_date_end").val().trim();
+	if(!checkDate(ctreatedDateBegin,ctreatedDateEnd)){
+		layer.msg("工单创建日期开始日期不得大于截止日期！");
+		return;
+	}else if(!checkDate(approveDateBegin,approveDateEnd)){
+		layer.msg("合同审批通过日期开始日期不得大于截止日期！");
+		return;
+	}else if(!checkDate(sealAndSignDateBegin,sealAndSignDateEnd)){
+		layer.msg("签订盖章日期开始日期不得大于截止日期！");
+		return;
+	}else{
+		var table = $('#workOrderQueryTable').DataTable();
+		if(retainPaging) {
+			table.ajax.reload(null, false);
+		} else {
+			table.ajax.reload();
+		}
 	}
 }
 
@@ -184,4 +201,19 @@ function exportResultExcel(){
 	var searchParmData = getSearchParm();
 	var url = serverPath + 'workOrderQuery/workOrderQueryExpoetList' + App.urlEncode(searchParmData);
     location.href = encodeURI(url);
+}
+
+
+/**
+ * 校验开始时间是否大于截止时间
+ * */
+function checkDate(strDate1,strDate2){  
+    var t1 = new Date(strDate1);     
+    var t2 = new Date(strDate2);    
+              
+    if(Date.parse(t1) - Date.parse(t2) > 0){     
+        return false;   
+    }else{  
+        return true;  
+    }  
 }

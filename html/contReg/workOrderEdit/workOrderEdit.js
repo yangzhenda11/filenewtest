@@ -92,6 +92,11 @@ function beforePushProcess(pass){
 		};
 		//删除表格内多余的数据
 		removeMoreThanTablecontent();
+		//检查是否长度超长
+		var isOverlength = checkDomOverlength();
+		if(isOverlength){
+			return false;
+		};
 		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
@@ -330,6 +335,11 @@ function submitContent(){
 		};
 		//删除表格内多余的数据
 		removeMoreThanTablecontent();
+		//检查是否长度超长
+		var isOverlength = checkDomOverlength();
+		if(isOverlength){
+			return false;
+		};
 		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
@@ -825,13 +835,18 @@ function saveContent(){
 		if($("#contractScanCopyUpload")[0]){
 			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
     	};
-		saveContentPost(submitData,2);
+		saveContentPost(submitData,"GDQR");
 	}else{
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
+		//检查是否长度超长
+		var isOverlength = checkDomOverlength();
+		if(isOverlength){
+			return false;
+		};
 		var submitData = getContentValue();
 		if(submitData){
-			saveContentPost(submitData,1);
+			saveContentPost(submitData,"GDCL");
 		}
 	};
 	//手动触发表单特定的验证项
@@ -849,9 +864,9 @@ function saveContent(){
  */
 function saveContentPost(data,type){
 	var postData = JSON.stringify(data);
-	if(type == 1){
+	if(type == "GDCL"){
 		var url = serverPath + "contractOrderEditorController/saveOrderEditorInfo";
-	}else{
+	}else if(type == "GDQR"){
 		var url = serverPath + "contractOrderEditorController/saveOrderEditorApprovalInfo"
 	}
 	App.formAjaxJson(url, "post", postData, successCallback);
@@ -919,6 +934,21 @@ function addNotEmptyValidatorField(name,msg){
    	App.addValidatorField("#workOrderContentForm",name,notEmptyValidatorField);
 }
 /*
+ * 检查页面错误项中是否有超长的元素（不精确，为用户点击触发后才生效）
+ */
+function checkDomOverlength(){
+	var overLengthDom = $("#workOrderContentForm").find(".has-error.overlength")[0];
+	if(overLengthDom){
+		srolloOffect(overLengthDom,1);
+		var limitLen = $(overLengthDom).find("input").attr("maxlength");
+		var inputLen = getByteLen($(overLengthDom).find("input").val());
+		showLayerErrorMsg("该输入框限制输入"+limitLen+"个字符，现已输入"+inputLen+"个字符，请修改后再进行操作");
+		return true;
+	}else{
+		return false;
+	}
+}
+/*
  * 获取字符串长度（汉字算两个字符，字母数字算一个）
  */
 function getByteLen(val) {
@@ -942,6 +972,11 @@ function checkMaxLength(dom){
 	var maxLength = $(dom).attr("maxlength");
 	if(maxLength < len){
 		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个字的字符！");
+		$(dom).parents(".form-group").addClass("has-error overlength");
+	}else{
+		if($(dom).hasClass("overlength")){
+			$(dom).removeClass("overlength has-error");
+		}
 	}
 }
 //返回上一页

@@ -1143,7 +1143,7 @@ function checkifdone(){
 				result=false;
 			}else{
 				result=true;
-				window.top.alertModel(data.info);
+				layer.msg(data.info);
 			}
 		},
 		error: function(result) {

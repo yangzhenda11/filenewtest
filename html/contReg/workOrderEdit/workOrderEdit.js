@@ -510,7 +510,7 @@ function sendBack(){
 function setPinfoContent(){
 	var pinfoContent = $("#pinfoContent").val();
 	if(pinfoContent == ""){
-		layer.msg("请输入退回原因");
+		layer.msg("请输入退回原因",{offset: '130px'});
 	}else{
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
 		flowParam.pinfoContent = pinfoContent;

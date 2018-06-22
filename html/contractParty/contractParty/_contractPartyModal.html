@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="form-group col-sm-11">
-                        <label for="other" class="control-label">其他映射组织<i class="iconfont icon-mi required"></i></label>
+                        <label for="other" class="control-label">其他映射组织</label>
                         <div class="valiParent input-group">
                             <input id="other" onclick="showTree('other')" readonly name="otherTree" type="text" class="form-control" />
                             <span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
@@ -252,13 +252,6 @@
                             message: '请选择法人代表'
                         }
                     }
-                },
-                otherTree: {
-                    validators: {
-                        notEmpty: {
-                            message: '请选择其他映射组织'
-                        }
-                    }
                 }
             }
         }).on('success.form.bv', function(e) {
@@ -385,6 +378,16 @@
     /*
      * 所属组织树多选配置
      */
+    var orgsSetting = {
+        view: {
+            dblClickExpand: false
+        },
+        callback: {
+            onAsyncError: onAsyncError,
+            onClick: onClick,
+            beforeAsync: zTreeBeforeAsync
+        }
+    };
     var otherSetting = {
         async: {
             enable: true,
@@ -404,7 +407,8 @@
             }
         },
         check: {
-            enable: true
+            enable: true,
+            chkboxType:{"Y":"","N":""}
         },
         callback: {
             onCheck: onCheck,
@@ -416,14 +420,19 @@
 
     function otherFilter(treeId, parentNode, responseData) {
         var responseData = responseData.data;
-        if (responseData.length > 0) {
+        var returnData = [];
+        if (responseData.length>0) {
             for (var i = 0; i < responseData.length; i++) {
-                if ("true" == responseData[i].isParent) {
-                    responseData[i].nocheck = true;
+                if ("true" == responseData[i].isParent || responseData[i].orgType == 1 || responseData[i].orgType == 4) {
+                    //responseData[i].nocheck = true;
+                    returnData.push(responseData[i]);
+                    returnData.nocheck = true;
                 }
             }
+            return returnData;
+        } else {
+            return null;
         }
-        return responseData;
     }
 
     function zTreeBeforeAsync(treeId, treeNode) {
@@ -467,7 +476,7 @@
         var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
         if (treeId == "organisationTree") {
             var selectName = nodes[0].orgName;
-            var selectId = nodes[0].orgCode;
+            var selectId = nodes[0].orgId;
             $("input[name=" + treeId + "]").val(selectName);
             $("#contractEditForm").data("bootstrapValidator").updateStatus("organisationTree", "NOT_VALIDATED", null);
             $("#contractEditForm").data("bootstrapValidator").validateField('organisationTree');

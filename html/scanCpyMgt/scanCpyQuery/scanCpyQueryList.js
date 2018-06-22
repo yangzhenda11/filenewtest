@@ -79,11 +79,18 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
  * 搜索点击事件
  */
 function searchContractUpload(retainPaging) {
-	var table = $('#scanCpyQueryTable').DataTable();
-	if(retainPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
+	var approveDateBegin = $("#approve_date_begin").val().trim();
+	var approveDateEnd = $("#approve_date_end").val().trim();
+	if(checkDate(approveDateBegin,approveDateEnd)){
+		var table = $('#scanCpyQueryTable').DataTable();
+		if(retainPaging) {
+			table.ajax.reload(null, false);
+		} else {
+			table.ajax.reload();
+		}
+	}else{
+		layer.msg("审批通过日期开始日期不得大于截止日期！");
+		return;
 	}
 }
 
@@ -186,4 +193,19 @@ function getScanCpyConract(id){
 			layer.msg("获取不到下载key值！");
 		}
 	}
+}
+
+
+/**
+ * 校验开始时间是否大于截止时间
+ * */
+function checkDate(strDate1,strDate2){  
+    var t1 = new Date(strDate1);     
+    var t2 = new Date(strDate2);    
+              
+    if(Date.parse(t1) - Date.parse(t2) > 0){     
+        return false;   
+    }else{  
+        return true;  
+    }  
 }

@@ -322,6 +322,7 @@
 
     function orgsfilter(treeId, parentNode, responseData) {
         var responseData = responseData.data;
+        console.log(responseData);
         if (responseData) {
         	var returnData = [];
         	for(var i = 0; i < responseData.length; i++){
@@ -369,6 +370,7 @@
 
     function orgsFilter(treeId, parentNode, responseData) {
         var responseData = responseData.children;
+        console.log(responseData);
         if (responseData) {
             return responseData;
         } else {
@@ -378,16 +380,6 @@
     /*
      * 所属组织树多选配置
      */
-    var orgsSetting = {
-        view: {
-            dblClickExpand: false
-        },
-        callback: {
-            onAsyncError: onAsyncError,
-            onClick: onClick,
-            beforeAsync: zTreeBeforeAsync
-        }
-    };
     var otherSetting = {
         async: {
             enable: true,

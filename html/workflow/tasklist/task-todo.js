@@ -94,15 +94,15 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
 		}
 	},
 	columns: [// 对应列
-		{"data": "title","title":"待办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(30, true)},
-        {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
-        {"data": "name","title":"环节名称",className: "text-center"},
-        {"data": "createTime","title":"接收时间",className: "text-center", 
-        	render: function (a, b, c, d) { 
+		{"data": "title","title":"待办标题",className: "whiteSpaceNormal text-center","width": "35%"},
+        {"data": "processDefinitionName","title":"流程名称",className: "whiteSpaceNormal text-center","width": "23%"},
+        {"data": "name","title":"环节名称",className: "whiteSpaceNormal text-center","width": "15%"},
+        {"data": "createTime","title":"接收时间",className: "whiteSpaceNormal text-center","width": "15%", 
+        	render: function (a, b, c, d) {
         		return getSmpFormatDateByLong(a, true);
         	}
         },
-        {"data": null,"title":"操作",className: "text-center"}
+        {"data": null,"title":"操作",className: "text-center","width": "10%"}
     ],
     "columnDefs": [
 		{// 所有列默认值

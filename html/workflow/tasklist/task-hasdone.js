@@ -28,20 +28,20 @@ App.initDataTables('#searchTableForDone', "#submitBtn", {
 		}
 	},
 	columns: [// 对应列
-		{"data": "title","title":"已办标题",className: "text-center",'render': $.fn.dataTable.render.ellipsis(20, true)},
-        {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
-        {"data": "name","title":"环节名称",className: "text-center"},
-        {"data": "startTime","title":"接收时间",className: "text-center",
+		{"data": "title","title":"已办标题",className: "text-center whiteSpaceNormal","width": "33%"},
+        {"data": "processDefinitionName","title":"流程名称",className: "text-center whiteSpaceNormal","width": "17%"},
+        {"data": "name","title":"环节名称",className: "text-center whiteSpaceNormal","width": "15%"},
+        {"data": "startTime","title":"接收时间",className: "text-center whiteSpaceNormal","width": "15%",
         	render: function (a, b, c, d) {
         		return getSmpFormatDateByLong(a, true);
         	}
         },
-        {"data": "endTime","title":"办理时间",className: "text-center",
+        {"data": "endTime","title":"办理时间",className: "text-center whiteSpaceNormal","width": "15%",
         	render: function (a, b, c, d) {
         		return getSmpFormatDateByLong(a, true);
         	}
         },
-        {"data": null,"title":"操作",className: "text-center"}
+        {"data": null,"title":"操作",className: "text-center","width": "5%"}
     ],
     "columnDefs": [
 		{// 所有列默认值

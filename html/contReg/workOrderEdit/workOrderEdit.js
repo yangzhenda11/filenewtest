@@ -941,7 +941,7 @@ function checkMaxLength(dom){
 	var len = getByteLen($(dom).val());
 	var maxLength = $(dom).attr("maxlength");
 	if(maxLength < len){
-		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个的字符！");
+		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个字的字符！");
 	}
 }
 //返回上一页

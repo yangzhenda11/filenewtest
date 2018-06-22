@@ -94,6 +94,7 @@
 		var emptyFn = function(){};
 		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
+		var maxFileSize = setting.maxFileSize == undefined ? 512000 : setting.maxFileSize;
 		var fileExtensions = [];
 		if(setting.fileExtensions){
 			fileExtensions = setting.fileExtensions;
@@ -108,7 +109,7 @@
 				})
 			}
 		};
-		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData);
+		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData,maxFileSize);
 	}
 	$("#uploadFileName").on("click",function(){
 		if($(".fileItem").length >= fileUploadMaxNumeber){
@@ -119,13 +120,13 @@
 	/*
 	 * 文件上传
 	 */
-	function initFileUpload(url,uploadAsync,fileExtensions,extraData){
+	function initFileUpload(url,uploadAsync,fileExtensions,extraData,maxFileSize){
 		$("#uploadFileName").fileinput({
 	        language: 'zh', 
 	        uploadUrl: serverPath + url,
 	        uploadAsync: uploadAsync,
 	        allowedFileExtensions: fileExtensions,
-	        maxFileSize: 51200,
+	        maxFileSize: maxFileSize,
 	       	maxFileCount: 1,
 	       	dropZoneEnabled: false,
 	       	//showPreview : false,

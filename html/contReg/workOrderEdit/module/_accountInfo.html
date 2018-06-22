@@ -25,7 +25,7 @@
 								<th class="isRequiredIcon">收款方账户名称</th>
 								<th class="isRequiredIcon">收款方银行账号</th>
 								<th class="isRequiredIcon">收款方开户银行</th>
-								<th>操作</th>
+								<th class="payeeEdit">操作</th>
 							</tr>
 						</thead>
 						<tbody id="payeeInfoTbody">
@@ -204,7 +204,7 @@
 							$("#payeeInfoTbody .emptyTr").remove();
 						};
 						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
-											"<td class='payerEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
+											"<td class='payeeEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' maxlength='240' /></div></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' maxlength='40' /></div></td>"+
 											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' maxlength='240' /></div></td>"+

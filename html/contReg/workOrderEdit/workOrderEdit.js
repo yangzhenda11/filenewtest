@@ -592,7 +592,7 @@ function getWorkOrderInfo(){
 					}else if(contractStatus == null){
 						var ms = '当前合同状态未知，请稍后操作';
 					};
-					if(parm.pageType == 1){
+					if(parm.pageType == 1 && parm.taskFlag == "db"){
 						parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
 							parent.layer.close(index);
 							setDomContent(domObj);
@@ -602,6 +602,8 @@ function getWorkOrderInfo(){
 							layer.close(index);
 							setDomContent(domObj);
 						});
+					}else{
+						setDomContent(domObj);
 					}
 				}
 			};

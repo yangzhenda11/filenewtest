@@ -39,6 +39,7 @@ function resetConditionForToDo(){
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee) {
+	if(!checkifdone(id)){	
 	$('#taskId').val(id);
 	$('#taskDefinitionKey').val(taskDefinitionKey);
 	// 环节名称
@@ -54,6 +55,7 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	
 	$("#goTaskToDoDetailForToDo").show();
 	$("#searchContentForToDo").hide();
+	}
 }
 function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee) {
@@ -148,3 +150,30 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
         }
     }]
 });
+
+//校验待办是否已经办理,true标识已经办理，false标识尚未办理
+function checkifdone(taskId){
+	var result=false;
+	$.ajax({
+		'cache': true,
+		'type': "POST",
+		'url':serverPath+"workflowrest/checktask?taskId="+taskId,
+		'async': false,
+		'error': function(request) {
+			layer.msg("校验待办异常，请联系管理员!",{time:1000});
+		},
+		'success': function(data) {
+			var success=data.success;
+			if(success=='1'){
+				result=false;
+			}else{
+				result=true;
+				layer.msg(data.info);
+			}
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+	});
+	return result;
+}

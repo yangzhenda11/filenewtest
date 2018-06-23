@@ -177,7 +177,9 @@ function addCommentByuser(businessKey){
 	flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
 	
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
-		document.getElementById("businessiframe").contentWindow.modal_passBybuss(flowParam);
+		if(!checkifdone()){
+			document.getElementById("businessiframe").contentWindow.modal_passBybuss(flowParam);
+		}
 	}else{
 		layer.msg("网络异常，请联系管理员！");
 	}
@@ -202,7 +204,9 @@ function addCommentQxsp(businessKey){
 	//flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
 	
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passQxsp)=="function"){
-		document.getElementById("businessiframe").contentWindow.modal_passQxsp(flowParam);
+		if(!checkifdone()){
+			document.getElementById("businessiframe").contentWindow.modal_passQxsp(flowParam);
+		}
 	}else{
 		layer.msg("网络异常，请联系管理员！");
 	}
@@ -392,26 +396,28 @@ function addComment(pass){
 }
 // 会签环节点击“通过”或“拒绝”按钮，添加评论
 function addCommentForVote(pass){
-	// 确认按钮事件处理
-	$("#confirmButton").unbind();
-	$('#confirmButton').click(function(){
-		pushProcessForVote();
-	});
-	// 隐藏环节选择及受理人选择
-	$("#linkDiv").hide();
-	$("#assigneeDiv").hide();
-	// 据按钮类型选择处理方式
-	if(pass){
-		//$("#comment").val("通过");
-		$("#handleType").val(1);
-	} else {
-		//$("#comment").val("不通过");
-		$("#handleType").val(2);
+	if(!checkifdone()){
+		// 确认按钮事件处理
+		$("#confirmButton").unbind();
+		$('#confirmButton').click(function(){
+			pushProcessForVote();
+		});
+		// 隐藏环节选择及受理人选择
+		$("#linkDiv").hide();
+		$("#assigneeDiv").hide();
+		// 据按钮类型选择处理方式
+		if(pass){
+			//$("#comment").val("通过");
+			$("#handleType").val(1);
+		} else {
+			//$("#comment").val("不通过");
+			$("#handleType").val(2);
+		}
+		
+	//	$("#out-footer").hide();
+	//	$("#in-footer").show();
+		$("#in-footer").modal("show");
 	}
-	
-//	$("#out-footer").hide();
-//	$("#in-footer").show();
-	$("#in-footer").modal("show");
 }
 //点击“中止”按钮，仅弹出意见填写窗口
 function addCommentForStop(){
@@ -449,6 +455,7 @@ function addCommentForQuick(){
 }
 //简退环节后的首环节“推进”按钮，仅弹出意见填写窗口
 function addCommentForStart(){
+if(!checkifdone()){
 	// 确认按钮仅绑定推进事件
 	$("#confirmButton").unbind();
 	$('#confirmButton').click(function(){
@@ -461,6 +468,7 @@ function addCommentForStart(){
 //	$("#out-footer").hide();
 //	$("#in-footer").show();
 	$("#in-footer").modal("show");
+}
 }
 // 点击“转派”按钮，仅弹出处理人选择及意见填写窗口
 function addCommentForTurn(){
@@ -597,6 +605,7 @@ function selectButton(){
 
 // 推动流程
 function pushProcess(){
+	if(!checkifdone()){
 	// 需提交处理的参数
 	var taskDefinitionKey = '';
 	var withdraw = 0;
@@ -665,9 +674,11 @@ function pushProcess(){
 		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, taskDefinitionKey, assignee, $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), withdraw,iscandidate);
 		layer.close(index);
 	})
+	}
 }
 // 会签环节专用流程推动
 function pushProcessForVote(){
+	if(!checkifdone()){
 	var comment = $("#comment").val();
 	if(comment.length == 0) {
 		alert('请填写审批意见！');
@@ -680,10 +691,12 @@ function pushProcessForVote(){
 		// 调用推进方法，会签环节同意及拒绝均调用此方法，如参分别为（目标环节定义，目标处理人，流程实例ID， 任务ID， 用户意见，处理类型， 是否可撤回 ），非必要参数传空串
 		document.getElementById("businessiframe").contentWindow.modal_pass(serverPath, '', '', $('#processInstanceId').val(), $('#taskId').val(), comment, $('#handleType').val(), '');
 	}
+	}
 }
 
 //流程终止，即仅首环节可以流程作废
 function stopProcess(){
+	if(!checkifdone()){
 	var comment = $("#comment").val();
 	if(comment.length == 0) {
 		alert('请填写审批意见！');
@@ -695,10 +708,11 @@ function stopProcess(){
 		// 调用中止方法
 		document.getElementById("businessiframe").contentWindow.modal_stop(serverPath, $('#processInstanceId').val(), $('#taskId').val(), comment);
 	}
+	}
 }
 // 流程简退-退回操作，即不存在业务数据变动的环节回退任务至首环节
 function quickBackProcess(){
-	
+	if(!checkifdone()){
 	// 抽取参数
 	var processInstanceId = $('#processInstanceId').val();
 	var taskId = $('#taskId').val();
@@ -721,10 +735,11 @@ function quickBackProcess(){
 			}
 		});
 	}
+	}
 }
 //流程简退-首环节推进操作，即不存在业务数据变动的首环节推进至之前回退
 function quickPushProcess(){
-	
+	if(!checkifdone()){
 	// 抽取参数
 	var processInstanceId = $('#processInstanceId').val();
 	var taskId = $('#taskId').val();
@@ -747,11 +762,12 @@ function quickPushProcess(){
 			}
 		});
 	}
+	}
 }
 
 // 任务转派
 function transferTask(){
-	
+	if(!checkifdone()){
 	// 抽取参数
 	var processInstanceId = $('#processInstanceId').val();
 	var taskId = $('#taskId').val();
@@ -782,7 +798,7 @@ function transferTask(){
 		});
 		layer.close(index);
 	})
-	
+	}
 }
 
 //清空下环节处理人已选择内容

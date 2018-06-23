@@ -47,6 +47,7 @@
                     <label for="partnerCode" class="control-label">上传说明</label>
                     <div class="valiParent" id="fileUpliadExplain" style="color: red;">
                         <i class="iconfont icon-mi required"></i>删除上传成功文件列表中的文件，此文档不做上传处理。</br>
+                        <i class="iconfont icon-mi required"></i>文件大小不能超过100M。
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
@@ -94,7 +95,7 @@
 		var emptyFn = function(){};
 		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
-		var maxFileSize = setting.maxFileSize == undefined ? 512000 : setting.maxFileSize;
+		var maxFileSize = setting.maxFileSize == undefined ? 102400 : setting.maxFileSize;
 		var fileExtensions = [];
 		if(setting.fileExtensions){
 			fileExtensions = setting.fileExtensions;

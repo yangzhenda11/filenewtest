@@ -94,8 +94,18 @@ function searchWorkOrderActivate(retainPaging) {
 
 //跳转到上传页面
 function jumpSanCpyQueryDetail(id){
-	var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
-	App.changePresentUrl(src);
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+	function successCallback(result) {
+		var wcardProcess = result.data;
+		if(wcardProcess == 1){
+			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
+			App.changePresentUrl(src);
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
 }
 
 /*

@@ -123,6 +123,7 @@
 	 */
 	function getInvoiceDict() {
 		invoiceType = App.getDictInfo(9025);
+		console.log(invoiceType)
 		invoiceTypeSelectHtml = "<option value=''>请选择</option>";
 		$.each(invoiceType, function(k,v) {
 			invoiceTypeSelectHtml += "<option value='"+ k +"'>"+ v +"</option>";

@@ -153,16 +153,17 @@
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 5px;
-  filter: alpha(opacity=50);
-  -moz-opacity: 0.5;
-  -khtml-opacity: 0.5;
-  opacity: 0.5;
+  filter: alpha(opacity=80);
+  -moz-opacity: 0.8;
+  -khtml-opacity: 0.8;
+  opacity: 0.8;
 }
 #workOrderMenu li i {
   font-size: 20px;
 }
 #workOrderMenu li:hover {
-  background: #ccc;
+  background: #b7b7b7;
+  border: 1px solid #b7b7b7;
   color: #fff;
   filter: alpha(opacity=100);
   -moz-opacity: 1;

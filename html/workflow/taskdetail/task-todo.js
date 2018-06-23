@@ -344,7 +344,7 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 function addComment(pass){
 	clearAssignee();
 	
-	if(!checkifdone()){
+	//if(!checkifdone()){
 	    if(typeof(document.getElementById("businessiframe").contentWindow.beforePushProcess)=="function") {
 	        if (!document.getElementById("businessiframe").contentWindow.beforePushProcess(pass)) {
 	            // alertModel("系统异常，请联系管理员");
@@ -392,7 +392,7 @@ function addComment(pass){
 		// $("#in-footer").show();
 		$("#in-footer").modal("show");
 		// 刷新环节及处理人并展现
-	}
+	//}
 }
 // 会签环节点击“通过”或“拒绝”按钮，添加评论
 function addCommentForVote(pass){

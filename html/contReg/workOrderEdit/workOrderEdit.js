@@ -77,6 +77,12 @@ $(function() {
 	//请求工单模块，获取基本信息及各模块的url
 	getWorkOrderInfo();
 })
+function checktaskBybusId(){
+	App.formAjaxJson(serverPath+"workflowrest/checktaskBybusId?businessId="+wcardId, "post", null, successCallback);
+	function successCallback(result) {
+		console.log(result)
+	}
+}
 /*
  * 工作流相关
  */
@@ -225,6 +231,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
+		checktaskBybusId();
 		var wcardCanSubmit = checkContractStatus();
 		if(!wcardCanSubmit){
 			return false;
@@ -240,8 +247,6 @@ function modal_passQxsp(flowParam){
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
 				parent.layer.alert("取消成功。",{icon:1},function(index){
-					//parent.layer.close(index);
-					//window.location.reload();
 					parent.modal_close();
 				});
 			}
@@ -358,7 +363,7 @@ function submitContent(){
 					}
 		    	}
 	    		var flowKey = "Contractproject2Process";
-	    		var linkcode = "GDCL";
+	    		var linkcode = "GDQR";
 	    		var prov = "sd";
 	    		var callbackFun = "submitContentPost";
 	    		var staffSelectType = 1;

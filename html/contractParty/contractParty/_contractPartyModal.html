@@ -38,11 +38,12 @@
                         </div>
                     </div>
                     <div class="form-group col-sm-11">
-                        <label for="ouOrgId" class="control-label">OU组织名称<i class="iconfont icon-mi required"></i></label>
-                        <div class="valiParent">
-                            <input type="text" class="form-control" name="ouOrgId" id="ouOrgId" value="" />
-                        </div>
-                    </div>
+                    	<label for="ouOrgName" class="control-label">OU组织名称<i class="iconfont icon-mi required"></i></label>
+                    	<div class="valiParent">
+                       		<select id="ouOrgName" data-allowSearch='5' name="ouOrgName" class="form-control select2me">
+                       		</select>
+                    	</div>
+                	</div>
                     <div class="form-group col-sm-11">
                         <label for="legal" class="control-label">法人代表<i class="iconfont icon-mi required"></i></label>
                         <div class="valiParent input-group">
@@ -85,8 +86,14 @@
         	"data" : {"dictId": 9065},
         	"async" : false
         }
+        var ajaxRoleType = {
+            "url": serverPath + "orgPartner/getOuOrgName",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
         App.initAjaxSelect2("#partnerCode",ajaxObj,"dictValue","dictLabel","请选择关联编码");
-        
+        App.initAjaxSelect2("#ouOrgName", ajaxRoleType, "ouShortCode", "ouName", "请选择OU组织");
         var url = serverPath + "orgPartner/" + data;
         App.formAjaxJson(url, "POST", "", successCallback);
 
@@ -98,7 +105,7 @@
             $("#isPartnerM").val(data.isUnicomOrg).trigger('change');
             if (data.isUnicomOrg == 1) {
                 $("#isunicom").removeClass("hide");
-                $("#ouOrgId").val(data.ouOrgId);
+                $("#ouOrgId").val(data.ouOrgName);
                 $("#organisation").val(data.orgName);
                 $("#organisation").data("id", data.orgId);
                 $("#organisation").attr("title", data.orgName);

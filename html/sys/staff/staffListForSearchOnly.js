@@ -180,9 +180,9 @@ function showStaffDetail(staffId) {
                     </div> \
                     <div class="col-sm-6"> \
                         <div class="form-group"> \
-                            <label class="control-label col-sm-4">所属组织:</label> \
+                            <label class="control-label col-sm-4">适用范围:</label> \
                             <div class="col-sm-8"> \
-                                <p class="form-control-static">' + role.orgName + '</p> \
+                                <p class="form-control-static">' + role.provName + '</p> \
                             </div> \
                         </div> \
                     </div>';

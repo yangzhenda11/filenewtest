@@ -4,11 +4,18 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var isLoad = false;					//全局加载成功标识位
 var contractId = parm.businessKey;			//主键ID
-//隐藏保存和通过按钮
-parent.showOrhideButton("saveButton",false);
-parent.showOrhideButton("passButton",false);
-//增加创建按钮
-parent.addCustomBt("cjgdButton","创建","createWorkOrder");
+if(parm.taskFlag == "db"){
+	//隐藏保存和通过按钮
+	parent.showOrhideButton("saveButton",false);
+	parent.showOrhideButton("passButton",false);
+	//增加创建按钮
+	parent.addCustomBt("cjgdButton","创建","createWorkOrder");
+	$("#lableInfoText").text('工单自动创建失败，请手动点击尝试创建。');
+	$("#fieldsetTitle").text('创建生效合同结构化数据工单');
+}else{
+	$("#lableInfoText").text('工单手动创建成功。');
+	$("#fieldsetTitle").text('已创建成功的生效合同结构化数据工单');
+}
 $(function() {
 	$(".page-content,.portlet-body").css("padding", '0px');
 	$(".portlet").css("cssText", "border:none !important;padding:0px");

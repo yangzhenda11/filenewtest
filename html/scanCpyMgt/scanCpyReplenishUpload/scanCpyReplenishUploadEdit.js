@@ -115,8 +115,6 @@ $("#contractTextUploadBtn").on("click",function(){
 			url: 'fileload/uploadFileS3',
 			maxNumber:1,
 			fileExtensions:["pdf"],
-			maxFileSize:102400,
-			explain:'<i class="iconfont icon-mi required"></i>正文大小不能超过100M。</br>',
 			extraData:{displayName:displayName}
 		};
 		function queryCallback(){

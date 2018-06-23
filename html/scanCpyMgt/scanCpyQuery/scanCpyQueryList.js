@@ -22,7 +22,8 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
          "title":"序号",
          "className": "text-center",
 		"render" : function(data, type, full, meta){
-						return meta.row + 1;
+						var start = App.getDatatablePaging("#scanCpyQueryTable").pageStart;
+						return start + meta.row + 1;
 				   }
 		},
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},

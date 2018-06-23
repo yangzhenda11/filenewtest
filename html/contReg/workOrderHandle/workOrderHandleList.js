@@ -21,7 +21,8 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
          "title":"序号",
          "className": "text-center",
 		"render" : function(data, type, full, meta){
-				return meta.row + 1;
+				var start = App.getDatatablePaging("#workOrderHandleListTable").pageStart;
+				return start + meta.row + 1;
 		   }
 		},
 		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
@@ -87,10 +88,25 @@ function manualCreation(){
 
 //跳转到上传页面
 function jumpSanCpyQueryDetail(id){
-	var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
-	App.changePresentUrl(src);
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+	function successCallback(result) {
+		var wcardProcess = result.data;
+		if(wcardProcess == 0 || wcardProcess == 2){
+			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
+App.changePresentUrl(src);
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
 }
-
+/*
+ * 检查工单状态是否属于该流程
+ */
+function checkWcardProcessId(){
+	
+}
 /*
  * 获取查询参数
  */

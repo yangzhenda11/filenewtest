@@ -686,6 +686,8 @@ function checkWcardProcessId(){
 		isPass = true;
 	};
 	if(!isPass){
+		isEdit = false;
+		fileUploadEdit = false;
 		if(parm.pageType == 1){
 			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
 				layer.close(index);

@@ -160,22 +160,6 @@
 			return validityData;
 		}
 	}
-	
-	/*
-	 * isEdit 判断页面是否只能查看
-	 * 逻辑1.当为工单确认为待办时显示
-	 * 2.当为工单确认为已办时 勾选时显示
-	 */
-	if(!isEdit){
-		$("#validityForm").find("input,select").attr("disabled","disabled");
-	};
-	if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-		$("#adminCommitmentContent").removeClass("hidden");
-		if(fileUploadEdit == true){
-			$("input[name='adminCommitment']").attr("disabled",false);
-		}
-	}
-	
 	//设置默认展示方式
 	changePostponableValidatorStatus(905010,0);
 	//获取合同生效信息
@@ -201,6 +185,20 @@
 				if($("input[name='adminCommitment']:checked").val()){
 					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "yb"){
 						$("#adminCommitmentContent").removeClass("hidden");
+					}
+				}
+				/*
+				 * isEdit 判断页面是否只能查看
+				 * 逻辑1.当为工单确认为待办时显示
+				 * 2.当为工单确认为已办时 勾选时显示
+				 */
+				if(!isEdit){
+					$("#validityForm").find("input,select").attr("disabled","disabled");
+				};
+				if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+					$("#adminCommitmentContent").removeClass("hidden");
+					if(fileUploadEdit == true){
+						$("input[name='adminCommitment']").attr("disabled",false);
 					}
 				}
 			}

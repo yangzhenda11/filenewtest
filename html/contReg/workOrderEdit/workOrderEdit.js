@@ -6,6 +6,7 @@ var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
 var wcardId = null;					//工单主键ID
 var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
+var wcardProcess = null;			//工单处理状态  0:草稿/1:复核/2:退回/3:激活
 var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
 var contractStatus = null;			//合同状态，1、 已审批，2、 作废，3、 作废申请中
@@ -77,12 +78,7 @@ $(function() {
 	//请求工单模块，获取基本信息及各模块的url
 	getWorkOrderInfo();
 })
-function checktaskBybusId(){
-	App.formAjaxJson(serverPath+"workflowrest/checktaskBybusId?businessId="+wcardId, "post", null, successCallback);
-	function successCallback(result) {
-		console.log(result)
-	}
-}
+
 /*
  * 工作流相关
  */
@@ -92,8 +88,10 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		//删除表格内多余的数据
@@ -231,9 +229,7 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
-		checktaskBybusId();
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkContractStatus()){
 			return false;
 		};
 		if(flowParam){
@@ -262,8 +258,10 @@ function modal_passQxsp(flowParam){
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		saveContent();
@@ -275,8 +273,10 @@ function modal_save(){
 //转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
 function beforeTransfer(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		var result=true;
@@ -297,8 +297,10 @@ function beforeTransfer(){
 function modal_return(root, processInstanceId, taskId){
 	if(formSubmit){
 		//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		$.post(root + "business/withdrawProcess", {
@@ -319,8 +321,10 @@ function modal_return(root, processInstanceId, taskId){
  */
 function saveBtnClick(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		saveContent();
@@ -334,8 +338,10 @@ function saveBtnClick(){
  */
 function submitContent(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		//删除表格内多余的数据
@@ -421,8 +427,10 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
  */
 function activateContract(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		if($("#contractScanCopyUpload")[0]){
@@ -473,8 +481,10 @@ function activateContract(){
  */
 function cancelApproved(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
@@ -499,8 +509,10 @@ function cancelApproved(){
  */
 function sendBack(){
 	if(formSubmit){
-		var wcardCanSubmit = checkContractStatus();
-		if(!wcardCanSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
+		if(checkContractStatus()){
 			return false;
 		};
 		$("#pinfoContentModal").modal("show");
@@ -531,23 +543,48 @@ function setPinfoContent(){
 }
 /*
  * 检查当前工单是否处于作废(contractStatus=2)或作废申请中(contractStatus=3)
- * 处于这两种状态下不能进行下一步操作，返回false
+ * 处于这两种状态下不能进行下一步操作，true
  */
 function checkContractStatus(){
 	if(contractStatus == null){
 		showLayerErrorMsg('当前合同状态未知，请稍后操作');
-		return false;
+		return true;
 	}else if(contractStatus == 2){
 		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作');
-		return false;
+		return true;
 	}else if(contractStatus == 3){
 		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作');
-		return false;
-	}else{
 		return true;
+	}else{
+		return false;
 	};
 }
-
+/*
+ * 检查工单状态是否发生了改变
+ * 改变了返回true，没有改变返回false
+ */
+function checkWcardProcessIschange(){
+	var isChangeWcardProvess = null;
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback,null,null,null,false);
+	function successCallback(result) {
+		var nowWcardProcess = result.data;
+		if(nowWcardProcess != wcardProcess){
+			if(parm.pageType == 1){
+				parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+					parent.modal_close();
+				});
+			}else{
+				layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+					backPage();
+				});
+			};
+			isChangeWcardProvess =  true;
+		}else{
+			isChangeWcardProvess =  false;
+		}
+	}
+	return isChangeWcardProvess;
+}
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
@@ -562,7 +599,8 @@ function getWorkOrderInfo(){
 			contractId = data[0].contractId;
 			contractNumber = data[0].contractNumber;
 			wcardTypeCode = data[0].wcardTypeCode;
-			if(isEdit== true && data[0].wcardProcess == 2 && data[0].wcardStatus == 904020){
+			wcardProcess = data[0].wcardProcess;
+			if(isEdit== true && wcardProcess == 2 && data[0].wcardStatus == 904020){
 				isCancelApproved = true;
 				if(parm.pageType == 1){
 					//显示取消审批按钮
@@ -629,6 +667,41 @@ function getWorkOrderInfo(){
 	}
 }
 /*
+ * 检查工单状态是否属于该流程
+ */
+function checkWcardProcessId(){
+	var isPass = false;
+	if(parm.taskFlag == "db"){
+		var taskDefinitionKey = parm.taskDefinitionKey;
+		if(taskDefinitionKey == "GDCL"){
+			if(wcardProcess == 0 || wcardProcess == 2){
+				isPass = true;
+			}
+		}else if(taskDefinitionKey == "GDQR"){
+			if(wcardProcess == 1){
+				isPass = true;
+			}
+		}
+	}else{
+		isPass = true;
+	};
+	if(!isPass){
+		isEdit = false;
+		fileUploadEdit = false;
+		if(parm.pageType == 1){
+			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+				layer.close(index);
+				parent.modal_close();
+			});
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+				layer.close(index);
+				backPage();
+			});
+		}
+	}
+}
+/*
  * 设置dom元素，并load进入
  */
 function setDomContent(domObj) {
@@ -664,6 +737,8 @@ function loadComplete() {
 	$("#workOrderContentForm").on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
+	//检查工单状态是否属于该流程
+	checkWcardProcessId();
 };
 /*
  * 加载意见

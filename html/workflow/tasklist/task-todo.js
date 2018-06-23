@@ -39,7 +39,7 @@ function resetConditionForToDo(){
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	if(!checkifdone(id)){	
+	//if(!checkifdone(id)){	
 	$('#taskId').val(id);
 	$('#taskDefinitionKey').val(taskDefinitionKey);
 	// 环节名称
@@ -55,7 +55,7 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	
 	$("#goTaskToDoDetailForToDo").show();
 	$("#searchContentForToDo").hide();
-	}
+	//}
 }
 function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee) {

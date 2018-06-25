@@ -197,7 +197,7 @@ function changePasswd() {
 
         function passwdCallback(result) {
             if (result.data) {
-                layer.alert("用户["+globalConfig.curStaffName+"]的密码已经修改，为安全起见需退出系统重新登录,点击确认按钮退出系统!",{close:0},function () {
+                layer.alert("用户["+globalConfig.curStaffName+"]的密码已经修改，为安全起见需退出系统重新登录,点击确认按钮退出系统!",{icon:1,closeBtn:0},function () {
                     logout();
                 });
             }

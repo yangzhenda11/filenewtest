@@ -171,13 +171,13 @@ function validatePassword() {
 function updatePasswd() {
     $('#editPasswd').modal('show');
     $('#passwdForm input').val("");
-    if ($('#passwdForm').data('bootstrapValidator')) {
-        //$('#passwdForm').data('bootstrapValidator').resetForm();
-    }else{
+    if (!$('#passwdForm').data('bootstrapValidator')) {
     	validatePassword();
     }
 }
-
+$("#editPasswd").on('hide.bs.modal',function(e){
+	$('#passwdForm').bootstrapValidator('resetForm', true);  
+});
 function changePasswd() {
     debugger;
     App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),

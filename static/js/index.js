@@ -128,52 +128,53 @@ function changeStaffOrg(staffOrgId) {
         }
     }
 }
-var passwdValidator = {
-    live: 'enabled',
-    trigger: 'live focus blur keyup change',
-    message: '校验未通过',
-    container: 'popover',
-    fields: {
-        passwd: {
-            validators: {
-                notEmpty: {
-                    message: '请输入新密码'
-                },
-                regexp: {
-                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
-                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
-                }
-            }
-        },
-        passConfirm: {
-            validators: {
-                notEmpty: {
-                    message: '请再次输入密码确认'
-                },
-                identical: {
-                    field: 'passwd',
-                    message: '两次输入的密码不一致。'
-                }
-            }
-        }
-    },
-
+/*
+ * 表单验证
+ */
+function validatePassword() {
+	$('#passwdForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup change',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+	        passwd: {
+	            validators: {
+	                notEmpty: {
+	                    message: '请输入新密码'
+	                },
+	                regexp: {
+	                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
+	                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
+	                }
+	            }
+	        },
+	        passConfirm: {
+	            validators: {
+	                notEmpty: {
+	                    message: '请再次输入密码确认'
+	                },
+	                identical: {
+	                    field: 'passwd',
+	                    message: '两次输入的密码不一致。'
+	                }
+	            }
+	        }
+	    }
+	}).on('success.form.bv', function(e) {
+		e.preventDefault();
+		alert(1);
+		//changePasswd();
+	})
 };
 
 function updatePasswd() {
-    $('#editPasswd').modal({
-        backdrop: 'static'
-    });
+    $('#editPasswd').modal('show');
     $('#passwdForm input').val("");
     if ($('#passwdForm').data('bootstrapValidator')) {
-        $('#passwdForm').data('bootstrapValidator').resetForm(false);
-    }
-    if (null == $('#passwdForm').data('bootstrapValidator')) {
-        $('#passwdForm').bootstrapValidator(passwdValidator).on(
-            "success.form.bv",
-            function(e) {
-                changePasswd();
-            });
+        //$('#passwdForm').data('bootstrapValidator').resetForm();
+    }else{
+    	validatePassword();
     }
 }
 

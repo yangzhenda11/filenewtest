@@ -182,12 +182,10 @@ function updatePasswd() {
 }
 
 function changePasswd() {
-    debugger;
     App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),
         "GET", null, keyPairCallback, null, null, null, false);
 
     function keyPairCallback(result) {
-        debugger;
         var passwd = $("#passwdForm input[name='passwd']").val();
         var modulus = result.data.modulus,
             exponent = result.data.exponent;

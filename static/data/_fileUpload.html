@@ -121,6 +121,8 @@
 	/*
 	 * 文件上传
 	 */
+	var regEn = /[`~!@#$%^&+{},.;'[\]]/im,  //   \/:*?"<>|
+	    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
 	function initFileUpload(url,uploadAsync,fileExtensions,extraData,maxFileSize){
 		$("#uploadFileName").fileinput({
 	        language: 'zh', 
@@ -130,6 +132,7 @@
 	        maxFileSize: maxFileSize,
 	       	maxFileCount: 1,
 	       	dropZoneEnabled: false,
+	       	notallowedFilenameExtensions:" |%",//文件名中不允许出现的字符
 	       	//showPreview : false,
 	        slugCallback: function (filename) {
 	        	if($(".kv-fileinput-error").css("display") == "block"){

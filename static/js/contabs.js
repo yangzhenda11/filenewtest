@@ -201,7 +201,6 @@ function showSubpageTab(link,title){
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))
 	}
-	return false
 }
 function conTabH() {
 	var m = $(this).parents(".J_menuTab").data("id");

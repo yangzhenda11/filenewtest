@@ -8,6 +8,10 @@ var ajaxObj = {
     "data" : {"dictId": 9040}
 }
 App.initAjaxSelect2("#wcardStatus",ajaxObj,"dictValue","dictLabel","请选择工单状态");
+function setCurPage(pageNum){
+    //$("#listDataTable").DataTable().search("").draw()  
+    $('#workOrderQueryTable').DataTable().page(pageNum).draw(false);  
+} 
 
 /*
  * 初始化表格

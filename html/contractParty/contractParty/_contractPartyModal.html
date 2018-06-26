@@ -105,6 +105,7 @@
             $("#partnerCode").val(data.associateCode).trigger('change');
             $("#isPartnerM").val(data.isUnicomOrg).trigger('change');
             if (data.isUnicomOrg == 1) {
+            	$("#ouOrgId").val(data.ouOrgId).trigger('change');
                 $("#isunicom").removeClass("hide");
                 $("#organisation").val(data.orgName);
                 $("#organisation").data("id", data.orgId);
@@ -115,9 +116,6 @@
                 $("#other").val(data.otherOrgName);
                 $("#other").data("id", data.otherOrgId);
                 $("#other").attr("title", data.otherOrgName);
-                $("#ouOrgId").val(data.ouOrgName);
-                $("#ouOrgId").data("id", data.ouOrgId);
-                $("#ouOrgId").attr("title", data.ouOrgName);
                 getTreeInfo();
             } else {
                 $("#organisation,#legal,#other").data("id", "");
@@ -203,13 +201,12 @@
         App.changeObjKey({
             "legalTree": "legalPersonName",
             "organisationTree": "orgId",
-            "organisationTree": "orgName",
             "otherTree": "otherOrgId",
         }, formObj)
         formObj.orgId = $("#organisation").data("id");
         formObj.legalPersonName = $("#legal").data("id");
         formObj.otherOrgId = $("#other").data("id");
-        formObj.ouOrgId = $("#ouOrgId").data("id");
+        formObj.ouOrgId = $("#ouOrgId").val();
         App.formAjaxJson(serverPath + "orgPartner", "PUT", JSON.stringify(formObj), successCallback);
 
         function successCallback(result) {

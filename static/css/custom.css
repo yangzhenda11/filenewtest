@@ -279,6 +279,20 @@
  * contract2.0
  */
 /*
+ * datatable
+ */
+.setCurPage{
+    width: 40px;
+    margin: 0 5px;
+    border: 1px solid #ececec;
+    border-radius: 3px;
+    outline: none;
+    height: 22px;
+    text-align:  center;
+    font-size: 12px;
+    color: #767676;
+}
+/*
  * 右侧若加工具栏样式，两层DIV  .toolbars-position>.toolbars-content
  * 浮动布局
  */

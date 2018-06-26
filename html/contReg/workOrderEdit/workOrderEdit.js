@@ -385,6 +385,9 @@ function submitContent(){
  * 工单注册后台提交@功能页面
  */
 function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
+	if(checkWcardProcessIschange()){
+		return false;
+	};
 	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;

@@ -1123,6 +1123,8 @@
 	}
 
 	function Qa(a, b) {
+		console.log(a);
+		console.log(b)
 		var c = parseInt(b, 10);
 		a._iDisplayLength = c;
 		Ra(a);

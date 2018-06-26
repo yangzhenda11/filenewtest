@@ -128,62 +128,64 @@ function changeStaffOrg(staffOrgId) {
         }
     }
 }
-var passwdValidator = {
-    live: 'enabled',
-    trigger: 'live focus blur keyup change',
-    message: '校验未通过',
-    container: 'popover',
-    fields: {
-        passwd: {
-            validators: {
-                notEmpty: {
-                    message: '请输入新密码'
-                },
-                regexp: {
-                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
-                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
-                }
-            }
-        },
-        passConfirm: {
-            validators: {
-                notEmpty: {
-                    message: '请再次输入密码确认'
-                },
-                identical: {
-                    field: 'passwd',
-                    message: '两次输入的密码不一致。'
-                }
-            }
-        }
-    },
-
+/*
+ * 表单验证
+ */
+function validatePassword() {
+	$('#passwdForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup change',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+	        passwd: {
+	            validators: {
+	                notEmpty: {
+	                    message: '请输入新密码'
+	                },
+	                regexp: {
+	                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
+	                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
+	                },
+                    identical: {
+                        field: 'passConfirm',
+                        message: '两次输入的密码不一致。'
+                    }
+	            }
+	        },
+	        passConfirm: {
+	            validators: {
+	                notEmpty: {
+	                    message: '请再次输入密码确认'
+	                },
+	                identical: {
+	                    field: 'passwd',
+	                    message: '两次输入的密码不一致。'
+	                }
+	            }
+	        }
+	    }
+	}).on('success.form.bv', function(e) {
+		e.preventDefault();
+        changePasswd();
+	})
 };
 
 function updatePasswd() {
-    $('#editPasswd').modal({
-        backdrop: 'static'
-    });
+    $('#editPasswd').modal('show');
     $('#passwdForm input').val("");
-    if ($('#passwdForm').data('bootstrapValidator')) {
-        $('#passwdForm').data('bootstrapValidator').resetForm(false);
-    }
-    if (null == $('#passwdForm').data('bootstrapValidator')) {
-        $('#passwdForm').bootstrapValidator(passwdValidator).on(
-            "success.form.bv",
-            function(e) {
-                changePasswd();
-            });
+    if (!$('#passwdForm').data('bootstrapValidator')) {
+    	validatePassword();
     }
 }
-
+$("#editPasswd").on('hide.bs.modal',function(e){
+	$('#passwdForm').bootstrapValidator('resetForm', true);  
+});
 function changePasswd() {
-    debugger;
     App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),
         "GET", null, keyPairCallback, null, null, null, false);
 
     function keyPairCallback(result) {
-        debugger;
         var passwd = $("#passwdForm input[name='passwd']").val();
         var modulus = result.data.modulus,
             exponent = result.data.exponent;
@@ -191,13 +193,18 @@ function changePasswd() {
             var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
         }
         var pwd = RSAUtils.encryptedString(publicKey, passwd);
-        App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(),"PUT", { "passwd": pwd }, passwdCallback, null, null, null, false);
+        App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(),"GET", { "passwd": pwd }, passwdCallback, passwdErrorCallbacks, null, null, false);
 
         function passwdCallback(result) {
             if (result.data) {
-	            layer.msg("修改成功");
-	            logout();
-	        }
+                layer.alert("用户["+globalConfig.curStaffName+"]的密码已经修改，为安全起见需退出系统重新登录,点击确认按钮退出系统!",{icon:1,closeBtn:0},function () {
+                    logout();
+                });
+            }
+        }
+
+        function passwdErrorCallbacks() {
+            layer.msg("修改密码失败！");
         }
     }
 }

@@ -944,7 +944,8 @@ var App = function() {
 				//"order":  [[ 2, 'asc' ], [ 4, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
-					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录，跳转到第<input onchange='setDatatableCurPage(this)' class='setCurPage' type='text' />页",
+//					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录，跳转到第<input onchange='setDatatableCurPage(this)' class='setCurPage' type='text' />页",
+					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
 					"sZeroRecords": "查询不到数据",
 					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
 					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
@@ -981,7 +982,7 @@ var App = function() {
 					}
 				},
 				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block"i><"inline-block"l>><"pull-right" p>>', //生成样式
-				"paginationType": "first_last_numbers",
+				"paginationType": "simple_numbers",
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,

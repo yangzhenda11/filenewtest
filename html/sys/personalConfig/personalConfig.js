@@ -102,7 +102,6 @@ function getPersonalConfig(id,type){
 	function successCallback(result){
 		var data = result;
 		if(type == "edit"){
-			debugger
 			$('#personalConfigModal').modal('show');
 			$('#personalConfigForm input[name="staffOrgId"]').val(globalConfig.curStaffOrgId);
 			$('#personalConfigForm input[name="configId"]').val(data.data.id);
@@ -132,7 +131,6 @@ function getPersonalConfig(id,type){
  * 新增||修改提交
  */
 function updatePersonalConfig(editType) {
-	debugger
 	var formObj = App.getFormValues($("#personalConfigForm"));
 	var ms = "新增成功";
 	var url = serverPath + 'personalConfig/';
@@ -143,7 +141,7 @@ function updatePersonalConfig(editType) {
 		ms = "修改成功";
 		var id = $('#personalConfigForm input[name="id"]').val();
 		url = serverPath + 'personalConfig/update';
-		pushType = "PUT";
+		pushType = "POST";
 	}
 	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks, null, null, false);
 	function successCallback(result) {

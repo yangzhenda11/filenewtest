@@ -685,10 +685,8 @@ function onClick(event, treeId, treeNode) {
     var selectName = nodes[0].orgName;
     var orgCode = nodes[0].orgCode;
     var provCode = nodes[0].provCode;
-   // var roleBaseTypeCode = nodes[0].roleBaseTypeCode;
     $("input[name=" + treeId + "]").data("orgCode", orgCode);
     $("input[name=" + treeId + "]").data("provCode", provCode);
-   // $("input[name=" + treeId + "]").data("roleBaseTypeCode", roleBaseTypeCode);
     $("input[name=" + treeId + "]").val(selectName);
     $("input[name=" + treeId + "]").attr("title", selectName);
     if (treeId == "orgName") {

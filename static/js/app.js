@@ -981,7 +981,7 @@ var App = function() {
 					}
 				},
 				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block"i><"inline-block"l>><"pull-right" p>>', //生成样式
-				"paginationType": "full_numbers",
+				"paginationType": "first_last_numbers",
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,
@@ -1048,14 +1048,10 @@ var App = function() {
 		getDatatablePaging:function(el){
             var oTable = $(el).dataTable();
             var oSettings = oTable.fnSettings();
-            // 获取页码值
-            var pageStart = oSettings._iDisplayStart;
-            //获取页面分割长度
-            var pageLength = oSettings._iDisplayLength;
             var returnObj = {
-            	pageStart : pageStart,
-            	pageLength : pageLength,
-            	nowPage : pageStart/pageLength + 1
+            	pageStart: oSettings._iDisplayStart,
+            	pageLength: oSettings._iDisplayLength,
+            	total: oSettings._iRecordsTotal
             }
             return returnObj;
 		},
@@ -2536,5 +2532,16 @@ String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 function setDatatableCurPage(dom){
-	console.log(dom);
+	var val = $(dom).val();
+	var tableId = $(dom).parents(".dataTables_wrapper")[0].id;
+	tableId = tableId.split("_")[0];
+	var pageObj = App.getDatatablePaging("#"+tableId);
+	var pages = Math.ceil(pageObj.total/pageObj.pageLength);
+	if(/^\+?\d+$/.test(val) && val > 0 && val <= pages){
+		val = Number(val) - 1;
+		$("#"+tableId).DataTable().page(val).draw(false);
+	}else{
+		layer.msg("输入页码有误请重新输入");
+	}
+	$(dom).val("");
 }

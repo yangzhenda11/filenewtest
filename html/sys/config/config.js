@@ -53,7 +53,7 @@ function getConfigTable(){
             		return  data == 0 ? "否" : "是";
             	}
         	},
-        	{ "data": "attrb", "title": "可更改枚举值", render: $.fn.dataTable.render.ellipsis(22, true) }
+        	{ "data": "attrb", "title": "可更改枚举值", render: $.fn.dataTable.render.ellipsis(40, true) }
 		]
 	});
 }

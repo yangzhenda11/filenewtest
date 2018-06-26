@@ -927,7 +927,7 @@ var App = function() {
 			if(!$().dataTable) {
 				return;
 			};
-			var pagelengthMenu = top.globalConfig.curConfigs.configPagelengthMenu.split(",")
+			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];
 				btn = "";
@@ -986,7 +986,7 @@ var App = function() {
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,
-				"pageLength": 10,
+				"pageLength": pagelengthMenu[0],
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
 					"thousands": ","

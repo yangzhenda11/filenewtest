@@ -2482,11 +2482,10 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
 /*
  * 全局ajax事件
  */
+$.ajaxSetup({cache:false});
 function loadStart(){
-//	NProgress.start();
 	layerIndex = layer.msg('数据处理中,请稍后...', {icon: 16,shade: 0.01,time:false});
 }
-
 function loadEnd(){
 	layer.close(layerIndex);
 }
@@ -2499,6 +2498,7 @@ $(document).ajaxStop(function(){
 $(document).ajaxError(function(){
     loadEnd();
 });
+
 $(document).ajaxSend(function(event, jqxhr, settings) {
 	if(settings.type == "GET"){
 //		if(settings.url.indexOf("?") === -1){

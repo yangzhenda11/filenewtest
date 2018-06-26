@@ -389,7 +389,6 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 		return false;
 	};
 	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
-	console.log(postData);
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;
 	postData.wcardType = wcardTypeCode;

@@ -23,40 +23,23 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         }
 	},
 	"columns": [
-		//增加序号列
-        {"data" : null,
-         "title":"序号",
-         "className": "text-center",
-         "width": "3%",
-		"render" : function(data, type, full, meta){
+        {"data" : null,"title":"序号","className": "text-center","width": "5%",
+			"render" : function(data, type, full, meta){
 				var start = App.getDatatablePaging("#workOrderQueryTable").pageStart;
 				return start + meta.row + 1;
-		   }
+		   	}
 		},
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},
         {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
-        {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "15%"},
-        {
-			"data": "wcardNumber",
-			"className":"whiteSpaceNormal",
-			"title": "工单编号",
-			"width": "10%",
+        {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "14%"},
+        {"data": "wcardNumber","className":"whiteSpaceNormal","title": "工单编号","width": "10%",
 			"render": function(data, type, full, meta) {
 				var result = '<a href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
 				return result;
 			}
 		},
-        {
-        	"data": "wcardStatusStr",
-        	"title": "工单状态",
-        	"width": "5%",
-        	"className":"whiteSpaceNormal"
-        },
-        {
-	        "data": "ctreatedDate",
-	        "title": "创建日期",
-	        "width": "5%",
-	        "className":"whiteSpaceNormal",
+        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width": "5%"},
+        {"data": "ctreatedDate","title": "创建日期","className":"whiteSpaceNormal","width": "5%",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }

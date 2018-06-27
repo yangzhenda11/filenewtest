@@ -41,14 +41,12 @@
 										<input type="text" class="form-control" id="processTitleForDone" name="processTitle" size="30px" />
 									</div>
 								</div>
-                                <div class="col-sm-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon searchLableText">流程类型</span>
-                                        <div class="valiParent">
-                                            <select id="flowType" name="flowType" class="form-control"></select>
-                                        </div>
-                                    </div>
-                                </div>
+                               	<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon">合同编号</span>
+										<input type="text" class="form-control" id="contractCode" name="contractCode" size="30px" />
+									</div>
+								</div>
                                 <div class="col-sm-4">
                                     <div class="input-group data-input-group2">
                                         <span class="input-group-addon searchLableText">送出日期</span>
@@ -59,12 +57,14 @@
                                         class="form-control" readonly="readonly" />
                                     </div>
                                 </div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon">合同编号</span>
-										<input type="text" class="form-control" id="contractCode" name="contractCode" size="30px" />
-									</div>
-								</div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon searchLableText">流程类型</span>
+                                        <div class="valiParent">
+                                            <select id="flowType" name="flowType" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 							<div class="page-search-action">
 								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="serarchForDone();"><i class="iconfont icon-search"></i> 查询</button>

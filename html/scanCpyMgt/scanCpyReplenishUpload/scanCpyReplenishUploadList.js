@@ -33,27 +33,24 @@ function initScanCpyReplenishUploadTable(){
 	        }
 	    },
 	    "columns": [
-	        {"data" : null,"title":"序号","className": "text-center",
+	        {"data" : null,"title":"序号","className": "text-center","width":"5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#scanCpyReplenishUploadTable").pageStart;
 					return start + meta.row + 1;
 				}
 			},
-	        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"20%"},
-	        {"data": "contractNumber","title": "合同编号","width":"10%"},
-	        {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"15%"},
-	        {"data": "undertakeName","title": "承办人"},
+	        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"19%"},
+	        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"13%"},
+	        {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"13%"},
+	        {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width":"6%"},
 	        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
 	        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"},
-	        {"data": "approveDate","title": "审批通过时间",
-	            render: function(data, type, full, meta) {
+	        {"data": "approveDate","title": "审批通过时间","className":"whiteSpaceNormal","width":"9%",
+	            "render": function(data, type, full, meta) {
 	                return App.formatDateTime(data,"yyyy-MM-dd");
 	        	}
 	        },
-	        {
-				"data": null,
-				"className": "text-center",
-				"title": "操作",
+	        {"data": null,"className": "text-center","title": "操作","width":"5%",
 				"render": function(data, type, full, meta) {
 					if(data) {
 						var btnArray = new Array();

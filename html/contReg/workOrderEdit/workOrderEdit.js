@@ -270,47 +270,26 @@ function modal_save(){
 		return false;
 	}
 }
-//转派前回调业务侧实现的方法，业务进行必要的校验等操作@工作流
-function beforeTransfer(){
-	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
-			return false;
-		};
-		var result=true;
-		//1,业务侧的校验
-		
-		//2，设置转派选人的参数
-		var assigneeParam = { 
-				"prov": "sd",  //省分，来自需求工单，必传
-		}
-		parent.setAssigneeParam(assigneeParam);
-		return result;
-	}else{
-		showLayerErrorMsg("页面加载失败");
-		return false;
-	}
-}
 //撤回代码示例，业务界面需要实现，可以拼接业务参数到后台，数据的更新和流程的撤回放在业务侧方法里，保持事务同步@工作流
 function modal_return(root, processInstanceId, taskId){
 	if(formSubmit){
-		//alert( "流程实例ID：" + processInstanceId + "_当前任务ID：" + taskId);
 		if(checkWcardProcessIschange()){
 			return false;
 		};
 		if(checkContractStatus()){
 			return false;
 		};
-		$.post(root + "business/withdrawProcess", {
-			"processInstanceId" : processInstanceId,//流程实例
-			"taskId" : taskId //任务id
-		}, function(data) {
-			alert(data.sign + "（业务开发人员自定义提示消息有无及内容）");
-			// 成功后回调模态窗口关闭方法
-			parent.modal_close();
-		});
+		var postData = {
+			"processInstanceId": processInstanceId,	//流程实例
+			"taskId": taskId,	//任务id
+			"wcardId": wcardId	//工单ID
+		}
+		App.formAjaxJson(serverPath+"contractOrderEditorController/saveOrderWithdrawProcess", "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			parent.layer.alert("工单撤回成功",{icon:1},function(index){
+				parent.modal_close();
+			});
+		}
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -385,6 +364,9 @@ function submitContent(){
  * 工单注册后台提交@功能页面
  */
 function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
+	if(checkWcardProcessIschange()){
+		return false;
+	};
 	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;

@@ -45,55 +45,17 @@ function searchPersonalConfig(resetPaging) {
 		table.ajax.reload();
 	}
 }
-/*
- * 新增系统参数点击事件
- */
-function addPersonalConfigModal(){
-	$("#personalConfigModal").load("_personalConfigModal.html?" + App.timestamp()+" #modalEdit",function(){
-		$("#modalTitle").text("新增系统参数");
-		$("#personalConfigModal").modal("show");
-		App.initFormSelect2("#personalConfigForm");
-		validate("add");
-	});
-}
+
 /*
  * 修改系统参数点击事件
  */
 function editPersonalConfigModal(id){
 	$("#personalConfigModal").load("_personalConfigModal.html?" + App.timestamp()+" #modalEdit",function(){
 		$("#modalTitle").text("系统参数修改");
-		App.initFormSelect2("#personalConfigForm");
 		getPersonalConfig(id,"edit");
 	});
 }
 
-/*
- * 系统参数详情点击事件
- */
-function detailPersonalConfigModal(id){
-	$("#personalConfigModal").load("_personalConfigModal.html?" + App.timestamp()+" #modalDetail",function(){
-		getPersonalConfig(id,"detail");
-	});
-}
-
-/*
- * 系统参数删除点击事件，提交删除
- */
-function delPersonalConfig(id, code) {
-	layer.confirm('确定删除系统参数<span style="color:red;margin:0 5px;">' + code + '</span>?', {
-		icon: 3,
-		title: '删除系统参数'
-	}, function(index) {
-		App.formAjaxJson(serverPath + 'personalConfig/' + id, "DELETE", "", successCallback);
-		function successCallback(result) {
-			layer.close(index);					
-			layer.msg("删除成功", {
-				icon: 1
-			});
-			searchPersonalConfig(true);
-		}
-	})
-}
 /*
  * 获取参数信息
  */
@@ -102,7 +64,6 @@ function getPersonalConfig(id,type){
 	function successCallback(result){
 		var data = result;
 		if(type == "edit"){
-			debugger
 			$('#personalConfigModal').modal('show');
 			$('#personalConfigForm input[name="staffOrgId"]').val(globalConfig.curStaffOrgId);
 			$('#personalConfigForm input[name="configId"]').val(data.data.id);
@@ -118,7 +79,8 @@ function getPersonalConfig(id,type){
 			}		
 			$('#personalConfigForm select').append(option);
 			$('#personalConfigForm select').val(data.data.val);
-			validate("edit");
+			App.initFormSelect2("#personalConfigForm");
+			validate();
 		}else{
 			$("#personalConfigModal").modal("show");
 			$("#codeDetail").text(data.code);
@@ -129,27 +91,16 @@ function getPersonalConfig(id,type){
 }
 
 /*
- * 新增||修改提交
+ * 修改提交
  */
-function updatePersonalConfig(editType) {
-	debugger
+function updatePersonalConfig() {
 	var formObj = App.getFormValues($("#personalConfigForm"));
-	var ms = "新增成功";
-	var url = serverPath + 'personalConfig/';
-	var pushType = "POST";
-	if(editType == "add"){
-		delete formObj.id;
-	}else{
-		ms = "修改成功";
-		var id = $('#personalConfigForm input[name="id"]').val();
-		url = serverPath + 'personalConfig/update';
-		pushType = "PUT";
-	}
-	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks, null, null, false);
+	var	url = serverPath + 'personalConfig/update';
+	App.formAjaxJson(url, "POST", JSON.stringify(formObj), successCallback,improperCallbacks, null, null, false);
 	function successCallback(result) {
-		layer.msg(ms, {icon: 1});
-		searchPersonalConfig(true);
+		layer.msg("参数设置成功，重新登录后生效", {icon: 1});
 		$('#personalConfigModal').modal('hide');
+		searchPersonalConfig(true);
 	}
 	function improperCallbacks(result){
 		$('#personalConfigForm').data('bootstrapValidator').resetForm();
@@ -158,7 +109,7 @@ function updatePersonalConfig(editType) {
 /*
  * 表单验证
  */
-function validate(editType) {
+function validate() {
 	$('#personalConfigForm').bootstrapValidator({
 		live: 'enabled',
 		trigger: 'live focus blur keyup change',
@@ -190,6 +141,6 @@ function validate(editType) {
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
-		updatePersonalConfig(editType);
+		updatePersonalConfig();
 	})
 }

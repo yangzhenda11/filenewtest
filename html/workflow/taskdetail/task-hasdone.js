@@ -172,11 +172,11 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 
 //流程终止，即仅首环节可以流程作废
 function returnProcess(){
-	var r = confirm("【撤回】确认后，当前流程将撤回本环节，是否确认？")
-	if (r == true) {
+	layer.confirm("【撤回】确认后，当前流程将撤回本环节，是否确认？",{icon:7,title:"提示"},function(index){
+		layer.close(index);
 		// 调用推进方法
 		document.getElementById("businessForDoneiframe").contentWindow.modal_return(serverPath, $('#processInstanceIdForDone').val(), $('#taskIdForDone').val());
-	}
+	});
 }
 
 //提供业务主页用户关闭模态窗口的按钮

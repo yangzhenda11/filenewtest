@@ -266,9 +266,6 @@
 			$(".contractPortletTitle").addClass("contractPortletPageTitle");
 		};
 		$(".wcardNumber").text(data.wcardNumber);
-		console.log(data.wcardStatus);
-		console.log(ticketStateType);
-		console.log(ticketStateType[data.wcardStatus]);
 		$(".wcardStatus").text(ticketStateType[data.wcardStatus]);
 		$(".contractPortletTitle").removeClass("hidden");
 		if(contractNature == null || contractNature == 1){

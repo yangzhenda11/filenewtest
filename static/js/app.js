@@ -927,7 +927,7 @@ var App = function() {
 			if(!$().dataTable) {
 				return;
 			};
-			var pagelengthMenu = top.globalConfig.curConfigs.configPagelengthMenu.split(",")
+			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];
 				btn = "";
@@ -944,6 +944,7 @@ var App = function() {
 				//"order":  [[ 2, 'asc' ], [ 4, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
+//					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录，跳转到第<input onchange='setDatatableCurPage(this)' class='setCurPage' type='text' />页",
 					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
 					"sZeroRecords": "查询不到数据",
 					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
@@ -981,11 +982,11 @@ var App = function() {
 					}
 				},
 				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block"i><"inline-block"l>><"pull-right" p>>', //生成样式
-				"paginationType": "full_numbers",
+				"paginationType": "simple_numbers",
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,
-				"pageLength": 10,
+				"pageLength": pagelengthMenu[0],
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
 					"thousands": ","
@@ -1048,14 +1049,10 @@ var App = function() {
 		getDatatablePaging:function(el){
             var oTable = $(el).dataTable();
             var oSettings = oTable.fnSettings();
-            // 获取页码值
-            var pageStart = oSettings._iDisplayStart;
-            //获取页面分割长度
-            var pageLength = oSettings._iDisplayLength;
             var returnObj = {
-            	pageStart : pageStart,
-            	pageLength : pageLength,
-            	nowPage : pageStart/pageLength + 1
+            	pageStart: oSettings._iDisplayStart,
+            	pageLength: oSettings._iDisplayLength,
+            	total: oSettings._iRecordsTotal
             }
             return returnObj;
 		},
@@ -2482,11 +2479,10 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
 /*
  * 全局ajax事件
  */
+$.ajaxSetup({cache:false});
 function loadStart(){
-//	NProgress.start();
 	layerIndex = layer.msg('数据处理中,请稍后...', {icon: 16,shade: 0.01,time:false});
 }
-
 function loadEnd(){
 	layer.close(layerIndex);
 }
@@ -2499,6 +2495,7 @@ $(document).ajaxStop(function(){
 $(document).ajaxError(function(){
     loadEnd();
 });
+
 $(document).ajaxSend(function(event, jqxhr, settings) {
 	if(settings.type == "GET"){
 //		if(settings.url.indexOf("?") === -1){
@@ -2534,4 +2531,18 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
  */
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+function setDatatableCurPage(dom){
+	var val = $(dom).val();
+	var tableId = $(dom).parents(".dataTables_wrapper")[0].id;
+	tableId = tableId.split("_")[0];
+	var pageObj = App.getDatatablePaging("#"+tableId);
+	var pages = Math.ceil(pageObj.total/pageObj.pageLength);
+	if(/^\+?\d+$/.test(val) && val > 0 && val <= pages){
+		val = Number(val) - 1;
+		$("#"+tableId).DataTable().page(val).draw(false);
+	}else{
+		layer.msg("输入页码有误请重新输入");
+	}
+	$(dom).val("");
 }

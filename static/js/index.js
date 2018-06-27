@@ -34,6 +34,13 @@ $(document).ready(function() {
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
 
     function successCallback(result) {
+    	//系统默认配置
+    	var defaultCurConfigs = {
+    		config_page_size: "10,20,50",
+			message_space: "300000",
+			oke_active_time: "1",
+			oken_maximum_number: "10"
+		}
         var data = result.data;
         globalConfig.provCode = data.provCode;
         globalConfig.curStaffId = data.staffId;
@@ -54,21 +61,26 @@ $(document).ready(function() {
                 }
             }
         };
-        //获取用户分页信息
-	    App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", { staffOrgId: globalConfig.curStaffOrgId, code: "config_page_size" }, configSuccess, configImproper, configError, null, false);
+        //获取用户自定义配置信息
+	    App.formAjaxJson(globalConfig.serverPath + "personalConfig/list", "GET", { staffOrgId: globalConfig.curStaffOrgId,draw:1,start:0,length:100}, configSuccess, configImproper, configError, null, false);
 	
 	    function configSuccess(result) {
+	    	var data = result.data;
 	        if (result.data != "") {
-	            globalConfig.curConfigs.configPagelengthMenu = result.data;
+	        	var personalConfigObj = {};
+				$.each(data, function(k,v) {
+					personalConfigObj[v.code] = v.val;
+				});
+	            globalConfig.curConfigs = personalConfigObj;
 	        } else {
-	            globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	            globalConfig.curConfigs = defaultCurConfigs;
 	        }
 	    }
 	    function configImproper(result) {
-	        globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	        globalConfig.curConfigs = defaultCurConfigs;
 	    }
 	    function configError(result) {
-	        globalConfig.curConfigs.configPagelengthMenu = "10,20,50,100";
+	        globalConfig.curConfigs = defaultCurConfigs;
 	    }
 	    
 	    //获取用户登录方式
@@ -82,8 +94,8 @@ $(document).ready(function() {
 	        }
 	    }
 	    //消息定时器，20s查询一次
-        setMessageTipNumber();
-        //var messageInterval = setInterval(setMessageTipNumber, 20000);
+    	setMessageTipNumber();
+      	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
     }

@@ -38,9 +38,9 @@
                         </div>
                     </div>
                     <div class="form-group col-sm-11">
-                    	<label for="ouOrgName" class="control-label">OU组织名称<i class="iconfont icon-mi required"></i></label>
+                    	<label for="ouOrgId" class="control-label">OU组织名称<i class="iconfont icon-mi required"></i></label>
                     	<div class="valiParent">
-                       		<select id="ouOrgName" data-allowSearch='5' name="ouOrgName" class="form-control select2me">
+                       		<select id="ouOrgId" data-allowSearch='5' name="ouOrgId" class="form-control select2me">
                        		</select>
                     	</div>
                 	</div>
@@ -86,29 +86,30 @@
         	"data" : {"dictId": 9065},
         	"async" : false
         }
-        var ajaxRoleType = {
+        var ajaxOuOrgName = {
             "url": serverPath + "orgPartner/getOuOrgName",
             "type": "post",
             "data": { id: null },
             "async": false
         }
         App.initAjaxSelect2("#partnerCode",ajaxObj,"dictValue","dictLabel","请选择关联编码");
-        App.initAjaxSelect2("#ouOrgName", ajaxRoleType, "ouShortCode", "ouName", "请选择OU组织");
+        App.initAjaxSelect2("#ouOrgId", ajaxOuOrgName, "ouShortCode", "ouName", "请选择OU组织");
         var url = serverPath + "orgPartner/" + data;
         App.formAjaxJson(url, "POST", "", successCallback);
 
         function successCallback(result) {
             var data = result.data;
+            console.log(data);
             $("#partnerId").val(data.partnerId);
             $("#partnerNameM").text(data.partnerName);
             $("#partnerCode").val(data.associateCode).trigger('change');
             $("#isPartnerM").val(data.isUnicomOrg).trigger('change');
             if (data.isUnicomOrg == 1) {
+            	$("#ouOrgId").val(data.ouOrgId).trigger('change');
                 $("#isunicom").removeClass("hide");
-                $("#ouOrgId").val(data.ouOrgName);
                 $("#organisation").val(data.orgName);
                 $("#organisation").data("id", data.orgId);
-                $("#organisation").attr("title", data.orgName);
+                $("#organisation").attr("title", data.orgName);         
                 $("#legal").val(data.staffName);
                 $("#legal").data("id", data.legalPersonName);
                 $("#legal").attr("title", data.staffName);
@@ -200,11 +201,12 @@
         App.changeObjKey({
             "legalTree": "legalPersonName",
             "organisationTree": "orgId",
-            "otherTree": "otherOrgId"
+            "otherTree": "otherOrgId",
         }, formObj)
         formObj.orgId = $("#organisation").data("id");
         formObj.legalPersonName = $("#legal").data("id");
         formObj.otherOrgId = $("#other").data("id");
+        formObj.ouOrgId = $("#ouOrgId").val();
         App.formAjaxJson(serverPath + "orgPartner", "PUT", JSON.stringify(formObj), successCallback);
 
         function successCallback(result) {

@@ -284,7 +284,7 @@ function modal_return(root, processInstanceId, taskId){
 			"taskId": taskId,	//任务id
 			"wcardId": wcardId	//工单ID
 		}
-		App.formAjaxJson(serverPath+"contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallback);
+		App.formAjaxJson(serverPath+"contractOrderEditorController/saveOrderWithdrawProcess", "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			parent.layer.alert("工单撤回成功",{icon:1},function(index){
 				parent.modal_close();

@@ -1,1 +1,88 @@
-!function(t){"use strict";var o=t.fn.bootstrapTable.utils.sprintf,l=function(t){t.initHeader(),t.initSearch(),t.initPagination(),t.initBody()};t.extend(t.fn.bootstrapTable.defaults,{showToggleBtn:!1,multiToggleDefaults:[]}),t.fn.bootstrapTable.methods.push("hideAllColumns","showAllColumns");var i=t.fn.bootstrapTable.Constructor,n=i.prototype.initToolbar;i.prototype.initToolbar=function(){n.apply(this,Array.prototype.slice.apply(arguments));var t=this,o=this.$toolbar.find(">.btn-group");if("string"==typeof this.options.multiToggleDefaults&&(this.options.multiToggleDefaults=JSON.parse(this.options.multiToggleDefaults)),this.options.showToggleBtn&&this.options.showColumns){var l="<button class='btn btn-default hidden' id='showAllBtn'><span class='glyphicon glyphicon-resize-full icon-zoom-in'></span></button>",i="<button class='btn btn-default' id='hideAllBtn'><span class='glyphicon glyphicon-resize-small icon-zoom-out'></span></button>";o.append(l+i),o.find("#showAllBtn").click(function(){t.showAllColumns(),o.find("#hideAllBtn").toggleClass("hidden"),o.find("#showAllBtn").toggleClass("hidden")}),o.find("#hideAllBtn").click(function(){t.hideAllColumns(),o.find("#hideAllBtn").toggleClass("hidden"),o.find("#showAllBtn").toggleClass("hidden")})}},i.prototype.hideAllColumns=function(){var i=this,n=i.options.multiToggleDefaults;t.each(this.columns,function(t,l){if(-1==n.indexOf(l.field)&&l.switchable){l.visible=!1;var s=i.$toolbar.find(".keep-open input").prop("disabled",!1);s.filter(o('[value="%s"]',t)).prop("checked",!1)}}),l(i)},i.prototype.showAllColumns=function(){var i=this;t.each(this.columns,function(t,l){l.switchable&&(l.visible=!0);var n=i.$toolbar.find(".keep-open input").prop("disabled",!1);n.filter(o('[value="%s"]',t)).prop("checked",!0)}),l(i),i.toggleColumn(0,i.columns[0].visible,!1)}}(jQuery);
+/**
+ * @author Homer Glascock <HopGlascock@gmail.com>
+ * @version: v1.0.0
+ */
+
+ !function ($) {
+    "use strict";
+
+    var sprintf = $.fn.bootstrapTable.utils.sprintf;
+
+    var reInit = function (self) {
+        self.initHeader();
+        self.initSearch();
+        self.initPagination();
+        self.initBody();
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, {
+        showToggleBtn: false,
+        multiToggleDefaults: [], //column names go here
+    });
+
+    $.fn.bootstrapTable.methods.push('hideAllColumns', 'showAllColumns');
+
+    var BootstrapTable = $.fn.bootstrapTable.Constructor,
+        _initToolbar = BootstrapTable.prototype.initToolbar;
+
+    BootstrapTable.prototype.initToolbar = function () {
+
+        _initToolbar.apply(this, Array.prototype.slice.apply(arguments));
+
+        var that = this,
+            $btnGroup = this.$toolbar.find('>.btn-group');
+
+        if (typeof this.options.multiToggleDefaults === 'string') {
+            this.options.multiToggleDefaults = JSON.parse(this.options.multiToggleDefaults);
+        }
+
+        if (this.options.showToggleBtn && this.options.showColumns) {
+            var showbtn = "<button class='btn btn-default hidden' id='showAllBtn'><span class='glyphicon glyphicon-resize-full icon-zoom-in'></span></button>",
+                hidebtn = "<button class='btn btn-default' id='hideAllBtn'><span class='glyphicon glyphicon-resize-small icon-zoom-out'></span></button>";
+
+            $btnGroup.append(showbtn + hidebtn);
+
+            $btnGroup.find('#showAllBtn').click(function () { that.showAllColumns(); 
+                $btnGroup.find('#hideAllBtn').toggleClass('hidden');
+                $btnGroup.find('#showAllBtn').toggleClass('hidden');  
+            });
+            $btnGroup.find('#hideAllBtn').click(function () { that.hideAllColumns(); 
+                $btnGroup.find('#hideAllBtn').toggleClass('hidden');
+                $btnGroup.find('#showAllBtn').toggleClass('hidden');  
+            });
+        }
+    };
+
+    BootstrapTable.prototype.hideAllColumns = function () {
+        var that = this,
+            defaults = that.options.multiToggleDefaults;
+
+        $.each(this.columns, function (index, column) {
+            //if its one of the defaults dont touch it
+            if (defaults.indexOf(column.field) == -1 && column.switchable) {
+                column.visible = false;
+                var $items = that.$toolbar.find('.keep-open input').prop('disabled', false);
+                $items.filter(sprintf('[value="%s"]', index)).prop('checked', false);
+            }
+        });
+
+        reInit(that);
+    };
+
+    BootstrapTable.prototype.showAllColumns = function () {
+        var that = this;
+        $.each(this.columns, function (index, column) {
+            if (column.switchable) {
+                column.visible = true;
+            }
+
+            var $items = that.$toolbar.find('.keep-open input').prop('disabled', false);
+            $items.filter(sprintf('[value="%s"]', index)).prop('checked', true);
+        });
+
+        reInit(that);
+
+        that.toggleColumn(0, that.columns[0].visible, false);
+    };
+    
+}(jQuery);

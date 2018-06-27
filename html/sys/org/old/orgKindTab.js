@@ -1,1 +1,53 @@
-function orgReset(){var r=$("#curTaborgKind").val();$("input[name='orgName']",$("#orgSearchForm"+r)).val(""),$("input[name='orgCode']",$("#orgSearchForm"+r)).val(""),$("select[name='orgType']",$("#orgSearchForm"+r)).val(""),$("select[name='orgStatus']",$("#orgSearchForm"+r)).val("")}function orgAddOrg(){var r=$("#curTaborgKind").val();$("#orgTabOrg"+r).load("../org/orgAdd.html",function(){$("#orgAddModle").attr("id","orgAddModle"+r),$("#orgAddModleTitle").attr("id","orgAddModleTitle"+r),$("#orgAddForm").attr("id","orgAddForm"+r),$("#orgAddSaveBtn").attr("id","orgAddSaveBtn"+r),"1"==r?$("#orgAddModleTitle"+r).html("新增联通组织"):"2"==r&&$("#orgAddModleTitle"+r).html("新增乙方组织"),resetValidator(),null==$("#orgAddForm"+r).data("bootstrapValidator")&&$("#orgAddForm"+r).bootstrapValidator(orgAddCheckValidator),$("#orgAddModle"+r).removeClass("HdClass")})}function resetValidator(){var r=$("#curTaborgKind").val();$("#orgAddForm"+r).data("bootstrapValidator")&&$("#orgAddForm"+r).data("bootstrapValidator").resetForm(!1)}
+
+
+/**
+ * 重置查询条件
+ * @author cuiy 2017/7/14
+ */
+function orgReset(){
+	 var curTabOrgKind = $('#curTaborgKind').val();
+	 $("input[name='orgName']",$("#orgSearchForm"+curTabOrgKind)).val("");
+	 $("input[name='orgCode']",$("#orgSearchForm"+curTabOrgKind)).val("");
+	 $("select[name='orgType']",$("#orgSearchForm"+curTabOrgKind)).val("");
+	 $("select[name='orgStatus']",$("#orgSearchForm"+curTabOrgKind)).val("");
+}
+/**
+ * 组织管理新增按钮
+ * @author cuiy 2017/7/17
+ */
+function orgAddOrg(){
+	var curTabOrgKind = $('#curTaborgKind').val();
+	debugger;
+	$("#orgTabOrg"+curTabOrgKind).load("../org/orgAdd.html",function(){
+		$("#orgAddModle").attr("id","orgAddModle"+curTabOrgKind);
+		$("#orgAddModleTitle").attr("id","orgAddModleTitle"+curTabOrgKind);
+		$("#orgAddForm").attr("id","orgAddForm"+curTabOrgKind);
+		$("#orgAddSaveBtn").attr("id","orgAddSaveBtn"+curTabOrgKind);
+		if("1" == curTabOrgKind){
+			$("#orgAddModleTitle"+curTabOrgKind).html("新增联通组织");
+		}else if("2" == curTabOrgKind){
+			$("#orgAddModleTitle"+curTabOrgKind).html("新增乙方组织");
+		}
+		resetValidator();
+		if(null == $('#orgAddForm'+curTabOrgKind ).data('bootstrapValidator')) {
+			$('#orgAddForm'+curTabOrgKind ).bootstrapValidator(orgAddCheckValidator);
+		}
+		$("#orgAddModle"+curTabOrgKind).removeClass("HdClass");
+		
+	});
+}
+
+/**
+ * bootstrapvalidator 验证
+ * @ cuiy 2017/7/24
+ */
+function resetValidator(){
+	var curTabOrgKind = $('#curTaborgKind').val();
+	if($('#orgAddForm'+curTabOrgKind ).data('bootstrapValidator')){
+		$('#orgAddForm'+curTabOrgKind ).data('bootstrapValidator').resetForm(false);
+	}
+}
+
+
+
+

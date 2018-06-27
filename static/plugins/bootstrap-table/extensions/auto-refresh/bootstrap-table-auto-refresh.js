@@ -1,1 +1,84 @@
-!function(t){"use strict";t.extend(t.fn.bootstrapTable.defaults,{autoRefresh:!1,autoRefreshInterval:60,autoRefreshSilent:!0,autoRefreshStatus:!0,autoRefreshFunction:null}),t.extend(t.fn.bootstrapTable.defaults.icons,{autoRefresh:"glyphicon-time icon-time"}),t.extend(t.fn.bootstrapTable.locales,{formatAutoRefresh:function(){return"Auto Refresh"}}),t.extend(t.fn.bootstrapTable.defaults,t.fn.bootstrapTable.locales);var o=t.fn.bootstrapTable.Constructor,e=o.prototype.init,s=o.prototype.initToolbar,n=t.fn.bootstrapTable.utils.sprintf;o.prototype.init=function(){if(e.apply(this,Array.prototype.slice.apply(arguments)),this.options.autoRefresh&&this.options.autoRefreshStatus){var t=this;this.options.autoRefreshFunction=setInterval(function(){t.refresh({silent:t.options.autoRefreshSilent})},1e3*this.options.autoRefreshInterval)}},o.prototype.initToolbar=function(){if(s.apply(this,Array.prototype.slice.apply(arguments)),this.options.autoRefresh){var o=this.$toolbar.find(">.btn-group"),e=o.find(".auto-refresh");e.length||(e=t([n('<button class="btn btn-default auto-refresh %s" ',this.options.autoRefreshStatus?"enabled":""),'type="button" ',n('title="%s">',this.options.formatAutoRefresh()),n('<i class="%s %s"></i>',this.options.iconsPrefix,this.options.icons.autoRefresh),"</button>"].join("")).appendTo(o),e.on("click",t.proxy(this.toggleAutoRefresh,this)))}},o.prototype.toggleAutoRefresh=function(){if(this.options.autoRefresh){if(this.options.autoRefreshStatus)clearInterval(this.options.autoRefreshFunction),this.$toolbar.find(">.btn-group").find(".auto-refresh").removeClass("enabled");else{var t=this;this.options.autoRefreshFunction=setInterval(function(){t.refresh({silent:t.options.autoRefreshSilent})},1e3*this.options.autoRefreshInterval),this.$toolbar.find(">.btn-group").find(".auto-refresh").addClass("enabled")}this.options.autoRefreshStatus=!this.options.autoRefreshStatus}}}(jQuery);
+/**
+ * @author: Alec Fenichel
+ * @webSite: https://fenichelar.com
+ * @version: v1.0.0
+ */
+
+(function ($) {
+
+  'use strict';
+
+  $.extend($.fn.bootstrapTable.defaults, {
+    autoRefresh: false,
+    autoRefreshInterval: 60,
+    autoRefreshSilent: true,
+    autoRefreshStatus: true,
+    autoRefreshFunction: null
+  });
+
+  $.extend($.fn.bootstrapTable.defaults.icons, {
+    autoRefresh: 'glyphicon-time icon-time'
+  });
+
+  $.extend($.fn.bootstrapTable.locales, {
+    formatAutoRefresh: function() {
+      return 'Auto Refresh';
+    }
+  });
+
+  $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales);
+
+  var BootstrapTable = $.fn.bootstrapTable.Constructor;
+  var _init = BootstrapTable.prototype.init;
+  var _initToolbar = BootstrapTable.prototype.initToolbar;
+  var sprintf = $.fn.bootstrapTable.utils.sprintf;
+
+  BootstrapTable.prototype.init = function () {
+    _init.apply(this, Array.prototype.slice.apply(arguments));
+
+    if (this.options.autoRefresh && this.options.autoRefreshStatus) {
+      var that = this;
+      this.options.autoRefreshFunction = setInterval(function () {
+        that.refresh({silent: that.options.autoRefreshSilent});
+      }, this.options.autoRefreshInterval*1000);
+    }
+  };
+
+  BootstrapTable.prototype.initToolbar = function() {
+    _initToolbar.apply(this, Array.prototype.slice.apply(arguments));
+
+    if (this.options.autoRefresh) {
+      var $btnGroup = this.$toolbar.find('>.btn-group');
+      var $btnAutoRefresh = $btnGroup.find('.auto-refresh');
+
+      if (!$btnAutoRefresh.length) {
+        $btnAutoRefresh = $([
+          sprintf('<button class="btn btn-default auto-refresh %s" ', this.options.autoRefreshStatus ? 'enabled' : ''),
+          'type="button" ',
+          sprintf('title="%s">', this.options.formatAutoRefresh()),
+          sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.autoRefresh),
+          '</button>'
+        ].join('')).appendTo($btnGroup);
+
+        $btnAutoRefresh.on('click', $.proxy(this.toggleAutoRefresh, this));
+      }
+    }
+  };
+
+  BootstrapTable.prototype.toggleAutoRefresh = function() {
+    if (this.options.autoRefresh) {
+      if (this.options.autoRefreshStatus) {
+        clearInterval(this.options.autoRefreshFunction);
+        this.$toolbar.find('>.btn-group').find('.auto-refresh').removeClass('enabled');
+      } else {
+        var that = this;
+        this.options.autoRefreshFunction = setInterval(function () {
+          that.refresh({silent: that.options.autoRefreshSilent});
+        }, this.options.autoRefreshInterval*1000);
+        this.$toolbar.find('>.btn-group').find('.auto-refresh').addClass('enabled');
+      }
+      this.options.autoRefreshStatus = !this.options.autoRefreshStatus;
+    }
+  };
+
+})(jQuery);

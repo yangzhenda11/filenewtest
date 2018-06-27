@@ -1,1 +1,53 @@
-.portlet-body{overflow:hidden;min-height:350px;position:relative;padding-bottom:8px}.ztree{overflow:auto}.dictHeightBorder{position:absolute;width:1px;background:#EEF1F5;top:8px;bottom:0;left:33%}.permHeightBorder{position:absolute;width:1px;background:#EEF1F5;top:8px;bottom:0;left:33%}#permissionShow{margin-top:20px}#permissionShow .form-control-static{margin-top:0}.portlet-title-per{margin-top:10px}.portlet-title-per button{margin-right:10px}.action-tools{margin-left:10px;width:280px}a{text-shadow:none;color:#e43a45}a:hover{color:#D12610}a:focus,a:hover,a:active{outline:0}
+.portlet-body {
+  overflow: hidden;
+  min-height: 350px;
+  position: relative;
+  padding-bottom: 8px;
+}
+.ztree {
+  overflow: auto;
+}
+.dictHeightBorder {
+  position: absolute;
+  width: 1px;
+  background: #EEF1F5;
+  top: 8px;
+  bottom: 0px;
+  left: 33%;
+}
+.permHeightBorder {
+  position: absolute;
+  width: 1px;
+  background: #EEF1F5;
+  top: 8px;
+  bottom: 0px;
+  left: 33%;
+}
+#permissionShow {
+  margin-top: 20px;
+}
+#permissionShow .form-control-static {
+  margin-top: 0px;
+}
+.portlet-title-per {
+  margin-top: 10px;
+}
+.portlet-title-per button {
+  margin-right: 10px;
+}
+.action-tools {
+  margin-left: 10px;
+  width: 280px;
+}
+a {
+  text-shadow: none;
+  color: #e43a45;
+}
+a:hover {
+  color: #D12610;
+}
+a:focus,
+a:hover,
+a:active {
+  outline: 0;
+}

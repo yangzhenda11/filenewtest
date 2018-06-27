@@ -1,1 +1,28 @@
-!function(t){"use strict";t.fn.bootstrapTable.locales["vi-VN"]={formatLoadingMessage:function(){return"Đang tải..."},formatRecordsPerPage:function(t){return t+" bản ghi mỗi trang"},formatShowingRows:function(t,n,r){return"Hiển thị từ trang "+t+" đến "+n+" của "+r+" bảng ghi"},formatSearch:function(){return"Tìm kiếm"},formatNoMatches:function(){return"Không có dữ liệu"}},t.extend(t.fn.bootstrapTable.defaults,t.fn.bootstrapTable.locales["vi-VN"])}(jQuery);
+/**
+ * Bootstrap Table Vietnamese translation
+ * Author: Duc N. PHAM <pngduc@gmail.com>
+ */
+(function ($) {
+    'use strict';
+
+    $.fn.bootstrapTable.locales['vi-VN'] = {
+        formatLoadingMessage: function () {
+            return 'Đang tải...';
+        },
+        formatRecordsPerPage: function (pageNumber) {
+            return pageNumber + ' bản ghi mỗi trang';
+        },
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+            return 'Hiển thị từ trang ' + pageFrom + ' đến ' + pageTo + ' của ' + totalRows + ' bảng ghi';
+        },
+        formatSearch: function () {
+            return 'Tìm kiếm';
+        },
+        formatNoMatches: function () {
+            return 'Không có dữ liệu';
+        }
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['vi-VN']);
+
+})(jQuery);

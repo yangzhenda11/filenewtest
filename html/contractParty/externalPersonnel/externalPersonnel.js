@@ -1,1 +1,539 @@
-function getTreeInfo(){function e(e){var a=e.data,t={isParent:"false",orgId:"",orgName:"全部"};null==a?layer.msg("没有相关组织和人员信息"):(a.unshift(t),organisationTree=$.fn.zTree.init($("#organisationTree"),orgsSetting,a))}App.formAjaxJson(serverPath+"orgs/"+config.curOrgId+"/orgTree","get",null,e)}function searchPersonnel(e){var a=$("#personnelTable").DataTable();e?a.ajax.reload(null,!1):a.ajax.reload()}function resetPasswd(e){e=e.split("&&"),layer.confirm('确定重置<span style="color:red;margin:0 5px;">'+e[1]+"</span>的密码?",{icon:3,title:"密码重置"},function(a){function t(t){layer.close(a),layer.alert("用户<span style='color:red;margin:0 5px;'>"+e[1]+"</span>的密码重置成功，</br>新密码为<span style='color:red;margin:0 5px;'>"+t.data+"</span>。",{icon:1})}App.formAjaxJson(serverPath+"staffPartner/updatePassword/"+e[0]+"/"+e[2],"PUT","",t)})}function changeStaffStatus(e){e=e.split("&&");var a="启用",t=1;"1"==e[3]&&(a="禁用",t=0),layer.confirm("确定"+a+'<span style="color:red;margin:0 5px;">'+e[1]+"</span>的账号?",{icon:3,title:"账号"+a},function(a){doChangeStaffStatus(e[0],t,a)})}function doChangeStaffStatus(e,a,t){function n(){layer.close(t);var e="1"==a?"启用成功":"禁用成功";layer.msg(e),searchPersonnel(!0)}App.formAjaxJson(serverPath+"staffPartner/updateStaffPartnerStatus/"+e+"/"+a,"PUT","",n)}function personnelModal(e){var e=e.split("&&"),a=e[0];"add"==a||"edit"==a?$("#modal").load("_externalPersonnelModal.html?"+App.timestamp()+" #modalEdit",function(){App.initFormSelect2("#externalPersonnelForm"),"add"==a?($("#modalTitle").text("新增外部人员"),dateRegNameChose(),validate(a),$("#modal").modal("show")):($("#modalTitle").text("外部人员信息编辑"),getInfor(e[1],a))}):$("#modal").load("_externalPersonnelModal.html?"+App.timestamp()+" #modalDetail",function(){getInfor(e[1],a)})}function getInfor(e,a){function t(e){var t=e.data;"edit"==a?setEditForm(t):setDetailForm(t)}App.formAjaxJson(serverPath+"staffPartner/getStaffPartner/"+e,"get","",t)}function setDetailForm(e){$("#modal").modal("show"),$("#staffNameDetail").text(e.staffName);var a={sex:function(e){return"W"==e?"女":"男"},staffStatus:function(e){return"1"==e?"有效":"无效"},hireDate:function(e){return App.formatDateTime(e,"yyyy-mm-dd")}};App.setFindValue("#baseInfo",e,a)}function setEditForm(e){$("#modal").modal("show");var a={hireDate:function(e){return App.formatDateTime(e,"yyyy-mm-dd")}};App.setFormValues("#externalPersonnelForm",e,a),$("#orgNameIn").attr("title",e.orgName),$("#orgNameIn").data("id",e.orgId),dateRegNameChose(),validate("edit")}function dateRegNameChose(){function e(e){var a=e.data;null==a?layer.msg("没有相关组织和人员信息"):orgNameTree=$.fn.zTree.init($("#orgName"),orgsSetting,a)}$("#orgNameIn").on("click",function(){showTree("orgNameIn")}),App.formAjaxJson(serverPath+"orgs/"+config.curOrgId+"/orgTree","get","",e)}function updateExternalPersonnel(e){function a(){layer.msg(r),searchPersonnel(!0),$("#modal").modal("hide")}function t(){$("#externalPersonnelForm").data("bootstrapValidator").resetForm()}var n=App.getFormValues($("#externalPersonnelForm")),r="新增成功",o=serverPath+"staffPartner/addStaffPartner",s="POST";"add"==e?(n.orgId=$("#orgNameIn").data("id"),n.staffKind=2,delete n.staffId):(n.orgId=$("#orgNameIn").data("id"),r="修改成功",o=serverPath+"staffPartner/updateStaffPartner",s="PUT"),App.formAjaxJson(o,s,JSON.stringify(n),a,t)}function showTree(e){{var a=$("#"+e);a.offset()}$("#"+e+"Content").css({left:"0",top:a.outerHeight()+"px",width:a.outerWidth()+("orgNameIn"==e?40:120)}).slideDown("fast"),onBodyDown(e)}function hideMenu(e){$("#"+e+"Content").fadeOut("fast"),$("body").unbind("mousedown",onBodyDown)}function onBodyDown(e){$("body").on("mousedown",function(a){a.target.id==e||a.target.id==e+"Content"||$(a.target).parents("#"+e+"Content").length>0||hideMenu(e)}),$(".page-content").on("scroll",function(){hideMenu(e)})}function orgsfilter(e,a,t){var t=t.data;return t?t:null}function zTreeBeforeAsync(e,a){return"organisationTree"==e?organisationTree.setting.async.url=serverPath+"orgs/"+a.orgId+"/children":"orgName"==e&&(orgNameTree.setting.async.url=serverPath+"orgs/"+a.orgId+"/children"),!0}function onClick(e,a){var t=$.fn.zTree.getZTreeObj(a).getSelectedNodes(),n=t[0].orgName,r=t[0].orgId;$("input[name="+a+"]").data("id",r),$("input[name="+a+"]").val(n),$("input[name="+a+"]").attr("title",n),"orgName"==a&&($("#externalPersonnelForm").data("bootstrapValidator").updateStatus("orgName","NOT_VALIDATED",null),$("#externalPersonnelForm").data("bootstrapValidator").validateField("orgName"))}function validate(e){$("#externalPersonnelForm").bootstrapValidator({live:"enabled",trigger:"live focus blur keyup change",message:"校验未通过",container:"popover",fields:{loginName:{validators:{notEmpty:{message:"请输入账号"},stringLength:{min:0,max:20,message:"请输入不超过20个字符"},regexp:{regexp:/^[a-zA-Z0-9_\-\.]+$/,message:"用户名由数字字母-_和.组成"}}},passwd:{validators:{notEmpty:{message:"请输入密码"},stringLength:{min:5,message:"密码至少5位"}}},staffName:{validators:{notEmpty:{message:"请输入人员姓名"},stringLength:{min:0,max:15,message:"请输入不超过15个字"}}},orgName:{validators:{notEmpty:{message:"请选择所属组织"}}},empCode:{validators:{regexp:{regexp:/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,message:"请输入15或18位身份证号"}}},sex:{validators:{notEmpty:{message:"请选择性别"}}},postcode:{validators:{regexp:{regexp:/^[0-9]+$/,message:"请检查邮政编码"},stringLength:{min:0,max:6,message:"请输入不超过6位数字"}}},mailAddr:{validators:{stringLength:{min:0,max:30,message:"请输入不超过30个字符"}}},phone:{validators:{regexp:{regexp:/(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,message:"请检查电话是否正确"}}},mobilPhone:{validators:{notEmpty:{message:"请输入手机号"},stringLength:{min:11,max:11,message:"请输入11位手机号码"},regexp:{regexp:/^1[3|5|7|8]{1}[0-9]{9}$/,message:"请输入正确的手机号码"}}},email:{validators:{emailAddress:{message:"请检查Email拼写"},stringLength:{min:0,max:50,message:"请输入不超过50个字符"}}},staffSort:{validators:{stringLength:{min:0,max:8,message:"请输入不超过8位数字"},regexp:{regexp:/^[0-9]+$/,message:"排序只能输入数字"}}}}}).on("success.form.bv",function(a){a.preventDefault(),updateExternalPersonnel(e)})}var organisationTree=null,orgNameTree=null,config=parent.globalConfig,serverPath=config.serverPath;$(function(){getTreeInfo()}),App.initDataTables("#personnelTable","#submitBtn",{ajax:{type:"GET",url:serverPath+"staffPartner/getStaffPartnerList",data:function(e){return e.sysOrgId=config.curOrgId,e.staffName=$("input[name='staffName']").val().trim(),e.loginName=$("input[name='loginName']").val().trim(),e.staffStatus=$("select[name='staffStatus']").val(),e.orgId=$("#organisation").data("id"),e}},columns:[{data:null,className:"text-center",title:"操作",render:function(e){if(e){var a=e.staffId+"&&"+e.staffName+"&&"+e.loginName+"&&"+e.staffStatus,t=new Array;return t.push({name:"修改",fn:"personnelModal('edit&&"+e.staffId+"')",icon:"iconfont icon-add"}),t.push({name:"密码重置",fn:"resetPasswd('"+a+"')"}),t.push("1"==e.staffStatus?{name:"禁用",fn:"changeStaffStatus('"+a+"')"}:{name:"启用",fn:"changeStaffStatus('"+a+"')"}),App.getDataTableBtn(t)}return""}},{data:null,title:"人员姓名",render:function(e){return'<a href="javascript:void(0)" onclick = "personnelModal(\'detail&&'+e.staffId+"')\">"+e.staffName+"</a>"}},{data:"loginName",title:"账号"},{data:"orgName",title:"组织"},{data:"sex",title:"性别",render:function(e){return"M"==e?"男":"女"}},{data:"email",title:"邮箱"},{data:"mobilPhone",title:"手机"},{data:"staffStatus",title:"岗位状态",render:function(e){return"1"==e?"有效":"无效"}}],fixedColumns:{leftColumns:2}});var orgsSetting={async:{enable:!0,url:"",type:"get",dataType:"json",dataFilter:orgsfilter},data:{simpleData:{enable:!0,idKey:"orgId",pIdKey:"parent_id"},key:{name:"orgName"}},view:{dblClickExpand:!1},callback:{onAsyncError:onAsyncError,onClick:onClick,beforeAsync:zTreeBeforeAsync}};
+/*
+ * 外部人员组织JS
+ */
+//树生成的全局变量
+var organisationTree = null;
+var orgNameTree = null;
+//系统的全局变量获取
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
+//页面初始化事件
+$(function() {
+	getTreeInfo();
+})
+/*
+ * 获取组织
+ * 所属组织树配置
+ */
+function getTreeInfo(code) {
+	App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var allObj = {
+			isParent: "false",
+			orgId: "",
+			orgName: "全部"
+		}
+		if(null == data) {
+			layer.msg("没有相关组织和人员信息");
+		} else {
+			data.unshift(allObj);
+			organisationTree = $.fn.zTree.init($("#organisationTree"), orgsSetting, data);
+		}
+	}
+}
+/*
+ * 表格初始化
+ */
+App.initDataTables('#personnelTable', "#submitBtn", {
+	ajax: {
+		"type": "GET",					//请求方式
+		"url": serverPath + 'staffPartner/getStaffPartnerList',	//请求地址
+		"data": function(d) {							//自定义传入参数
+			d.sysOrgId = config.curOrgId;
+			d.staffName = $("input[name='staffName']").val().trim();
+			d.loginName = $("input[name='loginName']").val().trim();
+			d.staffStatus = $("select[name='staffStatus']").val();
+			d.orgId = $("#organisation").data("id");
+			return d;
+		}
+	},
+	"columns": [{
+			"data": null,
+			"className": "text-center",
+			"title": "操作",
+			"render": function(data, type, full, meta) {
+				if(data) {
+					var para = data.staffId + '&&' + data.staffName + '&&' + data.loginName + '&&' + data.staffStatus;
+					var btnArray = new Array();
+                    btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.staffId + "\')","icon":"iconfont icon-add"});
+                    btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + para + "\')" });
+                    if ('1' == data.staffStatus) {
+                        btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + para + "\')"});
+                    } else {
+                        btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + para + "\')"});
+                    }
+                    return App.getDataTableBtn(btnArray);
+				} else {
+					return '';
+				}
+			}
+		},
+		{
+			"data": null,
+			"title": "人员姓名",
+			render: function(data, type, full, meta) {
+				return '<a href=\"javascript:void(0)\" onclick = "personnelModal(\'detail&&' + data.staffId + '\')">' + data.staffName + '</a>';
+			}
+		},
+		{
+			"data": "loginName",
+			"title": "账号"
+		},
+		{
+			"data": "orgName",
+			"title": "组织"
+		},
+		{
+			"data": "sex",
+			"title": "性别",
+			render: function(data, type, full, meta) {
+				return data == 'M' ? '男' : '女';
+			}
+		},
+		{
+			"data": "email",
+			"title": "邮箱"
+		},
+		{
+			"data": "mobilPhone",
+			"title": "手机"
+		},
+		{
+			"data": "staffStatus",
+			"title": "岗位状态",
+			render: function(data, type, full, meta) {
+				return data == '1' ? '有效' : '无效';
+			}
+		}
+	],
+	"fixedColumns":{
+		"leftColumns":2
+	}
+});
+/*
+ * 搜索点击事件
+ */
+function searchPersonnel(retainPaging) {
+	var table = $('#personnelTable').DataTable();
+	if(retainPaging) {
+		table.ajax.reload(null, false);
+	} else {
+		table.ajax.reload();
+	}
+}
+
+/*
+ * 密码重置
+ * para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + data.STAFF_STATUS;
+ */
+function resetPasswd(para) {
+	para = para.split("&&");
+	layer.confirm('确定重置<span style="color:red;margin:0 5px;">' + para[1] + '</span>的密码?', {
+		icon: 3,
+		title: '密码重置'
+	}, function(index) {
+		App.formAjaxJson(serverPath + 'staffPartner/updatePassword/' + para[0] + "/" + para[2], "PUT", "", successCallback);
+
+		function successCallback(result) {
+			layer.close(index);
+			layer.alert("用户<span style='color:red;margin:0 5px;'>" + para[1] + "</span>的密码重置成功，</br>新密码为<span style='color:red;margin:0 5px;'>" + result.data + "</span>。", {
+				icon: 1
+			});
+		}
+	});
+}
+/*
+ * 用户启用禁用
+ * STAFF_STATUS 1已经启用    0禁用
+ * para = data.STAFF_ID + '&&' + data.STAFF_NAME + '&&' + data.LOGIN_NAME + data.STAFF_STATUS;
+ */
+function changeStaffStatus(para) {
+	para = para.split("&&");
+	var statusMsg = "启用";
+	var status = 1;
+	if(para[3] == "1") {
+		statusMsg = "禁用";
+		status = 0;
+	};
+	layer.confirm('确定' + statusMsg + '<span style="color:red;margin:0 5px;">' + para[1] + '</span>的账号?', {
+		icon: 3,
+		title: '账号' + statusMsg
+	}, function(index) {
+		doChangeStaffStatus(para[0], status, index);
+	});
+}
+/*
+ * 启用禁用提交
+ */
+function doChangeStaffStatus(staffId, staffStatus, index) {
+	App.formAjaxJson(serverPath + "staffPartner/updateStaffPartnerStatus/" + staffId + "/" + staffStatus, "PUT", "", successCallback);
+	function successCallback(result) {
+		layer.close(index);
+		var ms = staffStatus == "1" ? "启用成功" : "禁用成功";
+		layer.msg(ms);
+		searchPersonnel(true);
+	}
+}
+/*
+ * 判断modal类型
+ */
+function personnelModal(code) {
+	var code = code.split("&&");
+	var editType = code[0];
+	if(editType == "add" || editType == "edit") {
+		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalEdit",function(){
+			App.initFormSelect2("#externalPersonnelForm")
+			if(editType == "add"){
+				$("#modalTitle").text("新增外部人员");
+				dateRegNameChose();
+				validate(editType);
+				$('#modal').modal('show');
+			}else{
+				$("#modalTitle").text("外部人员信息编辑");
+				getInfor(code[1],editType)
+			}
+		});
+	} else {
+		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalDetail",function(){
+			getInfor(code[1],editType);
+		});
+	}
+}
+
+/*
+ * 获取人员信息详情
+ */
+function getInfor(id,type){
+	App.formAjaxJson(serverPath + "staffPartner/getStaffPartner/" + id, "get", "", successCallback);
+	function successCallback(result){
+		var data = result.data;
+		if(type == "edit"){
+			setEditForm(data);
+		}else{
+			setDetailForm(data);
+		}	
+	}
+}
+/*
+ * 填充详情表单
+ */
+function setDetailForm(data){
+	$("#modal").modal("show");
+	$("#staffNameDetail").text(data.staffName);
+	var valueCallback = {'sex':function(value){return value == "W" ? "女" : "男"},
+						'staffStatus':function(value){return value == "1" ? "有效" : "无效"},
+						'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+	App.setFindValue("#baseInfo",data,valueCallback);
+}
+/*
+ * 填充修改表单
+ */
+function setEditForm(data){
+	$('#modal').modal('show');
+	var valueCallback = {'hireDate':function(value){return App.formatDateTime(value,"yyyy-mm-dd")}}
+	App.setFormValues("#externalPersonnelForm",data,valueCallback);
+	$("#orgNameIn").attr("title",data.orgName);
+	$("#orgNameIn").data("id",data.orgId);
+	dateRegNameChose();
+	validate("edit");
+}
+//日期和组织树选择触发
+function dateRegNameChose(){
+//	if($.fn.datepicker) {
+//		$.fn.datepicker.defaults.format = 'yyyy-mm-dd';
+//		$.fn.datepicker.defaults.language = 'zh-CN';
+//		$.fn.datepicker.defaults.autoclose = true;
+//		$('.date-picker').datepicker({
+//			format: "yyyy-mm-dd"
+//		});
+//	};
+	$("#orgNameIn").on("click",function(){
+		showTree('orgNameIn');
+	});
+	App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(null == data) {
+			layer.msg("没有相关组织和人员信息");
+		} else {
+			orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
+		}
+	}
+}
+
+/*
+ * 新增||修改提交
+ */
+function updateExternalPersonnel(editType) {
+	var formObj = App.getFormValues($("#externalPersonnelForm"));
+	var ms = "新增成功";
+	var url = serverPath + "staffPartner/addStaffPartner";
+	var pushType = "POST";
+	if(editType == "add"){
+		formObj.orgId = $("#orgNameIn").data("id");
+		formObj.staffKind = 2;
+		delete formObj.staffId;
+	}else{
+		formObj.orgId = $("#orgNameIn").data("id");
+		ms = "修改成功";
+		url = serverPath + "staffPartner/updateStaffPartner";
+		pushType = "PUT";
+	}
+	App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback,improperCallbacks);
+	function successCallback(result) {
+		layer.msg(ms);
+		searchPersonnel(true);
+		$('#modal').modal('hide');
+	}
+	function improperCallbacks(result){
+		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
+	}
+}
+/*
+ * 显示所属组织树
+ */
+function showTree(dom) {
+	var selectObj = $("#" + dom + "");
+	var selectOffset = selectObj.offset();
+	$("#" + dom + "Content").css({
+		left: "0",
+		top: selectObj.outerHeight() + "px",
+		width: selectObj.outerWidth() + (dom == "orgNameIn" ? 40 : 120)
+	}).slideDown("fast");
+	onBodyDown(dom);
+}
+/*
+ * 隐藏所属组织树
+ */
+function hideMenu(dom) {
+	$("#" + dom + "Content").fadeOut("fast");
+	$("body").unbind("mousedown", onBodyDown);
+}
+/*
+ * 组织树点击事件
+ */
+function onBodyDown(dom) {
+	$("body").on("mousedown", function(event) {
+		if(!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
+			hideMenu(dom);
+		}
+	});
+	$('.page-content').on('scroll',function(){
+        hideMenu(dom);
+    })
+}
+/*
+ * 所属组织树配置单选配置
+ */
+var orgsSetting = {
+	async: {
+		enable: true,
+		url: "",
+		type: "get",
+		dataType: 'json',
+		dataFilter: orgsfilter
+	},
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "orgId",
+			pIdKey: "parent_id"
+		},
+		key: {
+			name: "orgName"
+		}
+	},
+	view: {
+		dblClickExpand: false
+	},
+	callback: {
+		onAsyncError: onAsyncError,
+		onClick: onClick,
+		beforeAsync: zTreeBeforeAsync
+	}
+};
+
+function orgsfilter(treeId, parentNode, responseData) {
+	var responseData = responseData.data;
+	if(responseData) {
+		return responseData;
+	} else {
+		return null;
+	}
+}
+/*
+ * ztree异步加载之前
+ */
+function zTreeBeforeAsync(treeId, treeNode) {
+	if(treeId == "organisationTree") {
+		organisationTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
+	}else if(treeId == "orgName"){
+		orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
+	}
+	return true;
+}
+
+/*
+ * ztree点击事件
+ */
+function onClick(event, treeId, treeNode) {
+	var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
+	var selectName = nodes[0].orgName;
+	var selectId = nodes[0].orgId;
+	$("input[name=" + treeId + "]").data("id", selectId);
+	$("input[name=" + treeId + "]").val(selectName);
+	$("input[name=" + treeId + "]").attr("title", selectName);
+	if(treeId == "orgName"){
+		$("#externalPersonnelForm").data("bootstrapValidator").updateStatus("orgName",  "NOT_VALIDATED",  null );
+		$("#externalPersonnelForm").data("bootstrapValidator").validateField('orgName');
+	}
+}
+/*
+ * 表单验证
+ */
+function validate(editType) {
+	$('#externalPersonnelForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup change',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+			loginName : {
+				validators : {
+					notEmpty : {
+						message : '请输入账号'
+					},
+					stringLength : {
+						min : 0,
+						max : 20,
+						message : '请输入不超过20个字符'
+					},
+					regexp : {
+						regexp : /^[a-zA-Z0-9_\-\.]+$/,
+						message : '用户名由数字字母-_和.组成'
+					}
+				}
+			},
+			passwd : {
+				validators : {
+					notEmpty : {
+						message : '请输入密码'
+					},
+					stringLength : {
+						min : 5,
+						message : '密码至少5位'
+					}
+				}
+			},
+			staffName : {
+				validators : {
+					notEmpty : {
+						message : '请输入人员姓名'
+					},
+					stringLength : {
+						min : 0,
+						max : 15,
+						message : '请输入不超过15个字'
+					}
+				}
+			},
+			orgName : {
+				validators : {
+					notEmpty : {
+						message : '请选择所属组织'
+					}
+				}
+			},
+			empCode : {
+				validators : {
+					regexp : {
+						regexp : /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+						message : '请输入15或18位身份证号'
+					}
+				}
+			},
+			sex : {
+				validators : {
+					notEmpty : {
+						message : '请选择性别'
+					}
+				}
+			},
+			postcode : {
+				validators : {
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '请检查邮政编码'
+					},
+					stringLength : {
+						min : 0,
+						max : 6,
+						message : '请输入不超过6位数字'
+					}
+				}
+			},
+			mailAddr : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 30,
+						message : '请输入不超过30个字符'
+					}
+				}
+			},
+			phone : {
+				validators : {
+					regexp : {
+						regexp : /(^(\d{3,4}-)?\d{7,8})$|(1[3|5|7|8]{1}[0-9]{9})/,
+						message : '请检查电话是否正确'
+					}
+				}
+			},
+			mobilPhone : {
+				validators : {
+					notEmpty : {
+						message : '请输入手机号'
+					},
+					stringLength : {
+						min : 11,
+						max : 11,
+						message : '请输入11位手机号码'
+					},
+					regexp : {
+						regexp : /^1[3|5|7|8]{1}[0-9]{9}$/,
+						message : '请输入正确的手机号码'
+					}
+				}
+			},
+			email : {
+				validators : {
+					emailAddress : {
+						message : '请检查Email拼写'
+					},
+					stringLength : {
+						min : 0,
+						max : 50,
+						message : '请输入不超过50个字符'
+					}
+				}
+			},
+			staffSort : {
+				validators : {
+					stringLength : {
+						min : 0,
+						max : 8,
+						message : '请输入不超过8位数字'
+					},
+					regexp : {
+						regexp : /^[0-9]+$/,
+						message : '排序只能输入数字'
+					}
+				}
+			}
+		}
+	}).on('success.form.bv', function(e) {
+		e.preventDefault();
+		updateExternalPersonnel(editType);
+	});
+}

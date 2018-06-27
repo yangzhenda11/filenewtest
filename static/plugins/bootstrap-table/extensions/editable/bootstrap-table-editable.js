@@ -1,1 +1,146 @@
-!function(t){"use strict";t.extend(t.fn.bootstrapTable.defaults,{editable:!0,onEditableInit:function(){return!1},onEditableSave:function(){return!1},onEditableShown:function(){return!1},onEditableHidden:function(){return!1}}),t.extend(t.fn.bootstrapTable.Constructor.EVENTS,{"editable-init.bs.table":"onEditableInit","editable-save.bs.table":"onEditableSave","editable-shown.bs.table":"onEditableShown","editable-hidden.bs.table":"onEditableHidden"});var e=t.fn.bootstrapTable.Constructor,a=e.prototype.initTable,i=e.prototype.initBody;e.prototype.initTable=function(){var e=this;a.apply(this,Array.prototype.slice.apply(arguments)),this.options.editable&&t.each(this.columns,function(a,i){if(i.editable){var n={},o=[],r="editable-",d=function(t,e){var a=t.replace(/([A-Z])/g,function(t){return"-"+t.toLowerCase()});if(a.slice(0,r.length)==r){var i=a.replace(r,"data-");n[i]=e}};t.each(e.options,d),i.formatter=i.formatter||function(t){return t},i._formatter=i._formatter?i._formatter:i.formatter,i.formatter=function(a,r,l){var s=i._formatter?i._formatter(a,r,l):a;t.each(i,d),t.each(n,function(t,e){o.push(" "+t+'="'+e+'"')});var b=!1;return i.editable.hasOwnProperty("noeditFormatter")&&(b=i.editable.noeditFormatter(a,r,l)),b===!1?['<a href="javascript:void(0)"',' data-name="'+i.field+'"',' data-pk="'+r[e.options.idField]+'"',' data-value="'+s+'"',o.join(""),"></a>"].join(""):b}}})},e.prototype.initBody=function(){var e=this;i.apply(this,Array.prototype.slice.apply(arguments)),this.options.editable&&(t.each(this.columns,function(a,i){i.editable&&(e.$body.find('a[data-name="'+i.field+'"]').editable(i.editable).off("save").on("save",function(a,n){var o=e.getData(),r=t(this).parents("tr[data-index]").data("index"),d=o[r],l=d[i.field];t(this).data("value",n.submitValue),d[i.field]=n.submitValue,e.trigger("editable-save",i.field,d,l,t(this)),e.resetFooter()}),e.$body.find('a[data-name="'+i.field+'"]').editable(i.editable).off("shown").on("shown",function(a,n){var o=e.getData(),r=t(this).parents("tr[data-index]").data("index"),d=o[r];e.trigger("editable-shown",i.field,d,t(this),n)}),e.$body.find('a[data-name="'+i.field+'"]').editable(i.editable).off("hidden").on("hidden",function(a,n){var o=e.getData(),r=t(this).parents("tr[data-index]").data("index"),d=o[r];e.trigger("editable-hidden",i.field,d,t(this),n)}))}),this.trigger("editable-init"))}}(jQuery);
+/**
+ * @author zhixin wen <wenzhixin2010@gmail.com>
+ * extensions: https://github.com/vitalets/x-editable
+ */
+
+(function($) {
+
+    'use strict';
+
+    $.extend($.fn.bootstrapTable.defaults, {
+        editable: true,
+        onEditableInit: function() {
+            return false;
+        },
+        onEditableSave: function(field, row, oldValue, $el) {
+            return false;
+        },
+        onEditableShown: function(field, row, $el, editable) {
+            return false;
+        },
+        onEditableHidden: function(field, row, $el, reason) {
+            return false;
+        }
+    });
+
+    $.extend($.fn.bootstrapTable.Constructor.EVENTS, {
+        'editable-init.bs.table': 'onEditableInit',
+        'editable-save.bs.table': 'onEditableSave',
+        'editable-shown.bs.table': 'onEditableShown',
+        'editable-hidden.bs.table': 'onEditableHidden'
+    });
+
+    var BootstrapTable = $.fn.bootstrapTable.Constructor,
+        _initTable = BootstrapTable.prototype.initTable,
+        _initBody = BootstrapTable.prototype.initBody;
+
+    BootstrapTable.prototype.initTable = function() {
+        var that = this;
+        _initTable.apply(this, Array.prototype.slice.apply(arguments));
+
+        if (!this.options.editable) {
+            return;
+        }
+
+        $.each(this.columns, function(i, column) {
+            if (!column.editable) {
+                return;
+            }
+
+            var editableOptions = {},
+                editableDataMarkup = [],
+                editableDataPrefix = 'editable-';
+
+            var processDataOptions = function(key, value) {
+                // Replace camel case with dashes.
+                var dashKey = key.replace(/([A-Z])/g, function($1) {
+                    return "-" + $1.toLowerCase();
+                });
+                if (dashKey.slice(0, editableDataPrefix.length) == editableDataPrefix) {
+                    var dataKey = dashKey.replace(editableDataPrefix, 'data-');
+                    editableOptions[dataKey] = value;
+                }
+            };
+
+            $.each(that.options, processDataOptions);
+
+            column.formatter = column.formatter || function(value, row, index) {
+                return value;
+            };
+            column._formatter = column._formatter ? column._formatter : column.formatter;
+            column.formatter = function(value, row, index) {
+                var result = column._formatter ? column._formatter(value, row, index) : value;
+
+                $.each(column, processDataOptions);
+
+                $.each(editableOptions, function(key, value) {
+                    editableDataMarkup.push(' ' + key + '="' + value + '"');
+                });
+
+                var _dont_edit_formatter = false;
+                if (column.editable.hasOwnProperty('noeditFormatter')) {
+                    _dont_edit_formatter = column.editable.noeditFormatter(value, row, index);
+                }
+
+                if (_dont_edit_formatter === false) {
+                    return ['<a href="javascript:void(0)"',
+                        ' data-name="' + column.field + '"',
+                        ' data-pk="' + row[that.options.idField] + '"',
+                        ' data-value="' + result + '"',
+                        editableDataMarkup.join(''),
+                        '>' + '</a>'
+                    ].join('');
+                } else {
+                    return _dont_edit_formatter;
+                }
+
+            };
+        });
+    };
+
+    BootstrapTable.prototype.initBody = function() {
+        var that = this;
+        _initBody.apply(this, Array.prototype.slice.apply(arguments));
+
+        if (!this.options.editable) {
+            return;
+        }
+
+        $.each(this.columns, function(i, column) {
+            if (!column.editable) {
+                return;
+            }
+
+            that.$body.find('a[data-name="' + column.field + '"]').editable(column.editable)
+                .off('save').on('save', function(e, params) {
+                    var data = that.getData(),
+                        index = $(this).parents('tr[data-index]').data('index'),
+                        row = data[index],
+                        oldValue = row[column.field];
+
+                    $(this).data('value', params.submitValue);
+                    row[column.field] = params.submitValue;
+                    that.trigger('editable-save', column.field, row, oldValue, $(this));
+                    that.resetFooter();
+                });
+            that.$body.find('a[data-name="' + column.field + '"]').editable(column.editable)
+                .off('shown').on('shown', function(e, editable) {
+                    var data = that.getData(),
+                        index = $(this).parents('tr[data-index]').data('index'),
+                        row = data[index];
+
+                    that.trigger('editable-shown', column.field, row, $(this), editable);
+                });
+            that.$body.find('a[data-name="' + column.field + '"]').editable(column.editable)
+                .off('hidden').on('hidden', function(e, reason) {
+                    var data = that.getData(),
+                        index = $(this).parents('tr[data-index]').data('index'),
+                        row = data[index];
+
+                    that.trigger('editable-hidden', column.field, row, $(this), reason);
+                });
+        });
+        this.trigger('editable-init');
+    };
+
+})(jQuery);

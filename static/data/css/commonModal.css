@@ -1,1 +1,14 @@
-.commonModalTableBody{padding-left:0;padding-right:0}.commonModalTableBody .pageSearchContent{padding:0 25px}.commonModalTableBody .tableContent{padding:0 25px;overflow:auto}#ourSubjectTableDom{overflow:auto}
+.commonModalTableBody {
+  padding-left: 0;
+  padding-right: 0;
+}
+.commonModalTableBody .pageSearchContent {
+  padding: 0 25px;
+}
+.commonModalTableBody .tableContent {
+  padding: 0 25px;
+  overflow: auto;
+}
+#ourSubjectTableDom {
+  overflow: auto;
+}

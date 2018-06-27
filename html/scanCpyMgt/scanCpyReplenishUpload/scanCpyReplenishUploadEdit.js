@@ -1,1 +1,260 @@
-function getContractInfo(){function t(t){var a=t.data;a?($("#contractNumber").val(a.contractNumber),$("#undertakeName").val(a.undertakeName),$("#undertakePhone").val(a.undertakePhone),$("#undertakeMobile").val(a.undertakeMobile),$("#contractName").val(a.contractName),$("#executeDeptName").val(a.executeDeptName),$("#unicomPartyName").text(a.unicomPartyName),$("#oppoPartyName").text(a.oppoPartyName),$("#contractType").text(a.contractType)):layer.msg("暂无合同信息")}var a=serverPath+"contractUpload/getContractById?id="+scandocId;App.formAjaxJson(a,"post",null,t)}function getReplenishContractInfo(){function t(t){var a=t.data;a?(setBodyDocData(a.bodyDoc),setAttachDocData(a.attachDoc)):(layer.msg("暂无数据"),$("#contractTextUploadBtn").attr("disabled","disabled"))}var a=serverPath+"contractUpload/getReplenishContractInfo",o={id:scandocId};App.formAjaxJson(a,"post",JSON.stringify(o),t)}function setBodyDocData(t){if(t){var a="";t.bodyDocStoreId?($("#contractText").removeClass("col-sm-4").addClass("contractDocSty"),$("#contractTextUploadBtn").text("删除"),$("#contractText").data("storeid",t.bodyDocStoreId),a='<a href="'+serverPath+"fileload/downloadS3?key="+t.bodyDocStoreId+'">'+t.displayName+"</a>"):($("#contractTextUploadBtn").text("添加"),a='<input type="text" disabled="disabled" class="form-control" />',$("#contractText").data("storeid","")),$("#contractText").html(a),$("#contractText").data("attachid",t.attachId),$("#contractText").data("displayname",t.displayName)}else layer.msg("获取不到合同正文扫描件信息"),$("#contractTextUploadBtn").attr("disabled","disabled")}function setAttachDocData(t){if(t.length>0)for(var a="",o=0;o<t.length;o++){var e=t[o],c="";e.bodyDocStoreId?(c='<a href="'+serverPath+"fileload/downloadS3?key="+e.bodyDocStoreId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>',a+='<tr data-attachid="'+e.attachId+'" data-storeid="'+e.bodyDocStoreId+'">'):(c='<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>',a+='<tr data-attachid="'+e.attachId+'" data-storeid="">'),a+="<td>"+(o+1)+"</td><td>"+e.displayName+"</td><td>"+c+"</td></tr>"}$("#contractAttachmentTbody").html(a)}function getContractUploadInfo(t){var a=[],o={};$.each($("#contractAttachmentTbody tr"),function(t,o){if(!$(o).hasClass("emptyTr")){var e={attachId:$(o).data("attachid"),bodyDocStoreId:$(o).data("storeid")};a.push(e)}});var e=$("#contractText").data("storeid");if(e)o.bodyDoc={attachId:$("#contractText").data("attachid"),bodyDocStoreId:e};else{if(void 0==e)return layer.msg("合同正文扫描件信息为空"),!1;o.bodyDoc={attachId:$("#contractText").data("attachid"),bodyDocStoreId:""}}return o.attachDoc=a,o.uploadStatus=t,o.scandocId=scandocId,o}function saveContractUpload(){function t(){layer.msg("保存成功")}var a=getContractUploadInfo(1);if(a){var o=serverPath+"contractUpload/saveReplenishContractInfo";App.formAjaxJson(o,"post",JSON.stringify(a),t)}}function pushContractUpload(){function t(){layer.msg("提交成功");setTimeout("backPage()",1e3)}var a=getContractUploadInfo(3);if(a)if(a.bodyDoc.bodyDocStoreId){var o=serverPath+"contractUpload/saveReplenishContractInfo";App.formAjaxJson(o,"post",JSON.stringify(a),t)}else layer.msg("请上传合同正文扫描件后进行提交")}function backPage(){window.history.go(-1)}var parm=App.getPresentParm();if(1==parm.pageType)var scandocId=parm.businessKey;else if(2==parm.pageType)var scandocId=parm.id;var config=top.globalConfig,serverPath=config.serverPath;$(function(){1==parm.pageType?($(".toolbarBtn,.portlet-title").remove(),$(".page-content,.portlet-body").css("padding","0px"),$(".portlet").css("cssText","border:none !important;padding:0px"),$(".page-content").removeClass("hidden")):2==parm.pageType&&($(".page-content").removeClass("hidden"),App.fixToolBars("toolbarBtnContent",70)),getContractInfo(),getReplenishContractInfo()}),$("#contractTextUploadBtn").on("click",function(){function t(){var t=getFileItemInfo()[0].data;$("#commomModal").modal("hide");var a='<a href="'+serverPath+"fileload/downloadS3?key="+t+'">'+o+"</a>";$("#contractText").removeClass("col-sm-4").addClass("contractDocSty"),$("#contractText").html(a),$("#contractTextUploadBtn").text("删除"),$("#contractText").data("storeid",t)}var a=$("#contractText").data("storeid");if(a)layer.confirm("是否要删除已上传的正文扫描件",{icon:7,title:"提示"},function(t){layer.close(t);var a='<input type="text" disabled="disabled" class="form-control" />';$("#contractText").data("storeid",""),$("#contractText").removeClass("contractDocSty").addClass("col-sm-4"),$("#contractText").html(a),$("#contractTextUploadBtn").text("添加")});else{var o=($("#contractText").data("attachid"),$("#contractText").data("displayname")),e={title:"正文上传",url:"fileload/uploadFileS3",maxNumber:1,fileExtensions:["pdf"],extraData:{displayName:o}};App.getFileUploadModal(e,t)}}),$("#contractAttachmentTbody").on("click",".attachDelectBtn",function(){var t=$(this);layer.confirm("是否要删除已上传的附件扫描件",{icon:7,title:"提示"},function(a){layer.close(a);var o='<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';t.parents("tr").data("storeid",""),t.parent("td").html(o)})}),$("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){function t(){var t=getFileItemInfo()[0].data;$("#commomModal").modal("hide");var o='<a href="'+serverPath+"fileload/downloadS3?key="+t+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';a.parents("tr").data("storeid",t),a.parent("td").html(o)}var a=$(this),o=($(this).parents("tr").data("attachid"),{title:"附件上传",url:"fileload/uploadFileS3",maxNumber:1});App.getFileUploadModal(o,t)});
+//当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项
+var parm = App.getPresentParm();
+if(parm.pageType==1){
+	var scandocId = parm.businessKey;
+}else if(parm.pageType==2){
+	var scandocId = parm.id;
+};
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+//页面初始化事件
+$(function() {
+	if(parm.pageType == 1){
+		$(".toolbarBtn,.portlet-title").remove();
+		$(".page-content,.portlet-body").css("padding",'0px');
+		$(".portlet").css("cssText","border:none !important;padding:0px");
+		$(".page-content").removeClass("hidden");
+	}else if(parm.pageType == 2){
+		$(".page-content").removeClass("hidden");
+		//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 70);
+	}
+	//获取合同基本信息
+	getContractInfo();
+	//获取合同正文和附件列表
+	getReplenishContractInfo();
+})
+/*
+ * 获取合同基本信息
+ */
+function getContractInfo(){
+	var url = serverPath + "contractUpload/getContractById?id=" + scandocId;
+	App.formAjaxJson(url, "post", null, successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data){
+			$("#contractNumber").val(data.contractNumber);
+	    	$("#undertakeName").val(data.undertakeName);
+	    	$("#undertakePhone").val(data.undertakePhone);
+	    	$("#undertakeMobile").val(data.undertakeMobile);
+	    	$("#contractName").val(data.contractName);
+	    	$("#executeDeptName").val(data.executeDeptName);
+	    	$("#unicomPartyName").text(data.unicomPartyName);
+	    	$("#oppoPartyName").text(data.oppoPartyName);
+	    	$("#contractType").text(data.contractType);
+		}else{
+			layer.msg("暂无合同信息");
+		}
+
+	}
+} 
+/*
+ * 获取合同正文和附件列表
+ */
+function getReplenishContractInfo(){
+	var url = serverPath + "contractUpload/getReplenishContractInfo";
+	var postData = {id:scandocId};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data){
+			//设置正文扫描件html
+			setBodyDocData(data.bodyDoc);
+			//设置附件扫描件html
+			setAttachDocData(data.attachDoc);
+		}else{
+			layer.msg("暂无数据");
+			$("#contractTextUploadBtn").attr("disabled","disabled");
+		}
+	}
+}
+/*
+ * 设置正文扫描件html
+ */
+function setBodyDocData(bodyDocData){
+	if(bodyDocData){
+		var bodyDocHtml = "";
+		if(bodyDocData.bodyDocStoreId){
+			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
+			$("#contractTextUploadBtn").text("删除");
+			$("#contractText").data("storeid",bodyDocData.bodyDocStoreId);
+			bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocData.bodyDocStoreId+'">'+bodyDocData.displayName+'</a>';
+		}else{
+			$("#contractTextUploadBtn").text("添加");
+			bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
+			$("#contractText").data("storeid","");
+		};
+		$("#contractText").html(bodyDocHtml);
+		$("#contractText").data("attachid",bodyDocData.attachId);
+		$("#contractText").data("displayname",bodyDocData.displayName);
+	}else{
+		layer.msg("获取不到合同正文扫描件信息");
+		$("#contractTextUploadBtn").attr("disabled","disabled");
+	}
+}
+/*
+ * 正文扫描件的上传和回调及已经上传后的删除
+ */
+$("#contractTextUploadBtn").on("click",function(){
+	var bodyDocStoreId = $("#contractText").data("storeid");
+	if(bodyDocStoreId){
+		layer.confirm("是否要删除已上传的正文扫描件",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			var bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
+			$("#contractText").data("storeid","");
+			$("#contractText").removeClass("contractDocSty").addClass("col-sm-4");
+			$("#contractText").html(bodyDocHtml);
+			$("#contractTextUploadBtn").text("添加");
+		});
+	}else{
+		var attachId = $("#contractText").data("attachid");
+		var displayName = $("#contractText").data("displayname");
+		var setting = {
+			title : "正文上传",
+			url: 'fileload/uploadFileS3',
+			maxNumber:1,
+			fileExtensions:["pdf"],
+			extraData:{displayName:displayName}
+		};
+		function queryCallback(){
+			var fileInfo = getFileItemInfo()[0].data;
+			$("#commomModal").modal("hide");
+			var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">'+displayName+'</a>';
+			$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
+			$("#contractText").html(bodyDocHtml);
+			$("#contractTextUploadBtn").text("删除");
+			$("#contractText").data("storeid",fileInfo);
+		}
+		App.getFileUploadModal(setting,queryCallback);
+	}
+})
+/*
+ * 设置附件扫描件html
+ */
+function setAttachDocData(bodyDocData){
+	if(bodyDocData.length > 0){
+		var bodyDocHtml = "";
+		for(var i = 0; i < bodyDocData.length; i++){
+			var bodyDocItem = bodyDocData[i];
+			var btnHtml = "";
+			if(bodyDocItem.bodyDocStoreId){
+				btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocItem.bodyDocStoreId+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="'+bodyDocItem.bodyDocStoreId+'">';
+			}else{
+				btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
+				bodyDocHtml += '<tr data-attachid="'+bodyDocItem.attachId+'" data-storeid="">';
+			};
+			bodyDocHtml += '<td>'+(i+1)+'</td>'+
+						'<td>'+bodyDocItem.displayName+'</td>'+
+						'<td>'+btnHtml+'</td>'+
+						'</tr>';
+		}
+	};
+	$("#contractAttachmentTbody").html(bodyDocHtml);
+}
+/*
+ * 附件扫描件事件委托
+ */
+//删除
+$("#contractAttachmentTbody").on("click",".attachDelectBtn",function(){
+	var dom = $(this);
+	layer.confirm("是否要删除已上传的附件扫描件",{icon:7,title:"提示"},function(index){
+		layer.close(index);
+		var btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
+		dom.parents("tr").data("storeid","");
+		dom.parent("td").html(btnHtml);
+	});
+})
+//添加
+$("#contractAttachmentTbody").on("click",".attachUploadBtn",function(){
+	var dom = $(this);
+	var attachId = $(this).parents("tr").data("attachid");
+	var setting = {
+		title : "附件上传",
+		url: 'fileload/uploadFileS3',
+		maxNumber:1
+		//extraData:{attachId:attachId}
+	};
+	function queryCallback(){
+		var fileInfo = getFileItemInfo()[0].data;
+		$("#commomModal").modal("hide");
+		var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+		dom.parents("tr").data("storeid",fileInfo);
+		dom.parent("td").html(btnHtml);
+	}
+	App.getFileUploadModal(setting,queryCallback);
+})
+
+/*
+ * 获取正文扫描件及附件信息
+ * uploadStatus:1保存
+ * uploadStatus:3提交
+ */
+function getContractUploadInfo(uploadStatus){
+	var contractAttachmentList = [];
+	var obj = {};
+	$.each($("#contractAttachmentTbody tr"), function(k,v) {
+		if(!$(v).hasClass("emptyTr")){
+			var contractAttachmentItem = {
+				attachId : $(v).data("attachid"),
+				bodyDocStoreId : $(v).data("storeid"),
+			};
+			contractAttachmentList.push(contractAttachmentItem);
+		};
+	});
+	var bodyDocStoreId = $("#contractText").data("storeid");
+	if(bodyDocStoreId){
+		obj.bodyDoc = {
+			attachId : $("#contractText").data("attachid"),
+			bodyDocStoreId : bodyDocStoreId
+		};
+	}else if(bodyDocStoreId == undefined){
+		layer.msg("合同正文扫描件信息为空");
+		return false;
+	}else{
+		obj.bodyDoc = {
+			attachId : $("#contractText").data("attachid"),
+			bodyDocStoreId : ""
+		};
+	}
+	obj.attachDoc = contractAttachmentList;
+	obj.uploadStatus = uploadStatus;
+	obj.scandocId = scandocId;
+	return obj;
+}
+/*
+ * 保存方法
+ */
+function saveContractUpload(){
+	var data = getContractUploadInfo(1);
+	if(data){
+		var url = serverPath + "contractUpload/saveReplenishContractInfo";
+		App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
+		function successCallback(result) {
+			layer.msg("保存成功");
+		}
+	}
+}
+/*
+ * 提交方法
+ */
+function pushContractUpload(){
+	var data = getContractUploadInfo(3);
+	if(data){
+		if(data.bodyDoc.bodyDocStoreId){
+			var url = serverPath + "contractUpload/saveReplenishContractInfo";
+			App.formAjaxJson(url, "post", JSON.stringify(data), successCallback);
+			function successCallback(result) {
+				layer.msg("提交成功");
+				var backPageTimer = setTimeout('backPage()',1000);
+			}
+		}else{
+			layer.msg("请上传合同正文扫描件后进行提交");
+		}
+	}
+}
+//返回上一页
+function backPage(){
+	window.history.go(-1);
+}

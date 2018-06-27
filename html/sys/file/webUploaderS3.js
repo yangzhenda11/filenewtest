@@ -1,1 +1,132 @@
-function downloadUrl(a){var e=serverPath+"fileload/downloadS3Url",l=a.substr(0,a.lastIndexOf("."));$.ajax({url:e,type:"post",data:{key:l},success:function(a){""!=a&&(console.log(a.data),$("#imgFile").show(),$("#imgFile").attr("src",a.data),$("#imgFile").attr("width","256px"),$("#imgFile").attr("height","256px"));var e=$("#uploadTable").DataTable();e.ajax.reload()},error:function(a){App.ajaxErrorCallback(a)}})}function disImg(){$("#imgFile").hide();var a=$("#uploadTable").DataTable();a.ajax.reload()}function deleteFile(a){var e=serverPath+"fileload/delete",l=a.substr(0,a.lastIndexOf("."));$.ajax({url:e,type:"post",data:{key:l},success:function(a){alert(a.message);var e=$("#uploadTable").DataTable();e.ajax.reload()},error:function(a){App.ajaxErrorCallback(a)}})}var config=parent.globalConfig,serverPath=config.serverPath,uploadTable=App.initDataTables("#uploadTable",{ajax:{type:"GET",url:serverPath+"fileload/getAllBucketObject",data:function(a){return a.bucketName="my-new-bucket",a}},columns:[{data:"key",className:"text-center",title:"操作",render:function(a){var e='<a href="/fileload/downloadS3?key='+a.substr(0,a.lastIndexOf("."))+'">下载</a>';if(e=e+'<a style="margin-left:15px" href="#" onclick="deleteFile(\''+a+"')\">删除</a>",/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(a))if("none"==$("#imgFile").css("display"))e=e+'<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\''+a+"')\">显示图片</a>";else{var l=$("#imgFile")[0].src;-1!=decodeURI(l).indexOf(a)?e+='<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "disImg()">隐藏图片</a>':e=e+'<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\''+a+"')\">显示图片</a>"}return e}},{data:"key",title:"key",className:"text-center"},{data:"size",className:"text-center",title:"size"}]});!function(a,e){e("#fileName").fileinput({language:"zh",uploadUrl:serverPath+"fileload/uploadFileS3",uploadAsync:!1,maxFileSize:51200,maxFileCount:10,dropZoneEnabled:!1,slugCallback:function(a){return a},uploadExtraData:function(){var a={displayName:""};return a}}),e("#fileName").on("fileuploaded",function(a,l){alert(l.response.message);var t=e("#uploadTable").DataTable();t.ajax.reload()}),e("#fileName").on("filebatchuploadsuccess",function(a,l){alert(l.response.message),e("#fileName").fileinput("reset");var t=e("#uploadTable").DataTable();t.ajax.reload()})}(window,jQuery);
+
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
+
+var uploadTable = App.initDataTables('#uploadTable', {
+	ajax: {
+        "type": "GET",
+        "url": serverPath + 'fileload/getAllBucketObject',
+        "data":function(d){
+        	d.bucketName = "my-new-bucket";
+        	return d;
+        }
+	},
+	"columns": [{
+			"data": "key",
+			"className": "text-center",
+			"title": "操作",
+			"render": function(data, type, full, meta) {
+				var result = '<a href="/fileload/downloadS3?key=' + data.substr(0,data.lastIndexOf('.')) + '">下载</a>';
+				result = result + '<a style="margin-left:15px" href="#" onclick="deleteFile(\''+data+'\')">删除</a>';
+				if (/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(data)) {
+					if($('#imgFile').css('display')=='none'){
+						result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\'' + data + '\')">显示图片</a>';
+					}else{
+						var str = $('#imgFile')[0].src;
+						if(decodeURI(str).indexOf(data) != -1){
+							result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "disImg()">隐藏图片</a>';
+						}else{
+							result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\'' + data + '\')">显示图片</a>';
+						}
+					}
+				}
+				return result;
+			}
+		},
+		{
+			"data": "key",
+			"title": "key",
+			"className": "text-center"
+		},
+		{
+			"data": "size",
+			"className": "text-center",
+			"title": "size"
+		}
+	]
+});
+
+function downloadUrl(data){
+	var url = serverPath + 'fileload/downloadS3Url';
+	var key = data.substr(0,data.lastIndexOf('.'));
+	$.ajax({
+        url : url,
+        type : "post",
+        data : {key:key},
+        success : function(data) {
+            if (data != "") {
+            	console.log(data.data);
+            	$('#imgFile').show();
+                $('#imgFile').attr("src",data.data);
+                $('#imgFile').attr("width","256px");
+                $('#imgFile').attr("height","256px");
+            }
+            var table = $('#uploadTable').DataTable();
+        	table.ajax.reload();
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+    });
+}
+
+function disImg(){
+	$('#imgFile').hide();
+	var table = $('#uploadTable').DataTable();
+	table.ajax.reload();
+}
+
+function deleteFile(data){
+	var url = serverPath + 'fileload/delete';
+	var key = data.substr(0,data.lastIndexOf('.'));
+	$.ajax({
+        url : url,
+        type : "post",
+        data : {key:key},
+        success : function(data) {
+        	alert(data.message);
+        	var table = $('#uploadTable').DataTable();
+        	table.ajax.reload();
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+    });
+}
+/*
+ * 文件上传
+ */
+(function (_, $) {
+    $("#fileName").fileinput({
+        language: 'zh', 
+        uploadUrl: serverPath + 'fileload/uploadFileS3', // 用于文件上传的服务器端请求地址
+        uploadAsync: false,
+//         allowedFileExtensions: ['ini'],
+        maxFileSize: 51200,
+       	maxFileCount: 10,
+       	dropZoneEnabled: false,
+        slugCallback: function (filename) {
+            return filename;
+        },
+        uploadExtraData: function(previewId, index) {	
+			// 添加额外参数
+			var obj = {
+				displayName:''
+			};
+			return obj;
+		}
+    });
+    // 异步上传成功结果处理
+    $("#fileName").on("fileuploaded", function (event, data) {
+    	alert(data.response.message);
+    	var table = $('#uploadTable').DataTable();
+    	table.ajax.reload();
+    });
+    // 同步上传成功结果处理
+    $("#fileName").on("filebatchuploadsuccess", function (event, data) {
+    	alert(data.response.message);
+    	$("#fileName").fileinput('reset')
+    	var table = $('#uploadTable').DataTable();
+    	table.ajax.reload();
+    });
+})(window, jQuery);

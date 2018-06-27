@@ -1,1 +1,290 @@
-!function(t){t.fn.treeTable=function(e){function r(r){var a=t(r.target);if(a.attr("controller")&&(a=a.parents("tr[haschild]").find("[arrow]")),a.attr("arrow")){var n=a.attr("class");if(n&&!n.indexOf(d.AN)){var s=e.theme.length+1;return n=n.split(" ")[1].substr(s),n=0===n.indexOf("hover_")?e.theme+"_"+n.substr(6):e.theme+"_hover_"+n,a.attr("class",d.AN+" "+n),!1}}return!1}function a(r,a){function n(t){if(0==o[t])return 1;var e=n(o[t]);return e+1}r.each(function(){var e=t(this).attr("pId")||0;l[e]||(l[e]=[]),l[e].push(this.id),o[this.id]=e,t(this).addClass(e)}).find("[controller]").css("cursor","pointer"),r.each(function(r){if(this.id){var s=t(this);l[this.id]&&s.attr("hasChild",!0);var h=l[o[this.id]];if(h[0]==this.id)s.attr("isFirstOne",!0);else{for(var f=0,r=0;r<h.length&&h[r]!=this.id;r++)f=h[r];s.attr("prevId",f)}h[h.length-1]==this.id&&s.attr("isLastOne",!0);var c=n(this.id);if(s.attr("depth",c),i(this),a&&(c>e.expandLevel&&s.hide(),s.attr("hasChild")&&s.attr("depth")<e.expandLevel)){var v=s.attr("isLastOne")?d.LO:d.O;s.find("."+d.AN).attr("class",d.AN+" "+v)}}})}function n(e){if(!l[e])return!1;for(var r=0;r<l[e].length;r++)n(l[e][r]);t("tr."+e,h).hide()}function s(e){if(t("tr."+e,h).show(),!l[e])return!1;for(var r=0;r<l[e].length;r++){var a=l[e][r];if(l[a]){var n=t("#"+a,h).find("."+d.AN).attr("class");(n==d.AN+" "+d.O||n==d.AN+" "+d.LO)&&s(a)}}}function i(r){var a=t(r),n=r.id;if(0==o[n])var s=t('<span class="prev_sp"></span>');else if(a.attr("isFirstOne")){var i=t("#"+o[n],h),s=i.children("td").eq(e.column).find(".prev_sp").clone();s.append(i.attr("isLastOne")?'<span class="'+d.N+" "+d.B+'"></span>':'<span class="'+d.N+" "+d.V+'"></span>')}else var s=t("#"+a.attr("prevId"),h).children("td").eq(e.column).find(".prev_sp").clone();if(a.attr("hasChild")){var l=a.attr("isLastOne")?d.LS:d.S;l=d.AN+" "+l}else var l=d.N+" "+(a.attr("isLastOne")?d.LL:d.L);var f=a.children("td").eq(e.column);f.prepend('<span arrow="true" class="'+l+'"></span>').prepend(s)}e=t.extend({path:"",theme:"default",expandLevel:1,column:0,onSelect:function(){},beforeExpand:function(){}},e);var h=this;h.addClass("tree_table");var d={N:e.theme+"_node",AN:e.theme+"_active_node",O:e.theme+"_open",LO:e.theme+"_last_open",S:e.theme+"_shut",LS:e.theme+"_last_shut",HO:e.theme+"_hover_open",HS:e.theme+"_hover_shut",HLO:e.theme+"_hover_last_open",HLS:e.theme+"_hover_last_shut",L:e.theme+"_leaf",LL:e.theme+"_last_leaf",B:e.theme+"_blank",V:e.theme+"_vertline"},l={},o={},f=h.find("tr");return a(f,!0),h.unbind(),h.bind("click",function(r){var a=t(r.target);if(a.attr("controller")){if(a=a.parents("tr[haschild]").find("[arrow]"),-1==a.attr("class").indexOf(d.AN)&&-1==a.attr("class").indexOf(d.N))return;var i=a.parents("tr[haschild]")[0].id;if(e.onSelect&&e.onSelect(h,i)===!1)return}if(a.attr("arrow")){var l=a.attr("class");if(l==d.AN+" "+d.HLO||l==d.AN+" "+d.HO){var i=a.parents("tr[haschild]")[0].id;return a.attr("class",d.AN+" "+(-1!=l.indexOf(d.HO)?d.HS:d.HLS)),void n(i)}if(l==d.AN+" "+d.HLS||l==d.AN+" "+d.HS){var i=a.parents("tr")[0].id;return a.attr("class",d.AN+" "+(-1!=l.indexOf(d.HS)?d.HO:d.HLO)),e.beforeExpand(h,i),void s(i)}}}),h.mouseover(r).mouseout(r),h.addChilds=function(e){var r=t(e);if(!r.length)return!1;var n=t(r[0]).attr("pId");if(!n)return!1;var s=l[n]&&l[n][l[n].length-1]||n;t("#"+s,h).after(r),a(r)},h}}(jQuery);
+/**
+* 树表组件
+* @author benzhan (詹潮江)
+* @version 1.4.2
+* @lastUpdateDate 2011-09-03
+* @mail zhanchaojiang@qq.com
+*/
+(function ($) {
+//	window.SITE_URL = window.SITE_URL || '';
+//	if (document.location.href.indexOf('http://') != 0)	{
+//		var path = '../themes/';
+//	} else {
+//		var path = SITE_URL + '/themes/';
+//	}
+
+    $.fn.treeTable = function (opts) {
+        opts = $.extend({
+        	path: '',
+            theme: 'default',
+            expandLevel: 1,
+            column: 0,
+            onSelect: function($treeTable, id){},
+            beforeExpand: function($treeTable, id){}
+        }, opts);
+
+        var $treeTable = this;
+        $treeTable.addClass('tree_table');
+
+//        //添加需要的样式
+//        if ($('head').find('#tree_table_' + opts.theme).length == 0) {
+//            $('head').append('<link id="tree_table_' + opts.theme + '" href="' + opts.path + 'themes/' + opts.theme + '/treeTable.css" rel="stylesheet" type="text/css" />');
+//        }
+
+        var css = {
+            'N' : opts.theme + '_node',
+            'AN' : opts.theme + '_active_node',
+            'O' : opts.theme + '_open',
+            'LO' : opts.theme + '_last_open',
+            'S' : opts.theme + '_shut',
+            'LS' : opts.theme + '_last_shut',
+            'HO' : opts.theme + '_hover_open',
+            'HS' : opts.theme + '_hover_shut',
+            'HLO' : opts.theme + '_hover_last_open',
+            'HLS' : opts.theme + '_hover_last_shut',
+            'L' : opts.theme + '_leaf',
+            'LL' : opts.theme + '_last_leaf',
+            'B' : opts.theme + '_blank',
+            'V' : opts.theme + '_vertline'
+        };
+
+        var pMap = {}, cMap = {};
+        var $trs = $treeTable.find('tr');
+        initRelation($trs, true);  
+        $treeTable.unbind();
+        $treeTable.bind("click",function(event){
+
+            var $target = $(event.target);
+            //$target = $target.parents('tr[haschild]').find('[arrow]');
+            if ($target.attr('controller')) {
+                $target = $target.parents('tr[haschild]').find('[arrow]');
+                //判断是否是叶子节点
+				if ($target.attr('class').indexOf(css['AN']) == -1 && $target.attr('class').indexOf(css['N']) == -1) { return; }
+                var id = $target.parents('tr[haschild]')[0].id;
+                if (opts.onSelect && opts.onSelect($treeTable, id) === false) { return; }
+           }
+
+            if ($target.attr('arrow')) {
+                var className = $target.attr('class');
+                if (className == css['AN'] + ' ' + css['HLO'] || className == css['AN'] + ' ' + css['HO']) {
+                    var id = $target.parents('tr[haschild]')[0].id;
+                    $target.attr('class', css['AN'] + " " + (className.indexOf(css['HO']) != -1 ?  css['HS'] : css['HLS']));
+
+                    //关闭所有孩子的tr
+                    shut(id);
+					return;
+                } else if (className == css['AN'] + ' ' + css['HLS'] || className == css['AN'] + ' ' + css['HS']) {
+                    var id = $target.parents('tr')[0].id;
+                    $target.attr('class', css['AN'] + " " + (className.indexOf(css['HS']) != -1 ? css['HO'] : css['HLO']));
+                    
+                    opts.beforeExpand($treeTable, id);
+                    //展开所有直属节点，根据图标展开子孙节点
+                    open(id);
+					return;
+                }
+            }
+        	
+        })
+        /*$treeTable.click(function (event) {
+            var $target = $(event.target);
+            $target = $target.parents('tr[haschild]').find('[arrow]');
+            if ($target.attr('controller')) {
+                $target = $target.parents('tr[haschild]').find('[arrow]');
+                //判断是否是叶子节点
+				if ($target.attr('class').indexOf(css['AN']) == -1 && $target.attr('class').indexOf(css['N']) == -1) { return; }
+                var id = $target.parents('tr[haschild]')[0].id;
+                if (opts.onSelect && opts.onSelect($treeTable, id) === false) { return; }
+           }
+
+            if ($target.attr('arrow')) {
+                var className = $target.attr('class');
+                if (className == css['AN'] + ' ' + css['HLO'] || className == css['AN'] + ' ' + css['HO']) {
+                    var id = $target.parents('tr[haschild]')[0].id;
+                    $target.attr('class', css['AN'] + " " + (className.indexOf(css['HO']) != -1 ?  css['HS'] : css['HLS']));
+
+                    //关闭所有孩子的tr
+                    shut(id);
+					return;
+                } else if (className == css['AN'] + ' ' + css['HLS'] || className == css['AN'] + ' ' + css['HS']) {
+                    var id = $target.parents('tr')[0].id;
+                    $target.attr('class', css['AN'] + " " + (className.indexOf(css['HS']) != -1 ? css['HO'] : css['HLO']));
+                    
+                    opts.beforeExpand($treeTable, id);
+                    //展开所有直属节点，根据图标展开子孙节点
+                    open(id);
+					return;
+                }
+            }
+        });*/
+	/*	$treeTable.unbind();
+        $treeTable.bind("mouseover",function(event){
+        	hoverActiveNode(event);
+        });
+        $treeTable.unbind();
+        $treeTable.bind("mouseout",function(event){
+        	hoverActiveNode(event);
+        })*/
+		$treeTable.mouseover(hoverActiveNode).mouseout(hoverActiveNode);
+
+        function hoverActiveNode(event) {
+          var $target = $(event.target);
+//         $target = $target.parents('tr[haschild]').find('[arrow]');
+            if ($target.attr('controller')) {
+                $target = $target.parents('tr[haschild]').find('[arrow]');
+            } 
+
+            if ($target.attr('arrow')) { 
+                var className = $target.attr('class');
+                if (className && !className.indexOf(css['AN'])) {
+                    var len = opts.theme.length + 1;
+                    className = className.split(' ')[1].substr(len);
+                    if (className.indexOf('hover_') === 0) {
+                        className = opts.theme + '_' + className.substr(6);
+                    } else {
+                        className = opts.theme + '_hover_' + className;
+                    }
+                   $target.attr('class', css['AN'] + ' ' + className);
+//                   $target.attr('class','default_active_node default_hover_last_shut');
+                    return false;
+                }
+            } 
+            return false;
+        }
+        
+        /** 初始化节点关系　*/
+        function initRelation($trs, hideLevel) {
+            //构造父子关系
+            $trs.each(function (i) {
+                var pId = $(this).attr('pId') || 0;
+                pMap[pId] || (pMap[pId] = []);
+                pMap[pId].push(this.id);
+                cMap[this.id] = pId;
+                
+                //给这个tr增加类为了提高选择器的效率
+                $(this).addClass(pId);
+            }).find('[controller]').css('cursor', 'pointer');
+
+            //标识父节点是否有孩子、是否最后一个节点
+            $trs.each(function (i) {
+                if (!this.id) { return; }
+                var $tr = $(this);
+                
+                pMap[this.id] && $tr.attr('hasChild', true);
+                var pArr = pMap[cMap[this.id]];
+                if (pArr[0] == this.id) {
+                    $tr.attr('isFirstOne', true);
+                } else {
+                    var prevId = 0;
+                    for (var i = 0; i < pArr.length; i++) {
+                        if (pArr[i] == this.id) { break; }
+                        prevId = pArr[i];
+                    }
+                    $tr.attr('prevId', prevId);
+                }
+
+                pArr[pArr.length - 1] == this.id && $tr.attr('isLastOne', true);
+
+                var depth = getDepth(this.id);
+                $tr.attr('depth', depth);
+
+                //格式化节点
+				formatNode(this);
+
+                //判断是否要隐藏限制的层次
+                if (hideLevel) {
+                    depth > opts.expandLevel && $tr.hide();
+                    //判断是否小于深度，如果小于深度则要换成展开的图标
+                    if ($tr.attr('hasChild') && $tr.attr('depth') < opts.expandLevel) {
+                        var className = $tr.attr('isLastOne') ? css['LO'] : css['O'];
+                        $tr.find('.' + css['AN']).attr('class', css['AN'] + ' ' + className);
+                    }
+                }               
+            });
+            
+            //递归获取深度
+            function getDepth(id) {
+                if (cMap[id] == 0) { return 1; } 
+                var $parentDepth = getDepth(cMap[id]);
+                return $parentDepth + 1; 
+            }
+        }
+
+        //递归关闭所有的孩子
+        function shut(id) {
+            if (!pMap[id]) { return false; }
+            for (var i = 0; i < pMap[id].length; i++) {
+                shut(pMap[id][i]);
+            }
+            $('tr.' + id, $treeTable).hide();
+        }
+
+        //根据历史记录来展开节点
+        function open(id) {
+            $('tr.' + id, $treeTable).show();
+            if (!pMap[id]) { return false; }
+            for (var i = 0; i < pMap[id].length; i++) {
+                var cId = pMap[id][i];
+                if (pMap[cId]) {
+                    var className = $('#' + cId, $treeTable).find('.' + css['AN']).attr('class');
+                    //如果子节点是展开图表的，则需要展开此节点
+                    (className == css['AN'] + ' ' + css['O'] || className == css['AN'] + ' ' + css['LO']) && open(cId);
+                }
+            }
+        }
+
+        function formatNode(tr) {
+            var $cur = $(tr);
+            var id = tr.id;
+
+            //-------------下面一大段都是获取$preSpan---------
+            if (cMap[id] == 0) {
+                //如果是顶级节点，则没有prev_sp
+                var $preSpan = $('<span class="prev_sp"></span>');
+            } else {
+                //先判断是否有上一个兄弟节点
+                if (!$cur.attr('isFirstOne')) {
+                    var $preSpan = $('#' + $cur.attr('prevId'), $treeTable).children("td").eq(opts.column).find('.prev_sp').clone();
+                } else {
+                    var $parent = $('#' + cMap[id], $treeTable);
+                    //没有上一个兄弟节点，则使用父节点的prev_sp
+                    var $preSpan = $parent.children("td").eq(opts.column).find('.prev_sp').clone();
+
+                    //如果父亲后面没有兄弟，则直接加空白，若有则加竖线
+                    if ($parent.attr('isLastOne')) {
+                        $preSpan.append('<span class="' + css['N'] + ' ' + css['B'] + '"></span>');
+                    } else {
+                        $preSpan.append('<span class="' + css['N'] + ' ' + css['V'] + '"></span>');
+                    }
+                }
+            }
+            //------------------------------------------------
+
+            if ($cur.attr('hasChild')) {
+                //如果有下一个节点，并且下一个节点的父亲与当前节点的父亲相同，则说明该节点不是最后一个节点
+                var className = $cur.attr('isLastOne') ? css['LS'] : css['S'];
+                className = css['AN'] + ' ' + className;
+            } else {
+                var className = css['N'] + ' ' + ($cur.attr('isLastOne') ? css['LL'] : css['L']);
+            }
+            
+            var $td = $cur.children("td").eq(opts.column);
+            $td.prepend('<span arrow="true" class="' + className + '"></span>').prepend($preSpan);
+        };
+        
+        $treeTable.addChilds = function(trsHtml) {
+            var $trs = $(trsHtml);
+            if (!$trs.length) { return false; }
+            
+            var pId = $($trs[0]).attr('pId');
+            if (!pId) { return false; }
+            
+            //插入到最后一个孩子后面，或者直接插在父节点后面
+            var insertId = pMap[pId] && pMap[pId][pMap[pId].length - 1] || pId;
+            $('#' + insertId, $treeTable).after($trs);
+            initRelation($trs);
+        };
+
+        return $treeTable;
+    };
+})(jQuery);
+

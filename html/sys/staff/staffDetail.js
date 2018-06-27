@@ -1,1 +1,106 @@
-function doDetail(a){$.get(serverPath+"staffs/"+a,{},function(a){var s=a.data.staffInfo;for(var e in s)if("sex"==e)$("#sexInfoObj").html("M"===s[e]?"男":"女");else if("staffStatus"==e)$("#staffStatusInfoObj").html("1"===s[e]?"有效":"无效");else if("hireDate"==e){var t=transDate(s[e]);$("#"+e+"InfoObj").html(t)}else $("#"+e+"InfoObj").html(s[e]);var l=a.data.staffOrgs;$("#staffOrgInfos").empty();for(var o in l){var t=transDate(l[o].hireDate),r=transDate(l[o].effectStartDate),n=transDate(l[o].effectEndDate);$("#staffOrgInfos").append('<div class="form-group col-sm-6"><div class="input-group">					<label class="input-group-addon">岗位名称</label>					<span class="form-control">'+l[o].orgName+"</span></div></div>"),$("#staffOrgInfos").append('<div class="form-group col-sm-6"><div class="input-group">					<label class="input-group-addon">岗位类型</label>					<span class="form-control">'+orgTypeSet[l[o].staffOrgType]+"</span></div></div>"),$("#staffOrgInfos").append('<div class="form-group col-sm-6"><div class="input-group">					<label class="input-group-addon">入职日期</label>					<span class="form-control">'+(t?t:"")+"</span></div></div>"),$("#staffOrgInfos").append('<div class="form-group col-sm-6"><div class="input-group">					<label class="input-group-addon">生效日期</label>					<span class="form-control">'+(r?r:"")+"</span></div></div>"),$("#staffOrgInfos").append('<div class="form-group col-sm-6"><div class="input-group">					<label class="input-group-addon">结束日期</label>					<span class="form-control">'+(n?n:"")+"</span></div></div>")}var f=a.data.roles;if(f.length>0){$("#roleDiv").empty();for(var o in f)$("#roleDiv").append('<div class="form-group col-sm-6"><div class="input-group">						<label class="input-group-addon">角色名称</label>						<span class="form-control">'+(f[o].roleName?f[o].roleName:"")+"</span></div></div>"),$("#roleDiv").append('<div class="form-group col-sm-6"><div class="input-group">								<label class="input-group-addon">角色描述</label>								<span class="form-control">'+(f[o].roleDesc?f[o].roleDesc:"")+"</span></div></div>")}else $("#roleDiv").detach(),$("#role").append("<h5>无角色数据</h5>");var i=a.data.permissions;if(i.length>0){$.fn.zTree.destroy("staffDetailPermtree");{$.fn.zTree.init($("#staffDetailPermtree"),{data:{simpleData:{enable:!0,idKey:"PERM_ID",pIdKey:"PARENT_ID"},key:{name:"PERM_NAME"}}},i)}}else $("#staffDetailPermtree").detach(),$("#permission").append("<h5>无权限数据</h5>");$("#infoModal").modal({show:!0}),$("#infoTab a:first").tab("show")})}function transDate(a){if(null==a){var s=new Date(a),e=s.getFullYear(),t=s.getMonth()+1<10?"0"+(s.getMonth()+1):s.getMonth()+1,l=s.getDate()<10?"0"+s.getDate():s.getDate();return s=e+"-"+t+"-"+l}return a}$(document).ready(function(){$("#curTabstaffKind").val()&&!$("#mark").val()?doDetail($("#staffDetailId").val()):$("#mark").val()&&doDetail($("#staffDetailId"+$("#mark").val()).val())});var orgTypeSet={F:"主岗",T:"兼职",J:"借调"};
+$(document).ready(function() {
+    debugger;
+    if ($('#curTabstaffKind').val() && !$('#mark').val()) {
+        doDetail($("#staffDetailId").val());
+    } else if ($('#mark').val()) {
+        doDetail($("#staffDetailId" + $('#mark').val()).val());
+    }
+});
+var orgTypeSet = {
+    "F": "主岗",
+    "T": "兼职",
+    "J": "借调"
+};
+//展示人员信息
+function doDetail(staffId) {
+    $.get(serverPath + 'staffs/' + staffId, {}, function(data) {
+        var sysStaff = data.data.staffInfo;
+        debugger;
+        for (var col in sysStaff) {
+            if (col == 'sex') {
+                $("#sexInfoObj").html(sysStaff[col] === 'M' ? '男' : '女');
+            } else if (col == 'staffStatus') {
+                $("#staffStatusInfoObj").html(sysStaff[col] === '1' ? '有效' : '无效');
+            } else if (col == 'hireDate') {
+                var hireDate = transDate(sysStaff[col]);
+                $('#' + col + 'InfoObj').html(hireDate);
+            } else {
+                $('#' + col + 'InfoObj').html(sysStaff[col]);
+            }
+        }
+        var staffOrgs = data.data.staffOrgs;
+        $("#staffOrgInfos").empty();
+        debugger;
+        for (var i in staffOrgs) {
+            var hireDate = transDate(staffOrgs[i].hireDate);
+            var effectStartDate = transDate(staffOrgs[i].effectStartDate);
+            var effectEndDate = transDate(staffOrgs[i].effectEndDate);
+            $("#staffOrgInfos").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+					<label class=\"input-group-addon\">岗位名称</label>\
+					<span class=\"form-control\">" + staffOrgs[i].orgName + "</span></div></div>");
+            $("#staffOrgInfos").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+					<label class=\"input-group-addon\">岗位类型</label>\
+					<span class=\"form-control\">" + orgTypeSet[staffOrgs[i].staffOrgType] + "</span></div></div>");
+            $("#staffOrgInfos").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+					<label class=\"input-group-addon\">入职日期</label>\
+					<span class=\"form-control\">" + (hireDate ? hireDate : "") + "</span></div></div>");
+            $("#staffOrgInfos").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+					<label class=\"input-group-addon\">生效日期</label>\
+					<span class=\"form-control\">" + (effectStartDate ? effectStartDate : "") + "</span></div></div>");
+            $("#staffOrgInfos").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+					<label class=\"input-group-addon\">结束日期</label>\
+					<span class=\"form-control\">" + (effectEndDate ? effectEndDate : "") + "</span></div></div>");
+        }
+        var roles = data.data.roles;
+        if (roles.length > 0) {
+            $("#roleDiv").empty();
+            for (var i in roles) {
+                $("#roleDiv").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+						<label class=\"input-group-addon\">角色名称</label>\
+						<span class=\"form-control\">" + (roles[i].roleName ? roles[i].roleName : "") + "</span></div></div>");
+                $("#roleDiv").append("<div class=\"form-group col-sm-6\"><div class=\"input-group\">\
+								<label class=\"input-group-addon\">角色描述</label>\
+								<span class=\"form-control\">" + (roles[i].roleDesc ? roles[i].roleDesc : "") + "</span></div></div>");
+            }
+        } else {
+            $("#roleDiv").detach();
+            $("#role").append("<h5>无角色数据</h5>")
+        }
+        var permissions = data.data.permissions;
+        if (permissions.length > 0) {
+            $.fn.zTree.destroy("staffDetailPermtree");
+            var staffDetailPermtree = $.fn.zTree.init($("#staffDetailPermtree"), {
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "PERM_ID",
+                        pIdKey: "PARENT_ID"
+                    },
+                    key: {
+                        name: "PERM_NAME"
+                    }
+                }
+            }, permissions);
+        } else {
+            $("#staffDetailPermtree").detach();
+            $("#permission").append("<h5>无权限数据</h5>")
+        }
+        $('#infoModal').modal({ 'show': true });
+        $('#infoTab a:first').tab('show')
+    });
+}
+
+//修改日期格式
+function transDate(oldDate) {
+    if (null == oldDate) {
+        var newDate = new Date(oldDate);
+        var newDateYear = newDate.getFullYear();
+        var newDateMonth = newDate.getMonth() + 1 < 10 ? "0" + (newDate.getMonth() + 1) : newDate.getMonth() + 1;
+        var newDateDay = newDate.getDate() < 10 ? "0" + (newDate.getDate()) : newDate.getDate();
+        newDate = newDateYear + "-" + newDateMonth + "-" + newDateDay;
+        return newDate;
+    } else {
+        return oldDate;
+    }
+
+}

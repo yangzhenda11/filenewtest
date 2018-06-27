@@ -1,1 +1,61 @@
-function createWorkOrder(){var a=$("#contractDataSearch").val(),t=$("#contractId").val();return""==a?void layer.alert("合同编号不能为空！",{icon:2,title:"错误"}):void $.ajax({url:serverPath+"workOrderHandle/createWorkOrder",type:"post",data:{contractNumber:a,contractId:t},success:function(a){if("1"==a.status){var t=a.message,e=t.split(","),r="工单"+e[0]+"创建成功！<a href='../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+e[1]+"'>点击查看</a>";document.getElementById("createResult").innerHTML=r}else"0"==a.status&&layer.msg(a.message)},error:function(a){App.ajaxErrorCallback(a)}})}var config=top.globalConfig,serverPath=config.serverPath;$(function(){$("#searchContractData").off("click").on("click",function(){App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber",["contractId","contractName","unicomPartyName","partyName","undertakeName","executeDeptName","approveDate"])})}),$("#commomModal").on("hide.bs.modal",function(){if($("#contractDataSearch").data("exactSearch")){if($("#contractId").val($("#contractDataSearch").data("contractId")),$("#contractName").val($("#contractDataSearch").data("contractName")),null!=$("#contractDataSearch").data("unicomPartyName")){var a=$("#contractDataSearch").data("unicomPartyName").toString();$("#unicomPartyName").text(a.replace(",","\n"))}if(null!=$("#contractDataSearch").data("partyName")){var t=$("#contractDataSearch").data("partyName").toString();$("#oppoPartyName").text(t.replace(",","\n"))}$("#undertakeName").val($("#contractDataSearch").data("undertakeName")),$("#executeDeptName").val($("#contractDataSearch").data("executeDeptName")),$("#approveDate").val(App.formatDateTime($("#contractDataSearch").data("approveDate"),"yyyy-MM-dd"))}});
+//系统的全局变量
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+
+
+//点击iconfont弹出模态框事件
+$(function(){
+	$("#searchContractData").off("click").on("click",function() {
+		App.getCommonModal("contractDataSearch","#contractDataSearch","contractNumber",["contractId","contractName","unicomPartyName","partyName","undertakeName","executeDeptName","approveDate"]);
+	})
+})
+
+$('#commomModal').on('hide.bs.modal',function(){
+	if($("#contractDataSearch").data("exactSearch")){
+		$("#contractId").val($("#contractDataSearch").data("contractId"));
+        $("#contractName").val($("#contractDataSearch").data("contractName"));
+        if($("#contractDataSearch").data("unicomPartyName")!=null){
+        	var unicomStr = $("#contractDataSearch").data("unicomPartyName").toString();
+        	$("#unicomPartyName").text(unicomStr.replace(",","\n"));
+        }
+        if($("#contractDataSearch").data("partyName")!=null){
+        	var oppoStr = $("#contractDataSearch").data("partyName").toString();
+			$("#oppoPartyName").text(oppoStr.replace(",","\n"));
+        }
+		$("#undertakeName").val($("#contractDataSearch").data("undertakeName"));
+		$("#executeDeptName").val($("#contractDataSearch").data("executeDeptName"));
+		$("#approveDate").val(App.formatDateTime($("#contractDataSearch").data("approveDate"),"yyyy-MM-dd"));
+   }
+});
+
+/**
+ * 创建工单
+ * */
+function createWorkOrder(){
+	var contractNumber = $("#contractDataSearch").val();
+	var contractId = $("#contractId").val();
+	if(contractNumber==''){
+		layer.alert("合同编号不能为空！",{icon:2,title:"错误"});
+		return;
+	}else{
+		$.ajax({
+			url:serverPath + 'workOrderHandle/createWorkOrder',
+	        type:"post",
+	        data:{"contractNumber":contractNumber,"contractId":contractId},
+	        success:function(data) {
+   				if(data.status=='1'){
+   					var msg = data.message;
+   					var msgStr = msg.split(",");
+   					var htmlStr = "工单"+msgStr[0]+"创建成功！<a href='../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+msgStr[1]+"'>点击查看</a>";
+   					document.getElementById('createResult').innerHTML=htmlStr;
+   				}else if(data.status=='0'){
+   					layer.msg(data.message);
+   				}
+    		},
+    		error: function(result) {
+				App.ajaxErrorCallback(result);
+			}
+		});
+	}
+	
+}

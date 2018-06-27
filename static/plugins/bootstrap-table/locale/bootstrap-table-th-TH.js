@@ -1,1 +1,37 @@
-!function(t){"use strict";t.fn.bootstrapTable.locales["th-TH"]={formatLoadingMessage:function(){return"กำลังโหลดข้อมูล, กรุณารอสักครู่..."},formatRecordsPerPage:function(t){return t+" รายการต่อหน้า"},formatShowingRows:function(t,n,r){return"รายการที่ "+t+" ถึง "+n+" จากทั้งหมด "+r+" รายการ"},formatSearch:function(){return"ค้นหา"},formatNoMatches:function(){return"ไม่พบรายการที่ค้นหา !"},formatRefresh:function(){return"รีเฟรส"},formatToggle:function(){return"สลับมุมมอง"},formatColumns:function(){return"คอลัมน์"}},t.extend(t.fn.bootstrapTable.defaults,t.fn.bootstrapTable.locales["th-TH"])}(jQuery);
+/**
+ * Bootstrap Table Thai translation
+ * Author: Monchai S.<monchais@gmail.com>
+ */
+(function ($) {
+    'use strict';
+
+    $.fn.bootstrapTable.locales['th-TH'] = {
+        formatLoadingMessage: function () {
+            return 'กำลังโหลดข้อมูล, กรุณารอสักครู่...';
+        },
+        formatRecordsPerPage: function (pageNumber) {
+            return pageNumber + ' รายการต่อหน้า';
+        },
+        formatShowingRows: function (pageFrom, pageTo, totalRows) {
+            return 'รายการที่ ' + pageFrom + ' ถึง ' + pageTo + ' จากทั้งหมด ' + totalRows + ' รายการ';
+        },
+        formatSearch: function () {
+            return 'ค้นหา';
+        },
+        formatNoMatches: function () {
+            return 'ไม่พบรายการที่ค้นหา !';
+        },
+        formatRefresh: function () {
+            return 'รีเฟรส';
+        },
+        formatToggle: function () {
+            return 'สลับมุมมอง';
+        },
+        formatColumns: function () {
+            return 'คอลัมน์';
+        }
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['th-TH']);
+
+})(jQuery);

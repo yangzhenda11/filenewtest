@@ -1,1 +1,14 @@
-$(function(){$("#orgModalDetail").load("../org/orgDetail.html",function(){var o=$("#curTaborgKind").val();$("#orgDetailinfo").attr("id","orgDetailinfo"+o);var a=$("#orgDetailModal_orgId"+o).val();doDetail(a)}),$("#orgDetailInfoModal").modal({show:!0,backdrop:"static"}),$("#orgDetailInfoModal").on("hide.bs.modal",function(){})});
+$(function() {
+	debugger;
+	$('#orgModalDetail').load("../org/orgDetail.html", function() {
+		var curTabOrgKind = $('#curTaborgKind').val();
+		$("#orgDetailinfo").attr("id","orgDetailinfo"+curTabOrgKind);
+		var orgId = $("#orgDetailModal_orgId"+curTabOrgKind).val();
+		doDetail(orgId);
+	});
+	$('#orgDetailInfoModal').modal({ show: true, backdrop: 'static' });
+	$('#orgDetailInfoModal').on('hide.bs.modal', function() {
+
+	})
+
+})

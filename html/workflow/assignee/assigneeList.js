@@ -1,1 +1,163 @@
-function setParam(e,a,t,l,n){$("#wfflowKey").val(e),$("#wflinkCode").val(a),$("#wfprov").val(t),$("#wfcallbackFun").val(l),$("#wfstaffSelectType").val(n),chooseType=$("#wfstaffSelectType").val(),2==chooseType?($("#duoxuan").show(),tablestr='<input type="checkbox" class="checkall" />'):1==chooseType?($("#duoxuan").hide(),tablestr="操作"):($("#duoxuan").hide(),tablestr="未知"),setDataTableConfig()}function setDataTableConfig(){dataTableConfig={ajax:{type:"GET",url:serverPath+"assignee/searchMap4Page",data:function(e){return e.flowKey=$("#wfflowKey").val(),e.linkCode=$("#wflinkCode").val(),e.prov=$("#wfprov").val(),e.orgFullName=$("#searchEfOName").val(),e.staffName=$("#searchEfstaffName").val(),e.loginName=$("#loginname").val(),e}},columns:[{data:"",title:tablestr,width:"20",className:"text-center",render:function(e,a,t){if(2==chooseType)return'<input type="checkbox"  class="checkchild"  value="'+t.STAFF_ORG_ID+"-"+t.STAFF_NAME+'" />';var l="selectStaffValue('"+t.ORG_ID+"','"+t.org_code+"','"+t.full_name+"','"+t.STAFF_NAME+"','"+t.STAFF_ORG_ID+"','"+$("#wfcallbackFun").val()+"')",n={func:[{name:"选择",title:"请选择人员",fn:l,type:""}]},c=template(n);return c}},{data:"STAFF_NAME",title:"姓名",className:"text-center"},{data:"STAFF_ID",title:"人员id",className:"text-center",visible:!1},{data:"LOGIN_NAME",title:"帐号",className:"text-center"},{data:"STAFF_ORG_ID",title:"岗位id",className:"text-center",visible:!1},{data:"full_name",title:"组织机构名称",className:"text-center"},{data:"STAFF_ORG_TYPE",title:"岗位类型",className:"text-center",render:function(e){return"F"==e?"主岗":"T"==e?"兼职":"借调"}},{data:"ORG_ID",title:"组织id",className:"text-center",visible:!1},{data:"org_code",title:"组织code",className:"text-center",visible:!1},{data:"staff_sort",title:"人员排序",className:"text-center",visible:!1}]}}function selectStaffList(e){var a=$("#searchStaffTable").DataTable();e?a.ajax.reload(null,!1):a.ajax.reload()}function selectStaffValue(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){"function"==typeof eval(callbackFun)&&eval(callbackFun+"("+ORG_ID+","+org_code+",'"+full_name+"','"+STAFF_NAME+"',"+STAFF_ORG_ID+")")}function resetFun(){$("#searchEfstaffName").val(""),$("#loginname").val(""),$("#searchEfOName").val("")}function addMultiStaff(){if(funName=$("#wfcallbackFun").val(),0==$(".checkchild:checked").length)return void layer.msg("请选人员，可以多选！",{time:1e3});var ids="",names="";$(".checkchild:checked").each(function(){var e=$(this).val();e=e.split("-"),ids=ids+e[0]+",",names=names+e[1]+","}),ids=ids.substring(0,ids.length-1),names=names.substring(0,names.length-1),eval(funName+"('"+ids+"','"+names+"')")}var tablestr="",dataTableConfig={},chooseType;$(function(){$("#currentId").val(curStaffOrgId)});var searchStaffTable,btnModel='    	{{#each func}}    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{this.title}} onclick="{{this.fn}}">{{this.name}}</button>    {{/each}}',template=Handlebars.compile(btnModel);
+//@ sourceURL=assigneeList.js
+/**
+ * 人员列表单选页
+ * @author ctt
+ */
+var tablestr='';
+var dataTableConfig = {};
+var chooseType;
+function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
+	$("#wfflowKey").val(flowKey);
+	$("#wflinkCode").val(linkcode);
+	$("#wfprov").val(prov);
+	$("#wfcallbackFun").val(callbackFun);
+	$("#wfstaffSelectType").val(staffSelectType);
+	
+	chooseType=$("#wfstaffSelectType").val();
+
+	if(chooseType==2){
+		$("#duoxuan").show();
+		tablestr='<input type="checkbox" class="checkall" />';
+	}else if(chooseType==1){
+		$("#duoxuan").hide();
+		tablestr="操作"
+	}else{
+		$("#duoxuan").hide();
+		tablestr="未知"
+	}
+	setDataTableConfig();
+}
+
+$(function(){
+	// 加载表格
+	$("#currentId").val(curStaffOrgId);
+});
+var searchStaffTable;
+// 后面构建btn 代码
+var btnModel =  '    \
+	{{#each func}}\
+    <button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{this.title}} onclick="{{this.fn}}">{{this.name}}</button>\
+    {{/each}}';
+var template = Handlebars.compile(btnModel);
+
+function setDataTableConfig(){
+	dataTableConfig={
+		ajax: {
+			"type": "GET",					//请求方式
+			"url": serverPath + 'assignee/searchMap4Page',	//请求地址
+			"data": function(d) {							//自定义传入参数
+				d.flowKey	=$("#wfflowKey").val();
+				d.linkCode	=$("#wflinkCode").val(); 
+				d.prov		=$("#wfprov").val();  
+				
+				d.orgFullName=$("#searchEfOName").val();
+				d.staffName  =$("#searchEfstaffName").val();
+				d.loginName  =$("#loginname").val();
+	        	return d;
+			}
+		},           
+		columns: [// 对应列
+			{	"data"      : "",
+				"title"     : tablestr,
+				"width"     : "20",
+				"className" : "text-center",
+		
+				"render"    : function (data, type, row, meta) {
+		        	
+						if(chooseType==2){
+							return '<input type="checkbox"  class="checkchild"  value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
+						}else{
+							var fn = "selectStaffValue(\'"+row.ORG_ID+"\',\'"+row.org_code+"\',\'"+row.full_name+"\',\'"+row.STAFF_NAME+"\',\'"+row.STAFF_ORG_ID+"\','"+$("#wfcallbackFun").val()+"')"; 
+							var context =
+							{
+								func: [
+									{	"name": "选择", 
+										"title": "请选择人员", 
+										"fn": fn, 
+										"type": ""
+									}
+									]
+							};
+							var html = template(context);
+							return html;
+						}
+					}
+			},
+			{"data": "STAFF_NAME","title":"姓名",className: "text-center"},
+			{"data": "STAFF_ID","title":"人员id",className: "text-center","visible" : false},
+			{"data": "LOGIN_NAME","title":"帐号",className: "text-center"},
+			{"data": "STAFF_ORG_ID","title":"岗位id",className: "text-center","visible" : false},
+			{"data": "full_name","title":"组织机构名称",className: "text-center"},
+			{"data": "STAFF_ORG_TYPE","title":"岗位类型",className: "text-center", 
+				render:function (data, type, row, meta){
+					if('F' == data){
+						return '主岗';
+					}else if('T' == data){
+						return '兼职';
+					}else {
+						return '借调';
+					}
+				}
+			},
+			{"data": "ORG_ID","title":"组织id",className: "text-center","visible" : false},
+			{"data": "org_code","title":"组织code",className: "text-center","visible" : false},
+	        {"data": "staff_sort","title":"人员排序",className: "text-center","visible" : false}
+	    ]
+	};
+}
+
+/*
+ * 表格初始化
+ */
+//App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+  
+/*
+ * 搜索点击事件
+ */
+function selectStaffList(resetPaging) {
+	var table = $('#searchStaffTable').DataTable();
+	if(resetPaging) {
+		table.ajax.reload(null, false);
+	} else {
+		table.ajax.reload();
+	}
+//	if(searchStaffTable){
+//		//重载表格
+//		searchStaffTable.ajax.reload();
+//	}else{
+//		// 加载表格
+//		searchStaffTable = App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+//	}
+}
+
+//人员列表的回调函数
+function selectStaffValue(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
+	if(typeof(eval(callbackFun))=="function"){
+		eval(callbackFun+"("+ORG_ID+","+org_code+",\'"+full_name+"\',\'"+STAFF_NAME+"\',"+STAFF_ORG_ID+")");
+	}
+	//window.parent[callbackFun](orgId,orgCode,orgFullName,staffName,staffOrgId,modelId);
+}
+
+function resetFun(){
+	$("#searchEfstaffName").val('');
+	$("#loginname").val('');
+	$("#searchEfOName").val('');
+} 
+function addMultiStaff(){
+	  funName=$("#wfcallbackFun").val();
+	  if ($(".checkchild:checked").length == 0){
+			layer.msg("请选人员，可以多选！",{time:1000});
+			return;
+		}
+	  var ids='';
+	  var names='';
+	  $(".checkchild:checked").each(function(i){
+	      var value = $(this).val();
+	      value=value.split("-");
+	      ids=ids+value[0]+',';
+	      names=names+value[1]+',';
+	    });
+	  ids=ids.substring(0,ids.length-1);
+	  names=names.substring(0,names.length-1);
+	  eval(funName+"(\'"+ids+"\',\'"+names+"\')");
+}

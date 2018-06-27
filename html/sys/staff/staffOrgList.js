@@ -1,1 +1,139 @@
-function judge(a){return App.stopLoading("#searchBtn"),resolveResult(a)}function goStaffOrgAdd(){var a=$("#curTabstaffKind").val();$("#staffOrgLoadPart"+a).show(),$("#staffOrgList"+a).hide(),$("#staffBody"+a).hide(),$("#header"+a).hide(),$("#staffOrgLoadPart"+a).load("../staff/staffOrgAdd.html",function(){$("#staffOrgAddForm").attr("id","staffOrgAddForm"+a),$("#staffOrgAddField").attr("id","staffOrgAddField"+a),null==$("#staffOrgAddForm"+a).data("bootstrapValidator")&&$("#staffOrgAddForm"+a).bootstrapValidator(staffOrgAddValidator),$("input[name='staffId']",$("#staffOrgAddForm"+a)).val($("#selectedStaffId"+a).val()),$("input[name='createBy']",$("#staffOrgAddForm"+a)).val(curStaffId),$("input[name='updateBy']",$("#staffOrgAddForm"+a)).val(curStaffId)})}function goStaffOrgEdit(a){var t=$("#curTabstaffKind").val();$("#staffOrgLoadPart"+t).show(),$("#staffOrgList"+t).hide(),$("#staffBody"+t).hide(),$("#header"+t).hide(),$("#selectedStaffOrgId"+t).val(a),$("#staffOrgLoadPart"+t).load("../staff/staffOrgEdit.html",function(){$("#staffOrgEditForm").attr("id","staffOrgEditForm"+t),$("#staffOrgEditField").attr("id","staffOrgEditField"+t),null==$("#staffOrgEditForm"+t).data("bootstrapValidator")&&$("#staffOrgEditForm"+t).bootstrapValidator(staffOrgEditValidator),$("input[name='staffId']",$("#staffOrgEditForm"+t)).val($("#selectedStaffId"+t).val()),$("input[name='staffOrgId']",$("#staffOrgEditForm"+t)).val(a),$("input[name='updateBy']",$("#staffOrgEditForm"+t)).val(curStaffId)})}function delStaffOrg(a,t){var f=$("#selectedStaffId"+curTabstaffKind).val();confirm("确认删除岗位："+t+"吗？（不可恢复）")&&$.ajax({url:serverPath+"staffs/"+f+"/staffOrg/"+a,type:"DELETE",success:function(){$("#searchStaffOrgTable"+curTabstaffKind).DataTable().ajax.reload()},error:function(){alert("修改失败o_o请重试...")}})}function staffOrgRoleManage(a){var t=$("#curTabstaffKind").val();$("#staffOrgLoadPart"+t).show(),$("#staffOrgList"+t).hide(),$("#selectedStaffOrgId"+t).val(a),$("#staffOrgLoadPart"+t).load("../staff/staffOrgRole.html",function(){$("#staffOrgRoleManage").attr("id","staffOrgRoleManage"+t),$("#notHavingRoles").attr("id","notHavingRoles"+t),$("#havingRoles").attr("id","havingRoles"+t),$("#rightAll").attr("id","rightAll"+t),$("#rightSelected").attr("id","rightSelected"+t),$("#leftSelected").attr("id","leftSelected"+t),$("#leftAll").attr("id","leftAll"+t),$("#notHavingRoles_undo").attr("id","notHavingRoles_undo"+t)})}function returnStaffOrgList(){var a=$("#curTabstaffKind").val();$("#searchStaffOrgTable"+a).DataTable().ajax.reload(),$("#staffOrgList"+a).show(),$("#staffOrgLoadPart"+a).empty(),$("#staffOrgLoadPart"+a).hide(),$("#staffBody"+a).hide(),$("#header"+a).hide()}function changeStaffOrgStatus(a,t,f){return"1"===f?void(confirm("确认恢复岗位："+t+"吗？")&&doChangeStaffOrgStatus(a,f)):void(confirm("确认禁用岗位："+t+"吗？")&&doChangeStaffOrgStatus(a,f))}function doChangeStaffOrgStatus(a,t){var f=$("#curTabstaffKind").val(),r={staffOrgId:a,updateBy:curStaffId};$.ajax({type:"PUT",url:serverPath+"staffs/"+staffId+"/staffOrgStatus/"+t,contentType:"application/json",data:JSON.stringify(r),success:function(){$("#searchStaffOrgTable"+f).DataTable().ajax.reload()},error:function(){alert("修改失败o_o请重试...")}})}$(function(){$("#selectedStaffId").val()});
+// var searchStaffOrgTable;
+// var btnModel = '    \
+// 	{{#each func}}\
+//     <button type="button" class="{{this.type}} btn-sm" onclick="{{this.fn}}">{{this.name}}</button>\
+//     {{/each}}';
+// var template = Handlebars.compile(btnModel);
+
+$(function() {
+    var staffId = $("#selectedStaffId").val();
+
+});
+
+/*
+ * 请求到结果后的回调事件
+ */
+function judge(result) {
+    App.stopLoading("#searchBtn");
+    return resolveResult(result);
+}
+//新增岗位
+function goStaffOrgAdd() {
+    debugger;
+    var curTabstaffKind = $('#curTabstaffKind').val();
+    $('#staffOrgLoadPart' + curTabstaffKind).show();
+    $('#staffOrgList' + curTabstaffKind).hide();
+    $("#staffBody" + curTabstaffKind).hide();
+    $("#header" + curTabstaffKind).hide();
+    $('#staffOrgLoadPart' + curTabstaffKind).load("../staff/staffOrgAdd.html", function() {
+        $("#staffOrgAddForm").attr("id", "staffOrgAddForm" + curTabstaffKind);
+        $("#staffOrgAddField").attr("id", "staffOrgAddField" + curTabstaffKind);
+        if (null == $('#staffOrgAddForm' + curTabstaffKind).data('bootstrapValidator')) {
+            $('#staffOrgAddForm' + curTabstaffKind).bootstrapValidator(staffOrgAddValidator);
+        }
+        $("input[name='staffId']", $('#staffOrgAddForm' + curTabstaffKind)).val($("#selectedStaffId" + curTabstaffKind).val());
+        $("input[name='createBy']", $('#staffOrgAddForm' + curTabstaffKind)).val(curStaffId);
+        $("input[name='updateBy']", $('#staffOrgAddForm' + curTabstaffKind)).val(curStaffId);
+    });
+}
+
+//修改岗位
+function goStaffOrgEdit(staffOrgId) {
+    debugger;
+    var curTabstaffKind = $('#curTabstaffKind').val();
+    $('#staffOrgLoadPart' + curTabstaffKind).show();
+    $('#staffOrgList' + curTabstaffKind).hide();
+    $("#staffBody" + curTabstaffKind).hide();
+    $("#header" + curTabstaffKind).hide();
+    $('#selectedStaffOrgId' + curTabstaffKind).val(staffOrgId);
+    $('#staffOrgLoadPart' + curTabstaffKind).load("../staff/staffOrgEdit.html", function() {
+        $("#staffOrgEditForm").attr("id", "staffOrgEditForm" + curTabstaffKind);
+        $("#staffOrgEditField").attr("id", "staffOrgEditField" + curTabstaffKind);
+        if (null == $('#staffOrgEditForm' + curTabstaffKind).data('bootstrapValidator')) {
+            $('#staffOrgEditForm' + curTabstaffKind).bootstrapValidator(staffOrgEditValidator);
+        }
+        $("input[name='staffId']", $('#staffOrgEditForm' + curTabstaffKind)).val($("#selectedStaffId" + curTabstaffKind).val());
+        $("input[name='staffOrgId']", $('#staffOrgEditForm' + curTabstaffKind)).val(staffOrgId);
+        $("input[name='updateBy']", $('#staffOrgEditForm' + curTabstaffKind)).val(curStaffId);
+    });
+}
+
+function delStaffOrg(staffOrgId, orgName) {
+    var staffId = $("#selectedStaffId" + curTabstaffKind).val();
+    if (confirm("确认删除岗位：" + orgName + "吗？（不可恢复）")) {
+        $.ajax({
+            "url": serverPath + "staffs/" + staffId + "/staffOrg/" + staffOrgId,
+            "type": "DELETE",
+            success: function(data) {
+                $("#searchStaffOrgTable" + curTabstaffKind).DataTable().ajax.reload();
+                //					alert("修改成功！");
+            },
+            error: function(e) {
+                alert("修改失败o_o请重试...");
+            }
+        })
+    }
+}
+
+
+//角色管理
+function staffOrgRoleManage(staffOrgId, orgName) {
+    debugger;
+    var curTabstaffKind = $('#curTabstaffKind').val();
+    $('#staffOrgLoadPart' + curTabstaffKind).show();
+    $('#staffOrgList' + curTabstaffKind).hide();
+    $('#selectedStaffOrgId' + curTabstaffKind).val(staffOrgId);
+    //	$("#staffBody"+curTabstaffKind).hide();
+    //	$("#header"+curTabstaffKind).hide();
+    $('#staffOrgLoadPart' + curTabstaffKind).load("../staff/staffOrgRole.html", function() {
+        $("#staffOrgRoleManage").attr("id", "staffOrgRoleManage" + curTabstaffKind);
+        $("#notHavingRoles").attr("id", "notHavingRoles" + curTabstaffKind);
+        $("#havingRoles").attr("id", "havingRoles" + curTabstaffKind);
+        $("#rightAll").attr("id", "rightAll" + curTabstaffKind);
+        $("#rightSelected").attr("id", "rightSelected" + curTabstaffKind);
+        $("#leftSelected").attr("id", "leftSelected" + curTabstaffKind);
+        $("#leftAll").attr("id", "leftAll" + curTabstaffKind);
+        $("#notHavingRoles_undo").attr("id", "notHavingRoles_undo" + curTabstaffKind);
+    });
+}
+
+function returnStaffOrgList() {
+    var curTabstaffKind = $('#curTabstaffKind').val();
+    $("#searchStaffOrgTable" + curTabstaffKind).DataTable().ajax.reload();
+    $('#staffOrgList' + curTabstaffKind).show();
+    $('#staffOrgLoadPart' + curTabstaffKind).empty();
+    $('#staffOrgLoadPart' + curTabstaffKind).hide();
+    $("#staffBody" + curTabstaffKind).hide();
+    $("#header" + curTabstaffKind).hide();
+}
+
+function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
+    debugger;
+    if ('1' === staffOrgStatus) {
+        if (confirm("确认恢复岗位：" + orgName + "吗？")) {
+            doChangeStaffOrgStatus(staffOrgId, staffOrgStatus);
+        }
+        return;
+    }
+    if (confirm("确认禁用岗位：" + orgName + "吗？")) {
+        doChangeStaffOrgStatus(staffOrgId, staffOrgStatus);
+    }
+}
+
+function doChangeStaffOrgStatus(staffOrgId, staffOrgStatus) {
+    var curTabstaffKind = $('#curTabstaffKind').val();
+    var obj = { "staffOrgId": staffOrgId, "updateBy": curStaffId };
+    $.ajax({
+        "type": "PUT",
+        "url": serverPath + 'staffs/' + staffId + "/staffOrgStatus/" + staffOrgStatus,
+        "contentType": "application/json",
+        "data": JSON.stringify(obj),
+        success: function(data) {
+            $("#searchStaffOrgTable" + curTabstaffKind).DataTable().ajax.reload();
+            //				alert("修改成功！");
+        },
+        error: function(e) {
+            alert("修改失败o_o请重试...");
+        }
+    })
+}

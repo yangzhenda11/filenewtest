@@ -1,1 +1,34 @@
-!function(t){"use strict";var i=t.fn.bootstrapTable.Constructor;i.prototype.changeTitle=function(i){t.each(this.options.columns,function(o,n){t.each(n,function(t,o){o.field&&(o.title=i[o.field])})}),this.initHeader(),this.initBody(),this.initToolbar()},i.prototype.changeLocale=function(t){this.options.locale=t,this.initLocale(),this.initPagination()},t.fn.bootstrapTable.methods.push("changeTitle"),t.fn.bootstrapTable.methods.push("changeLocale")}(jQuery);
+/**
+ * @author: Jewway
+ * @version: v1.0.0
+ */
+
+!function ($) {
+  'use strict';
+
+  var BootstrapTable = $.fn.bootstrapTable.Constructor;
+
+  BootstrapTable.prototype.changeTitle = function (locale) {
+    $.each(this.options.columns, function (idx, columnList) {
+      $.each(columnList, function (idx, column) {
+        if (column.field) {
+          column.title = locale[column.field];
+        }
+      });
+    });
+
+    this.initHeader();
+    this.initBody();
+    this.initToolbar();
+  };
+
+  BootstrapTable.prototype.changeLocale = function (localeId) {
+    this.options.locale = localeId;
+    this.initLocale();
+    this.initPagination();
+  };
+
+  $.fn.bootstrapTable.methods.push('changeTitle');
+  $.fn.bootstrapTable.methods.push('changeLocale');
+
+}(jQuery);

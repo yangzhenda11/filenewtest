@@ -1,1 +1,149 @@
-function searchWorkOrderActivate(e){var t=$("#create_date_begin").val().trim(),a=$("#create_date_end").val().trim();if(!checkDate(t,a))return void layer.msg("创建日期开始日期不得大于截止日期！");var r=$("#workOrderActivateListTable").DataTable();e?r.ajax.reload(null,!1):r.ajax.reload()}function jumpSanCpyQueryDetail(e){function t(t){var a=t.data;if(1==a){var r="../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+e;App.changePresentUrl(r)}else layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(e){layer.close(e)})}App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId","get",{wcardId:e},t,null,null,!1)}function getSearchParm(){var e={contractNumber:$("#contractNumber").val().trim(),contractName:$("#contractName").val().trim(),createDateBegin:$("#create_date_begin").val().trim(),createDateEnd:$("#create_date_end").val().trim()};return $("#undertakeName").data("exactSearch")?e.undertakerId=$("#undertakeName").data("id"):e.undertakeName=$("#undertakeName").val().trim(),e}function exportResultExcel(){var e=getSearchParm(),t=serverPath+"workOrderActivate/workOrderActivateExportList"+App.urlEncode(e);location.href=encodeURI(t)}function checkDate(e,t){var a=new Date(e),r=new Date(t);return Date.parse(a)-Date.parse(r)>0?!1:!0}var config=top.globalConfig,serverPath=config.serverPath;App.initDataTables("#workOrderActivateListTable","#submitBtn",{ajax:{type:"POST",contentType:"application/json;charset=utf-8",url:serverPath+"workOrderActivate/workOrderActivateList",data:function(e){var t=getSearchParm();return e=$.extend(e,t),JSON.stringify(e)}},columns:[{data:null,title:"序号",className:"text-center",render:function(e,t,a,r){var n=App.getDatatablePaging("#workOrderActivateListTable").pageStart;return n+r.row+1}},{data:"contractName",title:"合同名称",className:"whiteSpaceNormal",width:"25%"},{data:"contractNumber",title:"合同编号"},{data:"wcardNumber",title:"工单编号"},{data:"wcardStatusStr",title:"工单状态"},{data:"ctreatedDate",title:"创建日期",render:function(e){return App.formatDateTime(e,"yyyy-mm-dd")}},{data:null,className:"text-center",title:"操作",render:function(e){if(e){var t=new Array;return t.push({name:"激活",fn:"jumpSanCpyQueryDetail('"+e.wcardId+"')",icon:"iconfont icon-add"}),App.getDataTableBtn(t)}return""}}],columnDefs:[{createdCell:function(e,t,a,r,n){n>0&&6>n&&$(e).attr("title",$(e).text())}}]}),$(function(){$("#searchUndertaker").click(function(){App.getCommonModal("agentStaff","#undertakeName","name","id")}),$("#undertakeName").on("change",function(){$(this).data("exactSearch",!1)})});
+//系统的全局变量
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+
+/*
+ * 初始化表格
+ */
+App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
+	ajax: {
+        "type": "POST",
+        "contentType":"application/json;charset=utf-8",
+        "url": serverPath+'workOrderActivate/workOrderActivateList',
+        "data": function(d) {//自定义传入参数
+        	var searchParmData = getSearchParm();
+        	d = $.extend(d,searchParmData);
+           	return JSON.stringify(d);
+        }
+    },
+    "columns": [
+    	{"data" : null,
+         "title":"序号",
+         "className": "text-center",
+		"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#workOrderActivateListTable").pageStart;
+						return start + meta.row + 1;
+				   }
+		},
+		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
+        {"data": "contractNumber","title": "合同编号"},
+        {"data": "wcardNumber","title": "工单编号"},
+        {"data": "wcardStatusStr","title": "工单状态"},
+        {
+	        "data": "ctreatedDate",
+	        "title": "创建日期",
+	        render: function(data, type, full, meta) {
+	            return App.formatDateTime(data,"yyyy-mm-dd");
+	        }
+	    },
+	    {
+			"data": null,
+			"className": "text-center",
+			"title": "操作",
+			"render": function(data, type, full, meta) {
+				if(data) {
+					var btnArray = new Array();
+                    btnArray.push({ "name": "激活", "fn": "jumpSanCpyQueryDetail(\'"+data.wcardId+"\')","icon":"iconfont icon-add"});
+                    return App.getDataTableBtn(btnArray);
+				} else {
+					return '';
+				}
+			}
+		}
+    ],
+	"columnDefs": [{
+   		"createdCell": function (td, cellData, rowData, row, col) {
+         	if ( col > 0 && col < 6) {
+           		$(td).attr("title", $(td).text())
+         	}
+   		}
+ 	}]
+});
+
+
+//点击iconfont弹出模态框事件
+$(function(){
+	//承办人
+	$("#searchUndertaker").click(function(){
+		App.getCommonModal("agentStaff","#undertakeName","name","id");
+	})
+	
+	$("#undertakeName").on("change",function(){
+		$(this).data("exactSearch",false);
+	})
+})
+
+
+/*
+ * 搜索点击事件
+ */
+function searchWorkOrderActivate(retainPaging) {
+	var createDateBegin = $("#create_date_begin").val().trim();
+	var createDateEnd = $("#create_date_end").val().trim();
+	if(checkDate(createDateBegin,createDateEnd)){
+		var table = $('#workOrderActivateListTable').DataTable();
+		if(retainPaging) {
+			table.ajax.reload(null, false);
+		} else {
+			table.ajax.reload();
+		}
+	}else{
+		layer.msg("创建日期开始日期不得大于截止日期！");
+		return;
+	}
+}
+
+//跳转到上传页面
+function jumpSanCpyQueryDetail(id){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+	function successCallback(result) {
+		var wcardProcess = result.data;
+		if(wcardProcess == 1){
+			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
+			App.changePresentUrl(src);
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
+}
+
+/*
+ * 获取查询参数
+ */
+function getSearchParm(){
+	var searchData = {
+		contractNumber : $("#contractNumber").val().trim(),
+        contractName : $("#contractName").val().trim(),
+		createDateBegin : $("#create_date_begin").val().trim(),
+		createDateEnd : $("#create_date_end").val().trim()
+	};
+	if($("#undertakeName").data("exactSearch")){
+        searchData.undertakerId = $("#undertakeName").data("id");
+    }else{
+        searchData.undertakeName = $("#undertakeName").val().trim();
+    };
+    return searchData;
+}
+
+//导出合同扫描件Excel
+function exportResultExcel(){
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'workOrderActivate/workOrderActivateExportList' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
+}
+
+/**
+ * 校验开始时间是否大于截止时间
+ * */
+function checkDate(strDate1,strDate2){  
+    var t1 = new Date(strDate1);     
+    var t2 = new Date(strDate2);    
+              
+    if(Date.parse(t1) - Date.parse(t2) > 0){     
+        return false;   
+    }else{  
+        return true;  
+    }  
+}

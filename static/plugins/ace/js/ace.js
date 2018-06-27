@@ -1,1 +1,576 @@
-!function(){"ace"in window||(window.ace={}),"helper"in window.ace||(window.ace.helper={}),"vars"in window.ace||(window.ace.vars={}),window.ace.vars.icon=" ace-icon ",window.ace.vars[".icon"]=".ace-icon",ace.vars.touch="ontouchstart"in window;var a=navigator.userAgent;ace.vars.webkit=!!a.match(/AppleWebKit/i),ace.vars.safari=!!a.match(/Safari/i)&&!a.match(/Chrome/i),ace.vars.android=ace.vars.safari&&!!a.match(/Android/i),ace.vars.ios_safari=!!a.match(/OS ([4-9])(_\d)+ like Mac OS X/i)&&!a.match(/CriOS/i),ace.vars.ie=window.navigator.msPointerEnabled||document.all&&document.querySelector,ace.vars.old_ie=document.all&&!document.addEventListener,ace.vars.very_old_ie=document.all&&!document.querySelector,ace.vars.firefox="MozAppearance"in document.documentElement.style,ace.vars.non_auto_fixed=ace.vars.android||ace.vars.ios_safari}(),function(a){ace.click_event=ace.vars.touch&&a.fn.tap?"tap":"click"}(jQuery),jQuery(function(a){function e(){a("#setScreenSize").click(function(){var e=a(this).find("i");e.hasClass("icon-pingmufangda")?(a("body").addClass("hideNavbar"),a("#sidebar").addClass("menu-min"),e.removeClass("icon-pingmufangda").addClass("icon-pingmusuoxiao"),a(this).attr("title","恢复视图")):(a("body").removeClass("hideNavbar"),a("#sidebar").removeClass("menu-min"),e.removeClass("icon-pingmusuoxiao").addClass("icon-pingmufangda"),a(this).attr("title","放大主视区"))})}function n(){ace.vars.non_auto_fixed&&a("body").addClass("mob-safari"),ace.vars.transition=!!a.support.transition.end}function t(e,n){var i=e,o=a("#"+n);a.each(i,function(e,n){if(0!=n.childrens.length){o.append("<li class='' id="+n.id+"></li>"),a("#"+n.id).append("<a class='dropdown-toggle'  href='"+n.uri+"'id='"+n.id+"a'></a>"),a("#"+n.id+"a").append("<span class='menu-icon "+(""==n.icon||null==n.icon?"menu-icon iconfont icon-xuqiu":"iconfont "+n.icon)+"'></span>"),a("#"+n.id+"a").append("<span class='menu-text'> "+n.name+" </span>"),a("#"+n.id+"a").append("<b class='arrow fa fa-angle-down'></b>"),a("#"+n.id).append("<b class='arrow'></b>"),a("#"+n.id).append("<ul class='submenu' id="+n.id+"ul></ul>");var i=n.id+"ul";t(n.childrens,i)}else o.append("<li class='' id="+n.id+"></li>"),a("#"+n.id).append("<a class='dropdown-toggle J_menuItem' href='"+n.uri+"'id='"+n.id+"a'></a>"),a("#"+n.id+"a").append("<span class='menu-icon "+(""==n.icon||null==n.icon?"fa fa-circle":n.icon)+"'></span>"),a("#"+n.id+"a").append("<span class='menu-text'>"+n.name+"</span>"),a("#"+n.id).append("<b class='arrow'></b>")})}function i(){ace_menus&&t(ace_menus,"actionUl");var e=a(".sidebar");a.fn.ace_sidebar&&e.ace_sidebar(),a.fn.ace_sidebar_scroll&&e.ace_sidebar_scroll({include_toggle:!1||ace.vars.safari||ace.vars.ios_safari}),a.fn.ace_sidebar_hover&&e.ace_sidebar_hover({sub_hover_delay:750,sub_scroll_style:"no-track scroll-thin scroll-margin scroll-visible"})}function o(){if(a.fn.ace_ajax){window.Pace&&(window.paceOptions={ajax:!0,document:!0,eventLag:!1});var e={close_active:!0,default_url:"page/index",content_url:function(a){if(!a.match(/^page\//))return!1;var e=document.location.pathname;return e.match(/(\/ajax\/)(index\.html)?/)?e.replace(/(\/ajax\/)(index\.html)?/,"/ajax/content/"+a.replace(/^page\//,"")+".html"):e+"?"+a.replace(/\//,"=")}};window.Pace&&(e.loading_overlay="body"),a("[data-ajax-content=true]").ace_ajax(e),a(window).on("error.ace_ajax",function(){a("[data-ajax-content=true]").each(function(){var e=a(this);e.ace_ajax("working")&&(window.Pace&&Pace.running&&Pace.stop(),e.ace_ajax("stopLoading",!0))})})}}function s(){var e=!!a.fn.ace_scroll;e&&a(".dropdown-content").ace_scroll({reset:!1,mouseWheelLock:!0}),e&&!ace.vars.old_ie&&(a(window).on("resize.reset_scroll",function(){a(".ace-scroll:not(.scroll-disabled)").not(":hidden").ace_scroll("reset")}),e&&a(document).on("settings.ace.reset_scroll",function(e,n){"sidebar_collapsed"==n&&a(".ace-scroll:not(.scroll-disabled)").not(":hidden").ace_scroll("reset")}))}function r(){a(document).on("click.dropdown.pos",'.dropdown-toggle[data-position="auto"]',function(){var e=a(this).offset(),n=a(this.parentNode);parseInt(e.top+a(this).height())+50>ace.helper.scrollTop()+ace.helper.winHeight()-n.find(".dropdown-menu").eq(0).height()?n.addClass("dropup"):n.removeClass("dropup")})}function c(){a('.ace-nav [class*="icon-animated-"]').closest("a").one("click",function(){var e=a(this).find('[class*="icon-animated-"]').eq(0),n=e.attr("class").match(/icon\-animated\-([\d\w]+)/);e.removeClass(n[0])}),a(document).on("click",".dropdown-navbar .nav-tabs",function(e){e.stopPropagation();{var n;e.target}(n=a(e.target).closest("[data-toggle=tab]"))&&n.length>0&&(n.tab("show"),e.preventDefault(),a(window).triggerHandler("resize.navbar.dropdown"))})}function l(){a(".sidebar .nav-list .badge[title],.sidebar .nav-list .badge[title]").each(function(){var e=a(this).attr("class").match(/tooltip\-(?:\w+)/);e=e?e[0]:"tooltip-error",a(this).tooltip({placement:function(e,n){var t=a(n).offset();return parseInt(t.left)<parseInt(document.body.scrollWidth/2)?"right":"left"},container:"body",template:'<div class="tooltip '+e+'"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'})})}function d(){var e=a(".btn-scroll-up");if(e.length>0){var n=!1;a(window).on("scroll.scroll_btn",function(){var a=ace.helper.scrollTop(),t=ace.helper.winHeight(),i=document.body.scrollHeight;a>parseInt(t/4)||a>0&&i>=t&&t+a>=i-1?n||(e.addClass("display"),n=!0):n&&(e.removeClass("display"),n=!1)}).triggerHandler("scroll.scroll_btn"),e.on(ace.click_event,function(){var e=Math.min(500,Math.max(100,parseInt(ace.helper.scrollTop()/3)));return a("html,body").animate({scrollTop:0},e),!1})}}function u(){if(ace.vars.webkit){var e=a(".ace-nav").get(0);e&&a(window).on("resize.webkit_fix",function(){ace.helper.redraw(e)})}ace.vars.ios_safari&&a(document).on("ace.settings.ios_fix",function(e,n,t){"navbar_fixed"==n&&(a(document).off("focus.ios_fix blur.ios_fix","input,textarea,.wysiwyg-editor"),1==t&&a(document).on("focus.ios_fix","input,textarea,.wysiwyg-editor",function(){a(window).on("scroll.ios_fix",function(){var e=a("#navbar").get(0);e&&ace.helper.redraw(e)})}).on("blur.ios_fix","input,textarea,.wysiwyg-editor",function(){a(window).off("scroll.ios_fix")}))}).triggerHandler("ace.settings.ios_fix",["navbar_fixed","fixed"==a("#navbar").css("position")])}function f(){a(document).on("hide.bs.collapse show.bs.collapse",function(e){var n=e.target.getAttribute("id"),t=a('a[href*="#'+n+'"]');0==t.length&&(t=a('a[data-target*="#'+n+'"]')),0!=t.length&&t.find(ace.vars[".icon"]).each(function(){var n,t=a(this),i=null,o=null;return(i=t.attr("data-icon-show"))?o=t.attr("data-icon-hide"):(n=t.attr("class").match(/fa\-(.*)\-(up|down)/))&&(i="fa-"+n[1]+"-down",o="fa-"+n[1]+"-up"),i?("show"==e.type?t.removeClass(i).addClass(o):t.removeClass(o).addClass(i),!1):void 0})})}function p(){function e(){var e=a(this).find("> .dropdown-menu");if("fixed"==e.css("position")){var t=parseInt(a(window).width()),i=t>320?60:t>240?40:30,o=parseInt(t)-i,s=parseInt(a(window).height())-30,r=parseInt(Math.min(o,320));e.css("width",r);var c=!1,l=0,d=e.find(".tab-pane.active .dropdown-content.ace-scroll");0==d.length?d=e.find(".dropdown-content.ace-scroll"):c=!0;var u=d.closest(".dropdown-menu"),f=e[0].scrollHeight;if(1==d.length){var p=d.find(".scroll-content")[0];p&&(f=p.scrollHeight),l+=u.find(".dropdown-header").outerHeight(),l+=u.find(".dropdown-footer").outerHeight();var h=u.closest(".tab-content");0!=h.length&&(l+=h.siblings(".nav-tabs").eq(0).height())}var v=parseInt(Math.min(s,480,f+l)),w=parseInt(Math.abs((o+i-r)/2)),m=parseInt(Math.abs((s+30-v)/2)),g=parseInt(e.css("z-index"))||0;if(e.css({height:v,left:w,right:"auto",top:m-(c?3:1)}),1==d.length&&(ace.vars.touch?d.ace_scroll("disable").css("max-height",v-l).addClass("overflow-scroll"):d.ace_scroll("update",{size:v-l}).ace_scroll("enable").ace_scroll("reset")),e.css("height",v+(c?7:2)),e.hasClass("user-menu")){e.css("height","");var b=a(this).find(".user-info");b.css(1==b.length&&"fixed"==b.css("position")?{left:w,right:"auto",top:m,width:r-2,"max-width":r-2,"z-index":g+1}:{left:"",right:"",top:"",width:"","max-width":"","z-index":""})}a(this).closest(".navbar.navbar-fixed-top").css("z-index",g)}else 0!=e.length&&n.call(this,e)}function n(e){if(e=e||a(this).find("> .dropdown-menu"),e.length>0&&(e.css({width:"",height:"",left:"",right:"",top:""}).find(".dropdown-content").each(function(){ace.vars.touch&&a(this).css("max-height","").removeClass("overflow-scroll");var e=parseInt(a(this).attr("data-size")||0)||a.fn.ace_scroll.defaults.size;a(this).ace_scroll("update",{size:e}).ace_scroll("enable").ace_scroll("reset")}),e.hasClass("user-menu"))){a(this).find(".user-info").css({left:"",right:"",top:"",width:"","max-width":"","z-index":""})}a(this).closest(".navbar").css("z-index","")}ace.vars.old_ie||a(document).on("shown.bs.dropdown.navbar",".ace-nav > li.dropdown-modal",function(){e.call(this);var n=this;a(window).on("resize.navbar.dropdown",function(){e.call(n)})}).on("hidden.bs.dropdown.navbar",".ace-nav > li.dropdown-modal",function(){a(window).off("resize.navbar.dropdown"),n.call(this)})}n(),i(),o(),s(),r(),c(),l(),d(),u(),f(),p(),e()}),function(a){a.unCamelCase=function(a){return a.replace(/([a-z])([A-Z])/g,function(a,e,n){return e+"-"+n.toLowerCase()})},a.strToVal=function(a){var e=a.match(/^(?:(true)|(false)|(null)|(\-?[\d]+(?:\.[\d]+)?)|(\[.*\]|\{.*\}))$/i),n=a;if(e)if(e[1])n=!0;else if(e[2])n=!1;else if(e[3])n=null;else if(e[4])n=parseFloat(a);else if(e[5])try{n=JSON.parse(a)}catch(t){}return n},a.getAttrSettings=function(e,n,t){if(e){var i=n instanceof Array?1:2,t=t?t.replace(/([^\-])$/,"$1-"):"";t="data-"+t;var o={};for(var s in n)if(n.hasOwnProperty(s)){var r,c=1==i?n[s]:s,l=a.unCamelCase(c.replace(/[^A-Za-z0-9]{1,}/g,"-")).toLowerCase();if(!(r=e.getAttribute(t+l)))continue;o[c]=a.strToVal(r)}return o}},a.scrollTop=function(){return document.scrollTop||document.documentElement.scrollTop||document.body.scrollTop},a.winHeight=function(){return window.innerHeight||document.documentElement.clientHeight},a.redraw=function(a,e){if(a){var n=a.style.display;a.style.display="none",a.offsetHeight,e!==!0?a.style.display=n:setTimeout(function(){a.style.display=n},10)}}}(ace.helper);
+/**
+ Required. Ace's Basic File to Initiliaze Different Parts and Some Variables.
+*/
+
+
+//some basic variables
+(function(undefined) {
+	if( !('ace' in window) ) window['ace'] = {}
+	if( !('helper' in window['ace']) ) window['ace'].helper = {}
+	if( !('vars' in window['ace']) ) window['ace'].vars = {}
+	window['ace'].vars['icon'] = ' ace-icon ';
+	window['ace'].vars['.icon'] = '.ace-icon';
+
+	ace.vars['touch']	= ('ontouchstart' in window);//(('ontouchstart' in document.documentElement) || (window.DocumentTouch && document instanceof DocumentTouch));
+	
+	//sometimes the only good way to work around browser's pecularities is to detect them using user-agents
+	//though it's not accurate
+	var agent = navigator.userAgent
+	ace.vars['webkit'] = !!agent.match(/AppleWebKit/i)
+	ace.vars['safari'] = !!agent.match(/Safari/i) && !agent.match(/Chrome/i);
+	ace.vars['android'] = ace.vars['safari'] && !!agent.match(/Android/i)
+	ace.vars['ios_safari'] = !!agent.match(/OS ([4-9])(_\d)+ like Mac OS X/i) && !agent.match(/CriOS/i)
+	
+	ace.vars['ie'] = window.navigator.msPointerEnabled || (document.all && document.querySelector);//8-11
+	ace.vars['old_ie'] = document.all && !document.addEventListener;//8 and below
+	ace.vars['very_old_ie']	= document.all && !document.querySelector;//7 and below
+	ace.vars['firefox'] = 'MozAppearance' in document.documentElement.style;
+	
+	ace.vars['non_auto_fixed'] = ace.vars['android'] || ace.vars['ios_safari'];
+})();
+
+
+
+(function($ , undefined) {
+	//sometimes we try to use 'tap' event instead of 'click' if jquery mobile plugin is available
+	ace['click_event'] = ace.vars['touch'] && $.fn.tap ? 'tap' : 'click';
+})(jQuery);
+
+
+
+
+//document ready function
+jQuery(function($) {
+	basics();
+	enableSidebar();
+	
+	enableDemoAjax();
+	handleScrollbars();
+	
+	dropdownAutoPos();
+	
+	navbarHelpers();
+	sidebarTooltips();
+	
+	scrollTopBtn();
+	
+	someBrowserFix();
+	
+	bsCollapseToggle();
+	smallDeviceDropdowns();
+	
+	setScreenSize();
+	////////////////////////////
+	
+	function setScreenSize(){
+		$('#setScreenSize').click(function(){
+		    var icon = $(this).find('i');
+		    if(icon.hasClass('icon-pingmufangda')){
+		        $('body').addClass('hideNavbar');
+                $('#sidebar').addClass('menu-min');
+                icon.removeClass('icon-pingmufangda').addClass('icon-pingmusuoxiao');
+                $(this).attr('title','恢复视图')
+		    }else{
+		        $('body').removeClass('hideNavbar');
+                $('#sidebar').removeClass('menu-min');
+                icon.removeClass('icon-pingmusuoxiao').addClass('icon-pingmufangda');
+                $(this).attr('title','放大主视区')
+		    }
+		})
+	}
+	function basics() {
+		// for android and ios we don't use "top:auto" when breadcrumbs is fixed
+		if(ace.vars['non_auto_fixed']) {
+			$('body').addClass('mob-safari');
+		}
+
+		ace.vars['transition'] = !!$.support.transition.end
+	}
+	function menu(date,pid){
+		var menus=date;
+		var ulmain= $("#"+pid);
+		$.each(menus,function(index,menuinfo){
+			if(menuinfo.childrens.length != 0){
+				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
+				$("#"+menuinfo.id).append("<a class='dropdown-toggle'  href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-text'> "+menuinfo.name+" </span>");
+				$("#"+menuinfo.id+"a").append("<b class='arrow fa fa-angle-down'></b>");
+				$("#"+menuinfo.id).append("<b class='arrow'></b>");
+				$("#"+menuinfo.id).append("<ul class='submenu'"+" id="+menuinfo.id+"ul"+"></ul>");
+				var parent=menuinfo.id+"ul";
+				menu(menuinfo.childrens,parent);
+			}else{
+				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
+				$("#"+menuinfo.id).append("<a class='dropdown-toggle J_menuItem' href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"fa fa-circle":menuinfo.icon)+"'></span>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-text'>"+menuinfo.name+"</span>");
+				$("#"+menuinfo.id).append("<b class='arrow'></b>");
+			};
+			});
+	}
+	function enableSidebar() {
+		if(ace_menus){
+			menu(ace_menus,"actionUl");
+		}
+		//initiate sidebar function
+		var $sidebar = $('.sidebar');
+		if($.fn.ace_sidebar) $sidebar.ace_sidebar();
+		if($.fn.ace_sidebar_scroll) $sidebar.ace_sidebar_scroll({
+			//for other options please see documentation
+			'include_toggle': false || ace.vars['safari'] || ace.vars['ios_safari'] //true = include toggle button in the scrollbars
+		});
+		if($.fn.ace_sidebar_hover)	$sidebar.ace_sidebar_hover({
+			'sub_hover_delay': 750,
+			'sub_scroll_style': 'no-track scroll-thin scroll-margin scroll-visible'
+		});
+	}
+
+	
+	//Load content via ajax
+	function enableDemoAjax() {		
+		if(!$.fn.ace_ajax) return;
+ 
+		if(window.Pace) {
+			window.paceOptions = {
+				ajax: true,
+				document: true,
+				eventLag: false // disabled
+				//elements: {selectors: ['.page-content-area']}
+			}
+		}
+
+		var demo_ajax_options = {
+			 'close_active': true,
+			 
+			 'default_url': 'page/index',//default hash
+			 'content_url': function(hash) {
+				//***NOTE***
+				//this is for Ace demo only, you should change it to return a valid URL
+				//please refer to documentation for more info
+
+				if( !hash.match(/^page\//) ) return false;
+				var path = document.location.pathname;
+
+				//for example in Ace HTML demo version we convert /ajax/index.html#page/gallery to > /ajax/content/gallery.html and load it
+				if(path.match(/(\/ajax\/)(index\.html)?/))
+					return path.replace(/(\/ajax\/)(index\.html)?/, '/ajax/content/'+hash.replace(/^page\//, '')+'.html') ;
+
+				//for example in Ace PHP demo version we convert "ajax.php#page/dashboard" to "ajax.php?page=dashboard" and load it
+				return path + "?" + hash.replace(/\//, "=");
+			  }			  
+		}
+		   
+		//for IE9 and below we exclude PACE loader (using conditional IE comments)
+		//for other browsers we use the following extra ajax loader options
+		if(window.Pace) {
+			demo_ajax_options['loading_overlay'] = 'body';//the opaque overlay is applied to 'body'
+		}
+
+		//initiate ajax loading on this element( which is .page-content-area[data-ajax-content=true] in Ace's demo)
+		$('[data-ajax-content=true]').ace_ajax(demo_ajax_options)
+
+		//if general error happens and ajax is working, let's stop loading icon & PACE
+		$(window).on('error.ace_ajax', function() {
+			$('[data-ajax-content=true]').each(function() {
+				var $this = $(this);
+				if( $this.ace_ajax('working') ) {
+					if(window.Pace && Pace.running) Pace.stop();
+					$this.ace_ajax('stopLoading', true);
+				}
+			})
+		})
+	}
+
+	/////////////////////////////
+
+	function handleScrollbars() {
+		//add scrollbars for navbar dropdowns
+		var has_scroll = !!$.fn.ace_scroll;
+		if(has_scroll) $('.dropdown-content').ace_scroll({reset: false, mouseWheelLock: true})
+
+		//reset scrolls bars on window resize
+		if(has_scroll && !ace.vars['old_ie']) {//IE has an issue with widget fullscreen on ajax?!!!
+			$(window).on('resize.reset_scroll', function() {
+				$('.ace-scroll:not(.scroll-disabled)').not(':hidden').ace_scroll('reset');
+			});
+			if(has_scroll) $(document).on('settings.ace.reset_scroll', function(e, name) {
+				if(name == 'sidebar_collapsed') $('.ace-scroll:not(.scroll-disabled)').not(':hidden').ace_scroll('reset');
+			});
+		}
+	}
+
+
+	function dropdownAutoPos() {
+		//change a dropdown to "dropup" depending on its position
+		$(document).on('click.dropdown.pos', '.dropdown-toggle[data-position="auto"]', function() {
+			var offset = $(this).offset();
+			var parent = $(this.parentNode);
+
+			if ( parseInt(offset.top + $(this).height()) + 50 
+					>
+				(ace.helper.scrollTop() + ace.helper.winHeight() - parent.find('.dropdown-menu').eq(0).height()) 
+				) parent.addClass('dropup');
+			else parent.removeClass('dropup');
+		});
+	}
+
+	
+	function navbarHelpers() {
+		//prevent dropdowns from hiding when a from is clicked
+		/**$(document).on('click', '.dropdown-navbar form', function(e){
+			e.stopPropagation();
+		});*/
+
+
+		//disable navbar icon animation upon click
+		$('.ace-nav [class*="icon-animated-"]').closest('a').one('click', function(){
+			var icon = $(this).find('[class*="icon-animated-"]').eq(0);
+			var $match = icon.attr('class').match(/icon\-animated\-([\d\w]+)/);
+			icon.removeClass($match[0]);
+		});
+
+
+		//prevent dropdowns from hiding when a tab is selected
+		$(document).on('click', '.dropdown-navbar .nav-tabs', function(e){
+			e.stopPropagation();
+			var $this , href
+			var that = e.target
+			if( ($this = $(e.target).closest('[data-toggle=tab]')) && $this.length > 0) {
+				$this.tab('show');
+				e.preventDefault();
+				$(window).triggerHandler('resize.navbar.dropdown')
+			}
+		});
+	}
+
+	
+	function sidebarTooltips() {
+		//tooltip in sidebar items
+		$('.sidebar .nav-list .badge[title],.sidebar .nav-list .badge[title]').each(function() {
+			var tooltip_class = $(this).attr('class').match(/tooltip\-(?:\w+)/);
+			tooltip_class = tooltip_class ? tooltip_class[0] : 'tooltip-error';
+			$(this).tooltip({
+				'placement': function (context, source) {
+					var offset = $(source).offset();
+
+					if( parseInt(offset.left) < parseInt(document.body.scrollWidth / 2) ) return 'right';
+					return 'left';
+				},
+				container: 'body',
+				template: '<div class="tooltip '+tooltip_class+'"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+			});
+		});
+		
+		//or something like this if items are dynamically inserted
+		/**
+		$('.sidebar').tooltip({
+			'placement': function (context, source) {
+				var offset = $(source).offset();
+
+				if( parseInt(offset.left) < parseInt(document.body.scrollWidth / 2) ) return 'right';
+				return 'left';
+			},
+			selector: '.nav-list .badge[title],.nav-list .label[title]',
+			container: 'body',
+			template: '<div class="tooltip tooltip-error"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+		});
+		*/
+	}
+	
+	
+
+	function scrollTopBtn() {
+		//the scroll to top button
+		var scroll_btn = $('.btn-scroll-up');
+		if(scroll_btn.length > 0) {
+			var is_visible = false;
+			$(window).on('scroll.scroll_btn', function() {
+				var scroll = ace.helper.scrollTop();
+				var h = ace.helper.winHeight();
+				var body_sH = document.body.scrollHeight;
+				if(scroll > parseInt(h / 4) || (scroll > 0 && body_sH >= h && h + scroll >= body_sH - 1)) {//|| for smaller pages, when reached end of page
+					if(!is_visible) {
+						scroll_btn.addClass('display');
+						is_visible = true;
+					}
+				} else {
+					if(is_visible) {
+						scroll_btn.removeClass('display');
+						is_visible = false;
+					}
+				}
+			}).triggerHandler('scroll.scroll_btn');
+
+			scroll_btn.on(ace.click_event, function(){
+				var duration = Math.min(500, Math.max(100, parseInt(ace.helper.scrollTop() / 3)));
+				$('html,body').animate({scrollTop: 0}, duration);
+				return false;
+			});
+		}
+	}
+
+
+	
+	function someBrowserFix() {
+		//chrome and webkit have a problem here when resizing from 479px to more
+		//we should force them redraw the navbar!
+		if( ace.vars['webkit'] ) {
+			var ace_nav = $('.ace-nav').get(0);
+			if( ace_nav ) $(window).on('resize.webkit_fix' , function(){
+				ace.helper.redraw(ace_nav);
+			});
+		}
+		
+		
+		//fix an issue with ios safari, when an element is fixed and an input receives focus
+		if(ace.vars['ios_safari']) {
+		  $(document).on('ace.settings.ios_fix', function(e, event_name, event_val) {
+			if(event_name != 'navbar_fixed') return;
+
+			$(document).off('focus.ios_fix blur.ios_fix', 'input,textarea,.wysiwyg-editor');
+			if(event_val == true) {
+			  $(document).on('focus.ios_fix', 'input,textarea,.wysiwyg-editor', function() {
+				$(window).on('scroll.ios_fix', function() {
+					var navbar = $('#navbar').get(0);
+					if(navbar) ace.helper.redraw(navbar);
+				});
+			  }).on('blur.ios_fix', 'input,textarea,.wysiwyg-editor', function() {
+				$(window).off('scroll.ios_fix');
+			  })
+			}
+		  }).triggerHandler('ace.settings.ios_fix', ['navbar_fixed', $('#navbar').css('position') == 'fixed']);
+		}
+	}
+
+	
+	
+	function bsCollapseToggle() {
+		//bootstrap collapse component icon toggle
+		$(document).on('hide.bs.collapse show.bs.collapse', function (ev) {
+			var panel_id = ev.target.getAttribute('id')
+			var panel = $('a[href*="#'+ panel_id+'"]');
+			if(panel.length == 0) panel = $('a[data-target*="#'+ panel_id+'"]');
+			if(panel.length == 0) return;
+
+			panel.find(ace.vars['.icon']).each(function(){
+				var $icon = $(this)
+
+				var $match
+				var $icon_down = null
+				var $icon_up = null
+				if( ($icon_down = $icon.attr('data-icon-show')) ) {
+					$icon_up = $icon.attr('data-icon-hide')
+				}
+				else if( $match = $icon.attr('class').match(/fa\-(.*)\-(up|down)/) ) {
+					$icon_down = 'fa-'+$match[1]+'-down'
+					$icon_up = 'fa-'+$match[1]+'-up'
+				}
+
+				if($icon_down) {
+					if(ev.type == 'show') $icon.removeClass($icon_down).addClass($icon_up)
+						else $icon.removeClass($icon_up).addClass($icon_down)
+						
+					return false;//ignore other icons that match, one is enough
+				}
+
+			});
+		})
+	}
+	
+
+	
+	//in small devices display navbar dropdowns like modal boxes
+	function smallDeviceDropdowns() {
+	  if(ace.vars['old_ie']) return;
+	  
+	  $(document)
+	  .on('shown.bs.dropdown.navbar', '.ace-nav > li.dropdown-modal', function(e) {
+		adjustNavbarDropdown.call(this);
+		var self = this;
+		$(window).on('resize.navbar.dropdown', function() {
+			adjustNavbarDropdown.call(self);
+		})
+	  })
+	  .on('hidden.bs.dropdown.navbar', '.ace-nav > li.dropdown-modal', function(e) {
+		$(window).off('resize.navbar.dropdown');
+		resetNavbarDropdown.call(this);
+	  })
+	 
+	  function adjustNavbarDropdown() {
+		var $sub = $(this).find('> .dropdown-menu');
+
+		if( $sub.css('position') == 'fixed' ) {
+			var win_width = parseInt($(window).width());
+			var offset_w = win_width > 320 ? 60 : (win_width > 240 ? 40 : 30);
+			var avail_width = parseInt(win_width) - offset_w;
+			var avail_height = parseInt($(window).height()) - 30;
+			
+			var width = parseInt(Math.min(avail_width , 320));
+			//we set 'width' here for text wrappings and spacings to take effect before calculating scrollHeight
+			$sub.css('width', width);
+
+			var tabbed = false;
+			var extra_parts = 0;
+			var dropdown_content = $sub.find('.tab-pane.active .dropdown-content.ace-scroll');
+			if(dropdown_content.length == 0) dropdown_content = $sub.find('.dropdown-content.ace-scroll');
+			else tabbed = true;
+
+			var parent_menu = dropdown_content.closest('.dropdown-menu');
+			var scrollHeight = $sub[0].scrollHeight;
+			if(dropdown_content.length == 1) {
+				//sometimes there's no scroll-content, for example in detached scrollbars
+				var content =  dropdown_content.find('.scroll-content')[0];
+				if(content) {
+					scrollHeight = content.scrollHeight;
+				}
+			
+				extra_parts += parent_menu.find('.dropdown-header').outerHeight();
+				extra_parts += parent_menu.find('.dropdown-footer').outerHeight();
+				
+				var tab_content = parent_menu.closest('.tab-content');
+				if( tab_content.length != 0 ) {
+					extra_parts += tab_content.siblings('.nav-tabs').eq(0).height();
+				}
+			}
+			
+
+			
+			var height = parseInt(Math.min(avail_height , 480, scrollHeight + extra_parts));
+			var left = parseInt(Math.abs((avail_width + offset_w - width)/2));
+			var top = parseInt(Math.abs((avail_height + 30 - height)/2));
+
+			
+			var zindex = parseInt($sub.css('z-index')) || 0;
+
+			$sub.css({'height': height, 'left': left, 'right': 'auto', 'top': top - (!tabbed ? 1 : 3)});
+			if(dropdown_content.length == 1) {
+				if(!ace.vars['touch']) {
+					dropdown_content.ace_scroll('update', {size: height - extra_parts}).ace_scroll('enable').ace_scroll('reset');
+				}
+				else {
+					dropdown_content
+					.ace_scroll('disable').css('max-height', height - extra_parts).addClass('overflow-scroll');
+				}
+			}
+			$sub.css('height', height + (!tabbed ? 2 : 7));//for bottom border adjustment and tab content paddings
+			
+			
+			if($sub.hasClass('user-menu')) {
+				$sub.css('height', '');//because of user-info hiding/showing at different widths, which changes above 'scrollHeight', so we remove it!
+				
+				//user menu is re-positioned in small widths
+				//but we need to re-position again in small heights as well (modal mode)
+				var user_info = $(this).find('.user-info');
+				if(user_info.length == 1 && user_info.css('position') == 'fixed') {
+					user_info.css({'left': left, 'right': 'auto', 'top': top, 'width': width - 2, 'max-width': width - 2, 'z-index': zindex + 1});
+				}
+				else user_info.css({'left': '', 'right': '', 'top': '', 'width': '', 'max-width': '', 'z-index': ''});
+			}
+			
+			//dropdown's z-index is limited by parent .navbar's z-index (which doesn't make sense because dropdowns are fixed!)
+			//so for example when in 'content-slider' page, fixed modal toggle buttons go above are dropdowns
+			//so we increase navbar's z-index to fix this!
+			$(this).closest('.navbar.navbar-fixed-top').css('z-index', zindex);
+		}
+		else {
+			if($sub.length != 0) resetNavbarDropdown.call(this, $sub);
+		}
+	  }
+
+	  //reset scrollbars and user menu
+	  function resetNavbarDropdown($sub) {
+		$sub = $sub || $(this).find('> .dropdown-menu');
+	  
+	    if($sub.length > 0) {
+			$sub
+			.css({'width': '', 'height': '', 'left': '', 'right': '', 'top': ''})
+			.find('.dropdown-content').each(function() {
+				if(ace.vars['touch']) {
+					$(this).css('max-height', '').removeClass('overflow-scroll');
+				}
+
+				var size = parseInt($(this).attr('data-size') || 0) || $.fn.ace_scroll.defaults.size;
+				$(this).ace_scroll('update', {size: size}).ace_scroll('enable').ace_scroll('reset');
+			})
+			
+			if( $sub.hasClass('user-menu') ) {
+				var user_info = 
+				$(this).find('.user-info')
+				.css({'left': '', 'right': '', 'top': '', 'width': '', 'max-width': '', 'z-index': ''});
+			}
+		}
+		
+		$(this).closest('.navbar').css('z-index', '');
+	  }
+	}
+
+});//jQuery document ready
+
+
+
+
+
+//some ace helper functions
+(function($$ , undefined) {//$$ is ace.helper
+ $$.unCamelCase = function(str) {
+	return str.replace(/([a-z])([A-Z])/g, function(match, c1, c2){ return c1+'-'+c2.toLowerCase() })
+ }
+ $$.strToVal = function(str) {
+	var res = str.match(/^(?:(true)|(false)|(null)|(\-?[\d]+(?:\.[\d]+)?)|(\[.*\]|\{.*\}))$/i);
+
+	var val = str;
+	if(res) {
+		if(res[1]) val = true;
+		else if(res[2]) val = false;
+		else if(res[3]) val = null;	
+		else if(res[4]) val = parseFloat(str);
+		else if(res[5]) {
+			try { val = JSON.parse(str) }
+			catch (err) {}
+		}
+	}
+
+	return val;
+ }
+ $$.getAttrSettings = function(elem, attr_list, prefix) {
+	if(!elem) return;
+	var list_type = attr_list instanceof Array ? 1 : 2;
+	//attr_list can be Array or Object(key/value)
+	var prefix = prefix ? prefix.replace(/([^\-])$/ , '$1-') : '';
+	prefix = 'data-' + prefix;
+
+	var settings = {}
+	for(var li in attr_list) if(attr_list.hasOwnProperty(li)) {
+		var name = list_type == 1 ? attr_list[li] : li;
+		var attr_val, attr_name = $$.unCamelCase(name.replace(/[^A-Za-z0-9]{1,}/g , '-')).toLowerCase()
+
+		if( ! ((attr_val = elem.getAttribute(prefix + attr_name))  ) ) continue;
+		settings[name] = $$.strToVal(attr_val);
+	}
+
+	return settings;
+ }
+
+ $$.scrollTop = function() {
+	return document.scrollTop || document.documentElement.scrollTop || document.body.scrollTop
+ }
+ $$.winHeight = function() {
+	return window.innerHeight || document.documentElement.clientHeight;
+ }
+ $$.redraw = function(elem, force) {
+	if(!elem) return;
+	var saved_val = elem.style['display'];
+	elem.style.display = 'none';
+	elem.offsetHeight;
+	if(force !== true) {
+		elem.style.display = saved_val;
+	}
+	else {
+		//force redraw for example in old IE
+		setTimeout(function() {
+			elem.style.display = saved_val;
+		}, 10);
+	}
+ }
+})(ace.helper);

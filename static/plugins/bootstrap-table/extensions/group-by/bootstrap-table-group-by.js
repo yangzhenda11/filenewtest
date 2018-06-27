@@ -1,1 +1,243 @@
-!function(t){"use strict";var o,i="data-tt-id",e="data-tt-parent-id",n={},p=void 0,r=function(o,i){for(var e=o.$body.find("tr").not("[data-tt-parent-id]"),n=0;n<e.length;n++)if(n===i)return t(e[n]).attr("data-tt-id");return void 0},a=function(o,i){var e={};return t.each(i,function(i,n){if(!n.IsParent)for(var p in n)isNaN(parseFloat(n[p]))||o.columns[t.fn.bootstrapTable.utils.getFieldIndex(o.columns,p)].groupBySumGroup&&(void 0===e[p]&&(e[p]=0),e[p]+=+n[p])}),e},s=function(t,r){return o.apply([t,r]),n[i.toString()]=r,t.IsParent?(p=r,delete n[e.toString()]):n[e.toString()]=void 0===p?r:p,n},l=function(t,o){for(var i=[],e=0;e<t.options.groupByField.length;e++)i.push(o[t.options.groupByField[e]]);return i},u=function(t,o,i){for(var e={},n=0;n<t.options.groupByField.length;n++)e[t.options.groupByField[n].toString()]=o[i][0][t.options.groupByField[n]];return e.IsParent=!0,e},d=function(o,i){var e={};return t.each(o,function(t,o){var n=JSON.stringify(i(o));e[n]=e[n]||[],e[n].push(o)}),Object.keys(e).map(function(t){return e[t]})},y=function(o,i){for(var e=[],n={},p=d(i,function(t){return l(o,t)}),r=0;r<p.length;r++)p[r].unshift(u(o,p,r)),o.options.groupBySumGroup&&(n=a(o,p[r]),t.isEmptyObject(n)||p[r].push(n));return e=e.concat.apply(e,p),!o.options.loaded&&e.length>0&&(o.options.loaded=!0,o.options.originalData=o.options.data,o.options.data=e),e};t.extend(t.fn.bootstrapTable.defaults,{groupBy:!1,groupByField:[],groupBySumGroup:!1,groupByInitExpanded:void 0,loaded:!1,originalData:void 0}),t.fn.bootstrapTable.methods.push("collapseAll","expandAll","refreshGroupByField"),t.extend(t.fn.bootstrapTable.COLUMN_DEFAULTS,{groupBySumGroup:!1});var h=t.fn.bootstrapTable.Constructor,g=h.prototype.init,f=h.prototype.initData;h.prototype.init=function(){if(!this.options.sortName&&this.options.groupBy&&this.options.groupByField.length>0){var i=this;Object.keys||t.fn.bootstrapTable.utils.objectKeys(),this.options.loaded=!1,this.options.originalData=void 0,o=this.options.rowAttributes,this.options.rowAttributes=s,this.$el.on("post-body.bs.table",function(){i.$el.treetable({expandable:!0,onNodeExpand:function(){i.options.height&&i.resetHeader()},onNodeCollapse:function(){i.options.height&&i.resetHeader()}},!0),void 0!==i.options.groupByInitExpanded&&("number"==typeof i.options.groupByInitExpanded?i.expandNode(i.options.groupByInitExpanded):"all"===i.options.groupByInitExpanded.toLowerCase()&&i.expandAll())})}g.apply(this,Array.prototype.slice.apply(arguments))},h.prototype.initData=function(t,o){this.options.sortName||this.options.groupBy&&this.options.groupByField.length>0&&(this.options.groupByField="string"==typeof this.options.groupByField?this.options.groupByField.replace("[","").replace("]","").replace(/ /g,"").toLowerCase().split(","):this.options.groupByField,t=y(this,t?t:this.options.data)),f.apply(this,[t,o])},h.prototype.expandAll=function(){this.$el.treetable("expandAll")},h.prototype.collapseAll=function(){this.$el.treetable("collapseAll")},h.prototype.expandNode=function(t){t=r(this,t),void 0!==t&&this.$el.treetable("expandNode",t)},h.prototype.refreshGroupByField=function(o){t.fn.bootstrapTable.utils.compareObjects(this.options.groupByField,o)||(this.options.groupByField=o,this.load(this.options.originalData))}}(jQuery);
+/**
+ * @author: Dennis Hernández
+ * @webSite: http://djhvscf.github.io/Blog
+ * @version: v1.1.0
+ */
+
+!function ($) {
+
+    'use strict';
+
+    var originalRowAttr,
+        dataTTId = 'data-tt-id',
+        dataTTParentId = 'data-tt-parent-id',
+        obj = {},
+        parentId = undefined;
+
+    var getParentRowId = function (that, id) {
+        var parentRows = that.$body.find('tr').not('[' + 'data-tt-parent-id]');
+
+        for (var i = 0; i < parentRows.length; i++) {
+            if (i === id) {
+                return $(parentRows[i]).attr('data-tt-id');
+            }
+        }
+
+        return undefined;
+    };
+
+    var sumData = function (that, data) {
+        var sumRow = {};
+        $.each(data, function (i, row) {
+            if (!row.IsParent) {
+                for (var prop in row) {
+                    if (!isNaN(parseFloat(row[prop]))) {
+                        if (that.columns[$.fn.bootstrapTable.utils.getFieldIndex(that.columns, prop)].groupBySumGroup) {
+                            if (sumRow[prop] === undefined) {
+                                sumRow[prop] = 0;
+                            }
+                            sumRow[prop] += +row[prop];
+                        }
+                    }
+                }
+            }
+        });
+        return sumRow;
+    };
+
+    var rowAttr = function (row, index) {
+        //Call the User Defined Function
+        originalRowAttr.apply([row, index]);
+
+        obj[dataTTId.toString()] = index;
+
+        if (!row.IsParent) {
+            obj[dataTTParentId.toString()] = parentId === undefined ? index : parentId;
+        } else {
+            parentId = index;
+            delete obj[dataTTParentId.toString()];
+        }
+
+        return obj;
+    };
+
+    var setObjectKeys = function () {
+        // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+        Object.keys = function (o) {
+            if (o !== Object(o)) {
+                throw new TypeError('Object.keys called on a non-object');
+            }
+            var k = [],
+                p;
+            for (p in o) {
+                if (Object.prototype.hasOwnProperty.call(o, p)) {
+                    k.push(p);
+                }
+            }
+            return k;
+        }
+    };
+
+    var getDataArrayFromItem = function (that, item) {
+        var itemDataArray = [];
+        for (var i = 0; i < that.options.groupByField.length; i++) {
+            itemDataArray.push(item[that.options.groupByField[i]]);
+        }
+
+        return itemDataArray;
+    };
+
+    var getNewRow = function (that, result, index) {
+        var newRow = {};
+        for (var i = 0; i < that.options.groupByField.length; i++) {
+            newRow[that.options.groupByField[i].toString()] = result[index][0][that.options.groupByField[i]];
+        }
+
+        newRow.IsParent = true;
+
+        return newRow;
+    };
+
+    var groupBy = function (array, f) {
+        var groups = {};
+        $.each(array, function (i, o) {
+            var group = JSON.stringify(f(o));
+            groups[group] = groups[group] || [];
+            groups[group].push(o);
+        });
+        return Object.keys(groups).map(function (group) {
+            return groups[group];
+        });
+    };
+
+    var makeGrouped = function (that, data) {
+        var newData = [],
+            sumRow = {};
+
+        var result = groupBy(data, function (item) {
+            return getDataArrayFromItem(that, item);
+        });
+
+        for (var i = 0; i < result.length; i++) {
+            result[i].unshift(getNewRow(that, result, i));
+            if (that.options.groupBySumGroup) {
+                sumRow = sumData(that, result[i]);
+                if (!$.isEmptyObject(sumRow)) {
+                    result[i].push(sumRow);
+                }
+            }
+        }
+
+        newData = newData.concat.apply(newData, result);
+
+        if (!that.options.loaded && newData.length > 0) {
+            that.options.loaded = true;
+            that.options.originalData = that.options.data;
+            that.options.data = newData;
+        }
+
+        return newData;
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, {
+        groupBy: false,
+        groupByField: [],
+        groupBySumGroup: false,
+        groupByInitExpanded: undefined, //node, 'all'
+        //internal variables
+        loaded: false,
+        originalData: undefined
+    });
+
+    $.fn.bootstrapTable.methods.push('collapseAll', 'expandAll', 'refreshGroupByField');
+
+    $.extend($.fn.bootstrapTable.COLUMN_DEFAULTS, {
+        groupBySumGroup: false
+    });
+
+    var BootstrapTable = $.fn.bootstrapTable.Constructor,
+        _init = BootstrapTable.prototype.init,
+        _initData = BootstrapTable.prototype.initData;
+
+    BootstrapTable.prototype.init = function () {
+        //Temporal validation
+        if (!this.options.sortName) {
+            if ((this.options.groupBy) && (this.options.groupByField.length > 0)) {
+                var that = this;
+
+                // Compatibility: IE < 9 and old browsers
+                if (!Object.keys) {
+                    $.fn.bootstrapTable.utils.objectKeys();
+                }
+
+                //Make sure that the internal variables are set correctly
+                this.options.loaded = false;
+                this.options.originalData = undefined;
+
+                originalRowAttr = this.options.rowAttributes;
+                this.options.rowAttributes = rowAttr;
+                this.$el.on('post-body.bs.table', function () {
+                    that.$el.treetable({
+                        expandable: true,
+                        onNodeExpand: function () {
+                            if (that.options.height) {
+                                that.resetHeader();
+                            }
+                        },
+                        onNodeCollapse: function () {
+                            if (that.options.height) {
+                                that.resetHeader();
+                            }
+                        }
+                    }, true);
+
+                    if (that.options.groupByInitExpanded !== undefined) {
+                        if (typeof that.options.groupByInitExpanded === 'number') {
+                            that.expandNode(that.options.groupByInitExpanded);
+                        } else if (that.options.groupByInitExpanded.toLowerCase() === 'all') {
+                            that.expandAll();
+                        }
+                    }
+                });
+            }
+        }
+        _init.apply(this, Array.prototype.slice.apply(arguments));
+    };
+
+    BootstrapTable.prototype.initData = function (data, type) {
+        //Temporal validation
+        if (!this.options.sortName) {
+            if ((this.options.groupBy) && (this.options.groupByField.length > 0)) {
+
+                this.options.groupByField = typeof this.options.groupByField === 'string' ?
+                    this.options.groupByField.replace('[', '').replace(']', '')
+                        .replace(/ /g, '').toLowerCase().split(',') : this.options.groupByField;
+
+                data = makeGrouped(this, data ? data : this.options.data);
+            }
+        }
+        _initData.apply(this, [data, type]);
+    };
+
+    BootstrapTable.prototype.expandAll = function () {
+        this.$el.treetable('expandAll');
+    };
+
+    BootstrapTable.prototype.collapseAll = function () {
+        this.$el.treetable('collapseAll');
+    };
+
+    BootstrapTable.prototype.expandNode = function (id) {
+        id = getParentRowId(this, id);
+        if (id !== undefined) {
+            this.$el.treetable('expandNode', id);
+        }
+    };
+
+    BootstrapTable.prototype.refreshGroupByField = function (groupByFields) {
+        if (!$.fn.bootstrapTable.utils.compareObjects(this.options.groupByField, groupByFields)) {
+            this.options.groupByField = groupByFields;
+            this.load(this.options.originalData);
+        }
+    };
+}(jQuery);

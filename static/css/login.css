@@ -1,1 +1,47 @@
-input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,input:-webkit-autofill:active{-webkit-transition-delay:99999s;-webkit-transition:color 99999s ease-out,background-color 99999s ease-out}body{background:#fff}input,button{outline:0!important}.alert-danger{margin-bottom:10px}.login-content{position:absolute;top:40%;left:0;right:0}.login-bg{background:url(../img/login-top-bg.png?t=1530087013475) no-repeat center center;position:absolute;left:0;top:0;height:40%;background-size:cover;overflow:hidden;width:100%;text-align:center}.login-bg img{width:35%;height:100%}.content-redbg{background:#de262b;padding-top:30px;padding-bottom:10px}.content-graybg{background:#444;height:45px}.logo-bg{background:url(../img/logo-bg.png?t=1530087013475) no-repeat;width:174px;position:absolute;z-index:99;top:-120px;left:100px;padding:130px 5px 230px}.logo-bg img{width:100%;height:100%}.login-title{color:#fff}.login-title h2{margin-top:5px}.login-title h1{font-size:32px}.login-form-body .checkbox,.login-form-body .checkbox-inline,.login-form-body .radio,.login-form-body .radio-inline{padding-top:0}.login-form-body .form-group .form-control{padding:10px 12px;line-height:22px;height:42px;padding-left:40px}.login-form-body .form-group{position:relative}.login-form-body .form-group i{position:absolute;left:10px;top:5px;color:#fdab29;font-size:22px}.login-btn{font-size:20px;padding-top:12px;padding-bottom:12px;background:#fdab29;color:#fff}.login-btn:hover{color:#fff}.login-btn:focus{color:#fff}.login-btn:active{color:#fff}.login-btn i{display:block;font-size:32px}.login-copyright{width:100%;text-align:center;position:fixed;bottom:10px;color:#999;color:#AEB4B4;font-size:12px}@media all and (max-width:1200px){.login-title h1{font-size:26px}.logo-bg{left:0}}@media all and (max-width:992px){.login-title h1{font-size:26px}.login-form-body .login-yanzheng{margin-right:0}}@media all and (max-width:768px){.logo-bg{display:none}.content-graybg{display:none}}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition-delay: 99999s;
+    -webkit-transition: color 99999s ease-out, background-color 99999s ease-out;
+}
+body{background: #fff;}
+input,button{outline: none !important;}
+.alert-danger{margin-bottom: 10px;}
+.login-content{ position: absolute; top: 40%; left: 0; right: 0;}
+.login-bg{background: url(../img/login-top-bg.png?t=1530089808708) no-repeat center center; position: absolute; left: 0; top: 0; height: 40%; background-size:cover; overflow: hidden;width: 100%;text-align: center;}
+.login-bg img{width:35%;height: 100%;}
+.content-redbg{ background: #de262b; padding-top: 30px; padding-bottom: 10px;}
+.content-graybg{ background: #444444; height: 45px;}
+.logo-bg{ background: url(../img/logo-bg.png?t=1530089808708) no-repeat; width: 174px; position: absolute; z-index: 99; top: -120px; left:100px; padding: 130px 5px 230px 5px;}
+.logo-bg img{ width: 100%; height: 100%;}
+.login-title{ color: #fff;}
+.login-title h2{ margin-top: 5px;}
+.login-title h1{ font-size: 32px;}
+.login-form-body .checkbox, .login-form-body .checkbox-inline, .login-form-body .radio, .login-form-body .radio-inline{ padding-top:0px}
+.login-form-body .form-group .form-control{ padding: 10px 12px;line-height:22px;height:42px; padding-left: 40px;}
+.login-form-body .form-group{ position: relative;}
+.login-form-body .form-group i{ position: absolute;left: 10px; top: 5px; color: #fdab29; font-size: 22px;}
+.login-btn{ font-size:20px; padding-top:12px; padding-bottom:12px;background: #fdab29;color: #fff;}
+.login-btn:hover{ color: #fff;}
+.login-btn:focus{ color: #fff;}
+.login-btn:active{ color: #fff;}
+.login-btn i{ display:block; font-size:32px;}
+/*.login-form-body .form-group .form-control.code{ padding-left: 12px;}
+.login-form-body .login-yanzheng{max-width: 100%; height: 42px; margin-right: -25px; border-radius: 4px;}
+.login-remember{ color:#fff;}
+.checkbox label{display:block;width:200px;text-align:left;}*/
+.login-copyright{ width:100%; text-align:center; position:fixed; bottom:10px; color:#999; color:#AEB4B4; font-size:12px;}
+
+@media all and (max-width: 1200px) {
+	.login-title h1 { font-size: 26px;}
+	.logo-bg{left:0px}
+}
+@media all and (max-width: 992px) {
+	.login-title h1 { font-size: 26px;}
+	.login-form-body .login-yanzheng{ margin-right:0}
+}
+@media all and (max-width: 768px) {
+	.logo-bg{display: none;}
+	.content-graybg{display: none;}
+}

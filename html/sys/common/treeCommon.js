@@ -1,1 +1,406 @@
-function selectStaff(t,e,a,n,l,o){(new selectStaffModal).staffModal(t,e,a,n,l,o)}function selectStaffModal(){function t(t,e,a){return a?a=a.data:null}this.initValStaff={ifradio:"1",init:function(t){null!=t&&""!=t&&(this.ifradio=t)},getIfradio:function(){return this.ifradio}},this.orgTrees=null,this.orgSetting={view:{selectedMulti:!1},edit:{enable:!1,editNameSelectAll:!1},data:{simpleData:{enable:!0,idKey:"orgId",pIdKey:"parentId"},key:{name:"orgName"}},check:{chkStyle:"checkbox",enable:!1,chkboxType:{Y:"",N:""}},async:{enable:!0,url:"",type:"GET",dataType:"json",dataFilter:t},callback:{beforeAsync:function(t,e){return orgTrees.setting.async.url=serverPath+"orgs/"+e.orgId+"/children",!0}}},this.staffModal=function(t,e,a,n,l,o){l=[{staffId:10002,staffName:"管理员"}];var i=this.initValStaff,r=this.orgSetting;0==$("#example"+t).size()&&($("body").append('<div class="" id="example"></div>'),$("#example").attr("id","example"+t)),$("#example"+t).load("../common/treeCommon.html",function(){$("a.close_btn").click(function(){$(this).parents(".detail_layer").fadeOut(),$(".fade_layer").fadeOut()}),$("a.title_close").click(function(){$(this).parents(".detail_layer").fadeOut(),$(".fade_layer").fadeOut()}),$(".fade_layer").fadeIn(),$("#rightSelected").attr("id","rightSelected"+t),$("#leftSelected").attr("id","leftSelected"+t),$("#checkedStaff").attr("id","checkedStaff"+t),$("#notStaffList").attr("id","notStaffList"+t),$("#roleList").attr("id","roleList"+t),$("#byOrg").attr("id","byOrg"+t),$("#byRole").attr("id","byRole"+t),$("#roleList").attr("id","roleList"+t),$("#orgTree").attr("id","orgTree"+t),$("#buttonConfim").attr("id","buttonConfim"+t),$("#searchStaff").attr("id","searchStaff"+t),$("#centerbutton").attr("id","centerbutton"+t),i.init(o),"2"==i.getIfradio()&&($("#centerbutton"+t).prepend('<button type="button" id="rightAll" class="btn btn-info btn-block"><i class="glyphicon glyphicon-forward"></i></button>'),$("#centerbutton"+t).append('<button type="button" id="leftAll" class="btn btn-info btn-block"><i class="glyphicon glyphicon-backward"></i></button>'),$("#rightAll").attr("id","rightAll"+t),$("#leftAll").attr("id","leftAll"+t),$("#notStaffList"+t).multiselect({rightAll:"#rightAll"+t,leftAll:"#leftAll"+t})),$("#notStaffList"+t).multiselect({keepRenderingSort:!0,right:"#checkedStaff"+t,left:"notStaffList"+t,rightSelected:"#rightSelected"+t,leftSelected:"#leftSelected"+t,search:{left:'<input type="text" name="q" class="form-control" style="margin:10px 0px;" placeholder="查询待选..." />',right:'<input type="text" name="q" class="form-control" style="margin:10px 0px;" placeholder="查询已选..." />'},fireSearch:function(t){return t.length>0},beforeMoveToRight:function(){if("2"==i.getIfradio())return!0;var e=document.getElementById("checkedStaff"+t),a=e.options.length;return 1>a?!0:(appendAlert("myStaffTreeModal",t,"单选"),!1)}}),$("input[name=searchRadio]").click(function(){showCont(t)}),e=34869;var s=e;$.ajax({url:serverPath+"orgs/"+s+"/orgTree",type:"GET",async:!1,success:function(e){return function(a){"1"==a.status?($("#orgTrees").attr("id","orgTrees"+t),e.callback.onClick=function(e,a,n){$.ajax({url:serverPath+"orgs/"+n.orgId+"/staffs/list",type:"GET",async:!1,success:function(e){var a=e.data,n=l;$("#checkedStaff"+t).empty(),$("#notStaffList"+t).empty();for(var o=0;o<n.length;o++)$("#checkedStaff"+t).append($('<option defName="'+n[o].staffName+'" value="'+n[o].staffId+'">'+n[o].staffName+"</option>"));if(a){for(var o=0;o<a.length;o++)for(var i=0;i<n.length;i++)if(a[o].staffId!=n[i].staffId){$("#notStaffList"+t).append($('<option value="'+a[o].staffId+'">'+a[o].staffName+"</option>"));break}}else $("#notStaffList"+t).append("<span>没有数据</span>")},error:function(){alert("查询人员失败")}})},orgTrees=$.fn.zTree.init($("#orgTrees"+t),e,a.data),orgTrees.expandAll(!1)):alert("cuole ")}}(r)}),a=10001;var d=a;$.ajax({url:serverPath+"roles/"+d+"/role",type:"GET",async:!1,success:function(e){for(var a=e.roles,o=0;o<a.length;o++)$("#roleList"+t).append("<div><input type='radio' name='roleCheckBox' value=\""+a[o].roleId+'"/><span>"'+a[o].roleName+'"</span></div>');$("input[name=roleCheckBox]").click(function(){searchStaffByroleId(this.value,s,l,t,n)})},error:function(){alert("查询角色失败")}}),staffbuttonConfirm(t,n)})}}function showCont(t){switch($("input[name=searchRadio]:checked").attr("id")){case"byOrg"+t:$("#orgTree"+t).removeClass("HdClass"),$("#roleList"+t).addClass("HdClass");break;case"byRole"+t:$("#roleList"+t).removeClass("HdClass"),$("#orgTree"+t).addClass("HdClass")}}function searchStaffByroleId(t,e,a,n){$.ajax({url:serverPath+"roles/"+t+"/notstaffsList",data:{orgId:e},type:"GET",async:!1,success:function(t){if("1"==t.status){var e=t.data,l=a;$("#checkedStaff"+n).empty(),$("#notStaffList"+n).empty();for(var o=0;o<l.length;o++)$("#checkedStaff"+n).append($('<option defName="'+l[o].staffName+'" value="'+l[o].staffId+'">'+l[o].staffName+"</option>"));if(e)for(var o=0;o<e.length;o++)for(var i=0;i<l.length;i++)if(e[o].staffId!=l[i].staffId){$("#notStaffList"+n).append($('<option value="'+e[o].staffId+'">'+e[o].staffName+"</option>"));break}}else appendAlert("mysearchStaffByroleIdModal",n,t.message)},error:function(){appendAlert("myrolestaffModal",n,"查询角色下人员失败")}})}function staffbuttonConfirm(t,e){$("a.do_add").click(function(){var a="",n="";$("#checkedStaff"+t+" option").each(function(){a+=$(this).attr("value")+",",n+=$(this).attr("defName")+","}),e(a.substr(0,a.length-1),n.substr(0,n.length-1)),$(this).parents(".detail_layer").fadeOut(),$(".fade_layer").fadeOut()})}function yourFunction1(t,e){console.log("ids:"+t+";names:"+e),alert("ids:"+t+";names:"+e)}function appendAlert(t,e,a){return 0==$("#"+t+e).size()?($("#"+t+e).empty(),$("body").append("<div class='modal fade' id='"+t+e+"' tabindex='-1' role='dialog' aria-labelledby='"+t+e+"'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>×</span></button><h4 class='modal-title' id='myModalLabel"+e+"'>提示</h4></div><div class='modal-body'><div class='form-group'><label id='tishi"+e+"' for='txt_departmentname'></label></div></div><div class='modal-footer'><button type='button' class='btn btn-default' data-dismiss='modal'><span class='glyphicon' aria-hidden='true'></span>关闭</button><button type='button' id='btn_submit"+e+"' class='btn btn-primary' data-dismiss='modal'><span class='glyphicon' aria-hidden='true'></span>确定</button></div></div></div></div>"),$("#tishi"+e).html(a),void $("#"+t+e).modal("show")):($("#tishi"+e).html(a),void $("#"+t+e).modal("show"))}
+
+
+
+function selectStaff(serial,curorgId,curStaffOrgId,callBackFun,checked,ifRadio) {
+	new selectStaffModal().staffModal(serial,curorgId,curStaffOrgId,callBackFun,checked,ifRadio);
+}
+
+
+
+function selectStaffModal(){
+	//初始化参数配置，如果参数为空，则为默认值，如果参数有值，则为此值
+	this.initValStaff = {
+			ifradio:"1",
+			init:function(ifr,wid,hei){
+				if(null != ifr && ""!=ifr){
+					this.ifradio = ifr;
+				}
+			},
+			getIfradio:function(){
+				return this.ifradio;
+			}
+		}
+	//orgTrees是组织树
+	 this.orgTrees = null;
+	//组织树设置
+	this.orgSetting = {
+			view: {
+				selectedMulti: false
+			},
+			
+			edit: {
+				enable: false,
+				editNameSelectAll: false,
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey:"orgId", 
+		            pIdKey:"parentId"
+				},
+				key : {
+					name : "orgName"
+				}
+			},
+			check:{
+				chkStyle:"checkbox",//勾选框类型
+				enable:false, //设置 zTree 的节点上是否显示 checkbox
+				chkboxType:{"Y":'',"N":''}
+			},
+			async:{
+				enable: true,
+				url:'',
+				type : "GET",// 默认post
+				dataType : 'json',
+				dataFilter: ajaxDataFilter//处理异步加载返回的数据
+			},
+			callback:{
+				beforeAsync:function(treeId, treeNode) {	
+					orgTrees.setting.async.url = serverPath + "orgs/"
+					+ treeNode.orgId + "/children";
+					return true;
+				}
+			}
+		};
+
+	//查看异步加载返回数据
+	function ajaxDataFilter(treeId, parentNode, childNodes) {
+		debugger;
+		if (!childNodes) { 
+	   	 return null;
+	   }else{
+	   	 childNodes = childNodes.data;
+	   	 return childNodes;
+	   }
+	}
+	
+	this.staffModal = function staffModal(serial,curorgId,curStaffOrgId,callBackFun,checked,ifRadio){
+		checked=[{"staffId":10002,"staffName":"管理员"}];
+		var initParams = this.initValStaff;
+		var oset = this.orgSetting;
+		if($("#example"+serial).size() == 0){
+			$('body').append('<div class="" id="example"></div>');
+			$("#example").attr("id","example"+serial);
+		}
+		$("#example"+serial).load("../common/treeCommon.html",function (){
+			// 弹出框关闭按钮的点击事件
+			$('a.close_btn').click(function(){
+				$(this).parents('.detail_layer').fadeOut();
+				$('.fade_layer').fadeOut();
+			});
+			//取消按钮的点击事件
+			$('a.title_close').click(function(){
+				$(this).parents('.detail_layer').fadeOut();
+				$('.fade_layer').fadeOut();
+			});
+			//展示阴影层
+			$('.fade_layer').fadeIn();
+			//设置唯一id
+			$("#rightSelected").attr("id","rightSelected"+serial);
+			$("#leftSelected").attr("id","leftSelected"+serial);
+			$("#checkedStaff").attr("id","checkedStaff"+serial);
+			$("#notStaffList").attr("id","notStaffList"+serial);
+			$("#roleList").attr("id","roleList"+serial);
+			$("#byOrg").attr("id","byOrg"+serial);
+			$("#byRole").attr("id","byRole"+serial);
+			$("#roleList").attr("id","roleList"+serial);
+			$("#orgTree").attr("id","orgTree"+serial);
+			$("#buttonConfim").attr("id","buttonConfim"+serial);
+			$("#searchStaff").attr("id","searchStaff"+serial);
+			$("#centerbutton").attr("id","centerbutton"+serial);
+			//初始化参数
+			initParams.init(ifRadio);	
+			//如果为多选，则向页面添加功能为可以全部选择的按钮
+			if(initParams.getIfradio()=="2"){
+				$("#centerbutton"+serial).prepend('<button type="button" id="rightAll" class="btn btn-info btn-block">'+
+						'<i class="glyphicon glyphicon-forward"></i>'+'</button>');
+				$("#centerbutton"+serial).append('<button type="button" id="leftAll" class="btn btn-info btn-block">'+
+						'<i class="glyphicon glyphicon-backward"></i>'+'</button>');
+				$("#rightAll").attr("id","rightAll"+serial);
+				$("#leftAll").attr("id","leftAll"+serial);
+				$('#notStaffList'+serial).multiselect({
+					rightAll: '#rightAll'+serial,
+					leftAll: '#leftAll'+serial,
+				});
+			}
+			//初始化左右选择控件
+			$('#notStaffList'+serial).multiselect({
+			       keepRenderingSort: true,
+			       right: '#checkedStaff'+serial,
+			       left:'notStaffList'+serial,
+			       rightSelected: '#rightSelected'+serial,
+			       leftSelected: '#leftSelected'+serial,
+			       search: {
+			            left: '<input type="text" name="q" class="form-control" style="margin:10px 0px;" placeholder="查询待选..." />',
+			            right: '<input type="text" name="q" class="form-control" style="margin:10px 0px;" placeholder="查询已选..." />',
+			        },
+			        fireSearch: function(value) {
+			            return value.length > 0;
+			        },
+			        //在向右添加选项之前进行判断
+			        beforeMoveToRight:function (){
+			        	debugger;
+			        	if(initParams.getIfradio()=="2"){
+			        		return true;
+			        	}else{
+			        		//获取已选择选项的长度
+			        		var obj = document.getElementById("checkedStaff"+serial);
+			        		var checkedLength = obj.options.length;
+			        		debugger;
+			        		if(1 > checkedLength){// 如果已选长度小于规定的个数，则可以操作，否则不可操作
+			        			return true;
+			        		}else{
+			        			appendAlert('myStaffTreeModal',serial,'单选');
+			        			return false;	
+			        		}
+			        	}
+			        },
+			   });
+			// 给radio按钮绑定点击事件
+			$("input[name=searchRadio]").click(function() {
+				showCont(serial);
+			});
+			
+			curorgId = 34869;
+			var orgid = curorgId;
+			//请求组织树数据
+			$.ajax({
+			    url: serverPath + "orgs/"+orgid+"/orgTree",
+			    type: "GET",
+			    async: false,
+			    success:(function(orgSetting){
+					return function(data){
+						if("1" == data.status){
+							$("#orgTrees").attr("id","orgTrees"+serial);
+							//点击ztree上的节点时调用的函数，此时请求到人员数据，并向左右选择框添加
+							orgSetting.callback.onClick = function(event,treeId, treeNode) {	
+								$.ajax({
+								    url: serverPath + "orgs/"+treeNode.orgId+"/staffs/list",
+								    type: "GET",
+								    async: false,
+								    success:function(data){
+						    	 		var allStaff = data.data;
+						    			var checkedStaff = checked;
+						    			//先清空左右选择框数据
+						    			$("#checkedStaff"+serial).empty();
+						    			$("#notStaffList"+serial).empty();
+						    			//向右选择框添加数据
+						    			for(var i=0;i<checkedStaff.length;i++){
+						    				$("#checkedStaff"+serial).append($("<option defName=\""+checkedStaff[i].staffName+"\" value=\""+checkedStaff[i].staffId+"\">"+checkedStaff[i].staffName+"</option>"));
+						    			}
+						    			//筛出右选择框数据，向做选择框添加数据
+						    			if(allStaff){
+							    			for(var i=0;i<allStaff.length;i++){
+							    				for(var j=0;j<checkedStaff.length;j++){
+							    					if(!(allStaff[i].staffId == checkedStaff[j].staffId)){
+									    				$("#notStaffList"+serial).append($("<option value=\""+allStaff[i].staffId+"\">"+allStaff[i].staffName+"</option>"));
+									    				break;
+							    					}
+							    				}
+							    			}
+						    			}else{
+						    				$("#notStaffList"+serial).append("<span>没有数据</span>");
+						    			}
+						    			//buttonOnclick(serial);
+					    			},
+					    			error:function(e){
+					    				alert("查询人员失败");
+					    			}
+								  });
+							};
+							//初始化ztree
+							orgTrees = $.fn.zTree.init($("#orgTrees"+serial), orgSetting, data.data);
+							orgTrees.expandAll(false);
+						}else{
+							alert("cuole ");
+						}
+					}
+				})(oset)
+			  });
+			
+			
+			curStaffOrgId =10001;
+			var stafforgid = curStaffOrgId;
+			//请求该人员可以查看的角色数据
+			$.ajax({
+			    url: serverPath + "roles/"+stafforgid+"/role",
+			    type: "GET",
+			    async: false,
+			    success:function(data){
+						var roles = data.roles;
+						for(var i=0;i<roles.length;i++){
+							$("#roleList"+serial).append("<div><input type='radio' name='roleCheckBox' value=\""+roles[i].roleId+"\"/>"+"<span>\""+roles[i].roleName+"\"</span></div>");
+						}
+						$("input[name=roleCheckBox]").click(function() {
+							searchStaffByroleId(this.value,orgid,checked,serial,callBackFun);
+						});
+					},
+	    			error:function(e){
+	    				alert("查询角色失败");
+	    			}
+			  });
+			//给确定按钮添加点击事件
+			staffbuttonConfirm(serial,callBackFun);
+		});
+	}
+
+}
+
+/**
+ * 根据radio的选择不同，展示相应的内容
+ */
+function showCont(serial) {
+	switch ($("input[name=searchRadio]:checked").attr("id")) {
+	case "byOrg"+serial:
+		$("#orgTree"+serial).removeClass('HdClass');
+		$("#roleList"+serial).addClass('HdClass');
+		break;
+	case "byRole"+serial:
+		$("#roleList"+serial).removeClass('HdClass');
+		$("#orgTree"+serial).addClass('HdClass');
+		;
+		break;
+	default:
+		break;
+	}
+}
+/**
+ * 给按角色查人员的单选按钮添加点击事件，进行按角色id查人员
+ * @param roleId 角色id
+ * @param orgid  组织id
+ * @param checked 已选数据
+ * @param serial  唯一标识
+ * @param callBackFun 回调函数
+ * @returns
+ */
+function searchStaffByroleId(roleId,orgid,checked,serial,callBackFun){
+	$.ajax({
+	    url: serverPath + "roles/"+roleId+"/notstaffsList",
+	    data:{"orgId":orgid},
+	    type: "GET",
+	    async: false,
+	    success:function(data){
+	    	if("1" == data.status){
+		    	var staff = data.data;
+		    	var checkedStaff = checked;
+		    	$("#checkedStaff"+serial).empty();
+				$("#notStaffList"+serial).empty();
+				for(var i=0;i<checkedStaff.length;i++){
+					$("#checkedStaff"+serial).append($("<option defName=\""+checkedStaff[i].staffName+"\" value=\""+checkedStaff[i].staffId+"\">"+checkedStaff[i].staffName+"</option>"));
+				}
+				if(staff){
+	    			for(var i=0;i<staff.length;i++){
+	    				for(var j=0;j<checkedStaff.length;j++){
+	    					if(!(staff[i].staffId == checkedStaff[j].staffId)){
+			    				$("#notStaffList"+serial).append($("<option value=\""+staff[i].staffId+"\">"+staff[i].staffName+"</option>"));
+			    				break;
+	    					}
+	    				}
+	    			}
+				}
+	    	}else{
+	    		appendAlert('mysearchStaffByroleIdModal',serial,data.message);
+	    	}
+	    	//buttonOnclick(serial);
+	        //staffbuttonConfirm(serial,callBackFun);
+	    },
+		error:function(e){
+			appendAlert('myrolestaffModal',serial,'查询角色下人员失败');
+		}
+	  });
+}
+
+
+/*function buttonOnclick(serial){
+	//移到右边
+    $('#rightSelected'+serial).click(function(){
+        //获取选中的选项，删除并追加给对方
+        $('#notStaffList'+serial+' option:selected').appendTo('#checkedStaff'+serial); 
+    });
+    //移到左边
+    $('#leftSelected'+serial).click(function(){
+        $('#checkedStaff'+serial+' option:selected').appendTo('#notStaffList'+serial);
+    });
+    //全部移到右边
+    $('#rightAll'+serial).click(function(){
+        //获取全部的选项,删除并追加给对方
+        $('#notStaffList'+serial+' option').appendTo('#checkedStaff'+serial);
+    });
+    //全部移到左边
+    $('#leftAll'+serial).click(function(){
+        $('#checkedStaff'+serial+' option').appendTo('#notStaffList'+serial);
+    });
+    //双击选项
+    $('#notStaffList'+serial).dblclick(function(){ //绑定双击事件
+        //获取全部的选项,删除并追加给对方
+        $("option:selected",this).appendTo('#checkedStaff'+serial); //追加给对方
+    });
+    //双击选项
+    $('#checkedStaff'+serial).dblclick(function(){
+        $("option:selected",this).appendTo('#notStaffList'+serial);
+    });
+}*/
+
+/**
+ * 确认按钮的点击事件，可以给回调函数提供参数
+ * @param serial 唯一标识
+ * @param callBackFun 回调函数
+ * @returns
+ */
+function staffbuttonConfirm(serial,callBackFun){
+	$('a.do_add').click(function (){
+		var staffId = "";
+		var staffName="";
+		//获取右选择框的选项属性
+	    $("#checkedStaff"+serial+" option").each(function() {
+	        staffId += $(this).attr("value")+",";
+	        staffName +=$(this).attr("defName")+",";
+	    });
+		callBackFun(staffId.substr(0,staffId.length-1),staffName.substr(0,staffName.length-1));
+		//关闭弹出页面
+		$(this).parents('.detail_layer').fadeOut();
+		$('.fade_layer').fadeOut();
+	});
+}
+
+/**
+ * 回调函数样例，本人员组件只提供了人员id和人员姓名的回调参数
+ * @param staffId 人员id
+ * @param staffName 人员姓名
+ * @returns
+ */
+function yourFunction1(staffId,staffName){
+	console.log("ids:"+staffId+";names:"+staffName);
+	alert("ids:"+staffId+";names:"+staffName);
+}
+
+/**
+ * 提示框
+ * @param modalId 提示框的id
+ * @param serial 唯一标识
+ * @param message 要展示的信息
+ * @returns 页面会弹出一个模态框的提示框
+ */
+function appendAlert(modalId,serial,message){
+	if($('#'+modalId+serial).size()==0){
+		 $('#'+modalId+serial).empty();
+		 $('body').append("<div class='modal fade' id='"+modalId+serial+"' tabindex='-1' role='dialog' aria-labelledby='"+modalId+serial+"'>" +
+		"<div class='modal-dialog' role='document'><div class='modal-content'>"+
+		"<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-label='Close'>"+
+		"<span aria-hidden='true'>×</span></button><h4 class='modal-title' id='myModalLabel"+serial+"'>提示</h4></div>"+
+		"<div class='modal-body'><div class='form-group'><label id='tishi"+serial+"' for='txt_departmentname'></label>"+
+		"</div></div>"+
+		"<div class='modal-footer'><button type='button' class='btn btn-default' data-dismiss='modal'>"+
+		"<span class='glyphicon' aria-hidden='true'></span>关闭</button>"+
+		"<button type='button' id='btn_submit"+serial+"' class='btn btn-primary' data-dismiss='modal'>"+
+		"<span class='glyphicon' aria-hidden='true'></span>确定</button></div></div></div></div>");
+		 $("#tishi"+serial).html(message); 
+		 $('#'+modalId+serial).modal('show');
+		 return;
+	}
+	else{
+		 $("#tishi"+serial).html(message); 
+		$('#'+modalId+serial).modal('show');
+		 return;
+	}
+}

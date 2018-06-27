@@ -1,1 +1,62 @@
-!function(t){"use strict";var a=function(a,r){function o(a,i){if(Object(a)!==a)n[i]=a;else if(t.isArray(a))for(var e=0,s=a.length;s>e;e++)o(a[e],i?i+r.options.flatSeparator+e:""+e),0==s&&(n[i]=[]);else{var f=!0;for(var p in a)f=!1,o(a[p],i?i+r.options.flatSeparator+p:p);f&&(n[i]={})}}var n={};return o(a,""),n},r=function(r,o){var n=[];return t.each(t.isArray(r)?r:[r],function(t,r){n.push(a(r,o))}),n};t.extend(t.fn.bootstrapTable.defaults,{flat:!1,flatSeparator:"."});var o=t.fn.bootstrapTable.Constructor,n=o.prototype.initData;o.prototype.initData=function(t,a){this.options.flat&&(t=r(t?t:this.options.data,this)),n.apply(this,[t,a])}}(jQuery);
+/**
+ * @author: Dennis Hernández
+ * @webSite: http://djhvscf.github.io/Blog
+ * @version: v1.3.0
+ */
+
+(function ($) {
+    'use strict';
+
+    var flat = function (element, that) {
+        var result = {};
+
+        function recurse(cur, prop) {
+            if (Object(cur) !== cur) {
+                result[prop] = cur;
+            } else if ($.isArray(cur)) {
+                for (var i = 0, l = cur.length; i < l; i++) {
+                    recurse(cur[i], prop ? prop + that.options.flatSeparator + i : "" + i);
+                    if (l == 0) {
+                        result[prop] = [];
+                    }
+                }
+            } else {
+                var isEmpty = true;
+                for (var p in cur) {
+                    isEmpty = false;
+                    recurse(cur[p], prop ? prop + that.options.flatSeparator + p : p);
+                }
+                if (isEmpty) {
+                    result[prop] = {};
+                }
+            }
+        }
+
+        recurse(element, "");
+        return result;
+    };
+
+    var flatHelper = function (data, that) {
+        var flatArray = [];
+
+        $.each(!$.isArray(data) ? [data] : data, function (i, element) {
+            flatArray.push(flat(element, that));
+        });
+        return flatArray;
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, {
+        flat: false,
+        flatSeparator: '.'
+    });
+
+    var BootstrapTable = $.fn.bootstrapTable.Constructor,
+        _initData = BootstrapTable.prototype.initData;
+
+    BootstrapTable.prototype.initData = function (data, type) {
+        if (this.options.flat) {
+            data = flatHelper(data ? data : this.options.data, this);
+        }
+        _initData.apply(this, [data, type]);
+    };
+})(jQuery);

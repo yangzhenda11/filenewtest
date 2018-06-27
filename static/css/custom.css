@@ -1,1 +1,588 @@
-.iconfont{-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:.2px}.page-content.page-content-bg{background-color:#EDF2F6}.page-content.page-content-bg .portlet{border:0!important}.page-tabs-content .fa.fa-times-circle{display:inline}.table_toolbars .btn{margin-right:5px}.dataTables_scrollBody{overflow-y:inherit!important}.multiselect-my:after{content:'';display:table;clear:both}.multiselect-my>.multiselect-leftPanel,.multiselect-my>.multiselect-options,.multiselect-my>.multiselect-rightPanel{float:left}.multiselect-my .panel-body{padding:0}.multiselect-my>.multiselect-leftPanel,.multiselect-my>.multiselect-rightPanel{width:45%;margin-bottom:0}.multiselect-my>.multiselect-leftPanel input,.multiselect-my>.multiselect-rightPanel input{width:94%;margin:10px auto}.multiselect-my>.multiselect-leftPanel select,.multiselect-my>.multiselect-rightPanel select{border:0}.multiselect-my>.multiselect-options{width:10%;padding:60px 15px 0}.selectL2R-actions{margin-top:42px;margin-right:5px}.selectL2R-actions>button{width:34px}.form-wizard-thin.form-wizard .steps{padding:5px 0}.form-wizard-thin.form-wizard .progress{margin-bottom:15px}.height-none{height:0!important;overflow:hidden!important}.btn>.iconfont,.btn>.fa,.btn>.glyphicon{margin-right:2px}.page-search,.page-search>form{position:relative;display:table;width:100%}.page-search .page-search-form,.page-search .page-search-action{position:relative;display:table-cell;overflow:visible}.page-search .page-search-form{width:100%;padding-right:0}.page-search .page-search-action{width:1%;white-space:nowrap;vertical-align:middle}.page-search-form .input-group .btn{margin-right:5px}.form-control-static{word-break:break-all}.taskBtnFixed{position:fixed;top:18px;right:30px;background:#FFF;z-index:99;padding:0!important}.row_box{width:100%}.sclapy_nav{width:20%;float:left;border-radius:0;border:0;background:#eaeaea;height:100%}.by-gray{background:#eaeaea}.sclapy_nav .nav_title{font-size:16px;padding:10px 15px}#navbar-example2 li a{color:#777;padding-left:40px}#navbar-example2 li.active a{background:#FFF!important}.right_box{float:right;width:78.3%}.auto_box{padding:0;height:-webkit-fill-available;width:100%}.right_box{float:right;width:80%}.auto_box{margin-left:10px;width:100%}.sclapy_nav big{font-size:16px;color:#777;margin-left:-5px;display:inline}.setCurPage{width:40px;margin:0 5px;border:1px solid #ececec;border-radius:3px;outline:0;height:22px;text-align:center;font-size:12px;color:#767676}#user-menu{margin-top:4px}.toolbars-position{position:relative}.toolbars-content{position:absolute}.page-search .select2-selection{border-top-left-radius:0;border-bottom-left-radius:0}.overflow-hidden{overflow:hidden}.align-center{text-align:center}.align-right{text-align:right}.align-left{text-align:left}button:focus{outline:0!important}.marginLeft15{margin-left:15px}.marginLeft25{margin-left:25px}.margin-top-10{margin-top:10px}.paddingR0{padding-right:0}.paddingL0{padding-left:0}.padding-tb-8{padding-top:8px}.paddingLR0{padding-left:0;padding-right:0}.fullWidth{width:100%}.sm-12-btn{width:200px;text-align:center}.sm-12-btn .letterSpace{margin-right:15px}.data-input-group span{padding-left:8px;padding-right:8px}.data-input-group input{padding-left:0;padding-right:0;text-align:center;cursor:pointer}.data-input-group2 input{padding-left:0;padding-right:0;text-align:center;cursor:pointer}.toolbars button{margin-right:8px}table .ui-radio,table .ui-checkbox{padding-left:20px;margin:0;height:14px}table i{font-weight:400}body{overflow:hidden}.whiteSpaceNormal{white-space:normal!important;word-break:break-all!important}.table-align td,.table-align th{text-align:center}th.thAlignCenter{text-align:center}.required{color:red}.zTreeContent{max-height:200px;margin-bottom:20px}.modalDetailTit{float:left;margin-top:15px}.modalDetailTab{margin-bottom:0}.modalDetailTab>li{float:right}.modalDetailCon{overflow:hidden;border:1px solid #ddd;border-top:0;padding:20px 0;margin-bottom:30px}.form-fieldset>.form-fieldset-body{padding-top:20px}.form-fieldset-body .control-label{text-align:right}.form-fieldset-body .control-label{padding-top:5px}.toolbarBtn{height:42px}#toolbarBtnContent{width:96%}#toolbarBtnContent button{margin:5px 3px}.defaultModalWidth{width:90%}.defaultModalForm .form-group,.modalForm25 .form-group{display:table}.defaultModalForm .form-group>label{width:30%;min-height:1px;line-height:16px;padding:0 10px 0 0;vertical-align:middle;display:table-cell;text-align:right}.modalForm25 .form-group>label{width:23%;min-height:1px;line-height:16px;padding:0 10px 0 0;vertical-align:middle;display:table-cell;text-align:right}.defaultFieldsetForm .form-group,.fieldsetForm15 .form-group{display:table;padding-left:5px;padding-right:5px}.defaultFieldsetForm .form-group>label{width:20%;min-height:1px;line-height:16px;padding:0 10px 0 0;vertical-align:middle;display:table-cell}.fieldsetForm15 .form-group>label{width:15%;min-height:1px;line-height:16px;padding:0 10px 0 0;vertical-align:middle;display:table-cell}.defaultModalForm .form-group>.valiParent,.modalForm15 .form-group>.valiParent{width:100%;float:left;position:relative;min-height:1px;padding-left:10px;padding-right:10px}.defaultFieldsetForm .form-group>.valiParent,.fieldsetForm15 .form-group>.valiParent{width:100%;float:left;position:relative;min-height:1px;padding-left:10px;padding-right:10px}.notNull{color:#E43A45;position:relative;top:2px;left:3px}.modal-body{display:block}.modal-body::after{content:"";clear:both;display:block}.searchLableText{}.custorPoint{cursor:pointer}.divInput{cursor:not-allowed;background:#f5f5f5;border:1px solid #ececec;padding:6px 12px;border-radius:3px;color:#767676;min-height:34px;white-space:pre;line-height:22px}
+/* 解决iconfont 在谷歌浏览器下锯齿加粗-开始 */
+.iconfont {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+}
+/* 解决iconfont 在谷歌浏览器下锯齿加粗-结束 */
+/* 带背景色的page-content-开始 */
+.page-content.page-content-bg {
+    background-color: #EDF2F6;
+}
+
+.page-content.page-content-bg .portlet {
+    border: none !important;
+}
+/* 带背景色的page-content-结束 */
+
+/* ie兼容性问题修改 -开始 */
+
+/*ie8下打开标签的图标不识别问题--开始*/
+.page-tabs-content .fa.fa-times-circle {
+    display: inline;
+}
+/*ie8下打开标签的图标不识别问题--结束*/
+/* ie兼容性问题修改 -结束 */
+
+/* 设定table_toolbars中按钮的间距-开始 */
+.table_toolbars .btn{margin-right:5px;}
+/* 设定table_toolbars中按钮的间距-结束 */
+.dataTables_scrollBody{
+	overflow-y: inherit !important;
+}
+/* 重定义弹出层间距-开始 */
+/*.modal .modal-header {
+    padding: 10px 15px;
+}*/
+
+/*.modal-footer {
+    padding: 10px 15px;
+}
+
+.form .form-body, .portlet-form .form-body {
+    padding: 10px 15px;
+}*/
+
+/*.form-group {
+    margin-bottom: 8px;
+}
+
+.input-group {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}*/
+/* 重定义弹出层间距-结束 */
+
+
+/* 左右选择样式-开始 */
+.multiselect-my:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.multiselect-my>.multiselect-leftPanel, .multiselect-my>.multiselect-options,
+    .multiselect-my>.multiselect-rightPanel {
+    float: left;
+}
+
+.multiselect-my .panel-body {
+    padding: 0
+}
+
+.multiselect-my>.multiselect-leftPanel, .multiselect-my>.multiselect-rightPanel
+    {
+    width: 45%;
+    margin-bottom: 0;
+}
+
+.multiselect-my>.multiselect-leftPanel input, .multiselect-my>.multiselect-rightPanel input
+    {
+    width: 94%;
+    margin: 10px auto;
+}
+
+.multiselect-my>.multiselect-leftPanel select, .multiselect-my>.multiselect-rightPanel select
+    {
+    border: none;
+}
+
+.multiselect-my>.multiselect-options {
+    width: 10%;
+    padding: 60px 15px 0;
+}
+.selectL2R-actions{
+	margin-top: 42px;
+	margin-right: 5px;
+}
+.selectL2R-actions > button{
+	width: 34px;
+}
+/* 左右选择样式-结束 */
+
+
+/* form-wizard-thin 开始 */
+.form-wizard-thin.form-wizard .steps {
+    padding: 5px 0;
+}
+
+.form-wizard-thin.form-wizard .progress {
+    margin-bottom: 15px
+}
+/* form-wizard-thin 结束*/
+
+/* 设置div高度为0 开始 */
+.height-none {
+    height: 0 !important;
+    overflow: hidden !important;
+}
+/* 设置div高度为0 结束 */
+
+/* 设置按钮中图标左右间距-开始 */
+.btn>.iconfont, .btn>.fa, .btn>.glyphicon {
+    margin-right: 2px;
+}
+/* 设置按钮中图标左右间距-结束 */
+
+/* 调整搜索区域的宽度自适应-开始  */
+.page-search, .page-search>form {
+    position: relative;
+    display: table;
+    width: 100%;
+}
+
+.page-search .page-search-form, .page-search .page-search-action {
+    position: relative;
+    display: table-cell;
+     overflow: visible;
+}
+
+.page-search .page-search-form {
+    width: 100%;
+    padding-right: 0;
+}
+
+.page-search .page-search-action {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.page-search-form .input-group .btn {
+    margin-right: 5px;
+}
+/* 调整搜索区域的宽度自适应-结束  */
+
+/* 设置表格内部的disabled按钮为灰色-开始 */
+/*.table .btn.disabled, .table .btn[disabled] {
+    color: #777 !important;
+}*/
+/* 设置表格内部的disabled按钮为灰色-结束 */
+
+/*强制换行-开始*/
+.form-control-static {
+    word-break: break-all;
+}
+/*强制换行-结束*/
+
+/* 流程按钮固定在顶部-开始 */
+.taskBtnFixed {
+    position: fixed;
+    top: 18px;
+    right: 30px;
+    background: #FFF;
+    z-index: 99;
+    padding: 0 !important;
+}
+/* 流程按钮固定在顶部-开始 */
+
+/*侧边滚动-开始  */
+.row_box {
+    width: 100%;
+}
+
+.sclapy_nav {
+    width: 20%;
+    float: left;
+    border-radius: 0;
+    border: none;
+    background: #eaeaea;
+    height:100%;
+}
+.by-gray{ background: #eaeaea;}
+.sclapy_nav .nav_title {
+    font-size: 16px;
+    padding:10px 15px;
+}
+
+#navbar-example2 li a {
+    color: #777;padding-left:40px;
+}
+
+#navbar-example2 li.active a {
+    background: #FFF !important;
+}
+
+.right_box {
+    float: right;
+    width: 78.3%;
+}
+
+.auto_box {
+    padding: 0;
+    height: -webkit-fill-available;
+    width: 100%;
+}
+.right_box{float:right;width:80%;}
+.auto_box{margin-left:10px; width:100%;}
+.sclapy_nav big{font-size:16px;color:#777777;margin-left:-5px;display:inline;}
+/*侧边滚动-结束  */
+/*modal.css*/
+/*.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1061;
+  display: none;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.modal:nth-of-type(1) {
+    z-index: 1061 !important;
+}
+.modal:nth-of-type(2) {
+    z-index: 1062 !important;
+}
+.modal:nth-of-type(3) {
+    z-index: 1063 !important;
+} 
+.modal:nth-of-type(4) {
+    z-index: 1064 !important;
+} 
+.modal:nth-of-type(5) {
+    z-index: 1065 !important;
+} 
+.modal:nth-of-type(6) {
+    z-index: 1066 !important;
+} 		
+.modal:nth-of-type(7) {
+    z-index: 1067 !important;
+} 
+
+.modal-backdrop.in:nth-last-of-type(1) {
+	z-index: 1060 !important;
+}
+.modal-backdrop.in:nth-last-of-type(2) {
+	z-index: 1061 !important;
+} 
+.modal-backdrop.in:nth-last-of-type(3) {
+	z-index: 1062 !important;
+}
+.modal-backdrop.in:nth-last-of-type(4) {
+	z-index: 1063 !important;
+}
+.modal-backdrop.in:nth-last-of-type(5) {
+	z-index: 1064 !important;
+}
+.modal-backdrop.in:nth-last-of-type(6) {
+	z-index: 1065 !important;
+}
+.modal-backdrop.in:nth-last-of-type(7) {
+	z-index: 1066 !important;
+}*/
+/*modal.css*/
+
+
+/*
+ * contract2.0
+ */
+/*
+ * datatable
+ */
+.setCurPage{
+    width: 40px;
+    margin: 0 5px;
+    border: 1px solid #ececec;
+    border-radius: 3px;
+    outline: none;
+    height: 22px;
+    text-align:  center;
+    font-size: 12px;
+    color: #767676;
+}
+/*
+ * 右侧若加工具栏样式，两层DIV  .toolbars-position>.toolbars-content
+ * 浮动布局
+ */
+#user-menu{
+	margin-top: 4px;
+}
+.toolbars-position{
+	position: relative;
+}
+.toolbars-content{
+	position: absolute;
+}
+.page-search .select2-selection{
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+/*
+ * 预定义字段
+ */
+/*.col-offset-5{
+	margin-left: 5%;
+}*/
+.overflow-hidden{
+		overflow: hidden;
+}
+.align-center{
+	text-align: center;
+}
+.align-right{
+    text-align: right;
+}
+.align-left{
+    text-align: left;
+}
+button:focus{
+		outline: none !important;
+}
+.marginLeft15{
+	margin-left: 15px;
+}
+.marginLeft25{
+	margin-left: 25px;
+}
+.margin-top-10{
+	margin-top: 10px;
+}
+.paddingR0{
+	padding-right: 0;
+}
+.paddingL0{
+	padding-left: 0;
+}
+.padding-tb-8{
+	padding-top: 8px;
+}
+.paddingLR0 {
+  padding-left: 0;
+  padding-right: 0;
+}
+.fullWidth{
+	width: 100%;
+}
+.sm-12-btn{
+	width: 200px;
+	text-align: center;
+}
+.sm-12-btn .letterSpace{
+	margin-right: 15px;
+}
+/*
+ * 日期数据居中且无padding
+ */
+/*六个字*/
+.data-input-group span{
+	padding-left: 8px;
+	padding-right: 8px;
+}
+.data-input-group input{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
+/*四个字*/
+.data-input-group2 input{
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
+
+/*
+ * 工具栏按钮间隙
+ */
+.toolbars button{
+	margin-right: 8px;
+}
+/*
+ * table下的ui-radio ui-checkbox
+ */
+table .ui-radio,table .ui-checkbox{
+	padding-left: 20px;
+	margin: 0;
+	height: 14px;
+}
+table i{
+	font-weight: normal;
+}
+body{
+	overflow: hidden;
+}
+/*
+ * 表格内文本不折行时添加此元素
+ */
+.whiteSpaceNormal{
+	white-space:normal !important;
+	word-break: break-all !important;
+}
+/*table全部字段居中*/
+.table-align td,.table-align th{
+    text-align: center;
+}
+/*th居中*/
+th.thAlignCenter{
+	text-align: center;
+}
+.required{
+    color: red;
+}
+/*
+ * ztree最大高度
+ */
+.zTreeContent{
+	max-height: 200px;
+	margin-bottom: 20px;
+}
+/*
+ * modal详情样式
+ */
+.modalDetailTit{
+    float: left;
+    margin-top: 15px;
+}
+.modalDetailTab{
+    margin-bottom:0;
+}
+.modalDetailTab>li{
+    float: right;
+}
+.modalDetailCon{
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+/*
+ * 列表页样式重置
+ */
+.form-fieldset > .form-fieldset-body{
+	padding-top: 20px;
+}
+.form-fieldset-body .control-label{
+	text-align: right;
+}
+.form-fieldset-body .control-label{
+	padding-top: 5px;
+}
+.toolbarBtn{
+	height: 42px;
+}
+#toolbarBtnContent{
+	width: 96%;
+	/*background: rgb(255,255,255,0.8);*/
+}
+#toolbarBtnContent button{
+	margin: 5px 3px;
+}
+
+/*
+ * 编辑框样式
+ */
+.defaultModalWidth{
+	width: 90%;
+}
+.defaultModalForm .form-group,.modalForm25 .form-group{
+	display:table;
+}
+.defaultModalForm .form-group > label{
+	width: 30%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+    text-align: right;
+}
+
+.modalForm25 .form-group > label{
+	width: 23%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+    text-align: right;
+}
+.defaultFieldsetForm .form-group,.fieldsetForm15 .form-group{
+	display:table;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.defaultFieldsetForm .form-group > label{
+		width: 20%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+}
+.fieldsetForm15 .form-group > label{
+		width: 15%;
+    min-height: 1px;
+    line-height: 16px;
+    padding:0 10px 0 0;
+    vertical-align:middle;    
+    display:table-cell;
+}
+.defaultModalForm .form-group > .valiParent,.modalForm15 .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  position: relative;
+    min-height: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.defaultFieldsetForm .form-group > .valiParent,.fieldsetForm15 .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  position: relative;
+    min-height: 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/*必填*号*/
+.notNull{
+	color: #E43A45;
+	position: relative;
+	top: 2px;
+	left: 3px;
+}
+.modal-body{
+	display: block;
+}
+/*modal-body内为浮动元素时,清除浮动*/
+.modal-body::after {
+    content:"";
+    clear:both;/*清除浮动*/
+    display:block;/*确保该元素是一个块级元素*/
+}
+/*
+ * 搜索条件标题预留class
+ */
+.searchLableText{
+	/*width: 150px;
+	text-align: left;*/
+}
+
+
+/*
+ * 放上显示手势图标
+ */
+.custorPoint{
+	cursor: pointer;
+}
+
+/*
+ * 仿input框
+ */
+.divInput{
+    cursor: not-allowed;
+    background: #f5f5f5;
+    border: 1px solid #ececec;
+    padding: 6px 12px;
+    border-radius: 3px;
+    color: #767676;
+    min-height: 34px;
+    white-space: pre;
+    line-height: 22px;
+}
+
+

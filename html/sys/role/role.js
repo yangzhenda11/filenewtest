@@ -1,1 +1,696 @@
-function provinceCodeTree(){var e={url:serverPath+"roles/listRoleSphere",type:"post",data:{id:null},async:!1};App.initAjaxSelect2("#provCode",e,"provCode","provName","请选择省分编码")}function getRoleTable(){App.initDataTables("#searchRoleTable","#submitBtn",{ajax:{type:"GET",url:serverPath+"roles/",data:function(e){return e.roleName=$("#sysRoleName").val(),e.provCode=$("#provCode").val(),e.roleBaseTypeCode=$("#roleBaseTypeCode").val(),e.staffOrgId=config.curStaffOrgId,e.companyId=config.curCompanyId,e.roleStatus=1,e}},columns:[{data:"roleId",title:"操作",className:"text-center",render:function(e,a,t){if(e){var o=new Array;return roleUpdate&&o.push({name:"编辑",fn:"editDetail('"+e+"')"}),roleDelete&&o.push({name:"删除",fn:"deleteDetail('"+e+"','"+t.roleName+"')"}),roleUpdate&&o.push({name:"授权",fn:"openAddRolePerm('"+t.roleName+"','"+e+"')"}),o.push("1"==t.roleStatus?{name:"禁用",fn:"changeRoleStatus('"+e+"','"+t.roleName+"',0)"}:{name:"启用",fn:"changeRoleStatus('"+e+"','"+t.roleName+"',1)"}),App.getDataTableBtn(o)}return""}},{data:"roleName",title:"角色名称",render:function(e,a,t){return'<a href="javascript:void(0)" onclick = "findDetail(\''+t.roleId+"')\">"+e+"</a>"}},{data:"roleDesc",title:"角色描述"},{data:"roleStatus",title:"角色状态",render:function(e,a,t){return"1"==t.roleStatus?"有效":"无效"}},{data:"roleCount",title:"授权人数",render:function(e,a,t){return'<a href="javascript:void(0)" onclick = "findStaff(\''+t.roleId+"')\">"+e+"</a>"}},{data:"createDate",title:"添加时间",render:function(e){return App.formatDateTime(e,"yyyy-mm-dd")}}]})}function changeRoleStatus(e,a,t){function o(){var e="禁用成功";1==t&&(e="启用成功"),layer.msg(e),searchRole(!0)}1===t?layer.confirm("确定启用角色"+a+"吗？",{btn:["启用","取消"],icon:0},function(){App.formAjaxJson(serverPath+"roles/"+e+"/status/"+t,"PUT",null,o)}):layer.confirm("确定禁用角色"+a+"吗？",{btn:["禁用","取消"],icon:0},function(){App.formAjaxJson(serverPath+"roles/"+e+"/status/"+t,"PUT",null,o)})}function deleteDetail(e,a){layer.confirm("确定删除"+a+"角色吗？",{icon:3,title:"删除角色"},function(a){function t(){layer.close(a),layer.msg("删除成功"),searchRole(!0)}App.formAjaxJson(serverPath+"roles/"+e+"/role/"+config.curStaffId,"DELETE","",t)})}function authRole(){}function searchRole(e){var a=$("#searchRoleTable").DataTable();e?a.ajax.reload(null,!1):a.ajax.reload()}function findDetail(e){$("#modal").load("_roleModal.html?"+App.timestamp()+" #modalDetail",function(){$("#modal").modal("show");$(".page-content").height()-190;getRoleInfo(e,"detail")})}function findStaff(e){$("#modal").load("roleStaffModal.html?"+App.timestamp()+" #modalDetail",function(){$("#modal").modal("show"),$("#roleStaffTableContent").height($(".page-content").height()-250),$("#modal").off("shown.bs.modal").on("shown.bs.modal",function(){getRoleStaffTable(e)})})}function getRoleStaffTable(e){App.initDataTables("#searchRoleStaffTable","#submitBtn",{scrollY:$(".page-content").height()-340,ajax:{type:"GET",url:serverPath+"roles/searchRoleStaff",data:function(a){return a.staffName=$("#staffName").val(),a.loginName=$("#loginName").val(),a.companyId=config.curCompanyId,a.roleId=e,a}},columns:[{data:null,title:"人员姓名",render:function(e){return'<a href="javascript:void(0)">'+e.STAFF_NAME+"</a>"}},{data:"LOGIN_NAME",title:"账号"},{data:"ORG_NAME",title:"部门名称"},{data:"STAFF_ORG_TYPE",title:"岗位状态",className:"text-center",render:function(e,a,t){return"F"==t.STAFF_ORG_TYPE?"主岗":"T"==t.STAFF_ORG_TYPE?"兼岗":"借调"}},{data:"SEX",title:"性别",className:"text-center",render:function(e,a,t){return"M"==t.SEX?"男":"女"}},{data:"EMAIL",title:"邮箱账号"},{data:"MOBIL_PHONE",title:"手机号码"},{data:"STAFF_ORG_STATUS",title:"岗位状态",className:"text-center",render:function(e,a,t){return"1"==t.STAFF_ORG_STATUS?"有效":"无效"}}]})}function searchRoleStaff(){var e=$("#searchRoleStaffTable").DataTable();e.ajax.reload()}function reset(){$("#staffName").val(""),$("#loginName").val("")}function editDetail(e){$("#modal").load("_roleModal.html?"+App.timestamp()+" #modalEdit",function(){App.initFormSelect2("#roleForm");var a={url:serverPath+"roles/listRoleSphere",type:"post",data:{id:null},async:!1},t={url:serverPath+"roles/getRoleType",type:"post",data:{id:null},async:!1};App.initAjaxSelect2("#provinceCode",a,"provCode","provName","请选择省分编码"),App.initAjaxSelect2("#roleBaseTypeCode",t,"roleNo","roleName","请选择角色类型"),$("#editModalTitle").text("编辑角色信息"),$("#modal").modal("show"),getRoleInfo(e,"edit"),validate("edit")})}function getRoleInfo(e,a){function t(t){function o(e){if(null!=e.data){var a=$.fn.zTree.init($("#rolePermissionDetailTree"),permissionViewSetting,e.data),t=a.getNodes()[0];a.expandNode(t)}else $("#rolePermission").text("该角色暂无权限"),layer.msg("该角色无相关权限",{icon:2})}if("detail"==a){var r={updateDate:function(e){return App.formatDateTime(e,"yyyy-mm-dd")},isPartnerRole:function(e){return"1"==e?"是":"否"}};App.setFindValue($("#roleInfo"),t.data,r),App.formAjaxJson(serverPath+"roles/"+e+"/perms","GET",null,o)}else{var r={updateDate:function(e){return App.formatDateTime(e,"yyyy-mm-dd")}};App.setFormValues($("#roleForm"),t.data,r),$("#orgNameTree").attr("title",t.data.orgName),$("#orgNameTree").data("orgCode",t.data.orgId),$("#orgNameTree").data("provCode",t.data.provCode),$("#roleBaseTypeCode").data("roleBaseTypeCode",t.data.roleBaseTypeCode),loadPerTree(e)}}App.formAjaxJson(serverPath+"roles/"+e,"GET",null,t)}function openAddModal(){$("#modal").load("_roleModal.html?"+App.timestamp()+" #modalEdit",function(){App.initFormSelect2("#roleForm");var e={url:serverPath+"roles/listRoleSphere",type:"post",data:{id:null},async:!1},a={url:serverPath+"roles/getRoleType",type:"post",data:{id:null},async:!1};App.initAjaxSelect2("#provinceCode",e,"provCode","provName","请选择适用范围"),App.initAjaxSelect2("#roleBaseTypeCode",a,"roleNo","roleName","请选择角色类型"),$("#roleBaseTypeCode").val("0").trigger("change"),$("#editModalTitle").text("添加角色"),$("#modal").modal("show"),loadPerTree(),validate("add")})}function openAddRolePerm(e,a){$("#modal").load("rolePerm.html?"+App.timestamp()+" #modalEdit",function(){$("#editModalTitle").text(e+"角色授权"),$("#modal").modal("show"),getRoleInfo(a,"edit"),$("#roleId").val(a),$("#staffId").val(config.curStaffId),$("#rolePermForm").bootstrapValidator({}).on("success.form.bv",function(e){function a(){layer.msg(t,{icon:1}),searchRole(!0),$("#modal").modal("hide")}e.preventDefault();for(var t="授权成功",o=App.getFormValues($("#rolePermForm")),r="",n=rolePermissionTree.getCheckedNodes(!0),l=0;l<n.length;l++)r+=n[l].permId+",";o.permId=r.substring(0,r.length-1);var i=serverPath+"roles/addRolePerm";App.formAjaxJson(i,"PUT",JSON.stringify(o),a)})})}function loadPerTree(e){function a(e){var a=e.data;null==a?layer.msg("没有相关组织和人员信息",{icon:2}):orgNameTree=$.fn.zTree.init($("#orgName"),orgsSetting,a)}$("#orgNameTree").on("click",function(){showTree("orgNameTree")}),App.formAjaxJson(serverPath+"orgs/"+config.curOrgId+"/orgTree","get",null,a),$.get(serverPath+"pers/permAll",{staffOrgId:config.curStaffOrgId,staffId:config.curStaffId},function(a){function t(e){if(null!=e.data){var a=e.data;for(p in a){var t=a[p],o=rolePermissionTree.getNodeByParam("permId",t.PERM_ID);rolePermissionTree.checkNode(o,!0)}}}a.length>0?(rolePermissionTree=$.fn.zTree.init($("#rolePermissionTree"),rolePermissionSetting,a),e&&App.formAjaxJson(serverPath+"roles/"+e+"/perms","GET",null,t)):($("#rolePermissions").html("<div style='margin-top:9px'>暂无查询到权限信息</div>"),layer.msg("暂无查询到权限信息",{icon:2}))})}function updateRoleValue(e){function a(e){e.data>0&&(r=!0)}function t(){layer.msg(m,{icon:1}),searchRole(!0),$("#modal").modal("hide")}function o(){$("#roleForm").data("bootstrapValidator").resetForm()}var r=!1;if("add"==e){var n=$("#roleName").val(),l={roleName:n};App.formAjaxJson(serverPath+"roles/getRoleNameInt","GET",l,a,null,null,null,!1)}if(r)return void layer.msg("角色名称已存在",{icon:5});for(var i=App.getFormValues($("#roleForm")),d=rolePermissionTree.getCheckedNodes(!0),s="",m="新增成功",p=serverPath+"roles/",c="POST",f=0;f<d.length;f++)s+=d[f].permId+",";i.permId=s.substring(0,s.length-1),"add"==e?delete i.roleId:(m="修改成功",c="PUT"),App.formAjaxJson(p,c,JSON.stringify(i),t,o)}function validate(e){$("#roleForm").bootstrapValidator({live:"enabled",trigger:"live focus blur keyup change",message:"校验未通过",container:"popover",fields:{roleName:{validators:{notEmpty:{message:"您输入的字段不能为空"}}},orgName:{validators:{notEmpty:{message:"请选择适用范围"}},trigger:"focus blur keyup change"},roleBaseTypeCode:{validators:{notEmpty:{message:"请选择角色类型"}}},roleDesc:{validators:{stringLength:{max:100,message:"请输入不超过100个字符"}}}}}).on("success.form.bv",function(a){a.preventDefault(),updateRoleValue(e)})}function setPermData(){{var e=$.fn.zTree.getZTreeObj("rolePermissionTree");e.getNodeByParam("permId",100),e.getNodeByParam("permId",201)}}function showTree(e){{var a=$("#"+e);a.offset()}$("#"+e+"Content").css({left:"0",top:a.outerHeight()+"px",width:a.outerWidth()+50}).slideDown("fast"),onBodyDown(e)}function hideMenu(e){$("#"+e+"Content").fadeOut("fast"),$("body").unbind("mousedown",onBodyDown)}function onBodyDown(e){$("body").on("mousedown",function(a){a.target.id==e||a.target.id==e+"Content"||$(a.target).parents("#"+e+"Content").length>0||hideMenu(e)})}function orgsfilter(e,a,t){var t=t.data;return t?t:null}function zTreeBeforeAsync(e,a){return orgNameTree.setting.async.url=serverPath+"orgs/"+a.orgId+"/children?orgType=1",!0}function onClick(e,a){var t=$.fn.zTree.getZTreeObj(a).getSelectedNodes(),o=t[0].orgName,r=t[0].orgCode,n=t[0].provCode;$("input[name="+a+"]").data("orgCode",r),$("input[name="+a+"]").data("provCode",n),$("input[name="+a+"]").val(o),$("input[name="+a+"]").attr("title",o),"orgName"==a&&($("#roleForm").data("bootstrapValidator").updateStatus("orgName","NOT_VALIDATED",null),$("#roleForm").data("bootstrapValidator").validateField("orgName"))}var config=parent.globalConfig,serverPath=config.serverPath,rolePermissionTree,orgNameTree;$(function(){parent.data_permFilter(document),getRoleTable(),provinceCodeTree()});var roleUpdate=parent.data_tpFilter("sys:role:update"),roleDelete=parent.data_tpFilter("sys:role:delete"),permissionViewSetting={view:{selectedMulti:!1},data:{simpleData:{enable:!0,idKey:"PERM_ID",pIdKey:"PARENT_ID"},key:{name:"PERM_NAME"}}},rolePermissionSetting={check:{enable:!0,chkboxType:{Y:"ps",N:"ps"}},data:{simpleData:{enable:!0,idKey:"permId",pIdKey:"parentId"},key:{name:"permName"}},callback:{}},orgsSetting={async:{enable:!0,url:"",type:"get",dataType:"json",dataFilter:orgsfilter},data:{simpleData:{enable:!0,idKey:"orgId",pIdKey:"parent_id"},key:{name:"orgName"}},view:{dblClickExpand:!1},callback:{onAsyncError:onAsyncError,onClick:onClick,beforeAsync:zTreeBeforeAsync}};
+//系统的全局变量获取
+var config = parent.globalConfig;
+var serverPath = config.serverPath;
+var rolePermissionTree; //权限树
+var orgNameTree; //组织树
+$(function() {
+        parent.data_permFilter(document);
+        getRoleTable();
+    provinceCodeTree();
+    })
+    /*
+     * 查询到角色列表
+     */
+var roleUpdate = parent.data_tpFilter("sys:role:update");
+var roleDelete = parent.data_tpFilter("sys:role:delete");
+
+function provinceCodeTree() {
+    var ajaxObj = {
+        "url": serverPath + "roles/listRoleSphere",
+        "type": "post",
+        "data": { id: null },
+        "async": false
+    }
+    App.initAjaxSelect2("#provCode", ajaxObj, "provCode", "provName", "请选择省分编码");
+}
+
+function getRoleTable() {
+    App.initDataTables('#searchRoleTable', "#submitBtn", {
+        "ajax": {
+            "type": "GET",
+            "url": serverPath + 'roles/',
+            "data": function(d) { // 查询参数
+                d.roleName = $('#sysRoleName').val();
+                d.provCode = $("#provCode").val();
+                d.roleBaseTypeCode = $("#roleBaseTypeCode").val();
+                d.staffOrgId = config.curStaffOrgId;
+                d.companyId = config.curCompanyId;
+                d.roleStatus = 1;
+                return d;
+            }
+        },
+        "columns": [{
+                "data": "roleId",
+                "title": "操作",
+                "className": "text-center",
+                "render": function(data, type, row, meta) {
+                    if (data) {
+                        var btnArray = new Array();
+                        //                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
+                        if (roleUpdate) {
+                            btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
+                        }
+                        if (roleDelete) {
+                            btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\',\'" + row.roleName + "\')" });
+                        }
+                        if (roleUpdate) {
+                            btnArray.push({ "name": "授权", "fn": "openAddRolePerm(\'" + row.roleName + "\',\'" + data + "\')" });
+                        }
+                        if ("1" == row.roleStatus) {
+                            btnArray.push({ "name": "禁用", "fn": "changeRoleStatus(\'" + data + "\',\'" + row.roleName + "\',0)" });
+                        } else {
+                            btnArray.push({ "name": "启用", "fn": "changeRoleStatus(\'" + data + "\',\'" + row.roleName + "\',1)" });
+                        }
+                        return App.getDataTableBtn(btnArray);
+                    } else {
+                        return '';
+                    }
+                }
+            },
+            {
+                "data": "roleName",
+                title: "角色名称",
+                render: function(data, type, row, meta) {
+                    return '<a href=\"javascript:void(0)\" onclick = "findDetail(\'' + row.roleId + '\')">' + data + '</a>';
+                }
+            },
+            // { "data": "orgName", title: "所属组织" },
+            { "data": "roleDesc", title: "角色描述" },
+            {
+                "data": "roleStatus",
+                title: "角色状态",
+                render: function(a, b, c, d) {
+                    return ('1' == c.roleStatus) ? '有效' : '无效';
+                }
+            },
+            {
+                "data": "roleCount",
+                title: "授权人数",
+                render: function(data, type, row, meta) {
+                    return '<a href=\"javascript:void(0)\" onclick = "findStaff(\'' + row.roleId + '\')">' + data + '</a>';
+                }
+            },
+            {
+                "data": "createDate",
+                title: "添加时间",
+                render: function(data, type, row, meta) {
+                    return App.formatDateTime(data, "yyyy-mm-dd");
+                }
+            }
+        ]
+    })
+}
+/**
+ * 启用/禁用角色
+ * daiyw 
+ */
+function changeRoleStatus(roleId, roleName, roleStatus) {
+    if (1 === roleStatus) {
+        layer.confirm("确定启用角色" + roleName + "吗？", {
+            btn: ['启用', '取消'],
+            icon: 0
+        }, function() {
+        	App.formAjaxJson(serverPath + 'roles/' + roleId + "/status/" + roleStatus, "PUT", null, successCallback);
+        });
+    } else {
+        layer.confirm("确定禁用角色" + roleName + "吗？", {
+            btn: ['禁用', '取消'],
+            icon: 0
+        }, function() {
+            App.formAjaxJson(serverPath + 'roles/' + roleId + "/status/" + roleStatus, "PUT", null, successCallback);
+        });
+    };
+    function successCallback(result) {
+    	var ms = "禁用成功";
+		if(roleStatus == 1){
+			ms = "启用成功";
+		};
+		layer.msg(ms);
+        searchRole(true);
+	}
+}
+/**
+ * 删除某个角色
+ * @param {角色id} roleId 
+ */
+function deleteDetail(roleId,roleName) {
+    layer.confirm('确定删除'+roleName+'角色吗？', {
+        icon: 3,
+        title: '删除角色'
+    }, function(index) {
+        App.formAjaxJson(serverPath + 'roles/' + roleId + '/role/' + config.curStaffId, "DELETE", "", successCallback);
+
+        function successCallback(result) {
+            layer.close(index);
+            layer.msg("删除成功");
+            searchRole(true);
+        }
+    })
+}
+
+function authRole(roleId) {
+
+}
+/**
+ * 执行查询
+ */
+function searchRole(retainPaging) {
+    var table = $('#searchRoleTable').DataTable();
+    if (retainPaging) {
+        table.ajax.reload(null, false);
+    } else {
+        table.ajax.reload();
+    }
+}
+
+/**
+ * 查看角色详情
+ * @param {角色id} itemId 
+ */
+function findDetail(itemId) {
+    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalDetail", function() {
+        $("#modal").modal("show");
+        var documentHeight = $(".page-content").height() - 190;
+		//$("#roleDeatilModal").css("height",documentHeight);
+		//$("#rolePermissionDetailTreeCon").css("max-height",documentHeight-120);
+        getRoleInfo(itemId, "detail");
+    });
+}
+/**
+ * 查看角色授权人员列表
+ * daiyw
+ */
+function findStaff(roleId) {
+     $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
+    	$("#modal").modal("show");
+    	$("#roleStaffTableContent").height($(".page-content").height() - 250);
+    	$('#modal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
+			getRoleStaffTable(roleId);
+		})
+    });
+}
+/**
+ * 授权人员列表
+ * daiyw
+ */
+function getRoleStaffTable(roleId) {
+    App.initDataTables('#searchRoleStaffTable', "#submitBtn", {
+    	scrollY:$(".page-content").height() - 340,
+        "ajax": {
+            "type": "GET",
+            "url": serverPath + 'roles/searchRoleStaff',
+            "data": function(d) { // 查询参数
+                d.staffName = $('#staffName').val();
+                d.loginName = $("#loginName").val();
+                d.companyId = config.curCompanyId;
+                d.roleId = roleId;
+                return d;
+            }
+        },
+        "columns": [{
+                "data": null,
+                "title": "人员姓名",
+                render: function(data, type, full, meta) {
+                    return '<a href=\"javascript:void(0)\">' + data.STAFF_NAME + '</a>';
+                }
+            },
+            { "data": "LOGIN_NAME", "title": "账号" },
+            { "data": "ORG_NAME", "title": "部门名称" },
+            {
+                "data": "STAFF_ORG_TYPE",
+                "title": "岗位状态",
+                className: "text-center",
+                render: function(a, b, c, d) {
+                    return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
+                }
+            },
+            {
+                "data": "SEX",
+                "title": "性别",
+                className: "text-center",
+                render: function(a, b, c, d) {
+                    return (c.SEX == 'M') ? '男' : '女';
+                }
+            },
+            // { "data": "PHONE", "title": "电话号码" },
+            { "data": "EMAIL", "title": "邮箱账号" },
+            { "data": "MOBIL_PHONE", "title": "手机号码" },
+            {
+                "data": "STAFF_ORG_STATUS",
+                "title": "岗位状态",
+                className: "text-center",
+                render: function(a, b, c, d) {
+                    return ('1' == c.STAFF_ORG_STATUS) ? '有效' : '无效';
+                }
+            }
+        ]
+    })
+}
+/**
+ * 根据条件查询授权人员
+ * daiyw
+ */
+function searchRoleStaff() {
+    var table = $('#searchRoleStaffTable').DataTable();
+    table.ajax.reload();
+}
+/**
+ * 重置授权人员查询条件
+ * daiyw
+ */
+function reset() {
+    $("#staffName").val("");
+    $("#loginName").val("");
+}
+/**
+ * 角色编辑
+ * @param {角色id} itemId 
+ */
+function editDetail(itemId) {
+    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
+        App.initFormSelect2("#roleForm");
+        var ajaxObj = {
+            "url": serverPath + "roles/listRoleSphere",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
+        var ajaxRoleType = {
+            "url": serverPath + "roles/getRoleType",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
+        App.initAjaxSelect2("#provinceCode", ajaxObj, "provCode", "provName", "请选择省分编码");
+		App.initAjaxSelect2("#roleBaseTypeCode", ajaxRoleType, "roleNo", "roleName", "请选择角色类型");
+        $("#editModalTitle").text("编辑角色信息");
+        $("#modal").modal("show");
+        getRoleInfo(itemId, "edit");
+        validate("edit");
+    });
+}
+/*
+ * 获取角色信息
+ */
+function getRoleInfo(id, type) {
+    App.formAjaxJson(serverPath + "roles/" + id, "GET", null, successCallback);
+
+    function successCallback(result) {
+        if (type == "detail") {
+            /**表单赋值时的回调函数 */
+            var valueCallback = {
+                    'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") },
+                    'isPartnerRole': function(value) { return value == "1" ? "是" : "否" }
+                }
+                /**根据返回结果给表单赋值 */
+            App.setFindValue($("#roleInfo"), result.data, valueCallback);
+
+            /**查询角色拥有的权限集合 */
+            App.formAjaxJson(serverPath + "roles/" + id + "/perms", "GET", null, permsSuccess);
+
+            /**权限查询结束后的回调函数 */
+            function permsSuccess(result) {
+                if (null != result.data) {
+                    var permTree = $.fn.zTree.init($("#rolePermissionDetailTree"), permissionViewSetting, result.data);
+                    var firstTree = permTree.getNodes()[0];
+                    permTree.expandNode(firstTree);
+                } else {
+                    $("#rolePermission").text("该角色暂无权限");
+                    layer.msg("该角色无相关权限", { icon: 2 });
+                }
+            }
+        } else {
+            var valueCallback = { 'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") } }
+            App.setFormValues($("#roleForm"), result.data, valueCallback);
+            $("#orgNameTree").attr("title", result.data.orgName);
+            $("#orgNameTree").data("orgCode", result.data.orgId);
+            $("#orgNameTree").data("provCode", result.data.provCode);
+            $("#roleBaseTypeCode").data("roleBaseTypeCode", result.data.roleBaseTypeCode);
+            loadPerTree(id);
+        }
+    }
+}
+
+/**
+ * 打开新增窗口，同时向表单增加验证
+ */
+function openAddModal() {
+    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
+        App.initFormSelect2("#roleForm");
+        var ajaxObj = {
+            "url": serverPath + "roles/listRoleSphere",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
+        var ajaxRoleType = {
+            "url": serverPath + "roles/getRoleType",
+            "type": "post",
+            "data": { id: null },
+            "async": false
+        }
+        App.initAjaxSelect2("#provinceCode", ajaxObj, "provCode", "provName", "请选择适用范围");
+		App.initAjaxSelect2("#roleBaseTypeCode", ajaxRoleType, "roleNo", "roleName", "请选择角色类型");
+		$("#roleBaseTypeCode").val("0").trigger("change");
+        $("#editModalTitle").text("添加角色");
+        $("#modal").modal("show");
+        loadPerTree();
+        validate("add");
+    })
+}
+/**
+ * 打开授权窗口,授权
+ */
+function openAddRolePerm(roleName, roleId) {
+    $("#modal").load("rolePerm.html?" + App.timestamp() + " #modalEdit", function() {
+        $("#editModalTitle").text(roleName + "角色授权");
+        $("#modal").modal("show");
+        getRoleInfo(roleId, "edit");
+        $("#roleId").val(roleId);
+        $("#staffId").val(config.curStaffId);
+        $('#rolePermForm').bootstrapValidator({}).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var ms = "授权成功";
+            var formObj = App.getFormValues($("#rolePermForm"));
+            var permId = '';
+            var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
+            for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
+                permId += rolePermissionTreeNodes[i].permId + ",";
+            }
+            formObj.permId = permId.substring(0, permId.length - 1);
+            var url = serverPath + "roles/addRolePerm";
+            App.formAjaxJson(url, "PUT", JSON.stringify(formObj), successCallback);
+
+            function successCallback(result) {
+                layer.msg(ms, { icon: 1 });
+                searchRole(true);
+                $('#modal').modal('hide');
+            }
+        });
+    })
+}
+/*
+ * 加载组织树和权限树
+ * id  编辑时的ID值，用来查询该ID下存在的权限
+ */
+function loadPerTree(itemId) {
+    //组织树点击事件
+    $("#orgNameTree").on("click", function() {
+        showTree('orgNameTree');
+        //selectOrg('orgtreeMark', '', '', yourFunction2, '', '2');
+    });
+    //加载组织树
+    App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
+
+    function successCallback(result) {
+        var data = result.data;
+        if (null == data) {
+            layer.msg("没有相关组织和人员信息", { icon: 2 });
+        } else {
+            orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
+        }
+    };
+    //加载权限树
+    $.get(serverPath + "pers/permAll", { "staffOrgId": config.curStaffOrgId, "staffId": config.curStaffId }, function(data) {
+        if (data.length > 0) {
+            rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
+            if (itemId) {
+                /**查询角色拥有的权限集合 */
+                App.formAjaxJson(serverPath + "roles/" + itemId + "/perms", "GET", null, permsSuccess);
+                /**权限查询结束后的回调函数 */
+                function permsSuccess(result) {
+                    if (null != result.data) {
+                        var perms = result.data;
+                        for (p in perms) {
+                            var perm = perms[p];
+                            var node = rolePermissionTree.getNodeByParam("permId", perm.PERM_ID);
+                            rolePermissionTree.checkNode(node, true);
+                        }
+                    }
+                }
+            }
+        } else {
+            $("#rolePermissions").html("<div style='margin-top:9px'>暂无查询到权限信息</div>");
+            layer.msg("暂无查询到权限信息", { icon: 2 });
+        }
+    });
+}
+/*
+ * 编辑/新增
+ */
+function updateRoleValue(editType) {
+    var roleTrue = false;
+    if (editType == "add") {
+        var roleName = $("#roleName").val();
+        var data = { roleName: roleName };
+        App.formAjaxJson(serverPath + 'roles/getRoleNameInt', "GET",data, successCallbackTrueRole,null,null,null,false);
+        function successCallbackTrueRole(result) {
+            if (result.data > 0){
+                roleTrue = true;
+            }
+        }
+    }
+    if(roleTrue){
+        layer.msg("角色名称已存在", { icon: 5});
+        return;
+    }
+    var formObj = App.getFormValues($("#roleForm"));
+    var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
+    var permId = '';
+    var ms = "新增成功";
+    var url = serverPath + "roles/";
+    var pushType = "POST";
+    for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
+        permId += rolePermissionTreeNodes[i].permId + ",";
+    }
+    formObj.permId = permId.substring(0, permId.length - 1);
+    //formObj.orgId = $("#orgNameTree").data("orgCode");
+    //formObj.provCode = $("#orgNameTree").data("provCode");
+    /*if (formObj.permId == '') {
+        layer.msg("请选择该角色对应的权限", { icon: 2 });
+        $('#roleForm').data('bootstrapValidator').resetForm();
+        return false;
+    }*/
+    if (editType == "add") {
+        delete formObj.roleId;
+    } else {
+        ms = "修改成功";
+        pushType = "PUT";
+    }
+    App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
+
+    function successCallback(result) {
+        layer.msg(ms, { icon: 1 });
+        searchRole(true);
+        $('#modal').modal('hide');
+    }
+
+    function improperCallbacks(result) {
+        $('#roleForm').data('bootstrapValidator').resetForm();
+    }
+}
+
+/*
+ * 验证提交
+ */
+function validate(type) {
+    $('#roleForm').bootstrapValidator({
+        live: 'enabled',
+        trigger: 'live focus blur keyup change',
+        message: '校验未通过',
+        container: 'popover',
+        fields: {
+            roleName: {
+                validators: {
+                    notEmpty: {
+                        message: '您输入的字段不能为空'
+                    }
+                }
+            },
+            orgName: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择适用范围'
+                    }
+                },
+                trigger: "focus blur keyup change",
+            },
+            roleBaseTypeCode: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择角色类型'
+                    }
+                }
+            },
+            roleDesc: {
+                validators: {
+                    stringLength: {
+                        max: 100,
+                        message: '请输入不超过100个字符'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+        updateRoleValue(type);
+    });
+}
+
+/**配置信息**/
+
+/** 查看权限的树配置 (无勾选框)*/
+var permissionViewSetting = {
+    view: {
+        selectedMulti: false
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "PERM_ID",
+            pIdKey: "PARENT_ID"
+        },
+        key: {
+            name: "PERM_NAME"
+        }
+    }
+};
+/** 角色管理页面的所有权限树配置(有勾选框) */
+var rolePermissionSetting = {
+    check: {
+        enable: true,
+        chkboxType: {
+            "Y": "ps",
+            "N": "ps"
+        }
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "permId",
+            pIdKey: "parentId"
+        },
+        key: {
+            name: "permName"
+        }
+    },
+    callback: {
+        //      beforeClick: function(treeId, treeNode) {},
+        //      onCheck: setPermData
+    }
+};
+//设置添加角色时拥有权限管理或角色管理的数据范围
+function setPermData() {
+    var treeObj = $.fn.zTree.getZTreeObj("rolePermissionTree");
+    var node1 = treeObj.getNodeByParam("permId", 100);
+    var node2 = treeObj.getNodeByParam("permId", 201);
+    /*	if(node1.checked){
+    		$('#permForPermManage').show();
+    	}
+    	if(node2.checked){
+    		$('#roleForRoleManage').show();
+    	}
+    	if(!node1.checked){
+    		$('#permForPermManage').hide();
+    		var permForPermManageTreeObj = $.fn.zTree.getZTreeObj("permForPermManageTree");
+    		permForPermManageTreeObj.checkAllNodes(false);
+    	}
+    	if(!node2.checked){
+    		$('#roleForRoleManage').hide();
+    	}*/
+}
+
+/*
+ * 显示所属组织树
+ */
+function showTree(dom) {
+    var selectObj = $("#" + dom + "");
+    var selectOffset = selectObj.offset();
+    $("#" + dom + "Content").css({
+        left: "0",
+        top: selectObj.outerHeight() + "px",
+        width: selectObj.outerWidth() + 50
+    }).slideDown("fast");
+    onBodyDown(dom);
+}
+/*
+ * 隐藏所属组织树
+ */
+function hideMenu(dom) {
+    $("#" + dom + "Content").fadeOut("fast");
+    $("body").unbind("mousedown", onBodyDown);
+}
+/*
+ * 组织树点击事件
+ */
+function onBodyDown(dom) {
+    $("body").on("mousedown", function(event) {
+        if (!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
+            hideMenu(dom);
+        }
+    });
+}
+/*
+ * 所属组织树配置单选配置
+ */
+var orgsSetting = {
+    async: {
+        enable: true,
+        url: "",
+        type: "get",
+        dataType: 'json',
+        dataFilter: orgsfilter
+    },
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "orgId",
+            pIdKey: "parent_id"
+        },
+        key: {
+            name: "orgName"
+        }
+    },
+    view: {
+        dblClickExpand: false
+    },
+    callback: {
+        onAsyncError: onAsyncError,
+        onClick: onClick,
+        beforeAsync: zTreeBeforeAsync
+    }
+};
+
+function orgsfilter(treeId, parentNode, responseData) {
+    var responseData = responseData.data;
+    if (responseData) {
+        return responseData;
+    } else {
+        return null;
+    }
+}
+/*
+ * ztree异步加载之前
+ */
+function zTreeBeforeAsync(treeId, treeNode) {
+    orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children?orgType=1";
+    return true;
+}
+
+/*
+ * ztree点击事件
+ */
+function onClick(event, treeId, treeNode) {
+    var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
+    var selectName = nodes[0].orgName;
+    var orgCode = nodes[0].orgCode;
+    var provCode = nodes[0].provCode;
+    $("input[name=" + treeId + "]").data("orgCode", orgCode);
+    $("input[name=" + treeId + "]").data("provCode", provCode);
+    $("input[name=" + treeId + "]").val(selectName);
+    $("input[name=" + treeId + "]").attr("title", selectName);
+    if (treeId == "orgName") {
+        $("#roleForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", null);
+        $("#roleForm").data("bootstrapValidator").validateField('orgName');
+    }
+}

@@ -3,6 +3,7 @@ var serverPath = config.serverPath;
 var curStaffOrgId=config.curStaffOrgId;
 var curStaffId=config.curStaffId;
 $(function(){
+	getFlowKyeList();
 	$("#currentIdForDone").val(curStaffOrgId);
 });
 //后面构建btn 代码
@@ -20,27 +21,40 @@ App.initDataTables('#searchTableForDone', "#submitBtn", {
 		"url": serverPath + 'workflowrest/taskHasDone',	//请求地址
 		"data": function(d) {							//自定义传入参数
         	d.title = $('#processTitleForDone').val();
-        	d.linkName = $('#linkNameForDone').val();
+        	//d.linkName = $('#linkNameForDone').val();
         	d.completeTimeStart = $('#startDateForDone').val();
         	d.completeTimeEnd = $('#endDateForDone').val();
         	d.staffId = curStaffId; 
+        	d.flowType=$("#flowType").val();
+        	d.contractCode=$("#contractCode").val();
         	return d;
 		}
 	},
 	columns: [// 对应列
-		{"data": "title","title":"已办标题",className: "text-center whiteSpaceNormal","width": "33%"},
-        {"data": "processDefinitionName","title":"流程名称",className: "text-center whiteSpaceNormal","width": "17%"},
-        {"data": "name","title":"环节名称",className: "text-center whiteSpaceNormal","width": "15%"},
-        {"data": "startTime","title":"接收时间",className: "text-center whiteSpaceNormal","width": "15%",
+    	//增加序号列
+        {"data" : null,
+         "title":"序号",
+         "className": "text-center",
+		"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#searchTableForDone").pageStart;
+						return start + meta.row + 1;
+				   }
+		},
+		{"data": "title","title":"主题",className: "text-center whiteSpaceNormal","width": "33%"},
+        {"data": "processDefinitionName","title":"流程类型",className: "text-center whiteSpaceNormal","width": "17%"},
+//        {"data": "name","title":"环节名称",className: "text-center whiteSpaceNormal","width": "15%"},
+//        {"data": "startTime","title":"接收时间",className: "text-center whiteSpaceNormal","width": "15%",
+//        	render: function (a, b, c, d) {
+//        		return getSmpFormatDateByLong(a, true);
+//        	}
+//        },
+        {"data": "endTime","title":"送出日期",className: "text-center whiteSpaceNormal","width": "15%",
         	render: function (a, b, c, d) {
         		return getSmpFormatDateByLong(a, true);
         	}
         },
-        {"data": "endTime","title":"办理时间",className: "text-center whiteSpaceNormal","width": "15%",
-        	render: function (a, b, c, d) {
-        		return getSmpFormatDateByLong(a, true);
-        	}
-        },
+        {"data": "nowLinkName","title":"当前环节",className: "text-center","width": "5%"},
+        {"data": "nowUserName","title":"当前处理人",className: "text-center","width": "5%"},
         {"data": null,"title":"操作",className: "text-center","width": "5%"}
     ],
     "columnDefs": [
@@ -112,4 +126,26 @@ function handleTaskForDone(id, taskDefinitionKey, name, processInstanceId, title
 	
 	$("#goTaskToDoDetailForDone").show();
 	$("#searchContentForDone").hide();
+}
+function getFlowKyeList(){
+	$.ajax({
+		'cache': true,
+		'type': "POST",
+		'url':serverPath+"workflowrest/getFlowKeyList",
+		'async': false,
+		'error': function(request) {
+			layer.msg("获取流程类型异常，请联系管理员!",{time:1000});
+		},
+		'success': function(result) {
+			var dataArray = result.dataArray;
+			console.log(result);
+			$("#flowType").append("<option value=''>请选择流程类型</option>");
+			$.each(dataArray, function (i, item) {
+				$("#flowType").append("<option value='" + item.value + "'>" + item.label + "</option>");
+			});
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+	});
 }

@@ -2,7 +2,10 @@ var config = parent.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 var curStaffId = config.curStaffId;
+
+
 $(function(){
+	getFlowKyeList();
 	// 加载表格
 	$("#currentId").val(curStaffOrgId);
 });
@@ -88,22 +91,34 @@ App.initDataTables('#searchTableTodo', "#submitBtn", {
 		"url": serverPath + 'workflowrest/taskToDo',	//请求地址
 		"data": function(d) {							//自定义传入参数
         	d.title = $('#processTitle').val();
-        	d.linkName = $('#linkName').val();
+        	//d.linkName = $('#linkName').val();
         	d.createTimeStart = $('#startDate').val();
         	d.createTimeEnd = $('#endDate').val();
         	d.staffId = curStaffId;
+        	d.flowType=$("#flowType").val();
+        	d.contractCode=$("#contractCode").val();
         	return d;
 		}
 	},
 	columns: [// 对应列
-		{"data": "title","title":"待办标题",className: "whiteSpaceNormal text-center","width": "35%"},
-        {"data": "processDefinitionName","title":"流程名称",className: "whiteSpaceNormal text-center","width": "23%"},
-        {"data": "name","title":"环节名称",className: "whiteSpaceNormal text-center","width": "15%"},
-        {"data": "createTime","title":"接收时间",className: "whiteSpaceNormal text-center","width": "15%", 
+    	//增加序号列
+        {"data" : null,
+         "title":"序号",
+         "className": "text-center",
+		"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#searchTableTodo").pageStart;
+						return start + meta.row + 1;
+				   }
+		},
+		{"data": "title","title":"主题",className: "whiteSpaceNormal text-center","width": "35%"},
+        {"data": "processDefinitionName","title":"流程类型",className: "whiteSpaceNormal text-center","width": "23%"},
+        //{"data": "name","title":"环节名称",className: "whiteSpaceNormal text-center","width": "15%"},
+        {"data": "createTime","title":"接收日期",className: "whiteSpaceNormal text-center","width": "15%", 
         	render: function (a, b, c, d) {
         		return getSmpFormatDateByLong(a, true);
         	}
         },
+        {"data": "beUserName","title":"发送人",className: "text-center","width": "10%"},
         {"data": null,"title":"操作",className: "text-center","width": "10%"}
     ],
     "columnDefs": [
@@ -176,4 +191,27 @@ function checkifdone(taskId){
 		}
 	});
 	return result;
+}
+
+function getFlowKyeList(){
+	$.ajax({
+		'cache': true,
+		'type': "POST",
+		'url':serverPath+"workflowrest/getFlowKeyList",
+		'async': false,
+		'error': function(request) {
+			layer.msg("获取流程类型异常，请联系管理员!",{time:1000});
+		},
+		'success': function(result) {
+			var dataArray = result.dataArray;
+			console.log(result);
+			$("#flowType").append("<option value=''>请选择流程类型</option>");
+			$.each(dataArray, function (i, item) {
+				$("#flowType").append("<option value='" + item.value + "'>" + item.label + "</option>");
+			});
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+	});
 }

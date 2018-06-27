@@ -873,7 +873,6 @@ function initData(){
 			$('#isSendRecord').val(data.isSendRecord);
 		},
 		error:function(e){
-			alert("获取数据异常"+e);
 			App.ajaxErrorCallback(e);
 		}
 	});

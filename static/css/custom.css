@@ -589,45 +589,45 @@ th.thAlignCenter{
  * 自定义文件字体大小
  */
 /*全局*/
-body{
+/*body{
 	font-size: 12px;
-}
+}*/
 /*按钮*/
-.btn{
+/*.btn{
 	font-size: 12px;
-}
+}*/
 /*图标*/
-.iconfont{
+/*.iconfont{
 	font-size: 14px;
-}
+}*/
 /*modal标题*/
-h4{
+/*h4{
 	font-size: 16px;
-}
+}*/
 /*导航最外层*/
-.nav-list > li > a{
+/*.nav-list > li > a{
 	font-size: 14px;
-}
+}*/
 /*表格*/
-table th,table td{
+/*table th,table td{
 	font-size: 12px !important;
-}
+}*/
 /*select2下拉选择框*/
-.select2-selection{
+/*.select2-selection{
 	font-size: 12px !important;
 }
 .select2-selection__rendered{
 	line-height: 1.7 !important;
-}
+}*/
 /*input框*/
-.input-group-addon,.form-control{
+/*.input-group-addon,.form-control{
 	font-size: 12px;
-}
+}*/
 /*联通大标题*/
-.navbar .navbar-brand{
+/*.navbar .navbar-brand{
 	font-size: 22px;
-}
+}*/
 /*user*/
-.user-info {
+/*.user-info {
   margin-top: 3px;
-}
+}*/

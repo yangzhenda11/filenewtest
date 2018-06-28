@@ -16,7 +16,7 @@ fis.match('**', {
 })
 
 //编译过滤
-fis.set('project.ignore', ['static/plugins/bootstrap-fileinput/FormData.js','static/plugins/pdf/build/pdf.worker.js','static/plugins/pdf/web/debugger.js']);
+fis.set('project.ignore', ['static/plugins/bootstrap-fileinput/FormData.js','static/plugins/pdf/build/pdf.worker.js','static/plugins/pdf/web/debugger.js','fis-conf.js']);
 
 //fis.match('*.{js,css}', {				// 加 md5
 //	useHash: true
@@ -27,15 +27,15 @@ fis.match('*.{js,css,jpg,png}', {
   	query: '?t=' + fis.get('new date')
 });
 
-fis.match('*.js', {
-	// fis-optimizer-uglify-js 插件进行压缩，已内置
-	optimizer: fis.plugin('uglify-js')
-});
-
-fis.match('*.css', {
-	// fis-optimizer-clean-css 插件进行压缩，已内置
-	optimizer: fis.plugin('clean-css')
-});
+//fis.match('*.js', {
+//	// fis-optimizer-uglify-js 插件进行压缩，已内置
+//	optimizer: fis.plugin('uglify-js')
+//});
+//
+//fis.match('*.css', {
+//	// fis-optimizer-clean-css 插件进行压缩，已内置
+//	optimizer: fis.plugin('clean-css')
+//});
 
 
 // css3 属性添加前缀

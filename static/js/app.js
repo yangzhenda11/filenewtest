@@ -706,7 +706,7 @@ var App = function() {
             handlePopovers(); // handles bootstrap popovers
             handleAccordions(); // handles accordions
             handleModals(); // handle modals
-            handleBootstrapConfirmation(); // handle bootstrap confirmations
+            //handleBootstrapConfirmation(); // handle bootstrap confirmations
             // handleTextareaAutosize(); // handle autosize textareas
             // handleCounterup(); // handle counterup instances
             handle100HeightContent(); //handle content fullHeight
@@ -730,7 +730,7 @@ var App = function() {
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
             // handleAccordions(); //handles accordions
-            handleBootstrapConfirmation(); // handle bootstrap confirmations
+            //handleBootstrapConfirmation(); // handle bootstrap confirmations
         },
 		/*
 		 * @param url  地址

@@ -7,6 +7,7 @@
  * Project repository: https://github.com/jquery-form/form
  * Dual licensed under the MIT and LGPLv3 licenses.
  * https://github.com/jquery-form/form#license
+ * 用与文件导入
  */
 /* global ActiveXObject */
 

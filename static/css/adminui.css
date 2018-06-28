@@ -586,6 +586,8 @@ Demo Utils
 /***
 Users
 ***/
+	.user-info {
+  	margin-top: 3px; }
   .user-info img {
     float: left;
     margin-right: 5px; }

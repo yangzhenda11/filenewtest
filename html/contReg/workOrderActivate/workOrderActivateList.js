@@ -17,29 +17,22 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
         }
     },
     "columns": [
-    	{"data" : null,
-         "title":"序号",
-         "className": "text-center",
-		"render" : function(data, type, full, meta){
-						var start = App.getDatatablePaging("#workOrderActivateListTable").pageStart;
-						return start + meta.row + 1;
-				   }
+    	{"data" : null,"title":"序号","className": "text-center","width":"5%",
+			"render" : function(data, type, full, meta){
+				var start = App.getDatatablePaging("#workOrderActivateListTable").pageStart;
+				return start + meta.row + 1;
+		   }
 		},
-		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-        {"data": "contractNumber","title": "合同编号"},
-        {"data": "wcardNumber","title": "工单编号"},
-        {"data": "wcardStatusStr","title": "工单状态"},
-        {
-	        "data": "ctreatedDate",
-	        "title": "创建日期",
-	        render: function(data, type, full, meta) {
+		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"36%"},
+        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"17%"},
+        {"data": "wcardNumber","title": "工单编号","className":"whiteSpaceNormal","width":"17%"},
+        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width":"10%"},
+        {"data": "ctreatedDate","title": "创建日期","className":"whiteSpaceNormal","width":"10%",
+	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-mm-dd");
 	        }
 	    },
-	    {
-			"data": null,
-			"className": "text-center",
-			"title": "操作",
+	    {"data": null,"className": "text-center","title": "操作","width":"5%",
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var btnArray = new Array();

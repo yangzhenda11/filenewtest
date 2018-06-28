@@ -3,6 +3,8 @@ var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 var curStaffId = config.curStaffId;
 $(function(){
+	getTableTodo();
+	getFlowKyeList();
 	// 加载表格
 	$("#currentId").val(curStaffOrgId);
 });
@@ -18,24 +20,18 @@ function initFrame(){
 	$('#searchContent').show();
 }
 // 查询
-function serarchForToDo(resetPaging){
-	var table = $('#searchTableTodo').DataTable();
-	if(resetPaging) {
-		table.ajax.reload(null, false);
-	} else {
+function serarchForToDo(){
+	var startDate = $('#startDate').val().trim();
+	var endDate = $('#endDate').val().trim();
+	if(!checkDate(startDate,endDate)){
+		layer.msg("接收开始日期不得大于截止日期！");
+		return;
+	}else{
+		var table = $('#searchTableTodo').DataTable();
 		table.ajax.reload();
 	}
 }
 
-//重置查询条件
-function resetConditionForToDo(){
-	$('#processTitle').val('');
-	$('#linkName').val('');
-	
-	$("input[name='startDate']").val('');
-	$("input[name='endDate']").val('');
-}
- 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee) {
@@ -82,75 +78,79 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 /*
  * 表格初始化
  */
-App.initDataTables('#searchTableTodo', "#submitBtn", {
-	ajax: {
-		"type": "GET",					//请求方式
-		"url": serverPath + 'workflowrest/taskToDo',	//请求地址
-		"data": function(d) {							//自定义传入参数
-        	d.title = $('#processTitle').val();
-        	d.linkName = $('#linkName').val();
-        	d.createTimeStart = $('#startDate').val();
-        	d.createTimeEnd = $('#endDate').val();
-        	d.staffId = curStaffId;
-        	return d;
-		}
-	},
-	columns: [// 对应列
-		{"data": "title","title":"待办标题",className: "whiteSpaceNormal text-center","width": "35%"},
-        {"data": "processDefinitionName","title":"流程名称",className: "whiteSpaceNormal text-center","width": "23%"},
-        {"data": "name","title":"环节名称",className: "whiteSpaceNormal text-center","width": "15%"},
-        {"data": "createTime","title":"接收时间",className: "whiteSpaceNormal text-center","width": "15%", 
-        	render: function (a, b, c, d) {
-        		return getSmpFormatDateByLong(a, true);
-        	}
-        },
-        {"data": null,"title":"操作",className: "text-center","width": "10%"}
-    ],
-    "columnDefs": [
-		{// 所有列默认值
-			"targets": "_all",
-			"defaultContent": ''
+function getTableTodo(){
+	App.initDataTables('#searchTableTodo', "#submitBtn", {
+		ajax: {
+			"type": "GET",					//请求方式
+			"url": serverPath + 'workflowrest/taskToDo',	//请求地址
+			"data": function(d) {	
+				d.staffId = curStaffId;//自定义传入参数
+	        	d.title = $('#processTitle').val().trim();
+	        	//d.linkName = $('#linkName').val().trim();
+	        	d.createTimeStart = $('#startDate').val().trim();
+	        	d.createTimeEnd = $('#endDate').val().trim();
+	        	d.flowType=$("#flowType").val();
+	        	d.contractCode=$("#contractCode").val().trim();
+	        	return d;
+			}
 		},
-       {// 最后一列添加按钮
-        targets: -1,
-        render: function (a, b, c, d) {
-        	var currentId = $("#currentId").val();;
-        	var assignee = c.assignee;
-        	var context ="";
-        	
-        	// 按钮显隐设置及方法设置
-        	var disabled = "disabled";
-        	var buttontitle = "title=当前任务属于【" + c.staffOrgName + "】，请切换岗位后处理";
-        	var fn = "";
-        	if(currentId == assignee){
-        		disabled = "";
-        		buttontitle = "";
-        		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-        		context =
-        		{
-        				func: [
-        					{"name": "处理", "title": buttontitle, "fn": fn, "type": disabled}
-        					]
-        		};
-        	}
-        	if(assignee.indexOf("candidate-") != -1){
-        		disabled = "";
-        		buttontitle = "title=该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
-        		fn = "onclick=applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-        		context =
-            	{
-            			func: [
-            				{"name": "申领", "title": buttontitle, "fn": fn, "type": disabled}
-            				]
-            	};
-        	}
-        	
-            var html = template(context);
-            return html;
-        }
-    }]
-});
-
+		columns: [// 对应列
+	    	//增加序号列
+	        {"data" : null,"title":"序号","className": "text-center","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#searchTableTodo").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "title","title":"主题","className": "whiteSpaceNormal","width": "50%"},
+	        {"data": "processDefinitionName","title":"流程类型","className": "whiteSpaceNormal","width": "15%"},
+	        {"data": "createTime","title":"接收日期","className": "whiteSpaceNormal","width": "15%", 
+	        	"render": function (a, b, c, d) {
+	        		return getSmpFormatDateByLong(a, true);
+	        	}
+	        },
+	        {"data": "beUserName","title":"发送人","className": "whiteSpaceNormal","width": "10%"},
+	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
+	    ],
+	    "columnDefs": [
+	       {// 最后一列添加按钮
+	        targets: -1,
+	        render: function (a, b, c, d) {
+	        	var currentId = $("#currentId").val();;
+	        	var assignee = c.assignee;
+	        	var context ="";
+	        	// 按钮显隐设置及方法设置
+	        	var disabled = "disabled";
+	        	var buttontitle = "title=当前任务属于【" + c.staffOrgName + "】，请切换岗位后处理";
+	        	var fn = "";
+	        	if(currentId == assignee){
+	        		disabled = "";
+	        		buttontitle = "";
+	        		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+	        		context =
+	        		{
+	        				func: [
+	        					{"name": "处理", "title": buttontitle, "fn": fn, "type": disabled}
+	        					]
+	        		};
+	        	}
+	        	if(assignee.indexOf("candidate-") != -1){
+	        		disabled = "";
+	        		buttontitle = "title=该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
+	        		fn = "onclick=applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+	        		context =
+	            	{
+	            			func: [
+	            				{"name": "申领", "title": buttontitle, "fn": fn, "type": disabled}
+	            				]
+	            	};
+	        	}
+	            var html = template(context);
+	            return html;
+	        }
+	    }]
+	})
+}
 //校验待办是否已经办理,true标识已经办理，false标识尚未办理
 function checkifdone(taskId){
 	var result=false;
@@ -176,4 +176,47 @@ function checkifdone(taskId){
 		}
 	});
 	return result;
+}
+
+function getFlowKyeList(){
+	var ajaxObj = {
+	    "url" :  serverPath + "workflowrest/getFlowKeyList",
+	    "type" : "post",
+	    "data" : null
+	}
+	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","请选择流程类型");
+//	
+//	$.ajax({
+//		'cache': true,
+//		'type': "POST",
+//		'url':serverPath+"workflowrest/getFlowKeyList",
+//		'async': false,
+//		'error': function(request) {
+//			layer.msg("获取流程类型异常，请联系管理员!",{time:1000});
+//		},
+//		'success': function(result) {
+//			var dataArray = result.dataArray;
+//			console.log(result);
+//			$("#flowType").append("<option value=''>请选择流程类型</option>");
+//			$.each(dataArray, function (i, item) {
+//				$("#flowType").append("<option value='" + item.value + "'>" + item.label + "</option>");
+//			});
+//		},
+//		error: function(result) {
+//			App.ajaxErrorCallback(result);
+//		}
+//	});
+}
+/**
+ * 校验开始时间是否大于截止时间
+ * */
+function checkDate(strDate1,strDate2){  
+    var t1 = new Date(strDate1);     
+    var t2 = new Date(strDate2);    
+              
+    if(Date.parse(t1) - Date.parse(t2) > 0){     
+        return false;   
+    }else{  
+        return true;  
+    }  
 }

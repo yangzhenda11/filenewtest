@@ -16,9 +16,8 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 		<link rel="stylesheet" type="text/css" href="../css/workflow.css" />
@@ -36,38 +35,40 @@
 					<div class="page-search">
 						<form class="form-horizontal" action="">
 							<div class="row page-search-form" style="overflow: visible;">
-								<div class="col-sm-4">
+                                <div class="col-sm-4">
 									<div class="input-group">
-										<span class="input-group-addon">已办标题:</span>
+										<span class="input-group-addon">主题</span>
 										<input type="text" class="form-control" id="processTitleForDone" name="processTitle" size="30px" />
 									</div>
 								</div>
-								<div class="col-sm-4">
+                               	<div class="col-sm-4">
 									<div class="input-group">
-										<span class="input-group-addon">审批开始时间:</span>
-										<input type="text" name="startDate" id="startDateForDone" size="30px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+										<span class="input-group-addon">合同编号</span>
+										<input type="text" class="form-control" id="contractCode" name="contractCode" size="30px" />
 									</div>
 								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon">审批结束时间:</span>
-										<input type="text" name="endDate" id="endDateForDone" size="30px" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<span class="input-group-addon">环节名称:</span>
-										<input type="text" class="form-control" id="linkNameForDone" name="linkName" size="30px" />
-									</div>
-								</div>
+                                <div class="col-sm-4">
+                                    <div class="input-group data-input-group2">
+                                        <span class="input-group-addon searchLableText">送出日期</span>
+                                        <input type="text" id="startDateForDone" name="startDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        class="form-control" readonly="readonly" />
+                                        <span class="input-group-addon searchLableText" >至</span>
+                                        <input type="text" id="endDateForDone" name="endDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        class="form-control" readonly="readonly" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon searchLableText">流程类型</span>
+                                        <div class="valiParent">
+                                            <select id="flowType" name="flowType" class="form-control"></select>
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 							<div class="page-search-action">
-								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="serarchForDone();">
-                                <i class="iconfont icon-search"></i> 查询
-                            </button>
-								<button type="reset" class="btn btn-block yellow" onclick="resetConditionForDone();">
-                                <i class="iconfont icon-reset"></i> 清空
-                            </button>
+								<button type="button" id="submitBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="serarchForDone();"><i class="iconfont icon-search"></i> 查询</button>
+								<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="iconfont icon-reset"></i> 清空</button>
 							</div>
 						</form>
 
@@ -110,10 +111,7 @@
 		<!--业务依赖-->
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/date-format.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>

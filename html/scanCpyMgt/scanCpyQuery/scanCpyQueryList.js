@@ -18,44 +18,34 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
     },
     "columns": [
     	//增加序号列
-        {"data" : null,
-         "title":"序号",
-         "className": "text-center",
-		"render" : function(data, type, full, meta){
-						var start = App.getDatatablePaging("#scanCpyQueryTable").pageStart;
-						return start + meta.row + 1;
-				   }
+        {"data" : null,"title":"序号","className": "text-center","width":"5%",
+			"render" : function(data, type, full, meta){
+				var start = App.getDatatablePaging("#scanCpyQueryTable").pageStart;
+				return start + meta.row + 1;
+		   	}
 		},
-        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
-        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"15%"},
-        {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"13%"},
+        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"14%"},
+        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"13%"},
+        {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"10%"},
 //      {"data": "undertakerId","bVisible":false,"title": "承办人"},
-        {"data": "undertakeName","title": "承办人"},
+        {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width":"6%"},
 //      {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
         {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
 //      {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"},
 //		{"data": "id","bVisible":false,"title": "id"},
-        {
-	        "data": "approveDate",
-	        "title": "审批通过时间",
-	        render: function(data, type, full, meta) {
+        {"data": "approveDate","title": "审批通过时间","className":"whiteSpaceNormal","width":"10%",
+	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
-        {
-			"data": "id",
-			"className": "text-center",
-			"title": "快捷下载",
+        {"data": "id","title": "快捷下载","className":"whiteSpaceNormal text-center","width":"7%",
 			"render": function(data, type, full, meta) {
 				var result = '<a onclick="getScanCpyConract(\''+full.id+'\')">正文下载</a>';
 				return result;
 			}
 		},
-		{
-			"data": null,
-			"className": "text-center",
-			"title": "操作",
+		{"data": null,"className": "text-center","title": "操作","width":"5%",
 			"render": function(data, type, full, meta) {
 				if(data) {
 					var btnArray = new Array();

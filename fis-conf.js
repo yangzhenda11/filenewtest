@@ -6,6 +6,7 @@
 //使用命令
 //fis3 release {media} -d {路径}
 //fis3 release -d {路径}
+//fis3 release -c
 //fis3 release -d ../upf-contract2-static-release/upf-contract2-static
 // 启用使用相对路径编译插件
 fis.hook('relative');

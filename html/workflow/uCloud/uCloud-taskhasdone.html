@@ -6,12 +6,15 @@
 	<!--<![endif]-->
 	<!-- BEGIN HEAD -->
 
-    <head>
+	<head>
 		<meta charset="UTF-8">
 		<title>云门户已办跳转界面</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
@@ -22,11 +25,11 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 		<link rel="stylesheet" type="text/css" href="../css/workflow.css" />
-    </head>
+	</head>
 
-    <body>
-        <div class="page-content" id="searchContentForDone">
-        	<div class="loadEffect">
+	<body>
+		<div class="page-content" id="searchContentForDone">
+			<div class="loadEffect">
 				<i></i>
 				<i></i>
 				<i></i>
@@ -37,24 +40,24 @@
 				<i></i>
 			</div>
 			<div class="textValue">正在努力为您跳转中，请稍候..........</div>
-            <div style="display: none;">
-                <!-- 当前登录人岗位ID -->
-                <input type="hidden" id="currentIdForDone" name="currentId" />
-                <form id="taskHasDoneDetail">
-                    <input type="text" id="taskIdForDone" name="taskId" /> 
-                    <input type="text" id="taskDefinitionKeyForDone" name="taskDefinitionKey" /> 
-                    <input type="text" id="nameForDone"name="name" /> 
-                    <input type="text" id="processInstanceIdForDone" name="processInstanceId" /> 
-                    <input type="text" id="titleForDone" name="title" /> 
-                    <input type="text" id="processDefinitionIdForDone" name="processDefinitionId" /> 
-                    <input type="text" id="processDefinitionKeyForDone" name="processDefinitionKey" /> 
-                    <input type="text" id="executionIdForDone" name="executionId" /> 
-                    <input type="text" id="assigneeIdForDone" name="assigneeId" />
-                </form>
-            </div>
-        </div>
-        <div id="goTaskToDoDetailForDone"></div>
-        
+			<div style="display: none;">
+				<!-- 当前登录人岗位ID -->
+				<input type="hidden" id="currentIdForDone" name="currentId" />
+				<form id="taskHasDoneDetail">
+					<input type="text" id="taskIdForDone" name="taskId" />
+					<input type="text" id="taskDefinitionKeyForDone" name="taskDefinitionKey" />
+					<input type="text" id="nameForDone" name="name" />
+					<input type="text" id="processInstanceIdForDone" name="processInstanceId" />
+					<input type="text" id="titleForDone" name="title" />
+					<input type="text" id="processDefinitionIdForDone" name="processDefinitionId" />
+					<input type="text" id="processDefinitionKeyForDone" name="processDefinitionKey" />
+					<input type="text" id="executionIdForDone" name="executionId" />
+					<input type="text" id="assigneeIdForDone" name="assigneeId" />
+				</form>
+			</div>
+		</div>
+		<div id="goTaskToDoDetailForDone"></div>
+
 		<!--[if lt IE 9]>
 		<script src="../../../static/plugins/html5shiv.min.js"></script>
 		<script src="../../../static/plugins/respond.min.js"></script>
@@ -76,7 +79,7 @@
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/uCloud.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/date-format.js" type="text/javascript" charset="utf-8"></script>
-        <script src="uCloud-taskhasdone.js" type="text/javascript" charset="utf-8"></script>
-    </body>
+		<script src="uCloud-taskhasdone.js" type="text/javascript" charset="utf-8"></script>
+	</body>
 
 </html>

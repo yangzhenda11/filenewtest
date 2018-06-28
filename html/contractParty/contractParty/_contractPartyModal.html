@@ -99,7 +99,6 @@
 
         function successCallback(result) {
             var data = result.data;
-            console.log(data);
             $("#partnerId").val(data.partnerId);
             $("#partnerNameM").text(data.partnerName);
             $("#partnerCode").val(data.associateCode).trigger('change');
@@ -149,7 +148,6 @@
          *  orgs/{orgId}/orgTree
          */
         App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", "", successCallback);
-
         function successCallback(result) {
             var data = result.data;
             if (null == data) {
@@ -331,7 +329,6 @@
 
     function orgsfilter(treeId, parentNode, responseData) {
         var responseData = responseData.data;
-        console.log(responseData);
         if (responseData) {
         	var returnData = [];
         	for(var i = 0; i < responseData.length; i++){
@@ -379,7 +376,6 @@
 
     function orgsFilter(treeId, parentNode, responseData) {
         var responseData = responseData.children;
-        console.log(responseData);
         if (responseData) {
             return responseData;
         } else {
@@ -428,7 +424,9 @@
                     //responseData[i].nocheck = true;
                     returnData.push(responseData[i]);
                     returnData.nocheck = true;
-                }
+                } /*else {
+                	return null;
+                }*/
             }
             return returnData;
         } else {

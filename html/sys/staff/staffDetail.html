@@ -1,108 +1,121 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<input type="hidden" id="staffIdForDetail">
-	<!-- 人员信息模态框 开始 -->
-	<div class="tab-top">
-		<ul id="infoTab" class="nav tab-ul" role="tablist">
-			<li role="presentation" class="active"><a id="infoAnchor" href="#info" aria-controls="info" data-toggle="tab">人员信息</a></li>
-			<li role="presentation"><a id="positionAnchor" href="#position" aria-controls="position" data-toggle="tab">岗位信息</a></li>
-			<li role="presentation"><a id="roleAnchor" href="#role" aria-controls="role" data-toggle="tab">角色信息</a></li>
-			<li role="presentation"><a id="permissionAnchor" href="#permission" aria-controls="permission" data-toggle="tab">权限信息</a></li>
-		</ul>
-	</div>
-	<div class="tab-content">
-		<div class="tab-pane fade in active" id="info">
-			<div id="infoDiv" class="pt20">
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="loginNameInfoObj">账号</label>
-						<span class="form-control" id="loginNameInfoObj"></span>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<title>Insert title here</title>
+	</head>
+
+	<body>
+		<input type="hidden" id="staffIdForDetail">
+		<!-- 人员信息模态框 开始 -->
+		<div class="tab-top">
+			<ul id="infoTab" class="nav tab-ul" role="tablist">
+				<li role="presentation" class="active">
+					<a id="infoAnchor" href="#info" aria-controls="info" data-toggle="tab">人员信息</a>
+				</li>
+				<li role="presentation">
+					<a id="positionAnchor" href="#position" aria-controls="position" data-toggle="tab">岗位信息</a>
+				</li>
+				<li role="presentation">
+					<a id="roleAnchor" href="#role" aria-controls="role" data-toggle="tab">角色信息</a>
+				</li>
+				<li role="presentation">
+					<a id="permissionAnchor" href="#permission" aria-controls="permission" data-toggle="tab">权限信息</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div class="tab-pane fade in active" id="info">
+				<div id="infoDiv" class="pt20">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="loginNameInfoObj">账号</label>
+							<span class="form-control" id="loginNameInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="staffSortInfoObj">排序</label>
-						<span class="form-control" id="staffSortInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="staffSortInfoObj">排序</label>
+							<span class="form-control" id="staffSortInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="nameInfoObj">人员姓名</label> <span
-							class="form-control" id="staffNameInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="nameInfoObj">人员姓名</label> <span class="form-control" id="staffNameInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="staffStatusInfoObj">人员状态</label>
-						<span class="form-control" id="staffStatusInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="staffStatusInfoObj">人员状态</label>
+							<span class="form-control" id="staffStatusInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="empCodeInfoObj">身份证号</label>
-						<span class="form-control" id="empCodeInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="empCodeInfoObj">身份证号</label>
+							<span class="form-control" id="empCodeInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="sexInfoObj">性别</label> <span
-							class="form-control" id="sexInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="sexInfoObj">性别</label> <span class="form-control" id="sexInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="hireDateInfoObj">入职日期</label>
-						<span class="form-control" id="hireDateInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="hireDateInfoObj">入职日期</label>
+							<span class="form-control" id="hireDateInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="postcodeInfoObj">邮政编码</label>
-						<span class="form-control" id="postcodeInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="postcodeInfoObj">邮政编码</label>
+							<span class="form-control" id="postcodeInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="mailAddrInfoObj">通信地址</label>
-						<span class="form-control" id="mailAddrInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="mailAddrInfoObj">通信地址</label>
+							<span class="form-control" id="mailAddrInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="phoneInfoObj">电话号码</label> <span
-							class="form-control" id="phoneInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="phoneInfoObj">电话号码</label> <span class="form-control" id="phoneInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="emailInfoObj">邮箱</label> <span
-							class="form-control" id="emailInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="emailInfoObj">邮箱</label> <span class="form-control" id="emailInfoObj"></span>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<div class="input-group">
-						<label class="input-group-addon" for="mobilPhoneInfoObj">手机号码</label>
-						<span class="form-control" id="mobilPhoneInfoObj"></span>
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<label class="input-group-addon" for="mobilPhoneInfoObj">手机号码</label>
+							<span class="form-control" id="mobilPhoneInfoObj"></span>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="tab-pane fade" id="position">
-			<div id="staffOrgInfos"></div>
-		</div>
+			<div class="tab-pane fade" id="position">
+				<div id="staffOrgInfos"></div>
+			</div>
 
-		<div class="tab-pane fade" id="role">
-			<div id="roleDiv"></div>
+			<div class="tab-pane fade" id="role">
+				<div id="roleDiv"></div>
+			</div>
+			<div class="tab-pane fade" id="permission">
+				<ul id="staffDetailPermtree" class="ztree container-fluid"></ul>
+			</div>
 		</div>
-		<div class="tab-pane fade" id="permission">
-			<ul id="staffDetailPermtree" class="ztree container-fluid"></ul>
-		</div>
-	</div>
-</body>
-<script type="text/javascript" src="staffDetail.js?t=1530089808708"></script>
+	</body>
+	<script type="text/javascript" src="staffDetail.js?t=1530186902004"></script>
+
 </html>

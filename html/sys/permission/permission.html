@@ -3,48 +3,51 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
-<head>
-    <meta charset="UTF-8">
-    <title>权限管理</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="renderer" content="webkit">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
 
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css?t=1530089808708">
-    <link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../../../static/css/custom.css?t=1530089808708" />
-    <link rel="stylesheet" type="text/css" href="../css/sys.css?t=1530089808708" />
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<title>权限管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css?t=1530186902004">
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css?t=1530186902004" />
+		<link rel="stylesheet" type="text/css" href="../css/sys.css?t=1530186902004" />
+	</head>
 
-<body>
-    <div class="page-content">
-        <div class="portlet">
-            <div class="portlet-title">
-                <div class="caption font-dark">
-                    <span class="caption-subject bold uppercase"> 权限管理</span>
-                </div>
-            </div>
-            <div class="portlet-body">
-                <div class="col-sm-4">
-                    <div class="action-tools">
-                        <button type="button" class="btn btn-info red" onclick="expandAll();">
+	<body>
+		<div class="page-content">
+			<div class="portlet">
+				<div class="portlet-title">
+					<div class="caption font-dark">
+						<span class="caption-subject bold uppercase"> 权限管理</span>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="col-sm-4">
+						<div class="action-tools">
+							<button type="button" class="btn btn-info red" onclick="expandAll();">
 										<i class="ace-icon fa fa-plus"></i> 全部展开
 									</button>
-                        <button type="button" class="btn btn-info red" onclick="collapseAll();">
+							<button type="button" class="btn btn-info red" onclick="collapseAll();">
 										<i class="ace-icon fa fa-minus"></i> 全部折叠
 										</button>
-                        <button type="button" class="btn btn-info red" onclick="refreshTree();">
+							<button type="button" class="btn btn-info red" onclick="refreshTree();">
 												<i class="ace-icon fa fa-refresh"></i> 刷新
 											</button>
-                        <!-- <a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
+							<!-- <a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
 								<span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
 							</a>
 							<a href="#" class="my-icon-a" title="全部折叠" onclick="collapseAll();">
@@ -53,93 +56,93 @@
 							<a href="#" class="my-icon-a" title="刷新" onclick="refreshTree();">
 								<span class="glyphicon glyphicon-refresh my-icon" aria-hidden="true"></span>
 							</a> -->
-                    </div>
-                    <ul id="permTree" class="ztree"></ul>
-                </div>
-                <div class="permHeightBorder"></div>
-                <div class="col-sm-7">
-                    <div class="portlet-title-per">
-                        <button type="button" class="btn btn-info red hidden" onclick="addPermission();" data-permcheck="sys:perm:add">
+						</div>
+						<ul id="permTree" class="ztree"></ul>
+					</div>
+					<div class="permHeightBorder"></div>
+					<div class="col-sm-7">
+						<div class="portlet-title-per">
+							<button type="button" class="btn btn-info red hidden" onclick="addPermission();" data-permcheck="sys:perm:add">
                                 <i class="ace-icon fa fa-plus"></i> 插入节点
                             </button>
-                        <button type="button" class="btn btn-info red hidden" onclick="showUpdate();" data-permcheck="sys:perm:update">
+							<button type="button" class="btn btn-info red hidden" onclick="showUpdate();" data-permcheck="sys:perm:update">
                                 <i class="ace-icon fa fa-pencil"></i> 修改节点
                            </button>
-                        <button type="button" class="btn btn-info red hidden" onclick="delPermission();" data-permcheck="sys:perm:delete">
+							<button type="button" class="btn btn-info red hidden" onclick="delPermission();" data-permcheck="sys:perm:delete">
                                 <i class="ace-icon fa fa-minus"></i> 删除节点
                            </button>
-                    </div>
-                    <div class="form-body">
-                        <form class="form-horizontal" id="permissionShow">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon" for="permCode">权限编码</span>
-                                    <div class="form-control-static form-control" id="permCode" name="permCode"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="permName" class="input-group-addon">权限名称</label>
-                                    <div class="form-control form-control-static" id="permName" name="permName"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="sysPermissionUri" class="input-group-addon">权限URI</label>
-                                    <div class="form-control form-control-static" id="sysPermissionUri" name="uri"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="permType" class="input-group-addon">权限类型</label>
-                                    <div class="form-control form-control-static" id="permType" name="permType"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="permIcon" class="input-group-addon">菜单图标</label>
-                                    <div class="form-control form-control-static" id="permIcon" name="permIcon"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="permCheck" class="input-group-addon">校验字符</label>
-                                    <div class="form-control form-control-static" id="permCheck" name="permCheck"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <label for="permSort" class="input-group-addon">展示顺序</label>
-                                    <div class="form-control form-control-static" id="permSort" name="permSort"></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--modal-->
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
-    <!--[if lt IE 9]>
-			<script src="../../../static/plugins/html5shiv.min.js?t=1530089808708"></script>
-			<script src="../../../static/plugins/respond.min.js?t=1530089808708"></script>
-			<script src="../../../static/plugins/ie8.fix.min.js?t=1530089808708"></script>
+						</div>
+						<div class="form-body">
+							<form class="form-horizontal" id="permissionShow">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon" for="permCode">权限编码</span>
+										<div class="form-control-static form-control" id="permCode" name="permCode"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permName" class="input-group-addon">权限名称</label>
+										<div class="form-control form-control-static" id="permName" name="permName"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="sysPermissionUri" class="input-group-addon">权限URI</label>
+										<div class="form-control form-control-static" id="sysPermissionUri" name="uri"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permType" class="input-group-addon">权限类型</label>
+										<div class="form-control form-control-static" id="permType" name="permType"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permIcon" class="input-group-addon">菜单图标</label>
+										<div class="form-control form-control-static" id="permIcon" name="permIcon"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permCheck" class="input-group-addon">校验字符</label>
+										<div class="form-control form-control-static" id="permCheck" name="permCheck"></div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<label for="permSort" class="input-group-addon">展示顺序</label>
+										<div class="form-control form-control-static" id="permSort" name="permSort"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--modal-->
+		<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+		<!--[if lt IE 9]>
+			<script src="../../../static/plugins/html5shiv.min.js?t=1530186902004"></script>
+			<script src="../../../static/plugins/respond.min.js?t=1530186902004"></script>
+			<script src="../../../static/plugins/ie8.fix.min.js?t=1530186902004"></script>
   		<![endif]-->
-    <!--[if lte IE 8]>
-	  		<script src="../../../static/plugins/selectivizr-min.js?t=1530089808708"></script>
+		<!--[if lte IE 8]>
+	  		<script src="../../../static/plugins/selectivizr-min.js?t=1530186902004"></script>
   		<![endif]-->
-    <!--基础依赖-->
-    <script src="../../../static/plugins/jquery-1.12.4.min.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/bootstrap/js/bootstrap.min.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/layer/layer.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/select2/js/select2.full.min.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <!--业务依赖-->
-    <script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="../../../static/js/app.js?t=1530089808708" type="text/javascript" charset="utf-8"></script>
-    <script src="permission.js?t=1530089808708"></script>
-</body>
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/select2/js/select2.full.min.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/js/app.js?t=1530186902004" type="text/javascript" charset="utf-8"></script>
+		<script src="permission.js?t=1530186902004"></script>
+	</body>
 
 </html>

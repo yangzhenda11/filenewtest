@@ -4,13 +4,14 @@
 General reset
 ***/
 /* Set default body */
+/*合同修改*/
 body {
   color: #333333;
   font-family: "Microsoft YaHei", "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 0px !important;
   margin: 0px !important;
   direction: "ltr";
-  font-size: 14px; }
+  font-size: 12px; }
 
 /*
  Internet Explorer 10 doesn't differentiate device width from viewport width, and thus doesn't 
@@ -316,9 +317,10 @@ h2 {
 
 h3 {
   font-size: 24px; }
-
+/*合同修改*/
+/*font-size: 18px;*/
 h4 {
-  font-size: 18px; }
+  font-size: 16px; }
 
 h5 {
   font-size: 14px; }
@@ -2586,7 +2588,10 @@ Custom color buttons
 
 .input-circle-top {
   border-radius: 25px 25px 0 0 !important; }
-
+/*合同修改*/
+/*加line-height*/
+/*line-height: 20px;
+  height: 20px;*/
 .ui-radio,
 .ui-checkbox {
   display: inline-block;
@@ -2594,8 +2599,9 @@ Custom color buttons
   padding-left: 30px;
   margin-bottom: 4px;
   cursor: pointer;
-  font-size: 14px;
-  height: 20px;
+  font-size: 12px;
+  line-height: 18px;
+  height: 16px;
   webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
@@ -2890,9 +2896,10 @@ Input icons
 /***
 Customized Bootstrap Labels
 ***/
+/*合同修改*/
 .label {
   text-shadow: none !important;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 300;
   padding: 3px 6px 3px 6px;
   color: #fff;
@@ -3483,12 +3490,14 @@ Portlets
       display: table; }
     .portlet > .portlet-title:after {
       clear: both; }
+      /*合同修改*/
+     /*padding: 8px 0 10px*/
     .portlet > .portlet-title > .caption {
       float: left;
       display: inline-block;
       font-size: 18px;
       line-height: 18px;
-      padding: 8px 0 10px; }
+      padding: 4px 0 6px; }
       .portlet > .portlet-title > .caption.bold {
         font-weight: 400; }
       .portlet > .portlet-title > .caption > i {
@@ -3682,6 +3691,9 @@ Portlets
     border-bottom: 1px solid #f3f3f3; }
     .portlet > .portlet-title > .caption {
       color: #666; }
+      /*合同修改*/
+     .portlet > .portlet-title > .caption > .caption-subject.contract {
+        font-size: 14px; }
       .portlet > .portlet-title > .caption > .caption-subject {
         font-size: 16px; }
       .portlet > .portlet-title > .caption > i {
@@ -4581,9 +4593,10 @@ Scrollable Tables
 /***
 Customized Bootstrap Tables
 ***/
+/*合同修改*/
 .table td,
 .table th {
-  font-size: 14px;
+  font-size: 12px;
   vertical-align: middle !important; }
 .table.table-bordered thead > tr > th {
   border-bottom: 0; }
@@ -4715,9 +4728,9 @@ Custom tables
   margin-left: 0px;
   margin-right: 5px;
   margin-bottom: -3px; }
-
+/*合同修改*/
 .table thead tr th {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600; }
 
 .table-advance {
@@ -4725,10 +4738,10 @@ Custom tables
 
 .table-advance thead {
   color: #3f444a; }
-
+/*合同修改*/
 .table-advance thead tr th {
   background-color: #f1f4f7;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: #3f444a; }
 
@@ -7089,12 +7102,13 @@ html, body, .page-content {
 
 .page-search-moreBody {
   display: none; }
-
-.form-fieldset {
+/*合同修改*/
+/*.form-fieldset {
   margin-bottom: 10px; }
+  padding: 10px 0*/
   .form-fieldset > .form-fieldset-title {
     position: relative;
-    padding: 10px 0;
+    padding: 16px 0 10px;
     border-bottom: 2px solid #f2f2f2;
     color: #d11718;
     font-weight: bold; }

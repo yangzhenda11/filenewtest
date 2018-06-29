@@ -9,10 +9,19 @@ var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线�
 var wcardProcess = null;			//工单处理状态  0:草稿/1:复核/2:退回/3:激活
 var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
-var contractStatus = null;			//合同状态，1、 已审批，2、 作废，3、 作废申请中
+var contractStatus = null;			//合同状态
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
+var contractStatusObj = {
+	1: "已审批",
+	2: "作废",
+	3: "作废申请中",
+	4: "变更补充",
+	5: "终止解除",
+	7: "办结",
+	8: "履行中"
+}
 
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
 
@@ -528,25 +537,22 @@ function setPinfoContent(){
  * 处于这两种状态下不能进行下一步操作，true
  */
 function checkContractStatus(){
-	if(contractStatus == null){
+	if(contractStatus == 1){
+		return false;
+	}else if(contractStatusObj[contractStatus] == undefined){
 		showLayerErrorMsg('当前合同状态未知，请稍后操作');
 		return true;
-	}else if(contractStatus == 2){
-		showLayerErrorMsg('当前合同处于"作废"状态，不能进行下一步操作');
-		return true;
-	}else if(contractStatus == 3){
-		showLayerErrorMsg('当前合同处于"作废申请中"状态，不能进行下一步操作');
-		return true;
 	}else{
-		return false;
-	};
+		showLayerErrorMsg('当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作');
+		return true;
+	}
 }
 /*
  * 检查工单状态是否发生了改变
  * 改变了返回true，没有改变返回false
  */
 function checkWcardProcessIschange(){
-	var isChangeWcardProvess = null;
+	var isChangeWcardProvess = false;
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback,null,null,null,false);
 	function successCallback(result) {
 		var nowWcardProcess = result.data;
@@ -567,6 +573,7 @@ function checkWcardProcessIschange(){
 	}
 	return isChangeWcardProvess;
 }
+
 /*
  * 请求工单模块，获取基本信息及各模块的url
  */
@@ -613,34 +620,7 @@ function getWorkOrderInfo(){
 			function contractBaseInfoCallback(result) {
 				getContractOrderBaseInfoData = result;
 				contractStatus = result.data.contractStatus;
-				if(contractStatus == 1){
-					setDomContent(domObj);
-				}else{
-					isEdit = false;
-					fileUploadEdit = false;
-					if(contractStatus == 2){
-						var ms = '当前合同处于"作废"状态，不能进行操作';
-					}else if(contractStatus == 3){
-						var ms = '当前合同处于"作废申请中"状态，请稍后操作';
-					}else if(contractStatus == 8){
-						var ms = '当前合同处于"履行中"状态，不能操作';
-					}else if(contractStatus == null){
-						var ms = '当前合同状态未知，请稍后操作';
-					};
-					if(parm.pageType == 1 && parm.taskFlag == "db"){
-						parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
-							parent.layer.close(index);
-							setDomContent(domObj);
-						});
-					}else if(parm.pageType == 2){
-						layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
-							layer.close(index);
-							setDomContent(domObj);
-						});
-					}else{
-						setDomContent(domObj);
-					}
-				}
+				setDomContent(domObj);
 			};
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
@@ -648,41 +628,7 @@ function getWorkOrderInfo(){
 		$(".wcardType").text(wcardType);
 	}
 }
-/*
- * 检查工单状态是否属于该流程
- */
-function checkWcardProcessId(){
-	var isPass = false;
-	if(parm.taskFlag == "db"){
-		var taskDefinitionKey = parm.taskDefinitionKey;
-		if(taskDefinitionKey == "GDCL"){
-			if(wcardProcess == 0 || wcardProcess == 2){
-				isPass = true;
-			}
-		}else if(taskDefinitionKey == "GDQR"){
-			if(wcardProcess == 1){
-				isPass = true;
-			}
-		}
-	}else{
-		isPass = true;
-	};
-	if(!isPass){
-		isEdit = false;
-		fileUploadEdit = false;
-		if(parm.pageType == 1){
-			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
-				layer.close(index);
-				parent.modal_close();
-			});
-		}else{
-			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
-				layer.close(index);
-				backPage();
-			});
-		}
-	}
-}
+
 /*
  * 设置dom元素，并load进入
  */
@@ -703,9 +649,70 @@ function setDomContent(domObj) {
 	};
 }
 /*
+ * 检查工单状态是否属于该流程
+ */
+function checkWcardProcessId(){
+	var isPass = false;
+	if(parm.taskFlag == "db"){
+		var taskDefinitionKey = parm.taskDefinitionKey;
+		if(taskDefinitionKey == "GDCL"){
+			if(wcardProcess == 0 || wcardProcess == 2){
+				isPass = true;
+			}
+		}else if(taskDefinitionKey == "GDQR"){
+			if(wcardProcess == 1){
+				isPass = true;
+			}
+		}
+	}else{
+		isPass = true;
+	};
+	return isPass;
+}
+/*
+ * 检查合同状态是否为审批中
+ */
+function returnContractStatus(){
+	if(contractStatus == 1){
+		return false;
+	}else if(contractStatusObj[contractStatus] == undefined){
+		return "当前合同状态未知，请稍后操作。";
+	}else{
+		return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+	}
+}
+/*
  * dom区域全部加载完成后的函数
  */
 function loadComplete() {
+	if(!checkWcardProcessId()){
+		isEdit = false;
+		fileUploadEdit = false;
+		if(parm.pageType == 1){
+			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+				layer.close(index);
+				parent.modal_close();
+			});
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+				layer.close(index);
+				backPage();
+			});
+		}
+	}else if(returnContractStatus()){
+		var ms = returnContractStatus();
+		isEdit = false;
+		fileUploadEdit = false;
+		if(parm.pageType == 1 && parm.taskFlag == "db"){
+			parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+				parent.layer.close(index);
+			});
+		}else if(parm.pageType == 2){
+			layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+				layer.close(index);
+			});
+		}
+	};
 	formSubmit = true;
 	//页面元素初始化
 	App.init();
@@ -719,8 +726,6 @@ function loadComplete() {
 	$("#workOrderContentForm").on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
-	//检查工单状态是否属于该流程
-	checkWcardProcessId();
 };
 /*
  * 加载意见

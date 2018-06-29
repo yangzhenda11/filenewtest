@@ -1,10 +1,9 @@
 .clues {
-  padding: 20px 32px;
+  padding: 10px 32px;
 }
 .cluesRed {
   color: red;
   padding-left: 32px;
-  margin-top: -8px;
 }
 .contractDocSty {
   float: left;

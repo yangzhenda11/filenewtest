@@ -3,273 +3,280 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
 
-<head>
-    <meta charset="UTF-8">
-    <title>待办任务详细页</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" type="text/css" href="/static/css/adminui.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
-	
-</head>
-<body>
-    <!-- 当前任务参数串 -->
-    <input type="hidden" id="param" name="param" />
-    <!-- 是否为首环节 -->
-    <input type="hidden" id="startLink" name="startLink" />
-    <!-- 是否为尾环节 -->
-    <input type="hidden" id="endLink" name="endLink" />
-    
-    <!-- 处理类型及条件分支1通过，2回退 -->
-    <input type="hidden" id="handleType" name="handleType" />
-    <!-- 路由选择标识，如果没有则默认0 -->
-    <input type="hidden" id="pathSelect" name="pathSelect" value="0" />
-    
-    <!-- 是否为简退的退回首环节以进行直接推进操作-->
-    <input type="hidden" id="canQuickPush" name="canQuickPush" />
-    <!-- 是否可以进行回退、转派、中止、简退操作-->
-    <input type="hidden" id="buttonBack" name="buttonBack" />
-    <input type="hidden" id="buttonTurn" name="buttonTurn" />
-    <input type="hidden" id="buttonBreak" name="buttonBreak" />
-    <input type="hidden" id="buttonQuick" name="buttonQuick" />
-    <!-- 是否显示推荐人 -->
-    <input type="hidden" id="isUseReferenceMan" name="buttonBack" />
-    <!-- 该环节在进行回退的时候是否进行历史记录进行匹配 -->
-    <input type="hidden" id="isHistoryBack" name="buttonTurn" />
-    <!-- 在流程推进的时候是否使用表达式进行匹配  -->
-    <input type="hidden" id="isUsePushExpression" name="buttonBreak" />
-    <!-- 在流程回退的时候是否使用表达式进行匹配 -->
-    <input type="hidden" id="isUseBackExpression" name="buttonQuick" />
-    <!-- 当前环节以通过方式向下流转时，是否发送待阅 -->
-    <input type="hidden" id="isSendRecord" name="isSendRecord" />
+	<head>
+		<meta charset="UTF-8">
+		<title>待办任务详细页</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 
-    <!-- 父流程的流程实例id -->
-    <input type="hidden" id="preProcessInstanceId" name="preProcessInstanceId" />
-    <!-- 子流程的标题 -->
-    <input type="hidden" id="subTitle" name="subTitle" />
-    <!-- 选人参数  -->
-    <input type="hidden" id="wprov" name="prov" /> 
-    <input type="hidden" id="wStaffSelectType" name="wStaffSelectType" value="1" /> 
-    
-<!--     <input type="hidden" id="wfflowKey" name="flowKey" /> 
+	</head>
+
+	<body>
+		<!-- 当前任务参数串 -->
+		<input type="hidden" id="param" name="param" />
+		<!-- 是否为首环节 -->
+		<input type="hidden" id="startLink" name="startLink" />
+		<!-- 是否为尾环节 -->
+		<input type="hidden" id="endLink" name="endLink" />
+
+		<!-- 处理类型及条件分支1通过，2回退 -->
+		<input type="hidden" id="handleType" name="handleType" />
+		<!-- 路由选择标识，如果没有则默认0 -->
+		<input type="hidden" id="pathSelect" name="pathSelect" value="0" />
+
+		<!-- 是否为简退的退回首环节以进行直接推进操作-->
+		<input type="hidden" id="canQuickPush" name="canQuickPush" />
+		<!-- 是否可以进行回退、转派、中止、简退操作-->
+		<input type="hidden" id="buttonBack" name="buttonBack" />
+		<input type="hidden" id="buttonTurn" name="buttonTurn" />
+		<input type="hidden" id="buttonBreak" name="buttonBreak" />
+		<input type="hidden" id="buttonQuick" name="buttonQuick" />
+		<!-- 是否显示推荐人 -->
+		<input type="hidden" id="isUseReferenceMan" name="buttonBack" />
+		<!-- 该环节在进行回退的时候是否进行历史记录进行匹配 -->
+		<input type="hidden" id="isHistoryBack" name="buttonTurn" />
+		<!-- 在流程推进的时候是否使用表达式进行匹配  -->
+		<input type="hidden" id="isUsePushExpression" name="buttonBreak" />
+		<!-- 在流程回退的时候是否使用表达式进行匹配 -->
+		<input type="hidden" id="isUseBackExpression" name="buttonQuick" />
+		<!-- 当前环节以通过方式向下流转时，是否发送待阅 -->
+		<input type="hidden" id="isSendRecord" name="isSendRecord" />
+
+		<!-- 父流程的流程实例id -->
+		<input type="hidden" id="preProcessInstanceId" name="preProcessInstanceId" />
+		<!-- 子流程的标题 -->
+		<input type="hidden" id="subTitle" name="subTitle" />
+		<!-- 选人参数  -->
+		<input type="hidden" id="wprov" name="prov" />
+		<input type="hidden" id="wStaffSelectType" name="wStaffSelectType" value="1" />
+
+		<!--     <input type="hidden" id="wfflowKey" name="flowKey" /> 
     <input type="hidden" id="wflinkCode" name="linkcode" /> 
     <input type="hidden" id="wfprov" name="prov" /> 
     <input type="hidden" id="wfcallbackFun" name="callbackFun" />
     <input type="hidden" id="wfstaffSelectType" name="wfstaffSelectType" value=""/> -->
 
-    <div class="page-content">
-        <div class="portlet portlet-fit full-height-content ifr-portlet">
-            <div class="portlet-title tabbable-line">
+		<div class="page-content">
+			<div class="portlet portlet-fit full-height-content ifr-portlet">
+				<div class="portlet-title tabbable-line">
 
-                <div id="out-footer">
-                    <ul id="myTab" class="nav nav-tabs pull-left">
-                        <li role="presentation" class="active"><a href="#business" aria-controls="business" role="tab" data-toggle="tab" id="businessTab">业务信息</a></li>
-                        <li role="presentation" id="historyLi"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">流程历史</a></li>
-                        <li role="presentation"><a href="#diagram" aria-controls="diagram" role="tab" data-toggle="tab">流程图</a></li>
-                    </ul>
-                    <div id="out-footers" class="actions taskBtnFixed">
-                        <button id="userButton" type="button" class="btn btn-success">重新上传扫描件</button>
-                        <button id="userQXSPButton" type="button" class="btn btn-success">取消审批</button>
-                        <button id="saveButton" type="button" class="btn btn-success">保存</button>
-                        <button id="passButton" type="button" class="btn btn-success">通过</button>
-                        <button id="backButton" type="button" class="btn btn-warning">退回</button>
-                        <button id="quickButton" type="button" class="btn btn-warning">简退</button>
-                        <button id="stopButton" type="button" class="btn btn-danger">中止</button>
-                        <button id="turnButton" type="button" class="btn btn-info">转派</button>
-                        <button id="backTolist" type="button" class="btn btn-info" onclick="returnList()">返回待办任务列表</button>
-                    </div>
+					<div id="out-footer">
+						<ul id="myTab" class="nav nav-tabs pull-left">
+							<li role="presentation" class="active">
+								<a href="#business" aria-controls="business" role="tab" data-toggle="tab" id="businessTab">业务信息</a>
+							</li>
+							<li role="presentation" id="historyLi">
+								<a href="#history" aria-controls="history" role="tab" data-toggle="tab">流程历史</a>
+							</li>
+							<li role="presentation">
+								<a href="#diagram" aria-controls="diagram" role="tab" data-toggle="tab">流程图</a>
+							</li>
+						</ul>
+						<div id="out-footers" class="actions taskBtnFixed">
+							<button id="userButton" type="button" class="btn btn-success">重新上传扫描件</button>
+							<button id="userQXSPButton" type="button" class="btn btn-success">取消审批</button>
+							<button id="saveButton" type="button" class="btn btn-success">保存</button>
+							<button id="passButton" type="button" class="btn btn-success">通过</button>
+							<button id="backButton" type="button" class="btn btn-warning">退回</button>
+							<button id="quickButton" type="button" class="btn btn-warning">简退</button>
+							<button id="stopButton" type="button" class="btn btn-danger">中止</button>
+							<button id="turnButton" type="button" class="btn btn-info">转派</button>
+							<button id="backTolist" type="button" class="btn btn-info" onclick="returnList()">返回待办任务列表</button>
+						</div>
 
-                </div>
-            </div>
-            <div class="portlet-body ifr-portlet-body">
-                <div class="full-height-content-body">
-                    <div id="myTabContent" class="tab-content ifr-tab-content">
-                        <div role="tabpanel" class="tab-pane fade in active ifr-tabpanel" id="business">
-                            <iframe id="businessiframe" name="businessiframe" width="100%" height="100%" frameborder="0"></iframe>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="history">
-                            <div class="list-group" id="h_content">
-                                <div id="preDiv" style="display: none;">
-                                    <div class="list-group-item" style="background-color: #A4D3EE;">
-                                        <table>
-                                            <tr style="width: 100%;">
-                                                <td style="width: 100%;"><span style="font-size: 14px; color: white;">主流程流程历史</span></td>
-                                                <td style="width: 100%;" align="right">
-                                                    <div class="btn-group btn-group-xs">
-                                                        <button id="flowImg" type="button" class="btn btn-danger" style="text-align: right;" data-toggle="modal" data-target="#lctModal">点击查看流程图</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="list-group-item">
+					</div>
+				</div>
+				<div class="portlet-body ifr-portlet-body">
+					<div class="full-height-content-body">
+						<div id="myTabContent" class="tab-content ifr-tab-content">
+							<div role="tabpanel" class="tab-pane fade in active ifr-tabpanel" id="business">
+								<iframe id="businessiframe" name="businessiframe" width="100%" height="100%" frameborder="0"></iframe>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="history">
+								<div class="list-group" id="h_content">
+									<div id="preDiv" style="display: none;">
+										<div class="list-group-item" style="background-color: #A4D3EE;">
+											<table>
+												<tr style="width: 100%;">
+													<td style="width: 100%;"><span style="font-size: 14px; color: white;">主流程流程历史</span></td>
+													<td style="width: 100%;" align="right">
+														<div class="btn-group btn-group-xs">
+															<button id="flowImg" type="button" class="btn btn-danger" style="text-align: right;" data-toggle="modal" data-target="#lctModal">点击查看流程图</button>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div class="list-group-item">
 
-                                        <table class="table table-striped table-bordered table-condensed">
-                                            <thead>
-                                                <tr>
-                                                    <th>序号</th>
-                                                    <th>环节名称</th>
-                                                    <th>受理人</th>
-                                                    <th>受理人部门</th>
-                                                    <th>处理方式</th>
-                                                    <th>任务接收时间</th>
-                                                    <th>任务办理时间</th>
-                                                    <th>处理意见</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="preHistoryContent">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="list-group-item" style="background-color: #A4D3EE;">
-                                        <span id="subspan" style="font-size: 14px; color: white;"></span>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <table class="table table-striped table-bordered table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <th>序号</th>
-                                                <th>环节名称</th>
-                                                <th>受理人</th>
-                                                <th>受理人部门</th>
-                                                <th>处理方式</th>
-                                                <th>任务接收时间</th>
-                                                <th>任务办理时间</th>
-                                                <th>处理意见</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="historyContent">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="diagram">
-<!--                             <img id="diagramImg" src=""></img> -->
-                            <div id=diagramImgdiv></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+											<table class="table table-striped table-bordered table-condensed">
+												<thead>
+													<tr>
+														<th>序号</th>
+														<th>环节名称</th>
+														<th>受理人</th>
+														<th>受理人部门</th>
+														<th>处理方式</th>
+														<th>任务接收时间</th>
+														<th>任务办理时间</th>
+														<th>处理意见</th>
+													</tr>
+												</thead>
+												<tbody id="preHistoryContent">
+												</tbody>
+											</table>
+										</div>
+										<div class="list-group-item" style="background-color: #A4D3EE;">
+											<span id="subspan" style="font-size: 14px; color: white;"></span>
+										</div>
+									</div>
+									<div class="list-group-item">
+										<table class="table table-striped table-bordered table-condensed">
+											<thead>
+												<tr>
+													<th>序号</th>
+													<th>环节名称</th>
+													<th>受理人</th>
+													<th>受理人部门</th>
+													<th>处理方式</th>
+													<th>任务接收时间</th>
+													<th>任务办理时间</th>
+													<th>处理意见</th>
+												</tr>
+											</thead>
+											<tbody id="historyContent">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="diagram">
+								<!--                             <img id="diagramImg" src=""></img> -->
+								<div id=diagramImgdiv></div>
+							</div>
+						</div>
+					</div>
+				</div>
 
+			</div>
+		</div>
 
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="in-footer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog" role="document" aria-hidden="true">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<div class="modal fade" id="in-footer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document" aria-hidden="true">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel" style="font-size: 16px;">请完善提交信息</h4>
-                </div>
-                <div class="modal-body form">
-                    <div class="form-body">
-                        <div class="row clearfix">
-                            <div class="col-md-8 column" id="shenpiDiv">
-                                <div id="linkDiv">
-                                    <div class="form-group">
-                                        <label for="link" style="text-align: center;">办理步骤<i class="iconfont icon-mi required"></i></label> 
-                                        <select class="form-control" id="link" name="link" onchange="clearAssignee();"></select>
-                                    </div>
-                                </div>
-                                <div id="assigneeDiv">
-                                    <div class="form-group">
-                                        <label for="assignee" style="text-align: center;">办理人员<i class="iconfont icon-mi required"></i></label>
-                                        <div class="input-group">
-                                            <input type="text" name="assigneeName" class="form-control" id="assigneeName" readonly="readonly" style="padding-left: 10px" /> 
-                                            <input type="hidden" name="assignee" class="form-control" id="assignee" /> 
-                                            <span class="input-group-btn">
+						<h4 class="modal-title" id="myModalLabel" style="font-size: 16px;">请完善提交信息</h4>
+					</div>
+					<div class="modal-body form">
+						<div class="form-body">
+							<div class="row clearfix">
+								<div class="col-md-8 column" id="shenpiDiv">
+									<div id="linkDiv">
+										<div class="form-group">
+											<label for="link" style="text-align: center;">办理步骤<i class="iconfont icon-mi required"></i></label>
+											<select class="form-control" id="link" name="link" onchange="clearAssignee();"></select>
+										</div>
+									</div>
+									<div id="assigneeDiv">
+										<div class="form-group">
+											<label for="assignee" style="text-align: center;">办理人员<i class="iconfont icon-mi required"></i></label>
+											<div class="input-group">
+												<input type="text" name="assigneeName" class="form-control" id="assigneeName" readonly="readonly" style="padding-left: 10px" />
+												<input type="hidden" name="assignee" class="form-control" id="assignee" />
+												<span class="input-group-btn">
                                                 <button id="selectstaff" onclick="selectstaff();" type="button" class="btn primary">选择人员</button>
                                             </span>
-                                        </div>
-<!--                                    <input type="text" name="assigneeName" class="form-control" id="assigneeName" readonly="readonly" style="padding-left: 10px" /> 
+											</div>
+											<!--                                    <input type="text" name="assigneeName" class="form-control" id="assigneeName" readonly="readonly" style="padding-left: 10px" /> 
                                         <input type="hidden" name="assignee" class="form-control" id="assignee" />
                                         <span id="selectAssignee" style="font-size: 16px; position: absolute; top: 9px; right: 25px; z-index: 999; cursor: pointer;" class="glyphicon glyphicon-zoom-in"></span> -->
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="comment" style="text-align: center; padding-top: 25px;">办理意见<i class="iconfont icon-mi required"></i></label>
-                                    <textarea name="comment" id="comment" class="form-control" rows="3" required autofocus></textarea>
-                                </div>
-                            </div>
-                            <div id="historyDiv" class="col-md-4 column">
-                                <div id="historyleDiv">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>名称</th>
-                                                <th>操作</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="historyUser">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="confirmButton" type="button" class="btn btn-success">确认</button>
-                        <button type="button" class="btn btn-default" onclick="selectButton();">返回</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="comment" style="text-align: center; padding-top: 25px;">办理意见<i class="iconfont icon-mi required"></i></label>
+										<textarea name="comment" id="comment" class="form-control" rows="3" required autofocus></textarea>
+									</div>
+								</div>
+								<div id="historyDiv" class="col-md-4 column">
+									<div id="historyleDiv">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th>名称</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody id="historyUser">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button id="confirmButton" type="button" class="btn btn-success">确认</button>
+							<button type="button" class="btn btn-default" onclick="selectButton();">返回</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="lctModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">流程图</h4>
+					</div>
+					<div class="modal-body">
+						<img id="zlc_diagramImg" src=""></img>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 
-    <!-- 模态框（Modal） -->
-    <div class="modal fade" id="lctModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">流程图</h4>
-                </div>
-                <div class="modal-body">
-                    <img id="zlc_diagramImg" src=""></img>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-    </div>
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="z_Modal" tabindex="-1" role="dialog" aria-labelledby="mm" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="mm">流程图</h4>
+					</div>
+					<div class="modal-body">
+						<img id="z_diagramImg" src=""></img>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 
+		<!--选人modal-->
+		<div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+	</body>
+	<script type="text/javascript" src="../taskdetail/task-todo.js"></script>
 
-    <!-- 模态框（Modal） -->
-    <div class="modal fade" id="z_Modal" tabindex="-1" role="dialog" aria-labelledby="mm" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="mm">流程图</h4>
-                </div>
-                <div class="modal-body">
-                    <img id="z_diagramImg" src=""></img>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal -->
-    </div>
-    
-    <!--选人modal-->
-    <div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
-</body>
-<script type="text/javascript" src="/html/workflow/taskdetail/task-todo.js"></script>
 </html>

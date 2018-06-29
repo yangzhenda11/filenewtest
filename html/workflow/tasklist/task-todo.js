@@ -184,28 +184,7 @@ function getFlowKyeList(){
 	    "type" : "post",
 	    "data" : null
 	}
-	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","请选择流程类型");
-//	
-//	$.ajax({
-//		'cache': true,
-//		'type': "POST",
-//		'url':serverPath+"workflowrest/getFlowKeyList",
-//		'async': false,
-//		'error': function(request) {
-//			layer.msg("获取流程类型异常，请联系管理员!",{time:1000});
-//		},
-//		'success': function(result) {
-//			var dataArray = result.dataArray;
-//			console.log(result);
-//			$("#flowType").append("<option value=''>请选择流程类型</option>");
-//			$.each(dataArray, function (i, item) {
-//				$("#flowType").append("<option value='" + item.value + "'>" + item.label + "</option>");
-//			});
-//		},
-//		error: function(result) {
-//			App.ajaxErrorCallback(result);
-//		}
-//	});
+	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
 }
 /**
  * 校验开始时间是否大于截止时间

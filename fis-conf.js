@@ -6,14 +6,18 @@
 //使用命令
 //fis3 release {media} -d {路径}
 //fis3 release -d {路径}
-
+//fis3 release -c
+//fis3 release -d ../upf-contract2-static-release/upf-contract2-static
 // 启用使用相对路径编译插件
-fis.hook('relative');
+//fis.hook('relative');
+//
+//// 让所有文件，都使用相对路径。
+//fis.match('**', {
+//relative: true
+//})
 
-// 让所有文件，都使用相对路径。
-fis.match('**', {
-  relative: true
-})
+//编译过滤
+fis.set('project.ignore', ['static/plugins/bootstrap-fileinput/FormData.js','static/plugins/pdf/build/pdf.worker.js','static/plugins/pdf/web/debugger.js','fis-conf.js']);
 
 //fis.match('*.{js,css}', {				// 加 md5
 //	useHash: true

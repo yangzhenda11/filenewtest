@@ -1,4 +1,4 @@
-	<!-- 
+<!-- 
 	注意：此页面为页面发起流程的公共引入页面
 	1.引入的父页面需要注意contentType等属性配置
 	2.页面中必要两个元素processDefinitionKey（流程编码）与taskDefinitionKey（首环节编码）——均参考流程定义文件即可
@@ -10,61 +10,70 @@
 	 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>流程发起待办页面-各流程发起嵌入页面</title>
-    <script type="text/javascript" src="/html/workflow/startpanel/process-start.js"></script>
-</head>
-<body>
-    <input type="hidden" id="processDefinitionKey" name="processDefinitionKey" />
-    <!-- 路由选择标识，如果没有则默认0 -->
-    <input type="hidden" id="pathSelect" name="pathSelect" value="0" />
-    <input type="hidden" id="wprov" name="prov" />
-    <input type="hidden" id="wStaffSelectType" name="wStaffSelectType" value="1" /> 
-    <!-- Modal -->
-    <div class="modal fade" id="myProcessStartModal" data-backdrop="static" role="dialog" aria-labelledby="流程启动弹窗">
-        <div class="modal-dialog" role="document" aria-hidden="true">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>流程发起待办页面-各流程发起嵌入页面</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<script type="text/javascript" src="/html/workflow/startpanel/process-start.js"></script>
+	</head>
+
+	<body>
+		<input type="hidden" id="processDefinitionKey" name="processDefinitionKey" />
+		<!-- 路由选择标识，如果没有则默认0 -->
+		<input type="hidden" id="pathSelect" name="pathSelect" value="0" />
+		<input type="hidden" id="wprov" name="prov" />
+		<input type="hidden" id="wStaffSelectType" name="wStaffSelectType" value="1" />
+		<!-- Modal -->
+		<div class="modal fade" id="myProcessStartModal" data-backdrop="static" role="dialog" aria-labelledby="流程启动弹窗">
+			<div class="modal-dialog" role="document" aria-hidden="true">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">流程启动</h4>
-                </div>
-                <div class="modal-body form">
-                    <div class="form-body">
-                        <div class="form-group" id="nextlink">
-                            <label for="linkForStart">办理步骤<i class="iconfont icon-mi required"></i></label> <select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
-                        </div>
-                        <div class="form-group" id="nextassignee" style="position: relative;">
-                            <label for="assigneeNameForStart">办理人员 <i class="iconfont icon-mi required"></i></label>
-                            <div class="input-group">
-                                <input type="text" name="assigneeName" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" /> 
-                                <input type="hidden"name="assignee" class="form-control" id="assigneeForStart" /> 
-                                <span class="input-group-btn">
+						<h4 class="modal-title" id="myModalLabel">流程启动</h4>
+					</div>
+					<div class="modal-body form">
+						<div class="form-body">
+							<div class="form-group" id="nextlink">
+								<label for="linkForStart">办理步骤<i class="iconfont icon-mi required"></i></label>
+								<select class="form-control" id="linkForStart" name="link" onchange="clearAssignee();"></select>
+							</div>
+							<div class="form-group" id="nextassignee" style="position: relative;">
+								<label for="assigneeNameForStart">办理人员 <i class="iconfont icon-mi required"></i></label>
+								<div class="input-group">
+									<input type="text" name="assigneeName" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" />
+									<input type="hidden" name="assignee" class="form-control" id="assigneeForStart" />
+									<span class="input-group-btn">
                                     <button id="selectstaff" onclick="selectstaff();" type="button" class="btn primary">选择人员</button>
                                 </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="comment">办理意见 <i class="iconfont icon-mi required"></i></label>
-                            <textarea name="comment" id="comment" class="form-control" rows="3" required autofocus maxlength="125"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn primary"
-                            onclick="startProcess($('#processDefinitionKey').val(), $('#assigneeForStart').val(), $('#linkForStart').val().toString().split(',')[0],$('#linkForStart').val().toString().split(',')[1]);">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="comment">办理意见 <i class="iconfont icon-mi required"></i></label>
+								<textarea name="comment" id="comment" class="form-control" rows="3" required autofocus maxlength="125"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn primary" onclick="startProcess($('#processDefinitionKey').val(), $('#assigneeForStart').val(), $('#linkForStart').val().toString().split(',')[0],$('#linkForStart').val().toString().split(',')[1]);">
                             <i class="iconfont icon-tijiao"></i>提交
                         </button>
-                        <button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">
+							<button type="button" id="closeModal" class="btn btn-default" data-dismiss="modal">
                             <i class="iconfont icon-guanbi"></i>关闭
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-     <!--modal-->
-     <div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
-</body>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--modal-->
+		<div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+	</body>
+
 </html>

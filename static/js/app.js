@@ -752,7 +752,6 @@ var App = function() {
 			var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
 			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
-			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? emptyFn : errorCallbacks;
 			$.ajax({
 				type: type,
 				url: url,
@@ -776,7 +775,9 @@ var App = function() {
 					}
 				},
 				error: function(result) {
-					if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
+					if(errorCallbacks){
+						errorCallbacks(result);
+					}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 		        			top.window.location.href = "/login";
 		        		});
@@ -791,7 +792,6 @@ var App = function() {
 	        		}else{
 	        			layer.alert("接口错误,url为"+url, {icon: 2,title:"错误"});
 	        		};
-					errorCallback(result);
 				}
 			});
 		},
@@ -1310,7 +1310,7 @@ var App = function() {
 		getDictInfo:function(code){
 			var postData = {"dictId": code};
 			var resturnData = {};
-			App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, null, null, null, false);
+			App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
 
 			function successCallback(result) {
 				var data = result.data;
@@ -1320,6 +1320,9 @@ var App = function() {
 				};
 				
 			};
+			function improperCallback(result){
+				layer.msg("字典项"+code+"异常");
+			}
 			return resturnData;
 		},
 		/**

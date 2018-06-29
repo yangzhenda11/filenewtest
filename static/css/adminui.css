@@ -3492,12 +3492,14 @@ Portlets
       clear: both; }
       /*合同修改*/
      /*padding: 8px 0 10px*/
+    .portlet > .portlet-title > .caption.contract {
+        padding: 4px 0 6px; }
     .portlet > .portlet-title > .caption {
       float: left;
       display: inline-block;
       font-size: 18px;
       line-height: 18px;
-      padding: 4px 0 6px; }
+      padding: 8px 0 10px; }
       .portlet > .portlet-title > .caption.bold {
         font-weight: 400; }
       .portlet > .portlet-title > .caption > i {
@@ -3692,7 +3694,7 @@ Portlets
     .portlet > .portlet-title > .caption {
       color: #666; }
       /*合同修改*/
-     .portlet > .portlet-title > .caption > .caption-subject.contract {
+     	.portlet > .portlet-title > .caption.contract > .caption-subject {
         font-size: 14px; }
       .portlet > .portlet-title > .caption > .caption-subject {
         font-size: 16px; }

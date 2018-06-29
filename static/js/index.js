@@ -254,11 +254,14 @@ function setMessageTipNumber(){
 		start : 0,
 		length : 0
 	};
-	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", messageIntervalData, messageSuccessCallback,null,null,false);
+	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", messageIntervalData, messageSuccessCallback,null,messageErrorCallback,false);
     function messageSuccessCallback(result) {
         if(result){
         	$("#messageTipNumber").text(result.recordsTotal);
         }
+    }
+    function messageErrorCallback(result){
+    	$("#messageTipNumber").text("?");
     }
 };
 /*

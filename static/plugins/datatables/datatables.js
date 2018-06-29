@@ -1181,8 +1181,8 @@
 	}
 
 	function Sa(a, b, c) {
-		var d = a._iDisplayStart,
-			e = a._iDisplayLength,
+		var d = parseInt(a._iDisplayStart),
+			e = parseInt(a._iDisplayLength),
 			f = a.fnRecordsDisplay();
 		0 === f || -1 ===
 			e ? d = 0 : "number" === typeof b ? (d = b * e, d > f && (d = 0)) : "first" == b ? d = 0 : "previous" == b ? (d = 0 <= e ? d - e : 0, 0 > d && (d = 0)) : "next" == b ? d + e < f && (d += e) : "last" == b ? d = Math.floor((f - 1) / e) * e : J(a, 0, "Unknown paging action: " + b, 5);

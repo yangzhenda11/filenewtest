@@ -982,7 +982,7 @@ var App = function() {
 					}
 				},
 				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t<"clearfix dt-footer-wrapper" <"pull-left" <"inline-block"i><"inline-block"l>><"pull-right" p>>', //生成样式
-				"paginationType": "simple_numbers",
+				"paginationType": "full_numbers",
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,

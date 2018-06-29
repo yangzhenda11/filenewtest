@@ -146,9 +146,10 @@ th, td { white-space: nowrap; }
 .navbar .navbar-link {
   color: #ffffff;
 }
+/*合同修改*/
 .navbar .navbar-brand {
   color: #ffffff;
-  font-size: 24px;
+  font-size: 22px;
   text-shadow: none;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -1037,13 +1038,14 @@ th, td { white-space: nowrap; }
 .nav-list > li.active > a {
   font-weight: bold;
 }
+/*合同修改*/
 .nav-list > li > a {
   display: block;
   height: 45px;
   line-height: 25px;
   padding-left: 7px;
   text-shadow: none !important;
-  font-size: 16px;
+  font-size: 14px;
   text-decoration: none;
 }
 .nav-list > li > a > .menu-icon {

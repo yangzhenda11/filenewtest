@@ -453,7 +453,7 @@ th.thAlignCenter{
  * 列表页样式重置
  */
 .form-fieldset > .form-fieldset-body{
-	padding-top: 20px;
+	padding-top: 15px;
 }
 .form-fieldset-body .control-label{
 	text-align: right;
@@ -484,7 +484,7 @@ th.thAlignCenter{
 .defaultModalForm .form-group > label{
 	width: 30%;
     min-height: 1px;
-    line-height: 16px;
+    line-height: 15px;
     padding:0 10px 0 0;
     vertical-align:middle;    
     display:table-cell;
@@ -494,7 +494,7 @@ th.thAlignCenter{
 .modalForm25 .form-group > label{
 	width: 23%;
     min-height: 1px;
-    line-height: 16px;
+    line-height: 15px;
     padding:0 10px 0 0;
     vertical-align:middle;    
     display:table-cell;
@@ -508,7 +508,7 @@ th.thAlignCenter{
 .defaultFieldsetForm .form-group > label{
 		width: 20%;
     min-height: 1px;
-    line-height: 16px;
+    line-height: 15px;
     padding:0 10px 0 0;
     vertical-align:middle;    
     display:table-cell;
@@ -516,7 +516,7 @@ th.thAlignCenter{
 .fieldsetForm15 .form-group > label{
 		width: 15%;
     min-height: 1px;
-    line-height: 16px;
+    line-height: 15px;
     padding:0 10px 0 0;
     vertical-align:middle;    
     display:table-cell;
@@ -577,54 +577,17 @@ th.thAlignCenter{
     cursor: not-allowed;
     background: #f5f5f5;
     border: 1px solid #ececec;
-    padding: 6px 12px;
+    padding: 4px 12px;
     border-radius: 3px;
     color: #767676;
-    min-height: 34px;
+    min-height: 30px;
     white-space: pre;
-    line-height: 22px;
+    line-height: 18px;
 }
-
-/*
- * 自定义文件字体大小
- */
-/*全局*/
-/*body{
-	font-size: 12px;
-}*/
-/*按钮*/
-/*.btn{
-	font-size: 12px;
-}*/
-/*图标*/
-/*.iconfont{
+/*合同修改*/
+.form-fieldset-title{
 	font-size: 14px;
-}*/
-/*modal标题*/
-/*h4{
-	font-size: 16px;
-}*/
-/*导航最外层*/
-/*.nav-list > li > a{
-	font-size: 14px;
-}*/
-/*表格*/
-/*table th,table td{
-	font-size: 12px !important;
-}*/
-/*select2下拉选择框*/
-/*.select2-selection{
-	font-size: 12px !important;
 }
-.select2-selection__rendered{
-	line-height: 1.7 !important;
-}*/
-/*input框*/
-/*.input-group-addon,.form-control{
-	font-size: 12px;
-}*/
-/*联通大标题*/
-/*.navbar .navbar-brand{
-	font-size: 22px;
-}*/
-
+.note{
+	margin: 0;
+}

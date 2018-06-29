@@ -120,7 +120,7 @@ function getFlowKyeList(){
 	    "type" : "post",
 	    "data" : null
 	}
-	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","请选择流程类型");
+	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
 }
 /**
  * 校验开始时间是否大于截止时间

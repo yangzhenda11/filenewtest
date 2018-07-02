@@ -46,7 +46,6 @@ function getRoleTable() {
                 "render": function(data, type, row, meta) {
                     if (data) {
                         var btnArray = new Array();
-                        //                        btnArray.push({ "name": "查看", "fn": "findDetail(\'" + data + "\')" });
                         if (roleUpdate) {
                             btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
                         }
@@ -322,11 +321,6 @@ function getRoleInfo(id, type) {
         } else {
             var valueCallback = { 'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") } }
             App.setFormValues($("#roleForm"), result.data, valueCallback);
-            $("#orgNameTree").attr("title", result.data.orgName);
-            $("#orgNameTree").data("orgCode", result.data.orgId);
-            $("#orgNameTree").data("provCode", result.data.provCode);
-            $("#roleBaseTypeCode").data("roleBaseTypeCode", result.data.roleBaseTypeCode);
-            loadPerTree(id);
         }
     }
 }
@@ -365,7 +359,7 @@ function openAddRolePerm(roleName, roleId) {
     $("#modal").load("rolePerm.html?" + App.timestamp() + " #modalEdit", function() {
         $("#editModalTitle").text(roleName + "角色授权");
         $("#modal").modal("show");
-        getRoleInfo(roleId, "edit");
+       	loadPerTree(roleId);
         $("#roleId").val(roleId);
         $("#staffId").val(config.curStaffId);
         $('#rolePermForm').bootstrapValidator({}).on('success.form.bv', function(e) {
@@ -455,15 +449,15 @@ function updateRoleValue(editType) {
         return;
     }
     var formObj = App.getFormValues($("#roleForm"));
-    var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
-    var permId = '';
+//  var rolePermissionTreeNodes = rolePermissionTree.getCheckedNodes(true);
+//  var permId = '';
     var ms = "新增成功";
     var url = serverPath + "roles/";
     var pushType = "POST";
-    for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
-        permId += rolePermissionTreeNodes[i].permId + ",";
-    }
-    formObj.permId = permId.substring(0, permId.length - 1);
+//  for (var i = 0; i < rolePermissionTreeNodes.length; i++) {
+//      permId += rolePermissionTreeNodes[i].permId + ",";
+//  }
+//  formObj.permId = permId.substring(0, permId.length - 1);
     //formObj.orgId = $("#orgNameTree").data("orgCode");
     //formObj.provCode = $("#orgNameTree").data("provCode");
     /*if (formObj.permId == '') {

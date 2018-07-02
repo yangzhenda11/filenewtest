@@ -318,9 +318,6 @@ function getRoleInfo(id, type) {
                     layer.msg("该角色无相关权限", { icon: 2 });
                 }
             }
-        }else if(type == "perm"){
-            App.setFormValues($("#roleForm"), result.data);
-          	loadPerTree(id);
         } else {
             var valueCallback = { 'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") } }
             App.setFormValues($("#roleForm"), result.data, valueCallback);

@@ -56,8 +56,9 @@
                     </div>
                     <div class="form-group col-sm-11">
                         <label for="other" class="control-label">其他映射组织</label>
-                        <div class="valiParent input-group">
+                        <div class="valiParent input-group inputGroupClearDom">
                             <input id="other" onclick="showTree('other')" readonly name="otherTree" type="text" class="form-control" />
+                            <span class="inputGroupAddonClear custorPoint" style="display: none;" id="otherClear" title="清空">×</span>
                             <span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
                             <div id="otherContent" class="zTreeContent selectZTreeCount">
                                 <ul id="otherTree" class="ztree"></ul>
@@ -161,6 +162,7 @@
                 var otherIds = $("#other").data("id");
                 var otherTreeObj = $.fn.zTree.getZTreeObj("otherTree");
                 if (otherIds) {
+                	$("#otherClear").show();
                     otherIdsArr = otherIds.split(",");
                     for (var i = 0; i < otherIdsArr.length; i++) {
                         var nodes = otherTreeObj.getNodesByParam("orgId", otherIdsArr[i], null);
@@ -421,7 +423,6 @@
         if (responseData.length>0) {
             for (var i = 0; i < responseData.length; i++) {
                 if ("true" == responseData[i].isParent || responseData[i].orgType == 1 || responseData[i].orgType == 4) {
-                    //responseData[i].nocheck = true;
                     returnData.push(responseData[i]);
                     returnData.nocheck = true;
                 } 
@@ -495,16 +496,26 @@
         var nodes = treeObj.getCheckedNodes(true);
         var idAll = [],
             nameAll = [];
-        for (var i = 0; i < nodes.length; i++) {
-            idAll.push(nodes[i].orgId);
-            nameAll.push(nodes[i].orgName)
+        if(nodes.length == 0){
+        	$("#otherClear").hide();
+        }else{
+        	for (var i = 0; i < nodes.length; i++) {
+	            idAll.push(nodes[i].orgId);
+	            nameAll.push(nodes[i].orgName)
+	        };
+	        $("#otherClear").show();
         }
+        
         $("input[name=" + treeId + "]").data("id", idAll.join(","));
         $("input[name=" + treeId + "]").attr("title", nameAll.join(","));
         $("input[name=" + treeId + "]").val(nameAll.join(","));
-        if (treeId == "otherTree") {
-            $("#contractEditForm").data("bootstrapValidator").updateStatus("otherTree", "NOT_VALIDATED", null);
-            $("#contractEditForm").data("bootstrapValidator").validateField('otherTree');
-        }
     }
+    /*
+     * 其他组织按钮点击清空input框事件
+     */
+    $("#otherClear").on("click",function(){
+    	$("#other").val("");
+        $("#other").data("id", "");
+        $("#other").attr("title", "");
+    })
 </script>

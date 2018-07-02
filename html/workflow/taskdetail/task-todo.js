@@ -215,6 +215,7 @@ function addCommentQxsp(businessKey){
 // 根据任务ID获取实际任务办理页面的路径并load到主DIV
 function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, processDefinitionId) {
 	var processDefinitionId = $('#processDefinitionId').val();
+	var processDefinitionKey=$('#processDefinitionKey').val();
 	var processInstanceId = $('#processInstanceId').val();
 	var taskDefinitionKey = $('#taskDefinitionKey').val();
 	var taskId = $('#taskId').val();
@@ -241,16 +242,18 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 			
 		} else if (success == 0){
 			alert(data.retValue);
+			alert("taskurl");
 		}
 		// 主页面加载完成后加载自定义标签
-		loadCustomTabs(serverPath, $('#param').val(), processDefinitionId, taskDefinitionKey);
+		//loadCustomTabs(serverPath, $('#param').val(), processDefinitionId, taskDefinitionKey);//屏蔽版本，使用模板key
+		loadCustomTabs(serverPath, $('#param').val(), processDefinitionKey, taskDefinitionKey);
 	});
 }
 
 // 加载全部自定义标签
-function loadCustomTabs(serverPath, param, processDefinitionId, taskDefinitionKey){
+function loadCustomTabs(serverPath, param, processDefinitionKey, taskDefinitionKey){
 	
-	$.get(serverPath + "workflowrest/taburls/" + processDefinitionId + "/" + taskDefinitionKey +　"/" + true, 
+	$.get(serverPath + "workflowrest/taburls/" + processDefinitionKey + "/" + taskDefinitionKey +　"/" + true, 
 		function(data) {
 			var success = data.retCode;
 			// 仅有自定义标签才处理
@@ -336,6 +339,7 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 					
 				} else if (success == 0){
 					alert(data.retValue);
+					alert("his");
 				}
 			});
 }
@@ -554,12 +558,12 @@ function refreshLink(pass){
 //					// 刷新人员
 //					refreshAssignee(serverPath, processDefinitionKey, $("#link").val().split(",")[0]);	
 //				}
-				if(link.length>0){
-					//是否显示推荐人
-					if($('#isUseReferenceMan').val() == 'true'){
-						historyUser($('#processDefinitionId').val(),$('#taskDefinitionKey').val(),handleType, $("#link").val().split(",")[0]);
-					}
-				}
+//				if(link.length>0){
+//					//是否显示推荐人
+//					if($('#isUseReferenceMan').val() == 'true'){
+//						historyUser($('#processDefinitionId').val(),$('#taskDefinitionKey').val(),handleType, $("#link").val().split(",")[0]);
+//					}
+//				}
 			} else if (success == 0){
 				// 未找到匹配的可选环节，异常情况
 				alert("未找到可流转环节，异常请处理！");

@@ -75,14 +75,16 @@ function loadTaskPath(serverPath, processInstanceId, taskId, taskDefinitionKey, 
 			alert(data.retVal);
 		}
 		// 主页面加载完成后加载自定义标签
-		loadCustomTabs(serverPath, $('#paramForDone').val(), processDefinitionId, taskDefinitionKey);
+		//loadCustomTabs(serverPath, $('#paramForDone').val(), processDefinitionId, taskDefinitionKey);
+		var processDefinitionKey=$('#processDefinitionKey').val();
+		loadCustomTabs(serverPath, $('#paramForDone').val(), processDefinitionKey, taskDefinitionKey);
 	});
 }
 
 // 加载全部自定义标签
-function loadCustomTabs(serverPath, param, processDefinitionId, taskDefinitionKey){
+function loadCustomTabs(serverPath, param, processDefinitionKey, taskDefinitionKey){
 	
-	$.get(serverPath + "workflowrest/taburls/" + processDefinitionId + "/" + taskDefinitionKey +　"/" + false, 
+	$.get(serverPath + "workflowrest/taburls/" + processDefinitionKey + "/" + taskDefinitionKey +　"/" + false, 
 		function(data) {
 			var success = data.retCode;
 			// 仅有自定义标签才处理

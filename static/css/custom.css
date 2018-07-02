@@ -569,6 +569,21 @@ th.thAlignCenter{
 .custorPoint{
 	cursor: pointer;
 }
+/*
+ * input上加清空按钮
+ */
+.inputGroupClearDom{
+	position: relative;
+}
+.inputGroupAddonClear{
+	position: absolute;
+	font-weight: 700;
+	color: #999;
+    top: 0px;
+    right: 55px;
+    z-index: 9999;
+    padding: 6px;
+}
 
 /*
  * 仿input框

@@ -322,10 +322,11 @@
 				}
 			},
 			"vatRate":function(value){
-				return value + "%";
+				
+				return value == null ? "" : value+"%";
 			},
 			"originalVatRate":function(value){
-				return value + "%";
+				return value == null ? "" : value+"%";
 			},
 			"contractValue":function(value){
 				return createMoneyStyle(value);

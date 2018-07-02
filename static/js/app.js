@@ -2485,11 +2485,11 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
  */
 $.ajaxSetup({cache:false});
 function loadStart(){
-	top.NProgress.start();
+	//top.NProgress.start();
 	layerIndex = layer.msg('数据处理中,请稍后...', {icon: 16,shade: 0.01,time:false});
 }
 function loadEnd(){
-	top.NProgress.done();
+	//top.NProgress.done();
 	layer.close(layerIndex);
 }
 $(document).ajaxStart(function(a){

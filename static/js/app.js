@@ -918,6 +918,17 @@ var App = function() {
 			return obj;
 		},
 		/*
+		 * 判断是否为数字
+		 */
+		checkRate: function(nubmer) { 
+		　　var re = /^[0-9]+.?[0-9]*$/;
+		　　if (!re.test(nubmer)){ 
+		　　　　return false;
+		　　}else{
+				return true;
+			}
+		},
+		/*
 		 * datatable初始化
 		 * el : table ID
 		 * btn : 搜索按钮 ID

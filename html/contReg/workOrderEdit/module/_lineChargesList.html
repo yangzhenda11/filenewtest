@@ -7,38 +7,45 @@
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row" id="lineChargesListContent">
-			<div class="portlet-body">
-				<div class="tableToobarContent hidden" id="lineChargesListToolbar">
-					<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i> 新增</button>
-					<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
-					<button class="btn red" type="button" onclick="exmportTemplate('wordcard_income_tariff')"><i class="iconfont icon-export"></i> 下载模板</button>
-					<button class="btn red" type="button" onclick="lineChargestFileImport()"><i class="iconfont icon-import"></i> 导入</button>
-				</div>
-				<div class="table-responsive" id="incomeLinerentTableContent">
-					<table class="table table-hover table-bordered table-striped table-align" style="min-width: 1700px;" id="incomeLinerentTable">
-						<thead>
-							<tr>
-								<th class="lineChargesTableEdit"><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
-								<th>序号</th>
-								<th>产品类型</th>
-								<th>产品名称</th>
-								<th>产品属性</th>
-								<th>稽核标签</th>
-								<th>固定月租</th>
-								<th>线路数量</th>
-								<th>合计月租</th>
-								<th>一次性费用</th>
-								<th>其他费用</th>
-								<th>结算周期</th>
-								<th class="lineChargesTableEdit">操作</th>
-							</tr>
-						</thead>
-						<tbody id="incomeLinerentTbody">
-							<tr class="emptyTr">
-								<td colspan="13">暂无线路资费清单</td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="portlet">
+                <div class="portlet-title ">
+                    <div class="caption font-dark contract">
+                        <span class="caption-subject bold uppercase">租费</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+					<div class="tableToobarContent hidden" id="lineChargesListToolbar">
+						<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i> 新增</button>
+						<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
+						<button class="btn red" type="button" onclick="exmportTemplate('wordcard_income_tariff')"><i class="iconfont icon-export"></i> 下载模板</button>
+						<button class="btn red" type="button" onclick="lineChargestFileImport()"><i class="iconfont icon-import"></i> 导入</button>
+					</div>
+					<div class="table-responsive" id="incomeLinerentTableContent">
+						<table class="table table-hover table-bordered table-striped table-align" style="min-width: 1700px;" id="incomeLinerentTable">
+							<thead>
+								<tr>
+									<th class="lineChargesTableEdit"><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheckAll' id="incomeLinerentCheckAll"><span></span></label></th>
+									<th>序号</th>
+									<th>产品类型</th>
+									<th>产品名称</th>
+									<th>产品属性</th>
+									<th>稽核标签</th>
+									<th>固定月租</th>
+									<th>线路数量</th>
+									<th>合计月租</th>
+									<th>一次性费用</th>
+									<th>其他费用</th>
+									<th>结算周期</th>
+									<th class="lineChargesTableEdit">操作</th>
+								</tr>
+							</thead>
+							<tbody id="incomeLinerentTbody">
+								<tr class="emptyTr">
+									<td colspan="13">暂无线路资费清单</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>

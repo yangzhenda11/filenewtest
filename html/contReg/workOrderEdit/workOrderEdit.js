@@ -620,8 +620,25 @@ function getWorkOrderInfo(){
 			function contractBaseInfoCallback(result) {
 				getContractOrderBaseInfoData = result;
 				contractStatus = result.data.contractStatus;
-				setDomContent(domObj);
-			};
+				if(returnContractStatus()){
+					var ms = returnContractStatus();
+					isEdit = false;
+					fileUploadEdit = false;
+					if(parm.pageType == 1 && parm.taskFlag == "db"){
+						parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+							parent.layer.close(index);
+							setDomContent(domObj);
+						});
+					}else if(parm.pageType == 2){
+						layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+							layer.close(index);
+							setDomContent(domObj);
+						});
+					}
+				}else{
+					setDomContent(domObj);
+				}
+			}
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
 		};
@@ -686,8 +703,6 @@ function returnContractStatus(){
  */
 function loadComplete() {
 	if(!checkWcardProcessId()){
-		isEdit = false;
-		fileUploadEdit = false;
 		if(parm.pageType == 1){
 			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
 				layer.close(index);
@@ -697,19 +712,6 @@ function loadComplete() {
 			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
 				layer.close(index);
 				backPage();
-			});
-		}
-	}else if(returnContractStatus()){
-		var ms = returnContractStatus();
-		isEdit = false;
-		fileUploadEdit = false;
-		if(parm.pageType == 1 && parm.taskFlag == "db"){
-			parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
-				parent.layer.close(index);
-			});
-		}else if(parm.pageType == 2){
-			layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
-				layer.close(index);
 			});
 		}
 	};
@@ -1049,23 +1051,23 @@ function checkMaxLength(dom){
 /*
  * input双击事件
  */
-//var tipsIndex = null;
-//$("#workOrderContent").on("dblclick","input,textarea",function(){
-//	if($(this).val().length > 0){
-//		tipsIndex = layer.tips($(this).val(), this, {
-//		  tips: [1, '#3595CC'],
-//		  time: 0,
-//		  closeBtn :2
-//		});
-//	}
-//	
-//})
-//$(".page-content").on("scroll",function(){
-//	if(tipsIndex){
-//		layer.close(tipsIndex);
-//		tipsIndex = null;
-//	}
-//})
+var tipsIndex = null;
+$("#workOrderContent").on("dblclick","input,textarea",function(){
+	if($(this).val().length > 0){
+		tipsIndex = layer.tips($(this).val(), this, {
+		  tips: [1, '#3595CC'],
+		  time: 0,
+		  closeBtn :2
+		});
+	}
+	
+})
+$(".page-content").on("scroll",function(){
+	if(tipsIndex){
+		layer.close(tipsIndex);
+		tipsIndex = null;
+	}
+})
 //返回上一页
 function backPage(){
 	window.history.go(-1);

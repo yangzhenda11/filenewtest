@@ -36,11 +36,15 @@
 			var html = "";
 			if(data.length > 0){
 				for(var i = 0; i < data.length; i++){
+					var shareMoney = data[i].shareMoney;
+					if(App.checkRate(shareMoney)){
+						shareMoney = shareMoney.toFixed(2);
+					}
 					html += "<tr>"+
 							"<td>"+ data[i].projectOrganization +"</td>"+
 							"<td>"+ data[i].projectCode+"</td>"+
 							"<td>"+ data[i].projectName +"</td>"+
-							"<td>"+ data[i].shareMoney +"</td>";
+							"<td>"+ shareMoney +"</td>";
 				}
 			}else{
 				$("#project").remove();
@@ -49,5 +53,5 @@
 			$("#projectInfoTbody").html(html);
 		}
 	}
-	
+
 </script>

@@ -1046,6 +1046,26 @@ function checkMaxLength(dom){
 		}
 	}
 }
+/*
+ * input双击事件
+ */
+//var tipsIndex = null;
+//$("#workOrderContent").on("dblclick","input,textarea",function(){
+//	if($(this).val().length > 0){
+//		tipsIndex = layer.tips($(this).val(), this, {
+//		  tips: [1, '#3595CC'],
+//		  time: 0,
+//		  closeBtn :2
+//		});
+//	}
+//	
+//})
+//$(".page-content").on("scroll",function(){
+//	if(tipsIndex){
+//		layer.close(tipsIndex);
+//		tipsIndex = null;
+//	}
+//})
 //返回上一页
 function backPage(){
 	window.history.go(-1);

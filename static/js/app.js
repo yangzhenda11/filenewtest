@@ -842,8 +842,11 @@ var App = function() {
 				var formName = $(formItem).attr('name');
 				var formValue = '';
 				if(formName != undefined){
-					if(formType == "text" || formType == "password" || formType == "select-one" || formType == "textarea" || formType == "hidden") {
+					if(formType == "text" || formType == "password" || formType == "textarea" || formType == "hidden") {
 						formValue = $(formItem).val().trim();
+						formData[formName] = formValue;
+					} else if(formType == "select-one") {
+						formValue = $(formItem).val();
 						formData[formName] = formValue;
 					} else if(formType == "checkbox") {
 						if($(formItem).is(':checked')) {
@@ -1094,7 +1097,8 @@ var App = function() {
                     if(obj.length > 0){
                         objType = obj[0].type;
                         if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
-                            obj.val(formData[a]);
+                        	var itemData = formData[a] == null ? "" : formData[a];
+                            obj.val(itemData);
                             if(objType == "select-one" && obj.hasClass('select2me')){
                                 obj.trigger('change');
                             }

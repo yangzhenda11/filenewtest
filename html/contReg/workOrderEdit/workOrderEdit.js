@@ -520,6 +520,9 @@ function setPinfoContent(){
 	if(pinfoContent == ""){
 		layer.msg("请输入退回原因",{offset: '130px'});
 	}else{
+		if(checkWcardProcessIschange()){
+			return false;
+		};
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;

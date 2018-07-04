@@ -1023,11 +1023,6 @@ var App = function() {
 				"ajax":{
 					beforSend:App.startLoading(btn)
 				}
-//				"columnDefs": [{
-//		       		"createdCell": function (td, cellData, rowData, row, col) {
-//		           		$(td).attr("title", cellData)
-//		       		}
-//		     	}]
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);

@@ -677,8 +677,8 @@ function getWorkOrderInfo(){
 			function contractBaseInfoCallback(result) {
 				getContractOrderBaseInfoData = result;
 				contractStatus = result.data.contractStatus;
-				if(returnContractStatus()){
-					var ms = returnContractStatus();
+				var ms = returnContractStatus();
+				if(ms){
 					isEdit = false;
 					fileUploadEdit = false;
 					if(parm.pageType == 1 && parm.taskFlag == "db"){
@@ -691,6 +691,8 @@ function getWorkOrderInfo(){
 							layer.close(index);
 							setDomContent(domObj);
 						});
+					}else{
+						setDomContent(domObj);
 					}
 				}else{
 					setDomContent(domObj);

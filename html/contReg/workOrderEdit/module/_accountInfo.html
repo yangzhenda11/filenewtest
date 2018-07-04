@@ -258,9 +258,9 @@
 		var openBank = "openBank" + isCreateAccountTrLength;
 		var appendHtml = "<tr data-id='100000'>"+
 							"<td><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' maxlength='240' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' maxlength='40' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' maxlength='240' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='' maxlength='240' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='' maxlength='40' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='' maxlength='240' /></div></td>"+
 							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#payeeInfoTbody").append(appendHtml);

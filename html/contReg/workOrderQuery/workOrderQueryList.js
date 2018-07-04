@@ -32,13 +32,13 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},
         {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
         {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "14%"},
-        {"data": "wcardNumber","className":"whiteSpaceNormal","title": "工单编号","width": "10%",
+        {"data": "wcardNumber","className":"whiteSpaceNormal","title": "工单编号","width": "9%",
 			"render": function(data, type, full, meta) {
 				var result = '<a href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
 				return result;
 			}
 		},
-        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width": "5%"},
+        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width": "6%"},
         {"data": "ctreatedDate","title": "创建日期","className":"whiteSpaceNormal","width": "5%",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");

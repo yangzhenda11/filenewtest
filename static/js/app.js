@@ -1023,11 +1023,6 @@ var App = function() {
 				"ajax":{
 					beforSend:App.startLoading(btn)
 				}
-//				"columnDefs": [{
-//		       		"createdCell": function (td, cellData, rowData, row, col) {
-//		           		$(td).attr("title", cellData)
-//		       		}
-//		     	}]
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
@@ -1260,7 +1255,7 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
+		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo,qw){
     		if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            var options = {
@@ -1278,7 +1273,7 @@ var App = function() {
                 if(allowSearch == undefined){
                 	options.minimumResultsForSearch = -1;
                 }
-                if(promptInfo){
+                if(promptInfo != undefined){
                 	options.placeholder=promptInfo;
                 }
                 $(dom).append('<option value="">请选择</option>');

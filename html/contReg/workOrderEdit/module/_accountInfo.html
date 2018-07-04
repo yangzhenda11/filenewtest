@@ -15,17 +15,17 @@
                 </div>
                 <div class="portlet-body">
                 	<div class="tableToobarContent hidden" id="payeeInforToolbar">
-                		<button class="btn red" type="button" onclick="addPayeeTr()"><i class="iconfont icon-add"></i> 新增</button>
+                		<button class="btn red" type="button" onclick="addAccountTableTr(1)"><i class="iconfont icon-add"></i> 新增</button>
                 		<button class="btn red" type="button" onclick="delectsPayeeTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
                 	</div>    	
                     <table class="table table-hover table-bordered table-striped table-align">
                     	<thead>
 							<tr>
-								<th class="payerEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
+								<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
 								<th class="isRequiredIcon">收款方账户名称</th>
 								<th class="isRequiredIcon">收款方银行账号</th>
 								<th class="isRequiredIcon">收款方开户银行</th>
-								<th class="payeeEdit">操作</th>
+								<th class="accountEdit">操作</th>
 							</tr>
 						</thead>
 						<tbody id="payeeInfoTbody">
@@ -44,17 +44,17 @@
                 </div>
                 <div class="portlet-body">
                 	<div class="tableToobarContent hidden" id="payerInforToolbar">
-                		<button class="btn red" type="button" onclick="addPayerTr()"><i class="iconfont icon-add"></i> 新增</button>
+                		<button class="btn red" type="button" onclick="addAccountTableTr(2)"><i class="iconfont icon-add"></i> 新增</button>
                 		<button class="btn red" type="button" onclick="delectsPayerTr()"><i class="iconfont icon-shanchu"></i> 删除</button>
                 	</div>    	
                     <table class="table table-hover table-bordered table-striped table-align">
                     	<thead>
 							<tr>
-								<th class="payerEdit"><label class='ui-checkbox'><input type='checkbox' name='payerCheckAll' id="payerCheckAll"><span></span></label></th>
+								<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payerCheckAll' id="payerCheckAll"><span></span></label></th>
 								<th>付款方账户名称</th>
 								<th>付款方银行账号</th>
 								<th>付款方开户银行</th>
-								<th class="payerEdit">操作</th>
+								<th class="accountEdit">操作</th>
 							</tr>
 						</thead>
 						<tbody id="payerInfoTbody">
@@ -194,44 +194,8 @@
 			setRequiredIcon();
 			var data = result.data;
 			if(data.length > 0){
-				isCreateAccountTrLength = data.length;
 				for(var i = 0; i < data.length; i++){
-					var accountName = "accountName"+i;
-					var accountNumber = "accountNumber"+i;
-					var openBank = "openBank"+i;
-					if(data[i].accountType == 1){
-						if($("#payeeInfoTbody .emptyTr")[0] != undefined){
-							$("#payeeInfoTbody .emptyTr").remove();
-						};
-						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
-											"<td class='payeeEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入收款方账户名称' value='"+ data[i].accountName +"' maxlength='240' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入收款方银行账号' value='"+ data[i].accountNumber +"' maxlength='40' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入收款方开户银行' value='"+ data[i].openBank +"' maxlength='240' /></div></td>"+
-											"<td class='payeeEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
-										"</tr>";
-						$("#payeeInfoTbody").append(appendHtml);
-						addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户");
-						addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
-						addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
-						App.checkAllFn("#payeeCheckAll","payeeCheck");
-					}else if(data[i].accountType == 2){
-						if($("#payerInfoTbody .emptyTr")[0] != undefined){
-							$("#payerInfoTbody .emptyTr").remove();
-						};
-						var appendHtml = "<tr data-id='"+ data[i].accountId +"'>"+
-											"<td class='payerEdit'><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' value='"+ data[i].accountName +"' maxlength='240' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' value='"+ data[i].accountNumber +"' maxlength='40' /></div></td>"+
-											"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' value='"+ data[i].openBank +"' maxlength='240' /></div></td>"+
-											"<td class='payerEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
-										"</tr>";
-						$("#payerInfoTbody").append(appendHtml);
-						addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户");
-						addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
-						addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
-						App.checkAllFn("#payerCheckAll","payerCheck");
-					}
+					addAccountTableTr(data[i].accountType,data[i]);
 				};
 			};
 			/*
@@ -239,36 +203,68 @@
 			 */
 			if(!isEdit){
 				$("#accountListContent").find("input,select").attr("disabled","disabled");
-				$("#payeeInforToolbar,#payerInforToolbar,.payeeEdit,.payerEdit").remove();
+				$("#payeeInforToolbar,#payerInforToolbar,.accountEdit").remove();
 			}else{
 				$("#payeeInforToolbar,#payerInforToolbar").removeClass("hidden");
 			}
 		}
 	}
 	/*
-	 * 收款方新增点击
+	 * 增加处理
+	 * accountType ： 1 收款方  2 付款方
+	 * 
 	 */
-	function addPayeeTr(){
-		if($("#payeeInfoTbody .emptyTr")[0] != undefined){
-			$("#payeeInfoTbody .emptyTr").remove();
-		}
+	function addAccountTableTr(accountType,data){
 		isCreateAccountTrLength++;
+		var accountId = "100000";
+		var accountNameVal = '';
+		var accountNumberVal = '';
+		var openBankVal = '';
 		var accountName = "accountName" + isCreateAccountTrLength;
 		var accountNumber = "accountNumber" + isCreateAccountTrLength;
 		var openBank = "openBank" + isCreateAccountTrLength;
-		var appendHtml = "<tr data-id='100000'>"+
-							"<td><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='' maxlength='240' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='' maxlength='40' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='' maxlength='240' /></div></td>"+
-							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
-						"</tr>";
-		$("#payeeInfoTbody").append(appendHtml);
-		addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户");
-		addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
-		addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
-		App.checkAllFn("#payeeCheckAll","payeeCheck");
+		if(data){
+			accountId = data.accountId ? data.accountId : "100000";
+			accountNameVal = data.accountName;
+			accountNumberVal = data.accountNumber;
+			openBankVal = data.openBank;
+		};
+		if(accountType == 1){
+			if($("#payeeInfoTbody .emptyTr")[0] != undefined){
+				$("#payeeInfoTbody .emptyTr").remove();
+			};
+			var appendHtml = "<tr data-id='"+ accountId +"'>"+
+								"<td class='accountEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='"+setPTip('请输入收款方银行账号')+"' value='"+ accountNameVal +"' maxlength='240' /></div></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='"+setPTip('请输入收款方银行账号')+"' value='"+ accountNumberVal +"' maxlength='40' /></div></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='"+setPTip('请输入收款方开户银行')+"' value='"+ openBankVal +"' maxlength='240' /></div></td>"+
+								"<td class='accountEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
+							"</tr>";
+			$("#payeeInfoTbody").append(appendHtml);
+			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户");
+			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
+			addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
+			App.checkAllFn("#payeeCheckAll","payeeCheck");
+		}else if(accountType == 2){
+			if($("#payerInfoTbody .emptyTr")[0] != undefined){
+				$("#payerInfoTbody .emptyTr").remove();
+			};
+			var appendHtml = "<tr data-id='"+accountId +"'>"+
+								"<td class='accountEdit'><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='"+setPTip('请输入付款方账户名称')+"' value='"+ accountNameVal +"' maxlength='240' /></div></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='"+setPTip('请输入付款方银行账号')+"' value='"+ accountNumberVal +"' maxlength='40' /></div></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='"+setPTip('请输入付款方开户银行')+"' value='"+ openBankVal +"' maxlength='240' /></div></td>"+
+								"<td class='accountEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
+							"</tr>";
+			$("#payerInfoTbody").append(appendHtml);
+			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户");
+			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
+			addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
+			App.checkAllFn("#payerCheckAll","payerCheck");
+		}
 	}
+	
+	
 	/*
 	 * 批量删除收款方表格数据
 	 */
@@ -307,30 +303,7 @@
 			$("#payeeInfoTbody").html(html);
 		}
 	}
-	/*
-	 * 付款方新增点击
-	 */
-	function addPayerTr(){
-		if($("#payerInfoTbody .emptyTr")[0] != undefined){
-			$("#payerInfoTbody .emptyTr").remove();
-		}
-		isCreateAccountTrLength++;
-		var accountName = "accountName" + isCreateAccountTrLength;
-		var accountNumber = "accountNumber" + isCreateAccountTrLength;
-		var openBank = "openBank" + isCreateAccountTrLength;
-		var appendHtml = "<tr data-id='100000'>"+
-							"<td><label class='ui-checkbox'><input type='checkbox' name='payerCheck'><span></span></label></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='请输入付款方账户名称' maxlength='240' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='请输入付款方银行账号' maxlength='40' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='请输入付款方开户银行' maxlength='240' /></div></td>"+
-							"<td><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
-						"</tr>";
-		$("#payerInfoTbody").append(appendHtml);
-		addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户");
-		addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
-		addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
-		App.checkAllFn("#payerCheckAll","payerCheck");
-	}
+	
 	/*
 	 * 批量删除付款方表格数据
 	 */

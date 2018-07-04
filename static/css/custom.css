@@ -600,6 +600,10 @@ th.thAlignCenter{
     white-space: pre;
     line-height: 18px;
 }
+.layui-layer-tips .layui-layer-setwin{
+	right: 10px;
+	top: 13px;
+}
 /*合同修改*/
 .form-fieldset-title{
 	font-size: 14px;

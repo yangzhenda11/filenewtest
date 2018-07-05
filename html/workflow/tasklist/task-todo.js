@@ -20,7 +20,7 @@ function initFrame(){
 	$('#searchContent').show();
 }
 // 查询
-function serarchForToDo(){
+function serarchForToDo(retainPaging){
 	var startDate = $('#startDate').val().trim();
 	var endDate = $('#endDate').val().trim();
 	if(!checkDate(startDate,endDate)){
@@ -28,7 +28,11 @@ function serarchForToDo(){
 		return;
 	}else{
 		var table = $('#searchTableTodo').DataTable();
-		table.ajax.reload();
+		if(retainPaging) {
+			table.ajax.reload();
+		} else {
+			table.ajax.reload(null, false);
+		}
 	}
 }
 
@@ -68,7 +72,7 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 					//currentTask=result.flowdata;
 					layer.msg(data.sign);
 					// 成功后刷新列表
-					serarchForToDo();
+					serarchForToDo(true);
 				} else {
 					layer.msg(data.sign);
 				};
@@ -127,13 +131,17 @@ function getTableTodo(){
 	        		disabled = "";
 	        		buttontitle = "";
 	        		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-	        		context =
-	        		{
-	        				func: [
-	        					{"name": "处理", "title": buttontitle, "fn": fn, "type": disabled}
-	        					]
-	        		};
+	        	}else{
+	        		disabled = "disabled";
+	        		fn="alertModel(\'"+buttontitle+"\');";
+	        		
 	        	}
+	        	context =
+	        	{
+	        			func: [
+	        				{"name": "处理", "title": buttontitle, "fn": fn, "type": disabled}
+	        				]
+	        	};
 	        	if(assignee.indexOf("candidate-") != -1){
 	        		disabled = "";
 	        		buttontitle = "title=该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";

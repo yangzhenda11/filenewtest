@@ -68,6 +68,9 @@ function getTableForDone(){
 	        		disabled = "";
 	        		title = "";
 	        		fn = "onclick=handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+	            }else{
+	            	disabled = "disabled";
+	            	fn="alertModel(\'"+title+"\');";
 	            }
 	            var context =
 	            {
@@ -82,7 +85,7 @@ function getTableForDone(){
 	})
 }
 // 查询
-function serarchForDone(){
+function serarchForDone(retainPaging){
 	var startDateForDone = $('#startDateForDone').val().trim();
 	var endDateForDone = $('#endDateForDone').val().trim();
 	if(!checkDate(startDateForDone,endDateForDone)){
@@ -90,7 +93,11 @@ function serarchForDone(){
 		return;
 	}else{
 		var table = $('#searchTableForDone').DataTable();
-		table.ajax.reload();
+		if(retainPaging){
+			table.ajax.reload();
+		}else{
+			table.ajax.reload(null, false);
+		}
 	}
 }
 

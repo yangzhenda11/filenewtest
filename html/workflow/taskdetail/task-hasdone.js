@@ -204,10 +204,11 @@ function returnListForDone(){
 		    window.close();
 		}
 	}else{
-		serarchForDone();
 		$("#goTaskToDoDetailForDone").hide();
-		$("#businessForDone").show();
-		$("#searchContentForDone").show();
+		$("#searchContentForDone").show(0,function(){
+			setTimeout(serarchForDone,150);
+			//setTimeout(getTableForDone,150);
+		})
 	}
 }
 

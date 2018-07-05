@@ -898,8 +898,10 @@ function returnList(){
 		$("#in-footer").modal("hide");
 		$("#goTaskToDoDetailForToDo").hide();
 		$("#business").hide();
-		$("#searchContentForToDo").show();
-		serarchForToDo();
+		$("#searchContentForToDo").show(0,function(){
+			setTimeout(serarchForToDo,150);
+			//setTimeout(getTableTodo,150);
+		})
 	}
 }
 

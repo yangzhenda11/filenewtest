@@ -941,6 +941,10 @@ var App = function() {
 			if(!$().dataTable) {
 				return;
 			};
+			if($.fn.DataTable.isDataTable(el)){
+				$(el).DataTable().destroy();
+				$(el).empty();
+			}
 			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];

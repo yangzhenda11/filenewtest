@@ -35,8 +35,9 @@ $(function() {
             },
             "columns": [
                 {
-                    "data": null,
+                    data: null,
                     className: "text-center",
+                    width: "35%",
                     title: "操作",
                     render: function(a, b, c, d) {
                         if (c) {
@@ -69,16 +70,19 @@ $(function() {
                 {
                     "data": null,
                     "title": "人员姓名",
+                    "className":"whiteSpaceNormal",
+                    "width": "7%",
                     render: function(data, type, full, meta) {
                         return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
                     }
                 },
-                { "data": "LOGIN_NAME", "title": "账号" },
-                { "data": "ORG_NAME", "title": "部门名称" },
+                { "data": "LOGIN_NAME", "title": "账号","className":"whiteSpaceNormal","width":"9%"},
+                { "data": "ORG_NAME", "title": "部门名称","className":"whiteSpaceNormal","width":"11%"},
                 {
                     "data": "STAFF_ORG_TYPE",
                     "title": "岗位类别",
-                    className: "text-center",
+                    "className": "whiteSpaceNormal text-center",
+                    "width": "7%",
                     render: function(a, b, c, d) {
                         return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
                     }
@@ -86,40 +90,31 @@ $(function() {
                 {
                     "data": "SEX",
                     "title": "性别",
-                    className: "text-center",
+                    "className": "whiteSpaceNormal text-center",
+                    "width": "4%",
                     render: function(a, b, c, d) {
                         return (c.SEX == 'M') ? '男' : '女';
                     }
                 },
-                { "data": "EMAIL", "title": "邮箱账号" },
-                { "data": "MOBIL_PHONE", "title": "手机号码" },
+                { "data": "EMAIL", "title": "邮箱账号","className":"whiteSpaceNormal","width":"11%"},
+                { "data": "MOBIL_PHONE", "title": "手机号码","className":"whiteSpaceNormal","width":"9%"},
                 {
                     "data": "STAFF_ORG_STATUS",
                     "title": "岗位状态",
-                    className: "text-center",
+                    "className": "whiteSpaceNormal text-center",
+                    "width": "7%",
                     render: function(a, b, c, d) {
                         return ('1' == c.STAFF_ORG_STATUS) ? '有效' : '无效';
                     }
                 }
-            ],
-            "columnDefs": [{ // 所有列默认值
-                    render: $.fn.dataTable.render.ellipsis(22, true),
-                }
-//              { // 添加按钮
-//                  targets: 0,
-//                  render: function(a, b, c, d) {
-//                      var context = btnFun(c);
-//                      var html = roletemplate(context);
-//                      return html;
-//                  }
-//              }
-            ],
-            "fixedColumns": {
-                'leftColumns': 2
-            },
-            drawCallback:function(){
-            	$('table td').css("height","20px");
-            }
+            ]
+//          "fixedColumns": {
+//              'leftColumns': 2
+//          },
+//          drawCallback:function(){
+//          	$('table td').css("height","20px");
+//          	$(".DTFC_LeftWrapper .DTFC_LeftBodyWrapper").css("margin-top","1px");
+//          }
         })
     }
 })

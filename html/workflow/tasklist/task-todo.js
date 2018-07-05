@@ -133,7 +133,6 @@ function getTableTodo(){
 	        		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 	        	}else{
 	        		disabled = "disabled";
-	        		fn="alertModel(\'"+buttontitle+"\');";
 	        		
 	        	}
 	        	context =

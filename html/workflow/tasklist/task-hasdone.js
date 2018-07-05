@@ -70,7 +70,6 @@ function getTableForDone(){
 	        		fn = "onclick=handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 	            }else{
 	            	disabled = "disabled";
-	            	fn="alertModel(\'"+title+"\');";
 	            }
 	            var context =
 	            {

@@ -114,6 +114,24 @@
 					</div>
 				</div>
 			</div>
+			<span id="relatedDom0" class="hidden">
+				<div class="col-sm-6 form-group">
+					<label for="relatedWcardNumber" class="control-label">关联工单编号：</label>
+					<div class="valiParent relatedWcardNumber" id="relatedWcardNumber"></div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="contractNature" class="control-label">合同性质：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="contractNature" name="contractNature" disabled="disabled" />
+					</div>
+				</div>
+				<div class="col-sm-6 form-group">
+					<label for="relatedContractNumber" class="control-label">关联合同编号：</label>
+					<div class="valiParent">
+						<input type="text" class="form-control" id="relatedContractNumber" name="relatedContractNumber" disabled="disabled" />
+					</div>
+				</div>
+			</span>
 			<div id="isOtherTypeOverview" class="hidden">
 				<div class="col-sm-6 form-group">
 					<label for="isFixed" class="control-label">是否固定金额：</label>
@@ -154,9 +172,10 @@
 					</div>
 				</div>
 				<div id="relationshipContract" class="hidden">
+					<span id="relatedDom1" class="hidden">
 					<div class="col-sm-6 form-group">
 						<label for="relatedWcardNumber" class="control-label">关联工单编号：</label>
-						<div class="valiParent" id="relatedWcardNumber"></div>
+						<div class="valiParent relatedWcardNumber" id="relatedWcardNumber"></div>
 					</div>
 					<div class="col-sm-6 form-group">
 						<label for="contractNature" class="control-label">合同性质：</label>
@@ -170,6 +189,7 @@
 							<input type="text" class="form-control" id="relatedContractNumber" name="relatedContractNumber" disabled="disabled" />
 						</div>
 					</div>
+					</span>
 					<div id="relationshipIsFixed" class="hidden">
 						<div class="col-sm-6 form-group" id="originalContractValueContent">
 							<label for="originalContractValue" class="control-label">原含增值税合同金额：</label>
@@ -237,7 +257,11 @@
 	getContractOverviewDict();
 	//wcardTypeCode为0时其余合同，隐藏
 	if(wcardTypeCode != 0){
-		$("#isOtherTypeOverview").removeClass("hidden");
+		$("#isOtherTypeOverview,#relatedDom1").removeClass("hidden");
+		$("#relatedDom0").remove();
+	}else{
+		$("#relatedDom0").removeClass("hidden");
+		$("#relatedDom1").remove();
 	}
 	//获取合同基本信息
 	getContractOverInfo();

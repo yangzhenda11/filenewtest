@@ -391,10 +391,17 @@
 	 */
 	function jumpContractOverview(id){
 		var href = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=0&askFlag=yb&taskDefinitionKey=GDQR&wcardId="+id;
-		layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
-			layer.close(index);
-			top.showSubpageTab(href,"工单查看");
-		});
+		if(parm.pageType == 1){
+			parent.layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
+				parent.layer.close(index);
+				top.showSubpageTab(href,"工单查看");
+			})
+		}else{
+			layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
+				layer.close(index);
+				top.showSubpageTab(href,"工单查看");
+			})
+		}
 	}
 	/*
 	 * 金额信息RP样式生成

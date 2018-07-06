@@ -899,7 +899,7 @@ function returnList(){
 		$("#goTaskToDoDetailForToDo").hide();
 		$("#business").hide();
 		$("#searchContentForToDo").show(0,function(){
-			setTimeout(serarchForToDo,150);
+			setTimeout(serarchForToDo,100);
 			//setTimeout(getTableTodo,150);
 		})
 	}

@@ -1366,7 +1366,7 @@ var App = function() {
         getDataTableLink:function(btnArray){
              var btnModel = '    \
                 {{#each btnArray}}\
-                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs" data-container="body" data-trigger="hover" data-toggle="tooltip"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
+                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn btn-link btn-xs" onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
                 {{/each}}';
             var template = Handlebars.compile(btnModel);
             return template({

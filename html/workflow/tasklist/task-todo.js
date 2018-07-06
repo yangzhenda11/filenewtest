@@ -122,38 +122,23 @@ function getTableTodo(){
 	        render: function (a, b, c, d) {
 	        	var currentId = $("#currentId").val();;
 	        	var assignee = c.assignee;
-	        	var context ="";
-	        	// 按钮显隐设置及方法设置
-	        	var disabled = "disabled";
-	        	var buttontitle = "title=当前任务属于【" + c.staffOrgName + "】，请切换岗位后处理";
+	        	var buttontitle = "";
 	        	var fn = "";
+	        	var style = "";
 	        	if(currentId == assignee){
-	        		disabled = "";
-	        		buttontitle = "";
-	        		fn = "onclick=handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+	        		fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 	        	}else{
-	        		disabled = "disabled";
-	        		
+	        		style = "cursor:not-allowed";
+	        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+	        		fn = "layer.msg(\'"+buttontitle+"\')";
 	        	}
-	        	context =
-	        	{
-	        			func: [
-	        				{"name": "处理", "title": buttontitle, "fn": fn, "type": disabled}
-	        				]
-	        	};
+	        	var context = [{"name": "处理","placement":"left","title": buttontitle,"style": style,"fn": fn}];
 	        	if(assignee.indexOf("candidate-") != -1){
-	        		disabled = "";
-	        		buttontitle = "title=该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
-	        		fn = "onclick=applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-	        		context =
-	            	{
-	            			func: [
-	            				{"name": "申领", "title": buttontitle, "fn": fn, "type": disabled}
-	            				]
-	            	};
+	        		buttontitle = "该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
+	        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+	        		context = [{"name": "申领","placement":"left","title": buttontitle,"style": style,"fn": fn}];
 	        	}
-	            var html = template(context);
-	            return html;
+	            return App.getDataTableBtnTooltip(context);
 	        }
 	    }]
 	})

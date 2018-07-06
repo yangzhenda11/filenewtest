@@ -60,25 +60,18 @@ function getTableForDone(){
 	        render: function (a, b, c, d) {
 	        	var currentId = $('#currentIdForDone').val();
 	        	var assignee = c.assignee;
-	        	// 按钮显隐设置及方法设置
-	        	var disabled = "disabled";
-	        	var title = "title=当前任务属于【" + c.staffOrgName + "】，请切换岗位后查看";
+	        	var buttontitle = "";
 	        	var fn = "";
+	        	var style = "";
 	        	if(currentId == assignee){
-	        		disabled = "";
-	        		title = "";
 	        		fn = "onclick=handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-	            }else{
-	            	disabled = "disabled";
-	            }
-	            var context =
-	            {
-	                func: [
-	                	{"name": "查看", "title": title, "fn": fn, "type": disabled}
-	                ]
-	            };
-	            var html = template(context);
-	            return html;
+	        	}else{
+	        		style = "cursor:not-allowed";
+	        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+	        		fn = "layer.msg(\'"+buttontitle+"\')";
+	        	}
+	        	var context = [{"name": "查看","placement":"left","title": buttontitle,"style": style,"fn": fn}];
+	            return App.getDataTableBtnTooltip(context);
 	        }
 	    }]
 	})

@@ -1019,7 +1019,7 @@ var App = function() {
 				"buttons": [], //'pdf','copy', 'excel', 'colvis'
 				"drawCallback": function() {
 					//若有气泡提示气泡
-					//$("[data-toggle='tooltip']").tooltip();
+					$("[data-toggle='tooltip']").tooltip();
 					if(options.drawCallbackFn != undefined){
 						options.drawCallbackFn();
 					}
@@ -1343,12 +1343,21 @@ var App = function() {
 		/**
          * datatable render 文本信息 btnArray 内容：
          */
-        
          getDataTableBtn:function(btnArray){
          	var btnModel = '    \
 				{{#each btnArray}}\
-    			<button type="button" class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
+    			<button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{#if this.disabled}} disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} onclick="{{this.fn}}">{{this.name}}</button>\
     			{{/each}}';
+            var template = Handlebars.compile(btnModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        getDataTableBtnTooltip:function(btnArray){
+             var btnModel = '    \
+                {{#each btnArray}}\
+                <button type="button" title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
+                {{/each}}';
             var template = Handlebars.compile(btnModel);
             return template({
                 btnArray:btnArray
@@ -1357,7 +1366,7 @@ var App = function() {
         getDataTableLink:function(btnArray){
              var btnModel = '    \
                 {{#each btnArray}}\
-                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs" data-delay="100" data-trigger="hover" data-toggle="tooltip"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
+                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}" {{else}}data-placement="right"{{/if}} {{#if this.disabled}} disabled="{{this.disabled}}" {{/if}} class="btn btn-link btn-xs" data-container="body" data-trigger="hover" data-toggle="tooltip"  onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
                 {{/each}}';
             var template = Handlebars.compile(btnModel);
             return template({

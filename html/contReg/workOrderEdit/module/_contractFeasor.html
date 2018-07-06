@@ -66,8 +66,7 @@
 		$.each($("#feasorTbody tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
 				var performerDataItem = {};
-				var performerType = $("input[name='performerType']:checked").val();
-				performerDataItem.performerType = performerType;
+				performerDataItem.performerType = 1;
 				performerDataItem.wcardId = wcardId;
 				performerDataItem.contractNumber = contractNumber;
 				performerDataItem.performerId = $(v).data("id");
@@ -117,10 +116,10 @@
 	    						'<td>'+data[i].performerStaffName+'</td>'+
 	    						'<td>'+data[i].performerOrgName+'</td></tr>';
 				};
-				if(data[0].performerType == 1){
+				if(data[0].performerOrgType == 1){
 					$("input[name='performerType'][value=1]").attr("checked",true);
 					deafaultFeasorHtml = html;
-				}else if(data[0].performerType == 2){
+				}else if(data[0].performerOrgType == 2){
 					$("input[name='performerType'][value=2]").attr("checked",true);
 				};
     			$("#feasorTbody").html(html);

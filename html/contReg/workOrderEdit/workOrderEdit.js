@@ -680,26 +680,11 @@ function getWorkOrderInfo(){
 			function contractBaseInfoCallback(result) {
 				getContractOrderBaseInfoData = result;
 				contractStatus = result.data.contractStatus;
-				var ms = returnContractStatus();
-				if(ms){
+				if(returnContractStatus()){
 					isEdit = false;
 					fileUploadEdit = false;
-					if(parm.pageType == 1 && parm.taskFlag == "db"){
-						parent.layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
-							parent.layer.close(index);
-							setDomContent(domObj);
-						});
-					}else if(parm.pageType == 2){
-						layer.alert(ms,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
-							layer.close(index);
-							setDomContent(domObj);
-						});
-					}else{
-						setDomContent(domObj);
-					}
-				}else{
-					setDomContent(domObj);
 				}
+				setDomContent(domObj);
 			}
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
@@ -764,10 +749,11 @@ function returnContractStatus(){
  * dom区域全部加载完成后的函数
  */
 function loadComplete() {
+	var contractStatusMs = returnContractStatus();
 	if(!checkWcardProcessId()){
 		if(parm.pageType == 1){
 			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
-				layer.close(index);
+				parent.layer.close(index);
 				parent.modal_close();
 			});
 		}else{
@@ -776,7 +762,17 @@ function loadComplete() {
 				backPage();
 			});
 		}
-	};
+	}else if(contractStatusMs){
+		if(parm.pageType == 1 && parm.taskFlag == "db"){
+			parent.layer.alert(contractStatusMs,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+				parent.layer.close(index);
+			});
+		}else if(parm.pageType == 2){
+			layer.alert(contractStatusMs,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+				layer.close(index);
+			});
+		}
+	}
 	formSubmit = true;
 	//页面元素初始化
 	App.init();

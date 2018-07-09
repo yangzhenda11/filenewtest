@@ -260,7 +260,6 @@
 		$("#isOtherTypeOverview,#relatedDom1").removeClass("hidden");
 		$("#relatedDom0").remove();
 	}else{
-		$("#relatedDom0").removeClass("hidden");
 		$("#relatedDom1").remove();
 	}
 	//获取合同基本信息
@@ -302,6 +301,7 @@
 		}else{
 			$("#defalutContract").remove();
 			$("#relationshipContract").removeClass("hidden");
+			$("#relatedDom0").removeClass("hidden");
 			var relatedWcardNumber = data.relatedWcardNumber
 			if(relatedWcardNumber == null){
 				$("#relatedWcardNumber").html("<a>暂无关联工单编号</a>");

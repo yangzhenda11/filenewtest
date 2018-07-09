@@ -238,6 +238,9 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
+		if(checkWcardProcessIschange()){
+			return false;
+		};
 		if(checkContractStatus()){
 			return false;
 		};
@@ -832,6 +835,7 @@ function showLayerErrorMsg(ms,isAlert){
 			layer.msg(ms);
 		}
 	}
+	window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
 }
 /*
  * 设置快捷跳转

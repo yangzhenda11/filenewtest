@@ -106,7 +106,7 @@ function getTableTodo(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "title","title":"主题","className": "whiteSpaceNormal","width": "50%"},
+			{"data": "title","title":"主题","className": "whiteSpaceNormal","width": "49%"},
 	        {"data": "processDefinitionName","title":"流程类型","className": "whiteSpaceNormal","width": "15%"},
 	        {"data": "createTime","title":"接收日期","className": "whiteSpaceNormal","width": "15%", 
 	        	"render": function (a, b, c, d) {
@@ -114,7 +114,7 @@ function getTableTodo(){
 	        	}
 	        },
 	        {"data": "beUserName","title":"发送人","className": "whiteSpaceNormal","width": "10%"},
-	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
+	        {"data": null,"title":"操作","className": "text-center","width": "6%"}
 	    ],
 	    "columnDefs": [
 	       {// 最后一列添加按钮

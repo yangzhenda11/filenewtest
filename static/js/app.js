@@ -685,7 +685,6 @@ var App = function() {
             // Core handlers
             handleInit(); // initialize core variables
             handleSubpageTab();// 子页面打开tab页控制
-            
             // UI Component handlers
             // handleiCheck(); // handles custom icheck radio and checkboxes
             // handleBootstrapSwitch(); // handle bootstrap switch plugin
@@ -694,7 +693,7 @@ var App = function() {
             handleSelect2(); // handle custom Select2 dropdowns
             handleDatePicker();
             handlePagesearch();
-            handleFileInput();// 上传文件的伪装触发
+            //handleFileInput();// 上传文件的伪装触发
             handleFormFieldset();// 表单分区的展开折叠控制
             handlePortletTools(); // handles portlet action bar
             // functionality(refresh, configure, toggle,
@@ -962,7 +961,7 @@ var App = function() {
 				//"order":  [[ 2, 'asc' ], [ 4, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {
 					"sProcessing": "正在加载数据，请稍候...",
-//					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录，跳转到第<input onchange='setDatatableCurPage(this)' class='setCurPage' type='text' />页",
+//					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录，跳转至第<input onchange='setDatatableCurPage(this)' class='setCurPage' type='text' />页",
 					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
 					"sZeroRecords": "查询不到数据",
 					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
@@ -1876,6 +1875,26 @@ var App = function() {
             return ( typeof angular == 'undefined') ? false : true;
         },
         
+        //判断是否是IE11以下IE浏览器
+        IEVersionVA11:function() {
+            //取得浏览器的userAgent字符串
+            var userAgent = navigator.userAgent;
+            //判断是否IE浏览器
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;
+            if (isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if (fIEVersion < 11) {
+                    return true;
+                }else{
+                	return false;
+                }
+            } else {
+                return false;
+            }
+        },
+        
         getAssetsPath:function(){
             return assetsPath;
         },
@@ -2561,6 +2580,9 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
+/*
+ * datatable跳转至第**页
+ */
 function setDatatableCurPage(dom){
 	var val = $(dom).val();
 	var tableId = $(dom).parents(".dataTables_wrapper")[0].id;

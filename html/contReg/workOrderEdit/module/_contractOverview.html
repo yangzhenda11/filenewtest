@@ -48,7 +48,7 @@
 				<div class="col-sm-6 form-group">
 					<label for="partyALegalperson" class="control-label">我方法定代表人：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="partyALegalperson" name="partyALegalperson" maxlength="100" />
+						<input type="text" class="form-control" id="partyALegalperson" name="partyALegalperson" maxlength="10" />
 					</div>
 				</div>
 				<div class="col-sm-6 form-group">
@@ -280,7 +280,7 @@
 	 * 获取合同基本信息
 	 */
 	function getContractOverInfo() {
-		var data = getContractOrderBaseInfoData.data;
+		var data = getContractOrderBaseInfoData;
 		var isFixed = data.isFixed;
 		var contractNature = data.contractNature;
 		var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;

@@ -4,12 +4,14 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
+var provinceCode = "";				//合同所属省份
 var wcardId = null;					//工单主键ID
 var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
 var wcardProcess = null;			//工单处理状态  0:草稿/1:复核/2:退回/3:激活
 var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
 var contractStatus = null;			//合同状态
+var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
@@ -149,9 +151,14 @@ function beforePushProcess(pass){
 		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
-	//2,设置下一步选人的参数，用于匹配通用规则选人。
+	//2,设置下一步选人的参数，用于匹配通用规则选人。	
 	var assigneeParam = { 
-		"prov": "sd",  //省分，来自需求工单，必传
+		prov: provinceCode,
+		city: "",
+		contracType: "",
+		attrA: "",
+		attrB: "",
+		attrC: ""
 	}
 	parent.setAssigneeParam(assigneeParam);
 	
@@ -361,10 +368,12 @@ function submitContent(){
 		    	}
 	    		var flowKey = "Contractproject2Process";
 	    		var linkcode = "GDQR";
-	    		var prov = "sd";
+	    		var prov = provinceCode;
 	    		var callbackFun = "submitContentPost";
 	    		var staffSelectType = 1;
-	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
+	    		var contracType = "";
+	    		var city = "",attrA = "",attrB = "",attrC = "";	    		
+				jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 			}
     	}
 	}else{
@@ -402,11 +411,11 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 /*
  * 调出选人页面（参考工作流）
  */
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
-    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
@@ -605,20 +614,25 @@ function saveContent(){
 		if(isOverlength){
 			return false;
 		};
-		var submitData = getContentValue();
-		if(submitData){
-			saveContentPost(submitData,"GDCL");
+		var isSubmits = true;
+		if($("#lineChargesListContent")[0]){
+			$.each($("#lineChargesListContent").find(".fixedMonthRent,.lineCount,.totalMonthRent,.onceCost,.otherCost"), function(k,v) {
+				if($(v).parent(".form-group").hasClass("has-error") && $(v).val()!=""){
+					isSubmits = false;
+					showLayerErrorMsg("该输入框输入格式不正确，请修改");
+					srolloOffect($(v).parent(".form-group")[0],1);
+					$(v).focus();
+					return false;
+				}
+			})
+		};
+		if(isSubmits){
+			var submitData = getContentValue();
+			if(submitData){
+				saveContentPost(submitData,"GDCL");
+			}
 		}
-	};
-	//手动触发表单特定的验证项
-	//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
-    //console.log(bootstrapValidator.isValid());
-//	    if(!bootstrapValidator.isValid()){
-//	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-//	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
-//	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
-//	    	return false;
-//	    };
+	}
 }
 /*
  * 保存提交后台
@@ -633,8 +647,12 @@ function saveContentPost(data,type){
 	App.formAjaxJson(url, "post", postData, successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		setPageIdCallback(data);
-		layer.msg("保存成功");
+		if(data.success == "000"){
+			showLayerErrorMsg(data.message);
+		}else{
+			setPageIdCallback(data);
+			layer.msg("保存成功");
+		}
 	}
 }
 /*
@@ -680,14 +698,21 @@ function getWorkOrderInfo(){
 			};
 			var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
 			App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, contractBaseInfoCallback);
-			function contractBaseInfoCallback(result) {
-				getContractOrderBaseInfoData = result;
-				contractStatus = result.data.contractStatus;
-				if(returnContractStatus()){
-					isEdit = false;
-					fileUploadEdit = false;
+			function contractBaseInfoCallback(resultData) {
+				var baseData = resultData.data;
+				if(baseData){
+					getContractOrderBaseInfoData = baseData;
+					contractStatus = baseData.contractStatus;
+					provinceCode = baseData.provinceCode;
+					contractType = baseData.contractType;
+					if(returnContractStatus()){
+						isEdit = false;
+						fileUploadEdit = false;
+					}
+					setDomContent(domObj);
+				}else{
+					showLayerErrorMsg("当前工单暂无信息");
 				}
-				setDomContent(domObj);
 			}
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");
@@ -798,7 +823,7 @@ function srolloOffect(el,srolloParm){
 	var scrollTopParm = 200;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
-			var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
+			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 500;
 			if(scrollLeftValue > 0){
 				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
 			}
@@ -983,6 +1008,7 @@ function checkDomOverlength(){
 		var limitLen = $(overLengthDom).find("input").attr("maxlength");
 		var inputLen = getByteLen($(overLengthDom).find("input").val());
 		showLayerErrorMsg("该输入框限制输入"+limitLen+"个字符，现已输入"+inputLen+"个字符，请修改后再进行操作");
+		$(overLengthDom).find("input").focus();
 		return true;
 	}else{
 		return false;
@@ -1010,15 +1036,17 @@ function getByteLen(val) {
 function checkMaxLength(dom){
 	var len = getByteLen($(dom).val());
 	var maxLength = $(dom).attr("maxlength");
+	var formGroupDom = $(dom).parents(".form-group");
 	if(maxLength < len){
 		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个字的字符！");
-		$(dom).parents(".form-group").addClass("has-error overlength");
+		formGroupDom.addClass("has-error overlength");
 	}else{
-		if($(dom).hasClass("overlength")){
-			$(dom).removeClass("overlength has-error");
+		if(formGroupDom.hasClass("overlength")){
+			formGroupDom.removeClass("overlength has-error");
 		}
-	}
+	}	
 }
+
 /*
  * 设置表格input，select的placeholder值，不能编辑时为空
  */

@@ -6,14 +6,20 @@
 var tablestr='';
 var dataTableConfig = {};
 var chooseType;
-function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType){
+function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 	$("#wfflowKey").val(flowKey);
 	$("#wflinkCode").val(linkcode);
 	$("#wfprov").val(prov);
 	$("#wfcallbackFun").val(callbackFun);
 	$("#wfstaffSelectType").val(staffSelectType);
+	$("#wfcity").val(city);
+	$("#wfcontracType").val(contracType);
+	$("#wfattrA").val(attrA);
+	$("#wfattrB").val(attrB);
+	$("#wfattrC").val(attrC);
 	
-	chooseType=$("#wfstaffSelectType").val();
+	//chooseType=$("#wfstaffSelectType").val();
+	chooseType = staffSelectType;
 
 	if(chooseType==2){
 		$("#duoxuan").show();
@@ -49,6 +55,11 @@ function setDataTableConfig(){
 				d.flowKey	=$("#wfflowKey").val();
 				d.linkCode	=$("#wflinkCode").val(); 
 				d.prov		=$("#wfprov").val();  
+				d.city=$("#wfcity").val();
+				d.contracType=$("#wfcontracType").val();
+				d.attrA=$("#wfattrA").val();
+				d.attrB=$("#wfattrB").val();
+				d.attrC=$("#wfattrC").val();
 				
 				d.orgFullName=$("#searchEfOName").val();
 				d.staffName  =$("#searchEfstaffName").val();

@@ -148,7 +148,7 @@
 			 * isEdit 判断页面是否只能查看
 			 */
 			if(!isEdit){
-				$("#invoiceInfoContent").find("input,select").attr("disabled","disabled");
+				$("#invoiceInfoContent").find("input").attr("disabled","disabled");
 				$("#invoiceInfoToolbar,.invoiceTableEdit").remove();
 			}else{
 				$("#invoiceInfoToolbar").removeClass("hidden");
@@ -180,6 +180,9 @@
 							"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#invoiceTbody").append(appendHtml);
+		if(!isEdit){
+			$("."+invoiceTypeName).find("select").attr("disabled","disabled");
+		}
 		App.initFormSelect2("."+invoiceTypeName);
 		if(data){
 			$("select[name='"+invoiceTypeName+"']").val(data.invoiceType).trigger("change");
@@ -188,9 +191,6 @@
 		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
 		addInvoiceTableSort();
 		App.checkAllFn("#invocieCheckAll","invoiceCheck");
-	}
-	function aaa(a){
-		return a;
 	}
 	/*
 	 * 批量删除表格数据

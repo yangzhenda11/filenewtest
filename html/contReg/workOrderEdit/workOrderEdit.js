@@ -617,10 +617,11 @@ function saveContent(){
 		var isSubmits = true;
 		if($("#lineChargesListContent")[0]){
 			$.each($("#lineChargesListContent").find(".fixedMonthRent,.lineCount,.totalMonthRent,.onceCost,.otherCost"), function(k,v) {
-				if($(v).parent(".form-group").hasClass("has-error")){
+				if($(v).parent(".form-group").hasClass("has-error") && $(v).val()!=""){
 					isSubmits = false;
 					showLayerErrorMsg("该输入框输入格式不正确，请修改");
 					srolloOffect($(v).parent(".form-group")[0],1);
+					$(v).focus();
 					return false;
 				}
 			})
@@ -1007,6 +1008,7 @@ function checkDomOverlength(){
 		var limitLen = $(overLengthDom).find("input").attr("maxlength");
 		var inputLen = getByteLen($(overLengthDom).find("input").val());
 		showLayerErrorMsg("该输入框限制输入"+limitLen+"个字符，现已输入"+inputLen+"个字符，请修改后再进行操作");
+		$(overLengthDom).find("input").focus();
 		return true;
 	}else{
 		return false;

@@ -235,15 +235,15 @@
 			};
 			var appendHtml = "<tr data-id='"+ accountId +"'>"+
 								"<td class='accountEdit'><label class='ui-checkbox'><input type='checkbox' name='payeeCheck'><span></span></label></td>"+
-								"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='"+setPTip('请输入收款方银行账号')+"' value='"+ accountNameVal +"' maxlength='240' /></div></td>"+
+								"<td><div class='form-group'><input type='text' class='form-control accountName' name='"+ accountName +"' placeholder='"+setPTip('请输入收款方账户名称')+"' value='"+ accountNameVal +"' maxlength='240' /></div></td>"+
 								"<td><div class='form-group'><input type='text' class='form-control accountNumber' name='"+ accountNumber +"' placeholder='"+setPTip('请输入收款方银行账号')+"' value='"+ accountNumberVal +"' maxlength='40' /></div></td>"+
 								"<td><div class='form-group'><input type='text' class='form-control openBank' name='"+ openBank +"' placeholder='"+setPTip('请输入收款方开户银行')+"' value='"+ openBankVal +"' maxlength='240' /></div></td>"+
 								"<td class='accountEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayeeTr(this)'>删除</button></td>"+
 							"</tr>";
 			$("#payeeInfoTbody").append(appendHtml);
-			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户");
-			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
+			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户名称");
 			addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
+			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
 			App.checkAllFn("#payeeCheckAll","payeeCheck");
 		}else if(accountType == 2){
 			if($("#payerInfoTbody .emptyTr")[0] != undefined){
@@ -257,9 +257,9 @@
 								"<td class='accountEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectPayerTr(this)'>删除</button></td>"+
 							"</tr>";
 			$("#payerInfoTbody").append(appendHtml);
-			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户");
-			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
+			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户名称");
 			addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
+			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
 			App.checkAllFn("#payerCheckAll","payerCheck");
 		}
 	}

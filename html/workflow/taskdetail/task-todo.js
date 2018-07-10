@@ -1123,11 +1123,11 @@ function getassignees(STAFF_ORG_IDS,STAFF_NAMES){
 }
 function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);//省分简码，必传
-	$("#wcity").val(assigneeParam.prov);//地市，非必传
-	$("#wcontracType").val(assigneeParam.prov);//合同类型，非必传
-	$("#wattrA").val(assigneeParam.prov);//预留参数
-	$("#wattrB").val(assigneeParam.prov);//预留参数
-	$("#wattrC").val(assigneeParam.prov);//预留参数
+	$("#wcity").val(assigneeParam.city);//地市，非必传
+	$("#wcontracType").val(assigneeParam.contracType);//合同类型，非必传
+	$("#wattrA").val(assigneeParam.attrA);//预留参数
+	$("#wattrB").val(assigneeParam.attrB);//预留参数
+	$("#wattrC").val(assigneeParam.attrC);//预留参数
 }
 //业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
 function addCustomTab(params){

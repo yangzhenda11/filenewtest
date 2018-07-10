@@ -155,7 +155,7 @@ function beforePushProcess(pass){
 	var assigneeParam = { 
 		prov: provinceCode,
 		city: "",
-		contracType: contractType,
+		contracType: "",
 		attrA: "",
 		attrB: "",
 		attrC: ""
@@ -371,7 +371,7 @@ function submitContent(){
 	    		var prov = provinceCode;
 	    		var callbackFun = "submitContentPost";
 	    		var staffSelectType = 1;
-	    		var contracType = contractType;
+	    		var contracType = "";
 	    		var city = "",attrA = "",attrB = "",attrC = "";	    		
 				jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 			}
@@ -614,20 +614,24 @@ function saveContent(){
 		if(isOverlength){
 			return false;
 		};
-		var submitData = getContentValue();
-		if(submitData){
-			saveContentPost(submitData,"GDCL");
+		var isSubmits = true;
+		if($("#lineChargesListContent")[0]){
+			$.each($("#lineChargesListContent").find(".fixedMonthRent,.lineCount,.totalMonthRent,.onceCost,.otherCost"), function(k,v) {
+				if($(v).parent(".form-group").hasClass("has-error")){
+					isSubmits = false;
+					showLayerErrorMsg("该输入框输入格式不正确，请修改");
+					srolloOffect($(v).parent(".form-group")[0],1);
+					return false;
+				}
+			})
+		};
+		if(isSubmits){
+			var submitData = getContentValue();
+			if(submitData){
+				saveContentPost(submitData,"GDCL");
+			}
 		}
-	};
-	//手动触发表单特定的验证项
-	//var bootstrapValidator = $("#workOrderContentForm").data('bootstrapValidator').validateField('notEmpty');
-    //console.log(bootstrapValidator.isValid());
-//	    if(!bootstrapValidator.isValid()){
-//	        layer.alert("当前工单表单校验未通过，请检查",{icon:2,title:"错误"});
-//	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],true);
-//	        //$($("#workOrderContentForm").find(".has-error")[0]).find("input,select").focus();
-//	    	return false;
-//	    };
+	}
 }
 /*
  * 保存提交后台
@@ -818,7 +822,7 @@ function srolloOffect(el,srolloParm){
 	var scrollTopParm = 200;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
-			var scrollLeftValue = $(el).offset().left - $(".page-content").width() + 500;
+			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 500;
 			if(scrollLeftValue > 0){
 				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
 			}
@@ -1040,12 +1044,7 @@ function checkMaxLength(dom){
 		}
 	}	
 }
-//if($("#lineChargesListContent")[0]){
-//		var islineCharge = $(dom).hasClass("fixedMonthRent")||$(dom).hasClass("lineCount")||$(dom).hasClass("totalMonthRent")||$(dom).hasClass("onceCost")||$(dom).hasClass("otherCost");
-//		if(islineCharge){
-//			
-//		}
-//	}
+
 /*
  * 设置表格input，select的placeholder值，不能编辑时为空
  */

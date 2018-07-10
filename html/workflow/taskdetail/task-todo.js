@@ -1091,7 +1091,7 @@ function selectstaff(){
     if(staffSelectType==2){
     	callbackFun="getassignees";
     }
-    jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 

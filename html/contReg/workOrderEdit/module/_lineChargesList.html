@@ -295,11 +295,11 @@
 		};
 		var isMoney = {
 			notEmpty : {
-				message : "请输入不超过20个字符的金额"
+				message : "请输入不超过20个字符的数字金额"
 			},
 			regexp : {
-				regexp : /^[0-9]{1,9}.{0,1}[0-9]{0,2}$/,
-				message : '请输入正确的金额'
+				regexp : /^[0-9]{1,17}.{0,1}[0-9]{0,2}$/,
+				message : '请输入正确的数字金额'
 			}
 		}
 	   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);

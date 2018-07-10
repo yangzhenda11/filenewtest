@@ -642,8 +642,12 @@ function saveContentPost(data,type){
 	App.formAjaxJson(url, "post", postData, successCallback);
 	function successCallback(result) {
 		var data = result.data;
-		setPageIdCallback(data);
-		layer.msg("保存成功");
+		if(data.success == "000"){
+			showLayerErrorMsg(data.message);
+		}else{
+			setPageIdCallback(data);
+			layer.msg("保存成功");
+		}
 	}
 }
 /*
@@ -1026,15 +1030,22 @@ function getByteLen(val) {
 function checkMaxLength(dom){
 	var len = getByteLen($(dom).val());
 	var maxLength = $(dom).attr("maxlength");
+	var formGroupDom = $(dom).parents(".form-group");
 	if(maxLength < len){
 		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个字的字符！");
-		$(dom).parents(".form-group").addClass("has-error overlength");
+		formGroupDom.addClass("has-error overlength");
 	}else{
-		if($(dom).hasClass("overlength")){
-			$(dom).removeClass("overlength has-error");
+		if(formGroupDom.hasClass("overlength")){
+			formGroupDom.removeClass("overlength has-error");
 		}
-	}
+	}	
 }
+//if($("#lineChargesListContent")[0]){
+//		var islineCharge = $(dom).hasClass("fixedMonthRent")||$(dom).hasClass("lineCount")||$(dom).hasClass("totalMonthRent")||$(dom).hasClass("onceCost")||$(dom).hasClass("otherCost");
+//		if(islineCharge){
+//			
+//		}
+//	}
 /*
  * 设置表格input，select的placeholder值，不能编辑时为空
  */

@@ -4,12 +4,14 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
+var provinceCode = "";				//合同所属省份
 var wcardId = null;					//工单主键ID
 var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
 var wcardProcess = null;			//工单处理状态  0:草稿/1:复核/2:退回/3:激活
 var contractId = null;				//合同ID
 var contractNumber = null;			//合同编号
 var contractStatus = null;			//合同状态
+var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
@@ -149,9 +151,14 @@ function beforePushProcess(pass){
 		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
-	//2,设置下一步选人的参数，用于匹配通用规则选人。
+	//2,设置下一步选人的参数，用于匹配通用规则选人。	
 	var assigneeParam = { 
-		"prov": "sd",  //省分，来自需求工单，必传
+		prov: provinceCode,
+		city: "",
+		contracType: contractType,
+		attrA: "",
+		attrB: "",
+		attrC: ""
 	}
 	parent.setAssigneeParam(assigneeParam);
 	
@@ -342,7 +349,7 @@ function submitContent(){
 		if(isOverlength){
 			return false;
 		};
-		//手动触发表单验证
+		手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
@@ -361,10 +368,12 @@ function submitContent(){
 		    	}
 	    		var flowKey = "Contractproject2Process";
 	    		var linkcode = "GDQR";
-	    		var prov = "sd";
+	    		var prov = provinceCode;
 	    		var callbackFun = "submitContentPost";
 	    		var staffSelectType = 1;
-	    		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
+	    		var contracType = contractType;
+	    		var city = "",attrA = "",attrB = "",attrC = "";	    		
+				jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 			}
     	}
 	}else{
@@ -402,11 +411,11 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 /*
  * 调出选人页面（参考工作流）
  */
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
-    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
@@ -680,14 +689,21 @@ function getWorkOrderInfo(){
 			};
 			var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
 			App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, contractBaseInfoCallback);
-			function contractBaseInfoCallback(result) {
-				getContractOrderBaseInfoData = result;
-				contractStatus = result.data.contractStatus;
-				if(returnContractStatus()){
-					isEdit = false;
-					fileUploadEdit = false;
+			function contractBaseInfoCallback(resultData) {
+				var baseData = resultData.data;
+				if(baseData){
+					getContractOrderBaseInfoData = baseData;
+					contractStatus = baseData.contractStatus;
+					provinceCode = baseData.provinceCode;
+					contractType = baseData.contractType;
+					if(returnContractStatus()){
+						isEdit = false;
+						fileUploadEdit = false;
+					}
+					setDomContent(domObj);
+				}else{
+					showLayerErrorMsg("当前工单暂无信息");
 				}
-				setDomContent(domObj);
 			}
 		}else{
 			showLayerErrorMsg("当前工单暂无信息");

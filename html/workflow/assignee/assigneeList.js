@@ -18,7 +18,8 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contrac
 	$("#wfattrB").val(attrB);
 	$("#wfattrC").val(attrC);
 	
-	chooseType=$("#wfstaffSelectType").val();
+	//chooseType=$("#wfstaffSelectType").val();
+	chooseType = staffSelectType;
 
 	if(chooseType==2){
 		$("#duoxuan").show();

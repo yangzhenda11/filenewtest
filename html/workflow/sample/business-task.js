@@ -161,7 +161,12 @@ function beforeTransfer(){
 	
 	//2，设置转派选人的参数
 	var assigneeParam = { 
-			"prov": "sd",  //省分，来自需求工单，必传
+			"prov": "sd",  //省分简码，必传，不要写死。
+			"city":"", //地市，非必传
+			"contracType":"",//合同类型，非必传
+			"attrA":"",//预留参数
+			"attrB":"",//预留参数
+			"attrC":"",//预留参数
 	}
 	parent.setAssigneeParam(assigneeParam);
 	return result;

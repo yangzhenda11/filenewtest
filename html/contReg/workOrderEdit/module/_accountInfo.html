@@ -202,7 +202,7 @@
 			 * isEdit 判断页面是否只能查看
 			 */
 			if(!isEdit){
-				$("#accountListContent").find("input,select").attr("disabled","disabled");
+				$("#accountListContent").find("input").attr("disabled","disabled");
 				$("#payeeInforToolbar,#payerInforToolbar,.accountEdit").remove();
 			}else{
 				$("#payeeInforToolbar,#payerInforToolbar").removeClass("hidden");

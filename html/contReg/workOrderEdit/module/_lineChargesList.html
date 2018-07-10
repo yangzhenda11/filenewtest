@@ -189,7 +189,7 @@
 			 * isEdit 判断页面是否只能查看
 			 */
 			if(!isEdit){
-				$("#lineChargesListContent").find("input,select").attr("disabled","disabled");
+				$("#lineChargesListContent").find("input").attr("disabled","disabled");
 				$("#lineChargesListToolbar,.lineChargesTableEdit").remove();
 			}else{
 				$("#lineChargesListToolbar").removeClass("hidden");
@@ -231,7 +231,6 @@
 			otherCostVal = data.otherCost ? data.otherCost : "0";
 			if(data.productKind == 906010){
 				incomeLinerentName = incomeLinerentName9070;
-				auditLabelDom = "<td><div class='form-group'><select class='form-control auditLabel' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>";
 			}else if(data.productKind == 906011){
 				incomeLinerentName = incomeLinerentName9073;
 			}else if(data.productKind == 906012){
@@ -254,6 +253,9 @@
 							"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#incomeLinerentTbody").append(appendHtml);
+		if(!isEdit){
+			$("."+productName).find("select").attr("disabled","disabled");
+		}
 		App.initFormSelect2("."+productName);
 		if(data){
 			$("select[name='"+productKind+"']").val(data.productKind).trigger("change");
@@ -333,7 +335,9 @@
             minimumResultsForSearch: -1
         });
         if(productKind == 906010){
-        	auditLabelDom.removeAttr("disabled");
+        	if(isEdit){
+        		auditLabelDom.removeAttr("disabled");
+        	}
         	auditLabelDom.select2({
         		placeholder:setPTip('请选择稽核标签'),
 	            language:'zh-CN',

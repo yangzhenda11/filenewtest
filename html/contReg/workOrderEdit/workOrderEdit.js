@@ -349,7 +349,7 @@ function submitContent(){
 		if(isOverlength){
 			return false;
 		};
-		手动触发表单验证
+		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){

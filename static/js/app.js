@@ -685,7 +685,6 @@ var App = function() {
             // Core handlers
             handleInit(); // initialize core variables
             handleSubpageTab();// 子页面打开tab页控制
-            
             // UI Component handlers
             // handleiCheck(); // handles custom icheck radio and checkboxes
             // handleBootstrapSwitch(); // handle bootstrap switch plugin
@@ -694,7 +693,7 @@ var App = function() {
             handleSelect2(); // handle custom Select2 dropdowns
             handleDatePicker();
             handlePagesearch();
-            handleFileInput();// 上传文件的伪装触发
+            //handleFileInput();// 上传文件的伪装触发
             handleFormFieldset();// 表单分区的展开折叠控制
             handlePortletTools(); // handles portlet action bar
             // functionality(refresh, configure, toggle,
@@ -1874,6 +1873,26 @@ var App = function() {
         // check IE8 mode
         isAngularJsApp:function(){
             return ( typeof angular == 'undefined') ? false : true;
+        },
+        
+        //判断是否是IE11以下IE浏览器
+        IEVersionVA11:function() {
+            //取得浏览器的userAgent字符串
+            var userAgent = navigator.userAgent;
+            //判断是否IE浏览器
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;
+            if (isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if (fIEVersion < 11) {
+                    return true;
+                }else{
+                	return false;
+                }
+            } else {
+                return false;
+            }
         },
         
         getAssetsPath:function(){

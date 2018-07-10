@@ -194,6 +194,9 @@
 				 */
 				if(!isEdit){
 					$("#validityForm").find("input,select").attr("disabled","disabled");
+					if(App.IEVersionVA11()){
+						App.initFormSelect2("#validityForm");
+					}
 				};
 				if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 					$("#adminCommitmentContent").removeClass("hidden");

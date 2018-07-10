@@ -1079,6 +1079,11 @@ function selectstaff(){
     var linkcode = $("#link").val().toString().split(",")[0];
     var idcandidate=$("#link").val().toString().split(",")[3];
     var prov=$("#wprov").val();
+    var city=$("#wcity").val();//地市，非必传
+    var contracType=$("#wcontracType").val();//合同类型，非必传
+    var attrA=$("#wattrA").val();//预留参数
+    var attrB=$("#wattrB").val();//预留参数
+    var attrC=$("#wattrC").val();//预留参数
 	if(idcandidate==1){
 		layer.msg("因下一步环节是候选人抢单环节，所以强制切换选人模式为多选！");
 		staffSelectType=2;
@@ -1088,12 +1093,12 @@ function selectstaff(){
     }
     jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
 }
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
-    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
@@ -1117,7 +1122,12 @@ function getassignees(STAFF_ORG_IDS,STAFF_NAMES){
 	$("#PandJstaffiframetask").modal('hide');
 }
 function setAssigneeParam(assigneeParam){
-	$("#wprov").val(assigneeParam.prov);
+	$("#wprov").val(assigneeParam.prov);//省分简码，必传
+	$("#wcity").val(assigneeParam.prov);//地市，非必传
+	$("#wcontracType").val(assigneeParam.prov);//合同类型，非必传
+	$("#wattrA").val(assigneeParam.prov);//预留参数
+	$("#wattrB").val(assigneeParam.prov);//预留参数
+	$("#wattrC").val(assigneeParam.prov);//预留参数
 }
 //业务界面自定义tab方法：addCustomTab({"title":"项目基本信息","url":url4});
 function addCustomTab(params){

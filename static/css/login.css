@@ -7,7 +7,7 @@ input:-webkit-autofill:active {
 }
 body{background: #fff;}
 input,button{outline: none !important;}
-.alert-danger{margin-bottom: 10px;}
+.alert-danger{margin-bottom: 8px;padding: 6px 15px 6px;}
 .login-content{ position: absolute; top: 40%; left: 0; right: 0;}
 .login-bg{background: url(../img/login-top-bg.png) no-repeat center center; position: absolute; left: 0; top: 0; height: 40%; background-size:cover; overflow: hidden;width: 100%;text-align: center;}
 .login-bg img{width:35%;height: 100%;}
@@ -22,7 +22,7 @@ input,button{outline: none !important;}
 .login-form-body .form-group .form-control{ padding: 10px 12px;line-height:22px;height:42px; padding-left: 40px;}
 .login-form-body .form-group{ position: relative;}
 .login-form-body .form-group i{ position: absolute;left: 10px; top: 5px; color: #fdab29; font-size: 22px;}
-.login-btn{ font-size:20px; padding-top:12px; padding-bottom:12px;background: #fdab29;color: #fff;}
+.login-btn{ font-size:20px; padding-top:12px; padding-bottom:8px;background: #fdab29;color: #fff;}
 .login-btn:hover{ color: #fff;}
 .login-btn:focus{ color: #fff;}
 .login-btn:active{ color: #fff;}
@@ -39,9 +39,9 @@ input,button{outline: none !important;}
 }
 @media all and (max-width: 992px) {
 	.login-title h1 { font-size: 26px;}
+	.logo-bg{display: none;}
 	.login-form-body .login-yanzheng{ margin-right:0}
 }
 @media all and (max-width: 768px) {
-	.logo-bg{display: none;}
 	.content-graybg{display: none;}
 }

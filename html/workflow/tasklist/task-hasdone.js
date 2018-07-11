@@ -43,7 +43,7 @@ function getTableForDone(){
 					return start + meta.row + 1;
 			   	}
 			},
-			{"data": "title","title":"主题","className": "whiteSpaceNormal","width": "39%"},
+			{"data": "title","title":"主题","className": "whiteSpaceNormal","width": "40%"},
 	        {"data": "processDefinitionName","title":"流程类型","className": "whiteSpaceNormal","width": "15%"},
 	        {"data": "endTime","title":"送出日期","className": "whiteSpaceNormal","width": "15%",
 	        	render: function (a, b, c, d) {
@@ -52,7 +52,7 @@ function getTableForDone(){
 	        },
 	        {"data": "nowLinkName","title":"当前环节","className": "whiteSpaceNormal","width": "10%"},
 	        {"data": "nowUserName","title":"当前处理人","className": "whiteSpaceNormal","width": "10%"},
-	        {"data": null,"title":"操作","className": "text-center","width": "6%"}
+	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
 	    ],
 	    "columnDefs": [
 	       	{// 最后一列添加按钮

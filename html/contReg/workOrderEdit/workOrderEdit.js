@@ -963,7 +963,7 @@ function setPageIdCallback(data){
 function validate() {
 	$('#workOrderContentForm').bootstrapValidator({
 		live: 'enabled',
-		trigger: 'live focus blur keyup change',
+		trigger: 'live keyup change',
 		message: '校验未通过',
 		container: 'popover',
 		fields: {}
@@ -1038,7 +1038,7 @@ function checkMaxLength(dom){
 	var maxLength = $(dom).attr("maxlength");
 	var formGroupDom = $(dom).parents(".form-group");
 	if(maxLength < len){
-		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个字的字符！");
+		showLayerErrorMsg("输入字段超长，请输入不超过"+maxLength+"个字符！");
 		formGroupDom.addClass("has-error overlength");
 	}else{
 		if(formGroupDom.hasClass("overlength")){

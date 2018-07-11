@@ -193,8 +193,12 @@ function findStaff(roleId) {
  * daiyw
  */
 function getRoleStaffTable(roleId) {
+	var scrollYHeight = $(".page-content").height() - 340;
+	if(App.isIE9() || App.isIE8()){
+		scrollYHeight = "";
+	}
     App.initDataTables('#searchRoleStaffTable', "#submitBtn", {
-    	scrollY:$(".page-content").height() - 340,
+    	scrollY: scrollYHeight,
         "ajax": {
             "type": "GET",
             "url": serverPath + 'roles/searchRoleStaff',
@@ -207,11 +211,8 @@ function getRoleStaffTable(roleId) {
             }
         },
         "columns": [{
-                "data": null,
-                "title": "人员姓名",
-                render: function(data, type, full, meta) {
-                    return '<a href=\"javascript:void(0)\">' + data.STAFF_NAME + '</a>';
-                }
+                "data": "STAFF_NAME",
+                "title": "人员姓名"
             },
             { "data": "LOGIN_NAME", "title": "账号" },
             { "data": "ORG_NAME", "title": "部门名称" },

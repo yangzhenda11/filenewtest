@@ -1516,7 +1516,7 @@ var App = function() {
 		addValidatorField:function(dom,name,validators){
 			$(dom).bootstrapValidator("addField", name, {  
 				container: 'popover',
-				trigger: 'live focus blur keyup change',
+				trigger: 'live keyup change',
 		       	validators: validators
 		   	});
 		},

@@ -956,7 +956,7 @@ var App = function() {
 				"scrollCollapse": true,
 				"sScrollX": "100%",
 				"sScrollXInner": "100%",
-				"bAutoWidth": false,
+				"bAutoWidth": true,
 				"ordering": false,
 				//"order":  [[ 2, 'asc' ], [ 4, 'asc' ]], //为空则表示取消默认排序否则复选框一列会出现小箭头 
 				"oLanguage": {

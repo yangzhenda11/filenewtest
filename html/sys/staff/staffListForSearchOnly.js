@@ -11,9 +11,7 @@ $(function() {
         }
         //根据当前登录人的岗位id查询其组织id
         //var curStaffOrgId1 = parent.globalConfig.curStaffOrgId;
-        App.initDataTables('#staffSearchOnlyTable', {
-            "serverSide": true, //开启服务器请求模式
-            //buttons: ['copy', 'colvis'], //显示的工具按钮
+        App.initDataTables('#staffSearchOnlyTable', "#searchBtn",{
             ajax: {
                 "type": "GET",
                 "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
@@ -30,21 +28,9 @@ $(function() {
                     d.staffKind = "1"; //$("#curTabstaffKind").val();
                     d.attra = $("select[name='staffOrgType']", $('#searchOnlyStaffForm')).val();
                     return d;
-                },
-                "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-                "dataType": "json",
-                error: function(xhr, error, thrown) {
-                    App.stopLoading("#searchBtn");
-                    layer.msg("接口错误", { icon: 2 });
-                },
-                "dataSrc": judge
+                }
             },
-            // "ordering": true,
-            // "order": [
-            //     [3, "asc"]
-            // ],
-            "columns": [ // 对应列
-
+            "columns": [
                 {
                     "data": null,
                     "title": "人员姓名",
@@ -83,11 +69,9 @@ $(function() {
                 }
             ],
             "columnDefs": [{ // 所有列默认值
-                    //render: $.fn.dataTable.render.ellipsis(22, true),
-                    "targets": "_all",
-                    "defaultContent": ''
+                    render: $.fn.dataTable.render.ellipsis(22, true),
                 },
-                { // 添加按钮
+                {
                     targets: 0,
                     render: function(a, b, c, d) {
                         var context = btnFun(c);
@@ -95,22 +79,11 @@ $(function() {
                         return html;
                     }
                 }
-            ],
-            "fixedColumns": {
-                'leftColumns': 2
-            },
-            "scrollX": true
+            ]
         });
     }
 });
 
-/*
- * 请求到结果后的回调事件
- */
-function judge(result) {
-    App.stopLoading("#searchBtn");
-    return resolveResult(result);
-}
 
 /**
  * 根据查询条件，查询人员列表

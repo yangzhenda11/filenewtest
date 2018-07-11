@@ -950,7 +950,7 @@ var App = function() {
 				btn = "";
 			};
 			options = $.extend(true, {
-				"serverSide": true,					//开启服务器请求模式
+				"serverSide": true,
 				"searching":false,
 				"scrollX": true,
 				"scrollCollapse": true,
@@ -1445,31 +1445,31 @@ var App = function() {
          */
         getCommonModal : function(type, dom, value, setkey, ajaxData){
         	if(type == "contractType"){
-        		$("#commomModal").load("../../../static/data/_contractType.html?" + App.timestamp(),function(){
+        		$("#commomModal").load("../../../static/data/_contractType.html",function(){
 					initContractTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "contractDataSearch"){
-        		$("#commomModal").load("../../../static/data/_contractDataSearch.html?" + App.timestamp(),function(){
+        		$("#commomModal").load("../../../static/data/_contractDataSearch.html",function(){
 					initContractDataSearch(dom, value, setkey, ajaxData);
 				})
             } else if (type == "staff") {
-                $("#commomModal").load("../../../static/data/_staff.html?" + App.timestamp(), function() {
+                $("#commomModal").load("../../../static/data/_staff.html", function() {
                     initStaffTree(dom, value, setkey, ajaxData);
                 })
         	}else if(type == "agentStaff"){
-        		$("#commomModal").load("../../../static/data/_agentStaff.html?" + App.timestamp(),function(){
+        		$("#commomModal").load("../../../static/data/_agentStaff.html",function(){
 					initAgentStaffTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "agentDepartment"){
-        		$("#commomModal").load("../../../static/data/_agentDepartment.html?" + App.timestamp(),function(){
+        		$("#commomModal").load("../../../static/data/_agentDepartment.html",function(){
 					initAgentDepartmentTree(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "ourSubject"){
-        		$("#commomModal").load("../../../static/data/_ourSubject.html?" + App.timestamp(),function(){
+        		$("#commomModal").load("../../../static/data/_ourSubject.html",function(){
 					initOurSubject(dom, value, setkey, ajaxData);
 				})
         	}else if(type == "otherSubject"){
-        		$("#commomModal").load("../../../static/data/_otherSubject.html?" + App.timestamp(),function(){
+        		$("#commomModal").load("../../../static/data/_otherSubject.html",function(){
 					initOtherSubject(dom, value, setkey, ajaxData);
 				})
         	}
@@ -1482,7 +1482,7 @@ var App = function() {
          * queryCallback:点击确定执行的方法
 		 */
 		getFileUploadModal : function(setting,queryCallback){
-			$("#commomModal").load("/static/data/_fileUpload.html?" + App.timestamp(),function(){
+			$("#commomModal").load("/static/data/_fileUpload.html",function(){
 				setParm(setting,queryCallback);
 			})
 		},
@@ -1494,7 +1494,7 @@ var App = function() {
          * queryCallback:点击确定执行的方法
 		 */
 		getAjaxFileUploadModal : function(setting,queryCallback){
-			$("#commomModal").load("/static/data/_ajaxFileupload.html?" + App.timestamp(),function(){
+			$("#commomModal").load("/static/data/_ajaxFileupload.html",function(){
 				setParm(setting,queryCallback);
 			})
 		},
@@ -1506,7 +1506,7 @@ var App = function() {
          * queryCallback:点击确定执行的方法
 		 */
 		getFileImportModal : function(setting,callback){
-			$("#commomModal").load("/static/data/_fileImport.html?" + App.timestamp(),function(){
+			$("#commomModal").load("/static/data/_fileImport.html",function(){
 				setParm(setting,callback);
 			})
 		},
@@ -1516,7 +1516,7 @@ var App = function() {
 		addValidatorField:function(dom,name,validators){
 			$(dom).bootstrapValidator("addField", name, {  
 				container: 'popover',
-				trigger: 'live keyup change',
+				trigger: 'live focus keyup change',
 		       	validators: validators
 		   	});
 		},

@@ -33,8 +33,7 @@ function getRoleTable() {
                 render: function(data, type, row, meta) {
                     return '<a href=\"javascript:void(0)\" onclick = "findDetail(\'' + row.roleId + '\')">' + data + '</a>';
                 }
-            },
-            // { "data": "orgName", title: "所属组织" },
+           	},
             { "data": "roleDesc", title: "角色描述" },
             {
                 "data": "roleStatus",
@@ -77,7 +76,7 @@ function searchRole(retainPaging) {
  * @param {角色id} itemId 
  */
 function findDetail(itemId) {
-    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalDetail", function() {
+    $("#modal").load("_roleModal.html #modalDetail", function() {
         $("#modal").modal("show");
         getRoleInfo(itemId, "detail");
     });
@@ -87,9 +86,12 @@ function findDetail(itemId) {
  * daiyw
  */
 function findStaff(roleId) {
-    $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
-        $("#modal").modal("show");
-        getRoleStaffTable(roleId);
+    $("#modal").load("roleStaffModal.html #modalDetail", function() {
+    	$("#modal").modal("show");
+    	$("#roleStaffTableContent").height($(".page-content").height() - 250);
+    	$('#modal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
+			getRoleStaffTable(roleId);
+		})
     });
 }
 /**
@@ -97,7 +99,12 @@ function findStaff(roleId) {
  * daiyw
  */
 function getRoleStaffTable(roleId) {
-    App.initDataTables('#searchRoleStaffTable', "#submitBtn", {
+	var scrollYHeight = $(".page-content").height() - 340;
+	if(App.isIE9() || App.isIE8()){
+		scrollYHeight = "";
+	}
+    App.initDataTables('#searchRoleStaffTable', "#submitBtnM", {
+    	scrollY: scrollYHeight,
         "ajax": {
             "type": "GET",
             "url": serverPath + 'roles/searchRoleStaff',

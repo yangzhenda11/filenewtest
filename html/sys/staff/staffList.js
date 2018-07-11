@@ -14,7 +14,6 @@ $(function() {
             $('#addBtn').show();
         }
         App.initDataTables('#staffSearchTable',"#searchBtn", {
-            "serverSide": true,
             ajax: {
                 "type": "GET",
                 "url": parent.globalConfig.serverPath + 'staffs/',
@@ -570,7 +569,7 @@ function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
  * 新增人员点击事件
  */
 function addStaffModal() {
-    $("#modal").load("staffInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("staffInfoModal.html #modalEdit", function() {
         $("#modalTitle").text("新增人员");
         $("#modal").modal("show");
         App.initFormSelect2("#staffForm")
@@ -583,7 +582,7 @@ function addStaffModal() {
  * 修改人员点击事件
  */
 function goStaffEdit(staffId) {
-    $("#modal").load("staffInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("staffInfoModal.html #modalEdit", function() {
         $("#modalTitle").text("修改人员");
         App.initFormSelect2("#staffForm")
         $("#modal").modal("show");
@@ -1138,7 +1137,7 @@ function getStaffSearch_OrgTree(obj) {
  * @returns
  */
 function goAddStaffOrg(staffId) {
-    $("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
+    $("#modal").load("addStaffOrgModal.html #modalAddSO", function() {
         $("#modalTitle").text("新增岗位");
         //App.initFormSelect2("#addStaffOrgForm");
         $("#modal").modal("show");
@@ -1196,7 +1195,7 @@ function goAddStaffOrg(staffId) {
  * @returns
  */
 function permissionConfiguration(staffOrgId) {
-    $("#modal").load("permissionConfigurationModal.html?" + App.timestamp() + " #modalPermission", function() {
+    $("#modal").load("permissionConfigurationModal.html #modalPermission", function() {
         $("#modalTitle").text("数据权限配置");
         $("#modalStaffOrgId").val(staffOrgId);
         //$("#modal").modal("show");
@@ -1325,7 +1324,7 @@ function goDelStaffOrg(staffId, staffOrgId) {
  * @returns
  */
 function goEditStaffOrg(staffId, staffOrgId) {
-    $("#modal").load("addStaffOrgModal.html?" + App.timestamp() + " #modalAddSO", function() {
+    $("#modal").load("addStaffOrgModal.html #modalAddSO", function() {
         $("#modalTitle").text("修改岗位");
         App.initFormSelect2("#addStaffOrgForm");
         $("#modal").modal("show");

@@ -92,7 +92,7 @@ function searchContract(retainPaging) {
  * 表格内编辑按钮点击获取结果事件
  */
 function editContract(data) {
-	$("#modal").load("_contractPartyModal.html?" + App.timestamp(),function(){
+	$("#modal").load("_contractPartyModal.html",function(){
 		getContractInfo(data);
 	});
 }

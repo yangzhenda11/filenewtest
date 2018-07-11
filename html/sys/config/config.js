@@ -73,7 +73,7 @@ function searchConfig(retainPaging) {
  * 系统参数详情点击事件
  */
 function detailConfigModal(id){
-	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalDetail",function(){
+	$("#modal").load("_configModal.html #modalDetail",function(){
 		getConfig(id,"detail");
 	});
 }
@@ -81,7 +81,7 @@ function detailConfigModal(id){
  * 新增系统参数点击事件
  */
 function addConfigModal(){
-	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_configModal.html #modalEdit",function(){
 		$("#modalTitle").text("新增系统参数");
 		$("#modal").modal("show");
 		App.initFormSelect2("#configForm");
@@ -92,7 +92,7 @@ function addConfigModal(){
  * 修改系统参数点击事件
  */
 function editConfigModal(id){
-	$("#modal").load("_configModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_configModal.html #modalEdit",function(){
 		$("#modalTitle").text("系统参数修改");
 		App.initFormSelect2("#configForm");
 		getConfig(id,"edit");

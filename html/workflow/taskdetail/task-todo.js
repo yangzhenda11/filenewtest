@@ -131,6 +131,14 @@ $(function(){
 		$("#backTolist").html("关闭");
 	}
 });
+/*
+ * tab标签页自定义切换
+ * 参数:eq  切换的页签计数(从0计数)
+ * zander
+ */
+function cutTab(eq){
+	$('#myTab li:eq('+eq+') a').tab('show');
+}
 
 //业务上添加自定义的按钮
 function addCustomBt(btId,btName,callBackName){
@@ -1095,7 +1103,7 @@ function selectstaff(){
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 
-	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
+	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);

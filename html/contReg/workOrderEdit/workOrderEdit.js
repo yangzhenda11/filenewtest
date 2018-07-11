@@ -412,7 +412,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
  * 调出选人页面（参考工作流）
  */
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
-	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
+	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
@@ -732,7 +732,7 @@ function setDomContent(domObj) {
 		var v = domObj[i].value;
 		var domHtml = '<div id="' + k + '" class="form-wrapper" data-target="' + k + '"></div>';
 		$("#workOrderContent").append(domHtml);
-		$("#" + k + "").load(v + "?" + App.timestamp(), function() {
+		$("#" + k + "").load(v, function() {
 			loadFlag++;
 			if(loadFlag == loadEndLen) {
 				loadComplete();
@@ -963,7 +963,7 @@ function setPageIdCallback(data){
 function validate() {
 	$('#workOrderContentForm').bootstrapValidator({
 		live: 'enabled',
-		trigger: 'live keyup change',
+		trigger: 'live focus keyup change',
 		message: '校验未通过',
 		container: 'popover',
 		fields: {}

@@ -118,7 +118,7 @@ function addOrg() {
         layer.alert("请选择父节点", { icon: 2, title: "添加节点" });
         return;
     } else {
-        $("#modal").load("orgInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
+        $("#modal").load("orgInfoModal.html #modalEdit", function() {
             $("#modalTitle").text("新增组织");
             App.initFormSelect2("#orgForm")
             $("#parentId").val(curNode.orgId);
@@ -138,7 +138,7 @@ function showUpdate() {
         layer.alert("父节点不能修改", { icon: 2, title: "修改节点" });
         return;
     }
-    $("#modal").load("orgInfoModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("orgInfoModal.html #modalEdit", function() {
         $("#modalTitle").text("修改组织");
         App.initFormSelect2("#orgForm")
         $('#modal').modal('show');
@@ -201,7 +201,7 @@ function searchOu() {
         return;
     } else {
         $('#modal').empty();
-        $("#modal").load("ouModal.html?" + App.timestamp() + " #modalEdit", function() {
+        $("#modal").load("ouModal.html #modalEdit", function() {
             $('#modal').modal('show');
             $("#ouModalTable").height($(".page-content").height() - 250);
             $("#modalTitle").text("新增ou组织");

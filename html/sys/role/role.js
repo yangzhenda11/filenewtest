@@ -167,7 +167,7 @@ function searchRole(retainPaging) {
  * @param {角色id} itemId 
  */
 function findDetail(itemId) {
-    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalDetail", function() {
+    $("#modal").load("_roleModal.html #modalDetail", function() {
         $("#modal").modal("show");
         var documentHeight = $(".page-content").height() - 190;
 		//$("#roleDeatilModal").css("height",documentHeight);
@@ -180,7 +180,7 @@ function findDetail(itemId) {
  * daiyw
  */
 function findStaff(roleId) {
-     $("#modal").load("roleStaffModal.html?" + App.timestamp() + " #modalDetail", function() {
+     $("#modal").load("roleStaffModal.html #modalDetail", function() {
     	$("#modal").modal("show");
     	$("#roleStaffTableContent").height($(".page-content").height() - 250);
     	$('#modal').off("shown.bs.modal").on('shown.bs.modal', function (e) {
@@ -193,8 +193,12 @@ function findStaff(roleId) {
  * daiyw
  */
 function getRoleStaffTable(roleId) {
-    App.initDataTables('#searchRoleStaffTable', "#submitBtn", {
-    	scrollY:$(".page-content").height() - 340,
+	var scrollYHeight = $(".page-content").height() - 340;
+	if(App.isIE9() || App.isIE8()){
+		scrollYHeight = "";
+	}
+    App.initDataTables('#searchRoleStaffTable', "#submitBtnM", {
+    	scrollY: scrollYHeight,
         "ajax": {
             "type": "GET",
             "url": serverPath + 'roles/searchRoleStaff',
@@ -207,11 +211,8 @@ function getRoleStaffTable(roleId) {
             }
         },
         "columns": [{
-                "data": null,
-                "title": "人员姓名",
-                render: function(data, type, full, meta) {
-                    return '<a href=\"javascript:void(0)\">' + data.STAFF_NAME + '</a>';
-                }
+                "data": "STAFF_NAME",
+                "title": "人员姓名"
             },
             { "data": "LOGIN_NAME", "title": "账号" },
             { "data": "ORG_NAME", "title": "部门名称" },
@@ -266,7 +267,7 @@ function reset() {
  * @param {角色id} itemId 
  */
 function editDetail(itemId) {
-    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("_roleModal.html #modalEdit", function() {
         App.initFormSelect2("#roleForm");
         var ajaxObj = {
             "url": serverPath + "roles/listRoleSphere",
@@ -329,7 +330,7 @@ function getRoleInfo(id, type) {
  * 打开新增窗口，同时向表单增加验证
  */
 function openAddModal() {
-    $("#modal").load("_roleModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("_roleModal.html #modalEdit", function() {
         App.initFormSelect2("#roleForm");
         var ajaxObj = {
             "url": serverPath + "roles/listRoleSphere",
@@ -356,7 +357,7 @@ function openAddModal() {
  * 打开授权窗口,授权
  */
 function openAddRolePerm(roleName, roleId) {
-    $("#modal").load("rolePerm.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("rolePerm.html #modalEdit", function() {
         $("#editModalTitle").text(roleName + "角色授权");
         $("#modal").modal("show");
        	loadPerTree(roleId);

@@ -50,7 +50,7 @@ function searchPersonalConfig(resetPaging) {
  * 修改系统参数点击事件
  */
 function editPersonalConfigModal(id){
-	$("#personalConfigModal").load("_personalConfigModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#personalConfigModal").load("_personalConfigModal.html #modalEdit",function(){
 		$("#modalTitle").text("系统参数修改");
 		getPersonalConfig(id,"edit");
 	});

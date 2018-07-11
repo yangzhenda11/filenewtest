@@ -182,7 +182,7 @@ function personnelModal(code) {
 	var code = code.split("&&");
 	var editType = code[0];
 	if(editType == "add" || editType == "edit") {
-		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalEdit",function(){
+		$("#modal").load("_externalPersonnelModal.html #modalEdit",function(){
 			App.initFormSelect2("#externalPersonnelForm")
 			if(editType == "add"){
 				$("#modalTitle").text("新增外部人员");
@@ -195,7 +195,7 @@ function personnelModal(code) {
 			}
 		});
 	} else {
-		$("#modal").load("_externalPersonnelModal.html?" + App.timestamp()+" #modalDetail",function(){
+		$("#modal").load("_externalPersonnelModal.html #modalDetail",function(){
 			getInfor(code[1],editType);
 		});
 	}

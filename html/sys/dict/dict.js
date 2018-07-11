@@ -248,7 +248,7 @@ function postDictChangeStatus(dictId,dictStatus){
  * 字典新增修改弹出框
  */
 function dictModal(editType,dictId,dictParentId,id){
-	$("#modal").load("_dictModal.html?" + App.timestamp()+" #modalEdit",function(){
+	$("#modal").load("_dictModal.html #modalEdit",function(){
 		//加载组织树
 		/*App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
 		function successCallback(result) {

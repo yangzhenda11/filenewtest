@@ -88,7 +88,7 @@ function addPermission() {
         layer.alert("请选择父节点", { icon: 2, title: "添加节点" });
         return;
     } else {
-        $("#modal").load("_permissionModal.html?" + App.timestamp() + " #modalEdit", function() {
+        $("#modal").load("_permissionModal.html #modalEdit", function() {
             $("#modalTitle").text("新增权限");
             App.initFormSelect2("#permissionForm")
             $("#parentId").val(curNode.permId);
@@ -108,7 +108,7 @@ function showUpdate() {
         layer.alert("父节点不能修改", { icon: 2, title: "修改节点" });
         return;
     }
-    $("#modal").load("_permissionModal.html?" + App.timestamp() + " #modalEdit", function() {
+    $("#modal").load("_permissionModal.html #modalEdit", function() {
         $("#modalTitle").text("修改权限");
         App.initFormSelect2("#permissionForm")
         $('#modal').modal('show');

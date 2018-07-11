@@ -823,7 +823,7 @@ function srolloOffect(el,srolloParm){
 	var scrollTopParm = 200;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
-			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 500;
+			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 630;
 			if(scrollLeftValue > 0){
 				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
 			}

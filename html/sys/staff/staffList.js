@@ -270,9 +270,9 @@ function showStaffDetail(staffId,staffOrgId) {
             }
             /**处理数据权限信息*/
             var dataPermissions = result.data.dataPermissions;
-            console.log(result.data);
-            /*if (dataPermissions.length > 0) {
-                for (p in dataPermissions) {
+            console.log(dataPermissions);
+            if (dataPermissions != null) {
+               /* for (p in dataPermissions) {
                     var dataPermission = dataPermissions[p];*/
                     var dataPermissionHtml = '<div class="col-sm-6"> \
                         <div class="form-group"> \
@@ -284,10 +284,19 @@ function showStaffDetail(staffId,staffOrgId) {
                     </div> \
                     </div>';
                     $("#DatapermissionInfo").append(dataPermissionHtml);
-            /*    }
+                  /*}*/
             } else {
-               $("#DatapermissionInfo").append("<h5 class=\"text-center\">无数据权限数据</h5>");
-            }*/
+                var dataPermissionHtml = '<div class="col-sm-6"> \
+                        <div class="form-group"> \
+                            <label class="control-label col-sm-4">数据权限级别:</label> \
+                            <div class="col-sm-8"> \
+                                <p class="form-control-static">' + "本人" + '</p> \
+                            </div> \
+                        </div> \
+                    </div> \
+                    </div>';
+                    $("#DatapermissionInfo").append(dataPermissionHtml);
+            }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
                 if (data) {
@@ -1228,8 +1237,8 @@ function getPermission(staffOrgId){
     function successCallback(result) {
         var data = result.data;
         if(data){
-        	if(data.hasOwnProperty("data_perm_type")){
-	        	$("input[name='dataPermType'][value='"+data.data_perm_type+"']").attr("checked","checked");
+        	if(data.hasOwnProperty("dataPermType")){
+	        	$("input[name='dataPermType'][value='"+data.dataPermType+"']").attr("checked","checked");
 	        	$("#saveradio2").removeClass("hide");
 	        	$("#saveradio1").addClass("hide");
 	        }

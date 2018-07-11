@@ -132,7 +132,7 @@ function selectstaff(){
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
 
-	var frameSrc ="/html/workflow/assignee/assgigneeList.html?" + App.timestamp(); 
+	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);

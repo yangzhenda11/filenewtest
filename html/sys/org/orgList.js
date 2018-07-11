@@ -111,7 +111,7 @@ function orgSearchOrg(resetPaging) {
 
 
 function orgShowOrgDetail(itemId) {
-	$("#modal").load("_orgModal.html?" + App.timestamp() + " #modalDetail",function(){
+	$("#modal").load("_orgModal.html #modalDetail",function(){
 		$("#modal").modal("show");
 		App.formAjaxJson(serverPath + "orgs/" + itemId, "GET", null, ajaxSuccess);
 	    /**成功回调函数 */

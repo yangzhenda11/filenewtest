@@ -138,7 +138,6 @@ function beforePushProcess(pass){
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
-	    	console.log($("#workOrderContentForm").find(".has-error")[0]);
 	    	if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
 	    			showLayerErrorMsg("当前工单表单校验未通过，请检查");
@@ -966,7 +965,7 @@ function srolloOffect(el,srolloParm){
 			$("#partyMore").click();
 		}
 	};
-	var scrollTopParm = 200;
+	var scrollTopParm = 140;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
 			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 630;

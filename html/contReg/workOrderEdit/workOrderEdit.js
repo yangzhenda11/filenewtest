@@ -138,6 +138,7 @@ function beforePushProcess(pass){
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
+	    	console.log($("#workOrderContentForm").find(".has-error")[0]);
 	    	if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
 	    			showLayerErrorMsg("当前工单表单校验未通过，请检查");
@@ -758,6 +759,14 @@ function saveContent(){
 			var submitData = getContentValue();
 			if(submitData){
 				saveContentPost(submitData,"GDCL");
+			}else{
+				if(parm.pageType == 1){
+					if(parent.getActiveMyTab() != 0){
+			    		parent.cutMyTab(0,function(){
+							getContentValue();
+			    		});
+			    	}
+				}
 			}
 		}
 	}
@@ -779,7 +788,11 @@ function saveContentPost(data,type){
 			showLayerErrorMsg(data.message);
 		}else{
 			setPageIdCallback(data);
-			layer.msg("保存成功");
+			if(parm.pageType == 1){
+	    		parent.layer.msg("保存成功");
+			}else{
+				layer.msg("保存成功");
+			}
 		}
 	}
 }
@@ -1100,7 +1113,7 @@ function validate() {
 		trigger: 'live focus keyup change',
 		message: '校验未通过',
 		container: 'popover',
-		excluded: [':disabled'],
+		excluded: [':disabled',":not(:visible)"],
 		fields: {}
 	});
 }

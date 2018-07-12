@@ -86,6 +86,8 @@ $(function() {
 		$(".page-content").removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
 	};
+	//加载验证壳
+	validate();
 	//请求工单模块，获取基本信息及各模块的url
 	getWorkOrderInfo();
 })
@@ -93,36 +95,70 @@ $(function() {
 /*
  * 工作流相关
  */
-//通过或退回回调的方法@工作流
+//通过或退回回调的方法(包括：工单注册，工单退回，工单激活)@工作流
 function beforePushProcess(pass){
 	var result = true;
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
+		if(checkWcardProcessIschange(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkWcardProcessIschange();
+	    		});
+	    	}else{
+	    		checkWcardProcessIschange();
+	    	}
 			return false;
 		};
-		if(checkContractStatus()){
+		if(checkContractStatus(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkContractStatus();
+	    		});
+	    	}else{
+	    		checkContractStatus();
+	    	}
 			return false;
 		};
 		//删除表格内多余的数据
 		removeMoreThanTablecontent();
 		//检查是否长度超长
-		var isOverlength = checkDomOverlength();
-		if(isOverlength){
+		if(checkDomOverlength(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkDomOverlength();
+	    		});
+	    	}else{
+	    		checkDomOverlength();
+	    	}
 			return false;
 		};
 		//手动触发表单验证
 		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
 	    bootstrapValidator.validate();
 	    if(!bootstrapValidator.isValid()){
-	    	showLayerErrorMsg("当前工单表单校验未通过，请检查");
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+	    	if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+	    			showLayerErrorMsg("当前工单表单校验未通过，请检查");
+		        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+	    		});
+	    	}else{
+	    		showLayerErrorMsg("当前工单表单校验未通过，请检查");
+	        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+	    	}
 	    	return false;
 	    }else{
 	    	var submitData = getContentValue(true);
 	    	if(!submitData){
-				return false;
+				if(parent.getActiveMyTab() != 0){
+		    		parent.cutMyTab(0,function(){
+		    			getContentValue(true);
+		    		});
+		    	}else{
+		    		getContentValue(true);
+		    	}
+		    	return false;
 			};
     	};
     	if($("#contractScanCopyUpload")[0]){
@@ -132,9 +168,16 @@ function beforePushProcess(pass){
 	    				var ms = "请上传合同正文扫描件后进行工单激活";
 	    			}else{
 	    				var ms = "请上传合同正文扫描件后进行工单注册";
-	    			}
-					showLayerErrorMsg(ms);
-					srolloOffect("#contractScanCopyUpload");
+	    			};
+	    			if(parent.getActiveMyTab() != 0){
+			    		parent.cutMyTab(0,function(){
+			    			showLayerErrorMsg(ms);
+							srolloOffect("#contractScanCopyUpload");
+			    		});
+			    	}else{
+			    		showLayerErrorMsg(ms);
+						srolloOffect("#contractScanCopyUpload");
+			    	}
 					return false;
 				}
 	    	}
@@ -142,13 +185,26 @@ function beforePushProcess(pass){
     	if(parm.taskDefinitionKey == "GDQR" && pass == true){
     		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 			if(adminCommitmentValue == null){
-				showLayerErrorMsg("请勾选合同管理员确认信息");
-				srolloOffect("#adminCommitmentContent");
+				if(parent.getActiveMyTab() != 0){
+		    		parent.cutMyTab(0,function(){
+		    			showLayerErrorMsg("请勾选合同管理员确认信息");
+						srolloOffect("#adminCommitmentContent");
+		    		});
+		    	}else{
+		    		showLayerErrorMsg("请勾选合同管理员确认信息");
+					srolloOffect("#adminCommitmentContent");
+		    	};
 				return false;
 			};
     	}
 	}else{
-		showLayerErrorMsg("页面加载失败");
+		if(parent.getActiveMyTab() != 0){
+    		parent.cutMyTab(0,function(){
+    			showLayerErrorMsg("页面加载失败");
+    		});
+    	}else{
+    		showLayerErrorMsg("页面加载失败");
+    	};
 		return false;
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。	
@@ -245,10 +301,24 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
+		if(checkWcardProcessIschange(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkWcardProcessIschange();
+	    		});
+	    	}else{
+	    		checkWcardProcessIschange();
+	    	}
 			return false;
 		};
-		if(checkContractStatus()){
+		if(checkContractStatus(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkContractStatus();
+	    		});
+	    	}else{
+	    		checkContractStatus();
+	    	}
 			return false;
 		};
 		if(flowParam){
@@ -270,22 +340,48 @@ function modal_passQxsp(flowParam){
 			}
 		});
 	}else{
-		showLayerErrorMsg("页面加载失败");
+		if(parent.getActiveMyTab() != 0){
+    		parent.cutMyTab(0,function(){
+    			showLayerErrorMsg("页面加载失败");
+    		});
+    	}else{
+    		showLayerErrorMsg("页面加载失败");
+    	};
 		return false;
 	}
 }
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
+		if(checkWcardProcessIschange(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkWcardProcessIschange();
+	    		});
+	    	}else{
+	    		checkWcardProcessIschange();
+	    	}
 			return false;
 		};
-		if(checkContractStatus()){
+		if(checkContractStatus(true)){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					checkContractStatus();
+	    		});
+	    	}else{
+	    		checkContractStatus();
+	    	}
 			return false;
 		};
 		saveContent();
 	}else{
-		showLayerErrorMsg("页面加载失败");
+		if(parent.getActiveMyTab() != 0){
+    		parent.cutMyTab(0,function(){
+    			showLayerErrorMsg("页面加载失败");
+    		});
+    	}else{
+    		showLayerErrorMsg("页面加载失败");
+    	};
 		return false;
 	}
 }
@@ -551,9 +647,11 @@ function setPinfoContent(){
  * 检查当前工单是否处于作废(contractStatus=2)或作废申请中(contractStatus=3)
  * 处于这两种状态下不能进行下一步操作，true
  */
-function checkContractStatus(){
+function checkContractStatus(checked){
 	if(contractStatus == 1){
 		return false;
+	}else if(checked){
+		return true;
 	}else if(contractStatusObj[contractStatus] == undefined){
 		showLayerErrorMsg('当前合同状态未知，请稍后操作');
 		return true;
@@ -566,7 +664,7 @@ function checkContractStatus(){
  * 检查工单状态是否发生了改变
  * 改变了返回true，没有改变返回false
  */
-function checkWcardProcessIschange(){
+function checkWcardProcessIschange(checked){
 	var isChangeWcardProvess = true;
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback,null,null,null,false);
 	function successCallback(result) {
@@ -574,15 +672,19 @@ function checkWcardProcessIschange(){
 		if(nowWcardProcess == wcardProcess){
 			isChangeWcardProvess =  false;
 		}else{
-			if(parm.pageType == 1){
-				parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
-					parent.modal_close();
-				});
+			if(checked){
+				return true;
 			}else{
-				layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
-					backPage();
-				});
-			};
+				if(parm.pageType == 1){
+					parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+						parent.modal_close();
+					});
+				}else{
+					layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+						backPage();
+					});
+				}
+			}
 		}
 	}
 	return isChangeWcardProvess;
@@ -610,18 +712,44 @@ function saveContent(){
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
 		//检查是否长度超长
-		var isOverlength = checkDomOverlength();
-		if(isOverlength){
-			return false;
+		if(parm.pageType == 1){
+			if(checkDomOverlength(true)){
+				if(parent.getActiveMyTab() != 0){
+		    		parent.cutMyTab(0,function(){
+						checkDomOverlength();
+		    		});
+		    	}else{
+		    		checkDomOverlength();
+		    	}
+				return false;
+			}
+		}else{
+			if(checkDomOverlength()){
+				return false;
+			}
 		};
 		var isSubmits = true;
 		if($("#lineChargesListContent")[0]){
 			$.each($("#lineChargesListContent").find(".fixedMonthRent,.lineCount,.totalMonthRent,.onceCost,.otherCost"), function(k,v) {
 				if($(v).parent(".form-group").hasClass("has-error") && $(v).val()!=""){
 					isSubmits = false;
-					showLayerErrorMsg("该输入框输入格式不正确，请修改");
-					srolloOffect($(v).parent(".form-group")[0],1);
-					$(v).focus();
+					if(parm.pageType == 1){
+						if(parent.getActiveMyTab() != 0){
+				    		parent.cutMyTab(0,function(){
+								showLayerErrorMsg("当前工单表单校验未通过，请检查");
+								srolloOffect($(v).parent(".form-group")[0],1);
+								$(v).focus();
+				    		});
+				    	}else{
+				    		showLayerErrorMsg("当前工单表单校验未通过，请检查");
+							srolloOffect($(v).parent(".form-group")[0],1);
+							$(v).focus();
+				    	}
+					}else{
+						showLayerErrorMsg("当前工单表单校验未通过，请检查");
+						srolloOffect($(v).parent(".form-group")[0],1);
+						$(v).focus();
+					}
 					return false;
 				}
 			})
@@ -780,23 +908,23 @@ function loadComplete() {
 	var contractStatusMs = returnContractStatus();
 	if(!checkWcardProcessId()){
 		if(parm.pageType == 1){
-			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
 				parent.layer.close(index);
 				parent.modal_close();
 			});
 		}else{
-			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"流程状态错误",closeBtn:0},function(index){
+			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
 				layer.close(index);
 				backPage();
 			});
 		}
 	}else if(contractStatusMs){
 		if(parm.pageType == 1 && parm.taskFlag == "db"){
-			parent.layer.alert(contractStatusMs,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+			parent.layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
 				parent.layer.close(index);
 			});
 		}else if(parm.pageType == 2){
-			layer.alert(contractStatusMs,{icon:2,title:"合同状态错误",closeBtn:0},function(index){
+			layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
 				layer.close(index);
 			});
 		}
@@ -804,8 +932,6 @@ function loadComplete() {
 	formSubmit = true;
 	//页面元素初始化
 	App.init();
-	//加载验证壳
-	validate();
 	//加载意见
 	getBusiProcessInfoID();
 	//加载快捷跳转
@@ -820,6 +946,13 @@ function loadComplete() {
  * 滚动到相应位置高度
  */
 function srolloOffect(el,srolloParm){
+	var elName = $(el).find("input").attr("name");
+	var overviewDomList = ["partyATelephone","partyZTelephone"];
+	if($.inArray(elName,overviewDomList) != -1){
+		if($("#partyContent").hasClass("hidden")){
+			$("#partyMore").click();
+		}
+	};
 	var scrollTopParm = 200;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
@@ -849,9 +982,9 @@ function srolloOffect(el,srolloParm){
 function showLayerErrorMsg(ms,isAlert){
 	if(isAlert){
 		if(parm.pageType == 1){
-			parent.layer.alert(ms,{icon:2,title:"错误"});
+			parent.layer.alert(ms,{icon:2,title:"提示"});
 		}else{
-			layer.alert(ms,{icon:2,title:"错误"});
+			layer.alert(ms,{icon:2,title:"提示"});
 		}
 	}else{
 		if(parm.pageType == 1){
@@ -958,7 +1091,8 @@ function setPageIdCallback(data){
 
 /*
  * 表单验证
- * 每个页面中单独往里增加内容，提交时先验证表单
+ * 注意！！！！！excluded: [':disabled'],隐藏域也会验证,若有需要请使用App.enableFieldValidators()禁用开启验证
+ * 每个页面中单独往里增加内容
  */
 function validate() {
 	$('#workOrderContentForm').bootstrapValidator({
@@ -966,6 +1100,7 @@ function validate() {
 		trigger: 'live focus keyup change',
 		message: '校验未通过',
 		container: 'popover',
+		excluded: [':disabled'],
 		fields: {}
 	});
 }
@@ -1001,9 +1136,11 @@ function addNotEmptyValidatorField(name,msg){
 /*
  * 检查页面错误项中是否有超长的元素（不精确，为用户点击触发后才生效）
  */
-function checkDomOverlength(){
+function checkDomOverlength(checked){
 	var overLengthDom = $("#workOrderContentForm").find(".has-error.overlength")[0];
-	if(overLengthDom){
+	if(overLengthDom && checked){
+		return true;
+	}else if(overLengthDom){
 		srolloOffect(overLengthDom,1);
 		var limitLen = $(overLengthDom).find("input").attr("maxlength");
 		var inputLen = getByteLen($(overLengthDom).find("input").val());

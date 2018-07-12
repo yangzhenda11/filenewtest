@@ -44,7 +44,7 @@ $(function() {
                             //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
                             if (cloudSwitch == 1) {
                                 if (c.STAFF_ORG_TYPE == 'F') {
-                                    btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\')" });
+                                    btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')"  });
                                     btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
                                 } else {
                                     btnArray.push({ "name": "调整", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
@@ -72,7 +72,7 @@ $(function() {
                     "className":"whiteSpaceNormal",
                     "width": "7%",
                     render: function(data, type, full, meta) {
-                        return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
+                        return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID +','+ data.STAFF_ORG_ID +')">' + data.STAFF_NAME + '</a>';
                     }
                 },
                 { "data": "LOGIN_NAME", "title": "账号","className":"whiteSpaceNormal","width":"9%"},
@@ -192,14 +192,14 @@ var orgTypeSet = {
  * 包括人员信息，人员岗位信息，人员角色信息和权限信息
  * param：staffId 人员Id
  */
-function showStaffDetail(staffId) {
+function showStaffDetail(staffId,staffOrgId) {
     //var curTabstaffKind = $('#curTabstaffKind').val();
     //debugger;
     $('#infoModal').load("../staff/staffDetailModal.html", function() {
         //$("#staffDetailId").val(staffId);
 
         $('#infoModal').modal({ show: true, backdrop: 'static' });
-        App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId, "GET", null, ajaxSuccess);
+        App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
         /**成功回调函数 */
         function ajaxSuccess(result) {
             /**根据返回结果给表单赋值 */
@@ -267,6 +267,35 @@ function showStaffDetail(staffId) {
             } else {
                 $("#staffDetailPermtree").detach();
                 $("#permission").append("<h5 class=\"text-center\">无权限数据</h5>")
+            }
+            /**处理数据权限信息*/
+            var dataPermissions = result.data.dataPermissions;
+            console.log(dataPermissions);
+            if (dataPermissions != null) {
+               /* for (p in dataPermissions) {
+                    var dataPermission = dataPermissions[p];*/
+                    var dataPermissionHtml = '<div class="col-sm-6"> \
+                        <div class="form-group"> \
+                            <label class="control-label col-sm-4">数据权限级别:</label> \
+                            <div class="col-sm-8"> \
+                                <p class="form-control-static">' + dataPermissions.dataPermName + '</p> \
+                            </div> \
+                        </div> \
+                    </div> \
+                    </div>';
+                    $("#DatapermissionInfo").append(dataPermissionHtml);
+                  /*}*/
+            } else {
+                var dataPermissionHtml = '<div class="col-sm-6"> \
+                        <div class="form-group"> \
+                            <label class="control-label col-sm-4">数据权限级别:</label> \
+                            <div class="col-sm-8"> \
+                                <p class="form-control-static">' + "本人" + '</p> \
+                            </div> \
+                        </div> \
+                    </div> \
+                    </div>';
+                    $("#DatapermissionInfo").append(dataPermissionHtml);
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
@@ -595,7 +624,6 @@ function goStaffEdit(staffId) {
  */
 function getInfor(staffId) {
     App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId, "get", "", successCallback);
-
     function successCallback(result) {
         var data = result.data;
         setEditForm(data);
@@ -1209,8 +1237,8 @@ function getPermission(staffOrgId){
     function successCallback(result) {
         var data = result.data;
         if(data){
-        	if(data.hasOwnProperty("data_perm_type")){
-	        	$("input[name='dataPermType'][value='"+data.data_perm_type+"']").attr("checked","checked");
+        	if(data.hasOwnProperty("dataPermType")){
+	        	$("input[name='dataPermType'][value='"+data.dataPermType+"']").attr("checked","checked");
 	        	$("#saveradio2").removeClass("hide");
 	        	$("#saveradio1").addClass("hide");
 	        }

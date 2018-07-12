@@ -409,6 +409,7 @@ function loadPerTree(itemId) {
     $.get(serverPath + "pers/permAll", { "staffOrgId": config.curStaffOrgId, "staffId": config.curStaffId }, function(data) {
         if (data.length > 0) {
             rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
+            rolePermissionTree.expandAll(true);
             if (itemId) {
                 /**查询角色拥有的权限集合 */
                 App.formAjaxJson(serverPath + "roles/" + itemId + "/perms", "GET", null, permsSuccess);
@@ -430,6 +431,7 @@ function loadPerTree(itemId) {
         }
     });
 }
+
 /*
  * 编辑/新增
  */

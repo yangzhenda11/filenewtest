@@ -1512,13 +1512,25 @@ var App = function() {
 		},
 		/*
 		 * 添加验证
+		 * dom:验证的form表单ID值
+		 * name:添加验证的input name值的字段
+		 * validators:验证规则
 		 */
 		addValidatorField:function(dom,name,validators){
-			$(dom).bootstrapValidator("addField", name, {  
-				container: 'popover',
-				trigger: 'live focus keyup change',
+			$(dom).bootstrapValidator("addField", name, {
 		       	validators: validators
 		   	});
+		},
+		/*
+		 * 启用,禁用某一字段的验证
+		 * dom:验证的form表单ID值
+		 * nameList:禁用或启用的input name值的字段,为list形式
+		 * isEnable:启用还是禁用,true为启用
+		 */
+		enableFieldValidators: function(dom,nameList,isEnable){
+			for(var k=0; k<nameList.length; k++){
+				$(dom).data('bootstrapValidator').enableFieldValidators(nameList[k], isEnable);
+			}
 		},
 		// init main components
         initComponents:function(){

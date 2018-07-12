@@ -131,13 +131,27 @@ $(function(){
 		$("#backTolist").html("关闭");
 	}
 });
+
 /*
  * tab标签页自定义切换
- * 参数:eq  切换的页签计数(从0计数)
+ * 参数:eq  切换的页签索引(从0计数)
  * zander
  */
-function cutTab(eq){
+function cutMyTab(eq,fn){
 	$('#myTab li:eq('+eq+') a').tab('show');
+ 	$('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	    fn();
+	    $('#myTab a[data-toggle="tab"]').off('shown.bs.tab');
+   	});
+}
+/*
+ * 获取当前激活的tab标签页
+ * 返回值:eq  当前激活的页签索引(从0计数)
+ * zander
+ */
+function getActiveMyTab(){
+	var eq = $("#myTab").find(".active").index("#myTab li");
+	return eq;
 }
 
 //业务上添加自定义的按钮

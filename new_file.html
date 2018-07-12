@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="static/plugins/textEdit/simditor.css" />
+		<script src="static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/plugins/textEdit/module.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/plugins/textEdit/hotkeys.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/plugins/textEdit/uploader.js" type="text/javascript" charset="utf-8"></script>
+		<script src="static/plugins/textEdit/simditor.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+
+	<body>
+		<textarea id="editor" autofocus></textarea>
+	</body>
+	<script type="text/javascript">
+		loadEditor();
+		/*
+		 * 实例化编辑器
+		 */
+		function loadEditor() {
+				var toolbar = [ 'title', 'bold', 'italic', 'underline', 'strikethrough',  
+			          'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|',  
+			          'link', 'image', 'hr', '|', 'indent', 'outdent' ]; 
+//			var toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough',
+//				'color', '|', 'ol', 'ul', '|', 'image', 'hr', '|', 'indent', 'outdent'
+//			];
+			editor = new Simditor({
+				textarea: $('#editor'),
+				placeholder: '这里输入内容...',
+				toolbar: toolbar, //工具栏  
+				defaultImage: '', //编辑器插入图片时使用的默认图片  
+				upload: {
+					url: '/fileload/uploadFileS3', //文件上传的接口地址  
+					leaveConfirm: '正在上传文件'
+				}
+			});
+
+			function get() {
+				var value = editor.getValue();
+				var html = value.replace(/[\n\r]/g, ''); //ie要先去了\n在处理
+				//html =  html.replace(/<[^>]+>/g,"")
+				html = html.replace(/<.*?>/ig, function(tag) {
+					if(tag === '</a>' || tag.indexOf('<a ') === 0 || tag.indexOf('<img ') === 0) {
+						return tag;
+					} else {
+						return '';
+					}
+				});
+			}
+		}
+	</script>
+
+</html>

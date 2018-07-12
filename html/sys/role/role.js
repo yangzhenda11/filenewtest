@@ -46,13 +46,13 @@ function getRoleTable() {
                 "render": function(data, type, row, meta) {
                     if (data) {
                         var btnArray = new Array();
-                        if (!roleUpdate) {
+                        if (roleUpdate) {
                             btnArray.push({ "name": "编辑", "fn": "editDetail(\'" + data + "\')" });
                         }
-                        if (!roleDelete) {
+                        if (roleDelete) {
                             btnArray.push({ "name": "删除", "fn": "deleteDetail(\'" + data + "\',\'" + row.roleName + "\')" });
                         }
-                        if (!roleUpdate) {
+                        if (roleUpdate) {
                             btnArray.push({ "name": "授权", "fn": "openAddRolePerm(\'" + row.roleName + "\',\'" + data + "\')" });
                         }
                         if ("1" == row.roleStatus) {

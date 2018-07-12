@@ -160,6 +160,18 @@
 			return validityData;
 		}
 	}
+	/*
+	 * 必填校验
+	 */
+	addNotEmptyValidatorField("partyASignDate","我方签约日期不能为空");
+	addNotEmptyValidatorField("partyZSignDate","对方签约日期不能为空");
+	addNotEmptyValidatorField("effectiveDate","生效日期不能为空");
+	addNotEmptyValidatorField("expiryDate","终止日期不能为空");
+	addNotEmptyValidatorField("effectCondition","请输入不超过2000个字符的生效条件");
+	addNotEmptyValidatorField("effectPeriod","请输入不超过2000个字符的协议期限");
+	addNotEmptyValidatorField("postponeCondition","请输入不超过2000个字符的顺延条件");
+	addNotEmptyValidatorField("postponePeriod","请输入不超过2000个字符的顺延时限");
+	addNotEmptyValidatorField("expiryCondition","请输入不超过2000个字符的满足终止条件");
 	//设置默认展示方式
 	changePostponableValidatorStatus(905010,0);
 	//获取合同生效信息
@@ -242,6 +254,7 @@
 	 */
 	function changePostponableValidatorStatus(selectValue,checkValue){
 		$("#postponableValidator .form-group").addClass("hidden");
+		App.enableFieldValidators('#workOrderContentForm',["partyASignDate","partyZSignDate","effectiveDate","expiryDate","effectPeriod","postponeCondition","postponePeriod","effectCondition","expiryCondition"],false);
 		$("#postponableValidator input").val("");
 		if(selectValue == "905030"){
 			$("input[name='isPostponable'][value=1]").prop("disabled",true);
@@ -249,27 +262,20 @@
 			$("input[name='isPostponable'][value=1]").prop("disabled",false);
 		};
 		if(selectValue == "905010" && checkValue == "1"){
+			App.enableFieldValidators('#workOrderContentForm',["effectiveDate","expiryDate","postponeCondition","postponePeriod"],true);
 			$("#effectiveDateDiv,#expiryDateDiv,#postponeConditionDiv,#postponePeriodDiv").removeClass("hidden");
 		}else if(selectValue == "905010" && checkValue == "0"){
+			App.enableFieldValidators('#workOrderContentForm',["effectiveDate","expiryDate"],true);
 			$("#effectiveDateDiv,#expiryDateDiv").removeClass("hidden");
 		}else if(selectValue == "905020" && checkValue == "1"){
+			App.enableFieldValidators('#workOrderContentForm',["effectCondition","effectPeriod","postponeCondition","postponePeriod"],true);
 			$("#effectConditionDiv,#effectPeriodDiv,#postponeConditionDiv,#postponePeriodDiv").removeClass("hidden");
 		}else if(selectValue == "905020" && checkValue == "0"){
+			App.enableFieldValidators('#workOrderContentForm',["effectCondition","effectPeriod"],true);
 			$("#effectConditionDiv,#effectPeriodDiv").removeClass("hidden");
 		}else if(selectValue == "905030" && checkValue == "0"){
+			App.enableFieldValidators('#workOrderContentForm',["effectCondition","expiryCondition"],true);
 			$("#effectConditionDiv,#expiryConditionDiv").removeClass("hidden");
-		}
+		};
 	}
-	/*
-	 * 必填校验
-	 */
-	addNotEmptyValidatorField("partyASignDate","我方签约日期不能为空");
-	addNotEmptyValidatorField("partyZSignDate","对方签约日期不能为空");
-	addNotEmptyValidatorField("effectiveDate","生效日期不能为空");
-	addNotEmptyValidatorField("expiryDate","终止日期不能为空");
-	addNotEmptyValidatorField("effectCondition","请输入不超过2000个字符的生效条件");
-	addNotEmptyValidatorField("effectPeriod","请输入不超过2000个字符的协议期限");
-	addNotEmptyValidatorField("postponeCondition","请输入不超过2000个字符的顺延条件");
-	addNotEmptyValidatorField("postponePeriod","请输入不超过2000个字符的顺延时限");
-	addNotEmptyValidatorField("expiryCondition","请输入不超过2000个字符的满足终止条件");
 </script>

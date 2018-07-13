@@ -7,6 +7,7 @@ var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
 var noticeReleaseFilter = parent.data_tpFilter("sys:notice:release");
 var noticeAbolishFilter = parent.data_tpFilter("sys:notice:abolish");
 var editor = null;
+var submitType = null;
 //页面初始化事件
 $(function() {
 	initNotiveTable();
@@ -65,7 +66,7 @@ function initNotiveTable(){
 				"data": "notifyTitle",
 				"title": "公告标题",
 				render: function(data, type, full, meta) {
-					return '<a href=\"javascript:void(0)\" title=' + c.notifyTitle + ' onclick = "viewNotify(\'' + data.staffId + '\')">' + data + '</a>';
+					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "viewNotify(\'' + data.staffId + '\')">' + data + '</a>';
 				}
 			},
 			{
@@ -182,55 +183,67 @@ function notiveModal(code) {
 				$('#modal').modal('show');
 			}else{
 				$("#modalTitle").text("编辑公告信息");
+				getSystemNotive("edit");
 				$('#modal').modal('show');
 			}
 		});
 	} else {
 		$("#modal").load("_notiveModal.html #modalDetail",function(){
+			getSystemNotive("detail");
 			$('#modal').modal('show');
 		});
 	}
 }
 /*
- * 公告发布和保存
- * type：1  保存
- * type：2  发布
+ * 获取公告详情
  */
-function notiveSubmit(type){
-	var bootstrapValidator = $('#notiveModalForm').data('bootstrapValidator');
-    bootstrapValidator.validate();
-    if(bootstrapValidator.isValid()){
-    	var notifyContent = editor.getValue();
-    	var storeIdList = [];
-    	if(notifyContent){
-	    	$.each($("#notiveSuccessList tr"),function(k,v){
-	    		if(!$(v).hasClass("defaultTr")){
-	    			storeIdList.push($(v).data("storeid"));
-	    		}
-	    	});
-	    	var submitData = {
-	    		notifyContent: editor.getValue(),
-	    		noticeState: type,
-	    		notifyTitle: $("#notifyTitle").val().trim(),
-	    		noticeType: $("#noticeType").val(),
-	    		noticeTop: $("input[name='noticeTop']:checked").val(),
-	    		storeIdList: storeIdList
-	    	};
-	    	if($("#notifyId").val() != ""){
-	    		submitData.notifyId = $("#notifyId").val();
-	    		var url = serverPath + "notifyController/modifyNotify";
-	    	}else{
-	    		var url = serverPath +"notifyController/saveNotify";
-	    	}
-			App.formAjaxJson(url,"post",submitData,successCallback,null,null,null,null,"formData");
-			function successCallback(result){
-				searchNotiveTable(true);
-				layer.msg(result.message);
-			}
+function getSystemNotive(type){
+	App.formAjaxJson(url,"post",submitData,successCallback,null,null,null,null,"formData");
+	function successCallback(result){
+		searchNotiveTable(true);
+		layer.msg(result.message);
+	}
+}
+/*
+ * 公告发布和保存
+ * submitType：1  保存
+ * submitType：2  发布
+ */
+function notiveSubmit(){
+	var notifyContent = editor.getValue();
+	var storeIdList = [];
+	if(notifyContent){
+    	$.each($("#notiveSuccessList tr"),function(k,v){
+    		if(!$(v).hasClass("defaultTr")){
+    			storeIdList.push($(v).data("storeid"));
+    		}
+    	});
+    	var submitData = {
+    		notifyContent: editor.getValue(),
+    		noticeState: submitType,
+    		notifyTitle: $("#notifyTitle").val().trim(),
+    		noticeType: $("#noticeType").val(),
+    		noticeTop: $("input[name='noticeTop']:checked").val(),
+    		storeIdList: storeIdList
+    	};
+    	if($("#notifyId").val() != ""){
+    		submitData.notifyId = $("#notifyId").val();
+    		var url = serverPath + "notifyController/modifyNotify";
     	}else{
-    		layer.msg("请填写公告内容");
+    		var url = serverPath +"notifyController/saveNotify";
     	}
-    }
+		App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
+		function successCallback(result){
+			searchNotiveTable(true);
+			layer.msg(result.message);
+		}
+	}else{
+		layer.msg("请填写公告内容");
+		$('#notiveModalForm').data('bootstrapValidator').resetForm();
+	}
+}
+function setsubmitType(type){
+	submitType = type;
 }
 /*
  * 实例化文件上传
@@ -365,5 +378,8 @@ function validate(){
 				}
 			},
 		}
-	})
+	}).on('success.form.bv', function(e) {
+		e.preventDefault();
+		notiveSubmit();
+	});
 }

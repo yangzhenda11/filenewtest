@@ -2,12 +2,13 @@
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
 //获取按钮权限
-var noticeEdit = parent.data_tpFilter("sys:notice:edit");
-var noticeRelease = parent.data_tpFilter("sys:notice:release");
-var noticeAbolish = parent.data_tpFilter("sys:notice:abolish");
+parent.data_permFilter(document);
+var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
+var noticeReleaseFilter = parent.data_tpFilter("sys:notice:release");
+var noticeAbolishFilter = parent.data_tpFilter("sys:notice:abolish");
 //页面初始化事件
 $(function() {
-	initNotiveTable();
+	//initNotiveTable();
 })
 /*
  * 表格初始化
@@ -32,23 +33,23 @@ function initNotiveTable(){
 				"render": function(data, type, full, meta) {
 					if(data) {
 	                    var btnArray = new Array();
-	                    if(noticeEdit){
+	                    if(noticeEditFilter){
                     		if(data.noticeState == 1){
-                    			btnArray.push({ "name": "修改", "fn": "personnelModal(\'edit&&" + data.notifyId + "\')"});
+                    			btnArray.push({ "name": "修改", "fn": "notiveModal(\'edit&&" + data.notifyId + "\')"});
                     		}else{
                     			btnArray.push({ "name": "修改","disabled":"disabled"});
                     		}	
                     	};
-	                    if(noticeRelease){
+	                    if(noticeReleaseFilter){
                     		if(data.noticeState == 1){
                     			btnArray.push({ "name": "发布", "fn": "noticeRelease(\'" + data.notifyId + "\')"});
                     		}else{
                     			btnArray.push({ "name": "发布","disabled":"disabled"});
                     		}	
                     	};
-	                    if(noticeAbolish){
+	                    if(noticeAbolishFilter){
                     		if(data.noticeState == 1 || data.noticeState == 2){
-                    			btnArray.push({ "name": "废除", "fn": "personnelModal(\'" + c.notifyId + "\','"+ c.noticeState + "\')"});
+                    			btnArray.push({ "name": "废除", "fn": "noticeAbolish(\'" + data.notifyId + "\')"});
                     		}else{
                     			btnArray.push({ "name": "废除","disabled":"disabled"});
                     		}	
@@ -63,7 +64,7 @@ function initNotiveTable(){
 				"data": "notifyTitle",
 				"title": "公告标题",
 				render: function(data, type, full, meta) {
-					return '<a href=\"javascript:void(0)\" title=' + c.notifyTitle + ' onclick = "notiveModal(\'detail&&' + data.staffId + '\')">' + data + '</a>';
+					return '<a href=\"javascript:void(0)\" title=' + c.notifyTitle + ' onclick = "viewNotify(\'' + data.staffId + '\')">' + data + '</a>';
 				}
 			},
 			{
@@ -120,22 +121,41 @@ function searchNotiveTable(retainPaging) {
  */
 function noticeRelease(notifyId){
 	var url = serverPath + 'notifyController/modifyNotifyStateFabu';
-	//App.formAjaxJson(url,"post",postData,successCallback,null,null,null,null,"formData");
-	$.ajax({
-        "type" : "POST",
-        "dataType" : 'json',
-        "data" : {
-            "notifyId" : notifyId
-        },
-        "success" : function(data) {
-            if (data.status == 1) {
-                layer.msg(data.msg);
-                searchNotiveTable(true);
-            } else {
-                layer.msg(data.msg);
-            }
-        }
+	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+	function successCallback(result){
+		searchNotiveTable(true);
+		layer.msg(result.message);
+	}
+}
+/*
+ * 废弃公告
+ */
+function noticeAbolish(notifyId){
+	layer.confirm('确定要废弃所选公告吗？',{btn:['废弃','取消'],icon:0},function(){
+        modifyNotifyStateFeiqi(notifyId);
     })
+}
+/*
+ * 废弃公告提交
+ */
+function modifyNotifyStateFeiqi(notifyId){
+	var url = serverPath + 'notifyController/modifyNotifyStateFeiqi';
+	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+	function successCallback(result){
+		searchNotiveTable(true);
+		layer.msg(result.message);
+	}
+}
+
+/**
+ * 查看公告并记录读取状态
+ */
+function viewNotify(notifyId) {
+    var url = serverPath + 'notifyController/saveNotifyRead';
+	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+	function successCallback(result){
+		notiveModal("detail&&"+notifyId);
+	}
 }
 
 /*

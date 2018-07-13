@@ -758,6 +758,14 @@ function saveContent(){
 			var submitData = getContentValue();
 			if(submitData){
 				saveContentPost(submitData,"GDCL");
+			}else{
+				if(parm.pageType == 1){
+					if(parent.getActiveMyTab() != 0){
+			    		parent.cutMyTab(0,function(){
+							getContentValue();
+			    		});
+			    	}
+				}
 			}
 		}
 	}
@@ -779,7 +787,11 @@ function saveContentPost(data,type){
 			showLayerErrorMsg(data.message);
 		}else{
 			setPageIdCallback(data);
-			layer.msg("保存成功");
+			if(parm.pageType == 1){
+	    		parent.layer.msg("保存成功");
+			}else{
+				layer.msg("保存成功");
+			}
 		}
 	}
 }
@@ -953,7 +965,7 @@ function srolloOffect(el,srolloParm){
 			$("#partyMore").click();
 		}
 	};
-	var scrollTopParm = 200;
+	var scrollTopParm = 140;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
 			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 630;
@@ -1100,7 +1112,7 @@ function validate() {
 		trigger: 'live focus keyup change',
 		message: '校验未通过',
 		container: 'popover',
-		excluded: [':disabled'],
+		excluded: [':disabled',":not(:visible)"],
 		fields: {}
 	});
 }

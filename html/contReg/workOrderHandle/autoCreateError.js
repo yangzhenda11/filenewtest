@@ -55,26 +55,19 @@ function getContractBaseInfo(){
  */
 function createWorkOrder(){
 	if(isLoad){
-		$.ajax({
-			url:serverPath + 'workOrderHandle/createWorkOrder',
-	        type:"post",
-	        data:{"contractNumber":$("#contractNumber").val(),"contractId":$("#contractId").val()},
-	        success:function(data) {
-   				if(data.status=='1'){
-   					var msg = data.message;
-   					var msgStr = msg.split(",");
-   					var htmlStr = "工单"+msgStr[0]+"创建成功！";
-   					parent.layer.alert(htmlStr,{icon:1},function(){
-   						parent.modal_close();
-   					});
-   				}else if(data.status=='0'){
-   					parent.layer.alert(data.message,{icon:2,title:"错误"});
-   				}
-    		},
-    		error: function(result) {
-				App.ajaxErrorCallback(result);
-			}
-		});
+		var postData = {
+			contractNumber: $("#contractNumber").val(),
+			contractId: $("#contractId").val()
+		}
+		App.formAjaxJson(serverPath + 'workOrderHandle/createWorkOrder',"post",postData,successCallback,null,null,null,null,"formData");
+		function successCallback(result){
+			var msg = result.message;
+			var msgStr = msg.split(",");
+			var htmlStr = "工单"+msgStr[0]+"创建成功！";
+			parent.layer.alert(htmlStr,{icon:1},function(){
+				parent.modal_close();
+			});
+		}
 	}else{
 		parent.layer.alert("页面信息有误",{icon:2,title:"错误"});
 	}

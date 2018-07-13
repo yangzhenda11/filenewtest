@@ -199,22 +199,22 @@
 						$("#adminCommitmentContent").removeClass("hidden");
 					}
 				}
-				/*
-				 * isEdit 判断页面是否只能查看
-				 * 逻辑1.当为工单确认为待办时显示
-				 * 2.当为工单确认为已办时 勾选时显示
-				 */
-				if(!isEdit){
-					$("#validityForm").find("input,select").attr("disabled","disabled");
-					if(App.IEVersionVA11()){
-						App.initFormSelect2("#validityForm");
-					}
-				};
-				if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-					$("#adminCommitmentContent").removeClass("hidden");
-					if(fileUploadEdit == true){
-						$("input[name='adminCommitment']").attr("disabled",false);
-					}
+			};
+			/*
+			 * isEdit 判断页面是否只能查看
+			 * 逻辑1.当为工单确认为待办时显示
+			 * 2.当为工单确认为已办时 勾选时显示
+			 */
+			if(!isEdit){
+				$("#validityForm").find("input,select").attr("disabled","disabled");
+				if(App.IEVersionVA11()){
+					App.initFormSelect2("#validityForm");
+				}
+			};
+			if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
+				$("#adminCommitmentContent").removeClass("hidden");
+				if(fileUploadEdit == true){
+					$("input[name='adminCommitment']").attr("disabled",false);
 				}
 			}
 		}
@@ -254,7 +254,7 @@
 	 */
 	function changePostponableValidatorStatus(selectValue,checkValue){
 		$("#postponableValidator .form-group").addClass("hidden");
-		App.enableFieldValidators('#workOrderContentForm',["partyASignDate","partyZSignDate","effectiveDate","expiryDate","effectPeriod","postponeCondition","postponePeriod","effectCondition","expiryCondition"],false);
+		App.enableFieldValidators('#workOrderContentForm',["effectiveDate","expiryDate","effectPeriod","postponeCondition","postponePeriod","effectCondition","expiryCondition"],false);
 		$("#postponableValidator input").val("");
 		if(selectValue == "905030"){
 			$("input[name='isPostponable'][value=1]").prop("disabled",true);

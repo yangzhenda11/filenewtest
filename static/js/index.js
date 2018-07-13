@@ -111,7 +111,6 @@ function data_permFilter(obj) {
                 $(e[i]).remove();
             } else {
                 $(e[i]).removeClass("hidden");
-
             }
         } else {
             $(e[i]).removeClass("hidden");

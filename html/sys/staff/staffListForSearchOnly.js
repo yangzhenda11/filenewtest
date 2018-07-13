@@ -35,7 +35,8 @@ $(function() {
                     "data": null,
                     "title": "人员姓名",
                     render: function(data, type, full, meta) {
-                        return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';
+                        /*return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID + ')">' + data.STAFF_NAME + '</a>';*/
+                        return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID +','+ data.STAFF_ORG_ID +')">' + data.STAFF_NAME + '</a>';
                     }
                 },
                 { "data": "LOGIN_NAME", "title": "账号" },
@@ -107,15 +108,16 @@ var orgTypeSet = {
  * 弹出模态框显示人员详细信息
  * 包括人员信息，人员岗位信息，人员角色信息和权限信息
  * param：staffId 人员Id
+ * param：staffOrgId 岗位Id
  */
-function showStaffDetail(staffId) {
+function showStaffDetail(staffId,staffOrgId) {
     //var curTabstaffKind = $('#curTabstaffKind').val();
     //debugger;
-    $('#infoModal').load("staffDetailModal.html", function() {
+    $('#infoModal').load("../staff/staffDetailModal.html", function() {
         //$("#staffDetailId").val(staffId);
 
         $('#infoModal').modal({ show: true, backdrop: 'static' });
-        App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId, "GET", null, ajaxSuccess);
+        App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
         /**成功回调函数 */
         function ajaxSuccess(result) {
             /**根据返回结果给表单赋值 */
@@ -183,6 +185,35 @@ function showStaffDetail(staffId) {
             } else {
                 $("#staffDetailPermtree").detach();
                 $("#permission").append("<h5 class=\"text-center\">无权限数据</h5>")
+            }
+            /**处理数据权限信息*/
+            var dataPermissions = result.data.dataPermissions;
+            console.log(dataPermissions);
+            if (dataPermissions != null) {
+               /* for (p in dataPermissions) {
+                    var dataPermission = dataPermissions[p];*/
+                    var dataPermissionHtml = '<div class="col-sm-6"> \
+                        <div class="form-group"> \
+                            <label class="control-label col-sm-4">数据权限级别:</label> \
+                            <div class="col-sm-8"> \
+                                <p class="form-control-static">' + dataPermissions.dataPermName + '</p> \
+                            </div> \
+                        </div> \
+                    </div> \
+                    </div>';
+                    $("#DatapermissionInfo").append(dataPermissionHtml);
+                  /*}*/
+            } else {
+                var dataPermissionHtml = '<div class="col-sm-6"> \
+                        <div class="form-group"> \
+                            <label class="control-label col-sm-4">数据权限级别:</label> \
+                            <div class="col-sm-8"> \
+                                <p class="form-control-static">' + "本人" + '</p> \
+                            </div> \
+                        </div> \
+                    </div> \
+                    </div>';
+                    $("#DatapermissionInfo").append(dataPermissionHtml);
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {

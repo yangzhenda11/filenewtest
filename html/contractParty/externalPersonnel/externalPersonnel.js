@@ -106,10 +106,7 @@ App.initDataTables('#personnelTable', "#submitBtn", {
 				return data == '1' ? '有效' : '无效';
 			}
 		}
-	],
-	"fixedColumns":{
-		"leftColumns":2
-	}
+	]
 });
 /*
  * 搜索点击事件
@@ -537,3 +534,4 @@ function validate(editType) {
 		updateExternalPersonnel(editType);
 	});
 }
+

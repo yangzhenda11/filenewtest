@@ -1,0 +1,25 @@
+.nitiveUpload{
+	overflow: hidden;
+	padding-top: 15px;
+	border: 1px solid #EFEFEF;
+	border-radius: 3px;
+}
+.red{
+	color: red;
+}
+.notiveDetailTitleCon{
+	border-bottom: 1px solid #efefef;
+}
+.notifyContent{
+	margin-bottom: 10px;
+}
+.notiveDetailTitle{
+	float: left;
+	font-size: 18px;
+}
+.notiveDetailAttribute{
+	float: right;
+	font-size: 14px;
+	position: relative;
+	top: 12px;
+}

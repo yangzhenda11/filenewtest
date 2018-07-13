@@ -88,9 +88,9 @@ function initNotiveTable(){
 					if(data == 0){
 						noticeState = "作废";
 					}else if(data == 1){
-						noticeState = "已发布";
-					}else if(data == 2){
 						noticeState = "未发布";
+					}else if(data == 2){
+						noticeState = "已发布";
 					};
 					return noticeState;
 				}
@@ -121,34 +121,30 @@ function searchNotiveTable(retainPaging) {
  * 发布公告
  */
 function noticeRelease(notifyId){
-	var url = serverPath + 'notifyController/modifyNotifyStateFabu';
-	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
-	function successCallback(result){
-		searchNotiveTable(true);
-		layer.msg(result.message);
-	}
+	layer.confirm('确定要发布所选公告吗？',{icon:0},function(index){
+		layer.close(index);
+       	var url = serverPath + 'notifyController/modifyNotifyStateFabu';
+		App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+		function successCallback(result){
+			searchNotiveTable(true);
+			layer.msg("发布成功");
+		}
+   })
 }
 /*
  * 废弃公告
  */
 function noticeAbolish(notifyId){
 	layer.confirm('确定要废弃所选公告吗？',{btn:['废弃','取消'],icon:0},function(index){
-        modifyNotifyStateFeiqi(notifyId);
         layer.close(index);
+        var url = serverPath + 'notifyController/modifyNotifyStateFeiqi';
+		App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+		function successCallback(result){
+			searchNotiveTable(true);
+			layer.msg("废除成功");
+		}
     })
 }
-/*
- * 废弃公告提交
- */
-function modifyNotifyStateFeiqi(notifyId){
-	var url = serverPath + 'notifyController/modifyNotifyStateFeiqi';
-	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
-	function successCallback(result){
-		searchNotiveTable(true);
-		layer.msg(result.message);
-	}
-}
-
 /**
  * 查看公告并记录读取状态
  */
@@ -214,6 +210,35 @@ function getSystemNotive(type,notifyId){
 				$(".notiveDetailTitle").text(data.notifyTitle);
 				$(".notiveDetailAttribute").text(notiveDetailAttribute);
 				$("#notifyContent").html(data.notifyContent);
+			};
+			getAttachmentFileID(type,notifyId);
+		}
+	}
+}
+function getAttachmentFileID(type,notifyId){
+	var url = serverPath + "notifyController/listNotifyFileAttachmentFileID"
+	App.formAjaxJson(url,"get",{notifyBusiId:notifyId},successCallback);
+	function successCallback(result){
+		console.log(result);
+		var data = result.data;
+		if(data){
+			$(".defaultTr").addClass("hidden");
+			if(type == "edit"){
+				$.each(data, function(k,v) {
+					var html = '<tr data-storeid="'+v.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
+						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.id+'">'+ v.displayName+'</td>'+
+						'<td>'+ v.updatedBy+'</td>'+
+						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
+					$("#notiveSuccessList").append(html);
+				});
+			}else{
+				$.each(data, function(k,v) {
+					var html = '<tr>'+
+						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.id+'">'+ v.displayName+'</td>'+
+						'<td>'+ v.updatedBy+'</td>'+
+						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
+					$("#notiveSuccessList").append(html);
+				});
 			}
 		}
 	}
@@ -313,16 +338,16 @@ function initFileUpload(){
 /*
  * 获取文件信息
  */
-function getNotifyFileID(id){
-	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:id},successCallback);
+function getNotifyFileID(storeId){
+	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:storeId},successCallback);
 	function successCallback(result){
 		var data = result.data[0];
 		if(data){
 			layer.msg("上传成功");
 			$(".defaultTr").addClass("hidden");
 			var html = '<tr data-storeid="'+data.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
-				'<td><a href="'+serverPath+"fileload/downloadS3?key="+id+'">'+ data.displayName+'</td>'+
-				'<td>'+ data.updatedBy+'</td>'+
+				'<td><a href="'+serverPath+"fileload/downloadS3?key="+storeId+'">'+ data.displayName+'</td>'+
+				'<td>'+ data.updatedName+'</td>'+
 				'<td>'+ App.formatDateTime(data.updatedDate)+'</td></tr>';
 			$("#notiveSuccessList").append(html);
 		}

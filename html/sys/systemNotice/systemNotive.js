@@ -8,7 +8,7 @@ var noticeReleaseFilter = parent.data_tpFilter("sys:notice:release");
 var noticeAbolishFilter = parent.data_tpFilter("sys:notice:abolish");
 //页面初始化事件
 $(function() {
-	//initNotiveTable();
+	initNotiveTable();
 })
 /*
  * 表格初始化

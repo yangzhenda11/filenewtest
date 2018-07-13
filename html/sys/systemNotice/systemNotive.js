@@ -63,16 +63,15 @@ function initNotiveTable(){
 				}
 			},
 			{
-				"data": "notifyTitle",
+				"data": null,
 				"title": "公告标题",
 				render: function(data, type, full, meta) {
-					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "viewNotify(\'' + data.staffId + '\')">' + data + '</a>';
+					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "viewNotify(\'' + data.notifyId + '\')">' + data.notifyTitle + '</a>';
 				}
 			},
 			{
 	            "data" : "lastUpdateByName",
 	            "title" : "发布人",
-	            "className":"text-center"
 	        },
 			{
 				"data": "lastUpdateDate",
@@ -183,25 +182,40 @@ function notiveModal(code) {
 				$('#modal').modal('show');
 			}else{
 				$("#modalTitle").text("编辑公告信息");
-				getSystemNotive("edit");
-				$('#modal').modal('show');
+				getSystemNotive("edit",code[1]);
 			}
 		});
 	} else {
 		$("#modal").load("_notiveModal.html #modalDetail",function(){
-			getSystemNotive("detail");
-			$('#modal').modal('show');
+			getSystemNotive("detail",code[1]);
 		});
 	}
 }
 /*
  * 获取公告详情
  */
-function getSystemNotive(type){
-	App.formAjaxJson(url,"post",submitData,successCallback,null,null,null,null,"formData");
+function getSystemNotive(type,notifyId){
+	var url = serverPath + "notifyController/findNotifyById"
+	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
 	function successCallback(result){
-		searchNotiveTable(true);
-		layer.msg(result.message);
+		var data = result.data;
+		if(data){
+			$('#modal').modal('show');
+			if(type == "edit"){
+				$("#notifyId").val(data.notifyId);
+				$("#notifyTitle").val(data.notifyTitle);
+				$("#noticeType").val(data.noticeType).trigger('change');
+				$("input[name='noticeTop'][value='"+data.noticeTop+"']").attr("checked","checked");
+				editor.setValue(data.notifyContent);
+			}else{
+				var noticeTypeDict = App.getDictInfo(9110);
+				var noticeTopName = data.noticeTopName == "1" ? "置顶" : "非置顶";
+				var notiveDetailAttribute = noticeTypeDict[data.noticeType] + " | " + noticeTopName;
+				$(".notiveDetailTitle").text(data.notifyTitle);
+				$(".notiveDetailAttribute").text(notiveDetailAttribute);
+				$("#notifyContent").html(data.notifyContent);
+			}
+		}
 	}
 }
 /*
@@ -235,7 +249,13 @@ function notiveSubmit(){
 		App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
 		function successCallback(result){
 			searchNotiveTable(true);
-			layer.msg(result.message);
+			$("#modal").modal("hide");
+			if(submitType == 1){
+				layer.msg("公告保存成功");
+			}else{
+				layer.msg("公告发布成功");
+			}
+			
 		}
 	}else{
 		layer.msg("请填写公告内容");

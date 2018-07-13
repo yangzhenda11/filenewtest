@@ -6,6 +6,7 @@ parent.data_permFilter(document);
 var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
 var noticeReleaseFilter = parent.data_tpFilter("sys:notice:release");
 var noticeAbolishFilter = parent.data_tpFilter("sys:notice:abolish");
+var editor = null;
 //页面初始化事件
 $(function() {
 	initNotiveTable();
@@ -131,8 +132,9 @@ function noticeRelease(notifyId){
  * 废弃公告
  */
 function noticeAbolish(notifyId){
-	layer.confirm('确定要废弃所选公告吗？',{btn:['废弃','取消'],icon:0},function(){
+	layer.confirm('确定要废弃所选公告吗？',{btn:['废弃','取消'],icon:0},function(index){
         modifyNotifyStateFeiqi(notifyId);
+        layer.close(index);
     })
 }
 /*
@@ -172,51 +174,196 @@ function notiveModal(code) {
 			    "data" : {"dictId": 9110}
 			}
 			App.initAjaxSelect2("#noticeType",ajaxObj,"dictValue","dictLabel","请选择公告类型");
-			loadEditor()
+			initEditor();
+			initFileUpload();
+			validate();
 			if(editType == "add"){
 				$("#modalTitle").text("新增公告信息");
-//				validate(editType);
 				$('#modal').modal('show');
 			}else{
 				$("#modalTitle").text("编辑公告信息");
+				$('#modal').modal('show');
 			}
 		});
 	} else {
 		$("#modal").load("_notiveModal.html #modalDetail",function(){
-			
+			$('#modal').modal('show');
 		});
 	}
 }
-
+/*
+ * 公告发布和保存
+ * type：1  保存
+ * type：2  发布
+ */
+function notiveSubmit(type){
+	var bootstrapValidator = $('#notiveModalForm').data('bootstrapValidator');
+    bootstrapValidator.validate();
+    if(bootstrapValidator.isValid()){
+    	var notifyContent = editor.getValue();
+    	var storeIdList = [];
+    	if(notifyContent){
+	    	$.each($("#notiveSuccessList tr"),function(k,v){
+	    		if(!$(v).hasClass("defaultTr")){
+	    			storeIdList.push($(v).data("storeid"));
+	    		}
+	    	});
+	    	var submitData = {
+	    		notifyContent: editor.getValue(),
+	    		noticeState: type,
+	    		notifyTitle: $("#notifyTitle").val().trim(),
+	    		noticeType: $("#noticeType").val(),
+	    		noticeTop: $("input[name='noticeTop']:checked").val(),
+	    		storeIdList: storeIdList
+	    	};
+	    	if($("#notifyId").val() != ""){
+	    		submitData.notifyId = $("#notifyId").val();
+	    		var url = serverPath + "notifyController/modifyNotify";
+	    	}else{
+	    		var url = serverPath +"notifyController/saveNotify";
+	    	}
+			App.formAjaxJson(url,"post",submitData,successCallback,null,null,null,null,"formData");
+			function successCallback(result){
+				searchNotiveTable(true);
+				layer.msg(result.message);
+			}
+    	}else{
+    		layer.msg("请填写公告内容");
+    	}
+    }
+}
+/*
+ * 实例化文件上传
+ */
+function initFileUpload(){
+	$("#uploadFileName").fileinput({
+        language: 'zh', 
+        uploadUrl: serverPath + "fileload/uploadFileS3",
+        uploadAsync: true,
+        allowedFileExtensions: [],
+        maxFileSize: 102400,
+       	maxFileCount: 1,
+       	dropZoneEnabled: false,
+       	notallowedFilenameExtensions:" |%",
+        slugCallback: function (filename) {
+        	if($(".kv-fileinput-error").css("display") == "block"){
+        		$(".fileinput-upload-button").addClass("aDisable");
+        		$(".fileinput-upload-button").attr("title","禁止上传");
+        	}else{
+        		$(".fileinput-upload-button").removeClass("aDisable");
+        		$(".fileinput-upload-button").attr("title","点击上传");
+        	}
+            return filename;
+        },
+        uploadExtraData: function(previewId, index) {
+			return {displayName:""};
+		}
+    });
+    // 异步上传成功结果处理
+    $("#uploadFileName").on("fileuploaded", function (event, data) {
+    	parseResult(data);
+    });
+    // 同步上传成功结果处理
+    $("#uploadFileName").on("filebatchuploadsuccess", function (event, data) {
+    	parseResult(data);
+    });
+    function parseResult(data){
+    	var fileValue = data.files;
+    	if(data.response.status == 1){
+	    	$("#uploadFileName").fileinput('reset');
+	    	getNotifyFileID(data.response.data);
+    	}else{
+    		layer.alert(data.response.message,{icon:2,title:"错误"});
+    	}
+    }
+}
+/*
+ * 获取文件信息
+ */
+function getNotifyFileID(id){
+	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:id},successCallback);
+	function successCallback(result){
+		var data = result.data[0];
+		if(data){
+			layer.msg("上传成功");
+			$(".defaultTr").addClass("hidden");
+			var html = '<tr data-storeid="'+data.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
+				'<td><a href="'+serverPath+"fileload/downloadS3?key="+id+'">'+ data.displayName+'</td>'+
+				'<td>'+ data.updatedBy+'</td>'+
+				'<td>'+ App.formatDateTime(data.updatedDate)+'</td></tr>';
+			$("#notiveSuccessList").append(html);
+		}
+	}
+}
+/*
+ * 列表内删除
+ */
+function delectNotiveSuccess(dom){
+	layer.confirm('确定删除该文件吗？',{icon:0},function(index){
+		layer.close(index);
+        $(dom).parent().parent().remove();
+		if($("#notiveSuccessList").children().length == 1){
+			$(".defaultTr").removeClass("hidden");
+		}
+   	})
+}
 /*
  * 实例化编辑器
  */
-function loadEditor() {
+function initEditor() {
 	var toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough',
 		'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|',
 		'link', 'image', 'hr', '|', 'indent', 'outdent'
 	];
 	editor = new Simditor({
 		textarea: $('#editor'),
-		placeholder: '这里输入内容...',
-		toolbar: toolbar, //工具栏  
+		placeholder: '这里输入公告内容...',
+		toolbar: toolbar,
 		defaultImage: '', //编辑器插入图片时使用的默认图片  
 		upload: {
-			url: serverPath+'/fileload/uploadFileS3', //文件上传的接口地址  
+			url: serverPath+'fileload/uploadFileS3', //文件上传的接口地址  
 			leaveConfirm: '正在上传文件'
 		}
 	});
-
-	function get() {
-		var value = editor.getValue();
-		var html = value.replace(/[\n\r]/g, ''); //ie要先去了\n在处理
-		//html =  html.replace(/<[^>]+>/g,"")
-		html = html.replace(/<.*?>/ig, function(tag) {
-			if(tag === '</a>' || tag.indexOf('<a ') === 0 || tag.indexOf('<img ') === 0) {
-				return tag;
-			} else {
-				return '';
-			}
+	function get(){
+		var value = editor.getValue();		
+        var html = value.replace(/[\n\r]/g, '');//ie要先去了\n在处理
+        //html =  html.replace(/<[^>]+>/g,"")
+        html = html.replace(/<.*?>/ig, function (tag) {
+		    if (tag === '</a>' || tag.indexOf('<a ') === 0 || tag.indexOf('<img ') === 0) {
+		        return tag;
+		    } else {
+		        return '';
+		    }
 		});
 	}
+}
+function validate(){
+	$('#notiveModalForm').bootstrapValidator({
+		live: 'enabled',
+		trigger: 'live focus blur keyup change',
+		message: '校验未通过',
+		container: 'popover',
+		fields: {
+			notifyTitle : {
+				validators : {
+					notEmpty : {
+						message : '请输入公告标题'
+					},
+					stringLength : {
+						min : 0,
+						max : 20,
+						message : '请输入不超过20个字符'
+					}
+				}
+			},
+			noticeType : {
+				validators : {
+					notEmpty : {
+						message : '请选择公告类型'
+					}
+				}
+			},
+		}
+	})
 }

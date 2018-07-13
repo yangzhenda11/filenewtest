@@ -17,47 +17,75 @@
     <div id="modalEdit">
         <div class="modal-dialog defaultModalWidth" role="document">
             <div class="modal-content">
-                <form class="form-horizontal" role="form" id="notiveModalForm">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modalTitle"></h4>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalTitle"></h4>
+                </div>
+                <div class="modal-body">
+                	<form class="form-horizontal" role="form" id="notiveModalForm">
+                    <input type="hidden" name="notifyId" id="notifyId" value="">
+                    <div class="form-group col-sm-12">
+                        <label for="notifyTitle">公告标题<i class="iconfont icon-mi required"></i></label>
+                        <input type="text" id="notifyTitle" name="notifyTitle" class="form-control" placeholder="公告标题">
                     </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="noticeState" id="noticeState" value="1">
-                        <div class="form-group col-sm-12">
-                            <label for="notifyTitle">公告标题<i class="iconfont icon-mi required"></i></label>
-                            <input type="text" id="notifyTitle" name="notifyTitle" class="form-control" placeholder="公告标题">
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            <label for="noticeType">公告类型<i class="iconfont icon-mi required"></i></label>
-                            <select class="form-control" name="noticeType" id="noticeType"></select>
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            <label for="noticeTop">是否置顶<i class="iconfont icon-mi required"></i></label>
-                            <div class="ui-radio-list ui-radio-inline" style="padding-top: 3px;">
-                                <label class="ui-radio">
-									是
-									<input type="radio" value="1" checked="" name="noticeTop">
-									<span></span>
-								</label>
-                                <label class="ui-radio">
-									否
-									<input type="radio" value="0" name="noticeTop">
-									<span></span>
-								</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 form-group">
-                        	<label for="editor">公告内容<i class="iconfont icon-mi required"></i></label>
-                        	<textarea id="editor"></textarea>
+                    <div class="col-sm-6 form-group">
+                        <label for="noticeType">公告类型<i class="iconfont icon-mi required"></i></label>
+                        <select class="form-control" name="noticeType" id="noticeType"></select>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label for="noticeTop">是否置顶<i class="iconfont icon-mi required"></i></label>
+                        <div class="ui-radio-list ui-radio-inline" style="padding-top: 3px;">
+                            <label class="ui-radio">
+								是
+								<input type="radio" value="1" checked="" name="noticeTop">
+								<span></span>
+							</label>
+                            <label class="ui-radio">
+								否
+								<input type="radio" value="0" name="noticeTop">
+								<span></span>
+							</label>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info btn-circle"><i class="iconfont icon-baocun"></i> 保存</button>
-                        <button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-export"></i> 发布</button>
-                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                    <div class="col-sm-12 form-group">
+                    	<label for="editor">公告内容<i class="iconfont icon-mi required"></i></label>
+                    	<textarea id="editor"></textarea>
                     </div>
-                </form>
+                    <div class="col-sm-12 form-group">
+                    	<label for="nitiveUpload">公告文件上传</label>
+                    	<div class="nitiveUpload">
+                    		<div class="form-group col-sm-6">
+                        		<input type="file" id="uploadFileName" name="fileName" />
+                        	</div>
+                        	<div class="form-group col-sm-12">
+                        		上传说明：<span class="red">文件大小不能超过100M。</span>
+                        	</div>
+                        	<div class="form-group col-sm-12">
+                        		<table class="table table-hover table-bordered table-striped align-center">
+			                        <thead>
+										<tr>
+											<th class="align-center">操作</th>
+											<th class="align-center">文件名</th>
+											<th class="align-center">上传人</th>
+											<th class="align-center">上传时间</th>
+										</tr>
+									</thead>
+									<tbody id="notiveSuccessList">
+										<tr class="defaultTr">
+											<td colspan="4">暂无文件</td>
+										</tr>
+									</tbody>
+			                    </table>
+                        	</div>
+                    	</div>
+                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-circle" onclick="notiveSubmit(1)"><i class="iconfont icon-baocun"></i> 保存</button>
+                    <button type="button" class="btn btn-danger btn-circle" onclick="notiveSubmit(2)"><i class="iconfont icon-export"></i> 发布</button>
+                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+                </div>
             </div>
         </div>
     </div>
@@ -69,74 +97,33 @@
                     <h4 class="modal-title">公告信息详情</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modalDetailTit">人员姓名：<span id="staffNameDetail"></span></div>
-                    <ul class="nav nav-tabs modalDetailTab">
-                        <li>
-                            <a href="#positionInfo" data-toggle="tab">岗位信息</a>
-                        </li>
-                        <li class="active">
-                            <a href="#baseInfo" data-toggle="tab">基本信息</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content modalDetailCon">
-                        <div class="tab-pane fade in active" id="baseInfo">
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 form-control-static align-right">账号：</div>
-                                <div class="col-sm-8 form-control-static" name="loginName"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 form-control-static align-right">人员姓名：</div>
-                                <div class="col-sm-8 form-control-static" name="staffName"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">所属组织：</div>
-                                <div class="col-sm-8 form-control-static" name="orgName"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">手机号码：</div>
-                                <div class="col-sm-8 form-control-static" name="mobilPhone"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">性别：</div>
-                                <div class="col-sm-8 form-control-static" name="sex"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">身份证号：</div>
-                                <div class="col-sm-8 form-control-static" name="empCode"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">入职日期：</div>
-                                <div class="col-sm-8 form-control-static" name="hireDate"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">显示顺序：</div>
-                                <div class="col-sm-8 form-control-static" name="staffSort"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">邮政编码：</div>
-                                <div class="col-sm-8 form-control-static" name="postcode"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">通讯地址：</div>
-                                <div class="col-sm-8 form-control-static" name="mailAddr"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">电话号码：</div>
-                                <div class="col-sm-8 form-control-static" name="phone"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">邮箱号码：</div>
-                                <div class="col-sm-8 form-control-static" name="email"></div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="col-sm-4 align-right form-control-static">岗位状态：</div>
-                                <div class="col-sm-8 form-control-static" name="staffStatus"></div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="positionInfo">
-                    		岗位状态
-                        </div>
-                    </div>
+                	<div class="col-sm-12 notiveDetailTitleCon">
+                		<p class="notiveDetailTitle">测试测试标题</p>
+                		<p class="notiveDetailAttribute">其他|非置顶</p>
+                	</div>
+                	<div class="col-sm-12" style="margin-top: 5px;">
+                		<p>公告内容：</p>
+                		<div class="notifyContent" id="notifyContent">
+                			我确定大青蛙多
+                		</div>
+                	</div>
+                	<div class="col-sm-12">
+                		<p>公告文件：</p>
+                		<table class="table table-hover table-bordered table-striped align-center">
+	                        <thead>
+								<tr>
+									<th class="align-center">文件名</th>
+									<th class="align-center">上传人</th>
+									<th class="align-center">上传时间</th>
+								</tr>
+							</thead>
+							<tbody id="uploadSuccessFile">
+								<tr class="defaultTr">
+									<td colspan="3">暂无公告文件</td>
+								</tr>
+							</tbody>
+	                    </table>
+                	</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>

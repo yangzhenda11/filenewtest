@@ -169,7 +169,7 @@ Uploader = (function(superClass) {
         return function(result) {  
         	if(result.status == 1){
         		var dataPath = result.data;
-        		var serverUrl = JSON.parse("{\"file_path\":\""+parent.globalConfig.serverPath+"/fileload/downloadS3?key=" + dataPath + "\"}");  //图片服务器src路径
+        		var serverUrl = JSON.parse("{\"file_path\":\""+parent.globalConfig.serverPath+"fileload/downloadS3?key=" + dataPath + "\"}");  //图片服务器src路径
         		_this.trigger('uploadsuccess', [file, serverUrl]);
           	_this.trigger('uploadprogress', [file, file.size, file.size]);          	
           	return $(document).trigger('uploadsuccess', [file, serverUrl, _this]);

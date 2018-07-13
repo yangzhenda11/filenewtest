@@ -169,16 +169,14 @@ Uploader = (function(superClass) {
         return function(result) {  
         	if(result.status == 1){
         		var dataPath = result.data;
-        		var serverUrl = JSON.parse("{\"file_path\":\"/fileload/downloadS3?key=" + dataPath + "\"}");  //图片服务器src路径
-//      		ToolTipTop.Show("图片上传成功","success");
-        		_this.trigger('uploadsuccess', [file, serverUrl]); 							//simditor.js回调
+        		var serverUrl = JSON.parse("{\"file_path\":\""+parent.globalConfig.serverPath+"/fileload/downloadS3?key=" + dataPath + "\"}");  //图片服务器src路径
+        		_this.trigger('uploadsuccess', [file, serverUrl]);
           	_this.trigger('uploadprogress', [file, file.size, file.size]);          	
           	return $(document).trigger('uploadsuccess', [file, serverUrl, _this]);
         		
         	}else{
         		var ms = result.message + "请删除图片重新上传";
         		updateImgResource = 1;
-//      		ToolTipTop.Show(ms,"error");
         		_this.trigger('uploadprogress', [file, file.size, file.size]);
           	_this.trigger('uploadsuccess', [file, result]);								//simditor.js回调
           	return $(document).trigger('uploadsuccess', [file, result, _this]);

@@ -740,13 +740,13 @@ var App = function() {
 		 * @param errorCallback  错误回调函数
 		 * @param animation 动画
 		 * @param async 同步异步
-		 * @param dataType 数据类型
+		 * @param contentType 数据类型默认application/json，传formData时为"application/x-www-form-urlencoded";
 		 */
-		formAjaxJson : function (url, type, data, successCallbacks, improperCallbacks, errorCallbacks, animations, asyncs, dataType){
+		formAjaxJson : function (url, type, data, successCallbacks, improperCallbacks, errorCallbacks, animations, asyncs, contentType){
 			var emptyFn = function(){};
 			var type = type || "get";
 			var data = data || "";
-			var dataType = dataType || "json";
+			var contentType = contentType == "formData" ? "application/x-www-form-urlencoded":"application/json";
 			var async = asyncs == null ? true : asyncs;
 			var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
@@ -755,10 +755,10 @@ var App = function() {
 				type: type,
 				url: url,
 				data: data,
-				dataType: dataType,
+				dataType: "json",
 				async: async,
 				global:animation,
-				contentType: "application/json",
+				contentType: contentType,
 				success: function(data,con,xhr){
 					if(xhr.status == 200){
 						var result = data;

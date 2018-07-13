@@ -215,19 +215,22 @@ function getSystemNotive(type,notifyId){
 		}
 	}
 }
+/*
+ * 获取附件列表
+ */
 function getAttachmentFileID(type,notifyId){
 	var url = serverPath + "notifyController/listNotifyFileAttachmentFileID"
 	App.formAjaxJson(url,"get",{notifyBusiId:notifyId},successCallback);
 	function successCallback(result){
 		console.log(result);
 		var data = result.data;
-		if(data){
+		if(data.length > 0){
 			$(".defaultTr").addClass("hidden");
 			if(type == "edit"){
 				$.each(data, function(k,v) {
 					var html = '<tr data-storeid="'+v.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
 						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.id+'">'+ v.displayName+'</td>'+
-						'<td>'+ v.updatedBy+'</td>'+
+						'<td>'+ v.updatedName+'</td>'+
 						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
 					$("#notiveSuccessList").append(html);
 				});
@@ -235,7 +238,7 @@ function getAttachmentFileID(type,notifyId){
 				$.each(data, function(k,v) {
 					var html = '<tr>'+
 						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.id+'">'+ v.displayName+'</td>'+
-						'<td>'+ v.updatedBy+'</td>'+
+						'<td>'+ v.updatedName+'</td>'+
 						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
 					$("#notiveSuccessList").append(html);
 				});

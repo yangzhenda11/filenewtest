@@ -3770,22 +3770,22 @@ div.page-tabs .page-tabs-content {
   -ms-transform: scale(1.2);
   transform: scale(1.2);
 }
-.modal-content {
+/*.modal-content {
   border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
-}
-.modal-footer {
+}*/
+/*.modal-footer {
   padding-top: 12px;
   padding-bottom: 14px;
   border-top-color: #e4e9ee;
   -webkit-box-shadow: none;
   box-shadow: none;
   background-color: #eff3f8;
-}
-.modal-header .close {
+}*/
+/*.modal-header .close {
   font-size: 32px;
-}
+}*/
 .modal.aside-dark .modal-content {
   background-color: rgba(0, 0, 0, 0.85);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#D8000000', endColorstr='#D8000000',GradientType=0 );

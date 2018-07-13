@@ -16,3 +16,29 @@ html {
     border-radius: 20px;
 }
 #hidemenu a{color: #FFF;}
+.notiveViewTitle{
+	color: red;
+}
+.red{
+	color: red;
+}
+.notiveDetailTitleCon{
+	border-bottom: 1px solid #efefef;
+}
+.notifyContent{
+	margin-bottom: 10px;
+}
+.notiveDetailTitle{
+	float: left;
+	font-size: 18px;
+}
+.notiveDetailAttribute{
+	float: right;
+	font-size: 14px;
+	position: relative;
+	top: 12px;
+}
+.notiveDetailFileCon{
+	border-top: 1px solid #efefef;
+	padding-top: 10px;
+}

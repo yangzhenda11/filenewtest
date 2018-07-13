@@ -129,6 +129,7 @@
 				</div>
 			</div>
 		</div>
+		//修改密码modal
 		<div class="modal fade" id="editPasswd" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -157,6 +158,36 @@
 							<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
 						</div>
 					</form>
+				</div>
+			</div>
+		</div>
+		//公告查看modal
+		<div class="modal fade" style="top: 10%;" id="systemNoticeView" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-lg" role="document">
+            	<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title notiveViewTitle">您有以下公告信息未读，请及时查看，其他历史公告请在【系统管理-公告管理】模块查看</h4>
+					</div>
+
+					<div class="modal-body modalForm">
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="passwd">密码<span class="notNull">*</span></label>
+							<div class="col-sm-8">
+								<input type="password" name="passwd" class="form-control" placeholder="密码">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="passConfirm">确认密码<span class="notNull">*</span></label>
+							<div class="col-sm-8">
+								<input type="password" name="passConfirm" class="form-control" placeholder="密码">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 保存</button>
+						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+					</div>
 				</div>
 			</div>
 		</div>

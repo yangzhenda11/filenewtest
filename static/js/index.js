@@ -169,6 +169,10 @@ function validatePassword() {
 	                notEmpty: {
 	                    message: '请再次输入密码确认'
 	                },
+	                regexp: {
+	                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
+	                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
+	                },
 	                identical: {
 	                    field: 'passwd',
 	                    message: '两次输入的密码不一致。'

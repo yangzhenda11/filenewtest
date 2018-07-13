@@ -191,6 +191,7 @@ var orgTypeSet = {
  * 弹出模态框显示人员详细信息
  * 包括人员信息，人员岗位信息，人员角色信息和权限信息
  * param：staffId 人员Id
+ * param：staffOrgId 岗位Id
  */
 function showStaffDetail(staffId,staffOrgId) {
     //var curTabstaffKind = $('#curTabstaffKind').val();

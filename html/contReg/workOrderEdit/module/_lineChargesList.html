@@ -244,11 +244,11 @@
 							"<td><div class='form-group'><select class='form-control productName' data-placeholder='"+setPTip('请选择产品名称')+"' name='"+ productName +"'>"+ incomeLinerentName +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='"+setPTip('请选择产品属性')+"' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
 							auditLabelDom +
-							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='"+setPTip('请输入固定月租')+"' value='"+fixedMonthRentVal+"' maxlength='20' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='"+setPTip('请输入线路数量')+"' value='"+lineCountVal+"' maxlength='10' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='"+setPTip('请输入合计月租')+"' value='"+totalMonthRentVal+"' maxlength='20' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='"+setPTip('请输入一次性费用')+"' value='"+onceCostVal+"' maxlength='20' /></div></td>"+
-							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='"+setPTip('请输入其他费用')+"' value='"+otherCostVal+"' maxlength='20' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='"+setPTip('请输入固定月租')+"' value='"+fixedMonthRentVal+"' maxlength='18' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='"+setPTip('请输入线路数量')+"' value='"+lineCountVal+"' maxlength='9' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='"+setPTip('请输入合计月租')+"' value='"+totalMonthRentVal+"' maxlength='18' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control onceCost' name='"+ onceCost +"' placeholder='"+setPTip('请输入一次性费用')+"' value='"+onceCostVal+"' maxlength='18' /></div></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control otherCost' name='"+ otherCost +"' placeholder='"+setPTip('请输入其他费用')+"' value='"+otherCostVal+"' maxlength='18' /></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me settlementFrequency' data-placeholder='"+setPTip('请选择结算周期')+"' name='"+ settlementFrequency +"'>"+ incomeLinerentCycle +"</select></div></td>"+
 							"<td class='lineChargesTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectIncomeLinerentTr(this)'>删除</button></td>"+
 						"</tr>";
@@ -286,7 +286,7 @@
 		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
 		var isInteger = {
 			notEmpty : {
-				message : "请输入不超过10个字符的整数"
+				message : "请输入不超过9个字符的整数"
 			},
 			regexp : {
 				regexp : /^(0|[1-9][0-9]*)$/,
@@ -295,7 +295,7 @@
 		};
 		var isMoney = {
 			notEmpty : {
-				message : "请输入不超过20个字符的数字金额"
+				message : "请输入不超过18个字符的数字金额"
 			},
 			regexp : {
 				regexp : /^[0-9]+(.[0-9]{1,2})?$/,

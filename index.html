@@ -15,17 +15,18 @@
 		<meta http-equiv="Expires" content="0">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
-		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1531473466744" />
-		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1531473466744" />
-		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1531473466744" />
-		<link rel="stylesheet" type="text/css" href="/static/plugins/ace/css/ace.css?t=1531473466744" />
-		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1531473466744" />
-		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1531473466744" />
-		<link rel="stylesheet" type="text/css" href="/static/css/index.css?t=1531473466744" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/ace/css/ace.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1531737194076" />
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css?t=1531737194076" />
 		<!--<link rel="stylesheet" type="text/css" href="static/plugins/nprogress/nprogress.css"/>-->
-		<link href="/static/img/favicon.png?t=1531473466744" rel="bookmark" type="image/x-icon" />
-		<link href="/static/img/favicon.png?t=1531473466744" rel="icon" type="image/x-icon" />
-		<link href="/static/img/favicon.png?t=1531473466744" rel="shortcut icon" type="image/x-icon" />
+		<link href="/static/img/favicon.png?t=1531737194076" rel="bookmark" type="image/x-icon" />
+		<link href="/static/img/favicon.png?t=1531737194076" rel="icon" type="image/x-icon" />
+		<link href="/static/img/favicon.png?t=1531737194076" rel="shortcut icon" type="image/x-icon" />
 	</head>
 
 	<body class="no-skin">
@@ -34,20 +35,25 @@
 			<div class="navbar-container ace-save-state" id="navbar-container">
 				<div class="navbar-header pull-left">
 					<a class="navbar-brand">
-						<img class="logo" src="/static/img/logo.png?t=1531473466744" /> 中国联通合同商务与履行管理系统
+						<img class="logo" src="/static/img/logo.png?t=1531737194076" /> 中国联通合同商务与履行管理系统
 					</a>
 				</div>
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
 						<li>
-							<a class="dropdown-toggle" href="html/workflow/tasklist/task-todo.html" id="messageTip">
-								<i class="fa fa-envelope icon-animated-vertical"></i>
+							<a class="dropdown-toggle" title="支撑渠道" onclick="appSupportShow()">
+								<i class="font18 glyphicon glyphicon-headphones fontSize18"></i>
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-toggle" href="html/workflow/tasklist/task-todo.html" id="messageTip" title="跳转至待办事项">
+								<i class="fa fa-envelope icon-animated-vertical fontSize18"></i>
 								<span class="badge badge-success" id="messageTipNumber"></span>
 							</a>
 						</li>
 						<li class="dropdown-modal" id="loginInfoCon">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="/static/img/avatar.png?t=1531473466744" alt="administrator">
+								<img class="nav-user-photo" src="/static/img/avatar.png?t=1531737194076" alt="administrator">
 								<span class="user-info">
 									<small>欢迎,</small>
 								</span>
@@ -129,6 +135,7 @@
 				</div>
 			</div>
 		</div>
+		<!--修改密码modal-->
 		<div class="modal fade" id="editPasswd" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -160,27 +167,135 @@
 				</div>
 			</div>
 		</div>
+		<!--公告查看表格modal-->
+		<div class="modal fade" id="indexNotiveTableView" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-lg" role="document">
+            	<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title notiveViewTitle">您有以下公告信息未读，请及时查看，其他历史公告请在【系统管理-公告管理】模块查看</h4>
+					</div>
+					<div class="modal-body" style="padding-bottom: 0;">
+						<table id="indexNotiveTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i> 保存</button>
+						<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--公告查看详情modal-->
+		<div class="modal fade" id="indexNotiveDetailView" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-lg" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">公告信息详情</h4>
+	                </div>
+	                <div class="modal-body">
+	                	<div class="col-sm-12 notiveDetailTitleCon">
+	                		<p class="notiveDetailTitle"></p>
+	                		<p class="notiveDetailAttribute"></p>
+	                	</div>
+	                	<div class="col-sm-12" style="margin-top: 5px;">
+	                		<p class="fontSize14">公告内容：</p>
+	                		<div class="notifyContent" id="notifyContent"></div>
+	                	</div>
+	                	<div class="col-sm-12 notiveDetailFileCon">
+	                		<p class="fontSize14">公告文件：</p>
+	                		<div id="notiveFileList"></div>
+	                	</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i> 关闭</button>
+	                </div>
+	            </div>
+	        </div>
+	   	</div>
+	   	<!-- 应用支撑渠道-开始 -->
+	    <div class="modal fade" id="appSupport" tabindex="-1" data-backdrop="static" role="dialog">
+	        <div class="modal-dialog" style="width:50%">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                    <h4 class="modal-title">支撑渠道</h4>
+	                </div>
+	                <div class="modal-body main-appSupport text-center">
+	                    <ul>
+	                        <li class="media">
+	                            <div class="media-body media-middle">
+	                            </div>
+	                            <div class="media-right">
+	                                <h4 class="fontSize18">中国联通合同商务与履行管理系统支撑渠道</h4>
+	                            </div>
+	                        </li>
+	                        <li class="media">
+	                            <div class="media-body media-middle">
+	                                <label class="label-danger"><i class="iconfont icon-unie737"></i></label>
+	                                <p class="font-gray">支撑热线</p>
+	                            </div>
+	                            <div class="media-right media-middle">
+	                                <!--<p class="fontSize18">0531-81908853</p>
+	                                <p class="font-gray">（受理时间：早9:00-晚5:00）</p>-->
+	                            </div>
+	                        </li>
+	                        <!--<li class="media">
+	                            <div class="media-body media-middle">
+	                                <label class="label-info"><i class="iconfont icon-dingding"></i></label>
+	                                <p class="font-gray">钉钉</p>
+	                            </div>
+	                            <div class="media-right media-middle">
+	                                <div class="thumbnail">
+	                                    <div><img alt="" src="/small-contract/resource/css/def/frm/common/img-dingding.png"></div>
+	                                </div>
+	                            </div>
+	                        </li>-->
+	                        <li class="media">
+	                            <div class="media-body media-middle">
+	                                <label class="label-success"><i class="iconfont icon-youxiang"></i></label>
+	                                <p class="font-gray">支撑邮箱</p>
+	                            </div>
+	                            <div class="media-right media-middle">
+	                               <!-- <p class="fontSize14">sds-woyj@chinaunicom.cn</p>-->
+	                            </div>
+	                        </li>
+	                    </ul>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-default" data-dismiss="modal">
+	                        <i class="iconfont icon-guanbi"></i> 关闭
+	                    </button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <!-- 应用支撑渠道-结束 -->
 		<!--[if lt IE 9]>
-	  	<script src="/static/plugins/html5shiv.min.js?t=1531473466744"></script>
-	  	<script src="/static/plugins/respond.min.js?t=1531473466744"></script>
-	  	<script src="/static/plugins/ie8.fix.min.js?t=1531473466744"></script>
+	  	<script src="/static/plugins/html5shiv.min.js?t=1531737194076"></script>
+	  	<script src="/static/plugins/respond.min.js?t=1531737194076"></script>
+	  	<script src="/static/plugins/ie8.fix.min.js?t=1531737194076"></script>
 	<![endif]-->
 		<!--[if lte IE 8]>
-		<script src="/static/plugins/selectivizr-min.js?t=1531473466744"></script>
+		<script src="/static/plugins/selectivizr-min.js?t=1531737194076"></script>
 	<![endif]-->
 		<!--插件引入-->
-		<script src="/static/plugins/jquery-1.12.4.min.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
 		<!--<script src="static/plugins/nprogress/nprogress.js" type="text/javascript" charset="utf-8"></script>-->
-		<script src="/static/plugins/layer/layer.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/app.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/index.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/security.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/ace/js/ace.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/ace/js/ace.sidebar.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/contabs.js?t=1531473466744" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/layer/layer.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/datatables.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/ellipsis.js?t=1531737194076"></script>
+		<script src="/static/js/app.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/index.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/security.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/ace/js/ace.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/ace/js/ace.sidebar.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/contabs.js?t=1531737194076" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

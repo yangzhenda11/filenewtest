@@ -8,7 +8,7 @@
 	color: red;
 }
 .notiveDetailTitleCon{
-	border-bottom: 1px solid #efefef;
+	border-bottom: 1px dashed  #efefef;
 }
 .notifyContent{
 	margin-bottom: 10px;
@@ -23,3 +23,12 @@
 	position: relative;
 	top: 12px;
 }
+.notiveDetailFileCon{
+	border-top: 1px dashed  #efefef;
+	padding-top: 10px;
+}
+#notiveFileList{
+	font-size: 14px;
+}
+#notiveFileList i{font-size: 24px;margin-right: 6px;}
+#notiveFileList p{margin-bottom: 15px;padding-left: 20px;}

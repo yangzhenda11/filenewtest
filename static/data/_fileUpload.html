@@ -77,7 +77,7 @@
 <script type="text/javascript">
 	//系统全局变量获取
 	var config = top.globalConfig;
-	var serverPath = config.serverPath;
+	var fileloadPath = config.fileloadPath;
 	var successCallback = null;
 	var fileUploadMaxNumeber = 99;
 	var fileCommonUploadObj = {};
@@ -124,7 +124,7 @@
 	function initFileUpload(url,uploadAsync,fileExtensions,extraData,maxFileSize){
 		$("#uploadFileName").fileinput({
 	        language: 'zh', 
-	        uploadUrl: serverPath + url,
+	        uploadUrl: fileloadPath + url,
 	        uploadAsync: uploadAsync,
 	        allowedFileExtensions: fileExtensions,
 	        maxFileSize: maxFileSize,

@@ -1,9 +1,14 @@
+function appSupportShow(){
+	$("#appSupport").modal("show");
+}
 /**
  * 全局变量的配置
  */
 var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
+    /**静态服务文件上传地址 */
+    fileloadPath: "/",
     /**后台服务地址 */
     serverPath: "/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
@@ -98,9 +103,10 @@ $(document).ready(function() {
       	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
+        //请求用户信息成功后加载公告列表
+        getIndexNotiveTableInfo(true);
     }
-});
-
+})
 // 页面权限过滤
 function data_permFilter(obj) {
     var e = obj.querySelectorAll('[data-permcheck]');
@@ -168,6 +174,10 @@ function validatePassword() {
 	            validators: {
 	                notEmpty: {
 	                    message: '请再次输入密码确认'
+	                },
+	                regexp: {
+	                    regexp: /^(?!.*')(?!.*\^)(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,18}$/,
+	                    message: "请输入6到18位同时包含大小写字母及数字密码且不包含'^"
 	                },
 	                identical: {
 	                    field: 'passwd',
@@ -282,7 +292,131 @@ $("#loginInfoCon").hover(function(){
 },function(){
 	$("#user-menu").hide();
 })
-
+/*
+ * 请求用户信息成功后加载公告列表
+ */
+function getIndexNotiveTableInfo(isInit){
+	var url = globalConfig.serverPath + "notifyController/search4Page1.do";
+	var requestParm = {
+		draw: 990,
+		start: 0,
+		length: 10
+	};
+	App.formAjaxJson(url,"post",requestParm,successCallback,null,null,null,null,"formData");
+	function successCallback(result){
+		if(isInit){
+			if(result.recordsTotal > 0){
+				$("#indexNotiveTableView").modal('show');
+		    	$("#indexNotiveTableView").on('shown.bs.modal', function (e) {
+					initNotiveTableInfo();
+				})
+			}
+		}else{
+			if(result.recordsTotal > 0){
+				var table = $('#indexNotiveTable').DataTable();
+				table.ajax.reload(null, false);
+			}else{
+				$("#indexNotiveTableView").modal('hide');
+			}
+		}
+	}
+}
+function initNotiveTableInfo(){
+	App.initDataTables('#indexNotiveTable', {
+		ajax: {
+			"type": "post",
+			"url": globalConfig.serverPath + 'notifyController/search4Page1.do',
+			"data": function(d) {
+				return d;
+			}
+		},
+		"columns": [
+			{
+				"data": null,
+				"title": "公告标题",
+				render: function(data, type, full, meta) {
+					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "indexNotiveModal(\'' + data.notifyId + '\')">' + data.notifyTitle + '</a>';
+				}
+			},
+			{
+	            "data" : "lastUpdateByName",
+	            "title" : "发布人",
+	        },
+			{
+				"data": "lastUpdateDate",
+				"title": "发布时间"
+			},
+			{
+				"data": "noticeState",
+				"title": "公告状态",
+				render: function(data, type, full, meta) {
+					var noticeState = "未知";
+					if(data == 0){
+						noticeState = "作废";
+					}else if(data == 1){
+						noticeState = "未发布";
+					}else if(data == 2){
+						noticeState = "已发布";
+					};
+					return noticeState;
+				}
+			},
+			{
+				"data": "noticeTop",
+				"title": "是否置顶",
+				render: function(data, type, full, meta) {
+					return data == '1' ? '是' : '否';
+				}
+			}
+		]
+	})
+}
+/*
+ * 公告详情
+ */
+function indexNotiveModal(notifyId){
+	var url = globalConfig.serverPath + "notifyController/findNotifyById"
+	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+	function successCallback(result){
+		var data = result.data;
+		if(data){
+			$('#indexNotiveDetailView').modal('show');
+			var noticeTypeDict = App.getDictInfo(9110);
+			var noticeTopName = data.noticeTopName == "1" ? "置顶" : "非置顶";
+			var notiveDetailAttribute = noticeTypeDict[data.noticeType] + " | " + noticeTopName;
+			$(".notiveDetailTitle").text(data.notifyTitle);
+			$(".notiveDetailAttribute").text(notiveDetailAttribute);
+			$("#notifyContent").html(data.notifyContent);
+			viewNotify(notifyId);
+		}
+	}
+}
+/**
+ * 获取附件列表记录读取状态
+ */
+function viewNotify(notifyId) {
+	var getFileurl = globalConfig.serverPath + "notifyController/listNotifyFileAttachmentFileID";
+	var saveNotifyUrl = globalConfig.serverPath + 'notifyController/saveNotifyRead';
+	App.formAjaxJson(getFileurl,"get",{notifyBusiId:notifyId},successCallback);
+	function successCallback(result){
+		var data = result.data;
+		$("#notiveFileList").html("");
+		if(data.length > 0){
+			$.each(data, function(k,v) {
+				var html = '<p><i class="icon iconfont icon-yanshoushq"></i>'+
+					'<a title="点击下载" href="'+globalConfig.serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></p>'
+				$("#notiveFileList").append(html);
+			});
+		}else{
+			var html = '<p>暂无公告文件</p>'
+			$("#notiveFileList").append(html);
+		}
+	};
+	App.formAjaxJson(saveNotifyUrl,"post",{notifyId:notifyId},saveNotifyRead,null,null,null,null,"formData");
+	function saveNotifyRead(){
+		getIndexNotiveTableInfo();
+	}
+}
 /*
  * 全屏实现
  */

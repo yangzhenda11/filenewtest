@@ -83,7 +83,7 @@ function manualCreation(){
 function jumpSanCpyQueryDetail(id){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
 	function successCallback(result) {
-		var wcardProcess = result.data;
+		var wcardProcess = result.data.wcardProcess;
 		if(wcardProcess == 0 || wcardProcess == 2){
 			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
 App.changePresentUrl(src);

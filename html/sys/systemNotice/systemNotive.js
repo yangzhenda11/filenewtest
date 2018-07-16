@@ -1,6 +1,7 @@
 //系统的全局变量获取
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
+var fileloadPath = config.fileloadPath
 //获取按钮权限
 parent.data_permFilter(document);
 var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
@@ -16,6 +17,10 @@ $(function() {
  * 表格初始化
  */
 function initNotiveTable(){
+	var isShow = true;
+	if(noticeEditFilter==false && noticeReleaseFilter==false && noticeAbolishFilter==false){
+		isShow = false;
+	};
 	App.initDataTables('#notiveTable', "#submitBtn", {
 		ajax: {
 			"type": "post",
@@ -32,6 +37,7 @@ function initNotiveTable(){
 				"data": null,
 				"className": "text-center",
 				"title": "操作",
+				"bVisible": isShow,
 				"render": function(data, type, full, meta) {
 					if(data) {
 	                    var btnArray = new Array();
@@ -63,23 +69,19 @@ function initNotiveTable(){
 				}
 			},
 			{
-				"data": "notifyTitle",
+				"data": null,
 				"title": "公告标题",
 				render: function(data, type, full, meta) {
-					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "viewNotify(\'' + data.staffId + '\')">' + data + '</a>';
+					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "notiveModal(\'detail&&' + data.notifyId + '\')">' + data.notifyTitle + '</a>';
 				}
 			},
 			{
 	            "data" : "lastUpdateByName",
 	            "title" : "发布人",
-	            "className":"text-center"
 	        },
 			{
 				"data": "lastUpdateDate",
-				"title": "发布时间",
-				"render": function(data, type, full, meta) {
-		            return App.formatDateTime(data);
-		        }
+				"title": "发布时间"
 			},
 			{
 				"data": "noticeState",
@@ -89,9 +91,9 @@ function initNotiveTable(){
 					if(data == 0){
 						noticeState = "作废";
 					}else if(data == 1){
-						noticeState = "已发布";
-					}else if(data == 2){
 						noticeState = "未发布";
+					}else if(data == 2){
+						noticeState = "已发布";
 					};
 					return noticeState;
 				}
@@ -122,43 +124,36 @@ function searchNotiveTable(retainPaging) {
  * 发布公告
  */
 function noticeRelease(notifyId){
-	var url = serverPath + 'notifyController/modifyNotifyStateFabu';
-	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
-	function successCallback(result){
-		searchNotiveTable(true);
-		layer.msg(result.message);
-	}
+	layer.confirm('确定要发布所选公告吗？',{icon:0},function(index){
+		layer.close(index);
+       	var url = serverPath + 'notifyController/modifyNotifyStateFabu';
+		App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+		function successCallback(result){
+			searchNotiveTable(true);
+			layer.msg("发布成功");
+		}
+   })
 }
 /*
  * 废弃公告
  */
 function noticeAbolish(notifyId){
 	layer.confirm('确定要废弃所选公告吗？',{btn:['废弃','取消'],icon:0},function(index){
-        modifyNotifyStateFeiqi(notifyId);
         layer.close(index);
+        var url = serverPath + 'notifyController/modifyNotifyStateFeiqi';
+		App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
+		function successCallback(result){
+			searchNotiveTable(true);
+			layer.msg("废除成功");
+		}
     })
 }
-/*
- * 废弃公告提交
- */
-function modifyNotifyStateFeiqi(notifyId){
-	var url = serverPath + 'notifyController/modifyNotifyStateFeiqi';
-	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
-	function successCallback(result){
-		searchNotiveTable(true);
-		layer.msg(result.message);
-	}
-}
-
 /**
  * 查看公告并记录读取状态
  */
 function viewNotify(notifyId) {
     var url = serverPath + 'notifyController/saveNotifyRead';
-	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
-	function successCallback(result){
-		notiveModal("detail&&"+notifyId);
-	}
+	App.formAjaxJson(url,"post",{notifyId:notifyId},null,null,null,null,null,"formData");
 }
 
 /*
@@ -183,25 +178,75 @@ function notiveModal(code) {
 				$('#modal').modal('show');
 			}else{
 				$("#modalTitle").text("编辑公告信息");
-				getSystemNotive("edit");
-				$('#modal').modal('show');
+				getSystemNotive("edit",code[1]);
 			}
 		});
 	} else {
 		$("#modal").load("_notiveModal.html #modalDetail",function(){
-			getSystemNotive("detail");
-			$('#modal').modal('show');
+			getSystemNotive("detail",code[1]);
 		});
 	}
 }
 /*
  * 获取公告详情
  */
-function getSystemNotive(type){
-	App.formAjaxJson(url,"post",submitData,successCallback,null,null,null,null,"formData");
+function getSystemNotive(type,notifyId){
+	var url = serverPath + "notifyController/findNotifyById"
+	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
 	function successCallback(result){
-		searchNotiveTable(true);
-		layer.msg(result.message);
+		var data = result.data;
+		if(data){
+			$('#modal').modal('show');
+			if(type == "edit"){
+				$("#notifyId").val(data.notifyId);
+				$("#notifyTitle").val(data.notifyTitle);
+				$("#noticeType").val(data.noticeType).trigger('change');
+				$("input[name='noticeTop'][value='"+data.noticeTop+"']").attr("checked","checked");
+				editor.setValue(data.notifyContent);
+			}else{
+				var noticeTypeDict = App.getDictInfo(9110);
+				var noticeTopName = data.noticeTopName == "1" ? "置顶" : "非置顶";
+				var notiveDetailAttribute = noticeTypeDict[data.noticeType] + " | " + noticeTopName;
+				$(".notiveDetailTitle").text(data.notifyTitle);
+				$(".notiveDetailAttribute").text(notiveDetailAttribute);
+				$("#notifyContent").html(data.notifyContent);
+				viewNotify(notifyId);
+			};
+			getAttachmentFileID(type,notifyId);
+		}
+	}
+}
+/*
+ * 获取附件列表
+ */
+function getAttachmentFileID(type,notifyId){
+	var url = serverPath + "notifyController/listNotifyFileAttachmentFileID"
+	App.formAjaxJson(url,"get",{notifyBusiId:notifyId},successCallback);
+	function successCallback(result){
+		var data = result.data;
+		if(type == "edit"){
+			if(data.length > 0){
+				$(".defaultTr").addClass("hidden");
+				$.each(data, function(k,v) {
+					var html = '<tr data-storeid="'+v.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
+						'<td><a title="点击下载" href="'+serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></td>'+
+						'<td>'+ v.updatedName+'</td>'+
+						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
+					$("#notiveSuccessList").append(html);
+				});
+			}
+		}else{
+			if(data.length == 0){
+				var html = '<p>暂无公告文件</p>'
+				$("#notiveFileList").append(html);
+			}else{
+				$.each(data, function(k,v) {
+					var html = '<p><i class="icon iconfont icon-yanshoushq"></i>'+
+						'<a title="点击下载" href="'+serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></p>'
+					$("#notiveFileList").append(html);
+				});
+			}
+		}
 	}
 }
 /*
@@ -235,7 +280,13 @@ function notiveSubmit(){
 		App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
 		function successCallback(result){
 			searchNotiveTable(true);
-			layer.msg(result.message);
+			$("#modal").modal("hide");
+			if(submitType == 1){
+				layer.msg("公告保存成功");
+			}else{
+				layer.msg("公告发布成功");
+			}
+			
 		}
 	}else{
 		layer.msg("请填写公告内容");
@@ -245,13 +296,44 @@ function notiveSubmit(){
 function setsubmitType(type){
 	submitType = type;
 }
+
+/*
+ * 获取文件信息
+ */
+function getNotifyFileID(storeId){
+	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:storeId},successCallback);
+	function successCallback(result){
+		var data = result.data[0];
+		if(data){
+			layer.msg("上传成功");
+			$(".defaultTr").addClass("hidden");
+			var html = '<tr data-storeid="'+data.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
+				'<td><a href="'+serverPath+"fileload/downloadS3?key="+storeId+'">'+ data.displayName+'</td>'+
+				'<td>'+ data.updatedName+'</td>'+
+				'<td>'+ App.formatDateTime(data.updatedDate)+'</td></tr>';
+			$("#notiveSuccessList").append(html);
+		}
+	}
+}
+/*
+ * 列表内删除
+ */
+function delectNotiveSuccess(dom){
+	layer.confirm('确定删除该文件吗？',{icon:0},function(index){
+		layer.close(index);
+        $(dom).parent().parent().remove();
+		if($("#notiveSuccessList").children().length == 1){
+			$(".defaultTr").removeClass("hidden");
+		}
+   	})
+}
 /*
  * 实例化文件上传
  */
 function initFileUpload(){
 	$("#uploadFileName").fileinput({
         language: 'zh', 
-        uploadUrl: serverPath + "fileload/uploadFileS3",
+        uploadUrl: fileloadPath + "fileload/uploadFileS3",
         uploadAsync: true,
         allowedFileExtensions: [],
         maxFileSize: 102400,
@@ -291,36 +373,6 @@ function initFileUpload(){
     }
 }
 /*
- * 获取文件信息
- */
-function getNotifyFileID(id){
-	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:id},successCallback);
-	function successCallback(result){
-		var data = result.data[0];
-		if(data){
-			layer.msg("上传成功");
-			$(".defaultTr").addClass("hidden");
-			var html = '<tr data-storeid="'+data.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
-				'<td><a href="'+serverPath+"fileload/downloadS3?key="+id+'">'+ data.displayName+'</td>'+
-				'<td>'+ data.updatedBy+'</td>'+
-				'<td>'+ App.formatDateTime(data.updatedDate)+'</td></tr>';
-			$("#notiveSuccessList").append(html);
-		}
-	}
-}
-/*
- * 列表内删除
- */
-function delectNotiveSuccess(dom){
-	layer.confirm('确定删除该文件吗？',{icon:0},function(index){
-		layer.close(index);
-        $(dom).parent().parent().remove();
-		if($("#notiveSuccessList").children().length == 1){
-			$(".defaultTr").removeClass("hidden");
-		}
-   	})
-}
-/*
  * 实例化编辑器
  */
 function initEditor() {
@@ -334,7 +386,7 @@ function initEditor() {
 		toolbar: toolbar,
 		defaultImage: '', //编辑器插入图片时使用的默认图片  
 		upload: {
-			url: serverPath+'fileload/uploadFileS3', //文件上传的接口地址  
+			url: fileloadPath+'fileload/uploadFileS3', //文件上传的接口地址  
 			leaveConfirm: '正在上传文件'
 		}
 	});

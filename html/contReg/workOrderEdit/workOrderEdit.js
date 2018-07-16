@@ -101,23 +101,13 @@ function beforePushProcess(pass){
 	var pathSelect = 0;
 	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
-		if(checkWcardProcessIschange(true)){
+		if(checkWcardIschange(true)){
 			if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
-					checkWcardProcessIschange();
+					checkWcardIschange();
 	    		});
 	    	}else{
-	    		checkWcardProcessIschange();
-	    	}
-			return false;
-		};
-		if(checkContractStatus(true)){
-			if(parent.getActiveMyTab() != 0){
-	    		parent.cutMyTab(0,function(){
-					checkContractStatus();
-	    		});
-	    	}else{
-	    		checkContractStatus();
+	    		checkWcardIschange();
 	    	}
 			return false;
 		};
@@ -301,23 +291,13 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 //工单处理取消审批按钮点击@工作流
 function modal_passQxsp(flowParam){
 	if(formSubmit){
-		if(checkWcardProcessIschange(true)){
+		if(checkWcardIschange(true)){
 			if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
-					checkWcardProcessIschange();
+					checkWcardIschange();
 	    		});
 	    	}else{
-	    		checkWcardProcessIschange();
-	    	}
-			return false;
-		};
-		if(checkContractStatus(true)){
-			if(parent.getActiveMyTab() != 0){
-	    		parent.cutMyTab(0,function(){
-					checkContractStatus();
-	    		});
-	    	}else{
-	    		checkContractStatus();
+	    		checkWcardIschange();
 	    	}
 			return false;
 		};
@@ -353,23 +333,13 @@ function modal_passQxsp(flowParam){
 //保存回调业务侧实现的方法@工作流
 function modal_save(){
 	if(formSubmit){
-		if(checkWcardProcessIschange(true)){
+		if(checkWcardIschange(true)){
 			if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
-					checkWcardProcessIschange();
+					checkWcardIschange();
 	    		});
 	    	}else{
-	    		checkWcardProcessIschange();
-	    	}
-			return false;
-		};
-		if(checkContractStatus(true)){
-			if(parent.getActiveMyTab() != 0){
-	    		parent.cutMyTab(0,function(){
-					checkContractStatus();
-	    		});
-	    	}else{
-	    		checkContractStatus();
+	    		checkWcardIschange();
 	    	}
 			return false;
 		};
@@ -388,10 +358,7 @@ function modal_save(){
 //撤回代码示例，业务界面需要实现，可以拼接业务参数到后台，数据的更新和流程的撤回放在业务侧方法里，保持事务同步@工作流
 function modal_return(root, processInstanceId, taskId){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		var postData = {
@@ -415,10 +382,7 @@ function modal_return(root, processInstanceId, taskId){
  */
 function saveBtnClick(){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		saveContent();
@@ -432,10 +396,7 @@ function saveBtnClick(){
  */
 function submitContent(){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		//删除表格内多余的数据
@@ -481,7 +442,7 @@ function submitContent(){
  * 工单注册后台提交@功能页面
  */
 function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
-	if(checkWcardProcessIschange()){
+	if(checkWcardIschange()){
 		return false;
 	};
 	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
@@ -526,10 +487,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
  */
 function activateContract(){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		if($("#contractScanCopyUpload")[0]){
@@ -580,10 +538,7 @@ function activateContract(){
  */
 function cancelApproved(){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
@@ -608,10 +563,7 @@ function cancelApproved(){
  */
 function sendBack(){
 	if(formSubmit){
-		if(checkWcardProcessIschange()){
-			return false;
-		};
-		if(checkContractStatus()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		$("#pinfoContentModal").modal("show");
@@ -628,7 +580,7 @@ function setPinfoContent(){
 	if(pinfoContent == ""){
 		layer.msg("请输入退回原因",{offset: '130px'});
 	}else{
-		if(checkWcardProcessIschange()){
+		if(checkWcardIschange()){
 			return false;
 		};
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
@@ -644,50 +596,49 @@ function setPinfoContent(){
 	};
 }
 /*
- * 检查当前工单是否处于作废(contractStatus=2)或作废申请中(contractStatus=3)
- * 处于这两种状态下不能进行下一步操作，true
- */
-function checkContractStatus(checked){
-	if(contractStatus == 1){
-		return false;
-	}else if(checked){
-		return true;
-	}else if(contractStatusObj[contractStatus] == undefined){
-		showLayerErrorMsg('当前合同状态未知，请稍后操作');
-		return true;
-	}else{
-		showLayerErrorMsg('当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作');
-		return true;
-	}
-}
-/*
- * 检查工单状态是否发生了改变
+ * 检查工单状态和合同状态是否发生了改变
  * 改变了返回true，没有改变返回false
  */
-function checkWcardProcessIschange(checked){
+function checkWcardIschange(checked){
 	var isChangeWcardProvess = true;
+	var isChangeContractStatus = true;
+	var wcardIschange = true;
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback,null,null,null,false);
 	function successCallback(result) {
-		var nowWcardProcess = result.data;
+		var data = result.data;
+		var nowContractStatus = data.contractStatus;
+		var nowWcardProcess = data.wcardProcess;
 		if(nowWcardProcess == wcardProcess){
 			isChangeWcardProvess =  false;
+		};
+		if(nowContractStatus == 1){
+			isChangeContractStatus =  false;
+		};
+		if(isChangeWcardProvess == false && isChangeContractStatus == false){
+			wcardIschange = false;
 		}else{
-			if(checked){
-				return true;
-			}else{
-				if(parm.pageType == 1){
-					parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
-						parent.modal_close();
-					});
+			if(!checked){
+				if(isChangeWcardProvess == true){
+					if(parm.pageType == 1){
+						parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+							parent.modal_close();
+						});
+					}else{
+						layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+							backPage();
+						});
+					}
 				}else{
-					layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
-						backPage();
-					});
+					if(contractStatusObj[nowContractStatus] == undefined){
+						showLayerErrorMsg('当前合同状态未知，请稍后操作');
+					}else{
+						showLayerErrorMsg('当前合同处于"'+contractStatusObj[nowContractStatus]+'"状态，不能进行下一步操作');
+					}
 				}
 			}
 		}
 	}
-	return isChangeWcardProvess;
+	return wcardIschange;
 }
 /*
  * 保存操作

@@ -58,7 +58,7 @@ App.initDataTables('#workOrderActivateListTable', "#submitBtn", {
 $(function(){
 	//承办人
 	$("#searchUndertaker").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","name","id");
+		App.getCommonModal("agentStaff","#undertakeName","name","staffOrgId");
 	})
 	
 	$("#undertakeName").on("change",function(){

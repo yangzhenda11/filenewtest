@@ -16,6 +16,10 @@ $(function() {
  * 表格初始化
  */
 function initNotiveTable(){
+	var isShow = true;
+	if(noticeEditFilter==false && noticeReleaseFilter==false && noticeAbolishFilter==false){
+		isShow = false;
+	};
 	App.initDataTables('#notiveTable', "#submitBtn", {
 		ajax: {
 			"type": "post",
@@ -32,6 +36,7 @@ function initNotiveTable(){
 				"data": null,
 				"className": "text-center",
 				"title": "操作",
+				"bVisible": isShow,
 				"render": function(data, type, full, meta) {
 					if(data) {
 	                    var btnArray = new Array();
@@ -223,15 +228,15 @@ function getAttachmentFileID(type,notifyId){
 				$(".defaultTr").addClass("hidden");
 				$.each(data, function(k,v) {
 					var html = '<tr data-storeid="'+v.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
-						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.storeId+'">'+ v.displayName+'</a></td>'+
+						'<td><a title="点击下载" href="'+serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></td>'+
 						'<td>'+ v.updatedName+'</td>'+
 						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
 					$("#notiveSuccessList").append(html);
 				});
 			}else{
 				$.each(data, function(k,v) {
-					var html = '<p><i class="icon iconfont icon-gonggao"></i>'+
-						'<a href="'+serverPath+"fileload/downloadS3?key="+v.storeId+'">'+ v.displayName+'</a></p>'
+					var html = '<p><i class="icon iconfont icon-yanshoushq"></i>'+
+						'<a title="点击下载" href="'+serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></p>'
 					$("#notiveFileList").append(html);
 				});
 			}
@@ -285,6 +290,37 @@ function notiveSubmit(){
 function setsubmitType(type){
 	submitType = type;
 }
+
+/*
+ * 获取文件信息
+ */
+function getNotifyFileID(storeId){
+	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:storeId},successCallback);
+	function successCallback(result){
+		var data = result.data[0];
+		if(data){
+			layer.msg("上传成功");
+			$(".defaultTr").addClass("hidden");
+			var html = '<tr data-storeid="'+data.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
+				'<td><a href="'+serverPath+"fileload/downloadS3?key="+storeId+'">'+ data.displayName+'</td>'+
+				'<td>'+ data.updatedName+'</td>'+
+				'<td>'+ App.formatDateTime(data.updatedDate)+'</td></tr>';
+			$("#notiveSuccessList").append(html);
+		}
+	}
+}
+/*
+ * 列表内删除
+ */
+function delectNotiveSuccess(dom){
+	layer.confirm('确定删除该文件吗？',{icon:0},function(index){
+		layer.close(index);
+        $(dom).parent().parent().remove();
+		if($("#notiveSuccessList").children().length == 1){
+			$(".defaultTr").removeClass("hidden");
+		}
+   	})
+}
 /*
  * 实例化文件上传
  */
@@ -329,36 +365,6 @@ function initFileUpload(){
     		layer.alert(data.response.message,{icon:2,title:"错误"});
     	}
     }
-}
-/*
- * 获取文件信息
- */
-function getNotifyFileID(storeId){
-	App.formAjaxJson(serverPath + 'notifyController/getNotifyFileID',"get",{storeIdStr:storeId},successCallback);
-	function successCallback(result){
-		var data = result.data[0];
-		if(data){
-			layer.msg("上传成功");
-			$(".defaultTr").addClass("hidden");
-			var html = '<tr data-storeid="'+data.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
-				'<td><a href="'+serverPath+"fileload/downloadS3?key="+storeId+'">'+ data.displayName+'</td>'+
-				'<td>'+ data.updatedName+'</td>'+
-				'<td>'+ App.formatDateTime(data.updatedDate)+'</td></tr>';
-			$("#notiveSuccessList").append(html);
-		}
-	}
-}
-/*
- * 列表内删除
- */
-function delectNotiveSuccess(dom){
-	layer.confirm('确定删除该文件吗？',{icon:0},function(index){
-		layer.close(index);
-        $(dom).parent().parent().remove();
-		if($("#notiveSuccessList").children().length == 1){
-			$(".defaultTr").removeClass("hidden");
-		}
-   	})
 }
 /*
  * 实例化编辑器

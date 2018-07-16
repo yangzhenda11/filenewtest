@@ -214,8 +214,8 @@ th, td { white-space: nowrap; }
 }
 .ace-nav > li > a > .badge {
   position: relative;
-  top: -4px;
-  left: 2px;
+  top: -10px;
+  left: -10px;
   padding-right: 5px;
   padding-left: 5px;
 }

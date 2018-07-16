@@ -1,3 +1,6 @@
+function appSupportShow(){
+	$("#appSupport").modal("show");
+}
 /**
  * 全局变量的配置
  */
@@ -397,8 +400,8 @@ function viewNotify(notifyId) {
 		var data = result.data;
 		if(data.length > 0){
 			$.each(data, function(k,v) {
-				var html = '<p><i class="icon iconfont icon-gonggao"></i>'+
-					'<a href="'+globalConfig.serverPath+"fileload/downloadS3?key="+v.storeId+'">'+ v.displayName+'</a></p>'
+				var html = '<p><i class="icon iconfont icon-yanshoushq"></i>'+
+					'<a title="点击下载" href="'+globalConfig.serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></p>'
 				$("#notiveFileList").append(html);
 			});
 		}

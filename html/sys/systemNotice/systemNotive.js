@@ -1,7 +1,7 @@
 //系统的全局变量获取
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
-var fileloadPath = config.fileloadPath
+var fileUploadPath = config.fileUploadPath
 //获取按钮权限
 parent.data_permFilter(document);
 var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
@@ -333,7 +333,7 @@ function delectNotiveSuccess(dom){
 function initFileUpload(){
 	$("#uploadFileName").fileinput({
         language: 'zh', 
-        uploadUrl: fileloadPath + "fileload/uploadFileS3",
+        uploadUrl: fileUploadPath + "fileload/uploadFileS3",
         uploadAsync: true,
         allowedFileExtensions: [],
         maxFileSize: 102400,
@@ -386,7 +386,7 @@ function initEditor() {
 		toolbar: toolbar,
 		defaultImage: '', //编辑器插入图片时使用的默认图片  
 		upload: {
-			url: fileloadPath+'fileload/uploadFileS3', //文件上传的接口地址  
+			url: fileUploadPath+'fileload/uploadFileS3', //文件上传的接口地址  
 			leaveConfirm: '正在上传文件'
 		}
 	});

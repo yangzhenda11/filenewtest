@@ -34,7 +34,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 //      {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"},
 //		{"data": "id","bVisible":false,"title": "id"},
-        {"data": "approveDate","title": "审批通过时间","className":"whiteSpaceNormal","width":"10%",
+        {"data": "approveDate","title": "审批通过日期","className":"whiteSpaceNormal","width":"10%",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }

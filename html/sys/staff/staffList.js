@@ -611,20 +611,20 @@ function addStaffModal() {
 /*
  * 修改人员点击事件
  */
-function goStaffEdit(staffId) {
+function goStaffEdit(staffId,staffOrgId) {
     $("#modal").load("staffInfoModal.html #modalEdit", function() {
         $("#modalTitle").text("修改人员");
         App.initFormSelect2("#staffForm")
         $("#modal").modal("show");
-        getInfor(staffId)
+        getInfor(staffId,staffOrgId)
         $("#selectedStaffId").val(staffId);
     });
 }
 /*
  * 获取人员信息详情
  */
-function getInfor(staffId) {
-    App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId, "get", "", successCallback);
+function getInfor(staffId,staffOrgId) {
+    App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "get", "", successCallback);
     function successCallback(result) {
         var data = result.data;
         setEditForm(data);

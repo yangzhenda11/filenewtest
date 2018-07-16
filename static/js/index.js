@@ -7,6 +7,8 @@ function appSupportShow(){
 var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
+    /**静态服务文件上传地址 */
+    fileloadPath: "/",
     /**后台服务地址 */
     serverPath: "/",
     /** 当前用户的岗位id （sys_staff_org表主键） */

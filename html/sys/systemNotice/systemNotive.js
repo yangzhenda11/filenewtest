@@ -1,6 +1,7 @@
 //系统的全局变量获取
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
+var fileloadPath = config.fileloadPath
 //获取按钮权限
 parent.data_permFilter(document);
 var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
@@ -209,9 +210,9 @@ function getSystemNotive(type,notifyId){
 				$(".notiveDetailTitle").text(data.notifyTitle);
 				$(".notiveDetailAttribute").text(notiveDetailAttribute);
 				$("#notifyContent").html(data.notifyContent);
+				viewNotify(notifyId);
 			};
 			getAttachmentFileID(type,notifyId);
-			viewNotify(notifyId);
 		}
 	}
 }
@@ -327,7 +328,7 @@ function delectNotiveSuccess(dom){
 function initFileUpload(){
 	$("#uploadFileName").fileinput({
         language: 'zh', 
-        uploadUrl: serverPath + "fileload/uploadFileS3",
+        uploadUrl: fileloadPath + "fileload/uploadFileS3",
         uploadAsync: true,
         allowedFileExtensions: [],
         maxFileSize: 102400,
@@ -380,7 +381,7 @@ function initEditor() {
 		toolbar: toolbar,
 		defaultImage: '', //编辑器插入图片时使用的默认图片  
 		upload: {
-			url: serverPath+'fileload/uploadFileS3', //文件上传的接口地址  
+			url: fileloadPath+'fileload/uploadFileS3', //文件上传的接口地址  
 			leaveConfirm: '正在上传文件'
 		}
 	});

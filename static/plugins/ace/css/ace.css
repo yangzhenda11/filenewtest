@@ -5827,7 +5827,7 @@ div.page-tabs .page-tabs-content {
   color: #547ea8;
 }
 .dataTable > thead > tr > th[class*=sorting_] {
-  color: #307ecc;
+  color: #707070;
 }
 .dataTable > thead > tr > th.sorting_desc,
 .dataTable > thead > tr > th.sorting_asc {

@@ -362,6 +362,9 @@ button:focus{
 .sm-12-btn .letterSpace{
 	margin-right: 15px;
 }
+.fontSize14{
+	font-size: 14px;
+}
 /*
  * 日期数据居中且无padding
  */

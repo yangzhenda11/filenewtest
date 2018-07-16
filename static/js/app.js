@@ -1324,7 +1324,7 @@ var App = function() {
 		getDictInfo:function(code){
 			var postData = {"dictId": code};
 			var resturnData = {};
-			App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
+			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
 
 			function successCallback(result) {
 				var data = result.data;

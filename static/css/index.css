@@ -42,3 +42,8 @@ html {
 	border-top: 1px solid #efefef;
 	padding-top: 10px;
 }
+#notiveFileList{
+	font-size: 14px;
+}
+#notiveFileList i{font-size: 24px;margin-right: 6px;}
+#notiveFileList p{margin-bottom: 15px;padding-left: 20px;}

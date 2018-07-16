@@ -66,7 +66,7 @@ function initNotiveTable(){
 				"data": null,
 				"title": "公告标题",
 				render: function(data, type, full, meta) {
-					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "viewNotify(\'' + data.notifyId + '\')">' + data.notifyTitle + '</a>';
+					return '<a href=\"javascript:void(0)\" title=' + data.notifyTitle + ' onclick = "notiveModal(\'detail&&' + data.notifyId + '\')">' + data.notifyTitle + '</a>';
 				}
 			},
 			{
@@ -75,10 +75,7 @@ function initNotiveTable(){
 	        },
 			{
 				"data": "lastUpdateDate",
-				"title": "发布时间",
-				"render": function(data, type, full, meta) {
-		            return App.formatDateTime(data);
-		        }
+				"title": "发布时间"
 			},
 			{
 				"data": "noticeState",
@@ -150,10 +147,7 @@ function noticeAbolish(notifyId){
  */
 function viewNotify(notifyId) {
     var url = serverPath + 'notifyController/saveNotifyRead';
-	App.formAjaxJson(url,"post",{notifyId:notifyId},successCallback,null,null,null,null,"formData");
-	function successCallback(result){
-		notiveModal("detail&&"+notifyId);
-	}
+	App.formAjaxJson(url,"post",{notifyId:notifyId},null,null,null,null,null,"formData");
 }
 
 /*
@@ -212,6 +206,7 @@ function getSystemNotive(type,notifyId){
 				$("#notifyContent").html(data.notifyContent);
 			};
 			getAttachmentFileID(type,notifyId);
+			viewNotify(notifyId);
 		}
 	}
 }
@@ -222,25 +217,22 @@ function getAttachmentFileID(type,notifyId){
 	var url = serverPath + "notifyController/listNotifyFileAttachmentFileID"
 	App.formAjaxJson(url,"get",{notifyBusiId:notifyId},successCallback);
 	function successCallback(result){
-		console.log(result);
 		var data = result.data;
 		if(data.length > 0){
-			$(".defaultTr").addClass("hidden");
 			if(type == "edit"){
+				$(".defaultTr").addClass("hidden");
 				$.each(data, function(k,v) {
 					var html = '<tr data-storeid="'+v.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
-						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.id+'">'+ v.displayName+'</td>'+
+						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.storeId+'">'+ v.displayName+'</a></td>'+
 						'<td>'+ v.updatedName+'</td>'+
 						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
 					$("#notiveSuccessList").append(html);
 				});
 			}else{
 				$.each(data, function(k,v) {
-					var html = '<tr>'+
-						'<td><a href="'+serverPath+"fileload/downloadS3?key="+v.id+'">'+ v.displayName+'</td>'+
-						'<td>'+ v.updatedName+'</td>'+
-						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
-					$("#notiveSuccessList").append(html);
+					var html = '<p><i class="icon iconfont icon-gonggao"></i>'+
+						'<a href="'+serverPath+"fileload/downloadS3?key="+v.storeId+'">'+ v.displayName+'</a></p>'
+					$("#notiveFileList").append(html);
 				});
 			}
 		}

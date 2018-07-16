@@ -93,6 +93,19 @@ function deleteFile(data){
 		}
     });
 }
+function test(){
+	var url = serverPath + 'fileload/test?wardId=2296027497154600996';
+	$.ajax({
+        url : url,
+        type : "get",
+        success : function(data) {
+        },
+        error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+    });
+	
+}
 /*
  * 文件上传
  */

@@ -38,7 +38,7 @@ body {
 .table-bordered{
   border-collapse: collapse;
 }
-th, td { white-space: nowrap; }
+th, td { /*white-space: nowrap;*/ }
 .table.table-bordered > thead > tr > th:first-child{
   border-left:none;
 }

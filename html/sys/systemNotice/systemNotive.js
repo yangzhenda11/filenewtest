@@ -224,8 +224,8 @@ function getAttachmentFileID(type,notifyId){
 	App.formAjaxJson(url,"get",{notifyBusiId:notifyId},successCallback);
 	function successCallback(result){
 		var data = result.data;
-		if(data.length > 0){
-			if(type == "edit"){
+		if(type == "edit"){
+			if(data.length > 0){
 				$(".defaultTr").addClass("hidden");
 				$.each(data, function(k,v) {
 					var html = '<tr data-storeid="'+v.storeId+'"><td><button type="button" onclick="delectNotiveSuccess(this)" class="btn primary btn-outline btn-xs fileItem">删除</button></td>'+
@@ -234,6 +234,11 @@ function getAttachmentFileID(type,notifyId){
 						'<td>'+ App.formatDateTime(v.updatedDate)+'</td></tr>';
 					$("#notiveSuccessList").append(html);
 				});
+			}
+		}else{
+			if(data.length == 0){
+				var html = '<p>暂无公告文件</p>'
+				$("#notiveFileList").append(html);
 			}else{
 				$.each(data, function(k,v) {
 					var html = '<p><i class="icon iconfont icon-yanshoushq"></i>'+

@@ -477,6 +477,12 @@ th.thAlignCenter{
     padding: 20px 0;
     margin-bottom: 30px;
 }
+table th{
+	border: 1px solid #ccc;
+}
+table td{
+	border: 1px solid #ccc;
+}
 /*
  * 列表页样式重置
  */

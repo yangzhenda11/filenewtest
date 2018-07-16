@@ -400,18 +400,22 @@ function viewNotify(notifyId) {
 	App.formAjaxJson(getFileurl,"get",{notifyBusiId:notifyId},successCallback);
 	function successCallback(result){
 		var data = result.data;
+		$("#notiveFileList").html("");
 		if(data.length > 0){
 			$.each(data, function(k,v) {
 				var html = '<p><i class="icon iconfont icon-yanshoushq"></i>'+
 					'<a title="点击下载" href="'+globalConfig.serverPath+"fileload/downloadS3?key="+v.storeIdKey+'">'+ v.displayName+'</a></p>'
 				$("#notiveFileList").append(html);
 			});
+		}else{
+			var html = '<p>暂无公告文件</p>'
+			$("#notiveFileList").append(html);
 		}
 	};
-	App.formAjaxJson(saveNotifyUrl,"post",{notifyId:notifyId},saveNotifyRead,null,null,null,null,"formData");
-	function saveNotifyRead(){
-		getIndexNotiveTableInfo();
-	}
+//	App.formAjaxJson(saveNotifyUrl,"post",{notifyId:notifyId},saveNotifyRead,null,null,null,null,"formData");
+//	function saveNotifyRead(){
+//		getIndexNotiveTableInfo();
+//	}
 }
 /*
  * 全屏实现

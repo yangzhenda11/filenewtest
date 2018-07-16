@@ -279,34 +279,34 @@
 	            width:'100%'
         	});
 		};
-//		addNotEmptyValidatorField(productKind,"产品类型不能为空");
-//		addNotEmptyValidatorField(productName,"产品名称不能为空");
-//		addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
-//		addNotEmptyValidatorField(productAttr,"产品属性不能为空");
-//		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
-//		var isInteger = {
-//			notEmpty : {
-//				message : "请输入不超过9个字符的整数"
-//			},
-//			regexp : {
-//				regexp : /^(0|[1-9][0-9]*)$/,
-//				message : '请输入大于等于0的整数'
-//			}
-//		};
-//		var isMoney = {
-//			notEmpty : {
-//				message : "请输入不超过18个字符的数字金额"
-//			},
-//			regexp : {
-//				regexp : /^[0-9]+(.[0-9]{1,2})?$/,
-//				message : '请输入正确的数字金额'
-//			}
-//		}
-//	   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);
-//	   	App.addValidatorField("#workOrderContentForm",fixedMonthRent,isMoney);
-//	   	App.addValidatorField("#workOrderContentForm",totalMonthRent,isMoney);
-//	   	App.addValidatorField("#workOrderContentForm",onceCost,isMoney);
-//	   	App.addValidatorField("#workOrderContentForm",otherCost,isMoney);
+		addNotEmptyValidatorField(productKind,"产品类型不能为空");
+		addNotEmptyValidatorField(productName,"产品名称不能为空");
+		addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
+		addNotEmptyValidatorField(productAttr,"产品属性不能为空");
+		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
+		var isInteger = {
+			notEmpty : {
+				message : "请输入不超过9个字符的整数"
+			},
+			regexp : {
+				regexp : /^(0|[1-9][0-9]*)$/,
+				message : '请输入大于等于0的整数'
+			}
+		};
+		var isMoney = {
+			notEmpty : {
+				message : "请输入不超过18个字符的数字金额"
+			},
+			regexp : {
+				regexp : /^[0-9]+(.[0-9]{1,2})?$/,
+				message : '请输入正确的数字金额'
+			}
+		}
+	   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);
+	   	App.addValidatorField("#workOrderContentForm",fixedMonthRent,isMoney);
+	   	App.addValidatorField("#workOrderContentForm",totalMonthRent,isMoney);
+	   	App.addValidatorField("#workOrderContentForm",onceCost,isMoney);
+	   	App.addValidatorField("#workOrderContentForm",otherCost,isMoney);
 	   	addIncomeLinerentTableSort();
 		App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
 	}

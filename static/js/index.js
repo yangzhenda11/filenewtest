@@ -412,10 +412,10 @@ function viewNotify(notifyId) {
 			$("#notiveFileList").append(html);
 		}
 	};
-//	App.formAjaxJson(saveNotifyUrl,"post",{notifyId:notifyId},saveNotifyRead,null,null,null,null,"formData");
-//	function saveNotifyRead(){
-//		getIndexNotiveTableInfo();
-//	}
+	App.formAjaxJson(saveNotifyUrl,"post",{notifyId:notifyId},saveNotifyRead,null,null,null,null,"formData");
+	function saveNotifyRead(){
+		getIndexNotiveTableInfo();
+	}
 }
 /*
  * 全屏实现

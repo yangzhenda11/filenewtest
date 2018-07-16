@@ -408,7 +408,7 @@ function viewNotify(notifyId) {
 				$("#notiveFileList").append(html);
 			});
 		}else{
-			var html = '<p>暂无公告文件</p>'
+			var html = '<p>暂无公告附件</p>'
 			$("#notiveFileList").append(html);
 		}
 	};

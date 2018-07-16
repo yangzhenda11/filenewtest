@@ -33,7 +33,12 @@ function initNotiveTable(){
 				return d;
 			}
 		},
-		"columns": [{
+		"columns": [{"data" : null,"title":"序号","className": "text-center","bVisible": !isShow,
+					"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#notiveTable").pageStart;
+						return start + meta.row + 1;
+				   	}
+				},{
 				"data": null,
 				"className": "text-center",
 				"title": "操作",
@@ -237,7 +242,7 @@ function getAttachmentFileID(type,notifyId){
 			}
 		}else{
 			if(data.length == 0){
-				var html = '<p>暂无公告文件</p>'
+				var html = '<p>暂无公告附件</p>'
 				$("#notiveFileList").append(html);
 			}else{
 				$.each(data, function(k,v) {

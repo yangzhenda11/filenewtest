@@ -1209,13 +1209,17 @@ var App = function() {
 		resetForm:function(obj){
             var form = $(obj).closest('form');
             form[0].reset();
-            //form.find('input[type=text]').data("id","");
+            $.each($(obj+" input:hidden"),function(m,n){
+            	$(n).val("");
+            })
+            
             form.find('.select2me').trigger("change");
             form.find('input[type=text]').each(function(){
                 if($(this).data("exactSearch") == true){
                 	$(this).data("exactSearch",false);
                 }
             })
+//        	form.find('input[type=text]').data("id","");
 //          form.find('input[data-initData]').each(function(){
 //              var initEl = $(this);
 //              var initVal = initEl.attr('data-initData');

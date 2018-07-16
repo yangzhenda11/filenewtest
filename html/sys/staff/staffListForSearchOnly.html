@@ -81,13 +81,14 @@
 									<div class="input-group">
 										<span class="input-group-addon">部门名称</span>
 										<input type="text" name="orgName" onclick="getStaffSearch_OrgTree(this);" onfocus="javascript:this.blur();" autocomplete="off" class="form-control" placeholder="">
+										<span class="input-group-addon"><i class="iconfont icon-xuanzehang"></i></span>
 										<input type="hidden" name="orgId">
 									</div>
 								</div>
 							</div>
 							<div class="page-search-action">
 								<button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchStaff();"><i class="iconfont icon-search"></i> 查询</button>
-								<button type="reset" class="btn btn-block yellow"><i class="iconfont icon-reset"></i> 清空</button>
+								<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="iconfont icon-reset"></i> 清空</button>
 							</div>
 						</form>
 					</div>

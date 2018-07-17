@@ -1,7 +1,7 @@
 //系统的全局变量获取
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
-var fileloadPath = config.fileloadPath
+var fileUploadPath = config.fileUploadPath
 //获取按钮权限
 parent.data_permFilter(document);
 var noticeEditFilter = parent.data_tpFilter("sys:notice:edit");
@@ -33,7 +33,14 @@ function initNotiveTable(){
 				return d;
 			}
 		},
-		"columns": [{
+		"columns": [
+				{"data" : null,"title":"序号","className": "text-center","bVisible": !isShow,
+					"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#notiveTable").pageStart;
+						return start + meta.row + 1;
+				   	}
+				},
+				{
 				"data": null,
 				"className": "text-center",
 				"title": "操作",
@@ -237,7 +244,7 @@ function getAttachmentFileID(type,notifyId){
 			}
 		}else{
 			if(data.length == 0){
-				var html = '<p>暂无公告文件</p>'
+				var html = '<p>暂无公告附件</p>'
 				$("#notiveFileList").append(html);
 			}else{
 				$.each(data, function(k,v) {
@@ -277,7 +284,7 @@ function notiveSubmit(){
     	}else{
     		var url = serverPath +"notifyController/saveNotify";
     	}
-		App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
+		//App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
 		function successCallback(result){
 			searchNotiveTable(true);
 			$("#modal").modal("hide");
@@ -290,7 +297,8 @@ function notiveSubmit(){
 		}
 	}else{
 		layer.msg("请填写公告内容");
-		$('#notiveModalForm').data('bootstrapValidator').resetForm();
+		$('#notiveModalForm').bootstrapValidator('resetForm');
+		$('#notiveModalForm').data('bootstrapValidator').validate();
 	}
 }
 function setsubmitType(type){
@@ -333,7 +341,7 @@ function delectNotiveSuccess(dom){
 function initFileUpload(){
 	$("#uploadFileName").fileinput({
         language: 'zh', 
-        uploadUrl: fileloadPath + "fileload/uploadFileS3",
+        uploadUrl: fileUploadPath + "fileload/uploadFileS3",
         uploadAsync: true,
         allowedFileExtensions: [],
         maxFileSize: 102400,
@@ -386,7 +394,7 @@ function initEditor() {
 		toolbar: toolbar,
 		defaultImage: '', //编辑器插入图片时使用的默认图片  
 		upload: {
-			url: fileloadPath+'fileload/uploadFileS3', //文件上传的接口地址  
+			url: fileUploadPath+'fileload/uploadFileS3', //文件上传的接口地址  
 			leaveConfirm: '正在上传文件'
 		}
 	});

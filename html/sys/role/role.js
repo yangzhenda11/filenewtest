@@ -4,13 +4,13 @@ var serverPath = config.serverPath;
 var rolePermissionTree; //权限树
 var orgNameTree; //组织树
 $(function() {
-        parent.data_permFilter(document);
-        getRoleTable();
+    parent.data_permFilter(document);
+    getRoleTable();
     provinceCodeTree();
-    })
-    /*
-     * 查询到角色列表
-     */
+})
+/*
+ * 查询到角色列表
+ */
 var roleUpdate = parent.data_tpFilter("sys:role:update");
 var roleDelete = parent.data_tpFilter("sys:role:delete");
 
@@ -349,7 +349,7 @@ function openAddModal() {
 		$("#roleBaseTypeCode").val("0").trigger("change");
         $("#editModalTitle").text("添加角色");
         $("#modal").modal("show");
-        loadPerTree();
+        //loadPerTree();
         validate("add");
     })
 }
@@ -389,27 +389,33 @@ function openAddRolePerm(roleName, roleId) {
  * id  编辑时的ID值，用来查询该ID下存在的权限
  */
 function loadPerTree(itemId) {
-    //组织树点击事件
-    $("#orgNameTree").on("click", function() {
-        showTree('orgNameTree');
-        //selectOrg('orgtreeMark', '', '', yourFunction2, '', '2');
-    });
-    //加载组织树
-    App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
+//  //组织树点击事件
+//  $("#orgNameTree").on("click", function() {
+//      showTree('orgNameTree');
+//      //selectOrg('orgtreeMark', '', '', yourFunction2, '', '2');
+//  });
+//  //加载组织树
+//  App.formAjaxJson(serverPath + "orgs/" + config.curOrgId + "/orgTree", "get", null, successCallback);
 
-    function successCallback(result) {
-        var data = result.data;
-        if (null == data) {
-            layer.msg("没有相关组织和人员信息", { icon: 2 });
-        } else {
-            orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
-        }
-    };
+//  function successCallback(result) {
+//      var data = result.data;
+//      if (null == data) {
+//          layer.msg("没有相关组织和人员信息", { icon: 2 });
+//      } else {
+//          orgNameTree = $.fn.zTree.init($("#orgName"), orgsSetting, data);
+//      }
+//  };
     //加载权限树
     $.get(serverPath + "pers/permAll", { "staffOrgId": config.curStaffOrgId, "staffId": config.curStaffId }, function(data) {
         if (data.length > 0) {
             rolePermissionTree = $.fn.zTree.init($("#rolePermissionTree"), rolePermissionSetting, data);
-            rolePermissionTree.expandAll(true);
+            function filter(node) {
+			    return (node.level == 0 || node.level == 1);
+			}
+            var nodes = rolePermissionTree.getNodesByFilter(filter);
+            for(var i = 0; i < nodes.length; i++){
+            	rolePermissionTree.expandNode(nodes[i], true, false , true);
+            }
             if (itemId) {
                 /**查询角色拥有的权限集合 */
                 App.formAjaxJson(serverPath + "roles/" + itemId + "/perms", "GET", null, permsSuccess);
@@ -597,97 +603,97 @@ function setPermData() {
     	}*/
 }
 
-/*
- * 显示所属组织树
- */
-function showTree(dom) {
-    var selectObj = $("#" + dom + "");
-    var selectOffset = selectObj.offset();
-    $("#" + dom + "Content").css({
-        left: "0",
-        top: selectObj.outerHeight() + "px",
-        width: selectObj.outerWidth() + 50
-    }).slideDown("fast");
-    onBodyDown(dom);
-}
-/*
- * 隐藏所属组织树
- */
-function hideMenu(dom) {
-    $("#" + dom + "Content").fadeOut("fast");
-    $("body").unbind("mousedown", onBodyDown);
-}
-/*
- * 组织树点击事件
- */
-function onBodyDown(dom) {
-    $("body").on("mousedown", function(event) {
-        if (!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
-            hideMenu(dom);
-        }
-    });
-}
-/*
- * 所属组织树配置单选配置
- */
-var orgsSetting = {
-    async: {
-        enable: true,
-        url: "",
-        type: "get",
-        dataType: 'json',
-        dataFilter: orgsfilter
-    },
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "orgId",
-            pIdKey: "parent_id"
-        },
-        key: {
-            name: "orgName"
-        }
-    },
-    view: {
-        dblClickExpand: false
-    },
-    callback: {
-        onAsyncError: onAsyncError,
-        onClick: onClick,
-        beforeAsync: zTreeBeforeAsync
-    }
-};
-
-function orgsfilter(treeId, parentNode, responseData) {
-    var responseData = responseData.data;
-    if (responseData) {
-        return responseData;
-    } else {
-        return null;
-    }
-}
-/*
- * ztree异步加载之前
- */
-function zTreeBeforeAsync(treeId, treeNode) {
-    orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children?orgType=1";
-    return true;
-}
-
-/*
- * ztree点击事件
- */
-function onClick(event, treeId, treeNode) {
-    var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
-    var selectName = nodes[0].orgName;
-    var orgCode = nodes[0].orgCode;
-    var provCode = nodes[0].provCode;
-    $("input[name=" + treeId + "]").data("orgCode", orgCode);
-    $("input[name=" + treeId + "]").data("provCode", provCode);
-    $("input[name=" + treeId + "]").val(selectName);
-    $("input[name=" + treeId + "]").attr("title", selectName);
-    if (treeId == "orgName") {
-        $("#roleForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", null);
-        $("#roleForm").data("bootstrapValidator").validateField('orgName');
-    }
-}
+///*
+// * 显示所属组织树
+// */
+//function showTree(dom) {
+//  var selectObj = $("#" + dom + "");
+//  var selectOffset = selectObj.offset();
+//  $("#" + dom + "Content").css({
+//      left: "0",
+//      top: selectObj.outerHeight() + "px",
+//      width: selectObj.outerWidth() + 50
+//  }).slideDown("fast");
+//  onBodyDown(dom);
+//}
+///*
+// * 隐藏所属组织树
+// */
+//function hideMenu(dom) {
+//  $("#" + dom + "Content").fadeOut("fast");
+//  $("body").unbind("mousedown", onBodyDown);
+//}
+///*
+// * 组织树点击事件
+// */
+//function onBodyDown(dom) {
+//  $("body").on("mousedown", function(event) {
+//      if (!(event.target.id == dom || event.target.id == dom + "Content" || $(event.target).parents("#" + dom + "Content").length > 0)) {
+//          hideMenu(dom);
+//      }
+//  });
+//}
+///*
+// * 所属组织树配置单选配置
+// */
+//var orgsSetting = {
+//  async: {
+//      enable: true,
+//      url: "",
+//      type: "get",
+//      dataType: 'json',
+//      dataFilter: orgsfilter
+//  },
+//  data: {
+//      simpleData: {
+//          enable: true,
+//          idKey: "orgId",
+//          pIdKey: "parent_id"
+//      },
+//      key: {
+//          name: "orgName"
+//      }
+//  },
+//  view: {
+//      dblClickExpand: false
+//  },
+//  callback: {
+//      onAsyncError: onAsyncError,
+//      onClick: onClick,
+//      beforeAsync: zTreeBeforeAsync
+//  }
+//};
+//
+//function orgsfilter(treeId, parentNode, responseData) {
+//  var responseData = responseData.data;
+//  if (responseData) {
+//      return responseData;
+//  } else {
+//      return null;
+//  }
+//}
+///*
+// * ztree异步加载之前
+// */
+//function zTreeBeforeAsync(treeId, treeNode) {
+//  orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children?orgType=1";
+//  return true;
+//}
+//
+///*
+// * ztree点击事件
+// */
+//function onClick(event, treeId, treeNode) {
+//  var nodes = $.fn.zTree.getZTreeObj(treeId).getSelectedNodes();
+//  var selectName = nodes[0].orgName;
+//  var orgCode = nodes[0].orgCode;
+//  var provCode = nodes[0].provCode;
+//  $("input[name=" + treeId + "]").data("orgCode", orgCode);
+//  $("input[name=" + treeId + "]").data("provCode", provCode);
+//  $("input[name=" + treeId + "]").val(selectName);
+//  $("input[name=" + treeId + "]").attr("title", selectName);
+//  if (treeId == "orgName") {
+//      $("#roleForm").data("bootstrapValidator").updateStatus("orgName", "NOT_VALIDATED", null);
+//      $("#roleForm").data("bootstrapValidator").validateField('orgName');
+//  }
+//}

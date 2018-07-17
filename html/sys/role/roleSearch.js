@@ -27,7 +27,13 @@ function getRoleTable() {
                 return d;
             }
         },
-        "columns": [{
+        "columns": [{"data" : null,"title":"序号","className": "text-center",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#searchRoleTable").pageStart;
+					return start + meta.row + 1;
+			   	}
+			},
+			{
                 "data": "roleName",
                 title: "角色名称",
                 render: function(data, type, row, meta) {

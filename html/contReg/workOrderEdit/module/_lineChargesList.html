@@ -215,12 +215,8 @@
 		var otherCost = "otherCost" + isCreateLinerLen;
 		var settlementFrequency = "settlementFrequency" + isCreateLinerLen;
 		var linerentId = "100000";
-		var fixedMonthRentVal = "";
-		var lineCountVal = "";
-		var totalMonthRentVal = "";
-		var onceCostVal = "0";
-		var otherCostVal = "0";
-		var incomeLinerentName = "";		//产品名称联动设置
+		var fixedMonthRentVal = "",lineCountVal = "",totalMonthRentVal = "",incomeLinerentName = "",onceCostVal = "0",otherCostVal = "0";
+		//产品名称联动设置
 		var auditLabelDom = "<td><div class='form-group'><select class='form-control auditLabel' disabled='disabled' name='"+ auditLabel +"'>"+ incomeLinerentLable +"</select></div></td>";
 		if(data){
 			linerentId = data.linerentId ? data.linerentId : "100000";
@@ -355,8 +351,8 @@
         	});
         };
         if(bvel.prevObject.prevObject){
-			$("#workOrderContentForm").data("bootstrapValidator").updateStatus(productName,"NOT_VALIDATED",null).validateField(productName);
-			$("#workOrderContentForm").data("bootstrapValidator").updateStatus(auditLabelName,"NOT_VALIDATED",null).validateField(auditLabelName);
+			$("#workOrderContentForm").data("bootstrapValidator").updateStatus(productName,"NOT_VALIDATED",null);
+			$("#workOrderContentForm").data("bootstrapValidator").updateStatus(auditLabelName,"NOT_VALIDATED",null);
 		}
 	})
 	/*

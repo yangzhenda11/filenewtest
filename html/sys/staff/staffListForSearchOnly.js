@@ -17,6 +17,7 @@ $(function() {
                 "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
                 "data": function(d) { // 查询参数
                     d.sysOrgId = parent.globalConfig.curCompanyId;
+                    d.staffOrgId = parent.globalConfig.curStaffOrgId;
                     d.staffName = $("input[name='staffName']", $('#searchOnlyStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchOnlyStaffForm')).val();
                     var orgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
@@ -31,6 +32,12 @@ $(function() {
                 }
             },
             "columns": [
+            	{"data" : null,"title":"序号","className": "text-center",
+					"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#staffSearchOnlyTable").pageStart;
+						return start + meta.row + 1;
+				   	}
+				},
                 {
                     "data": null,
                     "title": "人员姓名",

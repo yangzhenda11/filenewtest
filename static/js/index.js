@@ -1,6 +1,3 @@
-function appSupportShow(){
-	$("#appSupport").modal("show");
-}
 /**
  * 全局变量的配置
  */
@@ -8,7 +5,7 @@ var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
     /**静态服务文件上传地址 */
-    fileloadPath: "/",
+    fileUploadPath: "/",
     /**后台服务地址 */
     serverPath: "/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
@@ -133,7 +130,7 @@ function data_tpFilter(permCheck) {
     }
 }
 
-//hurx
+//切换岗位
 function changeStaffOrg(staffOrgId) {
     App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, menuCallback, null, null, null, false);
 
@@ -200,11 +197,10 @@ function updatePasswd() {
     }
 }
 $("#editPasswd").on('hide.bs.modal',function(e){
-	$('#passwdForm').bootstrapValidator('resetForm', true);  
+	$('#passwdForm').bootstrapValidator('resetForm', true);
 });
 function changePasswd() {
-    App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),
-        "GET", null, keyPairCallback, null, null, null, false);
+      App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),"GET", null, keyPairCallback, null, null, null, false);
 
     function keyPairCallback(result) {
         var passwd = $("#passwdForm input[name='passwd']").val();
@@ -331,6 +327,12 @@ function initNotiveTableInfo(){
 			}
 		},
 		"columns": [
+			{"data" : null,"title":"序号","className": "text-center",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#indexNotiveTable").pageStart;
+					return start + meta.row + 1;
+			   	}
+			},
 			{
 				"data": null,
 				"title": "公告标题",
@@ -408,7 +410,7 @@ function viewNotify(notifyId) {
 				$("#notiveFileList").append(html);
 			});
 		}else{
-			var html = '<p>暂无公告文件</p>'
+			var html = '<p>暂无公告附件</p>'
 			$("#notiveFileList").append(html);
 		}
 	};
@@ -416,6 +418,12 @@ function viewNotify(notifyId) {
 	function saveNotifyRead(){
 		getIndexNotiveTableInfo();
 	}
+}
+/*
+ * 支撑modal打开
+ */
+function appSupportShow(){
+	$("#appSupport").modal("show");
 }
 /*
  * 全屏实现

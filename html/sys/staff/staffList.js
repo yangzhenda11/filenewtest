@@ -19,6 +19,7 @@ $(function() {
                 "url": parent.globalConfig.serverPath + 'staffs/',
                 "data": function(d) {
                     d.sysOrgId = parent.globalConfig.curCompanyId;
+                    d.staffOrgId = parent.globalConfig.curStaffOrgId;
                     d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
                     var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();

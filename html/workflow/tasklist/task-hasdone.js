@@ -78,8 +78,8 @@ function getTableForDone(){
 }
 // 查询
 function serarchForDone(retainPaging){
-	var startDateForDone = $('#startDateForDone').val().trim();
-	var endDateForDone = $('#endDateForDone').val().trim();
+	var startDateForDone = $('#startDateForDone').val();
+	var endDateForDone = $('#endDateForDone').val();
 	if(!checkDate(startDateForDone,endDateForDone)){
 		layer.msg("送出开始日期不得大于截止日期！");
 		return;

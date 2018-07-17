@@ -21,8 +21,8 @@ function initFrame(){
 }
 // 查询
 function serarchForToDo(retainPaging){
-	var startDate = $('#startDate').val().trim();
-	var endDate = $('#endDate').val().trim();
+	var startDate = $('#startDate').val();
+	var endDate = $('#endDate').val();
 	if(!checkDate(startDate,endDate)){
 		layer.msg("接收开始日期不得大于截止日期！");
 		return;

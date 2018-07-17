@@ -1057,7 +1057,8 @@ if (typeof jQuery === 'undefined') {
                 if ($tabPane && (tabId = $tabPane.attr('id'))) {
                     $tab = $('a[href="#' + tabId + '"][data-toggle="tab"]').parent();
                 }
-
+//				console.log(status);
+//				console.log(this)
                 switch (status) {
                     case this.STATUS_VALIDATING:
                         isValidField = null;
@@ -1089,6 +1090,9 @@ if (typeof jQuery === 'undefined') {
                                      ? ($allErrors.filter('[data-bv-result="' + this.STATUS_VALID +'"]').length === $allErrors.length)  // All validators are completed
                                      : null;                                                                                            // There are some validators that have not done
                         if (isValidField !== null) {
+//                      	console.log(10)
+//                      	console.log(this.isValid());
+//                      	console.log(isValidField)
                             this.disableSubmitButtons(this.$submitButton ? !this.isValid() : !isValidField);
                             if ($icon) {
                                 $icon
@@ -1528,6 +1532,7 @@ if (typeof jQuery === 'undefined') {
          * @returns {BootstrapValidator}
          */
         resetForm: function(resetValue) {
+        	//console.log(resetValue);
             for (var field in this.options.fields) {
                 this.resetField(field, resetValue);
             }
@@ -1687,7 +1692,6 @@ if (typeof jQuery === 'undefined') {
                     }
                 }
             }
-
             this.disableSubmitButtons(false);   // Enable submit buttons
             this.$hiddenButton.remove();        // Remove the hidden button
 

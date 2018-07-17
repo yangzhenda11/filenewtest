@@ -67,7 +67,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!--  <div class="form-group col-sm-11" id="rolePerm">
                             <label class="control-label" for="roleDesc">角色权限</label>
                             <div class="col-sm-9" id="rolePermissions" style="max-height: 150px;overflow: auto;">
@@ -84,21 +83,16 @@
         </div>
     </div>
     <div id="modalDetail">
-        <div class="modal-dialog defaultModalWidth" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">角色信息</h4>
                 </div>
                 <div class="modal-body" id="roleDeatilModal">
-                    <!-- <ul class="nav nav-tabs modalDetailTab">
-                        <li class="active">
-                            <a href="#roleInfo" data-toggle="tab">角色信息</a>
-                        </li>
-                    </ul> -->
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="roleInfo">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" style="padding-top: 30px;padding-left: 30px;">
                                 <div class="col-sm-12">
                                     <div class="col-sm-4 form-control-static align-right">角色名称：</div>
                                     <div class="col-sm-8 form-control-static" name="roleName"></div>
@@ -128,7 +122,7 @@
                             <div class="col-sm-6">
                                 <div class="col-sm-12 align-left form-control-static">角色拥有的权限：</div>
                                 <div class="col-sm-12">
-                                    <div id="rolePermissionDetailTreeCon" class="col-sm-8 form-control-static" style="max-height: 264px;overflow: auto;">
+                                    <div id="rolePermissionDetailTreeCon" class="col-sm-8 form-control-static" style="overflow: auto;border: 1px solid #efefef;border-radius: 5px;">
                                         <ul id="rolePermissionDetailTree" class="ztree" style="padding-top: 0;"></ul>
                                     </div>
                                 </div>

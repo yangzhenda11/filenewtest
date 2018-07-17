@@ -1,6 +1,3 @@
-function appSupportShow(){
-	$("#appSupport").modal("show");
-}
 /**
  * 全局变量的配置
  */
@@ -98,9 +95,9 @@ $(document).ready(function() {
 	            globalConfig.loginSwitchSuccess = 1;
 	        }
 	    }
-	    //消息定时器，20s查询一次
+	    //消息定时器
     	setMessageTipNumber();
-      	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space);
+      	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space*60000);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
         //请求用户信息成功后加载公告列表
@@ -133,7 +130,7 @@ function data_tpFilter(permCheck) {
     }
 }
 
-//hurx
+//切换岗位
 function changeStaffOrg(staffOrgId) {
     App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, menuCallback, null, null, null, false);
 
@@ -200,11 +197,10 @@ function updatePasswd() {
     }
 }
 $("#editPasswd").on('hide.bs.modal',function(e){
-	$('#passwdForm').bootstrapValidator('resetForm', true);  
+	$('#passwdForm').bootstrapValidator('resetForm', true);
 });
 function changePasswd() {
-    App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),
-        "GET", null, keyPairCallback, null, null, null, false);
+      App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),"GET", null, keyPairCallback, null, null, null, false);
 
     function keyPairCallback(result) {
         var passwd = $("#passwdForm input[name='passwd']").val();
@@ -331,6 +327,12 @@ function initNotiveTableInfo(){
 			}
 		},
 		"columns": [
+			{"data" : null,"title":"序号","className": "text-center",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#indexNotiveTable").pageStart;
+					return start + meta.row + 1;
+			   	}
+			},
 			{
 				"data": null,
 				"title": "公告标题",
@@ -416,6 +418,12 @@ function viewNotify(notifyId) {
 	function saveNotifyRead(){
 		getIndexNotiveTableInfo();
 	}
+}
+/*
+ * 支撑modal打开
+ */
+function appSupportShow(){
+	$("#appSupport").modal("show");
 }
 /*
  * 全屏实现

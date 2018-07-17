@@ -1,8 +1,9 @@
-var serverPath = parent.globalConfig.serverPath;
+var globalConfig = parent.globalConfig;
+var serverPath = globalConfig.serverPath;
 $(function() {
     var cloudSwitch;
     //查询云门户开关参数
-    App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
+    App.formAjaxJson(serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
 
     function ajaxSuccess(result) {
         cloudSwitch = result.sysConfig.val;
@@ -14,9 +15,11 @@ $(function() {
         App.initDataTables('#staffSearchOnlyTable', "#searchBtn",{
             ajax: {
                 "type": "GET",
-                "url": parent.globalConfig.serverPath + 'staffs/', //请求路径
+                "url": serverPath + 'staffs/', //请求路径
                 "data": function(d) { // 查询参数
-                    d.sysOrgId = parent.globalConfig.curCompanyId;
+                    d.sysOrgId = globalConfig.curCompanyId;
+                    d.staffOrgId = globalConfig.curStaffOrgId;
+                    d.mainOrgFlag = globalConfig.mainOrgFlag;
                     d.staffName = $("input[name='staffName']", $('#searchOnlyStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchOnlyStaffForm')).val();
                     var orgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();
@@ -31,6 +34,12 @@ $(function() {
                 }
             },
             "columns": [
+            	{"data" : null,"title":"序号","className": "text-center",
+					"render" : function(data, type, full, meta){
+						var start = App.getDatatablePaging("#staffSearchOnlyTable").pageStart;
+						return start + meta.row + 1;
+				   	}
+				},
                 {
                     "data": null,
                     "title": "人员姓名",
@@ -117,7 +126,7 @@ function showStaffDetail(staffId,staffOrgId) {
         //$("#staffDetailId").val(staffId);
 
         $('#infoModal').modal({ show: true, backdrop: 'static' });
-        App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
+        App.formAjaxJson(serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
         /**成功回调函数 */
         function ajaxSuccess(result) {
             /**根据返回结果给表单赋值 */
@@ -264,7 +273,7 @@ function searchPersonnel(resetPaging) {
 }
 
 function getStaffSearch_OrgTree(obj) {
-    selectOrgTree('staffSearch_OrgTree', obj, parent.globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
+    selectOrgTree('staffSearch_OrgTree', obj, globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
 }
 
 function getStaffSearch_OrgTreeId(orgId, orgName, orgCode) {

@@ -33,12 +33,14 @@ function initNotiveTable(){
 				return d;
 			}
 		},
-		"columns": [{"data" : null,"title":"序号","className": "text-center","bVisible": !isShow,
+		"columns": [
+				{"data" : null,"title":"序号","className": "text-center","bVisible": !isShow,
 					"render" : function(data, type, full, meta){
 						var start = App.getDatatablePaging("#notiveTable").pageStart;
 						return start + meta.row + 1;
 				   	}
-				},{
+				},
+				{
 				"data": null,
 				"className": "text-center",
 				"title": "操作",
@@ -118,11 +120,18 @@ function initNotiveTable(){
  * 搜索点击事件
  */
 function searchNotiveTable(retainPaging) {
-	var table = $('#notiveTable').DataTable();
-	if(retainPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
+	var startDateForDone = $('#submitDateA').val();
+	var endDateForDone = $('#submitDateZ').val();
+	if(!checkDate(startDateForDone,endDateForDone)){
+		layer.msg("发布开始日期不得大于截止日期！");
+		return;
+	}else{
+		var table = $('#notiveTable').DataTable();
+		if(retainPaging){
+			table.ajax.reload();
+		}else{
+			table.ajax.reload(null, false);
+		}
 	}
 }
 /*
@@ -282,7 +291,7 @@ function notiveSubmit(){
     	}else{
     		var url = serverPath +"notifyController/saveNotify";
     	}
-		App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
+		//App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
 		function successCallback(result){
 			searchNotiveTable(true);
 			$("#modal").modal("hide");
@@ -295,7 +304,8 @@ function notiveSubmit(){
 		}
 	}else{
 		layer.msg("请填写公告内容");
-		$('#notiveModalForm').data('bootstrapValidator').resetForm();
+		$('#notiveModalForm').bootstrapValidator('resetForm');
+		$('#notiveModalForm').data('bootstrapValidator').validate();
 	}
 }
 function setsubmitType(type){
@@ -439,4 +449,17 @@ function validate(){
 		e.preventDefault();
 		notiveSubmit();
 	});
+}
+/**
+ * 校验开始时间是否大于截止时间
+ * */
+function checkDate(strDate1,strDate2){  
+    var t1 = new Date(strDate1);     
+    var t2 = new Date(strDate2);    
+              
+    if(Date.parse(t1) - Date.parse(t2) > 0){     
+        return false;   
+    }else{  
+        return true;  
+    }  
 }

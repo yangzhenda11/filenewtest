@@ -24,7 +24,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 				return start + meta.row + 1;
 		   	}
 		},
-        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"14%"},
+        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"16%"},
         {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"13%"},
         {"data": "executeDeptName","title": "承办部门","className":"whiteSpaceNormal","width":"10%"},
 //      {"data": "undertakerId","bVisible":false,"title": "承办人"},
@@ -34,7 +34,7 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
 //      {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
         {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"},
 //		{"data": "id","bVisible":false,"title": "id"},
-        {"data": "approveDate","title": "审批通过日期","className":"whiteSpaceNormal","width":"10%",
+        {"data": "approveDate","title": "审批通过日期","className":"whiteSpaceNormal","width":"8%",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }

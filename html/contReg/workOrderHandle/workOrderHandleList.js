@@ -72,7 +72,6 @@ function searchWorkOrderHandle(retainPaging) {
 	}
 	
 }
-
 function manualCreation(){
 	$("#manualCreationEditModal").load("_manualCreationEdit.html",function(){
 		$("#manualCreationEditModal").modal("show");

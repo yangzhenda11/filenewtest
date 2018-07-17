@@ -1,4 +1,5 @@
-var serverPath = parent.globalConfig.serverPath;
+var globalConfig = parent.globalConfig;
+var serverPath = globalConfig.serverPath;
 
 $(function() {
     // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
@@ -6,7 +7,7 @@ $(function() {
     // });
     var cloudSwitch;
     //查询云门户开关参数
-    App.formAjaxJson(parent.globalConfig.serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
+    App.formAjaxJson(serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
 
     function ajaxSuccess(result) {
         cloudSwitch = result.sysConfig.val;
@@ -16,10 +17,11 @@ $(function() {
         App.initDataTables('#staffSearchTable',"#searchBtn", {
             ajax: {
                 "type": "GET",
-                "url": parent.globalConfig.serverPath + 'staffs/',
+                "url": serverPath + 'staffs/',
                 "data": function(d) {
-                    d.sysOrgId = parent.globalConfig.curCompanyId;
-                    d.staffOrgId = parent.globalConfig.curStaffOrgId;
+                    d.sysOrgId = globalConfig.curCompanyId;
+                    d.staffOrgId = globalConfig.curStaffOrgId;
+                    d.mainOrgFlag = globalConfig.mainOrgFlag;
                     d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
                     d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
                     var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
@@ -201,7 +203,7 @@ function showStaffDetail(staffId,staffOrgId) {
         //$("#staffDetailId").val(staffId);
 
         $('#infoModal').modal({ show: true, backdrop: 'static' });
-        App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
+        App.formAjaxJson(serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
         /**成功回调函数 */
         function ajaxSuccess(result) {
             /**根据返回结果给表单赋值 */
@@ -347,7 +349,7 @@ function returnStaffList() {
 //      App.initDataTables('#searchStaffOrgTable',  {
 //	        ajax: {
 //	            "type": "GET",
-//	            "url": parent.globalConfig.serverPath + 'staffs/' + staffId + '/staffOrgs'
+//	            "url": serverPath + 'staffs/' + staffId + '/staffOrgs'
 //	        },
 //	        "columns": [ // 对应列
 //	            {
@@ -445,7 +447,7 @@ function staffOrgRoleManage(staffOrgId, orgName) {
         // $("#havingRoles").empty();
         // $("#notHavingRoles").empty();
         $('#roleModal').modal({ show: true, backdrop: 'static' });
-        App.formAjaxJson(parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrgs/" + parent.globalConfig.curStaffOrgId + "/staffRoles/" + staffOrgId, "GET", null, ajaxSuccess);
+        App.formAjaxJson(serverPath + "staffs/" + globalConfig.curStaffId + "/staffOrgs/" + globalConfig.curStaffOrgId + "/staffRoles/" + staffOrgId, "GET", null, ajaxSuccess);
 
         function ajaxSuccess(result) {
             var havingRoles = result.data.havingRoles;
@@ -512,8 +514,8 @@ function saveStaffOrgRoles() {
     //var all = "";
     var result = selectL2R.getResult('#selectL2R-ul').toString();
     var staffOrgId = $("#selectedStaffOrgId").val();
-    var obj = { "roleIds": result, "staffOrgId": staffOrgId, "createBy": parent.globalConfig.curStaffId };
-    var url = serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrgs/" + staffOrgId + "/staffRoles?t=" + App.timestamp();
+    var obj = { "roleIds": result, "staffOrgId": staffOrgId, "createBy": globalConfig.curStaffId };
+    var url = serverPath + "staffs/" + globalConfig.curStaffId + "/staffOrgs/" + staffOrgId + "/staffRoles?t=" + App.timestamp();
     App.formAjaxJson(url, "PUT", JSON.stringify(obj), successCallback);
 	function successCallback(result){
 		layer.msg("保存成功!");
@@ -569,14 +571,14 @@ function saveStaffOrgRoles() {
  * @param {状态} staffOrgStatus 
  */
 function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
-    var obj = { "staffOrgId": staffOrgId, "updateBy": parent.globalConfig.curStaffId };
+    var obj = { "staffOrgId": staffOrgId, "updateBy": globalConfig.curStaffId };
     if ('1' === staffOrgStatus) {
         layer.confirm("确认启用岗位:" + orgName + "吗？", {
             btn: ['启用', '取消'],
             icon: 0,
             skin: 'layer-ext-moon'
         }, function() {
-        	App.formAjaxJson(serverPath + 'staffs/' + parent.globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus, "PUT", JSON.stringify(obj), successCallback);
+        	App.formAjaxJson(serverPath + 'staffs/' + globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus, "PUT", JSON.stringify(obj), successCallback);
         });
     } else {
         layer.confirm("确认禁用岗位:" + orgName + "吗？", {
@@ -584,7 +586,7 @@ function changeStaffOrgStatus(staffOrgId, orgName, staffOrgStatus) {
             icon: 0,
             skin: 'layer-ext-moon'
         }, function() {
-        	App.formAjaxJson(serverPath + 'staffs/' + parent.globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus, "PUT", JSON.stringify(obj), successCallback);
+        	App.formAjaxJson(serverPath + 'staffs/' + globalConfig.curStaffId + "/staffOrgStatus/" + staffOrgStatus, "PUT", JSON.stringify(obj), successCallback);
         });
     }
     function successCallback(result) {
@@ -625,7 +627,7 @@ function goStaffEdit(staffId,staffOrgId) {
  * 获取人员信息详情
  */
 function getInfor(staffId,staffOrgId) {
-    App.formAjaxJson(parent.globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "get", "", successCallback);
+    App.formAjaxJson(globalConfig.serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "get", "", successCallback);
     function successCallback(result) {
         var data = result.data;
         setEditForm(data);
@@ -651,7 +653,7 @@ function checkLoginNameFun(){
 	if('' == loginName){
 		return;
 	}
-	App.formAjaxJson(parent.globalConfig.serverPath + "staffs/checkLoginName/" + loginName, "get", "", successCallback, null, null, null, false);
+	App.formAjaxJson(globalConfig.serverPath + "staffs/checkLoginName/" + loginName, "get", "", successCallback, null, null, null, false);
 	function successCallback(result) {
 		console.log(result.data);
         if (result.data==null) {
@@ -693,7 +695,7 @@ function validate(editType) {
                             callback: function(value, validator, $field) {
                                 var flag = true;
                                 if (value != "") {
-                                    App.formAjaxJson(parent.globalConfig.serverPath + "staffs/checkLoginName/" + value, "get", "", successCallback, null, null, null, false);
+                                    App.formAjaxJson(serverPath + "staffs/checkLoginName/" + value, "get", "", successCallback, null, null, null, false);
                                 }
 
                                 function successCallback(result) {
@@ -991,7 +993,7 @@ function dateRegNameChose() {
     $("#orgNameIn").on("click", function() {
         showTree('orgNameIn');
     });
-    App.formAjaxJson(parent.globalConfig.serverPath + "orgs/" + parent.globalConfig.curCompanyId + "/orgTree", "get", "", successCallback);
+    App.formAjaxJson(serverPath + "orgs/" + globalConfig.curCompanyId + "/orgTree", "get", "", successCallback);
 
     function successCallback(result) {
         var data = result.data;
@@ -1074,9 +1076,9 @@ function onClick(event, treeId, treeNode) {
  */
 function zTreeBeforeAsync(treeId, treeNode) {
     if (treeId == "organisationTree") {
-        organisationTree.setting.async.url = parent.globalConfig.serverPath + "orgs/" + treeNode.orgId + "/children";
+        organisationTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
     } else if (treeId == "orgName") {
-        orgNameTree.setting.async.url = parent.globalConfig.serverPath + "orgs/" + treeNode.orgId + "/children";
+        orgNameTree.setting.async.url = serverPath + "orgs/" + treeNode.orgId + "/children";
     }
     return true;
 }
@@ -1103,7 +1105,7 @@ function hideMenu(dom) {
 function updateInnalPersonnel(editType) {
 	var formObj = App.getFormValues($("#staffForm"));
     var ms = "新增成功";
-    var url = parent.globalConfig.serverPath + "staffs/addStaff";
+    var url = serverPath + "staffs/addStaff";
     var pushType = "POST";
     if (editType == "add") {
     	if(!checkLoginNameFun()){
@@ -1113,16 +1115,16 @@ function updateInnalPersonnel(editType) {
            	});
 			return;
     	}
-        formObj.createBy = parent.globalConfig.curStaffId;
-        formObj.updateBy = parent.globalConfig.curStaffId;
+        formObj.createBy = globalConfig.curStaffId;
+        formObj.updateBy = globalConfig.curStaffId;
         formObj.orgId = $("#orgNameIn").data("id");
         formObj.staffKind = 1;
         delete formObj.staffId;
     } else {
-        formObj.updateBy = parent.globalConfig.curStaffId;
+        formObj.updateBy = globalConfig.curStaffId;
         formObj.orgId = $("#orgNameIn").data("id");
         ms = "修改成功";
-        url = parent.globalConfig.serverPath + "staffs/updateStaff";
+        url = serverPath + "staffs/updateStaff";
         pushType = "PUT";
     }
     App.formAjaxJson(url, pushType, JSON.stringify(formObj), successCallback, improperCallbacks);
@@ -1152,7 +1154,7 @@ function searchPersonnel(resetPaging) {
  * 条件查询查询组织
  */
 function getStaffSearch_OrgTree(obj) {
-    selectOrgTree('staffSearch_OrgTree', obj, parent.globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
+    selectOrgTree('staffSearch_OrgTree', obj, globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
 
     function getStaffSearch_OrgTreeId(orgId, orgName, orgCode) {
         $("input[name='orgName']", $('#searchStaffForm')).val(orgName);
@@ -1191,7 +1193,7 @@ function goAddStaffOrg(staffId) {
                             callback: function(value, validator, $field) {
                                 var flag = true;
                                 if (value != "") {
-                                    var url = parent.globalConfig.serverPath + "staffs/staffOrgOrgId";
+                                    var url = serverPath + "staffs/staffOrgOrgId";
                                     var staffId = $("input[name='staffId']", $('#addStaffOrgForm')).val();
                                     var staffOrgId = $("input[name='staffOrgId']", $('#addStaffOrgForm')).val();
                                     var orgId = $("input[name='orgId']", $('#addStaffOrgForm')).val();
@@ -1235,7 +1237,7 @@ function permissionConfiguration(staffOrgId) {
 }
 //获取配置信息
 function getPermission(staffOrgId){
-    App.formAjaxJson(parent.globalConfig.serverPath +'staffs/staffOrgId' + staffOrgId, "get", "", successCallback);
+    App.formAjaxJson(serverPath +'staffs/staffOrgId' + staffOrgId, "get", "", successCallback);
     function successCallback(result) {
         var data = result.data;
         if(data){
@@ -1251,11 +1253,11 @@ function getPermission(staffOrgId){
 //权限配置保存
 function savePermission1(){
 	var dataPermType = $("input[name='dataPermType']:checked").val();
-	var createdBy = parent.globalConfig.curStaffId;
-	var updatedBy = parent.globalConfig.curStaffId;
+	var createdBy = globalConfig.curStaffId;
+	var updatedBy = globalConfig.curStaffId;
 	var staffOrgId = $("#modalStaffOrgId").val();
     var obj = { "staffOrgId": staffOrgId, "dataPermType":dataPermType,"createdBy":createdBy,"updatedBy":updatedBy};
-    var url = parent.globalConfig.serverPath + "staffs/addPermission";
+    var url = serverPath + "staffs/addPermission";
     App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
 	function successCallback(result){
 		layer.msg("配置成功!");
@@ -1264,10 +1266,10 @@ function savePermission1(){
 }
 function savePermission2(){
 	var dataPermType = $("input[name='dataPermType']:checked").val();
-	var updatedBy = parent.globalConfig.curStaffId;
+	var updatedBy = globalConfig.curStaffId;
 	var staffOrgId = $("#modalStaffOrgId").val();
     var obj = { "staffOrgId": staffOrgId, "dataPermType":dataPermType,"updatedBy":updatedBy};
-    var url = parent.globalConfig.serverPath + "staffs/updatePermission";
+    var url = serverPath + "staffs/updatePermission";
     App.formAjaxJson(url, "PUT", JSON.stringify(obj), successCallback);
 	function successCallback(result){
 		layer.msg("配置成功!");
@@ -1280,7 +1282,7 @@ function savePermission2(){
  * 
  */
 function addStaffOrg_OrgTree(obj) {
-    //selectOrgTree('staffOrgAdd_OrgTree', obj, parent.globalConfig.curCompanyId, addStaffOrg_Callback, '', '1', '400', '300');
+    //selectOrgTree('staffOrgAdd_OrgTree', obj, globalConfig.curCompanyId, addStaffOrg_Callback, '', '1', '400', '300');
     //196606 为中国联通
     selectOrgTree('staffOrgAdd_OrgTree', obj, 196606, addStaffOrg_Callback, '', '1', '400', '300');
 
@@ -1301,13 +1303,13 @@ function addStaffOrg(editType) {
     //debugger;
     var formObj = App.getFormValues($("#addStaffOrgForm"));
     var ms = "新增成功";
-    var url = parent.globalConfig.serverPath + "staffs/" + parent.globalConfig.curStaffId + "/staffOrg/";
+    var url = serverPath + "staffs/" + globalConfig.curStaffId + "/staffOrg/";
     var pushType = "POST";
     if (editType == "add") {
-        formObj.createBy = parent.globalConfig.curStaffId;
-        formObj.updateBy = parent.globalConfig.curStaffId;
+        formObj.createBy = globalConfig.curStaffId;
+        formObj.updateBy = globalConfig.curStaffId;
     } else {
-        formObj.updateBy = parent.globalConfig.curStaffId;
+        formObj.updateBy = globalConfig.curStaffId;
         ms = "修改成功";
         pushType = "PUT";
     }
@@ -1360,7 +1362,7 @@ function goEditStaffOrg(staffId, staffOrgId) {
         $("#modal").modal("show");
         $("input[name='staffId']", $('#addStaffOrgForm')).val(staffId);
         $("input[name='staffOrgId']", $('#addStaffOrgForm')).val(staffOrgId);
-        App.formAjaxJson(parent.globalConfig.serverPath + "staffs/" + staffId + '/staffOrg/' + staffOrgId, "get", "", successCallback);
+        App.formAjaxJson(serverPath + "staffs/" + staffId + '/staffOrg/' + staffOrgId, "get", "", successCallback);
 
         function successCallback(result) {
             debugger;
@@ -1390,7 +1392,7 @@ function goEditStaffOrg(staffId, staffOrgId) {
                                 var orgId = $("input[name='orgId']", $('#addStaffOrgForm')).val();
                                 var flag = true;
                                 if (value != "") {
-                                    var url = parent.globalConfig.serverPath + "staffs/staffOrgOrgId";
+                                    var url = serverPath + "staffs/staffOrgOrgId";
                                     App.formAjaxJson(url, 'GET', { 'staffId': staffId, 'orgId': orgId, 'staffOrgId': staffOrgId }, successCallback, null, null, null, false);
                                 }
 

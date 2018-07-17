@@ -120,11 +120,18 @@ function initNotiveTable(){
  * 搜索点击事件
  */
 function searchNotiveTable(retainPaging) {
-	var table = $('#notiveTable').DataTable();
-	if(retainPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
+	var startDateForDone = $('#submitDateA').val();
+	var endDateForDone = $('#submitDateZ').val();
+	if(!checkDate(startDateForDone,endDateForDone)){
+		layer.msg("发布开始日期不得大于截止日期！");
+		return;
+	}else{
+		var table = $('#notiveTable').DataTable();
+		if(retainPaging){
+			table.ajax.reload();
+		}else{
+			table.ajax.reload(null, false);
+		}
 	}
 }
 /*
@@ -442,4 +449,17 @@ function validate(){
 		e.preventDefault();
 		notiveSubmit();
 	});
+}
+/**
+ * 校验开始时间是否大于截止时间
+ * */
+function checkDate(strDate1,strDate2){  
+    var t1 = new Date(strDate1);     
+    var t2 = new Date(strDate2);    
+              
+    if(Date.parse(t1) - Date.parse(t2) > 0){     
+        return false;   
+    }else{  
+        return true;  
+    }  
 }

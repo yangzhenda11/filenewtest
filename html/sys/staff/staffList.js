@@ -1,10 +1,19 @@
+//全局变量
 var globalConfig = parent.globalConfig;
 var serverPath = globalConfig.serverPath;
+//权限控制
+parent.data_permFilter(document);
+var staffeditFilter = parent.data_tpFilter("sys:staff:staffedit");		//人员编辑
+var orgaddFilter = parent.data_tpFilter("sys:staff:orgadd");			//岗位新增
+var orgchangeFilter = parent.data_tpFilter("sys:staff:orgchange");		//岗位调整
+var orgdeleteFilter = parent.data_tpFilter("sys:staff:orgdelete");		//岗位删除
+var resetpwdFilter = parent.data_tpFilter("sys:staff:resetpwd");		//重置密码
+var roleallotFilter = parent.data_tpFilter("sys:staff:roleallot");		//角色分配
+var rolecopyFilter = parent.data_tpFilter("sys:staff:rolecopy");		//角色复制
+var dataauthFilter = parent.data_tpFilter("sys:staff:dataauth");		//数据权限
+var enableFilter = parent.data_tpFilter("sys:staff:enable");			//人员启用禁用
 
 $(function() {
-    // $("input[name='staffName']", $("#searchStaffForm")).click(function() {
-    //     App.getCommonModal("staff", "#searchStaffName", "orgName", ["staffId", "staffOid"]);
-    // });
     var cloudSwitch;
     //查询云门户开关参数
     App.formAjaxJson(serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
@@ -39,30 +48,47 @@ $(function() {
                 {
                     data: null,
                     className: "text-center",
-                    width: "35%",
+                    width: "5%",
                     title: "操作",
                     render: function(a, b, c, d) {
                         if (c) {
                             var btnArray = new Array();
-                            //    btnArray.push({ "name": "查看", "fn": "showStaffDetail(\'" + c.STAFF_ID + "\')" });
                             if (cloudSwitch == 1) {
                                 if (c.STAFF_ORG_TYPE == 'F') {
-                                    btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')"  });
-                                    btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
+                                	if(staffeditFilter){
+                                		btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')"  });
+                                	};
+                                    if(orgaddFilter){
+                                		btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
+                                	};
                                 } else {
-                                    btnArray.push({ "name": "调整", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
-                                    btnArray.push({ "name": "删除岗位", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                	if(orgchangeFilter){
+                                		btnArray.push({ "name": "调整", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                	};
+                                    if(orgdeleteFilter){
+                                		btnArray.push({ "name": "删除岗位", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                                	};
                                 }
-                            }
-                            btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
-                            btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
-                            btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
-                            btnArray.push({ "name": "数据权限", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
-                            if ("1" == c.STAFF_ORG_STATUS) {
-                                btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0,\'" + c.ORG_NAME + "\')" });
-                            } else {
-                                btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',1,\'" + c.ORG_NAME + "\')" });
-                            }
+                            };
+                            if(resetpwdFilter){
+                            	btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
+                            };
+                            if(roleallotFilter){
+                            	btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
+                            };
+                            if(rolecopyFilter){
+                            	 btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
+                            };
+                            if(dataauthFilter){
+                            	btnArray.push({ "name": "数据权限", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
+                            };
+                            if(enableFilter){
+                            	if ("1" == c.STAFF_ORG_STATUS) {
+	                                btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0,\'" + c.ORG_NAME + "\')" });
+	                            } else {
+	                                btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',1,\'" + c.ORG_NAME + "\')" });
+	                            }
+                            };
                             return App.getDataTableBtn(btnArray);
                         } else {
                             return '';
@@ -1365,7 +1391,6 @@ function goEditStaffOrg(staffId, staffOrgId) {
         App.formAjaxJson(serverPath + "staffs/" + staffId + '/staffOrg/' + staffOrgId, "get", "", successCallback);
 
         function successCallback(result) {
-            debugger;
             var data = result.data;
             if (null == data) {
                 layer.msg("没有查到岗位信息", { icon: 2 });

@@ -57,7 +57,7 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon">人员状态</span>
-										<select class="form-control" name="staffStatus" data-placeholder="人员状态">
+										<select class="form-control select2me" name="staffStatus" data-placeholder="人员状态">
 											<option value="" selected="selected">全部</option>
 											<option value="1">有效</option>
 											<option value="0">无效</option>
@@ -73,7 +73,7 @@
 								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon">岗位类别</span>
-										<select class="form-control" name="staffOrgType" data-placeholder="人员状态">
+										<select class="form-control select2me" name="staffOrgType" data-placeholder="人员状态">
 											<option value="" selected="selected">全部</option>
 											<option value="F">主岗</option>
 											<option value="T">兼岗</option>
@@ -97,7 +97,7 @@
 						</form>
 					</div>
 					<div class="toolbars" id="addBtn" style="display: none">
-						<button type="button" class="btn red" onclick="addStaffModal();"><i class="iconfont icon-add"></i>  新增</button>
+						<button type="button" class="btn red hidden" data-permcheck="sys:staff:staffadd" onclick="addStaffModal();"><i class="iconfont icon-add"></i>  新增</button>
 					</div>
 					<table id="staffSearchTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 				</div>

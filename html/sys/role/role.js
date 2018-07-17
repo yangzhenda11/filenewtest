@@ -3,17 +3,17 @@ var config = parent.globalConfig;
 var serverPath = config.serverPath;
 var rolePermissionTree; //权限树
 var orgNameTree; //组织树
-$(function() {
-    parent.data_permFilter(document);
+////页面权限控制
+parent.data_permFilter(document);
+var roleUpdate = parent.data_tpFilter("sys:role:update");
+var roleDelete = parent.data_tpFilter("sys:role:delete");
+$(function() { 
     getRoleTable();
     provinceCodeTree();
 })
 /*
- * 查询到角色列表
+ * 适用范围选择加载
  */
-var roleUpdate = parent.data_tpFilter("sys:role:update");
-var roleDelete = parent.data_tpFilter("sys:role:delete");
-
 function provinceCodeTree() {
     var ajaxObj = {
         "url": serverPath + "roles/listRoleSphere",
@@ -23,7 +23,9 @@ function provinceCodeTree() {
     }
     App.initAjaxSelect2("#provCode", ajaxObj, "provCode", "provName", "请选择省分编码");
 }
-
+/*
+ * 查询到角色列表
+ */
 function getRoleTable() {
     App.initDataTables('#searchRoleTable', "#submitBtn", {
         "ajax": {
@@ -32,7 +34,6 @@ function getRoleTable() {
             "data": function(d) { // 查询参数
                 d.roleName = $('#sysRoleName').val();
                 d.provCode = $("#provCode").val();
-                d.roleBaseTypeCode = $("#roleBaseTypeCode").val();
                 d.staffOrgId = config.curStaffOrgId;
                 d.companyId = config.curCompanyId;
                 d.roleStatus = 1;
@@ -170,8 +171,8 @@ function findDetail(itemId) {
     $("#modal").load("_roleModal.html #modalDetail", function() {
         $("#modal").modal("show");
         var documentHeight = $(".page-content").height() - 190;
-		//$("#roleDeatilModal").css("height",documentHeight);
-		//$("#rolePermissionDetailTreeCon").css("max-height",documentHeight-120);
+		$("#roleDeatilModal").css("height",documentHeight);
+		$("#rolePermissionDetailTreeCon").css("height",documentHeight-70);
         getRoleInfo(itemId, "detail");
     });
 }
@@ -312,8 +313,7 @@ function getRoleInfo(id, type) {
             function permsSuccess(result) {
                 if (null != result.data) {
                     var permTree = $.fn.zTree.init($("#rolePermissionDetailTree"), permissionViewSetting, result.data);
-                    var firstTree = permTree.getNodes()[0];
-                    permTree.expandNode(firstTree);
+                    permTree.expandAll(true);
                 } else {
                     $("#rolePermission").text("该角色暂无权限");
                     layer.msg("该角色无相关权限", { icon: 2 });

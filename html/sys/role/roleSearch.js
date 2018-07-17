@@ -3,24 +3,37 @@ var config = parent.globalConfig;
 var serverPath = config.serverPath;
 var rolePermissionTree; //权限树
 var orgNameTree; //组织树
-$(function() {
-        parent.data_permFilter(document);
-        getRoleTable();
-    })
-    /*
-     * 查询到角色列表
-     */
+//页面权限控制
+parent.data_permFilter(document);
 var roleUpdate = parent.data_tpFilter("sys:role:update");
 var roleDelete = parent.data_tpFilter("sys:role:delete");
-
+$(function() {
+    getRoleTable();
+    provinceCodeTree();
+})
+/*
+ * 适用范围选择加载
+ */
+function provinceCodeTree() {
+    var ajaxObj = {
+        "url": serverPath + "roles/listRoleSphere",
+        "type": "post",
+        "data": { id: null },
+        "async": false
+    }
+    App.initAjaxSelect2("#provCode", ajaxObj, "provCode", "provName", "请选择省分编码");
+}
+/*
+ * 查询到角色列表
+ */
 function getRoleTable() {
     App.initDataTables('#searchRoleTable', "#submitBtn", {
         "ajax": {
             "type": "GET",
             "url": serverPath + 'roles/',
-            "data": function(d) { // 查询参数
-                d.roleName = $('#sysRoleName').val();
-                d.orgName = $("#sysOrgName").val();
+            "data": function(d) {
+            	d.roleName = $('#sysRoleName').val();
+                d.provCode = $("#provCode").val();
                 d.staffOrgId = config.curStaffOrgId;
                 d.companyId = config.curCompanyId;
                 d.roleStatus = 1;

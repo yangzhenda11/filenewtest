@@ -95,9 +95,9 @@ $(document).ready(function() {
 	            globalConfig.loginSwitchSuccess = 1;
 	        }
 	    }
-	    //消息定时器，20s查询一次
+	    //消息定时器
     	setMessageTipNumber();
-      	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space);
+      	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space*60000);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
         //请求用户信息成功后加载公告列表

@@ -205,7 +205,7 @@ function changeDictStatus(dictId, dictParentId, dictLabel, dictStatus) {
  */
 function doChangeDictStatus(dictId, dictParentId, dictStatus, index) {
 	if(dictParentId == 0){
-		layer.msg("根节点禁止“启用禁用”操作", {icon: 2});
+		layer.msg("根节点禁止“启用禁用”操作");
 		return false;
 	}else if(dictStatus == 0){
 		var checkTreeLevel = dictTree.getNodeByParam("dictId", dictId).level;
@@ -227,9 +227,7 @@ function postDictChangeStatus(dictId,dictStatus){
 	function successCallback(result) {
 		var ms = dictStatus == "1" ? "启用成功" : "禁用成功";
 		var checkTree = dictTree.getSelectedNodes()[0];
-		layer.msg(ms, {
-			icon: 1
-		});
+		layer.msg(ms);
 		if(checkTree.dictValue == dictValue){
 			if(checkTree.level == 0){
 				curNodeId = dictTree.getNodes()[0].dictValue;

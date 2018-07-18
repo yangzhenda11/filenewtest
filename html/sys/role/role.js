@@ -315,8 +315,7 @@ function getRoleInfo(id, type) {
                     var permTree = $.fn.zTree.init($("#rolePermissionDetailTree"), permissionViewSetting, result.data);
                     permTree.expandAll(true);
                 } else {
-                    $("#rolePermission").text("该角色暂无权限");
-                    layer.msg("该角色无相关权限", { icon: 2 });
+                    $("#rolePermissionDetailTree").text("该角色暂无权限");
                 }
             }
         } else {

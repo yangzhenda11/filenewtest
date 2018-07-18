@@ -97,7 +97,10 @@ function searchRole(retainPaging) {
 function findDetail(itemId) {
     $("#modal").load("_roleModal.html #modalDetail", function() {
         $("#modal").modal("show");
-        getRoleInfo(itemId, "detail");
+        var documentHeight = $(".page-content").height() - 190;
+		$("#roleDeatilModal").css("height",documentHeight);
+		$("#rolePermissionDetailTreeCon").css("height",documentHeight-70);
+        getRoleInfo(itemId);
     });
 }
 /**
@@ -190,40 +193,29 @@ function reset() {
 /*
  * 获取角色信息
  */
-function getRoleInfo(id, type) {
+function getRoleInfo(id) {
     App.formAjaxJson(serverPath + "roles/" + id, "GET", null, successCallback);
 
     function successCallback(result) {
-        if (type == "detail") {
-            /**表单赋值时的回调函数 */
-            var valueCallback = {
-                    'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") },
-                    'isPartnerRole': function(value) { return value == "1" ? "是" : "否" }
-                }
-                /**根据返回结果给表单赋值 */
-            App.setFindValue($("#roleInfo"), result.data, valueCallback);
-
-            /**查询角色拥有的权限集合 */
-            App.formAjaxJson(serverPath + "roles/" + id + "/perms", "GET", null, permsSuccess);
-
-            /**权限查询结束后的回调函数 */
-            function permsSuccess(result) {
-                if (null != result.data) {
-                    var permTree = $.fn.zTree.init($("#rolePermissionDetailTree"), permissionViewSetting, result.data);
-                    var firstTree = permTree.getNodes()[0];
-                    permTree.expandNode(firstTree);
-                } else {
-                    $("#rolePermission").text("该角色暂无权限");
-                    layer.msg("该角色无相关权限", { icon: 2 });
-                }
+        /**表单赋值时的回调函数 */
+        var valueCallback = {
+                'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") },
+                'isPartnerRole': function(value) { return value == "1" ? "是" : "否" }
             }
-        } else {
-            var valueCallback = { 'updateDate': function(value) { return App.formatDateTime(value, "yyyy-mm-dd") } }
-            App.setFormValues($("#roleForm"), result.data, valueCallback);
-            $("#orgNameTree").attr("title", result.data.orgName);
-            $("#orgNameTree").data("orgCode", result.data.orgId);
-            $("#orgNameTree").data("provCode", result.data.provCode);
-            loadPerTree(id);
+            /**根据返回结果给表单赋值 */
+        App.setFindValue($("#roleInfo"), result.data, valueCallback);
+
+        /**查询角色拥有的权限集合 */
+        App.formAjaxJson(serverPath + "roles/" + id + "/perms", "GET", null, permsSuccess);
+
+        /**权限查询结束后的回调函数 */
+        function permsSuccess(result) {
+            if (null != result.data) {
+                var permTree = $.fn.zTree.init($("#rolePermissionDetailTree"), permissionViewSetting, result.data);
+                permTree.expandAll(true);
+            } else {
+                $("#rolePermissionDetailTree").text("该角色暂无权限");
+            }
         }
     }
 }

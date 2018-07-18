@@ -335,6 +335,7 @@ function updateDict(editType,dictId){
 		$('#modal').modal('hide');
 	}
 	function improperCallbacks(result){
+		layer.msg(result.message);
 		$('#externalPersonnelForm').data('bootstrapValidator').resetForm();
 	}
 }

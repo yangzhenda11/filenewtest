@@ -979,6 +979,7 @@ function updateInnalPersonnel(editType) {
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#staffForm').data('bootstrapValidator').resetForm();
     }
 }
@@ -1168,6 +1169,7 @@ function addStaffOrg(editType) {
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#addStaffOrgForm').data('bootstrapValidator').resetForm();
     }
 

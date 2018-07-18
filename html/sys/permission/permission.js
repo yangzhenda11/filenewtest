@@ -158,6 +158,7 @@ function updatePermisson(type) {
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#permissionForm').data('bootstrapValidator').resetForm();
     }
 }

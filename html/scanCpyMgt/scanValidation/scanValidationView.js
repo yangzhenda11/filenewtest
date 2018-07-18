@@ -277,7 +277,8 @@ function getScanValidationInfo(verifyId){
 			getDifferenceRecord(contractId,data.verifyVersion)
 		}
 	}
-	function improperCallback(){
+	function improperCallback(result){
+		layer.msg(result.message);
 		clearInterval(interval1);
 		clearInterval(interval2);
 	}

@@ -191,6 +191,7 @@ function updateOrg(type) {
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#orgForm').data('bootstrapValidator').resetForm();
     }
 }

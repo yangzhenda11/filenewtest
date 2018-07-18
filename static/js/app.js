@@ -750,7 +750,8 @@ var App = function() {
 			var async = asyncs == null ? true : asyncs;
 			var animation = animations == null ? true : animations;
 			var successCallback = successCallbacks == null || successCallbacks == "" ? emptyFn : successCallbacks;
-			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? emptyFn : improperCallbacks;
+			var improperCallback = improperCallbacks == null || improperCallbacks == "" ? null : improperCallbacks;
+			var errorCallback = errorCallbacks == null || errorCallbacks == "" ? null : errorCallbacks;
 			$.ajax({
 				type: type,
 				url: url,
@@ -764,18 +765,19 @@ var App = function() {
 						var result = data;
 						if (result.status == 1) {
 							successCallback(result);
-						} else {
+						} else if(improperCallback){
+							improperCallback(result);
+						}else{
 							var ms = result.message;
 							layer.msg(ms);
-							improperCallback(result);
 						};
 					}else{
 						successCallback("");
 					}
 				},
 				error: function(result) {
-					if(errorCallbacks){
-						errorCallbacks(result);
+					if(errorCallback){
+						errorCallback(result);
 					}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 		        			top.window.location.href = "/login";

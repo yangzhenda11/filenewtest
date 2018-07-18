@@ -625,6 +625,7 @@ table td{
 	margin-top: 20px;
 	color: #767676;
 }
+
 /*
  * 仿input框
  */
@@ -650,3 +651,13 @@ table td{
 .note{
 	margin: 0;
 }
+/*
+ * i标签设置
+ */
+i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i.icon-export,i.icon-shanchu,i.icon-tijiao1,i.icon-chehui,i.icon-arrow-left,i.icon-guanbi{
+	padding-right: 2px;
+    position: relative;
+    top: 2px;
+}
+
+

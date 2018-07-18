@@ -225,6 +225,7 @@ function yourFunction1(ids, names, codes) {
  * @param width  控制下拉框的展示最大宽度 默认:300px
  * @param height 控制下拉框的展示最大高度 默认：200px
  */
+
 function selectStaffTree(serial, parent, orgId, callBackFunc, ifRadio, width, height) {
     new newselectStaff().staffTreeDrop(serial, parent, orgId, callBackFunc, ifRadio, width, height);
 }
@@ -361,11 +362,15 @@ function newselectStaff() {
                                 $("#staffDIV" + serial).css("height", "33px");
                                 $("#staffTrees" + serial).html("没有相关数据！");
                             } else {
-                                $("#staffDIV" + serial).css("max-width", width + "px");
+                                $("#staffDIV" + serial).css("width", width + "px");
                                 $("#staffDIV" + serial).css("max-height", height + "px");
                                 $("#staffDIV" + serial).css("overflow", "auto");
                                 staffTrees = $.fn.zTree.init($("#staffTrees" + serial), staffSetting, data.data);
-                                staffTrees.expandAll(false);
+                                if(staffTrees.getNodes().length == 1){
+							        staffTrees.expandNode(staffTrees.getNodes()[0], true, false, true);
+                                }else{
+	                                staffTrees.expandAll(false);
+                                }
                             }
                         } else {
                             appendAlert('myStaffTreeModal', serial, data.message);

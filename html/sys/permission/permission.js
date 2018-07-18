@@ -106,7 +106,7 @@ function showUpdate() {
         layer.alert("请选择父节点", { icon: 2, title: "修改节点" });
         return;
     } else if (1 == curNode.permId) {
-        layer.alert("跟节点不能修改", { icon: 2, title: "修改节点" });
+        layer.alert("根节点不能修改", { icon: 2, title: "修改节点" });
         return;
     }
     $("#modal").load("_permissionModal.html #modalEdit", function() {

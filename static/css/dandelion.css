@@ -1409,7 +1409,8 @@ div#da-error-wrapper #da-error-code {
 }
 
 div#da-error-wrapper #da-error-code span {
-	font-size: 96px;
+	font-size: 66px;
+	padding-top: 10px;
 	display: block
 }
 

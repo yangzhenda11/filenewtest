@@ -151,7 +151,11 @@ function changeStaffOrg(staffOrgId) {
         }
     }
     function improperCallback(result){
-		layer.alert(result.message,{icon:2,title:"提示"})
+    	if(result.status == 9002){
+    		layer.alert("系统尚未在岗位所在的组织上线，您无法用选择的岗位访问系统",{icon:2,title:"提示"})
+    	}else{
+    		layer.alert(result.message,{icon:2,title:"提示"})
+    	}
     }
 }
 /*

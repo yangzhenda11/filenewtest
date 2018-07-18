@@ -7,8 +7,10 @@ var serverPath = config.serverPath;
 // 组织树对象 当前处理树的node
 var perPermissionTree = null;
 var curNode = null;
+
+var curStatus = "init", curAsyncCount = 0, asyncForAll = false,goAsync = false;
 $(function() {
-      parent.data_permFilter(document);
+    parent.data_permFilter(document);
     var windowHeigth = $(window).height();
     var documentHeight = $(".portlet").outerHeight();
     if (windowHeigth > documentHeight) {
@@ -20,7 +22,6 @@ $(function() {
     App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback)
 
     function successCallback(result) {
-        // debugger
         var zNodes = result.sysPerm;
         perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
         curNode = perPermissionTree.getNodes()[0];
@@ -105,7 +106,7 @@ function showUpdate() {
         layer.alert("请选择父节点", { icon: 2, title: "修改节点" });
         return;
     } else if (1 == curNode.permId) {
-        layer.alert("父节点不能修改", { icon: 2, title: "修改节点" });
+        layer.alert("根节点不能修改", { icon: 2, title: "修改节点" });
         return;
     }
     $("#modal").load("_permissionModal.html #modalEdit", function() {
@@ -157,6 +158,7 @@ function updatePermisson(type) {
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#permissionForm').data('bootstrapValidator').resetForm();
     }
 }
@@ -224,10 +226,14 @@ function refreshTree() {
     App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback);
 
     function successCallback(data) {
-        perPermissionTree.destroy('permTree');
         zNodes = data.sysPerm;
-        perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
-        curNode = perPermissionTree.getNodes()[0];
+		if (!check()) {
+			return;
+		}
+		asyncForAll = false;
+		goAsync = false;
+		perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
+		curNode = perPermissionTree.getNodes()[0];
         perPermissionTree.selectNode(curNode);
         perPermissionTree.expandNode(curNode, true, false, true);
         showPermission(curNode.permId);
@@ -235,21 +241,37 @@ function refreshTree() {
 }
 // 展开所有
 function expandAll() {
-    var nodes = perPermissionTree.getNodes();
-    expandNodes(nodes);
+	if (!check()) {
+		return;
+	}
+	if (asyncForAll) {
+		perPermissionTree.expandAll(true);
+	} else {
+		expandNodes(perPermissionTree.getNodes());
+		if (!goAsync) {
+			curStatus = "";
+		}
+	}
+}
+function expandNodes(nodes) {
+	if (!nodes) return;
+	curStatus = "expand";
+	for (var i=0, l=nodes.length; i<l; i++) {
+		perPermissionTree.expandNode(nodes[i], true, false, false);
+		if (nodes[i].isParent && nodes[i].zAsync) {
+			expandNodes(nodes[i].children);
+		} else {
+			goAsync = true;
+		}
+	}
+}
+function check() {
+	if (curAsyncCount > 0) {
+		return false;
+	}
+	return true;
 }
 
-//展开所有节点及其子节点
-function expandNodes(nodes) {
-    if (!nodes)
-        return;
-    for (var i = 0, l = nodes.length; i < l; i++) {
-        perPermissionTree.expandNode(nodes[i], true, false, false);
-        if (nodes[i].isParent) {
-            expandNodes(nodes[i].children);
-        }
-    }
-}
 // 关闭所有
 function collapseAll() {
     perPermissionTree.expandAll(false);
@@ -280,13 +302,36 @@ var permSetting = {
     },
     callback: {
         beforeAsync: function(treeId, treeNode) {
+        	curAsyncCount++;
             perPermissionTree.setting.async.url = serverPath + "pers/" + treeNode.permId + "/children";
             return true;
         },
         onClick: function(event, treeId, treeNode) {
             curNode = treeNode;
             showPermission(treeNode.permId);
-        }
+        },
+        onAsyncSuccess: function(event, treeId, treeNode, msg) {
+			curAsyncCount--;
+			if (curStatus == "expand") {
+				expandNodes(treeNode.children);
+			} else if (curStatus == "async") {
+				asyncNodes(treeNode.children);
+			}
+	
+			if (curAsyncCount <= 0) {
+				if (curStatus != "init" && curStatus != "") {
+					asyncForAll = true;
+				}
+				curStatus = "";
+			}
+		},
+        onAsyncError: function(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+			curAsyncCount--;
+			if (curAsyncCount <= 0) {
+				curStatus = "";
+				if (treeNode!=null) asyncForAll = true;
+			}
+		}
     }
 };
 // 过滤异步加载ztree时返回的数据

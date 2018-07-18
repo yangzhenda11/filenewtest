@@ -2,7 +2,6 @@
 var globalConfig = parent.globalConfig;
 var serverPath = globalConfig.serverPath;
 //权限控制
-parent.data_permFilter(document);
 var staffeditFilter = parent.data_tpFilter("sys:staff:staffedit");		//人员编辑
 var orgaddFilter = parent.data_tpFilter("sys:staff:orgadd");			//岗位新增
 var orgchangeFilter = parent.data_tpFilter("sys:staff:orgchange");		//岗位调整
@@ -12,130 +11,144 @@ var roleallotFilter = parent.data_tpFilter("sys:staff:roleallot");		//角色分�
 var rolecopyFilter = parent.data_tpFilter("sys:staff:rolecopy");		//角色复制
 var dataauthFilter = parent.data_tpFilter("sys:staff:dataauth");		//数据权限
 var enableFilter = parent.data_tpFilter("sys:staff:enable");			//人员启用禁用
-
+//云门户标志
+var cloudSwitch = null;
 $(function() {
-    var cloudSwitch;
-    //查询云门户开关参数
+    getCloudSwitch();
+    
+})
+/*
+ * 查询云门户开关参数
+ */
+function getCloudSwitch(){
     App.formAjaxJson(serverPath + "configs/" + 13, "GET", null, ajaxSuccess);
-
     function ajaxSuccess(result) {
         cloudSwitch = result.sysConfig.val;
         if (cloudSwitch == 1) {
-            $('#addBtn').show();
+            parent.data_permFilter(document);
+        }else{
+        	$("#addBtn").remove();
         }
-        App.initDataTables('#staffSearchTable',"#searchBtn", {
-            ajax: {
-                "type": "GET",
-                "url": serverPath + 'staffs/',
-                "data": function(d) {
-                    d.sysOrgId = globalConfig.curCompanyId;
-                    d.staffOrgId = globalConfig.curStaffOrgId;
-                    d.mainOrgFlag = globalConfig.mainOrgFlag;
-                    d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
-                    d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
-                    var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
-                    if (null != orgId && '' != orgId) {
-                        d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+    }
+}
+	
+/*
+ * 获取人员列表
+ */
+function getStaffSearchTable() {
+    App.initDataTables('#staffSearchTable',"#searchBtn", {
+        ajax: {
+            "type": "GET",
+            "url": serverPath + 'staffs/',
+            "data": function(d) {
+                d.sysOrgId = globalConfig.curCompanyId;
+                d.staffOrgId = globalConfig.curStaffOrgId;
+                d.mainOrgFlag = globalConfig.mainOrgFlag;
+                d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
+                d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
+                var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                if (null != orgId && '' != orgId) {
+                    d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                }
+                d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
+                d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
+                d.staffKind = "1";
+                d.attra = $("select[name='staffOrgType']", $('#searchStaffForm')).val();
+                return d;
+            }
+        },
+        "columns": [
+            {
+                data: null,
+                className: "text-center",
+                width: "5%",
+                title: "操作",
+                render: function(a, b, c, d) {
+                    if (c) {
+                        var btnArray = new Array();
+                        if (cloudSwitch == 1) {
+                            if (c.STAFF_ORG_TYPE == 'F') {
+                            	if(staffeditFilter){
+                            		btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')"  });
+                            	};
+                                if(orgaddFilter){
+                            		btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
+                            	};
+                            } else {
+                            	if(orgchangeFilter){
+                            		btnArray.push({ "name": "调整", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                            	};
+                                if(orgdeleteFilter){
+                            		btnArray.push({ "name": "删除岗位", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
+                            	};
+                            }
+                        };
+                        if(resetpwdFilter){
+                        	btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
+                        };
+                        if(roleallotFilter){
+                        	btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
+                        };
+                        if(rolecopyFilter){
+                        	 btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
+                        };
+                        if(dataauthFilter){
+                        	btnArray.push({ "name": "数据权限", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
+                        };
+                        if(enableFilter){
+                        	if ("1" == c.STAFF_ORG_STATUS) {
+                                btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0,\'" + c.ORG_NAME + "\')" });
+                            } else {
+                                btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',1,\'" + c.ORG_NAME + "\')" });
+                            }
+                        };
+                        return App.getDataTableBtn(btnArray);
+                    } else {
+                        return '';
                     }
-                    d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
-                    d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();
-                    d.staffKind = "1"; //$("#curTabstaffKind").val();
-                    d.attra = $("select[name='staffOrgType']", $('#searchStaffForm')).val();
-                    return d;
                 }
             },
-            "columns": [
-                {
-                    data: null,
-                    className: "text-center",
-                    width: "5%",
-                    title: "操作",
-                    render: function(a, b, c, d) {
-                        if (c) {
-                            var btnArray = new Array();
-                            if (cloudSwitch == 1) {
-                                if (c.STAFF_ORG_TYPE == 'F') {
-                                	if(staffeditFilter){
-                                		btnArray.push({ "name": "修改", "fn": "goStaffEdit(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')"  });
-                                	};
-                                    if(orgaddFilter){
-                                		btnArray.push({ "name": "新增岗位", "fn": "goAddStaffOrg(\'" + c.STAFF_ID + "\')" });
-                                	};
-                                } else {
-                                	if(orgchangeFilter){
-                                		btnArray.push({ "name": "调整", "fn": "goEditStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
-                                	};
-                                    if(orgdeleteFilter){
-                                		btnArray.push({ "name": "删除岗位", "fn": "goDelStaffOrg(\'" + c.STAFF_ID + "\',\'" + c.STAFF_ORG_ID + "\')" });
-                                	};
-                                }
-                            };
-                            if(resetpwdFilter){
-                            	btnArray.push({ "name": "密码重置", "fn": "resetPasswd(\'" + c.STAFF_ID + "\',\'" + c.STAFF_NAME + "\',\'" + c.LOGIN_NAME + "\')" });
-                            };
-                            if(roleallotFilter){
-                            	btnArray.push({ "name": "角色分配", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\')" });
-                            };
-                            if(rolecopyFilter){
-                            	 btnArray.push({ "name": "角色复制", "fn": "goStaffOrgRoleCopy(\'" + c.STAFF_ORG_ID + "\')" });
-                            };
-                            if(dataauthFilter){
-                            	btnArray.push({ "name": "数据权限", "fn":"permissionConfiguration(\'" + c.STAFF_ORG_ID + "\')" });
-                            };
-                            if(enableFilter){
-                            	if ("1" == c.STAFF_ORG_STATUS) {
-	                                btnArray.push({ "name": "禁用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',0,\'" + c.ORG_NAME + "\')" });
-	                            } else {
-	                                btnArray.push({ "name": "启用", "fn": "changeStaffStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.STAFF_NAME + "\',1,\'" + c.ORG_NAME + "\')" });
-	                            }
-                            };
-                            return App.getDataTableBtn(btnArray);
-                        } else {
-                            return '';
-                        }
-                    }
-                },
-                {
-                    "data": null,
-                    "title": "人员姓名",
-                    "className":"whiteSpaceNormal",
-                    "width": "7%",
-                    render: function(data, type, full, meta) {
-                        return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID +','+ data.STAFF_ORG_ID +')">' + data.STAFF_NAME + '</a>';
-                    }
-                },
-                { "data": "LOGIN_NAME", "title": "账号","className":"whiteSpaceNormal","width":"9%"},
-                { "data": "ORG_NAME", "title": "部门名称","className":"whiteSpaceNormal","width":"11%"},
-                {
-                    "data": "STAFF_ORG_TYPE",
-                    "title": "岗位类别",
-                    "className": "whiteSpaceNormal text-center",
-                    "width": "7%",
-                    render: function(a, b, c, d) {
-                        return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
-                    }
-                },
-                {
-                    "data": "SEX",
-                    "title": "性别",
-                    "className": "whiteSpaceNormal text-center",
-                    "width": "4%",
-                    render: function(a, b, c, d) {
-                        return (c.SEX == 'M') ? '男' : '女';
-                    }
-                },
-                { "data": "EMAIL", "title": "邮箱账号","className":"whiteSpaceNormal","width":"11%"},
-                { "data": "MOBIL_PHONE", "title": "手机号码","className":"whiteSpaceNormal","width":"9%"},
-                {
-                    "data": "STAFF_ORG_STATUS",
-                    "title": "岗位状态",
-                    "className": "whiteSpaceNormal text-center",
-                    "width": "7%",
-                    render: function(a, b, c, d) {
-                        return ('1' == c.STAFF_ORG_STATUS) ? '有效' : '无效';
-                    }
+            {
+                "data": null,
+                "title": "人员姓名",
+                "className":"whiteSpaceNormal",
+                "width": "7%",
+                render: function(data, type, full, meta) {
+                    return '<a href=\"javascript:void(0)\" onclick = "showStaffDetail(' + data.STAFF_ID +','+ data.STAFF_ORG_ID +')">' + data.STAFF_NAME + '</a>';
                 }
-            ]
+            },
+            { "data": "LOGIN_NAME", "title": "账号","className":"whiteSpaceNormal","width":"9%"},
+            { "data": "ORG_NAME", "title": "部门名称","className":"whiteSpaceNormal","width":"11%"},
+            {
+                "data": "STAFF_ORG_TYPE",
+                "title": "岗位类别",
+                "className": "whiteSpaceNormal text-center",
+                "width": "7%",
+                render: function(a, b, c, d) {
+                    return ('F' == c.STAFF_ORG_TYPE) ? '主岗' : ('T' == c.STAFF_ORG_TYPE ? '兼岗' : '借调');
+                }
+            },
+            {
+                "data": "SEX",
+                "title": "性别",
+                "className": "whiteSpaceNormal text-center",
+                "width": "4%",
+                render: function(a, b, c, d) {
+                    return (c.SEX == 'M') ? '男' : '女';
+                }
+            },
+            { "data": "EMAIL", "title": "邮箱账号","className":"whiteSpaceNormal","width":"11%"},
+            { "data": "MOBIL_PHONE", "title": "手机号码","className":"whiteSpaceNormal","width":"9%"},
+            {
+                "data": "STAFF_ORG_STATUS",
+                "title": "岗位状态",
+                "className": "whiteSpaceNormal text-center",
+                "width": "7%",
+                render: function(a, b, c, d) {
+                    return ('1' == c.STAFF_ORG_STATUS) ? '有效' : '无效';
+                }
+            }
+        ]
 //          "fixedColumns": {
 //              'leftColumns': 2
 //          },
@@ -143,21 +156,25 @@ $(function() {
 //          	$('table td').css("height","20px");
 //          	$(".DTFC_LeftWrapper .DTFC_LeftBodyWrapper").css("margin-top","1px");
 //          }
-        })
-    }
-})
+   })
+}
 
 /**
  * 根据查询条件，查询人员列表
  * @returns 
  */
 function searchStaff(retainPaging) {
-    var table = $('#staffSearchTable').DataTable();
-    if (retainPaging) {
-        table.ajax.reload(null, false);
-    } else {
-        table.ajax.reload();
-    }
+	if($.fn.DataTable.isDataTable("#staffSearchTable")){
+		var table = $('#staffSearchTable').DataTable();
+	    if (resetPaging) {
+	        table.ajax.reload(null, false);
+	    } else {
+	        table.ajax.reload();
+	    }
+	}else{
+		$(".emptyTableDom").hide();
+		getStaffSearchTable();
+	}
 }
 /**
  * 重置密码
@@ -166,7 +183,7 @@ function searchStaff(retainPaging) {
  * @param {登录名} loginName 
  */
 function resetPasswd(staffId, staffName, loginName) {
-    layer.confirm('确定重置' + staffName + '的密码为123456吗?', {
+    layer.confirm('确定重置' + staffName + '的密码为<span style="color:red"> 123456 </span>吗?', {
         btn: ['重置', '取消'],
         icon: 0,
         skin: 'layer-ext-moon'
@@ -186,22 +203,13 @@ function resetPasswd(staffId, staffName, loginName) {
  */
 function changeStaffStatus(staffOrgId, staffName, staffOrgStatus, orgName) {
     if (1 === staffOrgStatus) {
-        layer.confirm("确认启用" + staffName + "在"+orgName+"部门的岗位吗？", {
-            btn: ['启用', '取消'],
-            icon: 0,
-            skin: 'layer-ext-moon'
-        }, function() {
-        	App.formAjaxJson(serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus, "PUT", null, successCallback);
-        });
+    	var statusText = "启用";
     } else {
-        layer.confirm("确认禁用" + staffName + "在"+orgName+"部门的岗位吗？", {
-            btn: ['禁用', '取消'],
-            icon: 0,
-            skin: 'layer-ext-moon'
-        }, function() {
-        	App.formAjaxJson(serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus, "PUT", null, successCallback);
-        });
+        var statusText = "禁用";
     }
+    layer.confirm("确认<span style='color:red'>"+ statusText +"</span> "+ staffName +" "+ "在 "+orgName+" 部门的岗位吗？", {btn: [statusText, '取消'],icon: 0}, function() {
+    	App.formAjaxJson(serverPath + 'staffs/' + staffOrgId + "/status/" + staffOrgStatus, "PUT", null, successCallback);
+    });
     function successCallback(result) {
     	var ms = "禁用成功";
 		if(staffOrgStatus == 1){
@@ -223,12 +231,8 @@ var orgTypeSet = {
  * param：staffOrgId 岗位Id
  */
 function showStaffDetail(staffId,staffOrgId) {
-    //var curTabstaffKind = $('#curTabstaffKind').val();
-    //debugger;
-    $('#infoModal').load("../staff/staffDetailModal.html", function() {
-        //$("#staffDetailId").val(staffId);
-
-        $('#infoModal').modal({ show: true, backdrop: 'static' });
+    $('#infoModal').load("staffDetailModal.html", function() {
+        $('#infoModal').modal("show");
         App.formAjaxJson(serverPath + 'staffs/' + staffId + '/dataPerm/' + staffOrgId, "GET", null, ajaxSuccess);
         /**成功回调函数 */
         function ajaxSuccess(result) {
@@ -241,8 +245,8 @@ function showStaffDetail(staffId,staffOrgId) {
                     var staffOrg = staffOrgs[p];
                     var staffOrgHtml = '<div class="col-sm-12"> \
                         <div class="form-group"> \
-                            <label class="control-label col-sm-2">所属岗位:</label> \
-                            <div class="col-sm-10"> \
+                            <label class="control-label col-sm-3">所属岗位:</label> \
+                            <div class="col-sm-9"> \
                                 <p class="form-control-static">' + staffOrg.orgName + '(' + orgTypeSet[staffOrg.staffOrgType] + ')</p> \
                             </div> \
                         </div> \
@@ -250,7 +254,7 @@ function showStaffDetail(staffId,staffOrgId) {
                     $("#staffOrgInfos").append(staffOrgHtml);
                 }
             } else {
-                $("#staffOrgInfos").append("<h5 class=\"text-center\">无岗位数据</h5>");
+                $("#staffOrgInfos").append("<p class=\"text-center\">无岗位数据</p>");
             }
             /**处理角色 */
             var roles = result.data.roles;
@@ -276,7 +280,7 @@ function showStaffDetail(staffId,staffOrgId) {
                     $("#roleDiv").append(roleHtml);
                 }
             } else {
-                $("#roleDiv").append("<h5 class=\"text-center\">无角色数据</h5>");
+                $("#roleDiv").append("<p class=\"text-center\">无角色数据</p>");
             }
             /**处理权限 */
             var permissions = result.data.permissions;
@@ -294,38 +298,35 @@ function showStaffDetail(staffId,staffOrgId) {
                         }
                     }
                 }, permissions);
+                staffDetailPermtree.expandAll(true);
             } else {
                 $("#staffDetailPermtree").detach();
-                $("#permission").append("<h5 class=\"text-center\">无权限数据</h5>")
+                $("#permission").append("<p class=\"text-center\">无权限数据</p>")
             }
             /**处理数据权限信息*/
             var dataPermissions = result.data.dataPermissions;
-            console.log(dataPermissions);
             if (dataPermissions != null) {
-               /* for (p in dataPermissions) {
-                    var dataPermission = dataPermissions[p];*/
-                    var dataPermissionHtml = '<div class="col-sm-6"> \
-                        <div class="form-group"> \
-                            <label class="control-label col-sm-4">数据权限级别:</label> \
-                            <div class="col-sm-8"> \
-                                <p class="form-control-static">' + dataPermissions.dataPermName + '</p> \
-                            </div> \
+                var dataPermissionHtml = '<div class="col-sm-8"> \
+                    <div class="form-group"> \
+                        <label class="control-label col-sm-5">数据权限级别:</label> \
+                        <div class="col-sm-7"> \
+                            <p class="form-control-static">' + dataPermissions.dataPermName + '</p> \
                         </div> \
                     </div> \
-                    </div>';
-                    $("#DatapermissionInfo").append(dataPermissionHtml);
-                  /*}*/
+                </div> \
+                </div>';
+                $("#DatapermissionInfo").append(dataPermissionHtml); 
             } else {
-                var dataPermissionHtml = '<div class="col-sm-6"> \
-                        <div class="form-group"> \
-                            <label class="control-label col-sm-4">数据权限级别:</label> \
-                            <div class="col-sm-8"> \
-                                <p class="form-control-static">' + "本人" + '</p> \
-                            </div> \
+                var dataPermissionHtml = '<div class="col-sm-8"> \
+                    <div class="form-group"> \
+                        <label class="control-label col-sm-5">数据权限级别:</label> \
+                        <div class="col-sm-7"> \
+                            <p class="form-control-static">' + "本人" + '</p> \
                         </div> \
                     </div> \
-                    </div>';
-                    $("#DatapermissionInfo").append(dataPermissionHtml);
+                </div> \
+                </div>';
+                $("#DatapermissionInfo").append(dataPermissionHtml);
             }
             /**表单赋值时的回调函数 */
             function hireDateCallback(data) {
@@ -334,8 +335,6 @@ function showStaffDetail(staffId,staffOrgId) {
                 } else {
                     return '';
                 }
-                //  return getFormatDate(new Date(data), "yyyy-MM-dd");
-
             }
 
             function statusCallback(data) {
@@ -353,113 +352,10 @@ function showStaffDetail(staffId,staffOrgId) {
 }
 /**从岗位列表返回人员列表 */
 function returnStaffList() {
-    // debugger;
     $('#staffLoadPart').empty();
     $('#staffLoadPart').hide();
     $("#divStaffList").show();
-    // searchStaff(true);
 }
-/**显示岗位管理列表 */
-//function orgManage(staffId, staffName) {
-//  // var curTabstaffKind = $('#curTabstaffKind').val();
-//  $("#divStaffList").hide();
-//  //debugger;
-//  $('#staffLoadPart').load("staffOrgList.html", function() {
-//      // $('#staffOrgList').attr("id", "staffOrgList" + curTabstaffKind);
-//      // $('#searchStaffOrgTable').attr("id", "searchStaffOrgTable" + curTabstaffKind);
-//      // $('#selectedStaffOrgId').attr("id", "selectedStaffOrgId" + curTabstaffKind);
-//      // $('#staffOrgLoadPart').attr("id", "staffOrgLoadPart" + curTabstaffKind);
-//      // $('#staffManageTitle').attr("id", "staffManageTitle" + curTabstaffKind);
-//      $('#staffManageTitle').text(staffName + "的岗位操作");
-//      $('#staffLoadPart').show();
-//      App.initDataTables('#searchStaffOrgTable',  {
-//	        ajax: {
-//	            "type": "GET",
-//	            "url": serverPath + 'staffs/' + staffId + '/staffOrgs'
-//	        },
-//	        "columns": [ // 对应列
-//	            {
-//	                "data": null,
-//	                className: "text-center",
-//	                title: "操作",
-//	                render: function(a, b, c, d) {
-//	                	if(c) {
-//							var btnArray = new Array();
-//		                    btnArray.push({ "name": "角色管理", "fn": "staffOrgRoleManage(\'" + c.STAFF_ORG_ID + "','" + c.ORG_NAME + "\')" });
-//		                    if ("1" == c.STAFF_ORG_STATUS) {
-//		                       	btnArray.push({ "name": "禁用", "fn": "changeStaffOrgStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\',\'0\')" });
-//		                    } else {
-//		                        btnArray.push({ "name": "启用", "fn": "changeStaffOrgStatus(\'" + c.STAFF_ORG_ID + "\',\'" + c.ORG_NAME + "\',\'1\')" });
-//		                    }
-//		                    context = {
-//		                        func: btnArray
-//		                    }
-//		                    var template = Handlebars.compile(btnModel);
-//		                    var html = template(context);
-//		                    return html;
-//						} else {
-//							return '';
-//						} 
-//	                }
-//	            }, {
-//	                "data": "STAFF_ORG_TYPE",
-//	                "title": "岗位类型",
-//	                className: "text-center",
-//	                render: function(a, b, c, d) {
-//	                    if ('F' == c.STAFF_ORG_TYPE) {
-//	                        return '主岗';
-//	                    } else if ('T' == c.STAFF_ORG_TYPE) {
-//	                        return '兼职';
-//	                    } else {
-//	                        return '借调';
-//	                    }
-//	                }
-//	            },
-//	            { "data": "ORG_NAME", "title": "组织名称", className: "text-center" },
-//	            {
-//	                "data": "STAFF_ORG_STATUS",
-//	                "title": "岗位状态",
-//	                className: "text-center",
-//	                render: function(a, b, c, d) {
-//	                    if ('1' == c.STAFF_ORG_STATUS) {
-//	                        return '有效';
-//	                    } else {
-//	                        return '无效';
-//	                    }
-//	                }
-//	            },
-//	            {
-//	                "data": "HIRE_DATE",
-//	                "title": "录用时间",
-//	                className: "text-center",
-//	                render: function(a, b, c, d) {
-//	                    return c.HIRE_DATE ? new Date(c.HIRE_DATE).format("yyyy-MM-dd") : '';
-//	                }
-//	            },
-//	            {
-//	                "data": "EFFECT_START_DATE",
-//	                "title": "生效时间",
-//	                className: "text-center",
-//	                render: function(a, b, c, d) {
-//	                    return c.EFFECT_START_DATE ? new Date(c.EFFECT_START_DATE).format("yyyy-MM-dd") : '';
-//	                }
-//	            },
-//	            {
-//	                "data": "EFFECT_END_DATE",
-//	                "title": "失效时间",
-//	                className: "text-center",
-//	                render: function(a, b, c, d) {
-//	                    return c.EFFECT_END_DATE ? new Date(c.EFFECT_END_DATE).format("yyyy-MM-dd") : '';
-//	                }
-//	            },
-//	            { "data": "DUTY", "title": "职责", className: "text-center" }
-//	        ],
-//	        "fixedColumns": {
-//              'leftColumns': 2
-//          }
-//		});
-//	})
-//}
 /**
  * 角色分配
  * @param {岗位id} staffOrgId 
@@ -467,7 +363,6 @@ function returnStaffList() {
  */
 function staffOrgRoleManage(staffOrgId, orgName) {
     $('#selectedStaffOrgId').val(staffOrgId);
-    // debugger;
     $('#roleModal').load("staffOrgRole.html", function() {
         /**清空待选、已选 */
         // $("#havingRoles").empty();
@@ -497,47 +392,10 @@ function staffOrgRoleManage(staffOrgId, orgName) {
         })
     });
 }
-// $(function() {
-//     debugger;
-//     $("#havingRoles").empty();
-//     $("#notHavingRoles").empty();
-//     var staffId = $("#selectedStaffId" + curTabstaffKind).val();
-//     var staffOrgId = $("#selectedStaffOrgId" + curTabstaffKind).val();
-//     $.get(serverPath + "/staffs/" + staffId + "/staffOrgs/" + curStaffOrgId + "/staffRoles/" + staffOrgId, {}, function(array) {
-//         var havingRoles = array.data.havingRoles;
-//         var notHavingRoles = array.data.notHavingRoles;
-//         for (var i = 0; i < havingRoles.length; i++) {
-//             $("#havingRoles" + curTabstaffKind).append($("<option value=\"" + havingRoles[i].ROLE_ID + "\">" + havingRoles[i].ROLE_NAME + "</option>"));
-//         }
-//         for (var i = 0; i < notHavingRoles.length; i++) {
-//             $("#notHavingRoles" + curTabstaffKind).append($("<option value=\"" + notHavingRoles[i].ROLE_ID + "\">" + notHavingRoles[i].ROLE_NAME + "</option>"));
-//         }
-//         //初始化左右选择控件
-//         $('#notHavingRoles' + curTabstaffKind).multiselect({
-//             keepRenderingSort: true,
-//             right: '#havingRoles' + curTabstaffKind,
-//             rightAll: '#rightAll' + curTabstaffKind,
-//             rightSelected: '#rightSelected' + curTabstaffKind,
-//             leftSelected: '#leftSelected' + curTabstaffKind,
-//             leftAll: '#leftAll' + curTabstaffKind,
-//             undo: '#notHavingRoles_undo' + curTabstaffKind,
-//             search: {
-//                 left: '<input type="text" name="q" class="form-control" style="margin-bottom:10px" placeholder="查询待选..." />',
-//                 right: '<input type="text" name="q" class="form-control" style="margin-bottom:10px" placeholder="查询已选..." />',
-//             },
-//             fireSearch: function(value) {
-//                 return value.length > 0;
-//             }
-//         });
-//     });
-
-// })
 
 
 
 function saveStaffOrgRoles() {
-    // debugger;
-    //var all = "";
     var result = selectL2R.getResult('#selectL2R-ul').toString();
     var staffOrgId = $("#selectedStaffOrgId").val();
     var obj = { "roleIds": result, "staffOrgId": staffOrgId, "createBy": globalConfig.curStaffId };
@@ -547,49 +405,8 @@ function saveStaffOrgRoles() {
 		layer.msg("保存成功!");
         $('#roleModal').modal("hide");
 	}
-    // $.ajax({
-    //     "url": serverPath + "/staffs/" + staffId + "/staffOrgs/" + staffOrgId + "/staffRoles",
-    //     //    	"data":{'roleIds':all,'staffOrgId':staffOrgId,'createBy':curStaffId},
-    //     "type": "PUT",
-    //     "contentType": "application/json",
-    //     "data": JSON.stringify(obj),
-    //     success: function(data) {
-    //         returnStaffOrgList();
-    //         alert("保存成功！");
-    //     },
-    //     error: function(e) {
-    //         alert("添加失败o_o请重试...");
-    //     }
-    // })
 }
 
-// var curTabstaffKind = $('#curTabstaffKind').val();
-// $('#staffOrgLoadPart' + curTabstaffKind).show();
-// $('#staffOrgList' + curTabstaffKind).hide();
-// $('#selectedStaffOrgId' + curTabstaffKind).val(staffOrgId);
-// //	$("#staffBody"+curTabstaffKind).hide();
-// //	$("#header"+curTabstaffKind).hide();
-// $('#staffOrgLoadPart' + curTabstaffKind).load("../staff/staffOrgRole.html", function() {
-//     $("#staffOrgRoleManage").attr("id", "staffOrgRoleManage" + curTabstaffKind);
-//     $("#notHavingRoles").attr("id", "notHavingRoles" + curTabstaffKind);
-//     $("#havingRoles").attr("id", "havingRoles" + curTabstaffKind);
-//     $("#rightAll").attr("id", "rightAll" + curTabstaffKind);
-//     $("#rightSelected").attr("id", "rightSelected" + curTabstaffKind);
-//     $("#leftSelected").attr("id", "leftSelected" + curTabstaffKind);
-//     $("#leftAll").attr("id", "leftAll" + curTabstaffKind);
-//     $("#notHavingRoles_undo").attr("id", "notHavingRoles_undo" + curTabstaffKind);
-// });
-// }
-
-// function returnStaffOrgList() {
-//     var curTabstaffKind = $('#curTabstaffKind').val();
-//     $("#searchStaffOrgTable" + curTabstaffKind).DataTable().ajax.reload();
-//     $('#staffOrgList' + curTabstaffKind).show();
-//     $('#staffOrgLoadPart' + curTabstaffKind).empty();
-//     $('#staffOrgLoadPart' + curTabstaffKind).hide();
-//     $("#staffBody" + curTabstaffKind).hide();
-//     $("#header" + curTabstaffKind).hide();
-// }
 /**
  * 启用/禁用某个岗位
  * @param {岗位id} staffOrgId 
@@ -1157,11 +974,12 @@ function updateInnalPersonnel(editType) {
 
     function successCallback(result) {
         layer.msg(ms, { icon: 1 });
-        searchPersonnel(false);
+        searchStaff(false);
         $('#modal').modal('hide');
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#staffForm').data('bootstrapValidator').resetForm();
     }
 }
@@ -1169,18 +987,22 @@ function updateInnalPersonnel(editType) {
  * 搜索点击事件
  */
 function searchPersonnel(resetPaging) {
-    var table = $('#staffSearchTable').DataTable();
-    if (resetPaging) {
-        table.ajax.reload(null, false);
-    } else {
-        table.ajax.reload();
-    }
+    if($.fn.DataTable.isDataTable("#staffSearchTable")){
+		var table = $('#staffSearchTable').DataTable();
+	    if (resetPaging) {
+	        table.ajax.reload(null, false);
+	    } else {
+	        table.ajax.reload();
+	    }
+	}else{
+		getStaffSearchTable();
+	}
 }
 /*
  * 条件查询查询组织
  */
 function getStaffSearch_OrgTree(obj) {
-    selectOrgTree('staffSearch_OrgTree', obj, globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '400', '300');
+    selectOrgTree('staffSearch_OrgTree', obj, globalConfig.curCompanyId, getStaffSearch_OrgTreeId, '', '1', '300', '300');
 
     function getStaffSearch_OrgTreeId(orgId, orgName, orgCode) {
         $("input[name='orgName']", $('#searchStaffForm')).val(orgName);
@@ -1256,7 +1078,6 @@ function permissionConfiguration(staffOrgId) {
     $("#modal").load("permissionConfigurationModal.html #modalPermission", function() {
         $("#modalTitle").text("数据权限配置");
         $("#modalStaffOrgId").val(staffOrgId);
-        //$("#modal").modal("show");
         getPermission(staffOrgId);
         var dataPermType = $("input[name='dataPermType']:checked").val();
 	});
@@ -1343,11 +1164,12 @@ function addStaffOrg(editType) {
 
     function successCallback(result) {
         layer.msg(ms, { icon: 1 });
-        searchPersonnel(true);
+        searchStaff(true);
         $('#modal').modal('hide');
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#addStaffOrgForm').data('bootstrapValidator').resetForm();
     }
 
@@ -1370,7 +1192,7 @@ function goDelStaffOrg(staffId, staffOrgId) {
 
 	    function successCallback(result) {
 			layer.alert("删除成功！", {icon: 0});
-            searchPersonnel(true);
+            searchStaff(true);
 		}
     });
 }

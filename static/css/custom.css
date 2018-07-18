@@ -1,25 +1,16 @@
 /*支撑渠道-开始*/
 .font18{font-size:18px!important;}
-.main-appSupport,.main-aduioCourse{padding-top:0!important;padding-bottom:0!important;font-family: georgia;}
-.main-appSupport li,.main-aduioCourse li{border-bottom:1px solid #eeeeee;margin-top:0;}
-.main-appSupport li:last-child,.main-aduioCourse li:last-child{border-bottom:0;}
+.main-appSupport{padding-top:30px;padding-bottom:20px;font-family: georgia;}
+.main-appSupport li{border-bottom:1px solid #eeeeee;margin-top:0;}
+.main-appSupport li:first-child{border-top:1px solid #eeeeee;}
 .main-appSupport li .media-right{width:70%;padding-top:10px;}
-.main-appSupport li .media-body label,.main-aduioCourse li .media-body label{color:#ffffff;font-size:24px;border-radius: 100%;width: 40px;height: 40px;line-height: 40px;text-align: center;}
-.main-appSupport .media-body label i,.main-aduioCourse .media-body label i{font-size:24px;} 
-.main-appSupport li .media-body,.main-aduioCourse li .media-body{background-color: #fafafa;padding-top: 10px;}
-.main-appSupport li:first-child .media-body{background-color: #ffffff!important;}
-.main-appSupport li:first-child+li .media-body{border-left:4px solid #e54d42;}
-.main-appSupport li:first-child+li+li .media-body{border-left:4px solid #659be0;}
-.main-appSupport li:first-child+li+li+li .media-body,.main-aduioCourse li:first-child .media-body{border-left:4px solid #4cbd8b;}
-.main-appSupport li:first-child+li+li+li+li .media-body,.main-aduioCourse li:first-child+li .media-body{border-left:4px solid #f0a55b;}
-.main-appSupport .thumbnail{width: 180px;margin: 0 auto;padding:0;border:0;border-radius:0;margin-bottom:10px;}
-.main-appSupport .thumbnail img{width:100%;}
-.main-appSupport .thumbnail .caption{padding:0;}
-.main-appSupport .thumbnail h5{margin-bottom:5px;}
-.main-aduioCourse li .media-right{width:70%;padding-top:10px;padding-left: 40px;line-height: 30px;}
-.main-aduioCourse li .media-right a{color: #659be0;}
-.main-aduioCourse li .media-right span{margin-left:15px;margin-bottom: 4px;}
-/*支撑渠道-结束*/
+.main-appSupport li .media-body{background-color: #fafafa;padding-top: 10px;}
+.main-appSupport li .media-body label{color:#ffffff;font-size:24px;border-radius: 100%;width: 40px;height: 40px;line-height: 40px;text-align: center;}
+.main-appSupport li .media-body label i{font-size:24px;} 
+.main-appSupport li:first-child .media-body{border-left:4px solid #e54d42;}
+.main-appSupport li:first-child+li .media-body{border-left:4px solid #4cbd8b;}
+/*.main-appSupport li:first-child+li+li+li .media-body{border-left:4px solid #4cbd8b;}*/
+/*支撑渠道-结束 */
 /* 解决iconfont 在谷歌浏览器下锯齿加粗-开始 */
 .iconfont {
     -webkit-font-smoothing: antialiased;
@@ -361,6 +352,9 @@ button:focus{
 .margin-top-10{
 	margin-top: 10px;
 }
+.margin-top-20{
+	margin-top: 20px;
+}
 .paddingR0{
 	padding-right: 0;
 }
@@ -618,6 +612,10 @@ table td{
     z-index: 9999;
     padding: 6px;
 }
+.emptyTableDom{
+	margin-top: 20px;
+	color: #767676;
+}
 
 /*
  * 仿input框
@@ -644,3 +642,13 @@ table td{
 .note{
 	margin: 0;
 }
+/*
+ * i标签设置
+ */
+i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i.icon-export,i.icon-shanchu,i.icon-tijiao1,i.icon-chehui,i.icon-arrow-left,i.icon-guanbi{
+	padding-right: 2px;
+    position: relative;
+    top: 2px;
+}
+
+

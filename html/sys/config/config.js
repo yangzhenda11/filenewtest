@@ -156,6 +156,7 @@ function updateConfig(editType) {
 		$('#modal').modal('hide');
 	}
 	function improperCallbacks(result){
+		layer.msg(result.message);
 		$('#configForm').data('bootstrapValidator').resetForm();
 	}
 }

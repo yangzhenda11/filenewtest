@@ -488,6 +488,7 @@ function updateRoleValue(editType) {
     }
 
     function improperCallbacks(result) {
+    	layer.msg(result.message);
         $('#roleForm').data('bootstrapValidator').resetForm();
     }
 }

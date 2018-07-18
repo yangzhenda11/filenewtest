@@ -117,6 +117,7 @@ function updatePersonalConfig() {
 		searchPersonalConfig(true);
 	}
 	function improperCallbacks(result){
+		layer.msg(result.message);
 		$('#personalConfigForm').data('bootstrapValidator').resetForm();
 	}
 }

@@ -33,7 +33,7 @@ var ace_menus = null;
 
 $(document).ready(function() {
 	//获取用户基本信息
-    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
+    App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, null, null, false);
 
     function successCallback(result) {
     	//系统默认配置
@@ -103,6 +103,15 @@ $(document).ready(function() {
         //请求用户信息成功后加载公告列表
         getIndexNotiveTableInfo(true);
     }
+    function improperCallback(result){
+    	if(result.status == 9002){
+    		window.location.href = "permissionDenied.html";
+    	}else{
+    		layer.alert(result.message,{icon:2,title:"提示",closeBtn:0},function () {
+                logout();
+            })
+    	}
+    }
 })
 // 页面权限过滤
 function data_permFilter(obj) {
@@ -132,14 +141,17 @@ function data_tpFilter(permCheck) {
 
 //切换岗位
 function changeStaffOrg(staffOrgId) {
-    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, menuCallback, null, null, null, false);
+    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, successCallback, improperCallback, null, null, false);
 
-    function menuCallback(result) {
+    function successCallback(result) {
         if (result.status) {
             window.location.reload();
         } else {
             layer.msg(data.message);
         }
+    }
+    function improperCallback(result){
+		layer.alert(result.message,{icon:2,title:"提示"})
     }
 }
 /*

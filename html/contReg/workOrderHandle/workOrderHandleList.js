@@ -78,7 +78,7 @@ function manualCreation(){
 	});
 }
 
-//跳转到上传页面
+//跳转到工单编辑页面
 function jumpSanCpyQueryDetail(id){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
 	function successCallback(result) {

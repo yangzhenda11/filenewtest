@@ -86,11 +86,11 @@ function searchWorkOrderActivate(retainPaging) {
 	}
 }
 
-//跳转到上传页面
+//跳转到工单激活页面
 function jumpSanCpyQueryDetail(id){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
 	function successCallback(result) {
-		var wcardProcess = result.data;
+		var wcardProcess = result.data.wcardProcess;
 		if(wcardProcess == 1){
 			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
 			App.changePresentUrl(src);

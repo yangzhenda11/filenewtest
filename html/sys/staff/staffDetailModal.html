@@ -1,4 +1,4 @@
-<div class="modal-dialog defaultModalWidth" role="document">
+<div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -7,14 +7,14 @@
             <h4 class="modal-title">人员信息</h4>
         </div>
         <div class="modal-body">
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a id="infoAnchor" href="#info" aria-controls="info" data-toggle="tab">人员信息</a></li>
-                <li role="presentation"><a id="positionAnchor" href="#position" aria-controls="position" data-toggle="tab">岗位信息</a></li>
-                <li role="presentation"><a id="roleAnchor" href="#role" aria-controls="role" data-toggle="tab">角色信息</a></li>
-                <li role="presentation"><a id="permissionAnchor" href="#permission" aria-controls="permission" data-toggle="tab">权限信息</a></li>
-                <li role="presentation"><a id="datapermAnchor" href="#dataperm" aria-controls="dataperm" data-toggle="tab">数据权限信息</a></li>
+            <ul class="nav nav-tabs modalDetailTab">
+                <li><a id="datapermAnchor" href="#dataperm" aria-controls="dataperm" data-toggle="tab">数据权限信息</a></li>
+                <li><a id="permissionAnchor" href="#permission" aria-controls="permission" data-toggle="tab">权限信息</a></li>
+                <li><a id="roleAnchor" href="#role" aria-controls="role" data-toggle="tab">角色信息</a></li>
+                <li><a id="positionAnchor" href="#position" aria-controls="position" data-toggle="tab">岗位信息</a></li>
+                <li class="active"><a id="infoAnchor" href="#info" aria-controls="info" data-toggle="tab">人员信息</a></li>
             </ul>
-            <div class="tab-content" style="height: 240px">
+            <div class="tab-content modalDetailCon" style="height: 240px">
                 <div class="tab-pane fade in active" id="info">
                     <div id="infoDiv" class="form-body form-horizontal form-row-seperated">
                         <div class="col-sm-6">
@@ -101,7 +101,7 @@
                     <div id="roleDiv" class="form-body form-horizontal form-row-seperated"></div>
                 </div>
                 <div class="tab-pane fade" id="permission">
-                    <ul id="staffDetailPermtree" class="ztree container-fluid" style="max-height: 220px;overflow-y: auto"></ul>
+                    <ul id="staffDetailPermtree" class="ztree container-fluid" style="padding-left:30px;max-height: 220px;overflow-y: auto"></ul>
                 </div>
                 <div class="tab-pane fade" id="dataperm">
                 	<div id="DatapermissionInfo" class="form-body form-horizontal form-row-seperated"></div>

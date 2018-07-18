@@ -18,8 +18,6 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link href="../common/treeDropDown.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
@@ -87,10 +85,13 @@
 								</div>
 							</div>
 							<div class="page-search-action">
-								<button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchStaff();"><i class="iconfont icon-search"></i> 查询</button>
-								<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="iconfont icon-reset"></i> 清空</button>
+								<button type="button" id="searchBtn" class="btn btn-block red" data-loading-text="加载中.." onclick="searchStaff(true);"><i class="iconfont icon-search"></i>查询</button>
+								<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn btn-block yellow"><i class="iconfont icon-reset"></i>清空</button>
 							</div>
 						</form>
+					</div>
+					<div class="emptyTableDom align-center">
+						<i class="iconfont icon-search"></i>请点击查询按钮进行数据查询
 					</div>
 					<table id="staffSearchOnlyTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 				</div>
@@ -99,13 +100,13 @@
 		<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal_label">
 		</div>
 		<!--[if lt IE 9]>
-	  	<script src="../../../static/plugins/html5shiv.min.js"></script>
-	  	<script src="../../../static/plugins/respond.min.js"></script>
-	  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
-	<![endif]-->
-		<!--[if lte IE 8]>
-		<script src="../../../static/plugins/selectivizr-min.js"></script>
-	<![endif]-->
+		  	<script src="../../../static/plugins/html5shiv.min.js"></script>
+		  	<script src="../../../static/plugins/respond.min.js"></script>
+		  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+			<!--[if lte IE 8]>
+			<script src="../../../static/plugins/selectivizr-min.js"></script>
+		<![endif]-->
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
@@ -115,12 +116,8 @@
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js"></script>
 		<!--业务依赖-->
-		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<!--<script src="../../../static/plugins/date-format.js" type="text/javascript" charset="utf-8"></script>-->
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<!--当前页面依赖-->
 		<script type="text/javascript" src="staffListForSearchOnly.js" charset="utf-8"></script>

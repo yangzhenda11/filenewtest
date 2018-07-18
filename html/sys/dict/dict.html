@@ -20,7 +20,6 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/zTreeStyle/zTreeStyle.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
@@ -39,15 +38,6 @@
 				<div class="portlet-body">
 					<div class="col-sm-4 dictTreeContent">
 						<div class="action-tools">
-							<!--<a href="#" class="my-icon-a" title="全部展开" onclick="expandAll();">
-								<span class="glyphicon glyphicon-plus my-icon" aria-hidden="true"></span>
-							</a>
-							<a href="#" class="my-icon-a" title="全部折叠" onclick="collapseAll();">
-								<span class="glyphicon glyphicon-minus my-icon" aria-hidden="true"></span>
-							</a>
-							<a href="#" class="my-icon-a" title="刷新" onclick="refreshTree();">
-								<span class="glyphicon glyphicon-refresh my-icon" aria-hidden="true"></span>
-							</a>-->
 							<button type="button" class="btn btn-info red" onclick="expandAll();">
 								<i class="ace-icon fa fa-plus"></i> 全部展开
 							</button>
@@ -72,14 +62,14 @@
 										</div>
 									</div>
 									<div class="input-group">
-										<button type="button" id="submitBtn" class="btn red" data-loading-text="加载中.." onclick="searchDict();"><i class="iconfont icon-search"></i> 查询</button>
-										<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn yellow"><i class="iconfont icon-reset"></i> 清空</button>
+										<button type="button" id="submitBtn" class="btn red" data-loading-text="加载中.." onclick="searchDict();"><i class="iconfont icon-search"></i>查询</button>
+										<button type="reset" onclick="App.resetForm('.form-horizontal')" class="btn yellow"><i class="iconfont icon-reset"></i>清空</button>
 									</div>
 								</div>
 							</form>
 						</div>
 						<div class="toolbars hide" id="toolbars">
-							<button type="button" class="btn red" onclick="dictModal('add');" <!--data-permcheck="sys:dict:add"--><i class="iconfont icon-add"></i>  新增</button>
+							<button type="button" class="btn red" onclick="dictModal('add');" <!--data-permcheck="sys:dict:add"--><i class="iconfont icon-add"></i>新增</button>
 						</div>
 						<table id="dictTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
 					</div>

@@ -9,8 +9,11 @@
  * @param width  控制下拉框的展示最大宽度 默认:300px
  * @param height 控制下拉框的展示最大高度 默认：200px
  */
+var treeDropOrgTreeScrollTop = "";
 function selectOrgTree(serial, parent, orgId, callBackFunc, showType, ifRadio, width, height) {
-    if ($("#orgDIV" + serial).size() == 0) {
+	var scrollTop = $(".page-content").scrollTop();
+    if (scrollTop != treeDropOrgTreeScrollTop || $("#orgDIV" + serial).size() == 0) {
+    	treeDropOrgTreeScrollTop = scrollTop;
         new newselectOrg().orgTreeDrop(serial, parent, orgId, callBackFunc, showType, ifRadio, width, height);
     } else {
         var parentObj = $(parent);
@@ -117,6 +120,7 @@ function newselectOrg() {
                 url: serverPath + "orgs/" + orgId + "/orgTree",
                 type: "GET",
                 async: false,
+                global:false,
                 success: (function(orgSetting) {
                     return function(data) {
                         if ("1" == data.status) {
@@ -171,11 +175,15 @@ function newselectOrg() {
                                 $("#orgDIV" + serial).css("height", "33px");
                                 $("#orgTrees" + serial).html("没有相关数据！");
                             } else {
-                                $("#orgDIV" + serial).css("max-width", initVal.getWidth() + "px");
+                                $("#orgDIV" + serial).css("width", initVal.getWidth() + "px");
                                 $("#orgDIV" + serial).css("max-height", initVal.getHeight() + "px");
                                 $("#orgDIV" + serial).css("overflow", "auto");
                                 orgTrees = $.fn.zTree.init($("#orgTrees" + serial + ""), orgSetting, data.data);
-                                orgTrees.expandAll(false);
+                                if(orgTrees.getNodes().length == 1){
+							        orgTrees.expandNode(orgTrees.getNodes()[0], true, false, true);
+                                }else{
+	                                orgTrees.expandAll(false);
+                                }
                             }
                         } else {
                             appendAlert('myTreeModal', serial, data.message);
@@ -184,14 +192,16 @@ function newselectOrg() {
                 })(oset)
             });
         }
-        //点击空白消除绑定事件
-    $("html").bind("mousedown", { view: this }, function(event) {
-
-        if (!(event.target.classname == "wodetreeclass" || $(event.target).parents(".wodetreeclass").length > 0)) {
-            $(".wodetreeclass").fadeOut("fast");
-        }
-
-    });
+    //点击空白消除绑定事件
+    $("body").unbind("mousedown").on("mousedown", function(event) {
+		if(!(event.target.className == "wodetreeclass" || $(event.target).parents(".wodetreeclass").length > 0)) {
+			$(".wodetreeclass").fadeOut("fast");
+		}
+	});
+	$('.page-content').unbind("scroll").on('scroll',function(){
+        $(".wodetreeclass").hide();
+    })
+    
 }
 
 
@@ -215,6 +225,7 @@ function yourFunction1(ids, names, codes) {
  * @param width  控制下拉框的展示最大宽度 默认:300px
  * @param height 控制下拉框的展示最大高度 默认：200px
  */
+
 function selectStaffTree(serial, parent, orgId, callBackFunc, ifRadio, width, height) {
     new newselectStaff().staffTreeDrop(serial, parent, orgId, callBackFunc, ifRadio, width, height);
 }
@@ -351,11 +362,15 @@ function newselectStaff() {
                                 $("#staffDIV" + serial).css("height", "33px");
                                 $("#staffTrees" + serial).html("没有相关数据！");
                             } else {
-                                $("#staffDIV" + serial).css("max-width", width + "px");
+                                $("#staffDIV" + serial).css("width", width + "px");
                                 $("#staffDIV" + serial).css("max-height", height + "px");
                                 $("#staffDIV" + serial).css("overflow", "auto");
                                 staffTrees = $.fn.zTree.init($("#staffTrees" + serial), staffSetting, data.data);
-                                staffTrees.expandAll(false);
+                                if(staffTrees.getNodes().length == 1){
+							        staffTrees.expandNode(staffTrees.getNodes()[0], true, false, true);
+                                }else{
+	                                staffTrees.expandAll(false);
+                                }
                             }
                         } else {
                             appendAlert('myStaffTreeModal', serial, data.message);
@@ -368,7 +383,7 @@ function newselectStaff() {
         }
         //点击空白消除绑定事件
     $("html").bind("mousedown", { view: this }, function(event) {
-        if (!(event.target.classname == "class='wodetreeclass'" || $(event.target).parents(".wodetreeclass").length > 0)) {
+        if (!(event.target.className == "class='wodetreeclass'" || $(event.target).parents(".wodetreeclass").length > 0)) {
             $(".wodetreeclass").fadeOut("fast");
         }
     });

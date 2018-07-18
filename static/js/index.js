@@ -105,7 +105,7 @@ $(document).ready(function() {
     }
     function improperCallback(result){
     	if(result.status == 9002){
-//  		window.location.href = "permissionDenied.html";
+    		window.location.href = "permissionDenied.html";
     	}else{
     		layer.alert(result.message,{icon:2,title:"提示",closeBtn:0},function () {
                 logout();

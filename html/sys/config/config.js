@@ -111,7 +111,6 @@ function getConfig(id,type){
 			App.setFormValues("#configForm",data);
 		}else{
 			$("#modal").modal("show");
-			$("#codeDetail").text(data.code);
 			var valueCallback = {'attra':function(value){return value == "0" ? "否" : "是"}}
 			App.setFindValue("#configInfo",data,valueCallback);
 		}	

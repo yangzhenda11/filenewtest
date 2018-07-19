@@ -128,9 +128,9 @@ function searchNotiveTable(retainPaging) {
 	}else{
 		var table = $('#notiveTable').DataTable();
 		if(retainPaging){
-			table.ajax.reload();
-		}else{
 			table.ajax.reload(null, false);
+		}else{
+			table.ajax.reload();
 		}
 	}
 }

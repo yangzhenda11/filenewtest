@@ -100,9 +100,9 @@ function getOrgTable(orgId){
  * @returns 
  * @author cuiy 2017/7/14
  */
-function orgSearchOrg(resetPaging) {
+function orgSearchOrg(retainPaging) {
     var table = $('#orgSearchTable').DataTable();
-    if (resetPaging) {
+    if (retainPaging) {
         table.ajax.reload(null, false);
     } else {
         table.ajax.reload();

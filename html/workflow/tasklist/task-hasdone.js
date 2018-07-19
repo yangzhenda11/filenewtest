@@ -77,7 +77,7 @@ function getTableForDone(){
 	})
 }
 // 查询
-function serarchForDone(retainPaging){
+function serarchForDone(resetPaging){
 	var startDateForDone = $('#startDateForDone').val();
 	var endDateForDone = $('#endDateForDone').val();
 	if(!checkDate(startDateForDone,endDateForDone)){
@@ -85,7 +85,7 @@ function serarchForDone(retainPaging){
 		return;
 	}else{
 		var table = $('#searchTableForDone').DataTable();
-		if(retainPaging){
+		if(resetPaging){
 			table.ajax.reload();
 		}else{
 			table.ajax.reload(null, false);

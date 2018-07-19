@@ -125,9 +125,9 @@ function setDataTableConfig(){
 /*
  * 搜索点击事件
  */
-function selectStaffList(resetPaging) {
+function selectStaffList(retainPaging) {
 	var table = $('#searchStaffTable').DataTable();
-	if(resetPaging) {
+	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();

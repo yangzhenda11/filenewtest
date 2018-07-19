@@ -89,31 +89,31 @@
 				var totalMonthRent = $(v).find(".totalMonthRent").val();
 				var onceCost = $(v).find(".onceCost").val();
 				var otherCost = $(v).find(".otherCost").val();
-				if(getValue || retMoney(fixedMonthRent) || fixedMonthRent == ""){
+				if(fixedMonthRent == "" || getValue || retMoney(fixedMonthRent)){
 					incomeLinerentDataItem.fixedMonthRent = fixedMonthRent;
 				}else{
 					isReg = false;
 					$(v).find(".fixedMonthRent").parents(".form-group").addClass("has-error");
 				};
-				if(getValue || retInteger(lineCount) || lineCount == ""){
+				if(lineCount == "" || getValue || retInteger(lineCount)){
 					incomeLinerentDataItem.lineCount = lineCount;
 				}else{
 					isReg = false;
 					$(v).find(".lineCount").parents(".form-group").addClass("has-error");
 				};
-				if(getValue || retMoney(totalMonthRent) || totalMonthRent == ""){
+				if(totalMonthRent == "" || getValue || retMoney(totalMonthRent)){
 					incomeLinerentDataItem.totalMonthRent = totalMonthRent;
 				}else{
 					isReg = false;
 					$(v).find(".totalMonthRent").parents(".form-group").addClass("has-error");
 				};
-				if(getValue || retMoney(onceCost) || onceCost == ""){
+				if(onceCost == "" || getValue || retMoney(onceCost)){
 					incomeLinerentDataItem.onceCost = onceCost;
 				}else{
 					isReg = false;
 					$(v).find(".onceCost").parents(".form-group").addClass("has-error");
 				};
-				if(getValue || retMoney(otherCost) || otherCost == ""){
+				if(otherCost == "" || getValue || retMoney(otherCost)){
 					incomeLinerentDataItem.otherCost = otherCost;
 				}else{
 					isReg = false;

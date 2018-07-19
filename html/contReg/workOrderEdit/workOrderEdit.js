@@ -26,7 +26,7 @@ var contractStatusObj = {
 }
 
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
-
+var orderLayerIndex = null;				//layer提示index
 /*
  * 页面是待办且为工单处理时才可以编辑
  */
@@ -406,36 +406,41 @@ function submitContent(){
 		if(isOverlength){
 			return false;
 		};
-		//手动触发表单验证
-		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
-	    bootstrapValidator.validate();
-	    if(!bootstrapValidator.isValid()){
-	    	showLayerErrorMsg("当前工单表单校验未通过，请检查");
-	        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
-	    	return false;
-	    }else{
-	    	var submitData = getContentValue(true);
-	    	if(submitData){
-	    		if($("#contractScanCopyUpload")[0]){
-		    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
-						showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
-						srolloOffect("#contractScanCopyUpload");
-						return false;
-					}
-		    	}
-	    		var flowKey = "Contractproject2Process";
-	    		var linkcode = "GDQR";
-	    		var prov = provinceCode;
-	    		var callbackFun = "submitContentPost";
-	    		var staffSelectType = 1;
-	    		var contracType = "";
-	    		var city = "",attrA = "",attrB = "",attrC = "";	    		
-				jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
-			}
-    	}
+		orderLayerIndex = layer.msg('表单验证中,请稍后...', {icon: 16,shade: 0.01,time:false});
+		var timer = setTimeout(submitContentFn, 100);
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
+	}
+}
+function submitContentFn(){
+	//手动触发表单验证
+	var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
+    bootstrapValidator.validate();
+   	layer.close(orderLayerIndex);
+    if(!bootstrapValidator.isValid()){
+    	showLayerErrorMsg("当前工单表单校验未通过，请检查");
+        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+    	return false;
+    }else{
+    	var submitData = getContentValue(true);
+    	if(submitData){
+    		if($("#contractScanCopyUpload")[0]){
+	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
+					showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
+					srolloOffect("#contractScanCopyUpload");
+					return false;
+				}
+	    	}
+    		var flowKey = "Contractproject2Process";
+    		var linkcode = "GDQR";
+    		var prov = provinceCode;
+    		var callbackFun = "submitContentPost";
+    		var staffSelectType = 1;
+    		var contracType = "";
+    		var city = "",attrA = "",attrB = "",attrC = "";	    		
+			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
+		}
 	}
 }
 /*
@@ -679,44 +684,16 @@ function saveContent(){
 				return false;
 			}
 		};
-		var isSubmits = true;
-		if($("#lineChargesListContent")[0]){
-			$.each($("#lineChargesListContent").find(".fixedMonthRent,.lineCount,.totalMonthRent,.onceCost,.otherCost"), function(k,v) {
-				if($(v).parent(".form-group").hasClass("has-error") && $(v).val()!=""){
-					isSubmits = false;
-					if(parm.pageType == 1){
-						if(parent.getActiveMyTab() != 0){
-				    		parent.cutMyTab(0,function(){
-								showLayerErrorMsg("当前工单表单校验未通过，请检查");
-								srolloOffect($(v).parent(".form-group")[0],1);
-								$(v).focus();
-				    		});
-				    	}else{
-				    		showLayerErrorMsg("当前工单表单校验未通过，请检查");
-							srolloOffect($(v).parent(".form-group")[0],1);
-							$(v).focus();
-				    	}
-					}else{
-						showLayerErrorMsg("当前工单表单校验未通过，请检查");
-						srolloOffect($(v).parent(".form-group")[0],1);
-						$(v).focus();
-					}
-					return false;
-				}
-			})
-		};
-		if(isSubmits){
-			var submitData = getContentValue();
-			if(submitData){
-				saveContentPost(submitData,"GDCL");
-			}else{
-				if(parm.pageType == 1){
-					if(parent.getActiveMyTab() != 0){
-			    		parent.cutMyTab(0,function(){
-							getContentValue();
-			    		});
-			    	}
-				}
+		var submitData = getContentValue();
+		if(submitData){
+			saveContentPost(submitData,"GDCL");
+		}else{
+			if(parm.pageType == 1){
+				if(parent.getActiveMyTab() != 0){
+		    		parent.cutMyTab(0,function(){
+						getContentValue();
+		    		});
+		    	}
 			}
 		}
 	}
@@ -1059,7 +1036,7 @@ function setPageIdCallback(data){
  */
 function validate() {
 	$('#workOrderContentForm').bootstrapValidator({
-		live: 'enabled',
+		live: 'disabled',		//enabled
 		trigger: 'live focus keyup change',
 		message: '校验未通过',
 		container: 'popover',

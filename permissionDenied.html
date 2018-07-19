@@ -30,7 +30,6 @@
 			   	vertical-align: -0.15em;
 			   	fill: currentColor;
 			   	overflow: hidden;
-			   	font-size:90px;
 			}
 			.wuquanxian1{
 				font-size: 90px;
@@ -62,7 +61,39 @@
 				</div>
 			</div>
 		</div>
-
+		<script src="static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			logout();
+			/*
+			 * 清除登录信息
+			 */
+			function logout() {
+				clearAllCookie();
+				$.ajax({
+					type: "post",
+					url: "/staffs/removeStaffCache",
+					dataType: "json",
+					contentType: "application/json",
+					success: function(data,con,xhr){
+						console.log(data);
+					},
+					error: function(data) {
+						console.log(data);
+					}
+				});
+			}
+			/*
+			 * 清除cookie
+			 */
+			function clearAllCookie() {  
+			    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
+			    if(keys) {
+			        for(var i = keys.length; i--;){
+						document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+			        }
+			    }
+			}
+		</script>
 	</body>
 
 </html>

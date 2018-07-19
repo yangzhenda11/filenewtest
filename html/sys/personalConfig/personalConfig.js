@@ -50,9 +50,9 @@ function getPersonalConfigTable(){
 /*
  * 搜索点击事件
  */
-function searchPersonalConfig(resetPaging) {
+function searchPersonalConfig(retainPaging) {
 	var table = $('#personalConfigTable').DataTable();
-	if(resetPaging) {
+	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();

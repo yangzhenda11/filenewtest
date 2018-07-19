@@ -207,7 +207,7 @@ function returnListForDone(){
 		$("#goTaskToDoDetailForDone").hide();
 		$("#searchContentForDone").show(0,function(){
 			setTimeout(serarchForDone,100);
-			//setTimeout(getTableForDone,150);
+			//setTimeout(getTableForDone,100);
 		})
 	}
 }

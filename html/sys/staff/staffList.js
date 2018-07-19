@@ -29,6 +29,10 @@ function getCloudSwitch(){
         }else{
         	$("#addBtn").remove();
         }
+        if($("#addBtn")[0]){
+        	$(".emptyTableDom").css("margin-top","-16px");
+        }
+        $(".emptyTableDom").removeClass("hidden");
     }
 }
 	
@@ -166,7 +170,7 @@ function getStaffSearchTable() {
 function searchStaff(retainPaging) {
 	if($.fn.DataTable.isDataTable("#staffSearchTable")){
 		var table = $('#staffSearchTable').DataTable();
-	    if (resetPaging) {
+	    if (retainPaging) {
 	        table.ajax.reload(null, false);
 	    } else {
 	        table.ajax.reload();
@@ -245,7 +249,7 @@ function showStaffDetail(staffId,staffOrgId) {
                     var staffOrg = staffOrgs[p];
                     var staffOrgHtml = '<div class="col-sm-12"> \
                         <div class="form-group"> \
-                            <label class="control-label col-sm-3">所属岗位:</label> \
+                            <label class="control-label col-sm-2">所属岗位:</label> \
                             <div class="col-sm-9"> \
                                 <p class="form-control-static">' + staffOrg.orgName + '(' + orgTypeSet[staffOrg.staffOrgType] + ')</p> \
                             </div> \
@@ -306,10 +310,10 @@ function showStaffDetail(staffId,staffOrgId) {
             /**处理数据权限信息*/
             var dataPermissions = result.data.dataPermissions;
             if (dataPermissions != null) {
-                var dataPermissionHtml = '<div class="col-sm-8"> \
+                var dataPermissionHtml = '<div class="col-sm-12"> \
                     <div class="form-group"> \
-                        <label class="control-label col-sm-5">数据权限级别:</label> \
-                        <div class="col-sm-7"> \
+                        <label class="control-label col-sm-3">数据权限级别:</label> \
+                        <div class="col-sm-9"> \
                             <p class="form-control-static">' + dataPermissions.dataPermName + '</p> \
                         </div> \
                     </div> \
@@ -317,10 +321,10 @@ function showStaffDetail(staffId,staffOrgId) {
                 </div>';
                 $("#DatapermissionInfo").append(dataPermissionHtml); 
             } else {
-                var dataPermissionHtml = '<div class="col-sm-8"> \
+                var dataPermissionHtml = '<div class="col-sm-12"> \
                     <div class="form-group"> \
-                        <label class="control-label col-sm-5">数据权限级别:</label> \
-                        <div class="col-sm-7"> \
+                        <label class="control-label col-sm-3">数据权限级别:</label> \
+                        <div class="col-sm-9"> \
                             <p class="form-control-static">' + "本人" + '</p> \
                         </div> \
                     </div> \
@@ -986,10 +990,10 @@ function updateInnalPersonnel(editType) {
 /*
  * 搜索点击事件
  */
-function searchPersonnel(resetPaging) {
+function searchPersonnel(retainPaging) {
     if($.fn.DataTable.isDataTable("#staffSearchTable")){
 		var table = $('#staffSearchTable').DataTable();
-	    if (resetPaging) {
+	    if (retainPaging) {
 	        table.ajax.reload(null, false);
 	    } else {
 	        table.ajax.reload();

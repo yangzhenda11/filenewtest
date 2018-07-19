@@ -20,7 +20,7 @@ function initFrame(){
 	$('#searchContent').show();
 }
 // 查询
-function serarchForToDo(retainPaging){
+function serarchForToDo(resetPaging){
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
 	if(!checkDate(startDate,endDate)){
@@ -28,7 +28,7 @@ function serarchForToDo(retainPaging){
 		return;
 	}else{
 		var table = $('#searchTableTodo').DataTable();
-		if(retainPaging) {
+		if(resetPaging) {
 			table.ajax.reload();
 		} else {
 			table.ajax.reload(null, false);

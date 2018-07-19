@@ -106,8 +106,12 @@ $(document).ready(function() {
     function improperCallback(result){
     	if(result.status == 9002){
     		window.location.href = "permissionDenied.html";
+    	}else if(result.status == 9003){
+    		layer.alert("您的用户状态异常。如需正常访问系统，请联系系统管理员",{icon:2,title:"提示",closeBtn:0},function(){
+                logout();
+            })
     	}else{
-    		layer.alert(result.message,{icon:2,title:"提示",closeBtn:0},function () {
+    		layer.alert(result.message,{icon:2,title:"提示",closeBtn:0},function(){
                 logout();
             })
     	}
@@ -151,11 +155,13 @@ function changeStaffOrg(staffOrgId) {
         }
     }
     function improperCallback(result){
+    	var message = result.message;
     	if(result.status == 9002){
-    		layer.alert("系统尚未在岗位所在的组织上线，您无法用选择的岗位访问系统",{icon:2,title:"提示"})
-    	}else{
-    		layer.alert(result.message,{icon:2,title:"提示"})
-    	}
+    		message = "系统尚未在岗位所在的组织上线，您无法用选择的岗位访问系统";
+    	}else if(result.status == 9003){
+    		message = "您的用户状态异常。如需正常访问系统，请联系系统管理员";
+    	};
+    	layer.alert(message,{icon:2,title:"提示"});
     }
 }
 /*

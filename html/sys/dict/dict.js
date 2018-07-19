@@ -134,13 +134,13 @@ function createDictTable() {
 /*
  * 搜索点击事件
  */
-function searchDict(resetPaging) {
+function searchDict(retainPaging) {
 	var table = $('#dictTable').DataTable();
 	var checkNode =  dictTree.getSelectedNodes()[0];
 	if(checkNode.level > 1){
 		curNodeId = checkNode.dictParentId;
 	}
-	if(resetPaging) {
+	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();

@@ -15,11 +15,11 @@
 		<meta http-equiv="Expires" content="0">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
-		<link rel="stylesheet" type="text/css" href="/static/css/dandelion.css?t=1531996490780" />
-		<script src="/static/css/iconfont/iconfont.js?t=1531996490780" type="text/javascript" charset="utf-8"></script>
-		<link href="/static/img/favicon.png?t=1531996490780" rel="bookmark" type="image/x-icon" />
-		<link href="/static/img/favicon.png?t=1531996490780" rel="icon" type="image/x-icon" />
-		<link href="/static/img/favicon.png?t=1531996490780" rel="shortcut icon" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="/static/css/dandelion.css?t=1532065220168" />
+		<script src="/static/css/iconfont/iconfont.js?t=1532065220168" type="text/javascript" charset="utf-8"></script>
+		<link href="/static/img/favicon.png?t=1532065220168" rel="bookmark" type="image/x-icon" />
+		<link href="/static/img/favicon.png?t=1532065220168" rel="icon" type="image/x-icon" />
+		<link href="/static/img/favicon.png?t=1532065220168" rel="shortcut icon" type="image/x-icon" />
 		<style type="text/css">
 			body {
 				font-size: 18px;
@@ -61,7 +61,7 @@
 				</div>
 			</div>
 		</div>
-		<script src="/static/plugins/jquery-1.12.4.min.js?t=1531996490780" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1532065220168" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			logout();
 			/*
@@ -75,11 +75,23 @@
 					dataType: "json",
 					contentType: "application/json",
 					success: function(data,con,xhr){
-						console.log(data);
+						//console.log(data);
 					},
 					error: function(data) {
 						console.log(data);
 					}
+				});
+				$.ajax({
+				    type: "post",
+				    url: "/logoutAndRemoveCache",
+				    dataType: "json",
+				    contentType: "application/json",
+				    success: function(data,con,xhr){
+				        //console.log(data);
+				    },
+				    error: function(data) {
+				        console.log(data);
+				    }
 				});
 			}
 			/*

@@ -80,7 +80,7 @@ function getTableForDone(){
 function serarchForDone(resetPaging){
 	var startDateForDone = $('#startDateForDone').val();
 	var endDateForDone = $('#endDateForDone').val();
-	if(!checkDate(startDateForDone,endDateForDone)){
+	if(!App.checkDate(startDateForDone,endDateForDone)){
 		layer.msg("送出开始日期不得大于截止日期！");
 		return;
 	}else{
@@ -120,17 +120,4 @@ function getFlowKyeList(){
 	    "data" : null
 	}
 	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
-}
-/**
- * 校验开始时间是否大于截止时间
- * */
-function checkDate(strDate1,strDate2){  
-    var t1 = new Date(strDate1);     
-    var t2 = new Date(strDate2);    
-              
-    if(Date.parse(t1) - Date.parse(t2) > 0){     
-        return false;   
-    }else{  
-        return true;  
-    }  
 }

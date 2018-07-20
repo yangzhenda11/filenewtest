@@ -13,15 +13,18 @@ $(function(){
 function getLog(){
 	App.initDataTables('#logTable',"#submitBtn", {
 		ajax: {
-	        "type": "GET",
-	        "url": serverPath + 'operateLog/',
+	        "type": "post",
+	        "url": serverPath + 'operateLog/getLogList',
+	        "contentType":"application/json;charset=utf-8",
 	        "data":function(d){
-	            d.operAccount = $("#operAccountObj").val();
-	            d.operIp = $("#operIpObj").val();
-	            d.operPermissionName = $("#operPermissionNameObj").val();
-	            d.operUrl = $("#operUrlObj").val();
-	            d.operStatus = $("#operStatusObj").val();
-	            return d;
+	            d.operType = $("#operType").val();
+	            if($("#startDate").val()){
+	            	d.startDate = new Date($("#startDate").val()).getTime();
+	            }
+	            if($("#endDate").val()){
+	            	d.endDate = new Date($("#endDate").val()).getTime();
+	            }
+	            return JSON.stringify(d);
 	        }
 		},
 		"columns": [
@@ -58,6 +61,13 @@ function getLog(){
  * 查询点击
  */
 function selectLog() {
-	var table = $('#logTable').DataTable();
-	table.ajax.reload();
+	var startDate = $('#startDate').val();
+	var endDate = $('#endDate').val();
+	if(!App.checkDate(startDate,endDate)){
+		layer.msg("接收开始日期不得大于截止日期！");
+		return;
+	}else{
+		var table = $('#logTable').DataTable();
+		table.ajax.reload();
+	}
 }

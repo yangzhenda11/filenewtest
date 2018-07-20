@@ -386,19 +386,13 @@ button:focus{outline: none !important;}
 /*
  * 日期数据居中且无padding
  */
-/*四个字*/
-.data-input-group2 input{
-	padding-left: 0;
-	padding-right: 0;
-	text-align: center;
-	cursor: pointer;
-}
 /*六个字*/
 .data-input-group span{
 	padding-left: 8px;
 	padding-right: 8px;
 }
-.data-input-group input{
+/*四个字*/
+.data-input-group input,.data-input-group2 input{
 	padding-left: 0;
 	padding-right: 0;
 	text-align: center;

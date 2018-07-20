@@ -2290,6 +2290,16 @@ var App = function() {
         formatStringDate:function(dateStr,formatStr){
             return new Date(App.getDateTimeStamp(dateStr)).Format(formatStr)
         },
+        //检查起始时间是否大于结束时间
+        checkDate: function(startData,endData){
+        	var startData = new Date(startData);
+		    var endData = new Date(endData);
+		    if(startData > endData){     
+		        return false;
+		    }else{
+		        return true;
+		    }
+        },
         getDateDiff :function(dateTimeStamp){
             var minute = 1000 * 60;
             var hour = minute * 60;

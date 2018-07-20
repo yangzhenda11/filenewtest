@@ -122,7 +122,7 @@ function initNotiveTable(){
 function searchNotiveTable(retainPaging) {
 	var startDateForDone = $('#submitDateA').val();
 	var endDateForDone = $('#submitDateZ').val();
-	if(!checkDate(startDateForDone,endDateForDone)){
+	if(!App.checkDate(startDateForDone,endDateForDone)){
 		layer.msg("发布开始日期不得大于截止日期！");
 		return;
 	}else{
@@ -450,16 +450,4 @@ function validate(){
 		notiveSubmit();
 	});
 }
-/**
- * 校验开始时间是否大于截止时间
- * */
-function checkDate(strDate1,strDate2){  
-    var t1 = new Date(strDate1);     
-    var t2 = new Date(strDate2);    
-              
-    if(Date.parse(t1) - Date.parse(t2) > 0){     
-        return false;   
-    }else{  
-        return true;  
-    }  
-}
+

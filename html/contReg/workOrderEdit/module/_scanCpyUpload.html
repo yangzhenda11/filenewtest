@@ -49,7 +49,7 @@
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
 	function getValue_contractScanCopyUpload(isSubmit) {
-		if(isSubmit){
+		if(isSubmit && parm.taskDefinitionKey == "GDQR"){
 			var contractScanCopyUploadData = getContractUploadInfo(3);
 		}else{
 			var contractScanCopyUploadData = getContractUploadInfo(1);

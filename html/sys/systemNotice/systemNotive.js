@@ -291,7 +291,7 @@ function notiveSubmit(){
     	}else{
     		var url = serverPath +"notifyController/saveNotify";
     	}
-		//App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
+		App.formAjaxJson(url,"post",JSON.stringify(submitData),successCallback);
 		function successCallback(result){
 			searchNotiveTable(true);
 			$("#modal").modal("hide");

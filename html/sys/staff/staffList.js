@@ -1244,10 +1244,10 @@ function goEditStaffOrg(staffId, staffOrgId) {
                                 var flag = true;
                                 if (value != "") {
                                     var url = serverPath + "staffs/staffOrgOrgId";
-                                    App.formAjaxJson(url, 'GET', { 'staffId': staffId, 'orgId': orgId, 'staffOrgId': staffOrgId }, successCallback, null, null, null, false);
+                                    App.formAjaxJson(url, 'GET', { 'staffId': staffId, 'orgId': orgId, 'staffOrgId': staffOrgId }, successCallbackFn, null, null, null, false);
                                 }
 
-                                function successCallback(result) {
+                                function successCallbackFn(result) {
                                     var staffOrgId = result.data ? result.data.staffOrgId : null;
                                     if (staffOrgId) { //已存在岗位
                                         flag = false;

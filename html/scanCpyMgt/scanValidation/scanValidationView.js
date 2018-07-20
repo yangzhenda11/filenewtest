@@ -15,8 +15,8 @@ var relationId = null;		//保存意见是的ID
 var contractId = null;		//合同ID
 //取关联字典编码
 var associateCodeInfo = new Array();
-App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId","post",JSON.stringify({"dictId": 9030}),succssCallback,null,null,null,false);
-function succssCallback(result) {
+App.formAjaxJson(serverPath + "dicts/listChildrenByDicttId","post",JSON.stringify({"dictId": 9030}),succssCallbacks,null,null,null,false);
+function succssCallbacks(result) {
     var data = result.data;
     $.each(data, function (i, item) {
         associateCodeInfo[item.dictValue] = item.dictLabel;

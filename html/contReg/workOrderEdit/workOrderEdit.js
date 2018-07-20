@@ -226,11 +226,11 @@ function beforePushProcess(pass){
 	return result;
 }
 //点通过或回退，在公共界面点提交按钮调用的流程推进方法，方法名和参数不允许修改，可以凭借业务侧的表单序列化后的参数一起传到后台，完成业务处理与流程推进。
-function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId, comment, handleType, withdraw){
+function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, comment, handleType, withdraw){
 	var postData = {
 		"processInstanceId" : processInstanceId,//当前流程实例
 		"taskId" : taskId,//当前任务id
-		"taskDefinitionKey" : taskDefinitionKey,//下一步任务code
+		"taskDefinitionKey" : taskDefinition,//下一步任务code
 		"assignee" : assignee,//下一步参与者
 		"comment" : comment,//下一步办理意见
 		"handleType" : handleType,//处理类型，1为通过，2为回退
@@ -238,6 +238,9 @@ function modal_pass(root, taskDefinitionKey, assignee, processInstanceId, taskId
 		//"nowtaskDefinitionKey":$("#taskDefinitionKey").val(),//当前办理环节
 		"title":""//可不传，如果需要修改待办标题则传此参数。
 	};
+	alert("handleType"+handleType);
+	alert("页面taskDefinitionKey"+parm.taskDefinitionKey);
+	alert("工作流下一步"+taskDefinition);
 	if(handleType == 1 && parm.taskDefinitionKey == "GDCL"){		//工单注册点击@工作流
 		var datas = getContentValue(true);
 		postData = $.extend(postData, datas);
@@ -466,16 +469,24 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback);
+	$(".register").attr("disabled",true);
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data.success == "000"){
 			showLayerErrorMsg(data.message);
+			$(".register").attr("disabled",false);
 		}else{
-			layer.alert("注册成功！",{icon:1},function(){
+			$(".register").attr("disabled",false);
+			layer.alert("注册成功！",{icon:1,closeBtn:0},function(){
 				backPage();
 			});
 		}
+	}
+	function improperCallback(result){
+		var ms = result.message;
+		showLayerErrorMsg(ms);
+		$(".register").attr("disabled",false);
 	}
 }
 /*
@@ -593,6 +604,7 @@ function setPinfoContent(){
 	if(pinfoContent == ""){
 		layer.msg("请输入退回原因",{offset: '130px'});
 	}else{
+		$("#pinfoContentModal").modal("hide");
 		if(checkWcardIschange()){
 			return false;
 		};
@@ -710,13 +722,18 @@ function saveContent(){
  * 保存提交后台
  */
 function saveContentPost(data,type){
+	if(parm.pageType == 1){
+		parent.$("#saveButton").attr("disabled",true);
+	}else{
+		$(".saveBtn").attr("disabled",true);
+	};
 	var postData = JSON.stringify(data);
 	if(type == "GDCL"){
 		var url = serverPath + "contractOrderEditorController/saveOrderEditorInfo";
 	}else if(type == "GDQR"){
 		var url = serverPath + "contractOrderEditorController/saveOrderEditorApprovalInfo"
 	}
-	App.formAjaxJson(url, "post", postData, successCallback);
+	App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data.success == "000"){
@@ -725,9 +742,20 @@ function saveContentPost(data,type){
 			setPageIdCallback(data);
 			if(parm.pageType == 1){
 	    		parent.layer.msg("保存成功");
+	    		parent.$("#saveButton").attr("disabled",false);
 			}else{
 				layer.msg("保存成功");
+				$(".saveBtn").attr("disabled",false);
 			}
+		}
+	}
+	function improperCallback(result){
+		var ms = result.message;
+		showLayerErrorMsg(ms);
+		if(parm.pageType == 1){
+    		parent.$("#saveButton").attr("disabled",false);
+		}else{
+			$(".saveBtn").attr("disabled",false);
 		}
 	}
 }

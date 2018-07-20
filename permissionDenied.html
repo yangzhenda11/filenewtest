@@ -75,11 +75,23 @@
 					dataType: "json",
 					contentType: "application/json",
 					success: function(data,con,xhr){
-						console.log(data);
+						//console.log(data);
 					},
 					error: function(data) {
 						console.log(data);
 					}
+				});
+				$.ajax({
+				    type: "post",
+				    url: "/logoutAndRemoveCache",
+				    dataType: "json",
+				    contentType: "application/json",
+				    success: function(data,con,xhr){
+				        //console.log(data);
+				    },
+				    error: function(data) {
+				        console.log(data);
+				    }
 				});
 			}
 			/*

@@ -73,7 +73,7 @@ $(function(){
 function searchWorkOrderActivate(retainPaging) {
 	var createDateBegin = $("#create_date_begin").val().trim();
 	var createDateEnd = $("#create_date_end").val().trim();
-	if(checkDate(createDateBegin,createDateEnd)){
+	if(App.checkDate(createDateBegin,createDateEnd)){
 		var table = $('#workOrderActivateListTable').DataTable();
 		if(retainPaging) {
 			table.ajax.reload(null, false);
@@ -125,18 +125,4 @@ function exportResultExcel(){
 	var searchParmData = getSearchParm();
 	var url = serverPath + 'workOrderActivate/workOrderActivateExportList' + App.urlEncode(searchParmData);
     location.href = encodeURI(url);
-}
-
-/**
- * 校验开始时间是否大于截止时间
- * */
-function checkDate(strDate1,strDate2){  
-    var t1 = new Date(strDate1);     
-    var t2 = new Date(strDate2);    
-              
-    if(Date.parse(t1) - Date.parse(t2) > 0){     
-        return false;   
-    }else{  
-        return true;  
-    }  
 }

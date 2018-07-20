@@ -18,9 +18,13 @@ function getLog(){
 	        "contentType":"application/json;charset=utf-8",
 	        "data":function(d){
 	            d.operType = $("#operType").val();
-	            d.startDate = $("#startDate").val();
-	            d.endDate = $("#endDate").val();
-	            return d;
+	            if($("#startDate").val()){
+	            	d.startDate = new Date($("#startDate").val()).getTime();
+	            }
+	            if($("#endDate").val()){
+	            	d.endDate = new Date($("#endDate").val()).getTime();
+	            }
+	            return JSON.stringify(d);
 	        }
 		},
 		"columns": [
@@ -47,7 +51,7 @@ function getLog(){
 	        }
 		],
 		"columnDefs": [{
-               // render: $.fn.dataTable.render.ellipsis(22, true)
+                render: $.fn.dataTable.render.ellipsis(22, true)
             }
         ]
 	});
@@ -59,23 +63,11 @@ function getLog(){
 function selectLog() {
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
-	if(!checkDate(startDate,endDate)){
+	if(!App.checkDate(startDate,endDate)){
 		layer.msg("接收开始日期不得大于截止日期！");
 		return;
 	}else{
 		var table = $('#logTable').DataTable();
 		table.ajax.reload();
 	}
-}
-/**
- * 校验开始时间是否大于截止时间
- * */
-function checkDate(strDate1,strDate2){  
-    var t1 = new Date(strDate1);     
-    var t2 = new Date(strDate2);         
-    if(Date.parse(t1) - Date.parse(t2) > 0){     
-        return false;   
-    }else{  
-        return true;  
-    }  
 }

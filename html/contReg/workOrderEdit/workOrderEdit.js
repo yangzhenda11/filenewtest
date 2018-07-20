@@ -244,8 +244,11 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 		postData.wcardId = wcardId;
 		postData.wcardType = wcardTypeCode;
 		postData.contractName = $("#contractName").val();
+		parent.$("#in-footer").modal("hide");
+		parent.$("#out-footers button").not("#backTolist").attr("disabled",true);
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallbackFn1, improperCallbackFn1);
 		function successCallbackFn1(result) {
+			parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 			var data = result.data;
 			if(data.success == "000"){
 				showLayerErrorMsg(data.message);
@@ -256,20 +259,25 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 			}
 		}
 		function improperCallbackFn1(result){
+			parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 			showLayerErrorMsg(result.message);
 		}
 	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){		//工单退回点击@工作流
 		var pinfoContent = $('#comment', parent.document).val();
 		postData.pinfoContent = pinfoContent;
 		postData.busiId = wcardId;
+		parent.$("#in-footer").modal("hide");
+		parent.$("#out-footers button").not("#backTolist").attr("disabled",true);
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(postData), successCallbackFn2, improperCallbackFn2);
 		function successCallbackFn2(result) {
+			parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 			var data = result.data;
 			parent.layer.alert("退回成功！",{icon:1},function(){
 				parent.modal_close();
 			});
 		}
 		function improperCallbackFn2(result){
+			parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 			showLayerErrorMsg(result.message);
 		}
 	}else if(handleType == 1 && parm.taskDefinitionKey == "GDQR"){		//工单激活点击@工作流
@@ -283,14 +291,18 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
 			postData.contractId = contractId;
+			parent.$("#in-footer").modal("hide");
+			parent.$("#out-footers button").not("#backTolist").attr("disabled",true);
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallbackFn3, improperCallbackFn3);
 			function successCallbackFn3(result) {
+				parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 				var data = result.data;
 				parent.layer.alert("激活成功！",{icon:1},function(){
 					parent.modal_close();
 				});
 			}
 			function improperCallbackFn3(result){
+				parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 				showLayerErrorMsg(result.message);
 			}
 		});

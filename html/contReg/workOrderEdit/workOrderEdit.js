@@ -95,11 +95,9 @@ $(function() {
 /*
  * 工作流相关
  */
-//通过或退回回调的方法(包括：工单注册，工单退回，工单激活)@工作流
-function beforePushProcess(pass){
+//通过或退回回调的方法1(包括：工单注册，工单退回，工单激活)@工作流
+function businessDispose(pass){
 	var result = true;
-	var pathSelect = 0;
-	//1，业务侧的校验，校验不通过则返回false
 	if(formSubmit){
 		if(checkWcardIschange(true)){
 			if(parent.getActiveMyTab() != 0){
@@ -109,7 +107,7 @@ function beforePushProcess(pass){
 	    	}else{
 	    		checkWcardIschange();
 	    	}
-			return false;
+			result = false;
 		};
 		//删除表格内多余的数据
 		removeMoreThanTablecontent();
@@ -122,71 +120,8 @@ function beforePushProcess(pass){
 	    	}else{
 	    		checkDomOverlength();
 	    	}
-			return false;
+			result = false;
 		};
-		//手动触发表单验证
-		var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
-	    bootstrapValidator.validate();
-	    if(!bootstrapValidator.isValid()){
-	    	if(parent.getActiveMyTab() != 0){
-	    		parent.cutMyTab(0,function(){
-	    			showLayerErrorMsg("当前工单表单校验未通过，请检查");
-		        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
-	    		});
-	    	}else{
-	    		showLayerErrorMsg("当前工单表单校验未通过，请检查");
-	        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
-	    	}
-	    	return false;
-	    }else{
-	    	var submitData = getContentValue(true);
-	    	if(!submitData){
-				if(parent.getActiveMyTab() != 0){
-		    		parent.cutMyTab(0,function(){
-		    			getContentValue(true);
-		    		});
-		    	}else{
-		    		getContentValue(true);
-		    	}
-		    	return false;
-			};
-    	};
-    	if($("#contractScanCopyUpload")[0]){
-    		if(pass == true){
-	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
-	    			if(parm.taskDefinitionKey == "GDQR"){
-	    				var ms = "请上传合同正文扫描件后进行工单激活";
-	    			}else{
-	    				var ms = "请上传合同正文扫描件后进行工单注册";
-	    			};
-	    			if(parent.getActiveMyTab() != 0){
-			    		parent.cutMyTab(0,function(){
-			    			showLayerErrorMsg(ms);
-							srolloOffect("#contractScanCopyUpload");
-			    		});
-			    	}else{
-			    		showLayerErrorMsg(ms);
-						srolloOffect("#contractScanCopyUpload");
-			    	}
-					return false;
-				}
-	    	}
-    	}
-    	if(parm.taskDefinitionKey == "GDQR" && pass == true){
-    		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
-			if(adminCommitmentValue == null){
-				if(parent.getActiveMyTab() != 0){
-		    		parent.cutMyTab(0,function(){
-		    			showLayerErrorMsg("请勾选合同管理员确认信息");
-						srolloOffect("#adminCommitmentContent");
-		    		});
-		    	}else{
-		    		showLayerErrorMsg("请勾选合同管理员确认信息");
-					srolloOffect("#adminCommitmentContent");
-		    	};
-				return false;
-			};
-    	}
 	}else{
 		if(parent.getActiveMyTab() != 0){
     		parent.cutMyTab(0,function(){
@@ -195,7 +130,80 @@ function beforePushProcess(pass){
     	}else{
     		showLayerErrorMsg("页面加载失败");
     	};
-		return false;
+		result = false;
+	}
+	if(result){
+		orderLayerIndex = layer.msg('表单验证中,请稍后...', {icon: 16,shade: 0.01,time:false});
+	}
+	return result;
+}
+//通过或退回回调的方法2(包括：工单注册，工单退回，工单激活)@工作流
+function beforePushProcess(pass){
+	var result = true;
+	var pathSelect = 0;
+	//手动触发表单验证
+	var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
+    bootstrapValidator.validate();
+    layer.close(orderLayerIndex);
+    if(!bootstrapValidator.isValid()){
+    	if(parent.getActiveMyTab() != 0){
+    		parent.cutMyTab(0,function(){
+    			showLayerErrorMsg("当前工单表单校验未通过，请检查");
+	        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+    		});
+    	}else{
+    		showLayerErrorMsg("当前工单表单校验未通过，请检查");
+        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+    	}
+    	return false;
+    }else{
+    	var submitData = getContentValue(true);
+    	if(!submitData){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+	    			getContentValue(true);
+	    		});
+	    	}else{
+	    		getContentValue(true);
+	    	}
+	    	return false;
+		};
+	};
+	if($("#contractScanCopyUpload")[0]){
+		if(pass == true){
+    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
+    			if(parm.taskDefinitionKey == "GDQR"){
+    				var ms = "请上传合同正文扫描件后进行工单激活";
+    			}else{
+    				var ms = "请上传合同正文扫描件后进行工单注册";
+    			};
+    			if(parent.getActiveMyTab() != 0){
+		    		parent.cutMyTab(0,function(){
+		    			showLayerErrorMsg(ms);
+						srolloOffect("#contractScanCopyUpload");
+		    		});
+		    	}else{
+		    		showLayerErrorMsg(ms);
+					srolloOffect("#contractScanCopyUpload");
+		    	}
+				return false;
+			}
+    	}
+	}
+	if(parm.taskDefinitionKey == "GDQR" && pass == true){
+		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		if(adminCommitmentValue == null){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+	    			showLayerErrorMsg("请勾选合同管理员确认信息");
+					srolloOffect("#adminCommitmentContent");
+	    		});
+	    	}else{
+	    		showLayerErrorMsg("请勾选合同管理员确认信息");
+				srolloOffect("#adminCommitmentContent");
+	    	};
+			return false;
+		};
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。	
 	var assigneeParam = { 
@@ -887,7 +895,7 @@ function loadComplete() {
  */
 function srolloOffect(el,srolloParm){
 	var elName = $(el).find("input").attr("name");
-	var overviewDomList = ["partyATelephone","partyZTelephone"];
+	var overviewDomList = ["partyATelephone","partyZTelephone","partyALegalperson","partyZLegalperson","partyARegaddr","partyZRegaddr","partyAContact","partyZContact"];
 	if($.inArray(elName,overviewDomList) != -1){
 		if($("#partyContent").hasClass("hidden")){
 			$("#partyMore").click();
@@ -897,9 +905,7 @@ function srolloOffect(el,srolloParm){
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
 			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 630;
-			if(scrollLeftValue > 0){
-				$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
-			}
+			$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
 		}
 	}else if(srolloParm == 2){
 		if(parm.pageType == 1) {

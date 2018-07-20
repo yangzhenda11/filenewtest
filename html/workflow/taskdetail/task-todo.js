@@ -365,9 +365,30 @@ function loadHistoicFlow(serverPath, processInstanceId) {
 				}
 			});
 }
-
-// 普通环节点击“通过”或“回退”按钮，添加评论
+/*
+ * 普通环节点击“通过”或“回退”前一步方法
+ * 判断业务页面是否存在businessDispose方法,用与处理在下一步beforePushProcess中校验卡顿问题
+ * 在这个一步业务中预先加入动画,防止用户以为卡顿
+ * 对于不存在的businessDispose方法的直接执行下一步,对于原逻辑不受影响
+ * zander
+ */
 function addComment(pass){
+	var pass = pass;
+	if(document.getElementById("businessiframe").contentWindow.App.isExitsFunction("businessDispose")) {
+        if (document.getElementById("businessiframe").contentWindow.businessDispose(pass)) {
+            var timer = setTimeout(disposeAddCommentFn, 100);
+            function disposeAddCommentFn(){
+            	addCommentFn(pass);
+            };
+        }else{
+        	return false;
+        }
+    }else{
+    	addCommentFn(pass);
+    }
+}
+// 普通环节点击“通过”或“回退”按钮，添加评论
+function addCommentFn(pass){
 	clearAssignee();
 	
 	//if(!checkifdone()){

@@ -19,9 +19,9 @@ $(function() {
         $("#permTree").css("max-height", documentHeight - 110);
     }
     // 初始化树
-    App.formAjaxJson(serverPath + "pers/root", "get", null, successCallback)
+    App.formAjaxJson(serverPath + "pers/root", "get", null, successCallbackFn)
 
-    function successCallback(result) {
+    function successCallbackFn(result) {
         var zNodes = result.sysPerm;
         perPermissionTree = $.fn.zTree.init($("#permTree"), permSetting, zNodes);
         curNode = perPermissionTree.getNodes()[0];

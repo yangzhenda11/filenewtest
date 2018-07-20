@@ -128,9 +128,9 @@
             //         $(dom).data(setKey, treeNode[setKey]);
             //     }
             // };
-            App.formAjaxJson(parent.globalConfig.serverPath + "staffs/editStaffRoleByCopy/" + $("#roleCopyFrom").val() + "/" + treeNode.staffOid, "get", null, successCallback, improperCallbacks);
+            App.formAjaxJson(parent.globalConfig.serverPath + "staffs/editStaffRoleByCopy/" + $("#roleCopyFrom").val() + "/" + treeNode.staffOid, "get", null, successCallbacks, improperCallbacks);
 
-            function successCallback(result) {
+            function successCallbacks(result) {
                 layer.alert(result.message, {
                     time: 1500,
                     icon: 6

@@ -44,13 +44,11 @@ $(function() {
 		$(".page-content").removeClass("hidden");
 		if(parm.taskFlag == "db"){
 			if(parm.taskDefinitionKey == "GDCL"){
-				$("#flowLable").text("工单处理");
 				//工单处理环节将提交按钮改为“注册完成” btId：passButton   
 				parent.setUserBtName("passButton","注册完成");
 				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
 				parent.setUserBtName("backTolist","关闭");
 			}else if(parm.taskDefinitionKey == "GDQR"){
-				$("#flowLable").text("工单确认");
 				//工单确认环节将提交按钮改为“工单激活” btId：passButton   
 				parent.setUserBtName("passButton","激活合同");
 				//工单处理环节将回退按钮改为“退回承办人” btId：backButton
@@ -58,13 +56,12 @@ $(function() {
 				//工单处理环节将返回待办列表改为“关闭” btId：backTolist
 				parent.setUserBtName("backTolist","关闭");
 			};
-		}else{
-			if(parm.taskDefinitionKey == "GDCL"){
-				$("#flowLable").text("工单处理");
-			}else if(parm.taskDefinitionKey == "GDQR"){
-				$("#flowLable").text("工单确认");
-			};
 		}
+		if(parm.taskDefinitionKey == "GDCL"){
+			$("#flowLable").text("工单处理");
+		}else if(parm.taskDefinitionKey == "GDQR"){
+			$("#flowLable").text("工单确认");
+		};
 	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
@@ -123,20 +120,15 @@ function businessDispose(pass){
 			result = false;
 		};
 	}else{
-		if(parent.getActiveMyTab() != 0){
-    		parent.cutMyTab(0,function(){
-    			showLayerErrorMsg("页面加载失败");
-    		});
-    	}else{
-    		showLayerErrorMsg("页面加载失败");
-    	};
+		formSubmitFalse();
 		result = false;
-	}
+	};
 	if(result){
 		orderLayerIndex = layer.msg('表单验证中,请稍后...', {icon: 16,shade: 0.01,time:false});
-	}
+	};
 	return result;
 }
+
 //通过或退回回调的方法2(包括：工单注册，工单退回，工单激活)@工作流
 function beforePushProcess(pass){
 	var result = true;
@@ -206,7 +198,7 @@ function beforePushProcess(pass){
 		};
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。	
-	var assigneeParam = { 
+	var assigneeParam = {
 		prov: provinceCode,
 		city: "",
 		contracType: "",
@@ -340,13 +332,7 @@ function modal_passQxsp(flowParam){
 			}
 		});
 	}else{
-		if(parent.getActiveMyTab() != 0){
-    		parent.cutMyTab(0,function(){
-    			showLayerErrorMsg("页面加载失败");
-    		});
-    	}else{
-    		showLayerErrorMsg("页面加载失败");
-    	};
+		formSubmitFalse();
 		return false;
 	}
 }
@@ -362,16 +348,11 @@ function modal_save(){
 	    		checkWcardIschange();
 	    	}
 			return false;
-		};
-		saveContent();
+		}else{
+			saveContent();
+		}
 	}else{
-		if(parent.getActiveMyTab() != 0){
-    		parent.cutMyTab(0,function(){
-    			showLayerErrorMsg("页面加载失败");
-    		});
-    	}else{
-    		showLayerErrorMsg("页面加载失败");
-    	};
+		formSubmitFalse();
 		return false;
 	}
 }
@@ -398,14 +379,27 @@ function modal_return(root, processInstanceId, taskId){
 	}
 }
 /*
+ * 页面加载失败时工作流提示
+ */
+function formSubmitFalse(){
+	if(parent.getActiveMyTab() != 0){
+		parent.cutMyTab(0,function(){
+			showLayerErrorMsg("页面加载失败");
+		});
+	}else{
+		showLayerErrorMsg("页面加载失败");
+	};
+}
+/*
  * 保存按钮点击@功能页面
  */
 function saveBtnClick(){
 	if(formSubmit){
 		if(checkWcardIschange()){
 			return false;
-		};
-		saveContent();
+		}else{
+			saveContent();
+		}
 	}else{
 		showLayerErrorMsg("页面加载失败");
 		return false;
@@ -478,15 +472,14 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
-	$(".register").attr("disabled",true);
+	$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",true);
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
+		$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
 		var data = result.data;
 		if(data.success == "000"){
 			showLayerErrorMsg(data.message);
-			$(".register").attr("disabled",false);
 		}else{
-			$(".register").attr("disabled",false);
 			layer.alert("注册成功！",{icon:1,closeBtn:0},function(){
 				backPage();
 			});
@@ -495,7 +488,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	function improperCallback(result){
 		var ms = result.message;
 		showLayerErrorMsg(ms);
-		$(".register").attr("disabled",false);
+		$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
 	}
 }
 /*
@@ -547,18 +540,24 @@ function activateContract(){
 			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 			postData.validity = {};
 			if($("#contractScanCopyUpload")[0]){
-				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);;
+				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
 	    	};
 			postData.validity.adminCommitment = adminCommitment;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
 			postData.contractId = contractId;
-			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback);
+			$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",true);
+			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
+				$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
 				var data = result.data;
 				layer.alert("激活成功！",{icon:1},function(){
 					backPage();
 				});
+			}
+			function improperCallback(result){
+				$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
+				showLayerErrorMsg(result.message);
 			}
 		});
 	}else{
@@ -613,11 +612,11 @@ function setPinfoContent(){
 	if(pinfoContent == ""){
 		layer.msg("请输入退回原因",{offset: '130px'});
 	}else{
-		$("#pinfoContentModal").modal("hide");
 		if(checkWcardIschange()){
 			return false;
 		};
 		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
+		$("#pinfoContentModal").modal("hide");
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);

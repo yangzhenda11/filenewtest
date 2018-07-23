@@ -50,11 +50,8 @@ var defaultCurConfigs = {
 	config_page_size: "10,20,50",
 	message_space: "6"
 }
-App.formAjaxJson(globalConfig.serverPath + "configs/getVal", "GET", {
-	staffOrgId: globalConfig.curStaffOrgId,
-	code: "config_page_size"
-}, configSuccess, configImproper, configError, null, false);
-
+//获取用户自定义配置信息
+App.formAjaxJson(globalConfig.serverPath + "personalConfig/list", "GET", { staffOrgId: globalConfig.curStaffOrgId,draw:1,start:0,length:100}, configSuccess, configImproper, configError, null, false);
 function configSuccess(result) {
 	var data = result.data;
     if (data != "") {

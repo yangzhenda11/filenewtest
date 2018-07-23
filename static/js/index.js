@@ -39,9 +39,7 @@ $(document).ready(function() {
     	//系统默认配置
     	var defaultCurConfigs = {
     		config_page_size: "10,20,50",
-			message_space: "300000",
-			oke_active_time: "1",
-			oken_maximum_number: "10"
+			message_space: "6"
 		}
         var data = result.data;
         globalConfig.provCode = data.provCode;
@@ -68,7 +66,7 @@ $(document).ready(function() {
 	
 	    function configSuccess(result) {
 	    	var data = result.data;
-	        if (result.data != "") {
+	        if (data != "") {
 	        	var personalConfigObj = {};
 				$.each(data, function(k,v) {
 					personalConfigObj[v.code] = v.val;

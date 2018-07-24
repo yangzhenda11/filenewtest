@@ -191,7 +191,7 @@
 			if(!$(v).hasClass("emptyTr")){
 				var dataItem = {};
 				dataItem.stampedId = $(v).data("id");
-				dataItem.stampedData = $(v).find(".stampedData").val();
+				dataItem.stampedDate = $(v).find(".stampedDate").val();
 				stampedInfoOurList.push(dataItem);
 			}
 		});
@@ -201,7 +201,7 @@
 			if(!$(v).hasClass("emptyTr")){
 				var dataItem = {};
 				dataItem.stampedId = $(v).data("id");
-				dataItem.stampedData = $(v).find(".stampedData").val();
+				dataItem.stampedDate = $(v).find(".stampedDate").val();
 				stampedInfoOtherList.push(dataItem);
 			}
 		});
@@ -245,6 +245,8 @@
 				}else{
 					$("input[name='isPostponable'][value=1]").prop("checked",true);
 				};
+				delete data.periodType;
+				delete data.isPostponable;
 				App.setFormValues("#validityConForm",data);
 				initPartySignDate(data.stampedInfoOurList,"partyASignDate");
 				initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");

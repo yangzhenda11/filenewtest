@@ -29,8 +29,10 @@ var globalConfig = {
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
+//菜单
 var ace_menus = null;
-
+//跳转参数
+var jmpParameters = new Object();
 $(document).ready(function() {
 	//获取用户基本信息
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, null, null, false);

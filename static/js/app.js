@@ -1115,6 +1115,17 @@ var App = function() {
 //              if('undefined' !== typeof initVal )initEl.attr("value",initVal);
 //          })
         },
+        /*
+         * 跳转时获取表单内的参数存储
+         * 数据格式:
+         * jmpParameters = {
+         * 		pageName:{
+         * 			select:{name:val},
+         * 			val:{}
+         * 		}
+         * }
+         */
+        
 		/*
 		 * 表单内静态select2内容的初始化
 		 * dom 表单的dom元素

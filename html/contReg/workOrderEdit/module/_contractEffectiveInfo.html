@@ -237,23 +237,18 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			if(data){
-				changePostponableValidatorStatus(data.periodType,data.isPostponable);
-				if(data.undertakerCommitment == 1){
+			var tRContractValidityVo = data.tRContractValidityVo;
+			initPartySignDate(data.stampedInfoOurList,"partyASignDate");
+			initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");
+			if(tRContractValidityVo){
+				changePostponableValidatorStatus(tRContractValidityVo.periodType,tRContractValidityVo.isPostponable);
+				if(tRContractValidityVo.undertakerCommitment == 1){
 					$("#validityForm input[name='undertakerCommitment']").attr("checked",true);
 				};
-				if(data.adminCommitment == 1){
+				if(tRContractValidityVo.adminCommitment == 1){
 					$("#validityForm input[name='adminCommitment']").attr("checked",true);
 				};
-				App.setFormValues("#validityConForm",data);
-				if(data.validityId == null){
-					$("#validityId").val("100000");
-				};
-				if(data.periodType == null){
-					$("#periodType").val("905010").trigger('change');
-				};
-				initPartySignDate(data.stampedInfoOurList,"partyASignDate");
-				initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");
+				App.setFormValues("#validityConForm",tRContractValidityVo);
 				if($("input[name='adminCommitment']:checked").val()){
 					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "yb"){
 						$("#adminCommitmentContent").removeClass("hidden");

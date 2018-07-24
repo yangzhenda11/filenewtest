@@ -793,7 +793,7 @@ var App = function() {
                             App.setChecked(a,formData[a]);
                         }
                     }else if('object' == typeof formData[a]){
-                        App.setFormValues(el,formData[a]);
+                        //App.setFormValues(el,formData[a]);
                     }
                 }
             }

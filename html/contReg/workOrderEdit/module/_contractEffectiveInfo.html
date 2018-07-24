@@ -80,80 +80,80 @@
             	</div>
        	   	</div>
 			<div id="validityConForm">
-			<input type="hidden" name="validityId" id="validityId" value="100000" />
-			<div class="col-sm-6 form-group">
-				<label for="periodType" class="control-label"><i class="iconfont icon-mi required"></i>合同有效期确认方式：</label>
-				<div class="valiParent">
-					<select class="form-control select2me" data-placeholder='请选择合同有效期确认方式' data-allowClear="false" name="periodType" id="periodType">
-						<option value="905010">固定起止日期</option>
-						<option value="905020">按条件约定合同生效日期，期限固定</option>
-						<option value="905030">按条件约定合同生效日期，期限不固定</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="isPostponable" class="control-label"><i class="iconfont icon-mi required"></i>是否顺延：</label>
-				<div class="valiParent">
-					<div class="ui-radio-list ui-radio-inline">
-						<label class="ui-radio">
-							是
-							<input type="radio" value="1" name="isPostponable">
-							<span></span>
-						</label>
-						<label class="ui-radio">
-							否
-							<input type="radio" value="0" checked="checked" name="isPostponable">
-							<span></span>
-						</label>
-					</div>
-				</div>
-			</div>
-			<div id="postponableValidator">
-				<div class="col-sm-6 form-group hidden" id="effectiveDateDiv">
-					<label for="effectiveDate" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
-					<div class="valiParent input-group">
-						<input type="text" name="effectiveDate" id="effectiveDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-						<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
-					<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
-					<div class="valiParent input-group">
-						<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-						<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="effectConditionDiv">
-					<label for="effectCondition" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
+				<input type="hidden" name="validityId" id="validityId" value="100000" />
+				<div class="col-sm-6 form-group">
+					<label for="periodType" class="control-label"><i class="iconfont icon-mi required"></i>合同有效期确认方式：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="effectCondition" name="effectCondition" maxlength="2000" />
+						<select class="form-control select2me" data-placeholder='请选择合同有效期确认方式' data-allowClear="false" name="periodType" id="periodType">
+							<option value="905010">固定起止日期</option>
+							<option value="905020">按条件约定合同生效日期，期限固定</option>
+							<option value="905030">按条件约定合同生效日期，期限不固定</option>
+						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group hidden" id="effectPeriodDiv">
-					<label for="effectPeriod" class="control-label"><i class="iconfont icon-mi required"></i>协议期限：</label>
+				<div class="col-sm-6 form-group">
+					<label for="isPostponable" class="control-label"><i class="iconfont icon-mi required"></i>是否顺延：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="effectPeriod" name="effectPeriod" maxlength="2000" />
+						<div class="ui-radio-list ui-radio-inline">
+							<label class="ui-radio">
+								是
+								<input type="radio" value="1" name="isPostponable">
+								<span></span>
+							</label>
+							<label class="ui-radio">
+								否
+								<input type="radio" value="0" checked="checked" name="isPostponable">
+								<span></span>
+							</label>
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group hidden" id="postponeConditionDiv">
-					<label for="postponeCondition" class="control-label"><i class="iconfont icon-mi required"></i>顺延条件：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="postponeCondition" name="postponeCondition" maxlength="2000" />
+				<div id="postponableValidator">
+					<div class="col-sm-6 form-group hidden" id="effectiveDateDiv">
+						<label for="effectiveDate" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
+						<div class="valiParent input-group">
+							<input type="text" name="effectiveDate" id="effectiveDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+							<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
+						<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
+						<div class="valiParent input-group">
+							<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+							<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="effectConditionDiv">
+						<label for="effectCondition" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="effectCondition" name="effectCondition" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="effectPeriodDiv">
+						<label for="effectPeriod" class="control-label"><i class="iconfont icon-mi required"></i>协议期限：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="effectPeriod" name="effectPeriod" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="postponeConditionDiv">
+						<label for="postponeCondition" class="control-label"><i class="iconfont icon-mi required"></i>顺延条件：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="postponeCondition" name="postponeCondition" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="postponePeriodDiv">
+						<label for="postponePeriod" class="control-label"><i class="iconfont icon-mi required"></i>顺延时限：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="postponePeriod" name="postponePeriod" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="expiryConditionDiv">
+						<label for="expiryCondition" class="control-label"><i class="iconfont icon-mi required"></i>满足终止：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="expiryCondition" name="expiryCondition" maxlength="2000" />
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group hidden" id="postponePeriodDiv">
-					<label for="postponePeriod" class="control-label"><i class="iconfont icon-mi required"></i>顺延时限：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="postponePeriod" name="postponePeriod" maxlength="2000" />
-					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="expiryConditionDiv">
-					<label for="expiryCondition" class="control-label"><i class="iconfont icon-mi required"></i>满足终止：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="expiryCondition" name="expiryCondition" maxlength="2000" />
-					</div>
-				</div>
-			</div>
 			</div>
 		</div>
 	</div>
@@ -239,14 +239,12 @@
 			var data = result.data;
 			if(data){
 				changePostponableValidatorStatus(data.periodType,data.isPostponable);
-				$("#periodType").val(data.periodType).trigger('change');
-				if(data.isPostponable == 0){
-					$("input[name='isPostponable'][value=0]").prop("checked",true);
-				}else{
-					$("input[name='isPostponable'][value=1]").prop("checked",true);
-				};
-				delete data.periodType;
-				delete data.isPostponable;
+//				$("#periodType").val(data.periodType).trigger('change');
+//				if(data.isPostponable == 0){
+//					$("input[name='isPostponable'][value=0]").prop("checked",true);
+//				}else{
+//					$("input[name='isPostponable'][value=1]").prop("checked",true);
+//				};
 				App.setFormValues("#validityConForm",data);
 				initPartySignDate(data.stampedInfoOurList,"partyASignDate");
 				initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");
@@ -273,6 +271,24 @@
 					$("input[name='adminCommitment']").attr("disabled",false);
 				}
 			}
+			/*
+			 * 选择触发input框改变
+			 */
+			$("#periodType").on("change",function(){
+				if($(this).val() == "905030"){
+					$("input[name='isPostponable'][value=0]").prop("checked",true);
+				};
+				var selectValue = $(this).val();
+				var checkValue = $("input[name='isPostponable']:checked").val();
+				changePostponableValidatorStatus(selectValue,checkValue);
+				resetEffectiveValidator();
+			});
+			$("input[name='isPostponable']").on("change",function(){
+				var selectValue = $("#periodType").val();
+				var checkValue = $(this).val();
+				changePostponableValidatorStatus(selectValue,checkValue);
+				resetEffectiveValidator();
+			});
 		}
 	}
 	/*
@@ -300,7 +316,7 @@
 			appendHtml = '<tr data-id="'+ data[k].stampedId +'">'+
 								'<td>'+ (k+1) +'</td>'+
 								'<td>'+ data[k].partyName +'</td>'+
-								'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedData" readonly="readonly" /><span class="input-group-addon"><i class="iconfont icon-calendar"></i></span></div></td>'+
+								'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedDate" readonly="readonly" /><span class="input-group-addon"><i class="iconfont icon-calendar"></i></span></div></td>'+
 							'</tr>';
 			if(type == "partyASignDate"){
 				$("#partyASignDateTbody").append(appendHtml);
@@ -311,24 +327,7 @@
 			}
 		}
 	}
-	/*
-	 * 选择触发input框改变
-	 */
-	$("#periodType").on("change",function(){
-		if($(this).val() == "905030"){
-			$("input[name='isPostponable'][value=0]").prop("checked",true);
-		};
-		var selectValue = $(this).val();
-		var checkValue = $("input[name='isPostponable']:checked").val();
-		changePostponableValidatorStatus(selectValue,checkValue);
-		resetEffectiveValidator();
-	});
-	$("input[name='isPostponable']").on("change",function(){
-		var selectValue = $("#periodType").val();
-		var checkValue = $(this).val();
-		changePostponableValidatorStatus(selectValue,checkValue);
-		resetEffectiveValidator();
-	});
+	
 	/*
 	 * 选择时重置验证
 	 */

@@ -239,13 +239,19 @@
 			var data = result.data;
 			if(data){
 				changePostponableValidatorStatus(data.periodType,data.isPostponable);
-//				$("#periodType").val(data.periodType).trigger('change');
-//				if(data.isPostponable == 0){
-//					$("input[name='isPostponable'][value=0]").prop("checked",true);
-//				}else{
-//					$("input[name='isPostponable'][value=1]").prop("checked",true);
-//				};
+				if(data.undertakerCommitment == 1){
+					$("#validityForm input[name='undertakerCommitment']").attr("checked",true);
+				};
+				if(data.adminCommitment == 1){
+					$("#validityForm input[name='adminCommitment']").attr("checked",true);
+				};
 				App.setFormValues("#validityConForm",data);
+				if(data.validityId == null){
+					$("#validityId").val("100000");
+				};
+				if(data.periodType == null){
+					$("#periodType").val("905010").trigger('change');
+				};
 				initPartySignDate(data.stampedInfoOurList,"partyASignDate");
 				initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");
 				if($("input[name='adminCommitment']:checked").val()){

@@ -128,7 +128,7 @@
     //确定按钮点击
     function checkAgent() {
         var treeNode = agentStaffTree.getSelectedNodes()[0];
-        if (treeNode == undefined) {
+        if (treeNode == undefined || treeNode.orgType != '') {
             layer.msg("请选择人员", {
                 icon: 2
             })

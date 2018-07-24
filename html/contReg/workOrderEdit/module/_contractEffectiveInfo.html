@@ -33,91 +33,125 @@
 					</div>
             	</div>
        	    </div>
-       	    <input type="hidden" name="validityId" id="validityId" value="100000" />
-			<div class="col-sm-6 form-group">
-				<label for="partyASignDate" class="control-label"><i class="iconfont icon-mi required"></i>我方签约日期：</label>
-				<div class="valiParent input-group">
-					<input type="text" name="partyASignDate" id="partyASignDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-					<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="partyZSignDate" class="control-label"><i class="iconfont icon-mi required"></i>对方签约日期：</label>
-				<div class="valiParent input-group">
-					<input type="text" name="partyZSignDate" id="partyZSignDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-					<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="periodType" class="control-label"><i class="iconfont icon-mi required"></i>合同有效期确认方式：</label>
-				<div class="valiParent">
-					<select class="form-control select2me" data-placeholder='请选择合同有效期确认方式' data-allowClear="false" name="periodType" id="periodType">
-						<option value="905010">固定起止日期</option>
-						<option value="905020">按条件约定合同生效日期，期限固定</option>
-						<option value="905030">按条件约定合同生效日期，期限不固定</option>
-					</select>
-				</div>
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="isPostponable" class="control-label"><i class="iconfont icon-mi required"></i>是否顺延：</label>
-				<div class="valiParent">
-					<div class="ui-radio-list ui-radio-inline">
-						<label class="ui-radio">
-							是
-							<input type="radio" value="1" name="isPostponable">
-							<span></span>
-						</label>
-						<label class="ui-radio">
-							否
-							<input type="radio" value="0" checked="checked" name="isPostponable">
-							<span></span>
-						</label>
-					</div>
-				</div>
-			</div>
-			<div id="postponableValidator">
-				<div class="col-sm-6 form-group hidden" id="effectiveDateDiv">
-					<label for="effectiveDate" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
-					<div class="valiParent input-group">
-						<input type="text" name="effectiveDate" id="effectiveDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-						<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
-					<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
-					<div class="valiParent input-group">
-						<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
-						<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
-					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="effectConditionDiv">
-					<label for="effectCondition" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
+       	    <div class="portlet" id="payerAccountInfo">
+                <div class="portlet-title ">
+                    <div class="caption font-dark contract">
+                        <span class="caption-subject bold uppercase">我方签订盖章日期信息</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-hover table-bordered table-striped table-align">
+		            	<thead>
+							<tr>
+								<th style="width: 10%;">序号</th>
+								<th style="width: 55%;">我方主体</th>
+								<th style="width: 35%;"><i class="iconfont icon-mi required"></i>我方签订盖章日期</th>
+							</tr>
+						</thead>
+						<tbody id="partyASignDateTbody">
+							<tr class="emptyTr">
+								<td colspan="3">暂无我方主体信息</td>
+							</tr>
+						</tbody>
+					</table>
+            	</div>
+       	   	</div>
+       	    <div class="portlet" id="payerAccountInfo">
+                <div class="portlet-title ">
+                    <div class="caption font-dark contract">
+                        <span class="caption-subject bold uppercase">对方签订盖章日期信息</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-hover table-bordered table-striped table-align">
+		            	<thead>
+							<tr>
+								<th style="width: 10%;">序号</th>
+								<th style="width: 55%;">对方主体</th>
+								<th style="width: 35%;"><i class="iconfont icon-mi required"></i>对方签订盖章日期</th>
+							</tr>
+						</thead>
+						<tbody id="partyZSignDateTbody">
+							<tr class="emptyTr">
+								<td colspan="3">暂无对方主体信息</td>
+							</tr>
+						</tbody>
+					</table>
+            	</div>
+       	   	</div>
+			<div id="validityConForm">
+				<input type="hidden" name="validityId" id="validityId" value="100000" />
+				<div class="col-sm-6 form-group">
+					<label for="periodType" class="control-label"><i class="iconfont icon-mi required"></i>合同有效期确认方式：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="effectCondition" name="effectCondition" maxlength="2000" />
+						<select class="form-control select2me" data-placeholder='请选择合同有效期确认方式' data-allowClear="false" name="periodType" id="periodType">
+							<option value="905010">固定起止日期</option>
+							<option value="905020">按条件约定合同生效日期，期限固定</option>
+							<option value="905030">按条件约定合同生效日期，期限不固定</option>
+						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group hidden" id="effectPeriodDiv">
-					<label for="effectPeriod" class="control-label"><i class="iconfont icon-mi required"></i>协议期限：</label>
+				<div class="col-sm-6 form-group">
+					<label for="isPostponable" class="control-label"><i class="iconfont icon-mi required"></i>是否顺延：</label>
 					<div class="valiParent">
-						<input type="text" class="form-control" id="effectPeriod" name="effectPeriod" maxlength="2000" />
+						<div class="ui-radio-list ui-radio-inline">
+							<label class="ui-radio">
+								是
+								<input type="radio" value="1" name="isPostponable">
+								<span></span>
+							</label>
+							<label class="ui-radio">
+								否
+								<input type="radio" value="0" checked="checked" name="isPostponable">
+								<span></span>
+							</label>
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group hidden" id="postponeConditionDiv">
-					<label for="postponeCondition" class="control-label"><i class="iconfont icon-mi required"></i>顺延条件：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="postponeCondition" name="postponeCondition" maxlength="2000" />
+				<div id="postponableValidator">
+					<div class="col-sm-6 form-group hidden" id="effectiveDateDiv">
+						<label for="effectiveDate" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
+						<div class="valiParent input-group">
+							<input type="text" name="effectiveDate" id="effectiveDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+							<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+						</div>
 					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="postponePeriodDiv">
-					<label for="postponePeriod" class="control-label"><i class="iconfont icon-mi required"></i>顺延时限：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="postponePeriod" name="postponePeriod" maxlength="2000" />
+					<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
+						<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
+						<div class="valiParent input-group">
+							<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+							<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+						</div>
 					</div>
-				</div>
-				<div class="col-sm-6 form-group hidden" id="expiryConditionDiv">
-					<label for="expiryCondition" class="control-label"><i class="iconfont icon-mi required"></i>满足终止：</label>
-					<div class="valiParent">
-						<input type="text" class="form-control" id="expiryCondition" name="expiryCondition" maxlength="2000" />
+					<div class="col-sm-6 form-group hidden" id="effectConditionDiv">
+						<label for="effectCondition" class="control-label"><i class="iconfont icon-mi required"></i>生效条件：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="effectCondition" name="effectCondition" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="effectPeriodDiv">
+						<label for="effectPeriod" class="control-label"><i class="iconfont icon-mi required"></i>协议期限：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="effectPeriod" name="effectPeriod" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="postponeConditionDiv">
+						<label for="postponeCondition" class="control-label"><i class="iconfont icon-mi required"></i>顺延条件：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="postponeCondition" name="postponeCondition" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="postponePeriodDiv">
+						<label for="postponePeriod" class="control-label"><i class="iconfont icon-mi required"></i>顺延时限：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="postponePeriod" name="postponePeriod" maxlength="2000" />
+						</div>
+					</div>
+					<div class="col-sm-6 form-group hidden" id="expiryConditionDiv">
+						<label for="expiryCondition" class="control-label"><i class="iconfont icon-mi required"></i>满足终止：</label>
+						<div class="valiParent">
+							<input type="text" class="form-control" id="expiryCondition" name="expiryCondition" maxlength="2000" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -137,7 +171,7 @@
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
 	function getValue_validity(isSubmit){
-		var validityData = App.getFormValues($("#validityForm"));
+		var validityData = App.getFormValues($("#validityConForm"));
 		var undertakerCommitmentValue = $("input[name='undertakerCommitment']:checked").val();
 		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
 		validityData.wcardId = wcardId;
@@ -152,6 +186,26 @@
 		}else{
 			validityData.adminCommitment = 0;
 		};
+		var stampedInfoOurList = [];
+		$.each($("#partyASignDateTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var dataItem = {};
+				dataItem.stampedId = $(v).data("id");
+				dataItem.stampedDate = $(v).find(".stampedDate").val();
+				stampedInfoOurList.push(dataItem);
+			}
+		});
+		validityData.stampedInfoOurList = stampedInfoOurList;
+		var stampedInfoOtherList = [];
+		$.each($("#partyZSignDateTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var dataItem = {};
+				dataItem.stampedId = $(v).data("id");
+				dataItem.stampedDate = $(v).find(".stampedDate").val();
+				stampedInfoOtherList.push(dataItem);
+			}
+		});
+		validityData.stampedInfoOtherList = stampedInfoOtherList;
 		if(isSubmit && validityData.undertakerCommitment == 0){
 			layer.msg("请勾选承办人确认信息!");
 			srolloOffect("#undertakerCommitmentContent");
@@ -163,8 +217,6 @@
 	/*
 	 * 必填校验
 	 */
-	addNotEmptyValidatorField("partyASignDate","我方签约日期不能为空");
-	addNotEmptyValidatorField("partyZSignDate","对方签约日期不能为空");
 	addNotEmptyValidatorField("effectiveDate","生效日期不能为空");
 	addNotEmptyValidatorField("expiryDate","终止日期不能为空");
 	addNotEmptyValidatorField("effectCondition","请输入不超过2000个字符的生效条件");
@@ -187,13 +239,15 @@
 			var data = result.data;
 			if(data){
 				changePostponableValidatorStatus(data.periodType,data.isPostponable);
-				$("#periodType").val(data.periodType).trigger('change');
-				if(data.isPostponable == 0){
-					$("input[name='isPostponable'][value=0]").prop("checked",true);
-				}else{
-					$("input[name='isPostponable'][value=1]").prop("checked",true);
-				};
-				App.setFormValues("#validityForm",data);
+//				$("#periodType").val(data.periodType).trigger('change');
+//				if(data.isPostponable == 0){
+//					$("input[name='isPostponable'][value=0]").prop("checked",true);
+//				}else{
+//					$("input[name='isPostponable'][value=1]").prop("checked",true);
+//				};
+				App.setFormValues("#validityConForm",data);
+				initPartySignDate(data.stampedInfoOurList,"partyASignDate");
+				initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");
 				if($("input[name='adminCommitment']:checked").val()){
 					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "yb"){
 						$("#adminCommitmentContent").removeClass("hidden");
@@ -217,26 +271,63 @@
 					$("input[name='adminCommitment']").attr("disabled",false);
 				}
 			}
+			/*
+			 * 选择触发input框改变
+			 */
+			$("#periodType").on("change",function(){
+				if($(this).val() == "905030"){
+					$("input[name='isPostponable'][value=0]").prop("checked",true);
+				};
+				var selectValue = $(this).val();
+				var checkValue = $("input[name='isPostponable']:checked").val();
+				changePostponableValidatorStatus(selectValue,checkValue);
+				resetEffectiveValidator();
+			});
+			$("input[name='isPostponable']").on("change",function(){
+				var selectValue = $("#periodType").val();
+				var checkValue = $(this).val();
+				changePostponableValidatorStatus(selectValue,checkValue);
+				resetEffectiveValidator();
+			});
 		}
 	}
 	/*
-	 * 选择触发input框改变
+	 * 生成我方对方签订盖章日期表格
 	 */
-	$("#periodType").on("change",function(){
-		if($(this).val() == "905030"){
-			$("input[name='isPostponable'][value=0]").prop("checked",true);
+	var partySignDateLength = 0;		//自增主键
+	function initPartySignDate(data,type){
+		if(data == "" || data == null || data.length == 0){
+			return;
 		};
-		var selectValue = $(this).val();
-		var checkValue = $("input[name='isPostponable']:checked").val();
-		changePostponableValidatorStatus(selectValue,checkValue);
-		resetEffectiveValidator();
-	});
-	$("input[name='isPostponable']").on("change",function(){
-		var selectValue = $("#periodType").val();
-		var checkValue = $(this).val();
-		changePostponableValidatorStatus(selectValue,checkValue);
-		resetEffectiveValidator();
-	});
+		if(type == "partyASignDate"){
+			if($("#partyASignDateTbody .emptyTr")[0] != undefined){
+				$("#partyASignDateTbody .emptyTr").remove();
+			};
+		}else{
+			if($("#partyZSignDateTbody .emptyTr")[0] != undefined){
+				$("#partyZSignDateTbody .emptyTr").remove();
+			};
+		};
+		var appendHtml = "";
+		for(var k = 0; k < data.length;k++){
+			partySignDateLength++;
+			var partySignDate = "partySignDate" + partySignDateLength;
+			var stampedDate = data[k].stampedDate == null || data[k].stampedDate == "" ? "" : data[k].stampedDate;
+			appendHtml = '<tr data-id="'+ data[k].stampedId +'">'+
+								'<td>'+ (k+1) +'</td>'+
+								'<td>'+ data[k].partyName +'</td>'+
+								'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedDate" readonly="readonly" /><span class="input-group-addon"><i class="iconfont icon-calendar"></i></span></div></td>'+
+							'</tr>';
+			if(type == "partyASignDate"){
+				$("#partyASignDateTbody").append(appendHtml);
+				addNotEmptyValidatorField(partySignDate,"请选择我方签订盖章日期");
+			}else{
+				$("#partyZSignDateTbody").append(appendHtml);
+				addNotEmptyValidatorField(partySignDate,"请选择对方签订盖章日期");
+			}
+		}
+	}
+	
 	/*
 	 * 选择时重置验证
 	 */

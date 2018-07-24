@@ -15,7 +15,11 @@ $(function() {
  */
 function judge(result) {
     App.stopLoading("#searchBtn");
-    return resolveResult(result);
+    if(result.status == 1){
+		return result.data;
+	}else{
+		return [];
+	}
 }
 //新增岗位
 function goStaffOrgAdd() {

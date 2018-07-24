@@ -9,16 +9,7 @@ var App = function() {
 	var isIE9 = false;
 	var isIE10 = false;
 
-	var resizeHandlers = [];
-
-	var assetsPath = '../../';
-
-	var globalImgPath = 'static/img/';
-
-	var globalPluginsPath = 'static/plugins/';
-
-	var globalCssPath = 'static/css/';
-	
+	var resizeHandlers = [];	
 	var _getResponsiveBreakpoint = function(size) {
 			// bootstrap responsive breakpoints
 			var sizes = {
@@ -181,93 +172,6 @@ var App = function() {
             });
         }
     };
-
-	// Handles portlet tools & actions
-	var handlePortletTools = function() {
-		// handle portlet remove
-		$('body').on('click', '.portlet > .portlet-title .remove', function(e) {
-			e.preventDefault();
-			var portlet = $(this).closest(".portlet");
-
-			if($('body').hasClass('page-portlet-fullscreen')) {
-				$('body').removeClass('page-portlet-fullscreen');
-			}
-
-			portlet.find('.portlet-title .fullscreen').tooltip('destroy');
-			portlet.find('.portlet-title .reload').tooltip('destroy');
-			portlet.find('.portlet-title .remove').tooltip('destroy');
-			portlet.find('.portlet-title .config').tooltip('destroy');
-			portlet.find('.portlet-title .more').tooltip('destroy');
-			portlet.find('.portlet-title .collapse, .portlet-title .expand').tooltip('destroy');
-
-			portlet.remove();
-		});
-
-		$('body').on('click', '.portlet > .portlet-title  .reload', function(e) {
-			e.preventDefault();
-			var el = $(this).closest(".portlet").children(".portlet-body");
-			var url = $(this).attr("data-url");
-			var error = $(this).attr("data-error-display");
-			if(url) {
-				App.blockUI({
-					target: el,
-					animate: true,
-					overlayColor: 'none'
-				});
-				$.ajax({
-					type: "GET",
-					cache: false,
-					url: url,
-					dataType: "html",
-					success: function(res) {
-						App.unblockUI(el);
-						el.html(res);
-						App.initAjax() // reinitialize elements & plugins for newly loaded content
-					},
-					error: function(xhr, ajaxOptions, thrownError) {
-						App.unblockUI(el);
-						var msg = 'Error on reloading the content. Please check your connection and try again.';
-						if(error == "toastr" && toastr) {
-							toastr.error(msg);
-						} else if(error == "notific8" && $.notific8) {
-							$.notific8('zindex', 11500);
-							$.notific8(msg, {
-								theme: 'ruby',
-								life: 3000
-							});
-						} else {
-							alert(msg);
-						}
-					}
-				});
-			} else {
-				// for demo purpose
-				App.blockUI({
-					target: el,
-					animate: true,
-					overlayColor: 'none'
-				});
-				window.setTimeout(function() {
-					App.unblockUI(el);
-				}, 1000);
-			}
-		});
-
-		// load ajax data on page init
-		$('.portlet .portlet-title a.reload[data-load="true"]').click();
-
-		$('body').on('click', '.portlet > .portlet-title .collapse, .portlet .portlet-title .expand', function(e) {
-			e.preventDefault();
-			var el = $(this).closest(".portlet").children(".portlet-body");
-			if($(this).hasClass("collapse")) {
-				$(this).removeClass("collapse").addClass("expand");
-				el.slideUp(200);
-			} else {
-				$(this).removeClass("expand").addClass("collapse");
-				el.slideDown(200);
-			}
-		});
-	};
 
 	// Handles custom checkboxes & radios using jQuery iCheck plugin
 	var handleiCheck = function() {
@@ -661,16 +565,6 @@ var App = function() {
 			}
 		});
 	}
-	//检查缓存，刷新
-//	var checkCache = function(){
-//		if (self == top) { 
-//			var timestamp = new Date().getTime();
-//			
-//		}else{
-//			
-//		}
-//	};
-	
 	/*
 	 * 页面上调用要return出来
 	 * init为页面初始项
@@ -695,10 +589,8 @@ var App = function() {
             handlePagesearch();
             //handleFileInput();// 上传文件的伪装触发
             handleFormFieldset();// 表单分区的展开折叠控制
-            handlePortletTools(); // handles portlet action bar
-            // functionality(refresh, configure, toggle,
-            // remove)
-            handleAlerts(); // handle closabled alerts
+//          handlePortletTools(); // handles portlet action bar
+            //handleAlerts(); // handle closabled alerts
             handleDropdowns(); // handle dropdowns
             handleTabs(); // handle tabs
             handleTooltips(); // handle bootstrap tooltips
@@ -865,18 +757,93 @@ var App = function() {
 				}
 			})
 			return formData;
-//		    $form.find("[data-isNumber='true']").each(function(index, item) {
-//				var key = $(this).attr("name");
-//				o[key] = Number(o[key]);
-//			});
+		},
+		/*
+		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
+		 * @param {String} el 表单容器选择器
+		 * @param {JSON} formData 表单项的值
+		 * @param {object} valueCallback 需要做重定义的项
+		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
+		 */
+		setFormValues:function(el, formData, valueCallback){
+            if(formData != undefined && formData != null){
+                var obj = null,
+                    sel = null,
+                    objType = null;
+				$(el).find(".form-control[name]").val('');	//将有name的.form-control设置为空
+				if(valueCallback != undefined && valueCallback != null) {
+					for(var b in valueCallback) {
+						var value = formData[b];
+						var tvalue = valueCallback[b](value);
+						formData[b] = tvalue;
+					}
+				}
+                for(var a in formData){
+                    sel = ":input[name='" + a + "']";
+                    obj = $(el).find(sel);
+                    if(obj.length > 0){
+                        objType = obj[0].type;
+                        if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
+                        	var itemData = formData[a] == null ? "" : formData[a];
+                            obj.val(itemData);
+                            if(objType == "select-one" && obj.hasClass('select2me')){
+                                obj.trigger('change');
+                            }
+                        }else if(objType == "radio" || objType == "checkbox"){
+                            App.setChecked(a,formData[a]);
+                        }
+                    }else if('object' == typeof formData[a]){
+                        App.setFormValues(el,formData[a]);
+                    }
+                }
+            }
+        },
+        /*
+         * 设置checkbox或者radio选中
+         */
+        setChecked: function(name, value) {
+        	if(value == null){
+        		return;
+        	};
+			var cks = document.getElementsByName(name);
+			var arr = value.toString().split(',');
+			for(var i = 0; i < cks.length; i++) {	
+				if(isInArray(arr, cks[i].value)) {
+					cks[i].checked = true;
+				}
+			}
 		},
 		/**
-		 * 生成时间戳
-		 */
-		timestamp: function(){
-			var getTimestamp=new Date().getTime();
-			getTimestamp = "&t="+getTimestamp;
-		    return getTimestamp;
+		 * setFindValue 为查看页面自动赋值
+		 * @param {String} el 表单容器选择器
+		 * @param {JSON} formData 表单项的值
+		 * @param {object} valueCallback 需要做重定义的项
+		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
+		 * */
+		setFindValue: function(el, formData, valueCallback) {
+			if(formData != undefined && formData != null) {
+				var obj = null,
+					sel = null;
+				//将有name的.form-control-static设置为空
+				$(el).find(".form-control-static[name]").text('');
+				if(valueCallback != undefined && valueCallback != null) {
+					for(var b in valueCallback) {
+						var value = formData[b];
+						var tvalue = valueCallback[b](value);
+						formData[b] = tvalue;
+					}
+				}
+				$(el).find(".form-control-static[name]").each(function(index, item) {
+					var key = $(item).attr('name');
+					var valueObj = formData[key];
+					if(valueObj) {
+						$(item).text(valueObj);
+					} else {
+						//如果没有值用空格填充，解决为空导致的高度错乱问题
+						$(item).html('&nbsp;');
+					}
+				})
+			}
 		},
 		/** 
 		 * 对象转为get参数方法
@@ -920,17 +887,6 @@ var App = function() {
 				delete obj[key];
 			};
 			return obj;
-		},
-		/*
-		 * 判断是否为数字
-		 */
-		checkRate: function(nubmer) { 
-		　　var re = /^[0-9]+.?[0-9]*$/;
-		　　if (!re.test(nubmer)){ 
-		　　　　return false;
-		　　}else{
-				return true;
-			}
 		},
 		/*
 		 * datatable初始化
@@ -1071,92 +1027,13 @@ var App = function() {
             }
             return returnObj;
 		},
-		/*
-		 * setFormValues 为查看页面自动赋值不包含checkbox的赋值
-		 * @param {String} el 表单容器选择器
-		 * @param {JSON} formData 表单项的值
-		 * @param {object} valueCallback 需要做重定义的项
-		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
-		 */
-		setFormValues:function(el, formData, valueCallback){
-            if(formData != undefined && formData != null){
-                var obj = null,
-                    sel = null,
-                    objType = null;
-				$(el).find(".form-control[name]").val('');	//将有name的.form-control设置为空
-				if(valueCallback != undefined && valueCallback != null) {
-					for(var b in valueCallback) {
-						var value = formData[b];
-						var tvalue = valueCallback[b](value);
-						formData[b] = tvalue;
-					}
-				}
-                for(var a in formData){
-                    sel = ":input[name='" + a + "']";
-                    obj = $(el).find(sel);
-                    if(obj.length > 0){
-                        objType = obj[0].type;
-                        if(objType == "text" || objType == "password" || objType == "select-one" || objType == "textarea" || objType == "hidden"){
-                        	var itemData = formData[a] == null ? "" : formData[a];
-                            obj.val(itemData);
-                            if(objType == "select-one" && obj.hasClass('select2me')){
-                                obj.trigger('change');
-                            }
-                        }else if(objType == "radio" || objType == "checkbox"){
-                            App.setChecked(a,formData[a]);
-                        }
-                    }else if('object' == typeof formData[a]){
-                        App.setFormValues(el,formData[a]);
-                    }
-                }
-            }
-        },
-        /*
-         * 设置checkbox或者radio选中
-         */
-        setChecked: function(name, value) {
-        	if(value == null){
-        		return;
-        	};
-			var cks = document.getElementsByName(name);
-			var arr = value.toString().split(',');
-			for(var i = 0; i < cks.length; i++) {	
-				if(isInArray(arr, cks[i].value)) {			//判断是否在数组内
-					cks[i].checked = true;
-				}
-			}
-		},
 		/**
-		 * setFindValue 为查看页面自动赋值不包含checkbox的赋值
-		 * @param {String} el 表单容器选择器
-		 * @param {JSON} formData 表单项的值
-		 * @param {object} valueCallback 需要做重定义的项
-		 * valueCallback Demo:{'status':function(value){return value == "0" ? "禁用" : "启用"}}
-		 * */
-		setFindValue: function(el, formData, valueCallback) {
-			if(formData != undefined && formData != null) {
-				var obj = null,
-					sel = null;
-				//将有name的.form-control-static设置为空
-				$(el).find(".form-control-static[name]").text('');
-				if(valueCallback != undefined && valueCallback != null) {
-					for(var b in valueCallback) {
-						var value = formData[b];
-						var tvalue = valueCallback[b](value);
-						formData[b] = tvalue;
-					}
-				}
-				$(el).find(".form-control-static[name]").each(function(index, item) {
-					var key = $(item).attr('name');
-					var valueObj = formData[key];
-					if(valueObj) {
-						$(item).text(valueObj);
-					} else {
-						//如果没有值用空格填充，解决为空导致的高度错乱问题
-						$(item).html('&nbsp;');
-					}
-				})
-			}
+		 * 生成时间戳
+		 */
+		timestamp: function(){
+			var getTimestamp=new Date().getTime();
+			getTimestamp = "&t="+getTimestamp;
+		    return getTimestamp;
 		},
 		/*
 		 * 时间戳转时间
@@ -1186,6 +1063,16 @@ var App = function() {
 		    	return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
 		    } 
 		},
+		//检查起始时间是否大于结束时间
+        checkDate: function(startData,endData){
+        	var startData = new Date(startData);
+		    var endData = new Date(endData);
+		    if(startData > endData){     
+		        return false;
+		    }else{
+		        return true;
+		    }
+        },
 		/*
 		 * 金额三位加逗号
 		 */
@@ -1256,6 +1143,17 @@ var App = function() {
 	            })
 	        }
 	    },
+	    /*
+		 * 判断是否为数字
+		 */
+		checkRate : function(nubmer){ 
+		　　var re = /^[0-9]+.?[0-9]*$/;
+		　　if (!re.test(nubmer)){ 
+		　　　　return false;
+		　　}else{
+				return true;
+			}
+		},
 	    /*
 		 * ajaxselect2内容的初始化
 		 * dom 初始化的dom元素
@@ -1334,11 +1232,9 @@ var App = function() {
 
 			function successCallback(result) {
 				var data = result.data;
-				
 				for(var i = 0; i < data.length; i++){
 					resturnData[data[i].dictValue] = data[i].dictLabel
 				};
-				
 			};
 			function improperCallback(result){
 				layer.msg("字典项"+code+"异常");
@@ -1387,7 +1283,7 @@ var App = function() {
         /*
          * 获取当前url参数
          */
-        getPresentParm : function(isUrl,isTop){
+        getPresentParm : function(getUrl,isTop){
         	if(isTop){
         		var persentUrl = top.window.location.href;
         	}else{
@@ -1396,7 +1292,7 @@ var App = function() {
         	if(persentUrl[persentUrl.length-1] == "#"){
         		persentUrl = persentUrl.substring(0,persentUrl.length - 1);
         	};
-        	if(isUrl){
+        	if(getUrl){
         		return persentUrl;
         	}else{
 				var theRequest = new Object();   
@@ -1425,8 +1321,8 @@ var App = function() {
         },
         /*
          * 详情页固定操作按钮
-         * 1.操作按钮父级ID值
-         * 2.滚动固定的高度
+         * dom.操作按钮父级ID值
+         * dixScrollTop.滚动固定的高度
          */
         fixToolBars : function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
@@ -1671,149 +1567,6 @@ var App = function() {
             App.scrollTo();
         },
         
-        // wrApper function to block element(indicate loading)
-        blockUI:function(options){
-            options = $.extend(true,{},options);
-            var html = '';
-            if(options.animate){
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '">' +
-                    '<div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>' + '</div>';
-            }else if(options.iconOnly){
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif" align=""></div>';
-            }else if(options.textOnly){
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
-            }else{
-                html = '<div class="loading-message ' + (options.boxed ? 'loading-message-boxed' : '') + '"><img src="' + this.getGlobalImgPath() +
-                    'loading-spinner-grey.gif" align=""><span>&nbsp;&nbsp;' + (options.message ? options.message : 'LOADING...') + '</span></div>';
-            }
-            
-            if(options.target){ // element blocking
-                var el = $(options.target);
-                if(el.height() <= ($(window).height())){
-                    options.cenrerY = true;
-                }
-                el.block({
-                    message:html,
-                    baseZ:options.zIndex ? options.zIndex : 9000000000,
-                    centerY:options.cenrerY !== undefined ? options.cenrerY : false,
-                    css:{
-                        top:'10%',
-                        border:'0',
-                        padding:'0',
-                        backgroundColor:'none'
-                    },
-                    overlayCSS:{
-                        backgroundColor:options.overlayColor ? options.overlayColor : '#555',
-                        opacity:options.boxed ? 0.05 : 0.1,
-                        cursor:'wait'
-                    }
-                });
-            }else{ // page blocking
-                $.blockUI({
-                    message:html,
-                    baseZ:options.zIndex ? options.zIndex : 9000000000,
-                    css:{
-                        border:'0',
-                        padding:'0',
-                        backgroundColor:'none'
-                    },
-                    overlayCSS:{
-                        backgroundColor:options.overlayColor ? options.overlayColor : '#555',
-                        opacity:options.boxed ? 0.05 : 0.1,
-                        cursor:'wait'
-                    }
-                });
-            }
-        },
-        
-        // wrApper function to un-block element(finish loading)
-        unblockUI:function(target){
-            if(target){
-                $(target).unblock({
-                    onUnblock:function(){
-                        $(target).css('position','');
-                        $(target).css('zoom','');
-                    }
-                });
-            }else{
-                $.unblockUI();
-            }
-        },
-        
-        startPageLoading:function(options){
-            if(options && options.animate){
-                $('.page-spinner-bar').remove();
-                $('body').append('<div class="page-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>');
-            }else{
-                $('.page-loading').remove();
-                $('body').append(
-                    '<div class="page-loading"><img src="' + this.getGlobalImgPath() + 'loading-spinner-grey.gif"/>&nbsp;&nbsp;<span>' + (options && options.message ? options.message : 'Loading...') +
-                    '</span></div>');
-            }
-        },
-        
-        stopPageLoading:function(){
-            $('.page-loading, .page-spinner-bar').remove();
-        },
-        
-        alert:function(options){
-            
-            options = $.extend(true,{
-                container:"", // alerts parent container(by default placed
-                // after the page breadcrumbs)
-                place:"append", // "append" or "prepend" in container
-                type:'success', // alert's type
-                message:"", // alert's message
-                close:true, // make alert closable
-                reset:true, // close all previouse alerts first
-                focus:true, // auto scroll to the alert after shown
-                closeInSeconds:0, // auto close after defined seconds
-                icon:"" // put icon before the message
-            },options);
-            
-            var id = App.getUniqueID("App_alert");
-            
-            var html = '<div id="' + id + '" class="custom-alerts alert alert-' + options.type + ' fade in">' +
-                (options.close ? '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' : '') +
-                (options.icon !== "" ? '<i class="fa-lg fa fa-' + options.icon + '"></i>  ' : '') + options.message + '</div>';
-            
-            if(options.reset){
-                $('.custom-alerts').remove();
-            }
-            
-            if( !options.container){
-                if($('.page-fixed-main-content').length === 1){
-                    $('.page-fixed-main-content').prepend(html);
-                }else if(($('body').hasClass("page-container-bg-solid") || $('body').hasClass("page-content-white")) && $('.page-head').length === 0){
-                    $('.page-title').after(html);
-                }else{
-                    if($('.page-bar').length > 0){
-                        $('.page-bar').after(html);
-                    }else{
-                        $('.page-breadcrumb, .breadcrumbs').after(html);
-                    }
-                }
-            }else{
-                if(options.place == "append"){
-                    $(options.container).append(html);
-                }else{
-                    $(options.container).prepend(html);
-                }
-            }
-            
-            if(options.focus){
-                App.scrollTo($('#' + id));
-            }
-            
-            if(options.closeInSeconds > 0){
-                setTimeout(function(){
-                    $('#' + id).remove();
-                },options.closeInSeconds * 1000);
-            }
-            
-            return id;
-        },
-        
         // public function to initialize the fancybox plugin
         initFancybox:function(){
             handleFancybox();
@@ -1827,20 +1580,6 @@ var App = function() {
                 return "";
             }
             return el.val();
-        },
-        
-        // public function to get a paremeter by name from URL
-        getURLParameter:function(paramName){
-            var searchString = window.location.search.substring(1),
-                i, val, params = searchString.split("&");
-            
-            for(i = 0;i < params.length;i++){
-                val = params[i].split("=");
-                if(val[0] == paramName){
-                    return unescape(val[1]);
-                }
-            }
-            return null;
         },
         
         // check for device touch support
@@ -1911,34 +1650,6 @@ var App = function() {
             } else {
                 return false;
             }
-        },
-        
-        getAssetsPath:function(){
-            return assetsPath;
-        },
-        
-        setAssetsPath:function(path){
-            assetsPath = path;
-        },
-        
-        setGlobalImgPath:function(path){
-            globalImgPath = path;
-        },
-        
-        getGlobalImgPath:function(){
-            return assetsPath + globalImgPath;
-        },
-        
-        setGlobalPluginsPath:function(path){
-            globalPluginsPath = path;
-        },
-        
-        getGlobalPluginsPath:function(){
-            return assetsPath + globalPluginsPath;
-        },
-        
-        getGlobalCssPath:function(){
-            return assetsPath + globalCssPath;
         },
         
         getResponsiveBreakpoint:function(size){
@@ -2290,16 +2001,7 @@ var App = function() {
         formatStringDate:function(dateStr,formatStr){
             return new Date(App.getDateTimeStamp(dateStr)).Format(formatStr)
         },
-        //检查起始时间是否大于结束时间
-        checkDate: function(startData,endData){
-        	var startData = new Date(startData);
-		    var endData = new Date(endData);
-		    if(startData > endData){     
-		        return false;
-		    }else{
-		        return true;
-		    }
-        },
+        
         getDateDiff :function(dateTimeStamp){
             var minute = 1000 * 60;
             var hour = minute * 60;
@@ -2516,21 +2218,6 @@ function isInArray(arr,val) {
 	return testStr.indexOf("," + val + ",") != -1; 
 } 
 /*
- * datatable事件  以后不用
- * code如果返回的值不是默认为data时的参数
- */
-function resolveResult(result,code){
-	if(result.status == 1){
-		if(code){
-			return result.code;
-		}else{
-			return result.data;
-		}
-	}else{
-		return [];
-	}
-}
-/*
  * ztree异步加载失败事件
  */
 function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
@@ -2573,13 +2260,13 @@ $(document).ajaxError(function(){
 });
 
 $(document).ajaxSend(function(event, jqxhr, settings) {
-	if(settings.type == "GET"){
+//	if(settings.type == "GET"){
 //		if(settings.url.indexOf("?") === -1){
 //			settings.url = settings.url + "?testData=testData";
 //		}else{
 //			settings.url = settings.url + "&testData=testData";
 //		}
-	}else{
+//	}else{
 //		var contentType = settings.contentType;
 //		var data = settings.data;
 //		if(contentType.search("application/x-www-form-urlencoded") != -1){
@@ -2600,7 +2287,7 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 //			settings.data = JSON.stringify(parameter);
 //			return;
 //		}
-	}	
+//	}
 });
 /*
  * .trim()兼容IE8

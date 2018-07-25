@@ -240,11 +240,11 @@
 	 */
 	function getValue_contractOverv(isSubmit){
 		var contractOverData = App.getFormValues($("#contractOverviewForm"));
-		var performerOrgType = $("input[name='performerType']:checked").val();
+		var performerOrgType = $("#contractFeasorContent input[name='performerType']:checked").val();
 		contractOverData.performerOrgType = performerOrgType;
 		contractOverData.wcardId = wcardId;
 		contractOverData.contractId = contractId;
-		contractOverData.isFixed = $("input[name='isFixed']:checked").val();
+		contractOverData.isFixed = $("#isOtherTypeOverview input[name='isFixed']:checked").val();
 		return contractOverData;
 	}
 	/*

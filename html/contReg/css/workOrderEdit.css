@@ -194,4 +194,5 @@
 #validity .dataInputGroup .mar0pad15 input {
   height: 28px;
   text-align: center;
+  padding: 0;
 }

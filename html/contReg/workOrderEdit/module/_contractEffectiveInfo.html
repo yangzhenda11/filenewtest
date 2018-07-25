@@ -172,8 +172,8 @@
 	 */
 	function getValue_validity(isSubmit){
 		var validityData = App.getFormValues($("#validityConForm"));
-		var undertakerCommitmentValue = $("input[name='undertakerCommitment']:checked").val();
-		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		var undertakerCommitmentValue = $("#undertakerCommitmentContent input[name='undertakerCommitment']:checked").val();
+		var adminCommitmentValue = $("#adminCommitmentContent input[name='adminCommitment']:checked").val();
 		validityData.wcardId = wcardId;
 		validityData.contractNumber = contractNumber;
 		if(undertakerCommitmentValue == 1){
@@ -243,13 +243,13 @@
 			if(tRContractValidityVo){
 				changePostponableValidatorStatus(tRContractValidityVo.periodType,tRContractValidityVo.isPostponable);
 				if(tRContractValidityVo.undertakerCommitment == 1){
-					$("#validityForm input[name='undertakerCommitment']").attr("checked",true);
+					$("#undertakerCommitmentContent input[name='undertakerCommitment']").attr("checked",true);
 				};
 				if(tRContractValidityVo.adminCommitment == 1){
-					$("#validityForm input[name='adminCommitment']").attr("checked",true);
+					$("#adminCommitmentContent input[name='adminCommitment']").attr("checked",true);
 				};
 				App.setFormValues("#validityConForm",tRContractValidityVo);
-				if($("input[name='adminCommitment']:checked").val()){
+				if($("#adminCommitmentContent input[name='adminCommitment']:checked").val()){
 					if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "yb"){
 						$("#adminCommitmentContent").removeClass("hidden");
 					}
@@ -269,7 +269,7 @@
 			if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 				$("#adminCommitmentContent").removeClass("hidden");
 				if(fileUploadEdit == true){
-					$("input[name='adminCommitment']").attr("disabled",false);
+					$("#adminCommitmentContent input[name='adminCommitment']").attr("disabled",false);
 				}
 			}
 			/*
@@ -277,14 +277,14 @@
 			 */
 			$("#periodType").on("change",function(){
 				if($(this).val() == "905030"){
-					$("input[name='isPostponable'][value=0]").prop("checked",true);
+					$("#validityConForm input[name='isPostponable'][value=0]").prop("checked",true);
 				};
 				var selectValue = $(this).val();
-				var checkValue = $("input[name='isPostponable']:checked").val();
+				var checkValue = $("#validityConForm input[name='isPostponable']:checked").val();
 				changePostponableValidatorStatus(selectValue,checkValue);
 				resetEffectiveValidator();
 			});
-			$("input[name='isPostponable']").on("change",function(){
+			$("#validityConForm input[name='isPostponable']").on("change",function(){
 				var selectValue = $("#periodType").val();
 				var checkValue = $(this).val();
 				changePostponableValidatorStatus(selectValue,checkValue);
@@ -309,37 +309,42 @@
 				$("#partyZSignDateTbody .emptyTr").remove();
 			};
 		};
-		var appendHtml = "";
+		var partySignHtml = "";
+		var partySignDateList = [];
 		for(var k = 0; k < data.length;k++){
 			partySignDateLength++;
 			var partySignDate = "partySignDate" + partySignDateLength;
+			partySignDateList.push(partySignDate)
 			var stampedDate = data[k].stampedDate == null || data[k].stampedDate == "" ? "" : data[k].stampedDate;
-			appendHtml = '<tr data-id="'+ data[k].stampedId +'">'+
-								'<td>'+ (k+1) +'</td>'+
-								'<td>'+ data[k].partyName +'</td>'+
-								'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedDate" readonly="readonly" /><span class="input-group-addon"><i class="iconfont icon-calendar"></i></span></div></td>'+
-							'</tr>';
-			if(type == "partyASignDate"){
-				$("#partyASignDateTbody").append(appendHtml);
-				addNotEmptyValidatorField(partySignDate,"请选择我方签订盖章日期");
-			}else{
-				$("#partyZSignDateTbody").append(appendHtml);
-				addNotEmptyValidatorField(partySignDate,"请选择对方签订盖章日期");
-			}
+			partySignHtml += '<tr data-id="'+ data[k].stampedId +'">'+
+							'<td>'+ (k+1) +'</td>'+
+							'<td>'+ data[k].partyName +'</td>'+
+							'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedDate" readonly="readonly" /><span class="input-group-addon"><i class="iconfont icon-calendar"></i></span></div></td>'+
+						'</tr>';
 		}
+		if(type == "partyASignDate"){
+			$("#partyASignDateTbody").html(partySignHtml);
+			var validatorMs = "请选择我方签订盖章日期";
+		}else{
+			$("#partyZSignDateTbody").html(partySignHtml);
+			var validatorMs = "请选择对方签订盖章日期";
+		}
+		for(var m = 0; m < partySignDateList.length; m++){
+			addNotEmptyValidatorField(partySignDateList[m],validatorMs);
+		};
 	}
 	
 	/*
 	 * 选择时重置验证
 	 */
 	function resetEffectiveValidator(){
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("effectiveDate", "NOT_VALIDATED", null );
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("expiryDate", "NOT_VALIDATED", null );
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("effectCondition", "NOT_VALIDATED", null );
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("effectPeriod", "NOT_VALIDATED", null );
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("postponeCondition", "NOT_VALIDATED", null );
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("postponePeriod", "NOT_VALIDATED", null );
-		$("#workOrderContentForm").data("bootstrapValidator").updateStatus("expiryCondition", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("effectiveDate", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("expiryDate", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("effectCondition", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("effectPeriod", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("postponeCondition", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("postponePeriod", "NOT_VALIDATED", null );
+		$workOrderContentForm.data("bootstrapValidator").updateStatus("expiryCondition", "NOT_VALIDATED", null );
 	}
 	/*
 	 *	有效期和是否顺延现实和隐藏

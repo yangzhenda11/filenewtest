@@ -438,23 +438,25 @@ var App = function() {
         if($().select2){
             $.fn.select2.defaults.set("theme","bootstrap");
             $('.select2me').each(function(){
-                var allowClearFlag = $(this).attr('data-allowClear');
-                var allowSearch = $(this).attr('data-allowSearch');
-                if(allowClearFlag != "false"){
-                	allowClearFlag = true;
-                }else{
-                	allowClearFlag = false;
-                }
-                options = {
-                    placeholder:"全部",
-                    language:'zh-CN',
-                    width:'100%',
-                    allowClear:allowClearFlag
-                };
-                if(allowSearch == undefined){
-            	 	options.minimumResultsForSearch = -1;
-                };
-                $(this).select2(options);
+            	if(!$(this).hasClass(".select2-hidden-accessible")){
+            		var allowClearFlag = $(this).attr('data-allowClear');
+	                var allowSearch = $(this).attr('data-allowSearch');
+	                if(allowClearFlag != "false"){
+	                	allowClearFlag = true;
+	                }else{
+	                	allowClearFlag = false;
+	                }
+	                options = {
+	                    placeholder:"全部",
+	                    language:'zh-CN',
+	                    width:'100%',
+	                    allowClear:allowClearFlag
+	                };
+	                if(allowSearch == undefined){
+	            	 	options.minimumResultsForSearch = -1;
+	                };
+	                $(this).select2(options);
+            	}
             })
         }
     };
@@ -1134,23 +1136,25 @@ var App = function() {
         	if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            $(dom).find(".select2me").each(function(){
-	                var allowClearFlag = $(this).attr('data-allowClear');
-	                var allowSearch = $(this).attr('data-allowSearch');
-	                if(allowClearFlag != "false"){
-	                	allowClearFlag = true;
-	                }else{
-	                	allowClearFlag = false;
-	                }
-	                options = {
-	                    placeholder:"请选择",
-	                    language:'zh-CN',
-	                    width:'100%',
-	                    allowClear:allowClearFlag
-	                };
-	                if(allowSearch == undefined){
-	                	options.minimumResultsForSearch = -1;
-	                }
-	                $(this).select2(options);
+	            	if(!$(this).hasClass("select2-hidden-accessible")){
+	            		var allowClearFlag = $(this).attr('data-allowClear');
+		                var allowSearch = $(this).attr('data-allowSearch');
+		                if(allowClearFlag != "false"){
+		                	allowClearFlag = true;
+		                }else{
+		                	allowClearFlag = false;
+		                }
+		                options = {
+		                    placeholder:"请选择",
+		                    language:'zh-CN',
+		                    width:'100%',
+		                    allowClear:allowClearFlag
+		                };
+		                if(allowSearch == undefined){
+		                	options.minimumResultsForSearch = -1;
+		                }
+		                $(this).select2(options);
+	            	};
 	            })
 	        }
 	    },

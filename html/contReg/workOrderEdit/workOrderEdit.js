@@ -1177,7 +1177,13 @@ function setPTip(t){
 	}else{
 		return "";
 	}
-	
+}
+function getDisabled(){
+	if(isEdit){
+		return false;
+	}else{
+		return true;
+	}
 }
 /*
  * input双击事件

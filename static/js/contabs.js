@@ -174,24 +174,32 @@ $("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
 	}
 	return false;
 }
-function showSubpageTab(link,title){
+function showSubpageTab(link,title,openNew){
 	var o = link?link:'',
 		l = title?title:'',
 		m = '',
 		k = true;
 	if(o == undefined || $.trim(o).length == 0) {
 		return false
+	};
+	if(openNew){
+		var dataId = o;
+		var isChecked = false;
+	}else{
+		var dataId = o.split('?')[0];
+		var isChecked = true;
 	}
-	var url = o.split('?')[0];
 	$(".J_menuTab").each(function() {
-		if($(this).data("id") == url) {
+		if(isChecked || $(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
 				animateTab(this);
 				$(".J_mainContent .J_iframe").each(function() {
-					if($(this).data("id") == url) {
+					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
-						$(this)[0].src = o;
+						if(isChecked){
+							$(this)[0].src = o;
+						};
 						return false
 					}
 				})
@@ -201,9 +209,9 @@ function showSubpageTab(link,title){
 		}
 	});
 	if(k) {
-		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + url + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
+		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
-		var n = '<iframe scrolling="no" class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + url + '" seamless></iframe>';
+		var n = '<iframe scrolling="no" class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + dataId + '" seamless></iframe>';
 		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))

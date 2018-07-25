@@ -27,6 +27,8 @@ var contractStatusObj = {
 
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
 var orderLayerIndex = null;				//layer提示index
+//预定义dom元素
+var $workOrderContentForm = $("#workOrderContentForm"),$pageContent = $("#page-content");
 /*
  * 页面是待办且为工单处理时才可以编辑
  */
@@ -40,8 +42,8 @@ $(function() {
 		$(".portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding", '0px');
 		$(".portlet").css("cssText", "border:none !important;padding:0px");
-		$(".toolbarBtn").remove();
-		$(".page-content").removeClass("hidden");
+		$("#toolbarBtn").remove();
+		$pageContent.removeClass("hidden");
 		if(parm.taskFlag == "db"){
 			if(parm.taskDefinitionKey == "GDCL"){
 				//工单处理环节将提交按钮改为“注册完成” btId：passButton   
@@ -70,17 +72,17 @@ $(function() {
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 			$(".register,.cancelApprovedBtn").remove();
 		};
-		$(".page-content").removeClass("hidden");
+		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
-		$(".toolbarBtn,#flowNote").remove();
-		$(".page-content").removeClass("hidden");
+		$("#toolbarBtn,#flowNote").remove();
+		$pageContent.removeClass("hidden");
 	} else if(parm.pageType == 4) {		//工单查询页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		$("#toolbarBtnContent button").not(".closeBtn").remove();
-		$(".page-content").removeClass("hidden");
+		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
 	};
 	//加载验证壳
@@ -134,18 +136,18 @@ function beforePushProcess(pass){
 	var result = true;
 	var pathSelect = 0;
 	//手动触发表单验证
-	var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
+	var bootstrapValidator = $workOrderContentForm.data('bootstrapValidator');
     bootstrapValidator.validate();
     layer.close(orderLayerIndex);
     if(!bootstrapValidator.isValid()){
     	if(parent.getActiveMyTab() != 0){
     		parent.cutMyTab(0,function(){
     			showLayerErrorMsg("当前工单表单校验未通过，请检查");
-	        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+	        	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     		});
     	}else{
     		showLayerErrorMsg("当前工单表单校验未通过，请检查");
-        	srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+        	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	}
     	return false;
     }else{
@@ -183,7 +185,7 @@ function beforePushProcess(pass){
     	}
 	}
 	if(parm.taskDefinitionKey == "GDQR" && pass == true){
-		var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+		var adminCommitmentValue = $("#adminCommitmentContent input[name='adminCommitment']:checked").val();
 		if(adminCommitmentValue == null){
 			if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
@@ -429,12 +431,12 @@ function submitContent(){
 }
 function submitContentFn(){
 	//手动触发表单验证
-	var bootstrapValidator = $('#workOrderContentForm').data('bootstrapValidator');
+	var bootstrapValidator = $workOrderContentForm.data('bootstrapValidator');
     bootstrapValidator.validate();
    	layer.close(orderLayerIndex);
     if(!bootstrapValidator.isValid()){
     	showLayerErrorMsg("当前工单表单校验未通过，请检查");
-        srolloOffect($("#workOrderContentForm").find(".has-error")[0],1);
+        srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	return false;
     }else{
     	var submitData = getContentValue(true);
@@ -524,7 +526,7 @@ function activateContract(){
 				return false;
 			}
     	};
-    	var adminCommitmentValue = $("input[name='adminCommitment']:checked").val();
+    	var adminCommitmentValue = $("#adminCommitmentContent input[name='adminCommitment']:checked").val();
 		if(adminCommitmentValue == 1){
 			var adminCommitment = 1;
 		}else{
@@ -679,7 +681,7 @@ function checkWcardIschange(checked){
 function saveContent(){
 	if(parm.taskDefinitionKey == "GDQR"){
 		var submitData = {};
-		var adminCommitment = $("input[name='adminCommitment']:checked").val();
+		var adminCommitment = $("#adminCommitmentContent input[name='adminCommitment']:checked").val();
 		if(!adminCommitment){
 			adminCommitment = 0;
 		};
@@ -733,7 +735,7 @@ function saveContentPost(data,type){
 	if(parm.pageType == 1){
 		parent.$("#saveButton").attr("disabled",true);
 	}else{
-		$(".saveBtn").attr("disabled",true);
+		$("#saveBtn").attr("disabled",true);
 	};
 	var postData = JSON.stringify(data);
 	if(type == "GDCL"){
@@ -753,7 +755,7 @@ function saveContentPost(data,type){
 	    		parent.$("#saveButton").attr("disabled",false);
 			}else{
 				layer.msg("保存成功");
-				$(".saveBtn").attr("disabled",false);
+				$("#saveBtn").attr("disabled",false);
 			}
 		}
 	}
@@ -763,7 +765,7 @@ function saveContentPost(data,type){
 		if(parm.pageType == 1){
     		parent.$("#saveButton").attr("disabled",false);
 		}else{
-			$(".saveBtn").attr("disabled",false);
+			$("#saveBtn").attr("disabled",false);
 		}
 	}
 }
@@ -921,7 +923,7 @@ function loadComplete() {
 	//加载快捷跳转
 	setSpeedyJump();
 	//增加事件委托，input失去焦点时检查是否maxLength超长
-	$("#workOrderContentForm").on("blur","input,textarea",function(){
+	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
 }
@@ -940,7 +942,7 @@ function srolloOffect(el,srolloParm){
 	var scrollTopParm = 140;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
-			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $(".page-content").width() + 630;
+			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $pageContent.width() + 630;
 			$("#incomeLinerentTableContent").scrollLeft(scrollLeftValue);
 		}
 	}else if(srolloParm == 2){
@@ -950,9 +952,9 @@ function srolloOffect(el,srolloParm){
 			scrollTopParm = 50;
 		}
 	}
-	var v = $(".page-content").scrollTop();
+	var v = $pageContent.scrollTop();
 	var scrollTopValue = v + $(el).offset().top - scrollTopParm;
-	$('.page-content').animate({
+	$pageContent.animate({
 		scrollTop:scrollTopValue
 	},300)
 }
@@ -1001,7 +1003,7 @@ $("#workOrderMenu").hover(function(){
  */
 function setRequiredIcon(){
 	if(wcardTypeCode != 0){
-		var isFixedValue = $("input[name='isFixed']:checked").val();
+		var isFixedValue = $("#isOtherTypeOverview input[name='isFixed']:checked").val();
 		if(isFixedValue == 1){
 			$(".isRequiredIcon").each(function(){
 				var addRequiredIconHtml = '<i class="iconfont icon-mi required"></i>' + $(this).text();
@@ -1077,7 +1079,7 @@ function setPageIdCallback(data){
  * 每个页面中单独往里增加内容
  */
 function validate() {
-	$('#workOrderContentForm').bootstrapValidator({
+	$workOrderContentForm.bootstrapValidator({
 		live: 'disabled',		//enabled
 		trigger: 'live focus keyup change',
 		message: '校验未通过',
@@ -1119,7 +1121,7 @@ function addNotEmptyValidatorField(name,msg){
  * 检查页面错误项中是否有超长的元素（不精确，为用户点击触发后才生效）
  */
 function checkDomOverlength(checked){
-	var overLengthDom = $("#workOrderContentForm").find(".has-error.overlength")[0];
+	var overLengthDom = $workOrderContentForm.find(".has-error.overlength:first")[0];
 	if(overLengthDom && checked){
 		return true;
 	}else if(overLengthDom){
@@ -1191,7 +1193,7 @@ function setPTip(t){
 //	}
 //	
 //})
-//$(".page-content").on("scroll",function(){
+//$pageContent.on("scroll",function(){
 //	if(tipsIndex){
 //		layer.close(tipsIndex);
 //		tipsIndex = null;

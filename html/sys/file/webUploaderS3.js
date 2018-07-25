@@ -17,7 +17,7 @@ var uploadTable = App.initDataTables('#uploadTable', {
 			"title": "操作",
 			"render": function(data, type, full, meta) {
 				var result = '<a href="/fileload/downloadS3?key=' + data.substr(0,data.lastIndexOf('.')) + '">下载</a>';
-				result = result + '<a style="margin-left:15px" href="#" onclick="deleteFile(\''+data+'\')">删除</a>';
+				result = result + '<a style="margin-left:15px" onclick="deleteFile(\''+data+'\')">删除</a>';
 				if (/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(data)) {
 					if($('#imgFile').css('display')=='none'){
 						result = result + '<a class="btn primary btn-outline btn-xs" style="margin-left:15px" onclick = "downloadUrl(\'' + data + '\')">显示图片</a>';

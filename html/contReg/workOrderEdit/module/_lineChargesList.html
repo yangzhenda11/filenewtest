@@ -2,7 +2,7 @@
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 线路资费清单</span>
 		<div class="form-fieldset-tools">
-			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body">
@@ -126,7 +126,7 @@
 			return incomeLinerentDataList;
 		}else{
 			showLayerErrorMsg("当前工单表单校验未通过，请检查");
-        	srolloOffect($("#incomeLinerentTbody").find(".has-error")[0],1);
+        	srolloOffect($("#incomeLinerentTbody").find(".has-error:first")[0],1);
         	return false;
 		}
 	}
@@ -375,7 +375,7 @@
 		var productKindName = $(this).attr("name");
 		var productName = $(productNameDom).attr("name");
 		var auditLabelName = $(auditLabelDom).attr("name");
-		var bvel = $("#workOrderContentForm").data("bootstrapValidator").getFieldElements(productKindName);
+		var bvel = $workOrderContentForm.data("bootstrapValidator").getFieldElements(productKindName);
 		productNameDom.html(incomeLinerentName);
         productNameDom.select2({
         	placeholder:"请选择",
@@ -405,8 +405,8 @@
         	});
         };
         if(bvel.prevObject.prevObject){
-			$("#workOrderContentForm").data("bootstrapValidator").updateStatus(productName,"NOT_VALIDATED",null);
-			$("#workOrderContentForm").data("bootstrapValidator").updateStatus(auditLabelName,"NOT_VALIDATED",null);
+			$workOrderContentForm.data("bootstrapValidator").updateStatus(productName,"NOT_VALIDATED",null);
+			$workOrderContentForm.data("bootstrapValidator").updateStatus(auditLabelName,"NOT_VALIDATED",null);
 		}
 	})
 	/*

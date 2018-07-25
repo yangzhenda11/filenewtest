@@ -458,7 +458,7 @@ function setDifferenceRecord(data){
 				'<span class="diffVersion">版本号：'+ diffInfoItem.verifyVersion +'</span>'+
 				'<span class="diffValiDate">验证日期：'+ diffInfoItem.verifyDate +'</span>'+
 				'<span class="diffNum">共有<span class="mLR5">'+ verifyDiffCount +'</span>项不符</span>'+
-				'<div class="form-fieldset-tools"><a href="#" class="form-collapse"><i class="fa fa-angle-down"></i></a></div>'+
+				'<div class="form-fieldset-tools"><a class="form-collapse"><i class="fa fa-angle-down"></i></a></div>'+
 			'</div>'+
 			'<div class="form-fieldset-body" style="display:none;"><div class="row">'+ thatItemHtml +
 					'<table class="table table-hover table-bordered table-striped">'+

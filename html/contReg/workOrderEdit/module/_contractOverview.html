@@ -2,7 +2,7 @@
 	<div class="form-fieldset-title">
 		<span><i class="iconfont icon-layers"></i> 合同总览</span>
 		<div class="form-fieldset-tools">
-			<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body">
@@ -392,7 +392,6 @@
 			var data = result.data;
 			if(data.length > 0){
 				var id = data[0].wcardId;
-				var href = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=0&wcardId="+id;
 				$("#relatedWcardNumber").html("<a onclick='jumpContractOverview(\""+id+"\")'>"+relatedWcardNumber+"</a>");
 			}else{
 				$("#relatedWcardNumber").html("<a>暂无关联工单编号</a>");
@@ -407,12 +406,12 @@
 		if(parm.pageType == 1){
 			parent.layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
 				parent.layer.close(index);
-				top.showSubpageTab(href,"工单查看");
+				top.showSubpageTab(href,"工单查看",true);
 			})
 		}else{
 			layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
 				layer.close(index);
-				top.showSubpageTab(href,"工单查看");
+				top.showSubpageTab(href,"工单查看",true);
 			})
 		}
 	}

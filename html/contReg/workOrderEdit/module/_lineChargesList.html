@@ -308,12 +308,12 @@
 			var otherCost = "otherCost" + isCreateLinerLen;
 			var settlementFrequency = "settlementFrequency" + isCreateLinerLen;
 			incomeLinerentList.push([productKind,productName,productAttr,auditLabel,fixedMonthRent,lineCount,totalMonthRent,onceCost,otherCost,settlementFrequency])
-			var linerentId = data.linerentId ? data.linerentId : "100000";
-			var fixedMonthRentVal = data.fixedMonthRent ? data.fixedMonthRent : "";
-			var lineCountVal = data.lineCount ? data.lineCount : "";
-			totalMonthRentVal = data.totalMonthRent ? data.totalMonthRent : "";
-			onceCostVal = data.onceCost ? data.onceCost : "0";
-			otherCostVal = data.otherCost ? data.otherCost : "0";
+			var linerentId = itemData.linerentId ? itemData.linerentId : "100000";
+			var fixedMonthRentVal = itemData.fixedMonthRent ? itemData.fixedMonthRent : "";
+			var lineCountVal = itemData.lineCount ? itemData.lineCount : "";
+			totalMonthRentVal = itemData.totalMonthRent ? itemData.totalMonthRent : "";
+			onceCostVal = itemData.onceCost ? itemData.onceCost : "0";
+			otherCostVal = itemData.otherCost ? itemData.otherCost : "0";
 			incomeLinerentTableHtml += "<tr data-id='"+ linerentId +"' id='"+ productKind +"'>"+
 							"<td class='lineChargesTableEdit'><label class='ui-checkbox'><input type='checkbox' name='incomeLinerentCheck'><span></span></label></td>"+
 							"<td class='orderNumber'></td>"+

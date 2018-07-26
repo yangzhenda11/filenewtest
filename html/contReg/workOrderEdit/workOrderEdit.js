@@ -1177,7 +1177,6 @@ function setPTip(t){
 	}else{
 		return "";
 	}
-	
 }
 /*
  * input双击事件

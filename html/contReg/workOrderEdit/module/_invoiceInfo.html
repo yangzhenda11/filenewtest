@@ -140,9 +140,7 @@
 		function successCallback(result) {
 			var data = result.data;
 			if(data.length > 0){
-				for(var i = 0; i < data.length; i++){
-					addInvoiceTableTr(data[i]);
-				};
+				addInvoiceTableData(data);
 			};
 			/*
 			 * isEdit 判断页面是否只能查看
@@ -156,37 +154,72 @@
 		}
 	}
 	/*
-	 * 增加处理
+	 * 初始化或导入增加处理
 	 */
-	function addInvoiceTableTr(data){
+	function addInvoiceTableData(data){
+		var isNew = false;
 		if($("#invoiceTbody .emptyTr")[0] != undefined){
+			isNew = true;
 			$("#invoiceTbody .emptyTr").remove();
 		};
-		var invoiceId = "100000";
-		var invoiceTitleVal = '';
-		if(data){
-			invoiceId = data.invoiceId ? data.invoiceId : "100000";
-			invoiceTitleVal = data.invoiceTitle;
-		}
-		isCreateInvoiceTrLength++;
-		var invoiceTitleName = "invoiceTitle" + isCreateInvoiceTrLength;
-		var invoiceTypeName = "invoiceType" + isCreateInvoiceTrLength;
-	
-		var appendHtml = "<tr data-id='"+invoiceId+"'>"+
+		var invoiceTitleNameList = [],invoiceTypeNameList = [],invoiceTableHtml = "";
+		for(var i = 0; i < data.length; i++){
+			var itemData = data[i];
+			isCreateInvoiceTrLength++;
+			var invoiceId = itemData.invoiceId ? itemData.invoiceId : "100000";
+			var invoiceTitleVal = itemData.invoiceTitle;
+			var invoiceTitleName = "invoiceTitle" + isCreateInvoiceTrLength;
+			var invoiceTypeName = "invoiceType" + isCreateInvoiceTrLength;
+			invoiceTitleNameList.push(invoiceTitleName);
+			invoiceTypeNameList.push(invoiceTypeName);
+			invoiceTableHtml += "<tr data-id='"+invoiceId+"' id='"+ invoiceTypeName +"'>"+
 							"<td class='invoiceTableEdit'><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
 							"<td class='orderNumber'></td>"+
 							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='"+setPTip('请输入发票抬头')+"' value='"+ invoiceTitleVal +"' maxlength='240' /></div></td>"+
-							"<td><div class='form-group "+ invoiceTypeName +"'><select class='form-control select2me invoiceTypeName' data-placeholder='"+setPTip('请选择发票类型')+"' name='"+ invoiceTypeName +"'>"+ invoiceTypeSelectHtml +"</select></div></td>"+
+							"<td><div class='form-group'><select class='form-control select2me invoiceTypeName' data-placeholder='"+setPTip('请选择发票类型')+"' name='"+ invoiceTypeName +"'>"+ invoiceTypeSelectHtml +"</select></div></td>"+
+							"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
+						"</tr>";
+		};
+		if(isNew){
+			$("#invoiceTbody").html(invoiceTableHtml);
+		}else{
+			$("#invoiceTbody").append(invoiceTableHtml);
+		};
+		if(!isEdit){
+			$("#invoiceTbody").find("select").attr("disabled","disabled");
+		}
+		App.initFormSelect2("#invoiceTbody");
+		for(var o = 0; o < data.length; o++){
+			var itemData = data[o];
+			$("#"+invoiceTypeNameList[o]+" select[name='"+invoiceTypeNameList[o]+"']").val(itemData.invoiceType).trigger("change");
+			addNotEmptyValidatorField(invoiceTitleNameList[o],"请输入不超过240个字符的发票抬头");
+			addNotEmptyValidatorField(invoiceTypeNameList[o],"发票类型不能为空");
+		};
+		addInvoiceTableSort();
+		App.checkAllFn("#invocieCheckAll","invoiceCheck");
+	}
+	/*
+	 * 单行增加处理
+	 */
+	function addInvoiceTableTr(){
+		if($("#invoiceTbody .emptyTr")[0] != undefined){
+			$("#invoiceTbody .emptyTr").remove();
+		};
+		isCreateInvoiceTrLength++;
+		var invoiceTitleName = "invoiceTitle" + isCreateInvoiceTrLength;
+		var invoiceTypeName = "invoiceType" + isCreateInvoiceTrLength;
+		var appendHtml = "<tr data-id='100000' id='"+invoiceTypeName+"'>"+
+							"<td class='invoiceTableEdit'><label class='ui-checkbox'><input type='checkbox' name='invoiceCheck'><span></span></label></td>"+
+							"<td class='orderNumber'></td>"+
+							"<td><div class='form-group'><input type='text' class='form-control invoiceTitleName' name='"+ invoiceTitleName +"' placeholder='"+setPTip('请输入发票抬头')+"' maxlength='240' /></div></td>"+
+							"<td><div class='form-group'><select class='form-control select2me invoiceTypeName' data-placeholder='"+setPTip('请选择发票类型')+"' name='"+ invoiceTypeName +"'>"+ invoiceTypeSelectHtml +"</select></div></td>"+
 							"<td class='invoiceTableEdit'><button type='button' class='btn primary btn-outline btn-xs' onclick='delectInvoiceTr(this)'>删除</button></td>"+
 						"</tr>";
 		$("#invoiceTbody").append(appendHtml);
 		if(!isEdit){
-			$("."+invoiceTypeName).find("select").attr("disabled","disabled");
+			$("#"+invoiceTypeName).find("select").attr("disabled","disabled");
 		}
-		App.initFormSelect2("."+invoiceTypeName);
-		if(data){
-			$("select[name='"+invoiceTypeName+"']").val(data.invoiceType).trigger("change");
-		}
+		App.initFormSelect2("#"+invoiceTypeName);
 		addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
 		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
 		addInvoiceTableSort();
@@ -254,13 +287,10 @@
 		function callback(result){
 			if(result.status == 1){
 				var data = result.data;
-				var length = data.length;
-				if(length > 0){
-					for(var i = 0; i < length; i++){
-						addInvoiceTableTr(data[i]);
-					}
+				if(data.length > 0){
+					addInvoiceTableData(data);
 				};
-				layer.msg("成功导入"+length+"条开票信息");
+				layer.msg("成功导入"+data.length+"条开票信息");
 				$("#commomModal").modal("hide");
 			}else if(result.status == 3010){
 				showLayerErrorMsg(result.message);

@@ -52,7 +52,8 @@ function getStaffSearchTable() {
                 d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
                 var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();
                 if (null != orgId && '' != orgId) {
-                    d.sysOrgId = $("input[name='orgId']", $('#searchStaffForm')).val();
+                    d.sysOrgId = orgId;
+                    d.orgSelectedFlg = '1';
                 }
                 d.staffStatus = $("select[name='staffStatus']", $('#searchStaffForm')).val();
                 d.mobilPhone = $("input[name='mobilPhone']", $('#searchStaffForm')).val();

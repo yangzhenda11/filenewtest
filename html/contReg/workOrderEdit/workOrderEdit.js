@@ -1029,14 +1029,19 @@ function getContentValue(isSubmit) {
 		};
 		var itemFn = eval('getValue_' + targetObj);
 		var itemValue = itemFn(isSubmit);
-		if(itemValue){
+		if(itemValue == "noValidator"){
+			isPass = "noValidator";
+		}else if(itemValue){
 			submitData[targetObj] = itemValue;
 		}else{
 			isPass = false;
 			return false;
 		}
 	});
-	if(isPass){
+	if(isPass == "noValidator"){						//保存时JS验证
+		showLayerErrorMsg("当前工单表单校验未通过，请检查");
+    	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
+	}else if(isPass == true){
 		submitData.wcardId = wcardId;
 		return submitData;
 	}else{

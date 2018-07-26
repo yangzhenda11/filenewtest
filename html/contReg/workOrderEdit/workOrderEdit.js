@@ -1207,7 +1207,7 @@ function backPage(){
  */
 function getBusiProcessInfoID(){
 	var url = serverPath + "contractOrderEditorController/getBusiProcessInfoID";
-	//App.formAjaxJson(url, "get", {wcardId:wcardId}, successCallback);
+	App.formAjaxJson(url, "get", {wcardId:wcardId}, successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data.length > 0){

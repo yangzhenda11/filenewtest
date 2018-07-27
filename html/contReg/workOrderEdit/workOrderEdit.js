@@ -433,8 +433,10 @@ function submitContentFn(){
 	//手动触发表单验证
 	var bootstrapValidator = $workOrderContentForm.data('bootstrapValidator');
     bootstrapValidator.validate();
+    var iscustomValPass = customValidator();
+    console.log(iscustomValPass);
    	layer.close(orderLayerIndex);
-    if(!bootstrapValidator.isValid()){
+    if(!bootstrapValidator.isValid() && iscustomValPass){
     	showLayerErrorMsg("当前工单表单校验未通过，请检查");
         srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	return false;
@@ -1063,7 +1065,26 @@ function removeMoreThanTablecontent(){
 		itemFn();
 	});
 }
-
+/*
+ * 子页面JS验证，不通过返回true
+ */
+function customValidator(){
+	//各页面执行相应的方法，若页面无方法跳过
+    var isPass = true;
+	$('.form-wrapper').each(function(index, wrapperItem) {
+		var targetObj = $(wrapperItem).data('target');
+		if(!App.isExitsFunction("customValidator_" + targetObj)){
+			return true;
+		};
+		var itemFn = eval('customValidator_' + targetObj);
+		var result = itemFn();
+		if(result == false){
+			isPass = false;
+		};
+	});
+	console.log(isPass);
+	return isPass;
+}
 /*
  * 保存或提交后更改各模块内对于ID值得callback函数
  * 页面内需声明"setPageId_"+约定各页面返回的ID值，  （约定为domain的name值即保存时的各模块key+ID）

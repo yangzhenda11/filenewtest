@@ -48,6 +48,7 @@ function getStaffSearchTable() {
                 d.sysOrgId = globalConfig.curCompanyId;
                 d.staffOrgId = globalConfig.curStaffOrgId;
                 d.mainOrgFlag = globalConfig.mainOrgFlag;
+                d.orgPath = globalConfig.orgPath;
                 d.staffName = $("input[name='staffName']", $('#searchStaffForm')).val();
                 d.loginName = $("input[name='loginName']", $('#searchStaffForm')).val();
                 var orgId = $("input[name='orgId']", $('#searchStaffForm')).val();

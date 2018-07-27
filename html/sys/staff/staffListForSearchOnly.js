@@ -12,6 +12,7 @@ function getStaffSearchOnlyTable() {
                 d.sysOrgId = globalConfig.curCompanyId;
                 d.staffOrgId = globalConfig.curStaffOrgId;
                 d.mainOrgFlag = globalConfig.mainOrgFlag;
+                d.orgPath = globalConfig.orgPath;
                 d.staffName = $("input[name='staffName']", $('#searchOnlyStaffForm')).val();
                 d.loginName = $("input[name='loginName']", $('#searchOnlyStaffForm')).val();
                 var orgId = $("input[name='orgId']", $('#searchOnlyStaffForm')).val();

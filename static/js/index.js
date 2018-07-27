@@ -148,16 +148,19 @@ function data_tpFilter(permCheck) {
 
 //切换岗位
 function changeStaffOrg(staffOrgId) {
-    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, successCallback, improperCallback, null, null, false);
-
-    function successCallback(result) {
-        if (result.status) {
-            window.location.reload();
-        } else {
-            layer.msg(data.message);
-        }
-    }
-    function improperCallback(result){
+	App.formAjaxJson(globalConfig.serverPath + "validateOrgId/" + staffOrgId, "GET", null,changeStationSuccess,improperCallback);
+	function changeStationSuccess(result){
+		if(result.data == 1){
+			App.formAjaxJson("/changeStation?staffOrgId=" + staffOrgId, "GET", null, null, improperCallback, null, null, false);
+		    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, successCallback, improperCallback, null, null, false);
+		    function successCallback(result) {
+	            window.location.reload();
+		    }
+		}else{
+			improperCallback(result);
+		}
+	};
+	function improperCallback(result){
     	var message = result.message;
     	if(result.status == 9002){
     		message = "系统尚未在岗位所在的组织上线，您无法用选择的岗位访问系统";
@@ -165,7 +168,7 @@ function changeStaffOrg(staffOrgId) {
     		message = "您的用户状态异常。如需正常访问系统，请联系系统管理员";
     	};
     	layer.alert(message,{icon:2,title:"提示"});
-    }
+    };
 }
 /*
  * 表单验证

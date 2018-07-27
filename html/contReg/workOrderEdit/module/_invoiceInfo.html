@@ -109,13 +109,14 @@
 		addInvoiceTbodyEmptyTr();
 	}
 	/*
-	 * 自定义验证，注意去除.error
+	 * 自定义验证，注意去除.has-error
 	 */
 	function customValidator_invoiceList(){
 		var isReg = true;
 		$.each($("#invoiceTbody tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
 				var invoiceTypeItem = $(v).find(".invoiceTypeName").val();
+				console.log($(v).find(".invoiceTypeName").attr("disabled"))
 				if(invoiceTypeItem == "" || invoiceTypeItem == null){
 					isReg = false;
 					$(v).find(".invoiceTypeName").parents(".form-group").addClass("has-error");
@@ -124,6 +125,9 @@
 		});
 		return isReg;
 	}
+	$("#invoiceTbody").on("change","select",function(){
+		$(this).parents(".form-group").removeClass("has-error");
+	})
 	//name自增基础值
 	var isCreateInvoiceTrLength = 0;
 	//获取开票信息字典值
@@ -144,7 +148,6 @@
 			invoiceTypeSelectHtml += "<option value='"+ k +"'>"+ v +"</option>";
 		});
 	}
-	
 	/*
 	 * 获取开票信息
 	 */
@@ -201,7 +204,7 @@
 		}else{
 			$("#invoiceTbody").append(invoiceTableHtml);
 		};
-		if(!isEdit){
+		if(isEdit){
 			$("#invoiceTbody").find("select").attr("disabled","disabled");
 		}
 		App.initFormSelect2("#invoiceTbody");

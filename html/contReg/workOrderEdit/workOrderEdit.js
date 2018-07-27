@@ -135,12 +135,13 @@ function businessDispose(pass){
 function beforePushProcess(pass){
 	var result = true;
 	var pathSelect = 0;
-	//手动触发表单验证
+	//手动触发表单验证	
 	if(parm.taskDefinitionKey == "GDCL" && pass == true){
 		var bootstrapValidator = $workOrderContentForm.data('bootstrapValidator');
 	    bootstrapValidator.validate();
+	    var customValiNoPass = customValidator();
 	    layer.close(orderLayerIndex);
-	    if(!bootstrapValidator.isValid()){
+	    if(!bootstrapValidator.isValid() || customValiNoPass){
 	    	if(parent.getActiveMyTab() != 0){
 	    		parent.cutMyTab(0,function(){
 	    			showLayerErrorMsg("当前工单表单校验未通过，请检查");

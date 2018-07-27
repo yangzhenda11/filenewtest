@@ -116,7 +116,6 @@
 		$.each($("#invoiceTbody tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
 				var invoiceTypeItem = $(v).find(".invoiceTypeName").val();
-				console.log($(v).find(".invoiceTypeName").attr("disabled"))
 				if(invoiceTypeItem == "" || invoiceTypeItem == null){
 					isReg = false;
 					$(v).find(".invoiceTypeName").parents(".form-group").addClass("has-error");
@@ -204,7 +203,7 @@
 		}else{
 			$("#invoiceTbody").append(invoiceTableHtml);
 		};
-		if(isEdit){
+		if(!isEdit){
 			$("#invoiceTbody").find("select").attr("disabled","disabled");
 		}
 		App.initFormSelect2("#invoiceTbody");

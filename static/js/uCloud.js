@@ -9,15 +9,17 @@ var globalConfig = {
     /**后台服务地址 */
     serverPath: "/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
-    curStaffOrgId: null, //10001
+    curStaffOrgId: null, 
+    /** 当前用户组织深度*/
+    orgPath: null,
     /** 当前用户所在组织的id（sys_org表主键） */
-    curOrgId: null, //56665
+    curOrgId: null,
     /** 当前用户所在组织的上级公司id（sys_org表主键） */
     curCompanyId: null,
     /** 当前用户的用户名 */
     curStaffName: "",
     /** 当前用户的id （sys_staff主键） */
-    curStaffId: null, //10002
+    curStaffId: null,
     /** 当前用户的权限集合 */
     permissions: [],
     /**当前岗位组织省份code */
@@ -42,6 +44,7 @@ function successCallback(result) {
 	globalConfig.curCompanyId = data.companyId;
 	globalConfig.mainOrgFlag = data.mainOrgFlag;
 	globalConfig.permissions = data.permissions;
+	globalConfig.orgPath = data.orgPath;
 }
 
 //获取用户配置信息

@@ -190,7 +190,7 @@ function showSubpageTab(link,title,openNew){
 		var isChecked = true;
 	}
 	$(".J_menuTab").each(function() {
-		if(isChecked || $(this).data("id") == dataId) {
+		if($(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
 				animateTab(this);

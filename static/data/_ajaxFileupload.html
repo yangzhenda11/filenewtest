@@ -110,7 +110,6 @@
 		var emptyFn = function(){};
 		fileUploadCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		ajaxFileUploadParm.url = setting.url;
-		ajaxFileUploadParm.uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
 		if(setting.fileExtensions){
 			ajaxFileUploadParm.fileExtensions = setting.fileExtensions;
 		};
@@ -201,7 +200,7 @@
 				'url' : serverPath + ajaxFileUploadParm.url,
 				'fileElementId' : "uploadFileName",
 				'data': ajaxFileUploadParm.extraData,
-				'async' : ajaxFileUploadParm.uploadAsync,
+				'async' : false,
 //				'contentType' : "text/html",
 //	            'processData' : true,
 		        'complete': function(){

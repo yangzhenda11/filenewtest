@@ -1132,11 +1132,11 @@ var App = function() {
 		 * 表单内静态select2内容的初始化
 		 * dom 表单的dom元素
 		 */
-		initFormSelect2 : function(dom){
+		initFormSelect2 : function(dom,coerce){
         	if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            $(dom).find(".select2me").each(function(){
-	            	if(!$(this).hasClass("select2-hidden-accessible")){
+	            	if(!$(this).hasClass("select2-hidden-accessible") || coerce){
 	            		var allowClearFlag = $(this).attr('data-allowClear');
 		                var allowSearch = $(this).attr('data-allowSearch');
 		                if(allowClearFlag != "false"){

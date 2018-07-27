@@ -6,6 +6,7 @@
 var tablestr='';
 var dataTableConfig = {};
 var chooseType;
+var _documentHeight = 0;
 function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 	$("#wfflowKey").val(flowKey);
 	$("#wflinkCode").val(linkcode);
@@ -20,7 +21,6 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contrac
 	
 	//chooseType=$("#wfstaffSelectType").val();
 	chooseType = staffSelectType;
-
 	if(chooseType==2){
 		$("#duoxuan").show();
 		tablestr='<input type="checkbox" class="checkall" />';
@@ -30,7 +30,9 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contrac
 	}else{
 		$("#duoxuan").hide();
 		tablestr="未知"
-	}
+	};
+	_documentHeight = $(".page-content").height() - 320;
+	$("#_searchStaffTableDom").css("height",_documentHeight + 90);
 	setDataTableConfig();
 }
 
@@ -47,7 +49,11 @@ var btnModel =  '    \
 var template = Handlebars.compile(btnModel);
 
 function setDataTableConfig(){
+	if(App.isIE9() || App.isIE8()){
+		_documentHeight = "";
+	}
 	dataTableConfig={
+		scrollY:_documentHeight,
 		ajax: {
 			"type": "GET",					//请求方式
 			"url": serverPath + 'assignee/searchMap4Page',	//请求地址

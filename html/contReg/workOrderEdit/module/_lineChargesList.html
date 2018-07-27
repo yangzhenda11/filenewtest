@@ -163,6 +163,50 @@
 		addIncomeLinerentTbodyEmptyTr();
 	}
 	/*
+	 * 自定义验证，注意去除.has-error
+	 */
+	function customValidator_incomeLinerentList(){
+		var isReg = true;
+		$.each($("#incomeLinerentTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var productKindItem = $(v).find(".productKind").val();
+				var productNameItem = $(v).find(".productName").val();
+				var productAttrItem = $(v).find(".productAttr").val();
+				var auditLabelItem = $(v).find(".auditLabel").val();
+				var auditLabelDisabled = $(v).find(".auditLabel").attr("disabled");
+				var settlementFrequencyItem = $(v).find(".settlementFrequency").val();
+				if(productKindItem == "" || productKindItem == null){
+					isReg = false;
+					$(v).find(".productKind").parents(".form-group").addClass("has-error");
+				};
+				if(productNameItem == "" || productNameItem == null){
+					isReg = false;
+					$(v).find(".productName").parents(".form-group").addClass("has-error");
+				};
+				if(productAttrItem == "" || productAttrItem == null){
+					isReg = false;
+					$(v).find(".productAttr").parents(".form-group").addClass("has-error");
+				};
+				if(auditLabelDisabled == "disabled" || auditLabelDisabled == true){
+					$(v).find(".auditLabel").parents(".form-group").removeClass("has-error");
+				}else{
+					if(auditLabelItem == "" || auditLabelItem == null){
+						isReg = false;
+						$(v).find(".auditLabel").parents(".form-group").addClass("has-error");
+					}
+				};
+				if(settlementFrequencyItem == "" || settlementFrequencyItem == null){
+					isReg = false;
+					$(v).find(".settlementFrequency").parents(".form-group").addClass("has-error");
+				};
+			}
+		});
+		return isReg;
+	}
+	$("#incomeLinerentTbody").on("change","select",function(){
+		$(this).parents(".form-group").removeClass("has-error");
+	})
+	/*
 	 * 验证金额
 	 */
 	function retMoney(val){
@@ -347,11 +391,6 @@
 				$("#"+listData[0]+" select[name='"+listData[3]+"']").val(itemData.auditLabel).trigger("change");
 			};
 			$("#"+listData[0]+" select[name='"+listData[9]+"']").val(itemData.settlementFrequency).trigger("change");
-			addNotEmptyValidatorField(listData[0],"产品类型不能为空");
-			addNotEmptyValidatorField(listData[1],"产品名称不能为空");
-			addNotEmptyValidatorField(listData[2],"产品属性不能为空");
-			addNotEmptyValidatorField(listData[3],"稽核标签不能为空");
-			addNotEmptyValidatorField(listData[9],"结算周期不能为空");
 			App.addValidatorField("#workOrderContentForm",listData[4],isMoney);
 		   	App.addValidatorField("#workOrderContentForm",listData[5],isInteger);
 		   	App.addValidatorField("#workOrderContentForm",listData[6],isMoney);
@@ -401,11 +440,11 @@
 			$("#"+productKind).find("select").attr("disabled","disabled");
 		}
 		App.initFormSelect2("#"+productKind);
-		addNotEmptyValidatorField(productKind,"产品类型不能为空");
-		addNotEmptyValidatorField(productName,"产品名称不能为空");
-		addNotEmptyValidatorField(auditLabel,"稽核标签不能为空");
-		addNotEmptyValidatorField(productAttr,"产品属性不能为空");
-		addNotEmptyValidatorField(settlementFrequency,"结算周期不能为空");
+		$("#"+productKind+" .auditLabel").select2({
+    		placeholder:"",
+            language:'zh-CN',
+            width:'100%'
+    	});
 	   	App.addValidatorField("#workOrderContentForm",lineCount,isInteger);
 	   	App.addValidatorField("#workOrderContentForm",fixedMonthRent,isMoney);
 	   	App.addValidatorField("#workOrderContentForm",totalMonthRent,isMoney);
@@ -419,7 +458,6 @@
 	 */
 	$("#incomeLinerentTbody").on("change",".productKind",function(){
 		var productKind = $(this).val();
-		console.log(productKind);
 		var incomeLinerentCont = "";
 		var auditLabelCont = "";
 		if(productKind == 906010){

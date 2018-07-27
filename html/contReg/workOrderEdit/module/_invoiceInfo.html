@@ -108,6 +108,25 @@
 		});
 		addInvoiceTbodyEmptyTr();
 	}
+	/*
+	 * 自定义验证，注意去除.has-error
+	 */
+	function customValidator_invoiceList(){
+		var isReg = true;
+		$.each($("#invoiceTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var invoiceTypeItem = $(v).find(".invoiceTypeName").val();
+				if(invoiceTypeItem == "" || invoiceTypeItem == null){
+					isReg = false;
+					$(v).find(".invoiceTypeName").parents(".form-group").addClass("has-error");
+				}
+			}
+		});
+		return isReg;
+	}
+	$("#invoiceTbody").on("change","select",function(){
+		$(this).parents(".form-group").removeClass("has-error");
+	})
 	//name自增基础值
 	var isCreateInvoiceTrLength = 0;
 	//获取开票信息字典值
@@ -128,7 +147,6 @@
 			invoiceTypeSelectHtml += "<option value='"+ k +"'>"+ v +"</option>";
 		});
 	}
-	
 	/*
 	 * 获取开票信息
 	 */
@@ -193,7 +211,6 @@
 			var itemData = data[o];
 			$("#"+invoiceTypeNameList[o]+" select[name='"+invoiceTypeNameList[o]+"']").val(itemData.invoiceType).trigger("change");
 			addNotEmptyValidatorField(invoiceTitleNameList[o],"请输入不超过240个字符的发票抬头");
-			addNotEmptyValidatorField(invoiceTypeNameList[o],"发票类型不能为空");
 		};
 		addInvoiceTableSort();
 		App.checkAllFn("#invocieCheckAll","invoiceCheck");
@@ -221,7 +238,6 @@
 		}
 		App.initFormSelect2("#"+invoiceTypeName);
 		addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
-		addNotEmptyValidatorField(invoiceTypeName,"发票类型不能为空");
 		addInvoiceTableSort();
 		App.checkAllFn("#invocieCheckAll","invoiceCheck");
 	}

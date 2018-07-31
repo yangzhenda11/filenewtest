@@ -211,7 +211,7 @@
 			var expiryDate = validityData.expiryDate;
 			if(effectiveDate && expiryDate){
 				if(!App.checkDate(effectiveDate,expiryDate)){
-					showLayerErrorMsg("合同生效信息中，生效日期不能大于终止日期");
+					showLayerErrorMsg("合同生效信息中，生效日期不能早于终止日期");
 					srolloOffect("#undertakerCommitmentContent",3);
 					return false;
 				}

@@ -206,6 +206,17 @@
 			}
 		});
 		validityData.stampedInfoOtherList = stampedInfoOtherList;
+		if(validityData.periodType == "905010"){
+			var effectiveDate = validityData.effectiveDate;
+			var expiryDate = validityData.expiryDate;
+			if(effectiveDate && expiryDate){
+				if(!App.checkDate(effectiveDate,expiryDate)){
+					showLayerErrorMsg("合同生效信息中，生效日期不能大于终止日期");
+					srolloOffect("#undertakerCommitmentContent",3);
+					return false;
+				}
+			}
+		}
 		if(isSubmit && validityData.undertakerCommitment == 0){
 			layer.msg("请勾选承办人确认信息!");
 			srolloOffect("#undertakerCommitmentContent");

@@ -3495,8 +3495,8 @@ Portlets
     .portlet > .portlet-title > .caption.contract {
         padding: 4px 0 6px; }
     .portlet > .portlet-title > .caption {
+    	/*display: inline-block;*/
       float: left;
-      display: inline-block;
       font-size: 18px;
       line-height: 18px;
       padding: 8px 0 10px; }
@@ -3505,7 +3505,7 @@ Portlets
       .portlet > .portlet-title > .caption > i {
         float: left;
         margin-top: 4px;
-        display: inline-block;
+        /*display: inline-block;*/
         font-size: 13px;
         margin-right: 5px;
         color: #666; }

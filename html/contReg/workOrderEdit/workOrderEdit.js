@@ -955,6 +955,8 @@ function srolloOffect(el,srolloParm){
 		}else{
 			scrollTopParm = 50;
 		}
+	}else if(srolloParm == 3){
+		scrollTopParm = -130;
 	}
 	var v = $pageContent.scrollTop();
 	var scrollTopValue = v + $(el).offset().top - scrollTopParm;

@@ -1229,12 +1229,13 @@ function checkifdone(){
 
 function modal_savefun(){
 	try{ 
-		if(typeof(document.getElementById("businessiframe").contentWindow.modal_save)=="function"){ 
+		if(typeof(document.getElementById("businessiframe").contentWindow.modal_save)=="function"){
 			document.getElementById("businessiframe").contentWindow.modal_save();
 		}else{
 			layer.msg("当前环节不需要保存数据！");
 		}
-	}catch(e){ 
+	}catch(e){
+		console.log(e);
 		//alert(e.name + ": " + e.message);
 		layer.msg("保存数据异常，请联系管理员！");
 	} 

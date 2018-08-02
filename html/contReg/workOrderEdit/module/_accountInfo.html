@@ -22,9 +22,9 @@
                     	<thead>
 							<tr>
 								<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
-								<th class="isRequiredIcon">收款方账户名称</th>
-								<th class="isRequiredIcon">收款方银行账号</th>
-								<th class="isRequiredIcon">收款方开户银行</th>
+								<th>收款方账户名称</th>
+								<th>收款方银行账号</th>
+								<th>收款方开户银行</th>
 								<th class="accountEdit">操作</th>
 							</tr>
 						</thead>
@@ -88,34 +88,22 @@
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
 	function getValue_accountList(isSubmit){
+		var payeeInfoList = [];
+		var payerInfoList = [];
 		var accountDataList = [];
-		accountDataList = returnAccoutTableInfor("payeeInfoTbody",accountDataList);
-		accountDataList = returnAccoutTableInfor("payerInfoTbody",accountDataList);
-		//当合同总览中"固定金额"为"是"时，加校验"至少有一条收款方信息";
-		var isFixedValue = $("input[name='isFixed']:checked").val();
-		if(isSubmit && isFixedValue == 1){
-			var havePayeeInfo = false;
-			$.each(accountDataList, function(k,v) {
-				if(v.accountType == 1){
-					havePayeeInfo = true;
-					return;
-				}
-			});
-			if(havePayeeInfo){
-				return accountDataList;
-			}else{
-				layer.msg("请至少填写一项收款方信息");
-				srolloOffect("#payeeAccountInfo");
-				return false;
-			}
+		payeeInfoList = returnAccoutTableInfor("payeeInfoTbody",payeeInfoList,true);
+		payerInfoList = returnAccoutTableInfor("payerInfoTbody",payerInfoList,true);
+		if(payeeInfoList == "noValidator" || payerInfoList == "noValidator"){
+			return "noValidator";
 		}else{
-			return accountDataList;
+			return payeeInfoList.concat(payerInfoList);
 		}
 	}
 	/*
 	 * 返回table的信息
 	 */
-	function returnAccoutTableInfor(dom,accountDataList){
+	function returnAccoutTableInfor(dom,accountDataList,isValid){
+		var isReg = true;
 		$.each($("#"+ dom +" tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
 				var accountDataItem = {};
@@ -128,12 +116,23 @@
 				accountDataItem.contractNumber = contractNumber;
 				accountDataItem.accountId = $(v).data("id");
 				accountDataItem.accountName = $(v).find(".accountName").val();
-				accountDataItem.accountNumber = $(v).find(".accountNumber").val();
 				accountDataItem.openBank = $(v).find(".openBank").val();
+				var accountNumber = $(v).find(".accountNumber").val();;
+				accountDataItem.accountNumber = accountNumber;
 				accountDataList.push(accountDataItem);
+				if(isValid){
+					if(accountNumber != "" && !retInteger(accountNumber)){
+						isReg = false;
+						$(v).find(".accountNumber").parents(".form-group").addClass("has-error").data("errordata","请输入正确的银行账号(只允许录入阿拉伯数字)");
+					}
+				};
 			}
 		});
-		return accountDataList;
+		if(isReg){
+			return accountDataList;
+		}else{
+			return "noValidator";
+		}
 	}
 	/*
 	 * 去除多于的行
@@ -177,6 +176,24 @@
 		};
 		return emptyList;
 	}
+	/*
+	 * 验证大于0的整数
+	 */
+	function retInteger(val){
+		var ret = /^(0|[1-9][0-9]*)$/;
+      	var result = ret.test(val);
+      	return result;
+	}
+	//整数验证
+	var isIntegerNum = {
+		notEmpty : {
+			message : "请输入不超过40个字符的银行账号"
+		},
+		regexp : {
+			regexp : /^(0|[1-9][0-9]*)$/,
+			message : '只允许录入阿拉伯数字'
+		}
+	};
 	//name自增基础值
 	var isCreateAccountTrLength = 0;
 	//获取账户信息
@@ -191,7 +208,6 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 
 		function successCallback(result) {
-			setRequiredIcon();
 			var data = result.data;
 			if(data.length > 0){
 				for(var i = 0; i < data.length; i++){
@@ -242,7 +258,7 @@
 							"</tr>";
 			$("#payeeInfoTbody").append(appendHtml);
 			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的收款方账户名称");
-			addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的收款方银行账号");
+			App.addValidatorField("#workOrderContentForm",accountNumber,isIntegerNum);
 			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的收款方开户银行");
 			App.checkAllFn("#payeeCheckAll","payeeCheck");
 		}else if(accountType == 2){
@@ -258,7 +274,7 @@
 							"</tr>";
 			$("#payerInfoTbody").append(appendHtml);
 			addNotEmptyValidatorField(accountName,"请输入不超过240个字符的付款方账户名称");
-			addNotEmptyValidatorField(accountNumber,"请输入不超过40个字符的付款方银行账号");
+			App.addValidatorField("#workOrderContentForm",accountNumber,isIntegerNum);
 			addNotEmptyValidatorField(openBank,"请输入不超过240个字符的付款方开户银行");
 			App.checkAllFn("#payerCheckAll","payerCheck");
 		}

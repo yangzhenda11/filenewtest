@@ -722,7 +722,6 @@ function saveContent(){
 		};
 		var submitData = getContentValue();
 		if(submitData){
-			alert(1);
 			saveContentPost(submitData,"GDCL");
 		}else{
 			if(parm.pageType == 1 && parent.getActiveMyTab() != 0){

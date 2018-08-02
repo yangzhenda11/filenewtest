@@ -93,31 +93,31 @@
 					incomeLinerentDataItem.fixedMonthRent = fixedMonthRent;
 				}else{
 					isReg = false;
-					$(v).find(".fixedMonthRent").parents(".form-group").addClass("has-error");
+					$(v).find(".fixedMonthRent").parents(".form-group").addClass("has-error").data("errordata","请输入正确的金额");
 				};
 				if(lineCount == "" || getValue || retInteger(lineCount)){
 					incomeLinerentDataItem.lineCount = lineCount;
 				}else{
 					isReg = false;
-					$(v).find(".lineCount").parents(".form-group").addClass("has-error");
+					$(v).find(".lineCount").parents(".form-group").addClass("has-error").data("errordata","请输入正确的线路数量(只允许录入整数)");
 				};
 				if(totalMonthRent == "" || getValue || retMoney(totalMonthRent)){
 					incomeLinerentDataItem.totalMonthRent = totalMonthRent;
 				}else{
 					isReg = false;
-					$(v).find(".totalMonthRent").parents(".form-group").addClass("has-error");
+					$(v).find(".totalMonthRent").parents(".form-group").addClass("has-error").data("errordata","请输入正确的金额");
 				};
 				if(onceCost == "" || getValue || retMoney(onceCost)){
 					incomeLinerentDataItem.onceCost = onceCost;
 				}else{
 					isReg = false;
-					$(v).find(".onceCost").parents(".form-group").addClass("has-error");
+					$(v).find(".onceCost").parents(".form-group").addClass("has-error").data("errordata","请输入正确的金额");
 				};
 				if(otherCost == "" || getValue || retMoney(otherCost)){
 					incomeLinerentDataItem.otherCost = otherCost;
 				}else{
 					isReg = false;
-					$(v).find(".otherCost").parents(".form-group").addClass("has-error");
+					$(v).find(".otherCost").parents(".form-group").addClass("has-error").data("errordata","请输入正确的金额");
 				};
 				incomeLinerentDataList.push(incomeLinerentDataItem);
 			}
@@ -318,24 +318,6 @@
 			$("#incomeLinerentTbody .emptyTr").remove();
 		};
 		var incomeLinerentList=[],incomeLinerentTableHtml = "";
-		var isInteger = {
-			notEmpty : {
-				message : "请输入不超过9个字符的整数"
-			},
-			regexp : {
-				regexp : /^(0|[1-9][0-9]*)$/,
-				message : '请输入大于等于0的整数'
-			}
-		};
-		var isMoney = {
-			notEmpty : {
-				message : "请输入不超过18个字符的数字金额"
-			},
-			regexp : {
-				regexp : /^[0-9]+(.[0-9]{1,2})?$/,
-				message : '请输入正确的数字金额'
-			}
-		};
 		for(var i = 0; i < data.length; i++){
 			var itemData = data[i];
 			isCreateLinerLen++;

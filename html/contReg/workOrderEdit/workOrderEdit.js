@@ -155,16 +155,18 @@ function beforePushProcess(pass){
 	    }
 	};
 	layer.close(orderLayerIndex);
-	var submitData = getContentValue(true);
-	if(!submitData){
-		if(parent.getActiveMyTab() != 0){
-    		parent.cutMyTab(0,function(){
-    			getContentValue(true);
-    		});
-    	}else{
-    		getContentValue(true);
-    	}
-    	return false;
+	if(pass == true){
+		var submitData = getContentValue(true);
+		if(!submitData){
+			if(parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+	    			getContentValue(true);
+	    		});
+	    	}else{
+	    		getContentValue(true);
+	    	}
+	    	return false;
+		};
 	};
 	if($("#contractScanCopyUpload")[0]){
 		if(pass == true){
@@ -720,14 +722,13 @@ function saveContent(){
 		};
 		var submitData = getContentValue();
 		if(submitData){
+			alert(1);
 			saveContentPost(submitData,"GDCL");
 		}else{
-			if(parm.pageType == 1){
-				if(parent.getActiveMyTab() != 0){
-		    		parent.cutMyTab(0,function(){
-						getContentValue();
-		    		});
-		    	}
+			if(parm.pageType == 1 && parent.getActiveMyTab() != 0){
+	    		parent.cutMyTab(0,function(){
+					getContentValue();
+	    		});
 			}
 		}
 	}
@@ -1005,20 +1006,6 @@ $("#workOrderMenu").hover(function(){
 	$(this).css("padding-left","0");
 })
 /*
- * 当不为其他类型工单时基本信息"固定金额"为"是"时，开票信息和账号信息(收款方)加*号
- */
-function setRequiredIcon(){
-	if(wcardTypeCode != 0){
-		var isFixedValue = $("#isOtherTypeOverview input[name='isFixed']:checked").val();
-		if(isFixedValue == 1){
-			$(".isRequiredIcon").each(function(){
-				var addRequiredIconHtml = '<i class="iconfont icon-mi required"></i>' + $(this).text();
-				$(this).html(addRequiredIconHtml);
-			})
-		}
-	}
-}
-/*
  * 获取表单信息
  * 验证各页面返回值，页面内的方法判断都错误时返回false，会阻止提交操作
  * 若都无错误进行下一步操作
@@ -1045,8 +1032,14 @@ function getContentValue(isSubmit) {
 		}
 	});
 	if(isPass == "noValidator"){						//保存时JS验证
-		showLayerErrorMsg("当前工单表单校验未通过，请检查");
-    	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
+		var $hasErrorDom = $workOrderContentForm.find(".has-error:first");
+		if($hasErrorDom.data("errordata")){
+			showLayerErrorMsg($hasErrorDom.data("errordata"));
+		}else{
+			showLayerErrorMsg("当前工单表单校验未通过，请检查");
+		}
+    	srolloOffect($hasErrorDom[0],1);
+    	return false;
 	}else if(isPass == true){
 		submitData.wcardId = wcardId;
 		return submitData;

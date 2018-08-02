@@ -100,7 +100,11 @@ $(document).ready(function() {
 	    }
 	    //消息定时器
     	setMessageTipNumber();
-      	var messageInterval = setInterval(setMessageTipNumber, globalConfig.curConfigs.message_space*60000);
+    	var messageSpace = globalConfig.curConfigs.message_space;
+    	if(messageSpace == null || messageSpace >= 30){
+    		messageSpace = 30;
+    	}
+      	var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
         //请求用户信息成功后加载待办列表
         $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
         //请求用户信息成功后加载公告列表

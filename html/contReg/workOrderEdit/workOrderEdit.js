@@ -1031,13 +1031,13 @@ function getContentValue(isSubmit) {
 		}
 	});
 	if(isPass == "noValidator"){						//保存时JS验证
-		var $hasErrorDom = $workOrderContentForm.find(".has-error:first");
-		if($hasErrorDom.data("errordata")){
-			showLayerErrorMsg($hasErrorDom.data("errordata"));
+		var errordata = $workOrderContentForm.find(".has-error:first").data("errordata");
+		if(errordata){
+			showLayerErrorMsg(errordata);
 		}else{
 			showLayerErrorMsg("当前工单表单校验未通过，请检查");
 		}
-    	srolloOffect($hasErrorDom[0],1);
+    	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	return false;
 	}else if(isPass == true){
 		submitData.wcardId = wcardId;

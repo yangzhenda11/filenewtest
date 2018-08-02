@@ -93,7 +93,7 @@
 		var accountDataList = [];
 		payeeInfoList = returnAccoutTableInfor("payeeInfoTbody",payeeInfoList,true);
 		payerInfoList = returnAccoutTableInfor("payerInfoTbody",payerInfoList,true);
-		if(payeeInfoList == false || payerInfoList == false){
+		if(payeeInfoList == "noValidator" || payerInfoList == "noValidator"){
 			return "noValidator";
 		}else{
 			return payeeInfoList.concat(payerInfoList);
@@ -131,7 +131,7 @@
 		if(isReg){
 			return accountDataList;
 		}else{
-			return false;
+			return "noValidator";
 		}
 	}
 	/*

@@ -29,8 +29,8 @@
 									<th style="width: 160px;"><i class="iconfont icon-mi required"></i>产品类型</th>
 									<th style="width: 180px;"><i class="iconfont icon-mi required"></i>产品名称</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>产品属性</th>
-									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>稽核标签</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>范围</th>
+									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>稽核标签</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>固定月租</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>线路数量</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>合计月租</th>
@@ -360,8 +360,8 @@
 							"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='"+setPTip('请选择产品类型')+"' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control productName' data-placeholder='"+setPTip('请选择产品名称')+"' name='"+ productName +"'></select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='"+setPTip('请选择产品属性')+"' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
-							"<td><div class='form-group'><select class='form-control auditLabel' disabled='disabled' name='"+ auditLabel +"'></select></div></td>" +
 							"<td><div class='form-group'><select class='form-control productRange' disabled='disabled' name='"+ productRange +"'></select></div></td>" +
+							"<td><div class='form-group'><select class='form-control auditLabel' disabled='disabled' name='"+ auditLabel +"'></select></div></td>" +
 							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='"+setPTip('请输入固定月租')+"' value='"+fixedMonthRentVal+"' maxlength='18' /></div></td>"+
 							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='"+setPTip('请输入线路数量')+"' value='"+lineCountVal+"' maxlength='9' /></div></td>"+
 							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='"+setPTip('请输入合计月租')+"' value='"+totalMonthRentVal+"' maxlength='18' /></div></td>"+
@@ -428,8 +428,8 @@
 							"<td><div class='form-group'><select class='form-control select2me productKind' data-placeholder='"+setPTip('请选择产品类型')+"' name='"+ productKind +"'>"+ incomeLinerentType +"</select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productName' data-placeholder='"+setPTip('请选择产品名称')+"' name='"+ productName +"'></select></div></td>"+
 							"<td><div class='form-group'><select class='form-control select2me productAttr' data-placeholder='"+setPTip('请选择产品属性')+"' name='"+ productAttr +"'>"+ incomeLinerentProp +"</select></div></td>"+
-							"<td><div class='form-group'><select class='form-control auditLabel' disabled='disabled' name='"+ auditLabel +"'></select></div></td>" +
 							"<td><div class='form-group'><select class='form-control productRange' disabled='disabled' name='"+ productRange +"'></select></div></td>" +
+							"<td><div class='form-group'><select class='form-control auditLabel' disabled='disabled' name='"+ auditLabel +"'></select></div></td>" +
 							"<td><div class='form-group'><input type='text' class='form-control fixedMonthRent' name='"+ fixedMonthRent +"' placeholder='"+setPTip('请输入固定月租')+"' maxlength='18' /></div></td>"+
 							"<td><div class='form-group'><input type='text' class='form-control lineCount' name='"+ lineCount +"' placeholder='"+setPTip('请输入线路数量')+"' maxlength='9' /></div></td>"+
 							"<td><div class='form-group'><input type='text' class='form-control totalMonthRent' name='"+ totalMonthRent +"' placeholder='"+setPTip('请输入合计月租')+"' maxlength='18' /></div></td>"+
@@ -479,8 +479,8 @@
 			incomeLinerentCont = incomeLinerentName9076;
 		};
 		var productNameDom = $(this).parents("td").next().find(".productName");
-		var auditLabelDom = $(this).parents("td").next().next().next().find(".auditLabel");
-		var productRangeDom = $(this).parents("td").next().next().next().next().find(".productRange");
+		var auditLabelDom = $(this).parents("td").next().next().next().next().find(".auditLabel");
+		var productRangeDom = $(this).parents("td").next().next().next().find(".productRange");
 		var productKindName = $(this).attr("name");
 		var productName = $(productNameDom).attr("name");
 		var auditLabelName = $(auditLabelDom).attr("name");

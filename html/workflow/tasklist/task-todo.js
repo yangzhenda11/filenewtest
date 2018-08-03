@@ -24,7 +24,7 @@ function serarchForToDo(resetPaging){
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
 	if(!App.checkDate(startDate,endDate)){
-		layer.msg("接收开始日期不得大于截止日期！");
+		layer.msg("接收开始日期不能早于截止日期");
 		return;
 	}else{
 		var table = $('#searchTableTodo').DataTable();
@@ -35,6 +35,17 @@ function serarchForToDo(resetPaging){
 		}
 	}
 }
+/*
+ * 日期修改时监听事件
+ */
+$("#startDate,#endDate").on("blur",function(){
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	if(!App.checkDate(startDate,endDate)){
+		layer.msg("接收开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,

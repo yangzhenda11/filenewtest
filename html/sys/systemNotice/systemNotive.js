@@ -123,7 +123,7 @@ function searchNotiveTable(retainPaging) {
 	var startDateForDone = $('#submitDateA').val();
 	var endDateForDone = $('#submitDateZ').val();
 	if(!App.checkDate(startDateForDone,endDateForDone)){
-		layer.msg("发布开始日期不得大于截止日期！");
+		layer.msg("发布开始日期不能早于截止日期");
 		return;
 	}else{
 		var table = $('#notiveTable').DataTable();
@@ -134,6 +134,17 @@ function searchNotiveTable(retainPaging) {
 		}
 	}
 }
+/*
+ * 日期修改时监听事件
+ */
+$("#submitDateA,#submitDateZ").on("blur",function(){
+	var submitDateA = $("#submitDateA").val();
+	var submitDateZ = $("#submitDateZ").val();
+	if(!App.checkDate(submitDateA,submitDateZ)){
+		layer.msg("发布开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 /*
  * 发布公告
  */

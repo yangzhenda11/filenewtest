@@ -226,6 +226,17 @@
 		}
 	}
 	/*
+	 * 日期修改时监听事件
+	 */
+	$("#effectiveDate,#expiryDate").on("blur",function(){
+		var effectiveDate = $("#effectiveDate").val();
+		var expiryDate = $("#expiryDate").val();
+		if(!App.checkDate(effectiveDate,expiryDate)){
+			$(this).val("");
+			layer.msg("生效日期不能早于终止日期");
+		}
+	})
+	/*
 	 * 必填校验
 	 */
 	addNotEmptyValidatorField("effectiveDate","生效日期不能为空");

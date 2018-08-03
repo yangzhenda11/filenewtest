@@ -499,12 +499,12 @@ table td{
 .btn.primary.btn-inline{
 	color: #fff;
 	background: #dc2a32;
-	border-color: #dc2a32;;
+	border-color: #dc2a32;
 }
 .btn.primary.btn-inline:hover{
 	color: #dc2a32;
 	background: #fff;
-	border-color: #dc2a32;;
+	border-color: #dc2a32;
 }
 /*
  * 编辑框样式

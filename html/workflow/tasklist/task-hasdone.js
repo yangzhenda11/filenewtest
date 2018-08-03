@@ -81,7 +81,7 @@ function serarchForDone(resetPaging){
 	var startDateForDone = $('#startDateForDone').val();
 	var endDateForDone = $('#endDateForDone').val();
 	if(!App.checkDate(startDateForDone,endDateForDone)){
-		layer.msg("送出开始日期不得大于截止日期！");
+		layer.msg("送出开始日期不能早于截止日期");
 		return;
 	}else{
 		var table = $('#searchTableForDone').DataTable();
@@ -92,8 +92,17 @@ function serarchForDone(resetPaging){
 		}
 	}
 }
-
-
+/*
+ * 日期修改时监听事件
+ */
+$("#startDateForDone,#endDateForDone").on("blur",function(){
+	var startDateForDone = $("#startDateForDone").val();
+	var endDateForDone = $("#endDateForDone").val();
+	if(!App.checkDate(startDateForDone,endDateForDone)){
+		layer.msg("送出开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 //“查看”按钮触发事件
 function handleTaskForDone(id, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee) {

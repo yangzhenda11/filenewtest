@@ -72,7 +72,7 @@ $(function() {
 			$(".register,.cancelApprovedBtn").remove();
 		};
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
 		$("#toolbarBtn,#flowNote").remove();
@@ -800,9 +800,9 @@ function getWorkOrderInfo(){
 				$("#cancelApprovedBtn").remove();
 			};
 			if(wcardTypeCode == 1){
-				wcardType = "收入类-租线合同";
+				wcardType = "收入类";
 			}else if(wcardTypeCode == 2){
-				wcardType = "支出类-采购合同";
+				wcardType = "支出类";
 			}else if(wcardTypeCode == 0){
 				wcardType = "其他";
 			};
@@ -1001,7 +1001,7 @@ function setSpeedyJump(){
 	}else{
 		$.each(data, function(k,v) {
 			if($(v.jumpId)[0]){
-				html += '<button onclick="srolloOffect(\''+v.jumpId+'\',2);" class="btn primary btn-inline">'+ v.title +'</button>';
+				html += '<button type="button" onclick="srolloOffect(\''+v.jumpId+'\',2);" class="btn primary btn-inline">'+ v.title +'</button>';
 			}
 		});
 		$("#wcardTypeMenuContent").html(html);

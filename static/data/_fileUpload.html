@@ -83,6 +83,7 @@
 	var fileCommonUploadObj = {};
 	var fileUploadFlag = 1;
 	var fileUploadModalBodyHeight = $(".page-content").height() - 185;
+	var needChangeName = false;
 	$("#fileUploadModalBody").css("max-height", fileUploadModalBodyHeight);
 	function setParm(setting,queryCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
@@ -108,6 +109,11 @@
 				$.each(setting.extraData, function(k,v) {
 					extraData[k] = v;
 				})
+			};
+			var displayName = extraData.displayName;
+			if(displayName.indexOf("&^&") != -1){
+				needChangeName = true;
+				extraData.displayName = displayName.substring(0,displayName.length-3);
 			}
 		};
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData,maxFileSize);
@@ -133,6 +139,11 @@
 	       	notallowedFilenameExtensions:" |%",//文件名中不允许出现的字符
 	       	//showPreview : false,
 	        slugCallback: function (filename) {
+	        	if(needChangeName){
+	        		if(extraData.displayName.indexOf(".") == -1){
+	        			extraData.displayName = extraData.displayName + "." + filename.split(".")[1];
+	        		}
+	        	}
 	        	if($(".kv-fileinput-error").css("display") == "block"){
 	        		$(".fileinput-upload-button").addClass("aDisable");
 	        		$(".fileinput-upload-button").attr("title","禁止上传");
@@ -163,17 +174,19 @@
 			console.log("错误");
 		});
 	    function parseResult(data){
-	    	var fileValue = data.files;
 	    	if(data.response.status == 1){
+	    		if(data.extra.displayName == "" || data.extra.displayName == undefined){
+	    			var fileName = data.files[0].name;
+	    		}else{
+	    			var fileName = data.extra.displayName;
+	    		};
 	    		fileUploadFlag++;
 	    		$(".defaultTr").addClass("hidden");
-				for(var i = 0; i < fileValue.length; i++){
-					var keys = "fileSave" + fileUploadFlag + i;
-					var html = '<tr><td>'+ fileValue[i].name +
-					'</td><td><button type="button" data-name="'+fileValue[i].name+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
-					$("#uploadSuccessFile").append(html);
-					fileCommonUploadObj[keys] = data.response.data;
-				};
+				var keys = "fileSave" + fileUploadFlag;
+				var html = '<tr><td>'+ fileName +
+				'</td><td><button type="button" data-name="'+fileName+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
+				$("#uploadSuccessFile").append(html);
+				fileCommonUploadObj[keys] = data.response.data;
 		    	layer.msg(data.response.message);
 		    	$("#uploadFileName").fileinput('reset');
 	    	}else{

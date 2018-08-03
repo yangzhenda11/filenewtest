@@ -170,10 +170,15 @@ function beforePushProcess(pass){
 	if($("#contractScanCopyUpload")[0]){
 		if(pass == true){
     		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
+    			if(wcardTypeCode == 2){
+    				var ms = "请上传合同签订盖章页扫描件后进行";
+				}else{
+					var ms = "请上传合同正文扫描件后进行";
+				};
     			if(parm.taskDefinitionKey == "GDQR"){
-    				var ms = "请上传合同正文扫描件后进行工单激活";
+    				ms = ms + "工单激活";
     			}else{
-    				var ms = "请上传合同正文扫描件后进行工单注册";
+    				ms = ms + "工单注册";
     			};
     			if(parent.getActiveMyTab() != 0){
 		    		parent.cutMyTab(0,function(){
@@ -451,7 +456,12 @@ function submitContentFn(){
     	if(submitData){
     		if($("#contractScanCopyUpload")[0]){
 	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
-					showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
+					if(wcardTypeCode == 2){
+	    				var ms = "请上传合同签订盖章页扫描件后进行工单注册";
+					}else{
+						var ms = "请上传合同正文扫描件后进行工单注册";
+					};
+					showLayerErrorMsg(ms);
 					srolloOffect("#contractScanCopyUpload");
 					return false;
 				}
@@ -532,7 +542,12 @@ function activateContract(){
 		if($("#contractScanCopyUpload")[0]){
 			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
 			if(!scanCopyUploadData.bodyDoc.bodyDocStoreId){
-				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
+				if(wcardTypeCode == 2){
+    				var ms = "请上传合同签订盖章页扫描件后进行工单激活";
+				}else{
+					var ms = "请上传合同正文扫描件后进行工单激活";
+				};
+				showLayerErrorMsg(ms);
 				srolloOffect("#contractScanCopyUpload");
 				return false;
 			}

@@ -162,22 +162,25 @@
 			});
 		}else{
 			var attachId = $("#contractText").data("attachid");
-			var displayName = $("#contractText").data("displayname");
+			if(wcardTypeCode == 2){
+				var displayName = contractNumber+"签订盖章页扫描件&^&";
+			}else{
+				var displayName = contractNumber+"正文扫描件&^&";
+			};
 			var setting = {
 				title : "正文上传",
 				url: 'fileload/uploadFileS3',
 				maxNumber:1,
-				fileExtensions:["pdf"],
 				extraData:{displayName:displayName}
 			};
 			function queryCallback(){
-				var fileInfo = getFileItemInfo()[0].data;
+				var fileInfo = getFileItemInfo()[0];
 				$("#commomModal").modal("hide");
-				var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">'+displayName+'</a>';
+				var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">'+fileInfo.name+'</a>';
 				$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("删除");
-				$("#contractText").data("storeid",fileInfo);
+				$("#contractText").data("storeid",fileInfo.data);
 			}
 			App.getFileUploadModal(setting,queryCallback);
 		}
@@ -239,14 +242,13 @@
 		var setting = {
 			title : "附件上传",
 			url: 'fileload/uploadFileS3',
-			maxNumber:1,
-			//extraData:{attachId:attachId}
+			maxNumber:1
 		};
 		function queryCallback(){
-			var fileInfo = getFileItemInfo()[0].data;
+			var fileInfo = getFileItemInfo()[0];
 			$("#commomModal").modal("hide");
-			var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
-			dom.parents("tr").data("storeid",fileInfo);
+			var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+			dom.parents("tr").data("storeid",fileInfo.data);
 			dom.parent("td").html(btnHtml);
 		}
 		App.getFileUploadModal(setting,queryCallback);
@@ -270,14 +272,12 @@
 			};
 		});
 		var bodyDocStoreId = $("#contractText").data("storeid");
-		if(bodyDocStoreId){
+		if(bodyDocStoreId && bodyDocStoreId != undefined){
 			obj.bodyDoc = {
-				attachId : $("#contractText").data("attachid"),
-				bodyDocStoreId : bodyDocStoreId
+				attachId: $("#contractText").data("attachid"),
+				displayName: $("#contractText").text(),
+				bodyDocStoreId: bodyDocStoreId
 			};
-		}else if(bodyDocStoreId == undefined){
-			layer.msg("合同正文扫描件信息为空");
-			return false;
 		}else{
 			obj.bodyDoc = {
 				attachId : $("#contractText").data("attachid"),

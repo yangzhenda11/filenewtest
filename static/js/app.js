@@ -1344,9 +1344,9 @@ var App = function() {
 				var topScroll = $(".page-content").scrollTop();
 				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
-					$("#"+dom).css({"position":"fixed","top":"0","z-index":"1000","background":"rgba(255,255,255,0.9)"});
+					$("#"+dom).css({"position":"fixed","top":"0","width":"96%","z-index":"1000","background":"rgba(255,255,255,0.9)","padding-top":"6px"});
 				}else{
-					toolbarBtn.style.position = 'static';
+					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
 			})
         },

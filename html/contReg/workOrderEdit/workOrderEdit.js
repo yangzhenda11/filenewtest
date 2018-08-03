@@ -72,7 +72,7 @@ $(function() {
 			$(".register,.cancelApprovedBtn").remove();
 		};
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
 		$("#toolbarBtn,#flowNote").remove();

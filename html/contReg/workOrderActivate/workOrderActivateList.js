@@ -71,8 +71,8 @@ $(function(){
  * 搜索点击事件
  */
 function searchWorkOrderActivate(retainPaging) {
-	var createDateBegin = $("#create_date_begin").val().trim();
-	var createDateEnd = $("#create_date_end").val().trim();
+	var createDateBegin = $("#create_date_begin").val();
+	var createDateEnd = $("#create_date_end").val();
 	if(App.checkDate(createDateBegin,createDateEnd)){
 		var table = $('#workOrderActivateListTable').DataTable();
 		if(retainPaging) {

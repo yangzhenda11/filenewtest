@@ -8,7 +8,7 @@
 	<div class="form-fieldset-body">
 		<div class="row" id="scanCpyUploadForm">
 			<div class="col-sm-12 form-group">
-				<label for="contractText" class="col-sm-1 control-label"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+				<label for="contractText" class="col-sm-1 control-label"><i class="iconfont icon-mi required"></i><span id="contractTextTitle"></span></label>
 				<div class="col-sm-4 paddingR0" id="contractText">
 					<input type="text" disabled="disabled" class="form-control" />
 				</div>
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 cluesRed">
-				提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
+				提示：<span id="contractTextTip"></span>
 			</div>
 			<div class="col-sm-12 clues">
 				合同附件扫描件：
@@ -69,6 +69,16 @@
 	}else{
 		var scanCpyUploadFormIsEdit = true;
 	};
+	/*
+	 * 判断工单类型，添加不同的提示
+	 */
+	if(wcardTypeCode == 2){
+		$("#contractTextTitle").text("合同签订盖章页扫描件：");
+		$("#contractTextTip").text("请上传合同签订盖章页扫描件，仅支持上传单个文件，无格式限制。");
+	}else{
+		$("#contractTextTitle").text("合同正文扫描件：");
+		$("#contractTextTip").text("请上传合同正文扫描件，仅支持上传单个文件，无格式限制。");
+	}
 	//获取合同扫描件ID来获取合同扫描件
 	getScandocIdUpload()
 	

@@ -14,6 +14,19 @@
                     </div>
                 </div>
                 <div class="portlet-body">
+                	<div id="wcardTagContent" class="ui-radio-list ui-radio-inline">
+            			包含租线业务：
+						<label class="ui-radio">
+							是
+							<input type="radio" value="1" name="wcardTag">
+							<span></span>
+						</label>
+						<label class="ui-radio">
+							否
+							<input type="radio" value="0" checked="checked" name="wcardTag">
+							<span></span>
+						</label>
+                	</div>
 					<div class="tableToobarContent hidden" id="lineChargesListToolbar">
 						<button class="btn red" type="button" onclick="addIncomeLinerentTr()"><i class="iconfont icon-add"></i>新增</button>
 						<button class="btn red" type="button" onclick="delectsIncomeLinerentTr()"><i class="iconfont icon-shanchu"></i>删除</button>
@@ -37,12 +50,12 @@
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>一次性费用</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>其他费用</th>
 									<th style="width: 150px;"><i class="iconfont icon-mi required"></i>结算周期</th>
-									<th class="lineChargesTableEdit">操作</th>
+									<th style="width: 50px;" class="lineChargesTableEdit">操作</th>
 								</tr>
 							</thead>
 							<tbody id="incomeLinerentTbody">
 								<tr class="emptyTr">
-									<td colspan="13">暂无线路资费清单</td>
+									<td colspan="14">暂无线路资费清单</td>
 								</tr>
 							</tbody>
 						</table>
@@ -162,6 +175,8 @@
 			var index = n - m;
 			$("#incomeLinerentTbody tr").eq(index).remove();
 		});
+		addIncomeLinerentTableSort();
+		App.checkAllFn("#incomeLinerentCheckAll","incomeLinerentCheck");
 		addIncomeLinerentTbodyEmptyTr();
 	}
 	/*
@@ -584,7 +599,7 @@
 	 */
 	function addIncomeLinerentTbodyEmptyTr(){
 		if($("#incomeLinerentTbody tr").length == 0){
-			var html = '<tr class="emptyTr"><td colspan="13">暂无线路资费清单</td></tr>';
+			var html = '<tr class="emptyTr"><td colspan="14">暂无线路资费清单</td></tr>';
 			$("#incomeLinerentTbody").html(html);
 		}
 	}
@@ -614,5 +629,41 @@
 			}
 		}
 		App.getFileImportModal(setting,callback);
+	}
+	/*
+	 * 是否租线业务默认事件及切换事件
+	 */
+	var wcardTagVal = getContractOrderBaseInfoData.wcardTag;
+	if(wcardTagVal != null || wcardTagVal != undefined){
+		if(wcardTagVal.indexOf("1") != -1){
+			$("#wcardTagContent input[name='wcardTag'][value=1]").attr("checked",true);
+			setRequiredIcon("add","#customerManagerContent .mangerRequired");
+		}
+	}
+	$("#wcardTagContent input[name='wcardTag']").on("change",function(){
+		var checkValue = $(this).val();
+		if(checkValue == 1){
+			setRequiredIcon("add","#customerManagerContent .mangerRequired");
+		}else{
+			setRequiredIcon("del","#customerManagerContent .mangerRequired");
+		}
+	});
+	/*
+	 * 设置添加获取去除星号
+	 * type:add|del
+	 * dom:元素dom
+	 */
+	function setRequiredIcon(type,dom){
+		if(type == "add"){
+			$(dom).each(function(){
+				var addRequiredIconHtml = '<i class="iconfont icon-mi required"></i>' + $(this).text();
+				$(this).html(addRequiredIconHtml);
+			})
+		}else if(type == "del"){
+			$(dom).each(function(){
+				var addRequiredIconHtml = $(this).text();
+				$(this).html(addRequiredIconHtml);
+			})
+		}
 	}
 </script>

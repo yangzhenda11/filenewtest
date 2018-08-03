@@ -66,6 +66,7 @@
     	"async" : false
     }
     App.initAjaxSelect2("#appointPayType",ajaxObj,"dictValue","dictLabel",setPTip('请选择支付方式'));
+    $("#appointPayType").val("903520").trigger("change");
 	//获取约定收款信息
 	getAppointReceiptInfo();
 	/*

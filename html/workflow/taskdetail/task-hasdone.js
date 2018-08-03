@@ -205,6 +205,7 @@ function returnListForDone(){
 		}
 	}else{
 		$("#goTaskToDoDetailForDone").hide();
+		$("#businessForDone").hide();
 		$("#searchContentForDone").show(0,function(){
 			setTimeout(serarchForDone,100);
 			//setTimeout(getTableForDone,100);

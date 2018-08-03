@@ -8,7 +8,7 @@
 	<div class="form-fieldset-body">
 		<div class="row" id="scanCpyUploadForm">
 			<div class="col-sm-12 form-group">
-				<label for="contractText" class="col-sm-1 control-label"><i class="iconfont icon-mi required"></i>合同正文扫描件：</label>
+				<label for="contractText" class="col-sm-1 control-label"><i class="iconfont icon-mi required"></i><span id="contractTextTitle"></span></label>
 				<div class="col-sm-4 paddingR0" id="contractText">
 					<input type="text" disabled="disabled" class="form-control" />
 				</div>
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div class="col-sm-12 cluesRed">
-				提示：合同正文扫描件仅支持上传单个PDF文件，请确保扫描件清晰、顺序正确无缺页。
+				提示：<span id="contractTextTip"></span>
 			</div>
 			<div class="col-sm-12 clues">
 				合同附件扫描件：
@@ -69,6 +69,16 @@
 	}else{
 		var scanCpyUploadFormIsEdit = true;
 	};
+	/*
+	 * 判断工单类型，添加不同的提示
+	 */
+	if(wcardTypeCode == 2){
+		$("#contractTextTitle").text("合同签订盖章页扫描件：");
+		$("#contractTextTip").text("请上传合同签订盖章页扫描件，仅支持上传单个文件，无格式限制。");
+	}else{
+		$("#contractTextTitle").text("合同正文扫描件：");
+		$("#contractTextTip").text("请上传合同正文扫描件，仅支持上传单个文件，无格式限制。");
+	}
 	//获取合同扫描件ID来获取合同扫描件
 	getScandocIdUpload()
 	
@@ -152,22 +162,25 @@
 			});
 		}else{
 			var attachId = $("#contractText").data("attachid");
-			var displayName = $("#contractText").data("displayname");
+			if(wcardTypeCode == 2){
+				var displayName = contractNumber+"签订盖章页扫描件&^&";
+			}else{
+				var displayName = contractNumber+"正文扫描件&^&";
+			};
 			var setting = {
 				title : "正文上传",
 				url: 'fileload/uploadFileS3',
 				maxNumber:1,
-				fileExtensions:["pdf"],
 				extraData:{displayName:displayName}
 			};
 			function queryCallback(){
-				var fileInfo = getFileItemInfo()[0].data;
+				var fileInfo = getFileItemInfo()[0];
 				$("#commomModal").modal("hide");
-				var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">'+displayName+'</a>';
+				var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">'+fileInfo.name+'</a>';
 				$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("删除");
-				$("#contractText").data("storeid",fileInfo);
+				$("#contractText").data("storeid",fileInfo.data);
 			}
 			App.getFileUploadModal(setting,queryCallback);
 		}
@@ -229,14 +242,13 @@
 		var setting = {
 			title : "附件上传",
 			url: 'fileload/uploadFileS3',
-			maxNumber:1,
-			//extraData:{attachId:attachId}
+			maxNumber:1
 		};
 		function queryCallback(){
-			var fileInfo = getFileItemInfo()[0].data;
+			var fileInfo = getFileItemInfo()[0];
 			$("#commomModal").modal("hide");
-			var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
-			dom.parents("tr").data("storeid",fileInfo);
+			var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
+			dom.parents("tr").data("storeid",fileInfo.data);
 			dom.parent("td").html(btnHtml);
 		}
 		App.getFileUploadModal(setting,queryCallback);
@@ -260,14 +272,12 @@
 			};
 		});
 		var bodyDocStoreId = $("#contractText").data("storeid");
-		if(bodyDocStoreId){
+		if(bodyDocStoreId && bodyDocStoreId != undefined){
 			obj.bodyDoc = {
-				attachId : $("#contractText").data("attachid"),
-				bodyDocStoreId : bodyDocStoreId
+				attachId: $("#contractText").data("attachid"),
+				displayName: $("#contractText").text(),
+				bodyDocStoreId: bodyDocStoreId
 			};
-		}else if(bodyDocStoreId == undefined){
-			layer.msg("合同正文扫描件信息为空");
-			return false;
 		}else{
 			obj.bodyDoc = {
 				attachId : $("#contractText").data("attachid"),

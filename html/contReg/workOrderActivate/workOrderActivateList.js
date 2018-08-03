@@ -81,11 +81,21 @@ function searchWorkOrderActivate(retainPaging) {
 			table.ajax.reload();
 		}
 	}else{
-		layer.msg("创建日期开始日期不得大于截止日期！");
+		layer.msg("创建日期开始日期不能早于截止日期");
 		return;
 	}
 }
-
+/*
+ * 日期修改时监听事件
+ */
+$("#create_date_begin,#create_date_end").on("blur",function(){
+	var createDateBegin = $("#create_date_begin").val();
+	var createDateEnd = $("#create_date_end").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		$(this).val("");
+		layer.msg("创建日期开始日期不能早于截止日期");
+	}
+})
 //跳转到工单激活页面
 function jumpSanCpyQueryDetail(id){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);

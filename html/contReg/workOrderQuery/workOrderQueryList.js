@@ -64,20 +64,20 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
  * 搜索点击事件
  */
 function searchWorkOrder(retainPaging) {
-	var ctreatedDateBegin = $("#create_date_begin").val().trim();
-    var ctreatedDateEnd = $("#create_date_end").val().trim();
-	var approveDateBegin = $("#approve_date_begin").val().trim();
-	var approveDateEnd = $("#approve_date_end").val().trim();
-	var sealAndSignDateBegin = $("#sealAndSign_date_begin").val().trim();
-	var sealAndSignDateEnd = $("#sealAndSign_date_end").val().trim();
+	var ctreatedDateBegin = $("#create_date_begin").val();
+    var ctreatedDateEnd = $("#create_date_end").val();
+	var approveDateBegin = $("#approve_date_begin").val();
+	var approveDateEnd = $("#approve_date_end").val();
+	var sealAndSignDateBegin = $("#sealAndSign_date_begin").val();
+	var sealAndSignDateEnd = $("#sealAndSign_date_end").val();
 	if(!App.checkDate(ctreatedDateBegin,ctreatedDateEnd)){
-		layer.msg("工单创建日期开始日期不得大于截止日期！");
+		layer.msg("工单创建日期开始日期不能早于截止日期");
 		return;
 	}else if(!App.checkDate(approveDateBegin,approveDateEnd)){
-		layer.msg("合同审批通过日期开始日期不得大于截止日期！");
+		layer.msg("合同审批通过日期开始日期不能早于截止日期");
 		return;
 	}else if(!App.checkDate(sealAndSignDateBegin,sealAndSignDateEnd)){
-		layer.msg("签订盖章日期开始日期不得大于截止日期！");
+		layer.msg("签订盖章日期开始日期不能早于截止日期");
 		return;
 	}else{
 		var table = $('#workOrderQueryTable').DataTable();
@@ -88,7 +88,27 @@ function searchWorkOrder(retainPaging) {
 		}
 	}
 }
-
+/*
+ * 日期修改时监听事件
+ */
+$("#create_date_begin,#create_date_end,#approve_date_begin,#approve_date_end,#sealAndSign_date_begin,#sealAndSign_date_end").on("blur",function(){
+	var ctreatedDateBegin = $("#create_date_begin").val();
+    var ctreatedDateEnd = $("#create_date_end").val();
+	var approveDateBegin = $("#approve_date_begin").val();
+	var approveDateEnd = $("#approve_date_end").val();
+	var sealAndSignDateBegin = $("#sealAndSign_date_begin").val();
+	var sealAndSignDateEnd = $("#sealAndSign_date_end").val();
+	if(!App.checkDate(ctreatedDateBegin,ctreatedDateEnd)){
+		layer.msg("工单创建日期开始日期不能早于截止日期");
+		$(this).val("");
+	}else if(!App.checkDate(approveDateBegin,approveDateEnd)){
+		layer.msg("合同审批通过日期开始日期不能早于截止日期");
+		$(this).val("");
+	}else if(!App.checkDate(sealAndSignDateBegin,sealAndSignDateEnd)){
+		layer.msg("签订盖章日期开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 //点击iconfont弹出模态框事件
 $(function(){
 	//合同类型

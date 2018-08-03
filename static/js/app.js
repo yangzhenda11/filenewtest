@@ -1270,7 +1270,7 @@ var App = function() {
             });
         },
         getDataTableBtnTooltip:function(btnArray){
-             var btnModel = '    \
+            var btnModel = '    \
                 {{#each btnArray}}\
                 <button type="button" title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
                 {{/each}}';
@@ -1280,6 +1280,16 @@ var App = function() {
             });
         },
         getDataTableLink:function(btnArray){
+            var linkModel = '    \
+                {{#each btnArray}}\
+                <a title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="top"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="{{this.type}}" onclick="{{this.fn}}">{{this.name}}</a>\
+                {{/each}}';
+            var template = Handlebars.compile(linkModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        getDataTableIcon:function(btnArray){
              var btnModel = '    \
                 {{#each btnArray}}\
                 <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn btn-link btn-xs" onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
@@ -1344,7 +1354,7 @@ var App = function() {
 				var topScroll = $(".page-content").scrollTop();
 				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
-					$("#"+dom).css({"position":"fixed","top":"0","width":"96%","z-index":"1000","background":"rgba(255,255,255,0.9)","padding-top":"6px"});
+					$("#"+dom).css({"position":"fixed","top":"0","width":"96%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}

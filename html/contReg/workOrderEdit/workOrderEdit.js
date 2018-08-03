@@ -170,10 +170,15 @@ function beforePushProcess(pass){
 	if($("#contractScanCopyUpload")[0]){
 		if(pass == true){
     		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
+    			if(wcardTypeCode == 2){
+    				var ms = "请上传合同签订盖章页扫描件后进行";
+				}else{
+					var ms = "请上传合同正文扫描件后进行";
+				};
     			if(parm.taskDefinitionKey == "GDQR"){
-    				var ms = "请上传合同正文扫描件后进行工单激活";
+    				ms = ms + "工单激活";
     			}else{
-    				var ms = "请上传合同正文扫描件后进行工单注册";
+    				ms = ms + "工单注册";
     			};
     			if(parent.getActiveMyTab() != 0){
 		    		parent.cutMyTab(0,function(){
@@ -242,6 +247,9 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 		postData.wcardId = wcardId;
 		postData.wcardType = wcardTypeCode;
 		postData.contractName = $("#contractName").val();
+		if($("#wcardTagContent")[0]){
+			postData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
+		};
 		parent.$("#in-footer").modal("hide");
 		parent.$("#out-footers button").not("#backTolist").attr("disabled",true);
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallbackFn1, improperCallbackFn1);
@@ -448,7 +456,12 @@ function submitContentFn(){
     	if(submitData){
     		if($("#contractScanCopyUpload")[0]){
 	    		if(!submitData.contractScanCopyUpload.bodyDoc.bodyDocStoreId){
-					showLayerErrorMsg("请上传合同正文扫描件后进行工单注册");
+					if(wcardTypeCode == 2){
+	    				var ms = "请上传合同签订盖章页扫描件后进行工单注册";
+					}else{
+						var ms = "请上传合同正文扫描件后进行工单注册";
+					};
+					showLayerErrorMsg(ms);
 					srolloOffect("#contractScanCopyUpload");
 					return false;
 				}
@@ -478,6 +491,9 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	postData.contractName = $("#contractName").val();
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
+	if($("#wcardTagContent")[0]){
+		postData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
+	};
 	$("#PandJstaffiframetask").modal("hide");
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
@@ -526,7 +542,12 @@ function activateContract(){
 		if($("#contractScanCopyUpload")[0]){
 			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
 			if(!scanCopyUploadData.bodyDoc.bodyDocStoreId){
-				showLayerErrorMsg("请上传合同正文扫描件后进行工单激活");
+				if(wcardTypeCode == 2){
+    				var ms = "请上传合同签订盖章页扫描件后进行工单激活";
+				}else{
+					var ms = "请上传合同正文扫描件后进行工单激活";
+				};
+				showLayerErrorMsg(ms);
 				srolloOffect("#contractScanCopyUpload");
 				return false;
 			}
@@ -721,6 +742,9 @@ function saveContent(){
 		};
 		var submitData = getContentValue();
 		if(submitData){
+			if($("#wcardTagContent")[0]){
+				submitData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
+			};
 			saveContentPost(submitData,"GDCL");
 		}else{
 			if(parm.pageType == 1 && parent.getActiveMyTab() != 0){

@@ -57,8 +57,8 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
  * 搜索点击事件
  */
 function searchWorkOrderHandle(retainPaging) {
-	var createDateBegin = $("#create_date_begin").val().trim();
-	var createDateEnd = $("#create_date_end").val().trim();
+	var createDateBegin = $("#create_date_begin").val();
+	var createDateEnd = $("#create_date_end").val();
 	if(App.checkDate(createDateBegin,createDateEnd)){
 		var table = $('#workOrderHandleListTable').DataTable();
 		if(retainPaging) {
@@ -67,11 +67,21 @@ function searchWorkOrderHandle(retainPaging) {
 			table.ajax.reload();
 		}
 	}else{
-		layer.msg("创建日期开始日期不得大于截止日期！");
+		layer.msg("创建日期开始日期不能早于截止日期");
 		return;
 	}
-	
 }
+/*
+ * 日期修改时监听事件
+ */
+$("#create_date_begin,#create_date_end").on("blur",function(){
+	var createDateBegin = $("#create_date_begin").val();
+	var createDateEnd = $("#create_date_end").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		$(this).val("");
+		layer.msg("创建日期开始日期不能早于截止日期");
+	}
+})
 function manualCreation(){
 	$("#manualCreationEditModal").load("_manualCreationEdit.html",function(){
 		$("#manualCreationEditModal").modal("show");

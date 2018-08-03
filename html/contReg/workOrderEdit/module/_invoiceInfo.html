@@ -66,19 +66,7 @@
 				invoiceDataList.push(invoiceDataItem);
 			}
 		});
-		//当合同总览中"固定金额"为"是"时，加校验"至少有一条开票信息";
-		var isFixedValue = $("input[name='isFixed']:checked").val();
-		if(isSubmit && isFixedValue == 1){
-			if(invoiceDataList.length > 0){
-				return invoiceDataList;
-			}else{
-				layer.msg("请至少填写一项开票信息");
-				srolloOffect("#invoiceInfoContent");
-				return false;
-			}
-		}else{
-			return invoiceDataList;
-		}
+		return invoiceDataList;
 	}
 	/*
 	 * 去除多于的行
@@ -106,6 +94,8 @@
 			var index = n - m;
 			$("#invoiceTbody tr").eq(index).remove();
 		});
+		addInvoiceTableSort();
+		App.checkAllFn("#invocieCheckAll","invoiceCheck");
 		addInvoiceTbodyEmptyTr();
 	}
 	/*
@@ -237,6 +227,7 @@
 			$("#"+invoiceTypeName).find("select").attr("disabled","disabled");
 		}
 		App.initFormSelect2("#"+invoiceTypeName);
+		$("#"+invoiceTypeName+" .invoiceTypeName").val("902510").trigger("change");
 		addNotEmptyValidatorField(invoiceTitleName,"请输入不超过240个字符的发票抬头");
 		addInvoiceTableSort();
 		App.checkAllFn("#invocieCheckAll","invoiceCheck");

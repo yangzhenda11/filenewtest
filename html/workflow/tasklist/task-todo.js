@@ -3,10 +3,9 @@ var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 var curStaffId = config.curStaffId;
 $(function(){
+	$("#currentId").val(curStaffOrgId);
 	getTableTodo();
 	getFlowKyeList();
-	// 加载表格
-	$("#currentId").val(curStaffOrgId);
 });
 // 后面构建btn 代码
 var btnModel =  '    \
@@ -24,7 +23,7 @@ function serarchForToDo(resetPaging){
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
 	if(!App.checkDate(startDate,endDate)){
-		layer.msg("接收开始日期不得大于截止日期！");
+		layer.msg("接收开始日期不能早于截止日期");
 		return;
 	}else{
 		var table = $('#searchTableTodo').DataTable();
@@ -35,6 +34,17 @@ function serarchForToDo(resetPaging){
 		}
 	}
 }
+/*
+ * 日期修改时监听事件
+ */
+$("#startDate,#endDate").on("blur",function(){
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	if(!App.checkDate(startDate,endDate)){
+		layer.msg("接收开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
@@ -85,62 +95,81 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 function getTableTodo(){
 	App.initDataTables('#searchTableTodo', "#submitBtn", {
 		ajax: {
-			"type": "GET",					//请求方式
-			"url": serverPath + 'workflowrest/taskToDo',	//请求地址
+			"type": "GET",
+			"url": serverPath + 'workflowrest/taskToDo',
 			"data": function(d) {	
 				d.staffId = curStaffId;//自定义传入参数
 	        	d.title = $('#processTitle').val().trim();
-	        	//d.linkName = $('#linkName').val().trim();
-	        	d.createTimeStart = $('#startDate').val().trim();
-	        	d.createTimeEnd = $('#endDate').val().trim();
+	        	d.createTimeStart = $('#startDate').val();
+	        	d.createTimeEnd = $('#endDate').val();
 	        	d.flowType=$("#flowType").val();
 	        	d.contractCode=$("#contractCode").val().trim();
 	        	return d;
 			}
 		},
-		columns: [// 对应列
-	    	//增加序号列
+		columns: [
 	        {"data" : null,"title":"序号","className": "text-center","width": "5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#searchTableTodo").pageStart;
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "title","title":"主题","className": "whiteSpaceNormal","width": "50%"},
+			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "55%",
+				"render" : function(a, b, c, d){
+					var assignee = c.assignee;
+		        	var buttontitle = "";
+		        	var fn = "";
+		        	var style = "";
+		        	if(curStaffOrgId == assignee){
+		        		fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        	}else{
+		        		style = "cursor:not-allowed";
+		        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+		        		fn = "layer.msg(\'"+buttontitle+"\')";
+		        	}
+		        	var context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
+		        	if(assignee.indexOf("candidate-") != -1){
+		        		buttontitle = "该任务为抢单任务，如需处理请先点击领取该任务";
+		        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
+		        	}
+		            return App.getDataTableLink(context);
+				}
+			
+			},
 	        {"data": "processDefinitionName","title":"流程类型","className": "whiteSpaceNormal","width": "15%"},
 	        {"data": "createTime","title":"接收日期","className": "whiteSpaceNormal","width": "15%", 
 	        	"render": function (a, b, c, d) {
 	        		return getSmpFormatDateByLong(a, true);
 	        	}
 	        },
-	        {"data": "beUserName","title":"发送人","className": "whiteSpaceNormal","width": "10%"},
-	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
-	    ],
-	    "columnDefs": [
-	       {// 最后一列添加按钮
-	        targets: -1,
-	        render: function (a, b, c, d) {
-	        	var currentId = $("#currentId").val();;
-	        	var assignee = c.assignee;
-	        	var buttontitle = "";
-	        	var fn = "";
-	        	var style = "";
-	        	if(currentId == assignee){
-	        		fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-	        	}else{
-	        		style = "cursor:not-allowed";
-	        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-	        		fn = "layer.msg(\'"+buttontitle+"\')";
-	        	}
-	        	var context = [{"name": "处理","placement":"left","title": buttontitle,"style": style,"fn": fn}];
-	        	if(assignee.indexOf("candidate-") != -1){
-	        		buttontitle = "该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
-	        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-	        		context = [{"name": "申领","placement":"left","title": buttontitle,"style": style,"fn": fn}];
-	        	}
-	            return App.getDataTableBtnTooltip(context);
-	        }
-	    }]
+	        {"data": "beUserName","title":"发送人","className": "whiteSpaceNormal","width": "10%"}
+//	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
+	    ]
+//	    "columnDefs": [
+//	       {
+//	        targets: -1,
+//	        render: function (a, b, c, d) {
+//	        	var assignee = c.assignee;
+//	        	var buttontitle = "";
+//	        	var fn = "";
+//	        	var style = "";
+//	        	if(curStaffOrgId == assignee){
+//	        		fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+//	        	}else{
+//	        		style = "cursor:not-allowed";
+//	        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+//	        		fn = "layer.msg(\'"+buttontitle+"\')";
+//	        	}
+//	        	var context = [{"name": "处理","placement":"left","title": buttontitle,"style": style,"fn": fn}];
+//	        	if(assignee.indexOf("candidate-") != -1){
+//	        		buttontitle = "该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
+//	        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+//	        		context = [{"name": "申领","placement":"left","title": buttontitle,"style": style,"fn": fn}];
+//	        	}
+//	            return App.getDataTableBtnTooltip(context);
+//	        }
+//	    }]
 	})
 }
 //校验待办是否已经办理,true标识已经办理，false标识尚未办理

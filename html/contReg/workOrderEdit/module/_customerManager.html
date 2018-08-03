@@ -11,17 +11,18 @@
 				<button type="button" class="btn red" onclick="addCustomerManager()">添加客户经理</button>
 				<button type="button" class="btn red" onclick="delectCustomerManager()">删除客户经理</button>
 			</div>
-			<table class='table table-hover table-bordered table-striped table-align' id="customerManagerTable">
+			<table class='table table-hover table-bordered table-striped table-align' id="customerManagerTable" style="width: 80%;">
 				<thead>
 					<tr>
-						<th class="cusManagerCheckbox"><label class='ui-checkbox'><input type='checkbox' name='customerManagerCheckAll' id="customerManagerCheckAll"><span></span></label></th>
-						<th><i class="iconfont icon-mi required"></i>客户经理</th>
-						<th><i class="iconfont icon-mi required"></i>客户经理所属组织</th>
+						<th class="cusManagerCheckbox" style="width: 10%;"><label class='ui-checkbox'><input type='checkbox' name='customerManagerCheckAll' id="customerManagerCheckAll"><span></span></label></th>
+						<th style="width: 10%;">序号</th>
+						<th style="width: 30%;" class="mangerRequired" id="mangerRequired">客户经理</th>
+						<th style="width: 50%;" class="mangerRequired">客户经理所属组织</th>
 					</tr>
 				</thead>
 				<tbody id="customerManagerTbody">
 					<tr class="emptyTr">
-						<td colspan="3">暂无客户经理信息</td>
+						<td colspan="4">暂无客户经理信息</td>
 					</tr>
 				</tbody>
 			</table>
@@ -59,13 +60,13 @@
 				customerManagerItem.managerId = $(v).data("id");
 				customerManagerItem.managerStaffOrgId = $(v).data("stafforgid");
 				customerManagerItem.managerOrgId = $(v).data("parentid");
-				customerManagerItem.managerStaffName = $(v).children().eq(1).text();
-				customerManagerItem.managerOrgName = $(v).children().eq(2).text();
+				customerManagerItem.managerStaffName = $(v).children().eq(2).text();
+				customerManagerItem.managerOrgName = $(v).children().eq(3).text();
 				customerManagerList.push(customerManagerItem);
 			}
 		});
 		//当合同提交时，加校验"至少添加一条客户经理信息";
-		if(isSubmit){
+		if(isSubmit && $("#mangerRequired i")[0]){
 			if(customerManagerList.length > 0){
 				return customerManagerList;
 			}else{
@@ -95,11 +96,12 @@
 				for(var i = 0; i < data.length; i++){
 					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+data[i].managerStaffName+'</td>'+
 	    						'<td>'+data[i].managerOrgName+'</td></tr>';
 				};
-				
     			$("#customerManagerTbody").html(html);
+    			addCustomerManagerTbodySort();
     			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
 			};
 			/*
@@ -279,17 +281,19 @@
 				if(!isExist){
 					var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+name+'</td>'+
 	    						'<td>'+$(v).data("fullname")+'</td></tr>';
 	    			$("#customerManagerTbody").append(html);
 				}
-			})
+			});
+			addCustomerManagerTbodySort();
 			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
     	}
     }
     
 	/*
-	 * 删除履行人
+	 * 删除客户经理
 	 */
 	function delectCustomerManager(){
 		var checkLength = $("#customerManagerTbody input[name='customerManagerCheck']:checked").length;
@@ -302,6 +306,7 @@
 					$(v).parents("tr").remove();
 				});
 				addCustomerManagerTbodyEmptyTr();
+				addCustomerManagerTbodySort();
 				App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
 			})
 		}
@@ -311,9 +316,17 @@
 	 */
 	function addCustomerManagerTbodyEmptyTr(){
 		if($("#customerManagerTbody tr").length == 0){
-			var html = '<tr class="emptyTr"><td colspan="3">暂无客户经理信息</td></tr>';
+			var html = '<tr class="emptyTr"><td colspan="4">暂无客户经理信息</td></tr>';
 			$("#customerManagerTbody").html(html);
 		}
+	}
+	/*
+	 * 表格数据增加序号
+	 */
+	function addCustomerManagerTbodySort(){
+		$.each($("#customerManagerTbody .orderNumber"), function(k,v) {
+			$(v).text(k+1);
+		});
 	}
 	/*
 	 * 人员选择点击	事件委托

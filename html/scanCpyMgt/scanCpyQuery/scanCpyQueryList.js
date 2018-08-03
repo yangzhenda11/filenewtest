@@ -70,8 +70,8 @@ App.initDataTables('#scanCpyQueryTable', "#submitBtn", {
  * 搜索点击事件
  */
 function searchContractUpload(retainPaging) {
-	var approveDateBegin = $("#approve_date_begin").val().trim();
-	var approveDateEnd = $("#approve_date_end").val().trim();
+	var approveDateBegin = $("#approve_date_begin").val();
+	var approveDateEnd = $("#approve_date_end").val();
 	if(App.checkDate(approveDateBegin,approveDateEnd)){
 		var table = $('#scanCpyQueryTable').DataTable();
 		if(retainPaging) {
@@ -80,11 +80,21 @@ function searchContractUpload(retainPaging) {
 			table.ajax.reload();
 		}
 	}else{
-		layer.msg("审批通过日期开始日期不得大于截止日期！");
+		layer.msg("审批通过日期开始日期不能早于截止日期");
 		return;
 	}
 }
-
+/*
+ * 日期修改时监听事件
+ */
+$("#approve_date_begin,#approve_date_end").on("blur",function(){
+	var approveDateBegin = $("#approve_date_begin").val();
+	var approveDateEnd = $("#approve_date_end").val();
+	if(!App.checkDate(approveDateBegin,approveDateEnd)){
+		layer.msg("审批通过日期开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 //导出合同扫描件Excel
 function exportScanCpyList(){
 	var searchParmData = getSearchParm();

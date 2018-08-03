@@ -80,9 +80,27 @@ function jumpContractUploadEdit(id){
  * 搜索按钮点击事件
  */
 function searchContractUpload() {
-	var table = $('#scanCpyReplenishUploadTable').DataTable();
-	table.ajax.reload();
+	var approveDateBegin = $("#approveDateBegin").val();
+	var approveDateEnd = $("#approveDateEnd").val();
+	if(!App.checkDate(approveDateBegin,approveDateEnd)){
+		layer.msg("审批通过日期开始日期不能早于截止日期");
+		return;
+	}else{
+		var table = $('#scanCpyReplenishUploadTable').DataTable();
+		table.ajax.reload();
+	}
 }
+/*
+ * 日期修改时监听事件
+ */
+$("#approveDateBegin,#approveDateEnd").on("blur",function(){
+	var approveDateBegin = $("#approveDateBegin").val();
+	var approveDateEnd = $("#approveDateEnd").val();
+	if(!App.checkDate(approveDateBegin,approveDateEnd)){
+		layer.msg("审批通过日期开始日期不能早于截止日期");
+		$(this).val("");
+	};
+})
 /*
  * 用户手动输入时重置自定义“exactSearch”属性
  */
@@ -103,8 +121,8 @@ function getSearchParm(){
 	var searchData = {
 		contractNumber : $("#contractNumber").val().trim(),
 		contractName : $("#contractName").val().trim(),
-		approveDateBegin : $("#approveDateBegin").val().trim(),
-		approveDateEnd : $("#approveDateEnd").val().trim()
+		approveDateBegin : $("#approveDateBegin").val(),
+		approveDateEnd : $("#approveDateEnd").val()
 	};
 	if($("#contractTypeName").data("exactSearch")){
 	    searchData.typeCode = $("#contractTypeName").data("typeCode");

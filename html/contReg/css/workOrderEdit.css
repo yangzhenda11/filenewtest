@@ -36,12 +36,44 @@
 /*
  * 工单编辑
  */
+#toolbarBtn {
+  height: 120px;
+}
+#toolbarBtn .wcardTypeTitle,
+#toolbarBtn .wcardTypeContent {
+  text-align: center;
+}
+#toolbarBtn .wcardTypeTitle {
+  font-size: 24px;
+}
+#toolbarBtn .wcardTypeContent {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+#toolbarBtn .wcardTypeMenu {
+  border-bottom: 4px solid #dc2a32;
+}
+#toolbarBtn button {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+#wcardTypeMenuContent button {
+  margin: 0 4px 0 3px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border: 2px solid;
+  border-bottom: none;
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 .contractPortletTitle {
   float: right;
 }
 .contractPortletPageTitle {
   position: relative;
-  bottom: -10px;
+  bottom: 18px;
   right: 20px;
 }
 #contractFeasorToolbar {

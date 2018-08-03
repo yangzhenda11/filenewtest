@@ -39,7 +39,6 @@ if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 $(function() {
 	if(parm.pageType == 1) {		//工作流页面进入
 		wcardId = parm.businessKey;
-		$(".portlet-title").remove();
 		$(".page-content,.portlet-body").css("padding", '0px');
 		$(".portlet").css("cssText", "border:none !important;padding:0px");
 		$("#toolbarBtn").remove();
@@ -81,7 +80,7 @@ $(function() {
 	} else if(parm.pageType == 4) {		//工单查询页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
-		$("#toolbarBtnContent button").not(".closeBtn").remove();
+		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
 	};
@@ -480,10 +479,10 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
 	$("#PandJstaffiframetask").modal("hide");
-	$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",true);
+	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
-		$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
+		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 		var data = result.data;
 		if(data.success == "000"){
 			showLayerErrorMsg(data.message);
@@ -496,7 +495,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	function improperCallback(result){
 		var ms = result.message;
 		showLayerErrorMsg(ms);
-		$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
+		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 	}
 }
 /*
@@ -554,17 +553,17 @@ function activateContract(){
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
 			postData.contractId = contractId;
-			$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",true);
+			$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
-				$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
+				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 				var data = result.data;
 				layer.alert("激活成功！",{icon:1},function(){
 					backPage();
 				});
 			}
 			function improperCallback(result){
-				$("#toolbarBtnContent button").not(".closeBtn").attr("disabled",false);
+				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 				showLayerErrorMsg(result.message);
 			}
 		});
@@ -953,7 +952,7 @@ function srolloOffect(el,srolloParm){
 		if(parm.pageType == 1) {
 			scrollTopParm = 0;
 		}else{
-			scrollTopParm = 50;
+			scrollTopParm = 130;
 		}
 	}else if(srolloParm == 3){
 		scrollTopParm = -130;
@@ -991,13 +990,22 @@ function showLayerErrorMsg(ms,isAlert){
 function setSpeedyJump(){
 	var data = titleIconList[wcardTypeCode];
 	var html = "";
-	$.each(data, function(k,v) {
-		if($(v.jumpId)[0]){
-			html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" data-container="body" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
-		}
-	});
-	$("#workOrderMenu").html(html);
-	$("#workOrderMenu [data-toggle='tooltip']").tooltip();
+	if(parm.pageType == 1) {
+		$.each(data, function(k,v) {
+			if($(v.jumpId)[0]){
+				html += '<li onclick="srolloOffect(\''+v.jumpId+'\',2)" data-placement="left" data-trigger="hover" data-toggle="tooltip" data-container="body" title="'+ v.title +'"><i class="iconfont '+ v.icon +'"></i></li>';
+			}
+		});
+		$("#workOrderMenu").html(html);
+		$("#workOrderMenu [data-toggle='tooltip']").tooltip();
+	}else{
+		$.each(data, function(k,v) {
+			if($(v.jumpId)[0]){
+				html += '<button onclick="srolloOffect(\''+v.jumpId+'\',2);" class="btn primary btn-inline">'+ v.title +'</button>';
+			}
+		});
+		$("#wcardTypeMenuContent").html(html);
+	}
 }
 $("#workOrderMenu").hover(function(){
 	$(this).css("padding-left","120px");

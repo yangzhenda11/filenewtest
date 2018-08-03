@@ -490,13 +490,22 @@ table td{
 	height: 42px;
 }
 #toolbarBtnContent{
-	width: 96%;
+	width: 100%;
 	/*background: rgb(255,255,255,0.8);*/
 }
 #toolbarBtnContent button{
 	margin: 5px 3px;
 }
-
+.btn.primary.btn-inline{
+	color: #fff;
+	background: #dc2a32;
+	border-color: #dc2a32;;
+}
+.btn.primary.btn-inline:hover{
+	color: #dc2a32;
+	background: #fff;
+	border-color: #dc2a32;;
+}
 /*
  * 编辑框样式
  */

@@ -52,10 +52,10 @@
 								<div class="col-sm-5">
                                     <div class="input-group data-input-group">
                                         <span class="input-group-addon searchLableText">起始时间</span>
-                                        <input type="text" id="startDate" name="startDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+                                        <input type="text" id="startDate" name="startDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){dataChangeEvent(this)}})"
                                         class="form-control" readonly="readonly" />
                                         <span class="input-group-addon searchLableText" >至</span>
-                                        <input type="text" id="endDate" name="endDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+                                        <input type="text" id="endDate" name="endDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){dataChangeEvent(this)}})"
                                         class="form-control" readonly="readonly" />
                                     </div>
                                 </div>

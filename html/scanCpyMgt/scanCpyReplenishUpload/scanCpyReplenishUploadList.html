@@ -72,9 +72,9 @@
 								<div class="col-sm-4">
 									<div class="input-group data-input-group">
 										<span class="input-group-addon searchLableText">审批通过日期</span>
-										<input type="text" id="approveDateBegin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+										<input type="text" id="approveDateBegin" name="approve_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
 										<span class="input-group-addon searchLableText">至</span>
-										<input type="text" id="approveDateEnd" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" class="form-control" readonly="readonly" />
+										<input type="text" id="approveDateEnd" name="approve_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
 									</div>
 								</div>
 							</div>

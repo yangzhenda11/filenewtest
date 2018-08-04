@@ -74,11 +74,11 @@ function selectLog() {
 /*
  * 日期修改时监听事件
  */
-$("#startDate,#endDate").on("blur",function(){
+function dataChangeEvent(dom){
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
 	if(!App.checkDate(startDate,endDate)){
-		layer.msg("接收开始日期不能早于截止日期");
-		$(this).val("");
+		layer.msg("起始开始日期不能早于截止日期");
+		$(dom).val("");
 	};
-})
+}

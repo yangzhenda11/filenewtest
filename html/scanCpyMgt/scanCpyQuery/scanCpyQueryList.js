@@ -87,14 +87,14 @@ function searchContractUpload(retainPaging) {
 /*
  * 日期修改时监听事件
  */
-$("#approve_date_begin,#approve_date_end").on("blur",function(){
+function dataChangeEvent(dom){
 	var approveDateBegin = $("#approve_date_begin").val();
 	var approveDateEnd = $("#approve_date_end").val();
 	if(!App.checkDate(approveDateBegin,approveDateEnd)){
 		layer.msg("审批通过日期开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	};
-})
+}
 //导出合同扫描件Excel
 function exportScanCpyList(){
 	var searchParmData = getSearchParm();

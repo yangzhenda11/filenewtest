@@ -88,14 +88,14 @@ function searchWorkOrderActivate(retainPaging) {
 /*
  * 日期修改时监听事件
  */
-$("#create_date_begin,#create_date_end").on("blur",function(){
+function dataChangeEvent(dom){
 	var createDateBegin = $("#create_date_begin").val();
 	var createDateEnd = $("#create_date_end").val();
 	if(!App.checkDate(createDateBegin,createDateEnd)){
-		$(this).val("");
+		$(dom).val("");
 		layer.msg("创建日期开始日期不能早于截止日期");
 	}
-})
+}
 //跳转到工单激活页面
 function jumpSanCpyQueryDetail(id){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);

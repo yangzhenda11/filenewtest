@@ -37,14 +37,14 @@ function serarchForToDo(resetPaging){
 /*
  * 日期修改时监听事件
  */
-$("#startDate,#endDate").on("blur",function(){
+function dataChangeEvent(dom){
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
 	if(!App.checkDate(startDate,endDate)){
 		layer.msg("接收开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	};
-})
+}
 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
@@ -116,6 +116,7 @@ function getTableTodo(){
 			},
 			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "55%",
 				"render" : function(a, b, c, d){
+					console.log(a)
 					var assignee = c.assignee;
 		        	var buttontitle = "";
 		        	var fn = "";

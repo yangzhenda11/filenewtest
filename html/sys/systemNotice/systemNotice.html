@@ -50,10 +50,10 @@
 								<div class="col-sm-4">
 									<div class="input-group data-input-group">
 										<span class="input-group-addon searchLableText">发布时间</span>
-										<input type="text" id="submitDateA" name="submitDateA" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+										<input type="text" id="submitDateA" name="submitDateA" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})"
                                         class="form-control" readonly="readonly" />
                                         <span class="input-group-addon searchLableText" >至</span>
-                                        <input type="text" id="submitDateZ" name="submitDateZ" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                        <input type="text" id="submitDateZ" name="submitDateZ" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})"
                                         class="form-control" readonly="readonly" />
 									</div>
 								</div>

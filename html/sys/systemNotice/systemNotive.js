@@ -137,14 +137,14 @@ function searchNotiveTable(retainPaging) {
 /*
  * 日期修改时监听事件
  */
-$("#submitDateA,#submitDateZ").on("blur",function(){
+function dataChangeEvent(dom){
 	var submitDateA = $("#submitDateA").val();
 	var submitDateZ = $("#submitDateZ").val();
 	if(!App.checkDate(submitDateA,submitDateZ)){
 		layer.msg("发布开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	};
-})
+}
 /*
  * 发布公告
  */

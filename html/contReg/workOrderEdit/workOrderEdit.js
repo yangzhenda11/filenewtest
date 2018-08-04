@@ -82,7 +82,7 @@ $(function() {
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
 	};
 	//加载验证壳
 	validate();
@@ -1179,9 +1179,14 @@ function checkDomOverlength(checked){
 		return true;
 	}else if(overLengthDom){
 		srolloOffect(overLengthDom,1);
-		var limitLen = $(overLengthDom).find("input").attr("maxlength");
-		var inputLen = getByteLen($(overLengthDom).find("input").val());
-		showLayerErrorMsg("该输入框限制输入"+limitLen+"个字符，现已输入"+inputLen+"个字符，请修改后再进行操作");
+		var limitLen = $(overLengthDom).find("input,textarea").attr("maxlength");
+		var labelName = $(overLengthDom).find("label").text();
+		if(labelName){
+			labelName = labelName.substring(0,labelName.length-1);
+		}else{
+			labelName = "该输入框";
+		};
+		showLayerErrorMsg(labelName+"限制输入"+limitLen+"个字符");
 		$(overLengthDom).find("input").focus();
 		return true;
 	}else{

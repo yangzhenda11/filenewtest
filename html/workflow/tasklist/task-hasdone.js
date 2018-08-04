@@ -44,12 +44,17 @@ function getTableForDone(){
 			},
 			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "40%",
 				"render" : function(a, b, c, d){
+					console.log(c)
 					var assignee = c.assignee;
 		        	var buttontitle = "";
 		        	var fn = "";
 		        	var style = "";
 		        	if(curStaffOrgId == assignee){
-		        		fn = "onclick=handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
+		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		}else{
+		        			fn = "handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		}
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
@@ -143,4 +148,55 @@ function getFlowKyeList(){
 	    "data" : null
 	}
 	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
+}
+/*
+ * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
+ */
+function redirectUrl(id, taskDefinitionKey, name, processInstanceId, title,
+		processDefinitionId, processDefinitionKey, executionId, assignee){
+	var canWithDrawForDoneData = {
+		taskId: id,
+		taskDefinitionKey: taskDefinitionKey,
+		name: name,
+		processInstanceId: processInstanceId,
+		title: title,
+		processDefinitionId: processDefinitionId,
+		processDefinitionKey: processDefinitionKey,
+		executionId: executionId,
+		assigneeId: assignee
+	}
+	$.ajax({
+		url:serverPath + 'workflowrest/taskHasDoneDetail', 
+		type: "POST",
+		data: canWithDrawForDoneData,
+		success:function(data){
+			var canWithDraw = data.canWithDraw;
+			getRedirectUrl(id,taskDefinitionKey,processInstanceId,canWithDraw);
+		},
+		error:function(e){
+			App.ajaxErrorCallback(e);
+		}
+	});
+}
+function getRedirectUrl(id,taskDefinitionKey,processInstanceId,canWithDraw){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + id, null, function(data) {
+		var success = data.retCode;
+		if (success == 1){
+			var param = data.dataRows[0].param;
+			var resultParam = {};
+			param = param.split("&");
+			for(var i = 0; i < param.length; i ++) {   
+		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
+		   	};
+		   	var businessKey = resultParam.businessKey;
+		   	if(businessKey){
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canReturn="+canWithDraw;
+		   		App.changePresentUrl(src);
+		   	}else{
+		   		layer.msg("获取不到工单主键");
+		   	}
+		} else {
+			layer.msg(data.retValue);
+		}
+	});
 }

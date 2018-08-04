@@ -67,12 +67,12 @@ $(function() {
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn").remove();
+			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".register,.cancelApprovedBtn").remove();
+			$(".register,.cancelApprovedBtn,.returnBtn").remove();
 		};
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
 		$("#toolbarBtn,#flowNote").remove();
@@ -82,8 +82,17 @@ $(function() {
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
-	};
+		App.fixToolBars("toolbarBtnContent", 0);
+	} else if(parm.pageType == 3) {		//已办页面进入
+		wcardId = parm.wcardId;
+		$("#flowNote").remove();
+		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
+		if(parm.canReturn != true){
+			$(".returnBtn").remove();
+		}
+		$pageContent.removeClass("hidden");
+		App.fixToolBars("toolbarBtnContent", 0);
+	};;
 	//加载验证壳
 	validate();
 	//请求工单模块，获取基本信息及各模块的url
@@ -1234,6 +1243,84 @@ function setPTip(t){
 		return t;
 	}else{
 		return "";
+	}
+}
+/*
+ * 获取流程图
+ */
+function getFlowchart(){
+	if(parm.processInstanceId){
+		var processInstanceId = parm.processInstanceId;
+	}else{
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+		var processInstanceId = flowParams.processInstanceId;
+	};
+	if(processInstanceId != undefined && processInstanceId != ""){
+		var imgurl = serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random());
+		var xhr = new XMLHttpRequest();
+	    xhr.open("get", imgurl, true);
+	    xhr.responseType = "blob";
+	    xhr.onload = function() {
+	        if (this.status == 200) {
+	        	var blob = this.response;
+	            var img = document.createElement("img");
+	            img.onload = function(e) {
+	            	window.URL.revokeObjectURL(img.src); 
+	            };
+	            img.src = window.URL.createObjectURL(blob);
+　　　　　　　	$("#flowchartImage").html(img);
+	        } 
+	    } 
+	    xhr.send();
+		$("#flowchartModal").modal("show");
+	}else{
+		showLayerErrorMsg("获取流程参数异常");
+	}
+}
+/*
+ * 获取流程历史
+ */
+function getFlowhistory(){
+	if(parm.processInstanceId){
+		var processInstanceId = parm.processInstanceId;
+	}else{
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+		var processInstanceId = flowParams.processInstanceId;
+	};
+	if(processInstanceId != undefined && processInstanceId != ""){
+		$.get(serverPath + "workflowrest/histoicflow/" + processInstanceId,function(data) {
+			if (data.retCode == 1){
+				$("#flowhistoryContent").css("max-height",$(".page-content").height() - 200);
+				var result = data.dataRows;
+				var html = '';
+				for (var i = 0; i < result.length; i++) {
+					var item = result[i];
+					var startTime = item.startTime == null ? '' : App.formatDateTime(item.startTime);
+					var endTime = item.endTime == null ? '' : App.formatDateTime(item.endTime);
+					var assigneeName = item.assigneeName;
+					if(item.replace == true){
+						var fromUserName = item.fromUserName;
+						assigneeName = assigneeName + "（ "+ fromUserName + "——待办授权）"
+					};
+					html += "<tr>"+
+								"<td class='align-center'>"+(i+1)+"</td>"+
+								"<td>"+item.linkName+"</td>"+
+								"<td>"+assigneeName+"</td>"+
+								"<td>"+item.orgName+"</td>"+
+								"<td>"+item.handleType+"</td>"+
+								"<td>"+startTime+"</td>"+
+								"<td>"+endTime+"</td>"+
+								"<td class='whiteSpaceNormal'>"+ item.userComment + "</td>"+
+							"</tr>";
+				}
+				$("#flowhistoryTbody").html(html);
+				$("#flowhistoryModal").modal("show");
+			} else {
+				showLayerErrorMsg(data.retValue);
+			};
+		});
+	}else{
+		showLayerErrorMsg("获取流程参数异常");
 	}
 }
 /*

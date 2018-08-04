@@ -23,7 +23,7 @@
 				<button type="button" class="btn red" onclick="creatFeasorTree()">添加主要履行人</button>
 				<button type="button" class="btn red" onclick="delectFeasor()">删除主要履行人</button>
 			</div>
-			<table class='table table-hover table-bordered table-striped table-align' id="feasorTable" style="width: 80%;">
+			<table class='table table-hover table-bordered table-striped table-align' id="feasorTable" style="width: 70%;">
 				<thead>
 					<tr>
 						<th class="feasorCheckbox" style="width: 10%;"><label class='ui-checkbox'><input type='checkbox' name='feasorCheckAll' id="feasorCheckAll"><span></span></label></th>
@@ -72,7 +72,7 @@
 				performerDataItem.contractNumber = contractNumber;
 				performerDataItem.performerId = $(v).data("id");
 				performerDataItem.performerOrgId = $(v).data("orgid");
-				performerDataItem.performerStaffId = $(v).data("staffid");
+				performerDataItem.performerStaffId = $(v).data("stafforgid");
 				performerDataItem.performerStaffName = $(v).children().eq(2).text();
 				performerDataItem.performerOrgName = $(v).children().eq(3).text();
 				performerDataList.push(performerDataItem);
@@ -112,7 +112,7 @@
 			if(data.length > 0){
 				var html = "";
 				for(var i = 0; i < data.length; i++){
-					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-staffid="'+data[i].performerStaffId+'" data-companyid="'+data[i].companyId+'">'+
+					html += '<tr data-id="'+data[i].performerId+'" data-orgid="'+data[i].performerOrgId+'" data-stafforgid="'+data[i].performerStaffId+'" data-companyid="'+data[i].companyId+'">'+
 	    						'<td class="feasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+data[i].performerStaffName+'</td>'+
@@ -257,9 +257,9 @@
         	var companyName = companyNode.name;
         	var performerOrgId = firstOrgNode.id;
         	var performerOrgName = firstOrgNode.fullName;
-        	var performerStaffId = treeNode.id;
+        	var performerStaffId = treeNode.staffOrgId;
             if(performerType == 1){
-            	var html = '<div class="feasorItem" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-staffid="'+performerStaffId+'">'+
+            	var html = '<div class="feasorItem" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
             				'<span>'+treeNode.name+'</span>'+
             				'</div>'
             	$("#feasorChecked").html(html);
@@ -273,7 +273,7 @@
             		}
             	});
             	if(!isExist){
-            		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-staffid="'+performerStaffId+'">'+
+            		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
 	            				'<span>'+treeNode.name+'</span>'+
 	            				'</div>';
             		$("#feasorChecked").append(html);
@@ -319,9 +319,9 @@
     			$.each($("#feasorModal .feasorItem"), function(k,v) {
     				var orgname = $(v).data("orgname");
     				var orgid = $(v).data("orgid");
-    				var staffid = $(v).data("staffid");
+    				var stafforgid = $(v).data("stafforgid");
     				var staffname = $(v).text();
-    				html += '<tr data-id="100000" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
+    				html += '<tr data-id="100000" data-orgid="'+orgid+'" data-stafforgid="'+stafforgid+'">'+
     						'<td class="feasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
     						'<td class="orderNumber"></td>'+
     						'<td>'+staffname+'</td>'+
@@ -357,9 +357,9 @@
 					});
     				if(!isExist){
     					var orgid = $(v).data("orgid");
-	    				var staffid = $(v).data("staffid");
+	    				var stafforgid = $(v).data("stafforgid");
 	    				var orgname = $(v).data("orgname");
-	    				var html = '<tr data-id="100000" data-companyid="'+companyid+'" data-orgid="'+orgid+'" data-staffid="'+staffid+'">'+
+	    				var html = '<tr data-id="100000" data-companyid="'+companyid+'" data-orgid="'+orgid+'" data-stafforgid="'+stafforgid+'">'+
 	    						'<td class="feasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="feasorCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+staffname+'</td>'+

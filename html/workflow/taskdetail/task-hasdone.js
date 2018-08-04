@@ -223,7 +223,6 @@ function initData(){
 			$('#canWithDrawForDone').val(data.canWithDraw);
 		},
 		error:function(e){
-			alert("获取数据异常"+e);
 			App.ajaxErrorCallback(e);
 		}
 	});

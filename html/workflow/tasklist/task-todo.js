@@ -116,7 +116,6 @@ function getTableTodo(){
 			},
 			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "55%",
 				"render" : function(a, b, c, d){
-					console.log(a)
 					var assignee = c.assignee;
 		        	var buttontitle = "";
 		        	var fn = "";
@@ -229,7 +228,7 @@ function redirectUrl(id,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey);
+		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}
@@ -241,7 +240,7 @@ function redirectUrl(id,taskDefinitionKey,processInstanceId){
 /*
  * 跳转到工单页面
  */
-function jumpSanCpyQueryDetail(id,taskDefinitionKey){
+function jumpSanCpyQueryDetail(id,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
@@ -256,7 +255,7 @@ function jumpSanCpyQueryDetail(id,taskDefinitionKey){
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+id;
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+id+"&processInstanceId="+processInstanceId;
 			App.changePresentUrl(src);
 		}else{
 			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){

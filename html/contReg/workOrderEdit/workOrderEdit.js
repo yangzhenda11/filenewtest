@@ -67,12 +67,12 @@ $(function() {
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn").remove();
+			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".register,.cancelApprovedBtn").remove();
+			$(".register,.cancelApprovedBtn,.returnBtn").remove();
 		};
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
 		$("#toolbarBtn,#flowNote").remove();
@@ -82,8 +82,17 @@ $(function() {
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
-	};
+		App.fixToolBars("toolbarBtnContent", 0);
+	} else if(parm.pageType == 3) {		//已办页面进入
+		wcardId = parm.wcardId;
+		$("#flowNote").remove();
+		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
+		if(parm.canReturn != true){
+			$(".returnBtn").remove();
+		}
+		$pageContent.removeClass("hidden");
+		App.fixToolBars("toolbarBtnContent", 0);
+	};;
 	//加载验证壳
 	validate();
 	//请求工单模块，获取基本信息及各模块的url
@@ -1240,9 +1249,14 @@ function setPTip(t){
  * 获取流程图
  */
 function getFlowchart(){
-	var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
-	if(flowParams.processInstanceId != undefined && flowParams.processInstanceId != ""){
-		var imgurl = serverPath + 'workflowrest/flowchart/' + flowParams.processInstanceId+"/"+parseInt(10*Math.random());
+	if(parm.processInstanceId){
+		var processInstanceId = parm.processInstanceId;
+	}else{
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+		var processInstanceId = flowParams.processInstanceId;
+	};
+	if(processInstanceId != undefined && processInstanceId != ""){
+		var imgurl = serverPath + 'workflowrest/flowchart/' + processInstanceId+"/"+parseInt(10*Math.random());
 		var xhr = new XMLHttpRequest();
 	    xhr.open("get", imgurl, true);
 	    xhr.responseType = "blob";
@@ -1267,9 +1281,14 @@ function getFlowchart(){
  * 获取流程历史
  */
 function getFlowhistory(){
-	var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
-	if(flowParams.processInstanceId != undefined && flowParams.processInstanceId != ""){
-		$.get(serverPath + "workflowrest/histoicflow/" + flowParams.processInstanceId,function(data) {
+	if(parm.processInstanceId){
+		var processInstanceId = parm.processInstanceId;
+	}else{
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+		var processInstanceId = flowParams.processInstanceId;
+	};
+	if(processInstanceId != undefined && processInstanceId != ""){
+		$.get(serverPath + "workflowrest/histoicflow/" + processInstanceId,function(data) {
 			if (data.retCode == 1){
 				$("#flowhistoryContent").css("max-height",$(".page-content").height() - 200);
 				var result = data.dataRows;

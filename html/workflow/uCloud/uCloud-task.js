@@ -32,14 +32,18 @@ function handleTaskToDo(taskInfo) {
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
 	
-	$("#goTaskToDoDetailForToDo").show();
-	$("#searchContentForToDo").hide();
+	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR"){
+		redirectUrl(id,taskDefinitionKey,processInstanceId)
+	}else{
+		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
+		$("#goTaskToDoDetailForToDo").show();
+		$("#searchContentForToDo").hide();
+	}
 }
 
 function getTaskInfo(){
-//	var taskData=null;
+	var taskData=null;
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
@@ -47,12 +51,8 @@ function getTaskInfo(){
 		global:false,
 		success:function(result){
 			if (result.success == 1) {
-				var taskInfo = result.taskInfo;
-				var taskId = taskInfo.taskId;
-				var taskDefinitionKey = taskInfo.taskDefinitionKey;
-				var processInstanceId = taskInfo.processInstanceId;
-				redirectUrl(taskId,taskDefinitionKey,processInstanceId)
-//				handleTaskToDo(taskData)
+				taskData=result.taskInfo;
+				handleTaskToDo(taskData)
 			} else {
 				layer.msg(result.info);
 			};

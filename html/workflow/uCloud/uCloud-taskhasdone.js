@@ -32,14 +32,17 @@ function handleTaskForDone(taskInfo) {
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
-	$("#goTaskToDoDetailForDone").load("/html/workflow/taskdetail/task-hasdone.html");
-	
-	$("#goTaskToDoDetailForDone").show();
-	$("#searchContentForDone").hide();
+	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR"){
+		redirectUrl(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee)
+	}else{
+		$("#goTaskToDoDetailForDone").load("/html/workflow/taskdetail/task-hasdone.html");
+		$("#goTaskToDoDetailForDone").show();
+		$("#searchContentForDone").hide();
+	}
 }
 
 function getTaskInfoHasdone(){
-//	var taskHasdoneData=null;
+	var taskHasdoneData=null;
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfoHasdone?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
@@ -47,18 +50,8 @@ function getTaskInfoHasdone(){
 		global:false,
 		success:function(result){
 			if (result.success == 1) {
-				var taskHasdoneData = result.taskInfo;
-				var taskId = taskInfo.taskId;
-				var taskDefinitionKey = taskInfo.taskDefinitionKey;
-				var name = taskInfo.linkName;
-				var processInstanceId = taskInfo.processInstanceId;
-				var title = taskInfo.title;
-				var processDefinitionId = taskInfo.processDefinitionId;
-				var processDefinitionKey = taskInfo.processDefinitionKey;
-				var executionId = taskInfo.executionId;
-				var assignee = taskInfo.assignee;
-				redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee)
-//				handleTaskForDone(taskHasdoneData)
+				taskHasdoneData=result.taskInfo;
+				handleTaskForDone(taskHasdoneData)
 			} else {
 				layer.msg(result.info);
 			};

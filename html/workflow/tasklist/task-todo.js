@@ -216,8 +216,8 @@ function getFlowKyeList(){
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(id,taskDefinitionKey,processInstanceId){
-	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + id, null, function(data) {
+function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
 		var success = data.retCode;
 		if (success == 1){
 			var param = data.dataRows[0].param;
@@ -240,8 +240,8 @@ function redirectUrl(id,taskDefinitionKey,processInstanceId){
 /*
  * 跳转到工单页面
  */
-function jumpSanCpyQueryDetail(id,taskDefinitionKey,processInstanceId){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
 		var isPass = false;
@@ -255,7 +255,7 @@ function jumpSanCpyQueryDetail(id,taskDefinitionKey,processInstanceId){
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+id+"&processInstanceId="+processInstanceId;
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
 			App.changePresentUrl(src);
 		}else{
 			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){

@@ -151,10 +151,10 @@ function getFlowKyeList(){
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(id, taskDefinitionKey, name, processInstanceId, title,
+function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title,
 		processDefinitionId, processDefinitionKey, executionId, assignee){
 	var canWithDrawForDoneData = {
-		taskId: id,
+		taskId: taskId,
 		taskDefinitionKey: taskDefinitionKey,
 		name: name,
 		processInstanceId: processInstanceId,
@@ -170,15 +170,15 @@ function redirectUrl(id, taskDefinitionKey, name, processInstanceId, title,
 		data: canWithDrawForDoneData,
 		success:function(data){
 			var canWithDraw = data.canWithDraw;
-			getRedirectUrl(id,taskDefinitionKey,processInstanceId,canWithDraw);
+			getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw);
 		},
 		error:function(e){
 			App.ajaxErrorCallback(e);
 		}
 	});
 }
-function getRedirectUrl(id,taskDefinitionKey,processInstanceId,canWithDraw){
-	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + id, null, function(data) {
+function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
 		var success = data.retCode;
 		if (success == 1){
 			var param = data.dataRows[0].param;
@@ -189,7 +189,7 @@ function getRedirectUrl(id,taskDefinitionKey,processInstanceId,canWithDraw){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canReturn="+canWithDraw+"&taskId="+id;
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canReturn="+canWithDraw+"&taskId="+taskId;
 		   		App.changePresentUrl(src);
 		   	}else{
 		   		layer.msg("获取不到工单主键");

@@ -39,7 +39,7 @@ function handleTaskToDo(taskInfo) {
 }
 
 function getTaskInfo(){
-	var taskData=null;
+//	var taskData=null;
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
@@ -47,8 +47,12 @@ function getTaskInfo(){
 		global:false,
 		success:function(result){
 			if (result.success == 1) {
-				taskData=result.taskInfo;
-				handleTaskToDo(taskData)
+				var taskInfo = result.taskInfo;
+				var taskId = taskInfo.taskId;
+				var taskDefinitionKey = taskInfo.taskDefinitionKey;
+				var processInstanceId = taskInfo.processInstanceId;
+				redirectUrl(taskId,taskDefinitionKey,processInstanceId)
+//				handleTaskToDo(taskData)
 			} else {
 				layer.msg(result.info);
 			};
@@ -59,4 +63,55 @@ function getTaskInfo(){
 		}
 	});
 	return taskData;
+}
+/*
+ * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
+ */
+function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
+		var success = data.retCode;
+		if (success == 1){
+			var param = data.dataRows[0].param;
+			var resultParam = {};
+			param = param.split("&");
+			for(var i = 0; i < param.length; i ++) {   
+		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
+		   	};
+		   	var businessKey = resultParam.businessKey;
+		   	if(businessKey){
+		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   	}else{
+		   		layer.msg("获取不到工单主键");
+		   	}
+		} else {
+			layer.msg(data.retValue);
+		}
+	});
+}
+/*
+ * 跳转到工单页面
+ */
+function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
+	function successCallback(result) {
+		var wcardProcess = result.data.wcardProcess;
+		var isPass = false;
+		if(taskDefinitionKey == "GDCL"){
+			if(wcardProcess == 0 || wcardProcess == 2){
+				isPass = true;
+			}
+		}else if(taskDefinitionKey == "GDQR"){
+			if(wcardProcess == 1){
+				isPass = true;
+			}
+		};
+		if(isPass == true){
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+			App.changePresentUrl(src);
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
 }

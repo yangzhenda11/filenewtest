@@ -39,7 +39,7 @@ function handleTaskForDone(taskInfo) {
 }
 
 function getTaskInfoHasdone(){
-	var taskHasdoneData=null;
+//	var taskHasdoneData=null;
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfoHasdone?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
@@ -47,8 +47,18 @@ function getTaskInfoHasdone(){
 		global:false,
 		success:function(result){
 			if (result.success == 1) {
-				taskHasdoneData=result.taskInfo;
-				handleTaskForDone(taskHasdoneData)
+				var taskHasdoneData = result.taskInfo;
+				var taskId = taskInfo.taskId;
+				var taskDefinitionKey = taskInfo.taskDefinitionKey;
+				var name = taskInfo.linkName;
+				var processInstanceId = taskInfo.processInstanceId;
+				var title = taskInfo.title;
+				var processDefinitionId = taskInfo.processDefinitionId;
+				var processDefinitionKey = taskInfo.processDefinitionKey;
+				var executionId = taskInfo.executionId;
+				var assignee = taskInfo.assignee;
+				redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee)
+//				handleTaskForDone(taskHasdoneData)
 			} else {
 				layer.msg(result.info);
 			};
@@ -59,4 +69,54 @@ function getTaskInfoHasdone(){
 		}
 	});
 	return taskHasdoneData;
+}
+/*
+ * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
+ */
+function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee){
+	var canWithDrawForDoneData = {
+		taskId: taskId,
+		taskDefinitionKey: taskDefinitionKey,
+		name: name,
+		processInstanceId: processInstanceId,
+		title: title,
+		processDefinitionId: processDefinitionId,
+		processDefinitionKey: processDefinitionKey,
+		executionId: executionId,
+		assigneeId: assignee
+	}
+	$.ajax({
+		url:serverPath + 'workflowrest/taskHasDoneDetail', 
+		type: "POST",
+		data: canWithDrawForDoneData,
+		success:function(data){
+			var canWithDraw = data.canWithDraw;
+			getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw);
+		},
+		error:function(e){
+			App.ajaxErrorCallback(e);
+		}
+	});
+}
+function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
+		var success = data.retCode;
+		if (success == 1){
+			var param = data.dataRows[0].param;
+			var resultParam = {};
+			param = param.split("&");
+			for(var i = 0; i < param.length; i ++) {   
+		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
+		   	};
+		   	var businessKey = resultParam.businessKey;
+		   	if(businessKey){
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canReturn="+canWithDraw+"&taskId="+taskId;
+		   		App.changePresentUrl(src);
+		   	}else{
+		   		layer.msg("获取不到工单主键");
+		   	}
+		} else {
+			layer.msg(data.retValue);
+		}
+	});
 }

@@ -82,7 +82,7 @@ $(function() {
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 70);	//固定操作按钮在70px的高度
+		App.fixToolBars("toolbarBtnContent", 0);	//固定操作按钮在70px的高度
 	};
 	//加载验证壳
 	validate();
@@ -1179,9 +1179,14 @@ function checkDomOverlength(checked){
 		return true;
 	}else if(overLengthDom){
 		srolloOffect(overLengthDom,1);
-		var limitLen = $(overLengthDom).find("input").attr("maxlength");
-		var inputLen = getByteLen($(overLengthDom).find("input").val());
-		showLayerErrorMsg("该输入框限制输入"+limitLen+"个字符，现已输入"+inputLen+"个字符，请修改后再进行操作");
+		var limitLen = $(overLengthDom).find("input,textarea").attr("maxlength");
+		var labelName = $(overLengthDom).find("label").text();
+		if(labelName){
+			labelName = labelName.substring(0,labelName.length-1);
+		}else{
+			labelName = "该输入框";
+		};
+		showLayerErrorMsg(labelName+"限制输入"+limitLen+"个字符");
 		$(overLengthDom).find("input").focus();
 		return true;
 	}else{
@@ -1229,6 +1234,74 @@ function setPTip(t){
 		return t;
 	}else{
 		return "";
+	}
+}
+/*
+ * 获取流程图
+ */
+function getFlowchart(){
+	var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+	if(flowParams.processInstanceId != undefined && flowParams.processInstanceId != ""){
+		var imgurl = serverPath + 'workflowrest/flowchart/' + flowParams.processInstanceId+"/"+parseInt(10*Math.random());
+		var xhr = new XMLHttpRequest();
+	    xhr.open("get", imgurl, true);
+	    xhr.responseType = "blob";
+	    xhr.onload = function() {
+	        if (this.status == 200) {
+	        	var blob = this.response;
+	            var img = document.createElement("img");
+	            img.onload = function(e) {
+	            	window.URL.revokeObjectURL(img.src); 
+	            };
+	            img.src = window.URL.createObjectURL(blob);
+　　　　　　　	$("#flowchartImage").html(img);
+	        } 
+	    } 
+	    xhr.send();
+		$("#flowchartModal").modal("show");
+	}else{
+		showLayerErrorMsg("获取流程参数异常");
+	}
+}
+/*
+ * 获取流程历史
+ */
+function getFlowhistory(){
+	var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+	if(flowParams.processInstanceId != undefined && flowParams.processInstanceId != ""){
+		$.get(serverPath + "workflowrest/histoicflow/" + flowParams.processInstanceId,function(data) {
+			if (data.retCode == 1){
+				$("#flowhistoryContent").css("max-height",$(".page-content").height() - 200);
+				var result = data.dataRows;
+				var html = '';
+				for (var i = 0; i < result.length; i++) {
+					var item = result[i];
+					var startTime = item.startTime == null ? '' : App.formatDateTime(item.startTime);
+					var endTime = item.endTime == null ? '' : App.formatDateTime(item.endTime);
+					var assigneeName = item.assigneeName;
+					if(item.replace == true){
+						var fromUserName = item.fromUserName;
+						assigneeName = assigneeName + "（ "+ fromUserName + "——待办授权）"
+					};
+					html += "<tr>"+
+								"<td class='align-center'>"+(i+1)+"</td>"+
+								"<td>"+item.linkName+"</td>"+
+								"<td>"+assigneeName+"</td>"+
+								"<td>"+item.orgName+"</td>"+
+								"<td>"+item.handleType+"</td>"+
+								"<td>"+startTime+"</td>"+
+								"<td>"+endTime+"</td>"+
+								"<td class='whiteSpaceNormal'>"+ item.userComment + "</td>"+
+							"</tr>";
+				}
+				$("#flowhistoryTbody").html(html);
+				$("#flowhistoryModal").modal("show");
+			} else {
+				showLayerErrorMsg(data.retValue);
+			};
+		});
+	}else{
+		showLayerErrorMsg("获取流程参数异常");
 	}
 }
 /*

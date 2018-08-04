@@ -1,7 +1,6 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-
 /*
  * 初始化表格
  */
@@ -74,14 +73,14 @@ function searchWorkOrderHandle(retainPaging) {
 /*
  * 日期修改时监听事件
  */
-$("#create_date_begin,#create_date_end").on("blur",function(){
+function dataChangeEvent(dom){
 	var createDateBegin = $("#create_date_begin").val();
 	var createDateEnd = $("#create_date_end").val();
 	if(!App.checkDate(createDateBegin,createDateEnd)){
-		$(this).val("");
+		$(dom).val("");
 		layer.msg("创建日期开始日期不能早于截止日期");
 	}
-})
+}
 function manualCreation(){
 	$("#manualCreationEditModal").load("_manualCreationEdit.html",function(){
 		$("#manualCreationEditModal").modal("show");

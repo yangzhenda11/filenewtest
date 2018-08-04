@@ -91,7 +91,7 @@ function searchWorkOrder(retainPaging) {
 /*
  * 日期修改时监听事件
  */
-$("#create_date_begin,#create_date_end,#approve_date_begin,#approve_date_end,#sealAndSign_date_begin,#sealAndSign_date_end").on("blur",function(){
+function dataChangeEvent(dom){
 	var ctreatedDateBegin = $("#create_date_begin").val();
     var ctreatedDateEnd = $("#create_date_end").val();
 	var approveDateBegin = $("#approve_date_begin").val();
@@ -100,15 +100,15 @@ $("#create_date_begin,#create_date_end,#approve_date_begin,#approve_date_end,#se
 	var sealAndSignDateEnd = $("#sealAndSign_date_end").val();
 	if(!App.checkDate(ctreatedDateBegin,ctreatedDateEnd)){
 		layer.msg("工单创建日期开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	}else if(!App.checkDate(approveDateBegin,approveDateEnd)){
 		layer.msg("合同审批通过日期开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	}else if(!App.checkDate(sealAndSignDateBegin,sealAndSignDateEnd)){
 		layer.msg("签订盖章日期开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	};
-})
+}
 //点击iconfont弹出模态框事件
 $(function(){
 	//合同类型

@@ -93,14 +93,14 @@ function searchContractUpload() {
 /*
  * 日期修改时监听事件
  */
-$("#approveDateBegin,#approveDateEnd").on("blur",function(){
+function dataChangeEvent(dom){
 	var approveDateBegin = $("#approveDateBegin").val();
 	var approveDateEnd = $("#approveDateEnd").val();
 	if(!App.checkDate(approveDateBegin,approveDateEnd)){
 		layer.msg("审批通过日期开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	};
-})
+}
 /*
  * 用户手动输入时重置自定义“exactSearch”属性
  */

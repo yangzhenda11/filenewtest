@@ -37,14 +37,14 @@ function serarchForToDo(resetPaging){
 /*
  * 日期修改时监听事件
  */
-$("#startDate,#endDate").on("blur",function(){
+function dataChangeEvent(dom){
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
 	if(!App.checkDate(startDate,endDate)){
 		layer.msg("接收开始日期不能早于截止日期");
-		$(this).val("");
+		$(dom).val("");
 	};
-})
+}
 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
@@ -116,12 +116,17 @@ function getTableTodo(){
 			},
 			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "55%",
 				"render" : function(a, b, c, d){
+					console.log(a)
 					var assignee = c.assignee;
 		        	var buttontitle = "";
 		        	var fn = "";
 		        	var style = "";
 		        	if(curStaffOrgId == assignee){
-		        		fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
+		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
+		        		}else{
+		        			fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		}
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
@@ -198,7 +203,9 @@ function checkifdone(taskId){
 	});
 	return result;
 }
-
+/*
+ * 获取流程类型
+ */
 function getFlowKyeList(){
 	var ajaxObj = {
 	    "url" :  serverPath + "workflowrest/getFlowKeyList",
@@ -206,4 +213,55 @@ function getFlowKyeList(){
 	    "data" : null
 	}
 	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
+}
+/*
+ * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
+ */
+function redirectUrl(id,taskDefinitionKey,processInstanceId){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + id, null, function(data) {
+		var success = data.retCode;
+		if (success == 1){
+			var param = data.dataRows[0].param;
+			var resultParam = {};
+			param = param.split("&");
+			for(var i = 0; i < param.length; i ++) {   
+		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
+		   	};
+		   	var businessKey = resultParam.businessKey;
+		   	if(businessKey){
+		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey);
+		   	}else{
+		   		layer.msg("获取不到工单主键");
+		   	}
+		} else {
+			layer.msg(data.retValue);
+		}
+	});
+}
+/*
+ * 跳转到工单页面
+ */
+function jumpSanCpyQueryDetail(id,taskDefinitionKey){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+	function successCallback(result) {
+		var wcardProcess = result.data.wcardProcess;
+		var isPass = false;
+		if(taskDefinitionKey == "GDCL"){
+			if(wcardProcess == 0 || wcardProcess == 2){
+				isPass = true;
+			}
+		}else if(taskDefinitionKey == "GDQR"){
+			if(wcardProcess == 1){
+				isPass = true;
+			}
+		};
+		if(isPass == true){
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+id;
+			App.changePresentUrl(src);
+		}else{
+			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
 }

@@ -141,7 +141,8 @@
 	        slugCallback: function (filename) {
 	        	if(needChangeName){
 	        		if(extraData.displayName.indexOf(".") == -1){
-	        			extraData.displayName = extraData.displayName + "." + filename.split(".")[1];
+	        			var fileNameList = filename.split(".");
+	        			extraData.displayName = extraData.displayName + "." + fileNameList[fileNameList.length-1];
 	        		}
 	        	}
 	        	if($(".kv-fileinput-error").css("display") == "block"){

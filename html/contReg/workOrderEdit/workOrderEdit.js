@@ -87,9 +87,9 @@ $(function() {
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
-//		if(parm.canReturn != true){
-//			$(".returnBtn").remove();
-//		}
+		if(parm.canReturn != true){
+			$(".returnBtn").remove();
+		}
 		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 0);
 	};;

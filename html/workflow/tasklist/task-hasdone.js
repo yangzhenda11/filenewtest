@@ -151,8 +151,7 @@ function getFlowKyeList(){
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee){
+function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee){
 	var canWithDrawForDoneData = {
 		taskId: taskId,
 		taskDefinitionKey: taskDefinitionKey,

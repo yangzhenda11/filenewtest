@@ -116,7 +116,6 @@ function getTableTodo(){
 			},
 			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "55%",
 				"render" : function(a, b, c, d){
-					console.log(a)
 					var assignee = c.assignee;
 		        	var buttontitle = "";
 		        	var fn = "";

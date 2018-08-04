@@ -44,7 +44,6 @@ function getTableForDone(){
 			},
 			{"data": null,"title":"主题","className": "whiteSpaceNormal","width": "40%",
 				"render" : function(a, b, c, d){
-					console.log(c)
 					var assignee = c.assignee;
 		        	var buttontitle = "";
 		        	var fn = "";

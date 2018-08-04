@@ -87,9 +87,9 @@ $(function() {
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
-		if(parm.canReturn != true){
-			$(".returnBtn").remove();
-		}
+//		if(parm.canReturn != true){
+//			$(".returnBtn").remove();
+//		}
 		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 0);
 	};;
@@ -664,6 +664,31 @@ function setPinfoContent(){
 			});
 		}
 	};
+}
+//撤回@功能页面
+function returnProcess(){
+	if(formSubmit){
+		if(checkWcardIschange()){
+			return false;
+		};
+		layer.confirm("当前流程将撤回本环节，是否确认？",{icon:7,title:"提示"},function(index){
+			layer.close(index);
+			var postData = {
+				"processInstanceId": parm.processInstanceId,
+				"taskId": parm.taskId,
+				"wcardId": parm.wcardId
+			};
+			App.formAjaxJson(serverPath+"contractOrderEditorController/saveOrderWithdrawProcess", "post", JSON.stringify(postData), successCallback);
+			function successCallback(result) {
+				layer.alert("工单撤回成功",{icon:1},function(index){
+					backPage();
+				});
+			}
+		});
+	}else{
+		showLayerErrorMsg("页面加载失败");
+		return false;
+	}
 }
 /*
  * 检查工单状态和合同状态是否发生了改变

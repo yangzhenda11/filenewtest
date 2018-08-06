@@ -151,10 +151,11 @@ function conTabC() {
 					if($(this).data("id") == o) {
 						$(this).show().siblings(".J_iframe").hide();
 						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner");
-						if(dataTablesDom.css("width") == "100px"){
+						var dataTablesDomParent = dataTablesDom.parent();
+						if(dataTablesDom.css("width") != dataTablesDomParent.css("width")){
 							var parentName = $(this)[0].id;
 							var tableId = dataTablesDom.parents(".dataTables_wrapper")[0].id.split("_")[0];
-$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+							$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
 						}
 						return false
 					}
@@ -294,7 +295,8 @@ function conTabE() {
 			if($(this).data("id") == k) {
 				$(this).show().siblings(".J_iframe").hide();
 				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner");
-				if(dataTablesDom.css("width") == "100px"){
+				var dataTablesDomParent = dataTablesDom.parent();
+				if(dataTablesDom.css("width") != dataTablesDomParent.css("width")){
 					var parentName = $(this)[0].id;
 					var tableId = dataTablesDom.parents(".dataTables_wrapper")[0].id.split("_")[0];
 $("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();

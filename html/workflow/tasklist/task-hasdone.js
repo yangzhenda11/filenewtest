@@ -176,6 +176,7 @@ function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, 
 		}
 	});
 }
+//获取工单主键
 function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
 		var success = data.retCode;
@@ -188,7 +189,7 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canReturn="+canWithDraw+"&taskId="+taskId;
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
 		   		App.changePresentUrl(src);
 		   	}else{
 		   		layer.msg("获取不到工单主键");

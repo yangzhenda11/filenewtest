@@ -33,6 +33,9 @@ function handleTaskForDone(taskInfo) {
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
 	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR"){
+		$("#goTaskToDoDetailForDone").remove();
+		$("#searchContentForDone").hide();
+		$("#businessiframe").show();
 		redirectUrl(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee)
 	}else{
 		$("#goTaskToDoDetailForDone").load("/html/workflow/taskdetail/task-hasdone.html");
@@ -84,32 +87,21 @@ function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, 
 		data: canWithDrawForDoneData,
 		success:function(data){
 			var canWithDraw = data.canWithDraw;
-			getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw);
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
+	   		$('#businessiframe').attr("src",src);
 		},
 		error:function(e){
 			App.ajaxErrorCallback(e);
 		}
 	});
 }
-function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
-	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
-		var success = data.retCode;
-		if (success == 1){
-			var param = data.dataRows[0].param;
-			var resultParam = {};
-			param = param.split("&");
-			for(var i = 0; i < param.length; i ++) {   
-		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
-		   	};
-		   	var businessKey = resultParam.businessKey;
-		   	if(businessKey){
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canReturn="+canWithDraw+"&taskId="+taskId;
-		   		App.changePresentUrl(src);
-		   	}else{
-		   		layer.msg("获取不到工单主键");
-		   	}
-		} else {
-			layer.msg(data.retValue);
-		}
-	});
+function closeWindow(){
+//  if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") !=-1) {
+//      window.location.href="about:blank";
+//      window.close();
+//  } else {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+//  }
 }

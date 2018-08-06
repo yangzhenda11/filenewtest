@@ -34,7 +34,10 @@ function handleTaskToDo(taskInfo) {
 	$('#assigneeId').val(assignee);
 	
 	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR"){
-		redirectUrl(id,taskDefinitionKey,processInstanceId)
+		$("#goTaskToDoDetailForToDo").remove();
+		$("#searchContentForToDo").hide();
+		$("#businessiframe").show();
+		jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId);
 	}else{
 		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
 		$("#goTaskToDoDetailForToDo").show();
@@ -67,32 +70,8 @@ function getTaskInfo(){
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
-	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
-		var success = data.retCode;
-		if (success == 1){
-			var param = data.dataRows[0].param;
-			var resultParam = {};
-			param = param.split("&");
-			for(var i = 0; i < param.length; i ++) {   
-		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
-		   	};
-		   	var businessKey = resultParam.businessKey;
-		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
-		   	}else{
-		   		layer.msg("获取不到工单主键");
-		   	}
-		} else {
-			layer.msg(data.retValue);
-		}
-	});
-}
-/*
- * 跳转到工单页面
- */
-function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
+function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,null,null,false);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
 		var isPass = false;
@@ -106,12 +85,23 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
-			App.changePresentUrl(src);
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
+			$('#businessiframe').attr("src",src);
 		}else{
-			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
+			layer.alert("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
 				layer.close(index);
+				closeWindow();
 			});
 		}
 	}
+}
+function closeWindow(){
+//  if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") !=-1) {
+//      window.location.href="about:blank";
+//      window.close();
+//  } else {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+//  }
 }

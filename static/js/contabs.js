@@ -290,7 +290,6 @@ function conTabJ() {
 
 function conTabE() {
 	if(!$(this).hasClass("active")) {
-		alert(1);
 		var k = $(this).data("id");
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == k) {

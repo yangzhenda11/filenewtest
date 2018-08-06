@@ -186,7 +186,7 @@ svg {
 }
 
 body {
-	background-image: url("/static/img/blueprint.png?t=1533544935931")
+	background-image: url("/static/img/blueprint.png?t=1533547543926")
 }
 
 div#da-header #da-header-top {
@@ -1399,7 +1399,7 @@ div#da-error-wrapper #da-error-code {
 	line-height: 1;
 	font-size: 32px;
 	text-align: center;
-	background: url("/static/img/error-hanger.png?t=1533544935931") no-repeat center center;
+	background: url("/static/img/error-hanger.png?t=1533547543926") no-repeat center center;
 	-webkit-transform-origin: center top;
 	-moz-transform-origin: center top;
 	transform-origin: center top;
@@ -1422,7 +1422,7 @@ div#da-error-wrapper #da-error-pin {
 	margin-bottom: -27px;
 	z-index: 10;
 	position: relative;
-	background: url("/static/img/error-pin.png?t=1533544935931") no-repeat center center
+	background: url("/static/img/error-pin.png?t=1533547543926") no-repeat center center
 }
 
 div#da-error-wrapper p {

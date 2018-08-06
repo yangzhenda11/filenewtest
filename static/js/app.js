@@ -685,7 +685,7 @@ var App = function() {
 			        		});
 						}
 	        		}else{
-	        			layer.alert("接口错误,url为"+url, {icon: 2,title:"错误"});
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
 	        		};
 				}
 			});

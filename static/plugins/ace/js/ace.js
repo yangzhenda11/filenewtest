@@ -112,6 +112,9 @@ jQuery(function($) {
 	function enableSidebar() {
 		if(ace_menus){
 			menu(ace_menus,"actionUl");
+			if($("#actionUl li:first")[0]){
+				$("#actionUl li:first").addClass("open");
+			}
 		}
 		//initiate sidebar function
 		var $sidebar = $('.sidebar');

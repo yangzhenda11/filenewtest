@@ -87,7 +87,7 @@ $(function() {
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
-		if(parm.canReturn != true){
+		if(parm.canWithDraw != "true"){
 			$(".returnBtn").remove();
 		}
 		$pageContent.removeClass("hidden");
@@ -983,6 +983,8 @@ function loadComplete() {
 	getBusiProcessInfoID();
 	//加载快捷跳转
 	setSpeedyJump();
+	//如果为工单待办激活请求已阅接口
+	setHaveRead();
 	//增加事件委托，input失去焦点时检查是否maxLength超长
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
@@ -1349,6 +1351,40 @@ function getFlowhistory(){
 	}
 }
 /*
+ * 若为工单激活设置已阅
+ */
+function setHaveRead(){
+	if(parm.taskFlag == "db" && parm.taskDefinitionKey == "GDQR" && parm.pageType == 2){
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
+		$.ajax({
+			url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+flowParams.processInstanceId+'&taskId='+flowParams.taskId+'&businessId='+parm.wcardId, 
+			type:"POST",
+			success:function(result){
+				if (result.success == 1) {
+					var taskInfo = result.taskInfo;
+					taskInfo.name = taskInfo.linkName;
+					delete taskInfo.linkName;
+					$.ajax({
+						url:serverPath + 'workflowrest/taskToDoDetail', 
+						type: "POST",
+						data: taskInfo,
+						success:function(data){},
+						error:function(e){
+							App.ajaxErrorCallback(e);
+						}
+					});
+				} else {
+					layer.msg(result.info);
+				};
+			},
+			error:function(e){
+				App.ajaxErrorCallback(e);
+			}
+		});
+	}
+	
+}
+/*
  * input双击事件
  */
 //var tipsIndex = null;
@@ -1370,7 +1406,11 @@ function getFlowhistory(){
 //})
 //返回上一页
 function backPage(){
-	window.history.go(-1);
+	if(parm.isucloud == "true"){
+		top.closeWindow();
+	}else{
+		window.history.go(-1);
+	}
 }
 /*
  * 加载意见

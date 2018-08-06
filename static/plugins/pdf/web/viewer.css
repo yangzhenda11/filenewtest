@@ -522,7 +522,7 @@ html[dir='rtl'] #viewerContainer {
   width: 200px;
   height: 32px;
   background-color: #424242; /* fallback */
-  background-image: url(/static/plugins/pdf/web/images/texture.png?t=1533521556156),
+  background-image: url(/static/plugins/pdf/web/images/texture.png?t=1533544935931),
                     linear-gradient(hsla(0,0%,30%,.99), hsla(0,0%,25%,.95));
 }
 html[dir='ltr'] #toolbarSidebar {
@@ -542,7 +542,7 @@ html[dir='rtl'] #toolbarSidebar {
   position: relative;
   /*height: 32px;*/
   background-color: #474747; /* fallback */
-  background-image: url(/static/plugins/pdf/web/images/texture.png?t=1533521556156),
+  background-image: url(/static/plugins/pdf/web/images/texture.png?t=1533544935931),
                     linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
 }
 html[dir='ltr'] #toolbarContainer, .findbar, .secondaryToolbar {
@@ -671,7 +671,7 @@ html[dir='rtl'] .findbar {
   font-style: italic;
 }
 #findInput[data-status="pending"] {
-  background-image: url(/static/plugins/pdf/web/images/loading-small.png?t=1533521556156);
+  background-image: url(/static/plugins/pdf/web/images/loading-small.png?t=1533544935931);
   background-repeat: no-repeat;
   background-position: right;
 }
@@ -1024,7 +1024,7 @@ html[dir='rtl'] .dropdownToolbarButton {
   max-width: 120px;
   padding: 0;
   overflow: hidden;
-  background: url(/static/plugins/pdf/web/images/toolbarButton-menuArrows.png?t=1533521556156) no-repeat;
+  background: url(/static/plugins/pdf/web/images/toolbarButton-menuArrows.png?t=1533544935931) no-repeat;
 }
 html[dir='ltr'] .dropdownToolbarButton {
   background-position: 95%;
@@ -1106,73 +1106,73 @@ html[dir="rtl"] .secondaryToolbarButton::before {
 }
 
 html[dir='ltr'] .toolbarButton#sidebarToggle::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle.png?t=1533544935931);
 }
 html[dir='rtl'] .toolbarButton#sidebarToggle::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle-rtl.png?t=1533544935931);
 }
 
 html[dir='ltr'] .toolbarButton#secondaryToolbarToggle::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle.png?t=1533544935931);
 }
 html[dir='rtl'] .toolbarButton#secondaryToolbarToggle::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle-rtl.png?t=1533544935931);
 }
 
 html[dir='ltr'] .toolbarButton.findPrevious::before {
-  content: url(/static/plugins/pdf/web/images/findbarButton-previous.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/findbarButton-previous.png?t=1533544935931);
 }
 html[dir='rtl'] .toolbarButton.findPrevious::before {
-  content: url(/static/plugins/pdf/web/images/findbarButton-previous-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/findbarButton-previous-rtl.png?t=1533544935931);
 }
 
 html[dir='ltr'] .toolbarButton.findNext::before {
-  content: url(/static/plugins/pdf/web/images/findbarButton-next.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/findbarButton-next.png?t=1533544935931);
 }
 html[dir='rtl'] .toolbarButton.findNext::before {
-  content: url(/static/plugins/pdf/web/images/findbarButton-next-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/findbarButton-next-rtl.png?t=1533544935931);
 }
 
 html[dir='ltr'] .toolbarButton.pageUp::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp.png?t=1533544935931);
 }
 html[dir='rtl'] .toolbarButton.pageUp::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp-rtl.png?t=1533544935931);
 }
 
 html[dir='ltr'] .toolbarButton.pageDown::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown.png?t=1533544935931);
 }
 html[dir='rtl'] .toolbarButton.pageDown::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown-rtl.png?t=1533544935931);
 }
 
 .toolbarButton.zoomOut::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-zoomOut.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-zoomOut.png?t=1533544935931);
 }
 
 .toolbarButton.zoomIn::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-zoomIn.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-zoomIn.png?t=1533544935931);
 }
 
 .toolbarButton.presentationMode::before,
 .secondaryToolbarButton.presentationMode::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-presentationMode.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-presentationMode.png?t=1533544935931);
 }
 
 .toolbarButton.print::before,
 .secondaryToolbarButton.print::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-print.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-print.png?t=1533544935931);
 }
 
 .toolbarButton.openFile::before,
 .secondaryToolbarButton.openFile::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-openFile.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-openFile.png?t=1533544935931);
 }
 
 .toolbarButton.download::before,
 .secondaryToolbarButton.download::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-download.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-download.png?t=1533544935931);
 }
 
 .toolbarButton.bookmark,
@@ -1195,26 +1195,26 @@ html[dir='rtl'] .toolbarButton.pageDown::before {
 
 .toolbarButton.bookmark::before,
 .secondaryToolbarButton.bookmark::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-bookmark.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-bookmark.png?t=1533544935931);
 }
 
 #viewThumbnail.toolbarButton::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-viewThumbnail.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-viewThumbnail.png?t=1533544935931);
 }
 
 html[dir="ltr"] #viewOutline.toolbarButton::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline.png?t=1533544935931);
 }
 html[dir="rtl"] #viewOutline.toolbarButton::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline-rtl.png?t=1533544935931);
 }
 
 #viewAttachments.toolbarButton::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-viewAttachments.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-viewAttachments.png?t=1533544935931);
 }
 
 #viewFind.toolbarButton::before {
-  content: url(/static/plugins/pdf/web/images/toolbarButton-search.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/toolbarButton-search.png?t=1533544935931);
 }
 
 .toolbarButton.pdfSidebarNotification::after {
@@ -1268,31 +1268,31 @@ html[dir="rtl"] .secondaryToolbarButton > span {
 }
 
 .secondaryToolbarButton.firstPage::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-firstPage.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-firstPage.png?t=1533544935931);
 }
 
 .secondaryToolbarButton.lastPage::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-lastPage.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-lastPage.png?t=1533544935931);
 }
 
 .secondaryToolbarButton.rotateCcw::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCcw.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCcw.png?t=1533544935931);
 }
 
 .secondaryToolbarButton.rotateCw::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCw.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCw.png?t=1533544935931);
 }
 
 .secondaryToolbarButton.selectTool::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-selectTool.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-selectTool.png?t=1533544935931);
 }
 
 .secondaryToolbarButton.handTool::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-handTool.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-handTool.png?t=1533544935931);
 }
 
 .secondaryToolbarButton.documentProperties::before {
-  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-documentProperties.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-documentProperties.png?t=1533544935931);
 }
 
 .verticalToolbarSeparator {
@@ -1353,7 +1353,7 @@ html[dir='rtl'] .verticalToolbarSeparator {
 }
 
 .toolbarField.pageNumber.visiblePageIsLoading {
-  background-image: url(/static/plugins/pdf/web/images/loading-small.png?t=1533521556156);
+  background-image: url(/static/plugins/pdf/web/images/loading-small.png?t=1533544935931);
   background-repeat: no-repeat;
   background-position: 1px;
 }
@@ -1538,15 +1538,15 @@ html[dir='rtl'] .attachmentsItem > button {
   color: hsla(0,0%,100%,.5);
 }
 .outlineItemToggler::before {
-  content: url(/static/plugins/pdf/web/images/treeitem-expanded.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/treeitem-expanded.png?t=1533544935931);
   display: inline-block;
   position: absolute;
 }
 html[dir='ltr'] .outlineItemToggler.outlineItemsHidden::before {
-  content: url(/static/plugins/pdf/web/images/treeitem-collapsed.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/treeitem-collapsed.png?t=1533544935931);
 }
 html[dir='rtl'] .outlineItemToggler.outlineItemsHidden::before {
-  content: url(/static/plugins/pdf/web/images/treeitem-collapsed-rtl.png?t=1533521556156);
+  content: url(/static/plugins/pdf/web/images/treeitem-collapsed-rtl.png?t=1533544935931);
 }
 .outlineItemToggler.outlineItemsHidden ~ .outlineItems {
   display: none;
@@ -1665,7 +1665,7 @@ html[dir='rtl'] .outlineItemToggler::before {
   font-size: 12px;
   line-height: 14px;
   background-color: #474747; /* fallback */
-  background-image: url(/static/plugins/pdf/web/images/texture.png?t=1533521556156),
+  background-image: url(/static/plugins/pdf/web/images/texture.png?t=1533544935931),
                     linear-gradient(hsla(0,0%,32%,.99), hsla(0,0%,27%,.95));
   box-shadow: inset 1px 0 0 hsla(0,0%,100%,.08),
               inset 0 1px 1px hsla(0,0%,0%,.15),
@@ -1893,148 +1893,148 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 
   .toolbarField.pageNumber.visiblePageIsLoading,
   #findInput[data-status="pending"] {
-    background-image: url(/static/plugins/pdf/web/images/loading-small@2x.png?t=1533521556156);
+    background-image: url(/static/plugins/pdf/web/images/loading-small@2x.png?t=1533544935931);
     background-size: 16px 17px;
   }
 
   .dropdownToolbarButton {
-    background: url(/static/plugins/pdf/web/images/toolbarButton-menuArrows@2x.png?t=1533521556156) no-repeat;
+    background: url(/static/plugins/pdf/web/images/toolbarButton-menuArrows@2x.png?t=1533544935931) no-repeat;
     background-size: 7px 16px;
   }
 
   html[dir='ltr'] .toolbarButton#sidebarToggle::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .toolbarButton#sidebarToggle::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-sidebarToggle-rtl@2x.png?t=1533544935931);
   }
 
   html[dir='ltr'] .toolbarButton#secondaryToolbarToggle::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .toolbarButton#secondaryToolbarToggle::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-secondaryToolbarToggle-rtl@2x.png?t=1533544935931);
   }
 
   html[dir='ltr'] .toolbarButton.findPrevious::before {
-    content: url(/static/plugins/pdf/web/images/findbarButton-previous@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/findbarButton-previous@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .toolbarButton.findPrevious::before {
-    content: url(/static/plugins/pdf/web/images/findbarButton-previous-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/findbarButton-previous-rtl@2x.png?t=1533544935931);
   }
 
   html[dir='ltr'] .toolbarButton.findNext::before {
-    content: url(/static/plugins/pdf/web/images/findbarButton-next@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/findbarButton-next@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .toolbarButton.findNext::before {
-    content: url(/static/plugins/pdf/web/images/findbarButton-next-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/findbarButton-next-rtl@2x.png?t=1533544935931);
   }
 
   html[dir='ltr'] .toolbarButton.pageUp::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .toolbarButton.pageUp::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-pageUp-rtl@2x.png?t=1533544935931);
   }
 
   html[dir='ltr'] .toolbarButton.pageDown::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .toolbarButton.pageDown::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-pageDown-rtl@2x.png?t=1533544935931);
   }
 
   .toolbarButton.zoomIn::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-zoomIn@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-zoomIn@2x.png?t=1533544935931);
   }
 
   .toolbarButton.zoomOut::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-zoomOut@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-zoomOut@2x.png?t=1533544935931);
   }
 
   .toolbarButton.presentationMode::before,
   .secondaryToolbarButton.presentationMode::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-presentationMode@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-presentationMode@2x.png?t=1533544935931);
   }
 
   .toolbarButton.print::before,
   .secondaryToolbarButton.print::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-print@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-print@2x.png?t=1533544935931);
   }
 
   .toolbarButton.openFile::before,
   .secondaryToolbarButton.openFile::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-openFile@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-openFile@2x.png?t=1533544935931);
   }
 
   .toolbarButton.download::before,
   .secondaryToolbarButton.download::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-download@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-download@2x.png?t=1533544935931);
   }
 
   .toolbarButton.bookmark::before,
   .secondaryToolbarButton.bookmark::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-bookmark@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-bookmark@2x.png?t=1533544935931);
   }
 
   #viewThumbnail.toolbarButton::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-viewThumbnail@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-viewThumbnail@2x.png?t=1533544935931);
   }
 
   html[dir="ltr"] #viewOutline.toolbarButton::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline@2x.png?t=1533544935931);
   }
   html[dir="rtl"] #viewOutline.toolbarButton::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-viewOutline-rtl@2x.png?t=1533544935931);
   }
 
   #viewAttachments.toolbarButton::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-viewAttachments@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-viewAttachments@2x.png?t=1533544935931);
   }
 
   #viewFind.toolbarButton::before {
-    content: url(/static/plugins/pdf/web/images/toolbarButton-search@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/toolbarButton-search@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.firstPage::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-firstPage@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-firstPage@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.lastPage::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-lastPage@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-lastPage@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.rotateCcw::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCcw@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCcw@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.rotateCw::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCw@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-rotateCw@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.selectTool::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-selectTool@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-selectTool@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.handTool::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-handTool@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-handTool@2x.png?t=1533544935931);
   }
 
   .secondaryToolbarButton.documentProperties::before {
-    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-documentProperties@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/secondaryToolbarButton-documentProperties@2x.png?t=1533544935931);
   }
 
   .outlineItemToggler::before {
     -webkit-transform: scale(0.5);
     transform: scale(0.5);
     top: -1px;
-    content: url(/static/plugins/pdf/web/images/treeitem-expanded@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/treeitem-expanded@2x.png?t=1533544935931);
   }
   html[dir='ltr'] .outlineItemToggler.outlineItemsHidden::before {
-    content: url(/static/plugins/pdf/web/images/treeitem-collapsed@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/treeitem-collapsed@2x.png?t=1533544935931);
   }
   html[dir='rtl'] .outlineItemToggler.outlineItemsHidden::before {
-    content: url(/static/plugins/pdf/web/images/treeitem-collapsed-rtl@2x.png?t=1533521556156);
+    content: url(/static/plugins/pdf/web/images/treeitem-collapsed-rtl@2x.png?t=1533544935931);
   }
   html[dir='ltr'] .outlineItemToggler::before {
     right: 0;

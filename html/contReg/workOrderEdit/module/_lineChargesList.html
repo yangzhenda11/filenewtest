@@ -277,19 +277,21 @@
 	 * 获取线路资费信息字典值
 	 */
 	function getIncomeLinerenDict() {
-		incomeLinerentType = createIncomeLinerenDictHtml(App.getDictInfo(9060));
-		incomeLinerentName9070 = createIncomeLinerenDictHtml(App.getDictInfo(9070));
-		incomeLinerentName9073 = createIncomeLinerenDictHtml(App.getDictInfo(9073));
-		incomeLinerentName9076 = createIncomeLinerenDictHtml(App.getDictInfo(9076));
-		incomeLinerentProp = createIncomeLinerenDictHtml(App.getDictInfo(9080));
-		incomeLinerentLable = createIncomeLinerenDictHtml(App.getDictInfo(9090));
-		incomeLinerentCycle = createIncomeLinerenDictHtml(App.getDictInfo(9015));
-		incomeProductRange = createIncomeLinerenDictHtml(App.getDictInfo(9095));
+		incomeLinerentType = createIncomeLinerenDictHtml(App.getDictInfo(9060,true));
+		incomeLinerentName9070 = createIncomeLinerenDictHtml(App.getDictInfo(9070,true));
+		incomeLinerentName9073 = createIncomeLinerenDictHtml(App.getDictInfo(9073,true));
+		incomeLinerentName9076 = createIncomeLinerenDictHtml(App.getDictInfo(9076,true));
+		incomeLinerentProp = createIncomeLinerenDictHtml(App.getDictInfo(9080,true));
+		incomeLinerentLable = createIncomeLinerenDictHtml(App.getDictInfo(9090,true));
+		incomeLinerentCycle = createIncomeLinerenDictHtml(App.getDictInfo(9015,true));
+		incomeProductRange = createIncomeLinerenDictHtml(App.getDictInfo(9095,true));
 	};
 	function createIncomeLinerenDictHtml(data){
+		console.log(data);
 		var selectHtml = "<option value=''>请选择</option>";
 		$.each(data, function(k,v) {
-			selectHtml += "<option value='"+ k +"'>"+ v +"</option>";
+			console.log(v);
+			selectHtml += "<option value='"+ v.dictValue +"'>"+ v.dictLabel +"</option>";
 		});
 		return selectHtml;
 	}

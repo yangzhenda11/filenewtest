@@ -1240,16 +1240,20 @@ var App = function() {
 		/*
 		 * 获取字典信息
 		 */
-		getDictInfo:function(code){
+		getDictInfo:function(code,notPackage){
 			var postData = {"dictId": code};
 			var resturnData = {};
 			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
 
 			function successCallback(result) {
 				var data = result.data;
-				for(var i = 0; i < data.length; i++){
-					resturnData[data[i].dictValue] = data[i].dictLabel
-				};
+				if(notPackage){
+					resturnData = data;
+				}else{
+					for(var i = 0; i < data.length; i++){
+						resturnData[data[i].dictValue] = data[i].dictLabel
+					};
+				}
 			};
 			function improperCallback(result){
 				layer.msg("字典项"+code+"异常");

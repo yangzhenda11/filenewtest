@@ -2,10 +2,6 @@
 	#fileUploadModalBody{
 		overflow: auto;
 	}
-	.fileUploadModalForm{
-		padding-top: 20px;
-		padding-bottom: 20px;
-	}
 	.fileUploadModalForm .form-group{
 		display:table;
 	}
@@ -50,11 +46,29 @@
                	<div class="form-group col-sm-12">
                     <label for="partnerCode" class="control-label">上传说明</label>
                     <div class="valiParent" id="fileUpliadExplain" style="color: red;">
+                        <i class="iconfont icon-mi required"></i>删除上传成功文件列表中的文件，此文档不做上传处理。</br>
                         <i class="iconfont icon-mi required"></i>文件大小不能超过100M。
                     </div>
                 </div>
+                <div class="form-group col-sm-12">
+                    <label for="partnerCode">上传成功文件</label>
+                    <table class="table table-hover table-bordered table-striped align-center">
+                        <thead>
+							<tr>
+								<th class="align-center">文件名</th>
+								<th class="align-center">操作</th>
+							</tr>
+						</thead>
+						<tbody id="uploadSuccessFile">
+							<tr class="defaultTr">
+								<td colspan="2">暂无文件</td>
+							</tr>
+						</tbody>
+                    </table>
+                </div>
            </div>
 		<div class="modal-footer">
+			<button type="button" onclick="getFileUploadInfo()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
 			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
 		</div>
 	</div>
@@ -65,14 +79,20 @@
 	var config = top.globalConfig;
 	var fileUploadPath = config.fileUploadPath;
 	var successCallback = null;
-	var fileCommonUploadObj = [];
+	var fileUploadMaxNumeber = 99;
+	var fileCommonUploadObj = {};
 	var fileUploadFlag = 1;
+	var fileUploadModalBodyHeight = $(".page-content").height() - 185;
 	var needChangeName = false;
+	$("#fileUploadModalBody").css("max-height", fileUploadModalBodyHeight);
 	function setParm(setting,queryCallback){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#fileUpliadExplain").append(setting.explain);
 		$("#commomModal").modal("show");
+		if(setting.maxNumber){
+			fileUploadMaxNumeber = setting.maxNumber;
+		}
 		var emptyFn = function(){};
 		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		var uploadAsync = setting.uploadAsync == undefined ? true : setting.uploadAsync;
@@ -98,6 +118,12 @@
 		};
 		initFileUpload(setting.url,uploadAsync,fileExtensions,extraData,maxFileSize);
 	}
+	$("#uploadFileName").on("click",function(){
+		if($(".fileItem").length >= fileUploadMaxNumeber){
+			layer.msg("最多上传"+fileUploadMaxNumeber+"个文件，若继续上传请先删除文件！",{icon:2,time:4000});
+			return false;
+		}
+	})
 	/*
 	 * 文件上传
 	 */
@@ -150,27 +176,58 @@
 		});
 	    function parseResult(data){
 	    	if(data.response.status == 1){
-	    		layer.msg("上传成功");
 	    		if(data.extra.displayName == "" || data.extra.displayName == undefined){
 	    			var fileName = data.files[0].name;
 	    		}else{
 	    			var fileName = data.extra.displayName;
 	    		};
-	    		var itemInfo = {
-	    			name:fileName,
-	    			data:data.response.data
-	    		};
-	    		fileCommonUploadObj.push(itemInfo);
-	    		successCallback();
+	    		fileUploadFlag++;
+	    		$(".defaultTr").addClass("hidden");
+				var keys = "fileSave" + fileUploadFlag;
+				var html = '<tr><td>'+ fileName +
+				'</td><td><button type="button" data-name="'+fileName+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
+				$("#uploadSuccessFile").append(html);
+				fileCommonUploadObj[keys] = data.response.data;
+		    	layer.msg(data.response.message);
+		    	$("#uploadFileName").fileinput('reset');
 	    	}else{
 	    		layer.alert(data.response.message,{icon:2,title:"错误"});
 	    	}
 	    }
 	}
+	/*
+	 * 列表内删除
+	 */
+	$("table").on("click",".fileItem",function(el){
+		delete fileCommonUploadObj[$(this).data("keys")];
+		$(this).parent().parent().remove();
+		if($("#uploadSuccessFile").children().length == 1){
+			$(".defaultTr").removeClass("hidden");
+		}
+	})
     /*
-     * 获取上传结果
+     * 获取列表内内容
      */
     function getFileItemInfo(){
-    	return fileCommonUploadObj;
+    	var fileInfo = [];
+    	$(".fileItem").each(function(index,element){
+    		var itemInfo = {
+    			name:$(element).data("name"),
+    			data:fileCommonUploadObj[$(element).data("keys")]
+    		};
+    		fileInfo.push(itemInfo);
+    	});
+    	return fileInfo;
+    }
+    /*
+     * 点击确定执行的方法
+     */
+    function getFileUploadInfo(){
+    	var fileUploadItem = getFileItemInfo();
+    	if(fileUploadItem.length == 0){
+    		layer.msg("请先点击上传按钮上传文件后再执行该操作！",{icon:2,time:3000})
+    	}else{
+    		successCallback();
+    	}
     }
 </script>

@@ -142,7 +142,11 @@
 			$("#contractText").data("attachid",bodyDocData.attachId);
 			$("#contractText").data("displayname",bodyDocData.displayName);
 		}else{
-			layer.msg("获取不到合同正文扫描件信息");
+			if(wcardTypeCode == 2){
+				layer.msg("获取不到合同签订盖章页扫描件信息");
+			}else{
+				layer.msg("获取不到合同正文扫描件信息");
+			};
 			$("#contractTextUploadBtn").attr("disabled","disabled");
 		}
 	}
@@ -151,8 +155,13 @@
 	 */
 	$("#contractTextUploadBtn").on("click",function(){
 		var bodyDocStoreId = $("#contractText").data("storeid");
+		if(wcardTypeCode == 2){
+			var bodyDocMessage = "合同签订盖章页扫描件";
+		}else{
+			var bodyDocMessage = "合同正文扫描件";
+		}
 		if(bodyDocStoreId){
-			layer.confirm("是否要删除已上传的正文扫描件",{icon:7,title:"提示"},function(index){
+			layer.confirm("是否要删除已上传的"+bodyDocMessage,{icon:7,title:"提示"},function(index){
 				layer.close(index);
 				var bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
 				$("#contractText").data("storeid","");
@@ -168,7 +177,7 @@
 				var displayName = contractNumber+"正文扫描件&^&";
 			};
 			var setting = {
-				title : "正文上传",
+				title : bodyDocMessage+"上传",
 				url: 'fileload/uploadFileS3',
 				maxNumber:1,
 				extraData:{displayName:displayName}
@@ -181,6 +190,7 @@
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("删除");
 				$("#contractText").data("storeid",fileInfo.data);
+				saveReplenishContractInfo();
 			}
 			App.getFileUploadModal(setting,queryCallback);
 		}
@@ -250,10 +260,20 @@
 			var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 			dom.parents("tr").data("storeid",fileInfo.data);
 			dom.parent("td").html(btnHtml);
+			saveReplenishContractInfo();
 		}
 		App.getFileUploadModal(setting,queryCallback);
 	})
-	
+	/*
+	 * 上传成功后立即保存合同正文和附件列表
+	 */
+	function saveReplenishContractInfo(){
+		var url = serverPath + "contractOrderEditorController/saveOrderFile";
+		App.formAjaxJson(url, "post", JSON.stringify(getContractUploadInfo(1)), successCallback);
+		function successCallback(result) {
+			layer.msg("上传成功");
+		}
+	}
 	/*
 	 * 获取正文扫描件及附件信息
 	 * uploadStatus:1保存

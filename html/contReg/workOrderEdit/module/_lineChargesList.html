@@ -287,10 +287,8 @@
 		incomeProductRange = createIncomeLinerenDictHtml(App.getDictInfo(9095,true));
 	};
 	function createIncomeLinerenDictHtml(data){
-		console.log(data);
 		var selectHtml = "<option value=''>请选择</option>";
 		$.each(data, function(k,v) {
-			console.log(v);
 			selectHtml += "<option value='"+ v.dictValue +"'>"+ v.dictLabel +"</option>";
 		});
 		return selectHtml;

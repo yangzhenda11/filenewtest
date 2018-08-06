@@ -168,6 +168,7 @@
 				$("#contractText").removeClass("contractDocSty").addClass("col-sm-4");
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("添加");
+				saveReplenishContractInfo();
 			});
 		}else{
 			var attachId = $("#contractText").data("attachid");
@@ -190,7 +191,7 @@
 				$("#contractText").html(bodyDocHtml);
 				$("#contractTextUploadBtn").text("删除");
 				$("#contractText").data("storeid",fileInfo.data);
-				saveReplenishContractInfo();
+				saveReplenishContractInfo(true);
 			}
 			App.getFileUploadModal(setting,queryCallback);
 		}
@@ -243,6 +244,7 @@
 			var btnHtml = '<button type="button" class="btn primary btn-outline btn-xs attachUploadBtn">添加</button>';
 			dom.parents("tr").data("storeid","");
 			dom.parent("td").html(btnHtml);
+			saveReplenishContractInfo();
 		});
 	})
 	//添加
@@ -260,18 +262,23 @@
 			var btnHtml = '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">查看</a><a class="attachDelectBtn marginLeft25">删除</a>';
 			dom.parents("tr").data("storeid",fileInfo.data);
 			dom.parent("td").html(btnHtml);
-			saveReplenishContractInfo();
+			saveReplenishContractInfo(true);
 		}
 		App.getFileUploadModal(setting,queryCallback);
 	})
 	/*
 	 * 上传成功后立即保存合同正文和附件列表
 	 */
-	function saveReplenishContractInfo(){
+	function saveReplenishContractInfo(isUpload){
 		var url = serverPath + "contractOrderEditorController/saveOrderFile";
 		App.formAjaxJson(url, "post", JSON.stringify(getContractUploadInfo(1)), successCallback);
 		function successCallback(result) {
-			layer.msg("上传成功");
+			if(isUpload){
+				layer.msg("上传成功");
+			}else{
+				layer.msg("删除成功");
+			}
+			
 		}
 	}
 	/*

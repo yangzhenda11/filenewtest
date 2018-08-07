@@ -113,14 +113,14 @@
 						<label for="effectiveDate" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
 						<div class="valiParent input-group">
 							<input type="text" name="effectiveDate" id="effectiveDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
-							<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+							<span class="input-group-addon" onclick="WdatePicker({el:'effectiveDate'})"><i class="iconfont icon-calendar"></i></span>
 						</div>
 					</div>
 					<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
 						<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
 						<div class="valiParent input-group">
 							<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
-							<span class="input-group-addon"><i class="iconfont icon-calendar"></i></span>
+							<span class="input-group-addon" onclick="WdatePicker({el:'expiryDate'})"><i class="iconfont icon-calendar"></i></span>
 						</div>
 					</div>
 					<div class="col-sm-6 form-group hidden" id="effectConditionDiv">
@@ -341,7 +341,7 @@
 			partySignHtml += '<tr data-id="'+ data[k].stampedId +'">'+
 							'<td>'+ (k+1) +'</td>'+
 							'<td>'+ data[k].partyName +'</td>'+
-							'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedDate" readonly="readonly" /><span class="input-group-addon"><i class="iconfont icon-calendar"></i></span></div></td>'+
+							'<td class="dataInputGroup"><div class="input-group form-group mar0pad15"><input type="text" id="'+partySignDate+'" name="'+partySignDate+'" value="'+ stampedDate +'" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" class="form-control stampedDate" readonly="readonly" /><span class="input-group-addon" onclick="WdatePicker({el:\''+partySignDate+'\'})"><i class="iconfont icon-calendar"></i></span></div></td>'+
 						'</tr>';
 		}
 		if(type == "partyASignDate"){

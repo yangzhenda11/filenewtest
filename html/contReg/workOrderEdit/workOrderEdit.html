@@ -81,8 +81,11 @@
 	                    <h4 class="modal-title">选择履行人</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="feasorTreeCotent">
-	                		<ul id="feasorTree" class="ztree feasorTree"></ul>
+	                	<div id="feasorTreeLeftCotent">
+	                		<input class="form-control" id="feasorTreeInput" placeholder="键入人员名称查询" />
+		                	<div id="feasorTreeCotent">
+	                			<ul id="feasorTree" class="ztree feasorTree"></ul>
+		                	</div>
 	                	</div>
 	                	<div id="feasorCheckTool">
 	                		<button type="button" class="btn red" onclick="setFeasorValue()">></button>
@@ -109,8 +112,11 @@
 	                    <h4 class="modal-title">选择客户经理</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="customerManagerCotent">
-	                		<ul id="customerManagerTree" class="ztree customerManagerTree"></ul>
+	                	<div id="customerLeftContent">
+	                		<input class="form-control" id="customerManagerInput" placeholder="键入人员名称查询" />
+		                	<div id="customerManagerCotent">
+	                			<ul id="customerManagerTree" class="ztree customerManagerTree"></ul>
+		                	</div>
 	                	</div>
 	                	<div id="customerManagerCheckTool">
 	                		<button type="button" class="btn red" onclick="setCustomerManagerValue()">></button>
@@ -211,6 +217,7 @@
 		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
+		<script src="../../../static/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
 		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>

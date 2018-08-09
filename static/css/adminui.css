@@ -1726,8 +1726,7 @@ Dropdowns
 Dropdown Menu
 ***/
 /*rtl:ignore*/
-.dropdown-menu {
-  box-shadow: 5px 5px rgba(102, 102, 102, 0.1); }
+
 
 .dropdown-menu {
   left: 0/*rtl:auto*/;
@@ -1755,7 +1754,7 @@ Dropdown Menu
   .dropdown-menu li.header {
     padding: 8px 14px 2px 14px; }
   .dropdown-menu > li > a {
-    padding: 8px 16px;
+    padding: 6px 14px;
     color: #6e6e6e;
     text-decoration: none;
     display: block;

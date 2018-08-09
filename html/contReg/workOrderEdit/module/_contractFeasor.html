@@ -103,7 +103,7 @@
 	 */
 	$("#feasorTreeInput").typeahead({
 		afterSelect: setFeasorInput,
-		delay: 500,
+		delay: 300,
 		addItem: {"name":"查询不到数据","id":""},
 		clearElement: true,
         source: function (query, process) {
@@ -116,11 +116,10 @@
                 	var data = result.data;
                 	if(data.length > 0){
                 		for(var k = 0; k < data.length; k++){
-                			var name = data[k].name;
-                			var fullName = data[k].fullName;
-                			var staffOrgType = data[k].staffOrgType == "J" ? "(兼岗)" : "(主岗)";
-                			data[k].name = name + "("+fullName+")  " + staffOrgType;
-                			data[k].defalutName = name;
+                			data[k].defalutName = data[k].name;
+                			var staffOrgType = data[k].staffOrgType == "J" ? "-兼岗)" : "-主岗)";
+                			var name = data[k].name + "(" + data[k].loginName +")" + "("+data[k].fullName + staffOrgType;
+                			data[k].name = name;
                 		}
                 	};
                     return process(data);

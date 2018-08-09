@@ -111,7 +111,7 @@
                 url: '/contractType/listPerformerStaff',
                 type: 'post',
                 global: false,
-                data: {staffName: query,executorType:0},
+                data: {staffName: query,executorType:getExecutorType()},
                 success: function (result) {
                 	var data = result.data;
                 	if(data.length > 0){
@@ -119,7 +119,7 @@
                 			var name = data[k].name;
                 			var fullName = data[k].fullName;
                 			var staffOrgType = data[k].staffOrgType == "J" ? "(兼岗)" : "(主岗)";
-                			data[k].name = name + "("+fullName+")" + staffOrgType;
+                			data[k].name = name + "("+fullName+")  " + staffOrgType;
                 			data[k].defalutName = name;
                 		}
                 	};
@@ -133,6 +133,14 @@
 			item.name = item.defalutName;
 	    	addFeasorValueForInput(item);
 		}
+	}
+	function getExecutorType(){
+		var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
+		if(performerType == 1){
+    		return 0;
+    	}else if(performerType == 2){
+    		return 1;
+    	}
 	}
 	
 	//获取履行人信息
@@ -182,6 +190,7 @@
 	 */
 	function creatFeasorTree(){
 		$("#feasorChecked").html("");
+		$("#feasorTreeInput").val("");
 		var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
 		var documentHeight = $pageContent.height() - 225;
     	$("#feasorTreeCotent,#feasorChecked").css("height", documentHeight);
@@ -335,8 +344,8 @@
             	$("#feasorChecked").html(html);
             }else if(performerType == 2){
             	var isExist = false;
-            	var companyId = item.id;
-        		var companyName = item.name;
+            	var companyId = item.companyId;
+        		var companyName = item.companyName;
             	$.each($("#feasorModal .feasorItem"),function(k,v){
             		if($(v).data("companyid") == companyId){
             			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");

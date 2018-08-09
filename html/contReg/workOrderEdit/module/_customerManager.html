@@ -99,7 +99,7 @@
                 			var name = data[k].name;
                 			var fullName = data[k].fullName;
                 			var staffOrgType = data[k].staffOrgType == "J" ? "(兼岗)" : "(主岗)";
-                			data[k].name = name + "("+fullName+")" + staffOrgType;
+                			data[k].name = name + "("+fullName+")  " + staffOrgType;
                 			data[k].defalutName = name;
                 		}
                 	};
@@ -155,6 +155,7 @@
 	 */
 	function addCustomerManager(){
 		$("#customerManagerChecked").html("");
+		$("#customerManagerInput").val("");
 		var documentHeight = $pageContent.height() - 225;
     	$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
 		initCustomerManagerTree();

@@ -88,7 +88,7 @@
 		clearElement: true,
         source: function (query, process) {
             return $.ajax({
-                url: '/contractType/listPerformerStaff',
+                url: serverPath+'contractType/listPerformerStaff',
                 type: 'post',
                 global: false,
                 data: {staffName: query,executorType:0},
@@ -105,6 +105,9 @@
                 	};
                     return process(data);
                 },
+				error:function(e){
+					App.ajaxErrorCallback(e);
+				}
             });
         }
 	});

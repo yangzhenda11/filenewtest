@@ -138,8 +138,8 @@
   width: 100%;
   overflow: auto;
 }
-#feasorTreeInput,
-#customerManagerInput {
+#feasorTreeInputGroup,
+#customerManagerInputGroup {
   margin: 10px 0 10px 10px;
   width: 95%;
 }

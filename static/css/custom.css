@@ -58,6 +58,7 @@ button:focus{outline: none !important;}
 /* 重定义弹出层间距-结束 */
 
 /*支撑渠道-开始*/
+#appSupport .modal-dialog{width: 50%;top: 20px;}
 .main-appSupport{padding-top:20px;padding-bottom:20px;font-family: georgia;}
 .main-appSupport li{border-bottom:1px solid #eeeeee;margin-top:0;}
 .main-appSupport li:first-child{border-top:1px solid #eeeeee;}
@@ -65,9 +66,9 @@ button:focus{outline: none !important;}
 .main-appSupport li .media-body{background-color: #fafafa;padding-top: 20px;padding-bottom: 10px;}
 .main-appSupport li .media-body label{color:#ffffff;font-size:24px;border-radius: 100%;width: 40px;height: 40px;line-height: 40px;text-align: center;}
 .main-appSupport li .media-body label i{font-size:24px;}
-.main-appSupport li:first-child .media-body{border-left:4px solid #e54d42;}
-.main-appSupport li:first-child+li .media-body{border-left:4px solid #4cbd8b;}
-/*.main-appSupport li:first-child+li+li+li .media-body{border-left:4px solid #4cbd8b;}*/
+.main-appSupport li:first-child .media-body{border-left:4px solid #4cbd8b;}
+.main-appSupport li:first-child .media-right{text-align: left;line-height: 28px;}
+.main-appSupport li:first-child+li .media-body{border-left:4px solid #e54d42;}
 /*支撑渠道-结束 */
 
 /* 左右选择样式-开始 */

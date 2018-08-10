@@ -91,7 +91,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-6 form-group">
+				<div class="col-sm-6 form-group" id="isPostponableDom">
 					<label for="isPostponable" class="control-label"><i class="iconfont icon-mi required"></i>是否顺延：</label>
 					<div class="valiParent">
 						<div class="ui-radio-list ui-radio-inline">
@@ -216,7 +216,10 @@
 					return false;
 				}
 			}
-		}
+		};
+//		if(wcardTypeCode == 2){
+//			validityData.isPostponable = "";
+//		};
 		if(isSubmit && validityData.undertakerCommitment == 0){
 			layer.msg("请勾选承办人确认信息!");
 			srolloOffect("#undertakerCommitmentContent");
@@ -247,6 +250,9 @@
 	addNotEmptyValidatorField("postponePeriod","请输入不超过2000个字符的顺延时限");
 	addNotEmptyValidatorField("expiryCondition","请输入不超过2000个字符的满足终止条件");
 	//设置默认展示方式
+//	if(wcardTypeCode == 2){
+//		$("#isPostponableDom").css("visibility","hidden");
+//	}
 	changePostponableValidatorStatus(905010,0);
 	//获取合同生效信息
 	getvalidityData();
@@ -263,6 +269,9 @@
 			initPartySignDate(data.stampedInfoOurList,"partyASignDate");
 			initPartySignDate(data.stampedInfoOtherList,"partyZSignDate");
 			if(tRContractValidityVo){
+//				if(wcardTypeCode == 2){
+//					tRContractValidityVo.isPostponable = "0";
+//				};
 				changePostponableValidatorStatus(tRContractValidityVo.periodType,tRContractValidityVo.isPostponable);
 				if(tRContractValidityVo.undertakerCommitment == 1){
 					$("#undertakerCommitmentContent input[name='undertakerCommitment']").attr("checked",true);

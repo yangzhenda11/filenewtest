@@ -1661,8 +1661,8 @@ var App = function() {
             return ( typeof angular == 'undefined') ? false : true;
         },
         
-        //判断是否是IE11以下IE浏览器
-        IEVersionVA11:function() {
+        //判断是否IE浏览器版本
+        IEVersionVA:function(ver) {
             //取得浏览器的userAgent字符串
             var userAgent = navigator.userAgent;
             //判断是否IE浏览器
@@ -1671,7 +1671,7 @@ var App = function() {
                 var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
                 reIE.test(userAgent);
                 var fIEVersion = parseFloat(RegExp["$1"]);
-                if (fIEVersion < 11) {
+                if (fIEVersion < ver) {
                     return true;
                 }else{
                 	return false;

@@ -154,13 +154,32 @@ function data_tpFilter(permCheck) {
 function changeStaffOrg(staffOrgId) {
 	App.formAjaxJson(globalConfig.serverPath + "validateOrgId/" + staffOrgId, "GET", null,changeStationSuccess,improperCallback);
 	function changeStationSuccess(result){
-		if(result.data == 1){
-			App.formAjaxJson("/changeStation?staffOrgId=" + staffOrgId, "GET", null, null, improperCallback, null, null, false);
-		    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, successCallback, improperCallback, null, null, false);
-		    function successCallback(result) {
-	            window.location.reload();
-		    }
-		}else{
+   		if(result.data == 1){
+            $.ajax({
+                type: "GET",
+                url:"/changeStation?staffOrgId=" + staffOrgId,
+                dataType: "json",
+                async: false,
+                contentType: "application/json",
+				error:function (result) {
+                    if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
+                        message = "切换岗位时发生异常,请联系管理员";
+                        layer.alert(message,{icon:2,title:"提示"});
+                    }else {
+                        App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, successCallback, improperCallback, null, null, false);
+                        function successCallback(result) {
+                            window.location.reload();
+                        }
+					}
+                },
+				success:function () {
+                    App.formAjaxJson(globalConfig.serverPath + "changestation/" + staffOrgId, "GET", null, successCallback, improperCallback, null, null, false);
+                    function successCallback(result) {
+                        window.location.reload();
+                    }
+                }
+            });
+   		}else{
 			improperCallback(result);
 		}
 	};
@@ -261,13 +280,30 @@ function changePasswd() {
  * 退出登录
  */
 function logout() {
-	clearAllCookie();
-    App.formAjaxJson(globalConfig.serverPath + "staffs/removeStaffCache", "POST", null, successMethod);
-    function successMethod(result) {
-        App.formAjaxJson(globalConfig.serverPath + "logout", "POST", null, successCallback);
-	    function successCallback(result) {
-	        window.location.href = "login.html";
-	    }
+	layer.confirm('是否要退出系统？退出系统后,浏览器当前窗口会自动关闭。', {
+        icon: 0
+    }, function() {
+        clearAllCookie();
+        App.formAjaxJson(globalConfig.serverPath + "staffs/removeStaffCache", "POST", null, successMethod);
+        function successMethod(result) {
+            App.formAjaxJson("/logout", "POST", null, successCallback);
+            function successCallback(result) {
+            	console.log(result);
+            	if (result.status == 1){
+                    closeWindow();
+				}
+            }
+        }
+    })
+}
+function closeWindow(){
+    if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1) {
+        window.location.href="about:blank";
+        window.close();
+    } else {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
     }
 }
 /*

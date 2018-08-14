@@ -178,7 +178,7 @@ function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, 
 }
 //获取工单主键
 function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
-	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
+	$.post(serverPath + "workflowrest/taskhasdonepath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, function(data) {
 		var success = data.retCode;
 		if (success == 1){
 			var param = data.dataRows[0].param;

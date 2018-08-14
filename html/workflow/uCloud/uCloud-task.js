@@ -37,7 +37,7 @@ function handleTaskToDo(taskInfo) {
 		$("#goTaskToDoDetailForToDo").remove();
 		$("#searchContentForToDo").hide();
 		$("#businessiframe").show();
-		jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId);
+		redirectUrl(id,taskDefinitionKey,processInstanceId);
 	}else{
 		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
 		$("#goTaskToDoDetailForToDo").show();
@@ -67,9 +67,31 @@ function getTaskInfo(){
 	});
 	return taskData;
 }
+
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
+function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
+	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
+		var success = data.retCode;
+		if (success == 1){
+			var param = data.dataRows[0].param;
+			var resultParam = {};
+			param = param.split("&");
+			for(var i = 0; i < param.length; i ++) {   
+		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
+		   	};
+		   	var businessKey = resultParam.businessKey;
+		   	if(businessKey){
+		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   	}else{
+		   		layer.msg("获取不到工单主键");
+		   	}
+		} else {
+			layer.msg(data.retValue);
+		}
+	});
+}
 function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,null,null,false);
 	function successCallback(result) {

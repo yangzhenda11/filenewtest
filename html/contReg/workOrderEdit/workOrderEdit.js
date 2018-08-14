@@ -92,7 +92,7 @@ $(function() {
 		}
 		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 0);
-	};;
+	};
 	//加载验证壳
 	validate();
 	//请求工单模块，获取基本信息及各模块的url

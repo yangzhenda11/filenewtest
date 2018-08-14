@@ -70,6 +70,27 @@ function getTaskInfoHasdone(){
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
 function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee){
+	$.post(serverPath + "workflowrest/taskhasdonepath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, function(data) {
+		var success = data.retCode;
+		if (success == 1){
+			var param = data.dataRows[0].param;
+			var resultParam = {};
+			param = param.split("&");
+			for(var i = 0; i < param.length; i ++) {   
+		        resultParam[param[i].split("=")[0]] = param[i].split("=")[1];   
+		   	};
+		   	var businessKey = resultParam.businessKey;
+		   	if(businessKey){
+		   		jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee, businessKey);
+		   	}else{
+		   		layer.msg("获取不到工单主键");
+		   	}
+		} else {
+			layer.msg(data.retValue);
+		}
+	});
+}
+function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee,businessId){
 	var canWithDrawForDoneData = {
 		taskId: taskId,
 		taskDefinitionKey: taskDefinitionKey,

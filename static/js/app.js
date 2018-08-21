@@ -1422,9 +1422,9 @@ var App = function() {
 				setParm(setting,queryCallback);
 			})
 		},
-		getFileUploadsModal : function(setting,queryCallback){
+		getFileUploadsModal : function(setting){
 			$("#commomModal").load("/static/data/_fileUploads.html",function(){
-				setParm(setting,queryCallback);
+				setParm(setting);
 			})
 		},
 		/*

@@ -44,8 +44,7 @@
                	<div class="form-group col-sm-12">
                     <label for="partnerCode" class="control-label">上传说明</label>
                     <div class="valiParent" id="fileUpliadExplain" style="color: red;">
-                        <i class="iconfont icon-mi required"></i>删除上传成功文件列表中的文件，此文档不做上传处理。</br>
-                        <i class="iconfont icon-mi required"></i>文件大小不能超过100M。
+                        <i class="iconfont icon-mi required"></i>上传单个文件大小不能超过100M。
                     </div>
                 </div>
                 <div class="form-group col-sm-12">
@@ -58,7 +57,7 @@
 								<th class="align-center">上传状态</th>
 							</tr>
 						</thead>
-						<tbody id="uploadSuccessFile">
+						<tbody id="uploadSuccessFiles">
 							<tr class="defaultTr">
 								<td colspan="3">暂无文件</td>
 							</tr>
@@ -67,7 +66,6 @@
                 </div>
            </div>
 		<div class="modal-footer">
-			<button type="button" onclick="getFileUploadInfo()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
 			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
 		</div>
 	</div>
@@ -77,14 +75,9 @@
 	//系统全局变量获取
 	var config = top.globalConfig;
 	var fileUploadPath = config.fileUploadPath;
-	var successCallback = null;
 	var uploadBeforFn = null;
 	var fileUploadMaxNumeber = 99;
-	var fileCommonUploadObj = {};
-	var fileUploadFlag = 1;
-	var needChangeName = false;
-	function setParm(setting,queryCallback){
-		App.pagehandleFormFieldset();
+	function setParm(setting){
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#commomModal").modal("show");
@@ -93,7 +86,6 @@
 		}
 		var emptyFn = function(){};
 		uploadBeforFn = setting.uploadBeforFn == null || setting.uploadBeforFn == "" ? null : setting.uploadBeforFn;
-		successCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		var maxFileSize = setting.maxFileSize == undefined ? 102400 : setting.maxFileSize;
 		var fileExtensions = [];
 		if(setting.fileExtensions){
@@ -112,7 +104,6 @@
 	 * 文件上传
 	 */
 	function initFileUpload(url,fileExtensions,extraData,maxFileSize){
-		console.log(uploadBeforFn)
 		$("#uploadFileName").fileinput({
 	        language: 'zh', 
 	        uploadUrl: fileUploadPath + url,
@@ -123,7 +114,6 @@
 	       	dropZoneEnabled: false,
 	       	uploadBeforFn: uploadBeforFn,
 	       	//notallowedFilenameExtensions:" |%",//文件名中不允许出现的字符
-	       	//showPreview : false,
 	        slugCallback: function (filename) {
 	        	if($(".kv-fileinput-error").css("display") == "block"){
 	        		$(".fileinput-upload-button").addClass("aDisable");
@@ -155,60 +145,36 @@
 			console.log("错误");
 		});
 	    function parseResult(data){
-	    	console.log(data)
-	    	if(data.response.status == 1){
-	    		if(data.extra.displayName == "" || data.extra.displayName == undefined){
-	    			var fileName = data.files[0].name;
-	    		}else{
-	    			var fileName = data.extra.displayName;
-	    		};
-	    		fileUploadFlag++;
-	    		$(".defaultTr").addClass("hidden");
-				var keys = "fileSave" + fileUploadFlag;
-				var html = '<tr><td>'+ fileName +
-				'</td><td><button type="button" data-name="'+fileName+'" data-keys="'+ keys +'" class="btn primary btn-outline btn-xs fileItem">删除</button></td></tr>'
-				$("#uploadSuccessFile").append(html);
-				fileCommonUploadObj[keys] = data.response.data;
-		    	layer.msg(data.response.message);
-		    	$("#uploadFileName").fileinput('reset');
+	    	var data = data.response;
+	    	fileUploadFlag ++;
+	    	$(".defaultTr").addClass("hidden");
+	    	if(data.status == 1){
+				var html = '<tr>'+
+							'<td class="orderNumber"></td>'+
+							'<td>'+ data.data + '</td>'+
+							'<td>成功</td></tr>';
 	    	}else{
-	    		layer.alert(data.response.message,{icon:2,title:"错误"});
+	    		var message = data.message;
+	    		if(message.indexOf(".") >= 0 ) { 
+				    layer.msg(message);
+				}else{
+					var html = '<tr>'+
+							'<td class="orderNumber"></td>'+
+							'<td>'+ data.message + '</td>'+
+							'<td>失败</td></tr>';
+				}
+	    	};
+	    	$("#uploadSuccessFiles").append(html);
+	    	addInvoiceTableSort();
+	    	if(fileUploadFlag == nowUploadFileNumber){
+	    		layer.msg("上传完成");
+	    		$("#uploadFileName").fileinput('reset');
 	    	}
 	    }
-	}
-	/*
-	 * 列表内删除
-	 */
-	$("table").on("click",".fileItem",function(el){
-		delete fileCommonUploadObj[$(this).data("keys")];
-		$(this).parent().parent().remove();
-		if($("#uploadSuccessFile").children().length == 1){
-			$(".defaultTr").removeClass("hidden");
+	    function addInvoiceTableSort(){
+			$.each($("#uploadSuccessFiles .orderNumber"), function(k,v) {
+				$(v).text(k+1);
+			});
 		}
-	})
-    /*
-     * 获取列表内内容
-     */
-    function getFileItemInfo(){
-    	var fileInfo = [];
-    	$(".fileItem").each(function(index,element){
-    		var itemInfo = {
-    			name:$(element).data("name"),
-    			data:fileCommonUploadObj[$(element).data("keys")]
-    		};
-    		fileInfo.push(itemInfo);
-    	});
-    	return fileInfo;
-    }
-    /*
-     * 点击确定执行的方法
-     */
-    function getFileUploadInfo(){
-    	var fileUploadItem = getFileItemInfo();
-    	if(fileUploadItem.length == 0){
-    		layer.msg("请先点击上传按钮上传文件后再执行该操作！",{icon:2,time:3000})
-    	}else{
-    		successCallback();
-    	}
-    }
+	}
 </script>

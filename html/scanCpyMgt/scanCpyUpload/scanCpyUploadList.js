@@ -119,7 +119,7 @@ function initScanUpload(){
 				};
 				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
 				errorMsg += "的文件命名不符合命名规范。文件名称应与合同编号保持一致，具体请参见页面的上传说明。请修改扫描件的合同编号后重新上传。";
-				layer.alert(errorMsg,{icon:2,width:"300px"});
+				layer.alert(errorMsg,{icon:2,area:"400px"});
 				return false;
 			};
 		}else{
@@ -134,7 +134,7 @@ function initScanUpload(){
 		}
 		function improperCallback(result){
 			fileIsExist = false;
-			layer.alert(result.message,{icon:2,width:"300px"});
+			layer.alert(result.message,{icon:2,area:"400px"});
 		};
 		return fileIsExist;
 	}

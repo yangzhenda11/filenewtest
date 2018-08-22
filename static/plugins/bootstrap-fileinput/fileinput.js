@@ -219,8 +219,8 @@
 				height: "80px"
 			},
 			other: {
-				width: "195px",
-				height: "80px"
+				width: "185px",
+				height: "98px"
 			}
 		},
 		R = {
@@ -291,7 +291,12 @@
 				n = e.trim(t + ""),
 				l = "." === n.slice(-1) ? "" : ".",
 				o = e(i.responseText).text();
-			return r.showAjaxErrorDetails ? (o = e.trim(o.replace(/\n\s*\n/g, "\n")), o = o.length > 0 ? "<pre>" + o + "</pre>" : "", n += l + o) : n += l, a ? "<b>" + a + ": </b>" + i : n
+				if(i.status != 200){
+					var ms = i.statusText;
+				}else{
+					var ms = i.responseText;
+				}
+			return r.showAjaxErrorDetails ? (o = e.trim(o.replace(/\n\s*\n/g, "\n")), o = o.length > 0 ? "<pre>" + o + "</pre>" : "", n += l + o) : n += l, a ? "<b>" + a + ": </b>" + ms : n
 		},
 		raise: function(i, t) {
 			var a, r = this,
@@ -353,7 +358,11 @@
 			}), r.off("click").on("click", function() {
 				i.raise("filebrowse"), i.isError && !i.isUploadable && i.clear(), a.focus()
 			}), n.off("reset").on("reset", e.proxy(i.reset, i)), i.$container.off("click").on("click", ".fileinput-remove:not([disabled])", e.proxy(i.clear, i)).on("click", ".fileinput-cancel", e.proxy(i.cancel, i)), i.isUploadable && i.dropZoneEnabled && i.showPreview && i.initDragDrop(), i.isUploadable || n.on("submit", e.proxy(i.submitForm, i)), i.$container.find(".kv-fileinput-upload").off("click").on("click", function(t) {
-				i.isUploadable && (t.preventDefault(), !e(this).hasClass("disabled") && z(e(this).attr("disabled")) && i.upload())
+				layer.msg('数据处理中,请稍后...', {icon: 16,shade: 0.01,time:false});
+				i.isUploadable && (t.preventDefault(), !e(this).hasClass("disabled") && z(e(this).attr("disabled")));
+				setTimeout(function(){
+					i.upload()
+				},300)
 			})
 		},
 		submitForm: function() {
@@ -626,7 +635,6 @@
 				url: l.uploadUrl,
 				type: "POST",
 				dataType: "json",
-				global:false,
 				data: l.formdata,
 				cache: !1,
 				processData: !1,
@@ -1066,7 +1074,7 @@
 		showPreview: !0,
 		showRemove: !0,
 		showUpload: !0,
-		showCancel: !0,
+		showCancel: 0,
 		mainClass: "",
 		previewClass: "",
 		captionClass: "",

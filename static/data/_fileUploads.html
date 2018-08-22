@@ -53,7 +53,7 @@
                         <thead>
 							<tr>
 								<th class="align-center">序号</th>
-								<th class="align-center">文件名</th>
+								<th class="align-center">文件名称</th>
 								<th class="align-center">上传状态</th>
 							</tr>
 						</thead>
@@ -107,13 +107,12 @@
 		$("#uploadFileName").fileinput({
 	        language: 'zh', 
 	        uploadUrl: fileUploadPath + url,
-	        uploadAsync: true,
+	        uploadAsync: false,
 	        allowedFileExtensions: fileExtensions,
 	        maxFileSize: maxFileSize,
 	       	maxFileCount: fileUploadMaxNumeber,
 	       	dropZoneEnabled: false,
 	       	uploadBeforFn: uploadBeforFn,
-//	       	dropZoneEnabled: true,
 	       	//notallowedFilenameExtensions:" |%",//文件名中不允许出现的字符
 	        slugCallback: function (filename) {
 	        	if($(".kv-fileinput-error").css("display") == "block"){
@@ -157,7 +156,7 @@
 							'<td>成功</td></tr>';
 	    	}else{
 	    		var message = data.message;
-	    		if(message.indexOf(".") >= 0 ) { 
+	    		if(message.indexOf(".") == -1 ) { 
 				    layer.msg(message);
 				}else{
 					var html = '<tr>'+

@@ -57,7 +57,7 @@ $(document).ready(function() {
         globalConfig.orgPath = data.orgPath;
         globalConfig.loginName = data.loginName;
        
-        if(data.loginName.indexOf("cq_zj") != -1 || data.loginName.indexOf("cq_gd") != -1){
+        if(data.loginName.indexOf("qc_zj") != -1 || data.loginName.indexOf("qc_gd") != -1){
         	ace_menus = [{
         	 	childrens: [],
         	 	grade: 0,
@@ -128,7 +128,7 @@ $(document).ready(function() {
       	var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
         //请求用户信息成功后加载首页列表
         var userLoginName = globalConfig.loginName;
-        if(userLoginName.indexOf("cq_zj") != -1 || userLoginName.indexOf("cq_gd") != -1 ){
+        if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
 			$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
         }else{
         	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");

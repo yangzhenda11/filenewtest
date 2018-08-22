@@ -82,7 +82,7 @@ function initScanUpload(){
 			var isCheckFileNormList = [];
 			var repeatList = [];
 			var ret = /^([\-0-9]*)$/;
-			var errorMsg = "文件：";
+			var errorMsg = "文件";
 			for(var i = 0; i < nowUploadFileNumber; i++){
 				var fileFullName = isCheckFileList[i].name;
 				fullNameList.push(fileFullName);
@@ -109,7 +109,7 @@ function initScanUpload(){
 					errorMsg += repeatList[o]+"、";
 				};
 				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
-				errorMsg += "命名重复，请点击删除图标，删除后再进行上传。";
+				errorMsg += "选择重复，请检查。";
 				layer.alert(errorMsg,{icon:2,width:"200px"});
 				return false;
 			};
@@ -118,8 +118,8 @@ function initScanUpload(){
 					errorMsg += isCheckFileNormList[o]+"、"
 				};
 				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
-				errorMsg += "命名有误，请点击删除图标，删除后重新选择上传。";
-				layer.alert(errorMsg,{icon:2,width:"200px"});
+				errorMsg += "的文件命名不符合命名规范。文件名称应与合同编号保持一致，具体请参见页面的上传说明。请修改扫描件的合同编号后重新上传。";
+				layer.alert(errorMsg,{icon:2,area:"400px"});
 				return false;
 			};
 		}else{
@@ -134,7 +134,7 @@ function initScanUpload(){
 		}
 		function improperCallback(result){
 			fileIsExist = false;
-			layer.alert(result.message,{icon:2,width:"200px"});
+			layer.alert(result.message,{icon:2,area:"400px"});
 		};
 		return fileIsExist;
 	}

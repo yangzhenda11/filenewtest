@@ -129,7 +129,7 @@
 		f = {
 			removeIcon: '<i class="glyphicon glyphicon-trash text-danger"></i>',
 			removeClass: "btn btn-xs btn-default",
-			removeTitle: "Remove file",
+			removeTitle: "删除该文件",
 			uploadIcon: '<i class="glyphicon glyphicon-upload text-info"></i>',
 			uploadClass: "btn btn-xs btn-default",
 			uploadTitle: "Upload file",
@@ -151,7 +151,7 @@
 		b = '<div class="progress">\n    <div class="{class}" role="progressbar" aria-valuenow="{percent}" aria-valuemin="0" aria-valuemax="100" style="width:{percent}%;">\n        {percent}%\n     </div>\n</div>',
 		x = '<div class="file-thumbnail-footer">\n    <div class="file-caption-name">{caption}</div>\n    {actions}\n</div>',
 		//zander  不显示底部按钮
-		C = '<div class="file-actions hidden">\n    <div class="file-footer-buttons">\n        {upload}{delete}{other}    </div>\n    <div class="file-upload-indicator" tabindex="-1" title="{indicatorTitle}">{indicator}</div>\n    <div class="clearfix"></div>\n</div>',
+		C = '<div class="file-actions">\n    <div class="file-footer-buttons">\n        {delete}{other}    </div>\n    <div class="file-upload-indicator" tabindex="-1" title="{indicatorTitle}">{indicator}</div>\n    <div class="clearfix"></div>\n</div>',
 		y = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}"{dataUrl}{dataKey}>{removeIcon}</button>\n',
 		E = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">   {uploadIcon}\n</button>\n',
 		$ = '<div class="file-preview-frame{frameClass}" id="{previewId}" data-fileindex="{fileindex}">\n   {content}\n   {footer}\n</div>\n',

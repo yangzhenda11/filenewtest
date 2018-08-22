@@ -1143,7 +1143,7 @@
         msgSizeTooLarge: '文件 "{name}" (<b>{size} KB</b>) 超过了文件大小 <b>{maxSize} KB</b>的限制,请重新上传!',
         msgFilesTooLess: '文件数量必须大于 <b>{n}</b> {files} ，请重新上传！',
         msgFilesTooMany: '仅支持传输 <b>({n})</b> exceeds maximum allowed limit of <b>{m}</b>. 请重试您的上传!',
-        msgFilesTooMany: '一次最多只能上传<b>{m}</b>个合同扫描件，请选择少于<b>{m}</b>个文件后重试',
+        msgFilesTooMany: '一次最多只能上传<b>{m}</b>个合同扫描件，请选择少于<b>{m}</b>个文件后重试。',
         msgFileNotFound: '文件 "{name}" 未找到!',
         msgFileSecured: 'Security restrictions prevent reading the file "{name}".',
         msgFileNotReadable: 'File "{name}" is not readable.',

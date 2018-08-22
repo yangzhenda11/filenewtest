@@ -6,7 +6,7 @@
 		display:table;
 	}
 	.fileUploadModalForm .form-group > label{
-		width: 18%;
+		width: 13%;
 	    min-height: 1px;
 	    line-height: 16px;
 	    padding:0 10px 0 0;
@@ -145,6 +145,7 @@
 			console.log("错误");
 		});
 	    function parseResult(data){
+	    	console.log(data);
 	    	var data = data.response;
 	    	fileUploadFlag ++;
 	    	$(".defaultTr").addClass("hidden");

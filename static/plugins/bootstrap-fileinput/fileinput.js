@@ -219,7 +219,7 @@
 				height: "80px"
 			},
 			other: {
-				width: "160px",
+				width: "205px",
 				height: "80px"
 			}
 		},

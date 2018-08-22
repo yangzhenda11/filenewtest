@@ -25,9 +25,9 @@ function getScanCpyUploadList(){
 				return meta.row + 1;
 				}
 			},
-	        {"data": "contractNumber","title": "合同编号"},
-	        {"data": "fileName","title": "文件名称"},
-	        {"data": "uploadTime","title": "上传时间","render": function(data, type, full, meta) {
+	        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"40%"},
+	        {"data": "fileName","title": "文件名称","className":"whiteSpaceNormal","width":"40%"},
+	        {"data": "uploadTime","title": "上传时间","className":"whiteSpaceNormal","width":"15%","render": function(data, type, full, meta) {
 	            	return App.formatDateTime(data);
 	        	}
 	        }
@@ -104,31 +104,31 @@ function initScanUpload(){
 		            break;
 		        }
 		    };
-			if(repeatList.length > 0){
-				for(var o = 0; o < repeatList.length; o++){
-					errorMsg += repeatList[o]+"、";
-				};
-				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
-				errorMsg += "命名重复，请点击删除图标，删除后再进行上传。";
-				layer.alert(errorMsg,{icon:2,width:"200px"});
-				return false;
-			};
-			if(isCheckFileNormList.length > 0){
-				for(var o = 0; o < isCheckFileNormList.length; o++){
-					errorMsg += isCheckFileNormList[o]+"、"
-				};
-				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
-				errorMsg += "命名有误，请点击删除图标，删除后重新选择上传。";
-				layer.alert(errorMsg,{icon:2,width:"200px"});
-				return false;
-			};
+//			if(repeatList.length > 0){
+//				for(var o = 0; o < repeatList.length; o++){
+//					errorMsg += repeatList[o]+"、";
+//				};
+//				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
+//				errorMsg += "命名重复，请点击删除图标，删除后再进行上传。";
+//				layer.alert(errorMsg,{icon:2,width:"200px"});
+//				return false;
+//			};
+//			if(isCheckFileNormList.length > 0){
+//				for(var o = 0; o < isCheckFileNormList.length; o++){
+//					errorMsg += isCheckFileNormList[o]+"、"
+//				};
+//				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
+//				errorMsg += "命名有误，请点击删除图标，删除后重新选择上传。";
+//				layer.alert(errorMsg,{icon:2,width:"200px"});
+//				return false;
+//			};
 		}else{
 			return false;
 		}
 		var postData = {
 			contractNumberList: isCheckFileIsExistList
 		}
-		App.formAjaxJson(serverPath+"contractHistoricalFileController/getContractUploadFileInfo", "post", JSON.stringify(postData), successCallback, improperCallback,null,null,false);
+		//App.formAjaxJson(serverPath+"contractHistoricalFileController/getContractUploadFileInfo", "post", JSON.stringify(postData), successCallback, improperCallback,null,null,false);
 		function successCallback(result) {
 			fileIsExist = true;
 		}

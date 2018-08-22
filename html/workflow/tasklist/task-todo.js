@@ -20,6 +20,7 @@ function initFrame(){
 }
 // 查询
 function serarchForToDo(resetPaging){
+	top.setMessageTipNumber();
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
 	if(!App.checkDate(startDate,endDate)){
@@ -93,6 +94,7 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
  * 表格初始化
  */
 function getTableTodo(){
+	top.setMessageTipNumber();
 	App.initDataTables('#searchTableTodo', "#submitBtn", {
 		ajax: {
 			"type": "GET",

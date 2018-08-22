@@ -1,137 +1,143 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-
+var nowUploadFileNumber = 0;
+var fileUploadFlag = 0;
+$(function(){
+	getScanCpyUploadList();
+})
 /*
  * 初始化表格
  */
-App.initDataTables('#searchContractTable', "#submitBtn", {
-	 ajax: {
-        "type": "POST",
-        "contentType":"application/json;charset=utf-8",
-        "url": serverPath+'contractUpload/contractUploadList',
-        "data": function(d) {//自定义传入参数
-        	if($("#contractTypeName").data("exactSearch")){
-        		d.typeId = $("#contractTypeName").data("typeId");
-        		d.typeCode = $("#contractTypeName").data("typeCode");
-        		d.ParentCode = $("#contractTypeName").data("ParentCode");
-        	}else{
-        		d.contractTypeName = $("#contractTypeName").val();
-        	};
-        	if($("#undertakeName").data("exactSearch")){
-        		d.undertakerId = $("#undertakeName").data("id");
-        	}else{
-        		d.undertakeName = $("#undertakeName").val();
-        	};
-        	if($("#oppoPartyName").data("exactSearch")){
-        		d.oppoPartyId = $("#oppoPartyName").data("partnerId");
-        	}else{
-        		d.oppoPartyName = $("#oppoPartyName").val();
-        	};
-        	d.contractId = config.contractId;
-        	d.contractNumber = $("#contractNumber").val();
-        	d.contractName = $("#contractName").val();
-			d.approveDateBegin = $("#approveDateBegin").val();
-			d.approveDateEnd = $("#approveDateEnd").val();
-			return JSON.stringify(d);
-        }
-    },
-    "columns": [
-    	//增加序号列
-        {"data" : null,
-         "title":"序号",
-         "className": "text-center",
-		"render" : function(data, type, full, meta){
-			return meta.row + 1;
-		}}, 
-        {"data": "contractName","title": "合同名称",
-         "className":"whiteSpaceNormal",
-		 "width":"25%"
-        },
-        {"data": "contractNumber","title": "合同编号"},
-        {"data": "executeDeptName","title": "承办部门",
-        "className":"whiteSpaceNormal",
-		 "width":"13%"
-        },
-        {"data": "undertakerId","bVisible":false,"title": "承办人"},
-        {"data": "undertakeName","title": "承办人"},
-        {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
-        {"data": "unicomPartyName","title": "我方主体",
-        "className":"whiteSpaceNormal",
-		 "width":"15%"
-		 },
-        {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
-        {"data": "oppoPartyName","title": "对方主体",
-        "className":"whiteSpaceNormal",
-		 "width":"15%"
-		 },
-		 {"data": "id","bVisible":false,"title": "id"},
-        {
-	            "data": "approveDate",
-	            "title": "审批通过时间",
-	            render: function(data, type, full, meta) {
-	                return App.formatDateTime(data,"yyyy-MM-dd");
-            	}
-	        },
-        {
-			"data": null,
-			"className": "text-center",
-			"title": "操作",
-			"render": function(data, type, full, meta) {
-				if(data) {
-					var btnArray = new Array();
-                    btnArray.push({ "name": "添加", "fn": "jumpContractUploadEdit(\'"+data.id+"\')","icon":"iconfont icon-add"});
-                    return App.getDataTableBtn(btnArray);
-				} else {
-					return '';
+function getScanCpyUploadList(){
+	App.initDataTables('#scanCpyUploadList', "#submitBtn", {
+		 ajax: {
+	        "type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+	        "url": serverPath+'contractHistoricalFileController/listContractUploadFileInfo',
+	        "data": function(d) {//自定义传入参数
+	        	d.contractNumber = $("#contractNumber").val().trim();
+				return JSON.stringify(d);
+	        }
+	    },
+	    "columns": [
+	        {"data" : null,"title":"序号","className": "text-center","width":"5%","render" :function(data, type, full, meta){
+				return meta.row + 1;
 				}
-			}
-		},
-    ],
-	"columnDefs": [{
-   		"createdCell": function (td, cellData, rowData, row, col) {
-         	if ( col > 0 ) {
-           		$(td).attr("title", $(td).text())
-         	}
-   		}
- 	}]
-});
-
-//跳转到上传页面
-function jumpContractUploadEdit(id){
-	var src = "./scanCpyUploadEdit.html?pageType=2&id="+id;
-	App.changePresentUrl(src);
+			},
+	        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"40%"},
+	        {"data": "fileName","title": "文件名称","className":"whiteSpaceNormal","width":"40%"},
+	        {"data": "uploadTime","title": "上传时间","className":"whiteSpaceNormal","width":"15%","render": function(data, type, full, meta) {
+	            	return App.formatDateTime(data);
+	        	}
+	        }
+	    ],
+		"columnDefs": [{
+	   		"createdCell": function (td, cellData, rowData, row, col) {
+	         	if ( col > 0 ) {
+	           		$(td).attr("title", $(td).text())
+	         	}
+	   		}
+	 	}]
+	});
 }
 
 /*
  * 搜索点击事件
  */
-function searchContractUpload(retainPaging) {
-	var table = $('#searchContractTable').DataTable();
+function searchScanCpyUploadList(retainPaging) {
+	var table = $('#scanCpyUploadList').DataTable();
 	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();
 	}
 }
-//点击iconfont弹出模态框事件
-$(function(){
-	$("#searchContractType").click(function() {
-		App.getCommonModal("contractType", "#contractTypeName","typeFullname","typeId");
-	})
-	$("#searchUndertakerName").click(function(){
-		App.getCommonModal("agentStaff","#undertakeName","name","id");
-	})
-	$("#searchOtherSubject").click(function(){
-		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
-	})
-	$("#contractTypeName").on("change",function(){
-		$(this).data("exactSearch",false);
-	})
-	$("#undertakeName").on("change",function(){
-		$(this).data("exactSearch",false);
-	})
-	$("#oppoPartyName").on("change",function(){
-		$(this).data("exactSearch",false);
-	})
+/*
+ * 当上传文件后模态框关闭刷新列表
+ */
+$('#commomModal').on('hide.bs.modal', function () {
+	if($("#uploadSuccessFiles .orderNumber").length > 0){
+		searchScanCpyUploadList();
+	}
 })
+/*
+ * 初始化上传
+ */
+function initScanUpload(){
+	var setting = {
+		title: "合同扫描件上传",
+		url: 'fileload/uploadMultiFileFTP',
+		maxNumber: 5,
+		uploadBeforFn: uploadBeforFn
+	};
+	function uploadBeforFn($upload){
+		var isCheckFileList = $upload.getFileStack();
+		var fileIsExist = true;
+		nowUploadFileNumber = isCheckFileList.length;
+		fileUploadFlag = 0;
+		if(nowUploadFileNumber > 0){
+			var fullNameList = [];
+			var isCheckFileIsExistList = [];
+			var isCheckFileNormList = [];
+			var repeatList = [];
+			var ret = /^([\-0-9]*)$/;
+			var errorMsg = "文件：";
+			for(var i = 0; i < nowUploadFileNumber; i++){
+				var fileFullName = isCheckFileList[i].name;
+				fullNameList.push(fileFullName);
+				var fileFullNameSplit = fileFullName.split(".");
+				fileFullNameSplit.pop();
+				fileFullNameSplit = fileFullNameSplit.join(".");
+				isCheckFileIsExistList.push(fileFullNameSplit);
+				var letter2 = fileFullNameSplit.substr(0,2);
+				var letterOther = fileFullNameSplit.substr(2,fileFullNameSplit.length-2);
+				if(!(letter2 == "CU" && ret.test(letterOther))){
+					isCheckFileNormFlag = false;
+					isCheckFileNormList.push(fileFullName);
+				};
+			};
+		    var s = fullNameList.join(",") + ",";
+		    for (var p = 0; p < fullNameList.length; p++) {
+		        if (s.replace(fullNameList[p] + ",", "").indexOf(fullNameList[p] + ",") > -1) {
+		            repeatList.push(fullNameList[p]);
+		            break;
+		        }
+		    };
+			if(repeatList.length > 0){
+				for(var o = 0; o < repeatList.length; o++){
+					errorMsg += repeatList[o]+"、";
+				};
+				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
+				errorMsg += "命名重复，请点击删除图标，删除后再进行上传。";
+				layer.alert(errorMsg,{icon:2,width:"200px"});
+				return false;
+			};
+			if(isCheckFileNormList.length > 0){
+				for(var o = 0; o < isCheckFileNormList.length; o++){
+					errorMsg += isCheckFileNormList[o]+"、"
+				};
+				errorMsg = errorMsg.substring(0, errorMsg.length - 1);
+				errorMsg += "命名有误，请点击删除图标，删除后重新选择上传。";
+				layer.alert(errorMsg,{icon:2,width:"200px"});
+				return false;
+			};
+		}else{
+			return false;
+		}
+		var postData = {
+			contractNumberList: isCheckFileIsExistList
+		}
+		App.formAjaxJson(serverPath+"contractHistoricalFileController/getContractUploadFileInfo", "post", JSON.stringify(postData), successCallback, improperCallback,null,null,false);
+		function successCallback(result) {
+			fileIsExist = true;
+		}
+		function improperCallback(result){
+			fileIsExist = false;
+			layer.alert(result.message,{icon:2,width:"200px"});
+		};
+		return fileIsExist;
+	}
+	App.getFileUploadsModal(setting);
+}
+

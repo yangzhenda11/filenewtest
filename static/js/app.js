@@ -1260,6 +1260,11 @@ var App = function() {
 			}
 			return resturnData;
 		},
+		pagehandleFormFieldset : function() {
+			if($('.form-fieldset .form-collapse').length) {
+				panelAction('.form-fieldset .form-collapse', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
+			}
+		},
 		/**
          * datatable render 文本信息 btnArray 内容：
          */
@@ -1415,6 +1420,11 @@ var App = function() {
 		getFileUploadModal : function(setting,queryCallback){
 			$("#commomModal").load("/static/data/_fileUpload.html",function(){
 				setParm(setting,queryCallback);
+			})
+		},
+		getFileUploadsModal : function(setting){
+			$("#commomModal").load("/static/data/_fileUploads.html",function(){
+				setParm(setting);
 			})
 		},
 		/*

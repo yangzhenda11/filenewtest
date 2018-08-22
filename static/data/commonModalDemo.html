@@ -125,7 +125,7 @@
 		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/ajaxfileupload/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/app.js?t=1534296764375" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/app.js?t=1534903963934" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$("#searchContractType").click(function() {
 				App.getCommonModal("contractType", "#contractType", "typeFullname", "typeId");
@@ -165,7 +165,7 @@
 					console.log(fileInfo);
 					$("#fileUpload").val(fileInfo[0].name)
 				}
-				App.getFileUploadModal(setting, queryCallback);
+				App.getFileUploadsModal(setting, queryCallback);
 			}
 
 			function ajaxfileupload() {

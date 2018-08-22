@@ -55,7 +55,28 @@ $(document).ready(function() {
         globalConfig.mainOrgFlag = data.mainOrgFlag;
         globalConfig.permissions = data.permissions;
         globalConfig.orgPath = data.orgPath;
-        ace_menus = data.menus;
+        globalConfig.loginName = data.loginName;
+       
+        if(data.loginName.indexOf("cq_zj") != -1 || data.loginName.indexOf("cq_gd") != -1){
+        	ace_menus = [{
+        	 	childrens: [],
+        	 	grade: 0,
+        	 	icon: "iconfont icon-report",
+        	 	id: 90469,
+        	 	name: "合同扫描件上传",
+        	 	openType: "1",
+        	 	pid: "1",
+        	 	uri: "html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html"
+        	}];
+        	$("#tabPageFiexd").text("合同扫描件上传");
+			$("#tabPageFiexd").data("id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+        	$("#iframeFiexd").data("id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
+        }else{
+        	ace_menus = data.menus;
+        	$("#tabPageFiexd").text("待办事项");
+			$("#tabPageFiexd").data("id","html/workflow/tasklist/task-todo.html");
+        	$("#iframeFiexd").data("id","html/workflow/tasklist/task-todo.html")
+        }
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
             for (var i = 0; i < data.staffOrgs.length; i++) {
@@ -105,8 +126,13 @@ $(document).ready(function() {
     		messageSpace = 30;
     	}
       	var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
-        //请求用户信息成功后加载待办列表
-        $("#iframeTaskTodo").attr("src","html/workflow/tasklist/task-todo.html");
+        //请求用户信息成功后加载首页列表
+        var userLoginName = globalConfig.loginName;
+        if(userLoginName.indexOf("cq_zj") != -1 || userLoginName.indexOf("cq_gd") != -1 ){
+			$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+        }else{
+        	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
+        };
         //请求用户信息成功后加载公告列表
         getIndexNotiveTableInfo(true);
     }

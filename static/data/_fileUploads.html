@@ -1,0 +1,181 @@
+<style type="text/css">
+	#fileUploadModalBody{
+		overflow: auto;
+	}
+	.fileUploadModalForm .form-group{
+		display:table;
+	}
+	.fileUploadModalForm .form-group > label{
+		width: 13%;
+	    min-height: 1px;
+	    line-height: 16px;
+	    padding:0 10px 0 0;
+	    vertical-align:middle;    
+	    display:table-cell;
+	    text-align: right;
+	}
+	.fileUploadModalForm .form-group > .valiParent{
+		width: 100%;
+		float: left;
+	  	position: relative;
+	    min-height: 1px;
+	    padding-left: 10px;
+	    padding-right: 10px;
+	}
+	.aDisable{
+		background: #e8dcdc;
+		pointer-events:none
+	}
+
+</style>
+<div class="modal-dialog" role="document" style="width: 55%;">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="fileUploadModalLabel"></h4>
+		</div>
+			<div class="modal-body fileUploadModalForm" id="fileUploadModalBody">
+                <div class="form-group col-sm-12">
+                    <label for="partnerCode" class="control-label">选择文件</label>
+                    <div class="valiParent">
+                        <input type="file" id="uploadFileName" multiple="multiple" name="fileName" />
+                    </div>
+                </div>
+               	<div class="form-group col-sm-12">
+                    <label for="partnerCode" class="control-label">上传说明</label>
+                    <div class="valiParent" id="fileUpliadExplain" style="color: red;">
+                        <i class="iconfont icon-mi required"></i>上传单个文件大小不能超过100M。
+                    </div>
+                </div>
+                <div class="form-group col-sm-12">
+                    <label for="partnerCode">上传结果</label>
+                    <table class="table table-hover table-bordered table-striped align-center">
+                        <thead>
+							<tr>
+								<th class="align-center">序号</th>
+								<th class="align-center">文件名</th>
+								<th class="align-center">上传状态</th>
+							</tr>
+						</thead>
+						<tbody id="uploadSuccessFiles">
+							<tr class="defaultTr">
+								<td colspan="3">暂无文件</td>
+							</tr>
+						</tbody>
+                    </table>
+                </div>
+           </div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	//系统全局变量获取
+	var config = top.globalConfig;
+	var fileUploadPath = config.fileUploadPath;
+	var uploadBeforFn = null;
+	var fileUploadMaxNumeber = 99;
+	function setParm(setting){
+		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
+		$("#fileUploadModalLabel").text(fileUploadModalLabel);
+		$("#commomModal").modal("show");
+		if(setting.maxNumber){
+			fileUploadMaxNumeber = setting.maxNumber;
+		}
+		var emptyFn = function(){};
+		uploadBeforFn = setting.uploadBeforFn == null || setting.uploadBeforFn == "" ? null : setting.uploadBeforFn;
+		var maxFileSize = setting.maxFileSize == undefined ? 102400 : setting.maxFileSize;
+		var fileExtensions = [];
+		if(setting.fileExtensions){
+			fileExtensions = setting.fileExtensions;
+		};
+		var extraData = {};
+		if(setting.extraData){
+			$.each(setting.extraData, function(k,v) {
+				extraData[k] = v;
+			})
+		};
+		initFileUpload(setting.url,fileExtensions,extraData,maxFileSize);
+	}
+
+	/*
+	 * 文件上传
+	 */
+	function initFileUpload(url,fileExtensions,extraData,maxFileSize){
+		$("#uploadFileName").fileinput({
+	        language: 'zh', 
+	        uploadUrl: fileUploadPath + url,
+	        uploadAsync: true,
+	        allowedFileExtensions: fileExtensions,
+	        maxFileSize: maxFileSize,
+	       	maxFileCount: fileUploadMaxNumeber,
+	       	dropZoneEnabled: false,
+	       	uploadBeforFn: uploadBeforFn,
+	       	//notallowedFilenameExtensions:" |%",//文件名中不允许出现的字符
+	        slugCallback: function (filename) {
+	        	if($(".kv-fileinput-error").css("display") == "block"){
+	        		$(".fileinput-upload-button").addClass("aDisable");
+	        		$(".fileinput-upload-button").attr("title","禁止上传");
+	        	}else{
+	        		$(".fileinput-upload-button").removeClass("aDisable");
+	        		$(".fileinput-upload-button").attr("title","点击上传");
+	        	}
+	            return filename;
+	        },
+	        uploadExtraData: function(previewId, index) {
+				return extraData;							//额外参数
+			}
+	    });
+	    // 异步上传成功结果处理
+	    $("#uploadFileName").on("fileuploaded", function (event, data) {
+	    	parseResult(data);
+	    });
+	    // 同步上传成功结果处理
+	    $("#uploadFileName").on("filebatchuploadsuccess", function (event, data) {
+	    	parseResult(data);
+	    });
+	    //异步上传错误结果处理
+	    $('#uploadFileName').on("fileerror", function(event, data, msg) {
+			console.log("错误");
+		});
+		//同步上传错误结果处理
+		$('#uploadFileName').on("filebatchuploaderror", function(event, data, msg) {
+			console.log("错误");
+		});
+	    function parseResult(data){
+	    	console.log(data);
+	    	var data = data.response;
+	    	fileUploadFlag ++;
+	    	$(".defaultTr").addClass("hidden");
+	    	if(data.status == 1){
+				var html = '<tr>'+
+							'<td class="orderNumber"></td>'+
+							'<td>'+ data.data + '</td>'+
+							'<td>成功</td></tr>';
+	    	}else{
+	    		var message = data.message;
+	    		if(message.indexOf(".") >= 0 ) { 
+				    layer.msg(message);
+				}else{
+					var html = '<tr>'+
+							'<td class="orderNumber"></td>'+
+							'<td>'+ data.message + '</td>'+
+							'<td>失败</td></tr>';
+				}
+	    	};
+	    	$("#uploadSuccessFiles").append(html);
+	    	addInvoiceTableSort();
+	    	if(fileUploadFlag == nowUploadFileNumber){
+	    		layer.msg("上传完成");
+	    		$("#uploadFileName").fileinput('reset');
+	    	}
+	    }
+	    function addInvoiceTableSort(){
+			$.each($("#uploadSuccessFiles .orderNumber"), function(k,v) {
+				$(v).text(k+1);
+			});
+		}
+	}
+</script>

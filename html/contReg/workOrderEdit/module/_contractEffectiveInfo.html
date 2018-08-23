@@ -234,7 +234,7 @@
 		var expiryDate = $("#expiryDate").val();
 		if(!App.checkDate(effectiveDate,expiryDate)){
 			$(dom).val("");
-			layer.msg("生效日期不能早于终止日期");
+			layer.msg("终止日期不能早于生效日期");
 		}
 	}
 	/*
@@ -291,6 +291,7 @@
 			 */
 			if(!isEdit){
 				$("#validityForm").find("input,select").attr("disabled","disabled");
+				$("#effectiveDate,#expiryDate").css({"cursor":"not-allowed","background-color":"#f5f5f5"})
 				if(App.IEVersionVA(11)){
 					App.initFormSelect2("#validityForm",true);
 				}

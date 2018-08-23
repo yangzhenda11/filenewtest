@@ -295,7 +295,7 @@
 					var ms = i.statusText;
 				}else{
 					var ms = i.responseText;
-				}
+				};
 			return r.showAjaxErrorDetails ? (o = e.trim(o.replace(/\n\s*\n/g, "\n")), o = o.length > 0 ? "<pre>" + o + "</pre>" : "", n += l + o) : n += l, a ? "<b>" + a + ": </b>" + ms : n
 		},
 		raise: function(i, t) {

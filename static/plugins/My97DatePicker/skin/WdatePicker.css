@@ -1,6 +1,9 @@
 .Wdate{
+	border:#999 1px solid;
+	height:20px;
 	background:#fff url(/static/plugins/My97DatePicker/skin/datePicker.gif) no-repeat right;
 }
+.Wdate::-ms-clear{display:none;}
 
 .WdateFmtErr{
 	font-weight:bold;

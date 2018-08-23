@@ -111,16 +111,14 @@
 				<div id="postponableValidator">
 					<div class="col-sm-6 form-group hidden" id="effectiveDateDiv">
 						<label for="effectiveDate" class="control-label"><i class="iconfont icon-mi required"></i>生效日期：</label>
-						<div class="valiParent input-group">
+						<div class="valiParent">
 							<input type="text" name="effectiveDate" id="effectiveDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
-							<span class="input-group-addon" onclick="WdatePicker({el:'effectiveDate'})"><i class="iconfont icon-calendar"></i></span>
 						</div>
 					</div>
 					<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
 						<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
-						<div class="valiParent input-group">
+						<div class="valiParent">
 							<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
-							<span class="input-group-addon" onclick="WdatePicker({el:'expiryDate'})"><i class="iconfont icon-calendar"></i></span>
 						</div>
 					</div>
 					<div class="col-sm-6 form-group hidden" id="effectConditionDiv">

@@ -56,7 +56,43 @@ button:focus{outline: none !important;}
     margin-bottom: 5px;
 }*/
 /* 重定义弹出层间距-结束 */
+/* 圆环样式*/
+.circlebar {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    margin: 10px 0 0;
+    width: 25%;
+    text-align: center;
+}
 
+.circlebar svg {
+    margin: 10px auto;
+}
+
+.circlebar p {
+    position: absolute;
+    bottom: -30px;
+    width: 100%;
+}
+
+.circlebar:after {
+    content: '';
+    height: 30px;
+}
+
+.circlebar font {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    line-height: 30px;
+    margin-top: -15px;
+    color: #0088cc;
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
 /*支撑渠道-开始*/
 #appSupport .modal-dialog{width: 50%;top: 20px;}
 .main-appSupport{padding-top:20px;padding-bottom:20px;font-family: georgia;}

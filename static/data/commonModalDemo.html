@@ -109,7 +109,7 @@
 							</div>
 						</div>
 						<div class="form-fieldset-body">
-							<button class="btn red" onclick="selectLR()">左右选择</button>
+							<button class="btn red" onclick="initselectLR()">左右选择</button>
 						</div>
 					</div>
 					<div class="form-fieldset">
@@ -120,7 +120,20 @@
 							</div>
 						</div>
 						<div class="form-fieldset-body">
-							<div id="scyleDom"></div>
+							<div id="scyleDom" style="height: 300px;">
+								<div id="im1" style="height: 300px;width: 300px;"></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> demo3</span>
+							<div class="form-fieldset-tools">
+								<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+							</div>
+						</div>
+						<div class="form-fieldset-body" style="display: none;height: 500px;">
+							<div>测试折叠</div>
 						</div>
 					</div>
 				</div>
@@ -155,13 +168,122 @@
 		<script src="../../../static/plugins/ajaxfileupload/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			$("#scyleDom").html('<div style="cursor:pointer;" class="circlebar" data-persent="0"><font>60%</font><p>测试</p></div><div style="cursor:pointer;" class="circlebar" data-persent="60"><font>60%</font><p>测试</p></div>');
-			
-	        animateSvgCircle({
-	            el:'.circlebar',
-	            width:180,
-	            borderWidth:30
+			function initselectLR(){
+				var options = {
+					title: "选择显示内容",
+					leftTitle: "可选择列",
+					rightTitle: "已选择列",
+					modalId: "#commomModal",
+					fluctuation: true,
+					fullData: [
+						{id:"测试1",data:"测试1"},
+						{id:"测试2",data:"测试2"},
+						{id:"测试3",data:"测试3"},
+						{id:"测试4",data:"测试4"},
+						{id:"测试5",data:"测试5"},
+						{id:"测试6",data:"测试6"},
+						{id:"测试7",data:"测试7"}
+					],
+					chooseData: [
+						{id:"测试2",data:"测试2"},
+						{id:"测试6",data:"测试6"}
+					]
+				}
+				$.initSelectL2RFn(options);
+			}
+			/*
+			 * 点击确定回调的页面方法
+			 */
+			function selectLRQueyFn(){
+				var data = $.getSelectL2RData("#selectL2RContent","fullData");
+				console.log(data);
+			}
+			var myChart1 = echarts.init(document.getElementById('im1'));
+			var option1 = {
+			    title:{
+			    	text:"订单付款",
+			    	left :"center",
+			    	subtext: "截止2018年5月订单累计含税付款情况",
+			    	textStyle:{
+			    		fontSize:"14"
+			    	},
+			    	subtextStyle:{
+			    		color:"#444"
+			    	}
+			    },
+			    legend: {
+			        orient: 'vertical',
+			        top: 'bottom',
+			        itemWidth : 12,
+			        itemHeight : 12,
+			        selectedMode: false,
+			        formatter: function (name) {
+					    return name;
+					}
+			    },
+			     tooltip: {
+			        trigger: 'item',
+			        formatter: "{b}",
+			        confine: true
+			    },
+			    color:['#e43a45', '#d1d1d1'],
+			    series: [
+			        {
+			        	clockwise:false,
+			        	hoverAnimation :false,
+			            name:'订单付款',
+			            silent:true,
+			            type:'pie',
+			            radius: ['35%', '60%'],
+			            avoidLabelOverlap: false,
+			            label: {
+			                normal: {
+			                    show: false,
+			                    position: 'center',
+			                    textStyle: {
+			                        fontWeight: 'bold'
+			                    },
+			                    formatter:'{d}%'
+			                },
+			                emphasis: {
+			                	show: true,
+			                    textStyle: {
+			                        fontSize: '20',
+			                        fontWeight: 'bold'
+			                    }
+			                }
+			            },
+			            labelLine: {
+			                normal: {
+			                    show: false
+			                }
+			            },
+			            data:[
+			                
+			                {value:120000, name:'累计订单含税付款金额：120000元'},
+			                {value:100000, name:'累计订单含税付款金额：100000元'},
+			            ]
+			        }
+			    ]
+			};
+	        myChart1.setOption(option1);
+	        myChart1.dispatchAction({
+    			type: 'highlight',
+    			dataIndex: 0,
+			})
+	        myChart1.on("mouseout",function(params){
+	        	console.log(2)
 	        })
+	        myChart1.on("mouseover",function(params){
+	        	console.log(1)
+	        })
+//			$("#scyleDom").html('<div style="cursor:pointer;" class="circlebar" data-persent="0"><font>60%</font><p>测试</p></div><div style="cursor:pointer;" class="circlebar" data-persent="60"><font>60%</font><p>测试</p></div>');
+//			
+//	        animateSvgCircle({
+//	            el:'.circlebar',
+//	            width:180,
+//	            borderWidth:30
+//	        })
 			$("#searchContractType").click(function() {
 				App.getCommonModal("contractType", "#contractType", "typeFullname", "typeId");
 			})

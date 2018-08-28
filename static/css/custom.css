@@ -144,12 +144,17 @@ button:focus{outline: none !important;}
     width: 10%;
     padding: 60px 15px 0;
 }
+.selectL2R .panel{
+	margin-bottom: 0;
+}
 .selectL2R-actions{
 	margin-top: 42px;
-	margin-right: 5px;
 }
-.selectL2R-actions > button{
-	width: 34px;
+#selectL2RContent .list-group{
+	margin-bottom: 0;
+}
+#selectL2RContent .list-group li{
+	cursor: pointer;
 }
 /* 左右选择样式-结束 */
 

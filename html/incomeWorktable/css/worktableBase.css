@@ -80,18 +80,22 @@
 .workItemDom .workItem p {
   margin: 0;
 }
-.incomeOverviewDom {
+.incomeOverviewDom,
+.incomeAnalysisDom {
   height: 300px;
   position: relative;
   font-size: 12px;
 }
-.incomeOverviewDom #incomeOverviewReceivable,
-.incomeOverviewDom #incomeOverviewReceived {
+#incomeOverviewReceivable,
+#incomeOverviewReceived {
   height: 280px;
   width: 50%;
   float: left;
 }
-.incomeOverviewDom .incomeOverviewNote {
+#incomeAnalysis {
+  height: 300px;
+}
+.chartsNote {
   position: absolute;
   bottom: 0;
   right: 10px;

@@ -8,9 +8,10 @@ if(roleType == 1){
 	$("#auditCol").remove();
 }
 $(".page-content-worktable").show();
-creatIncomChart()
+initIncomeOverview();
+initIncomeAnalysis();
 //我的收入总览图表生成
-function creatIncomChart(){
+function initIncomeOverview(){
 	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
 	var overviewReceivableOption = {
 		title : {
@@ -28,7 +29,12 @@ function creatIncomChart(){
 	        },
 	    },
 	    tooltip : {
-	        formatter: "{a} <br/>{b} ({d}%)"
+	        formatter: "{a} <br/>{b} ({d}%)",
+	        position: function (pos, params, dom, rect, size) {
+		      var obj = {top: 60};
+		      obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+		      return obj;
+		  }
 	    },
 	    legend: {
 	    	orient: "vertical",
@@ -36,8 +42,7 @@ function creatIncomChart(){
 	        itemWidth: 8,
 	        itemHeight: 8,
 	        selectedMode: false,
-	        itemGap: 5,
-	        data: ['风险收入：406,957元','合同收入：20,348元']
+	        itemGap: 5
 	    },
 	    series : [
 	        {
@@ -53,8 +58,8 @@ function creatIncomChart(){
  					formatter:"{d}%"
  				},
    				labelLine: {
-   					length: 10,
-   					length2: 10,
+   					length: 5,
+   					length2: 5,
    					lineStyle: {
    						color: "#333"
    					}
@@ -113,8 +118,7 @@ function returnEmptyChartsOption(title,subTitle,data,toolTip){
 	        itemWidth: 8,
 	        itemHeight: 8,
 	        selectedMode: false,
-	        itemGap: 5,
-	        data: data
+	        itemGap: 5
 	    },
 	    series : [
 	        {
@@ -137,3 +141,63 @@ function returnEmptyChartsOption(title,subTitle,data,toolTip){
 		};
 		return option;
 };
+function initIncomeAnalysis(){
+	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
+	var incomeAnalysisOption = {
+		title : {
+	        text: '2018年收入预测分析',
+	        x:'center',
+	        textStyle: {
+	        	fontSize:14
+	        }
+	   	},
+	    legend: {
+	        bottom: '0',
+	        itemWidth: 20,
+	        itemHeight: 8,
+	        selectedMode: false,
+	        itemGap: 15
+	    },
+	    tooltip : {
+	        trigger: 'axis',
+	        axisPointer : {
+	            type : 'shadow'
+	        }
+	    },
+	    xAxis: {
+	        data: ['6月', '7月', '8月', '9月', '10月', '11月', '12月']
+	    },
+	    yAxis: {},
+	    series: [
+	    	
+//	        {
+//	        type: 'line',
+////	        lable:{
+////	    		show:true
+////	    	},
+//	        data: [220, 182, 191, 234, 290, 330, 310].map(function(val) {
+//	            return val*2
+//	        })
+//	    },
+	        {
+	        	name: '合同收入',
+		        type: 'bar',
+		        stack:'收入预测',
+		        
+		        data: [22000, 18200, 19100, 23400, 29000, 33000, 31000]
+		    },
+		    {
+		    	name: '风险收入',
+		        type: 'bar',
+		        stack:'收入预测',
+		        // barWidth:'30%',
+		        lable:{
+		        	show:true
+		        },
+		        data: [220000, 182000, 191000, 23400, 290000, 330000, 310000]
+		    }
+	    ],
+	    color:['#0070c0', '#ed8b00']
+	};
+	incomeAnalysis.setOption(incomeAnalysisOption);
+}

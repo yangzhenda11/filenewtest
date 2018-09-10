@@ -695,6 +695,18 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
     position: relative;
     top: 2px;
 }
+/*
+ * 上下折叠范围控制
+ */
+.form-fieldset-tools{
+	width: 100%;
+}
+.form-fieldset-tools .form-collapse{
+	width: 100%;
+}
+.form-fieldset-tools .form-collapse i{
+	float: right;
+}
 /*合同修改*/
 .form-fieldset-title{
 	font-size: 14px;

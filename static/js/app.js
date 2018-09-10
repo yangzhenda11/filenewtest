@@ -989,7 +989,7 @@ var App = function() {
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
-		  }).on('xhr.dt', function ( e, settings, json, xhr ) {
+		  	}).on('xhr.dt', function ( e, settings, json, xhr ) {
 	        	App.stopLoading(btn);
 	        	loadEnd();
 	        	if(xhr.responseText.indexOf("会话已经超时") != -1 && xhr.responseJSON == null){

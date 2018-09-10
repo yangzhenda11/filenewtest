@@ -1,0 +1,98 @@
+/*
+ * 合同履行工作台 首页
+ */
+.page-content-worktable {
+  background: #eee;
+}
+.worktableTitle {
+  padding: 8px 0 8px 12px;
+  font-size: 12px;
+  background: #D11718;
+  color: #fff;
+  margin-bottom: 6px;
+  border-radius: 4px;
+}
+.worktableTitle .roleNameStyle {
+  font-size: 14px;
+}
+.worktableTitle .roleNameStyle i {
+  font-size: 18px;
+  margin-right: 4px;
+}
+.loginUserName {
+  float: right;
+  margin-right: 10px;
+}
+.portlet-worktable {
+  border-radius: 4px;
+  font-size: 14px;
+  border-top-width: 1px !important;
+  margin-bottom: 6px;
+}
+.portlet-worktable i {
+  margin-right: 4px;
+  font-size: 20px;
+  position: relative;
+  top: 1px;
+}
+.portlet-worktable .portlet-title .caption {
+  padding: 6px 0;
+}
+.processDom,
+.workItemDom,
+.auditDom {
+  height: 80px;
+}
+.workItemDom {
+  display: table;
+  width: 100%;
+}
+.auditDom .auditItem {
+  padding-left: 25px;
+}
+.auditDom .auditItem .ui-radio {
+  padding-left: 25px;
+  top: 5px;
+}
+.processDom .processItem {
+  padding: 12px 0 0 20px;
+}
+.processDom .processItem i {
+  font-size: 20px;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
+}
+.processDom .processItem a {
+  margin-left: 5px;
+  position: relative;
+  top: 1px;
+}
+.workItemDom .workItem {
+  display: table-cell;
+  text-align: center;
+}
+.workItemDom .workItem img {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+.workItemDom .workItem p {
+  margin: 0;
+}
+.incomeOverviewDom {
+  height: 300px;
+  position: relative;
+  font-size: 12px;
+}
+.incomeOverviewDom #incomeOverviewReceivable,
+.incomeOverviewDom #incomeOverviewReceived {
+  height: 280px;
+  width: 50%;
+  float: left;
+}
+.incomeOverviewDom .incomeOverviewNote {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+}

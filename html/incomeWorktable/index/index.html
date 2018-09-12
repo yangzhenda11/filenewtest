@@ -86,9 +86,9 @@
                             </div>
                         </div>
                         <div class="portlet-body">
-            				<div class="row workItemDom">
+            				<div class="row workItemDom" id="workItemDom">
 								<div class="workItem">
-									<img src="../../../static/img/worktable/kehugl.png"/>
+									<img src="../../../static/img/worktable/kehugl.png" data-url='/html/incomeWorktable/customerManage/customerManage.html'/>
 									<p>客户管理</p>
 								</div>
 								<div class="workItem">
@@ -149,6 +149,158 @@
                         <div class="portlet-body">
             				<div class="row incomeAnalysisDom">
             					<div id="incomeAnalysis"></div>
+							</div>
+                    	</div>
+               	    </div>
+    			</div>
+    			<div class="col-sm-12" id="emphasisCol1">
+    				<div class="portlet portlet-worktable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的重点关注</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                        	<div id="emphasisRadio">
+                        		<div class="ui-radio-list ui-radio-inline">
+									<label class="ui-radio">
+										<input type="radio" value="1" checked="checked" name="emphasisRadio">
+										<span></span>
+										客户
+									</label>
+									<label class="ui-radio">
+										<input type="radio" value="2" name="emphasisRadio">
+										<span></span>
+										合同
+									</label>
+								</div>
+                        	</div>
+            				<div id="emphasisCustomerDom">
+            					<table class="table table-hover table-bordered table-striped table-align">
+			                    	<thead>
+										<tr>
+											<th>序号</th>
+											<th>客户名称</th>
+											<th>集客客户编号</th>
+											<th>合作方编号</th>
+											<th>客户经理</th>
+											<th>履行中合同</th>
+										</tr>
+									</thead>
+									<tbody id="emphasisClient">
+										<!--<tr class="emptyTr">
+											<td colspan="6">暂无重点关注的客户信息</td>
+										</tr>-->
+										<tr>
+											<td>1</td>
+											<td>中共中央办公厅</td>
+											<td>515200000000005325</td>
+											<td>100000874</td>
+											<td>王刚</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>大连商品交易所</td>
+											<td>515200000000005326</td>
+											<td>100000824</td>
+											<td>王刚</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>杭州商品交易所</td>
+											<td>515200000000005327</td>
+											<td>100000846</td>
+											<td>王刚</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>武汉商品交易所</td>
+											<td>515200000000005328</td>
+											<td>100000874</td>
+											<td>王刚，李莉</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>广州商品交易所</td>
+											<td>515200000000005329</td>
+											<td>100000825</td>
+											<td>王刚</td>
+											<td><a>查看</a></td>
+										</tr>
+									</tbody>
+								</table>
+								<a class="showMore">更多...</a>
+							</div>
+							<div id="emphasisContractDom" style="display: none;">
+            					<table class="table table-hover table-bordered table-striped table-align">
+			                    	<thead>
+										<tr>
+											<th>序号</th>
+											<th>合同名称</th>
+											<th>合同编号</th>
+											<th>客户名称</th>
+											<th>集客客户编号</th>
+											<th>合作方编号</th>
+											<th>含增值税合同金额</th>
+											<th>客户经理</th>
+											<th>线路</th>
+										</tr>
+									</thead>
+									<tbody id="emphasisClient">
+										<!--<tr class="emptyTr">
+											<td colspan="9">暂无重点关注的合同信息</td>
+										</tr>-->
+										<tr>
+											<td>1</td>
+											<td>大连商品交易所xx合同</td>
+											<td>CU12-3301-2018-000001</td>
+											<td>大连商品交易所</td>
+											<td>515200000000005325</td>
+											<td>100000874</td>
+											<td>32,000</td>
+											<td>李华</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>杭州商品交易所xx合同</td>
+											<td>CU12-3301-2018-000002</td>
+											<td>杭州商品交易所</td>
+											<td>515200000000005326</td>
+											<td>100000824</td>
+											<td>18,000</td>
+											<td>李玉</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>杭州银行xx合同</td>
+											<td>CU12-3301-2018-000003</td>
+											<td>杭州银行xx合同</td>
+											<td>515200000000005327</td>
+											<td>100000846</td>
+											<td>7,000</td>
+											<td>王峰</td>
+											<td><a>查看</a></td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>杭州西湖派出所xx合同</td>
+											<td>CU12-3301-2018-000004</td>
+											<td>杭州西湖派出所</td>
+											<td>515200000000005328</td>
+											<td>100000564</td>
+											<td>4,500</td>
+											<td>高峰</td>
+											<td><a>查看</a></td>
+										</tr>
+									</tbody>
+								</table>
+								<a class="showMore">更多...</a>
 							</div>
                     	</div>
                	    </div>

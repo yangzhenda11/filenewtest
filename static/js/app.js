@@ -496,6 +496,7 @@ var App = function() {
 				times = times ? times : 200;
 			}
 			pbody.slideToggle(times);
+			console.log(pbody.parent(".form-fieldset"))
 			meicon.toggleClass(icon1).toggleClass(icon2);
 //			if(el == '.page-search-more a') {
 //				var panelSearch = me.closest('.page-search');
@@ -526,7 +527,7 @@ var App = function() {
 	// Handle formFieldset
 	var handleFormFieldset = function() {
 		if($('.form-fieldset .form-collapse').length) {
-			panelAction('.form-fieldset .form-collapse', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
+			panelAction('.form-fieldset .form-fieldset-tools', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
 		}
 	}
 

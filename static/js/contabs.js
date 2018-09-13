@@ -150,13 +150,19 @@ function conTabC() {
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == o) {
 						$(this).show().siblings(".J_iframe").hide();
-						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner");
-						var dataTablesDomParent = dataTablesDom.parent();
-						if(dataTablesDom.css("width") != dataTablesDomParent.css("width")){
-							var parentName = $(this)[0].id;
-							var tableId = dataTablesDom.parents(".dataTables_wrapper")[0].id.split("_")[0];
-							$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
-						}
+						var workListDom = $(this).contents().find(".work-list")[0];
+						if(workListDom){
+							return false;
+						};
+						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
+						if(dataTablesDom){
+							var dataTablesDomParent = $(dataTablesDom).parent();
+							if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
+								var parentName = $(this)[0].id;
+								var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
+			$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+							}
+						};
 						return false
 					}
 				})
@@ -298,13 +304,19 @@ function conTabE() {
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == k) {
 				$(this).show().siblings(".J_iframe").hide();
-				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner");
-				var dataTablesDomParent = dataTablesDom.parent();
-				if(dataTablesDom.css("width") != dataTablesDomParent.css("width")){
-					var parentName = $(this)[0].id;
-					var tableId = dataTablesDom.parents(".dataTables_wrapper")[0].id.split("_")[0];
-$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
-				}
+				var workListDom = $(this).contents().find(".work-list")[0];
+				if(workListDom){
+					return false;
+				};
+				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
+				if(dataTablesDom){
+					var dataTablesDomParent = $(dataTablesDom).parent();
+					if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
+						var parentName = $(this)[0].id;
+						var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
+	$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+					}
+				};
 				return false
 			}
 		});

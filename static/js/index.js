@@ -69,13 +69,13 @@ $(document).ready(function() {
         	 	uri: "html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html"
         	}];
         	$("#tabPageFiexd").text("合同扫描件上传");
-			$("#tabPageFiexd").data("id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-        	$("#iframeFiexd").data("id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
+			$("#tabPageFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+        	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
         }else{
         	ace_menus = data.menus;
         	$("#tabPageFiexd").text("待办事项");
-			$("#tabPageFiexd").data("id","html/workflow/tasklist/task-todo.html");
-        	$("#iframeFiexd").data("id","html/workflow/tasklist/task-todo.html")
+			$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
+        	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
         }
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {

@@ -15,7 +15,9 @@ var relationContractTheadList = [
 	{name:"月租费",data:"mon"},
 	{name:"租用状态",data:"sta"},
 	{name:"客户经理姓名",data:"cname"},
-	{name:"来源",data:"from"}
+	{name:"来源",data:"from"},
+	{name:"测试",data:"daihao"},
+	{name:"测试",data:"daihao"}
 ];
 //未关联合同表格头
 var notRelationContractTheadList = [
@@ -29,7 +31,9 @@ var notRelationContractTheadList = [
 	{name:"月租费",data:"mon"},
 	{name:"租用状态",data:"sta"},
 	{name:"客户经理姓名",data:"cname"},
-	{name:"来源",data:"from"}
+	{name:"来源",data:"from"},
+	{name:"测试",data:"daihao"},
+	{name:"测试",data:"daihao"}
 ];
 
 /*

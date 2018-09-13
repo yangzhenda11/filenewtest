@@ -52,19 +52,19 @@ function initRelationCustomerTable(){
 			}
 		},
 		"columns": [
-			{"data" : null,
+			{"data" : null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#relationCustomerTable").pageStart;
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "name"},
-			{"data": "number"},
-			{"data": "number1"},
-			{"data": "user"},
-			{"data": null,
+			{"data": "name","className": "whiteSpaceNormal"},
+			{"data": "number","className": "whiteSpaceNormal"},
+			{"data": "number1","className": "whiteSpaceNormal"},
+			{"data": "user","className": "whiteSpaceNormal"},
+			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.user+"\")'>查看</a>";
 				}
 			},
 		]
@@ -75,7 +75,16 @@ function initRelationCustomerTable(){
  * 未关联合同客户切换来源时重新初始化表格
  */
 $("#notRelationCustomerDom input[name='customerFor']").on("change",function(){
-	initNotRelationCustomerTable();
+	var isInit = $.fn.dataTable.isDataTable("#notRelationCustomerTable");
+	if(isInit){
+		initNotRelationCustomerTable();
+	}else{
+		if($(this).val() == 1){
+			$("#notRelationCustomerFrom").removeClass("hidden");
+		}else{
+			$("#notRelationCustomerFrom").addClass("hidden");
+		}
+	}
 })
 /*
  * 未关联合同客户点击查询事件
@@ -91,39 +100,9 @@ function searchNotRelationCustomer(){
 }
 /*
  * 未关联合同客户表格初始化
- * 表头为动态表头，第一次加载时需要去掉其中的内容
  */
 function initNotRelationCustomerTable(){
-	var isInit = $.fn.dataTable.isDataTable("#notRelationCustomerTable");
-	if(!isInit){
-		$("#notRelationCustomerTable").html("");
-	};
-	function initColumns(){
-		var checkRadio = $("#notRelationCustomerDom input[name='customerFor']:checked").val();
-		if(checkRadio == 1){
-			var visible = true;
-		}else{
-			var visible = false;
-		};
-		var colums = [
-			{"data" : null,"title":"序号",
-				"render" : function(data, type, full, meta){
-					var start = App.getDatatablePaging("#notRelationCustomerTable").pageStart;
-					return start + meta.row + 1;
-				}
-			},
-			{"data": "name","title":"客户名称"},
-			{"data": "number","title":"集客客户编号"},
-			{"data": "user","title":"客户经理"},
-			{"data": null,"title":"线路基本信息",
-				"render" : function(data, type, full, meta){
-					return "<a>查看</a>";
-				}
-			},
-			{"data": "laiyuan","title":"来源","visible":visible}
-		];
-		return colums;
-	};
+	var visible = $("#notRelationCustomerDom input[name='customerFor']:checked").val() == 1 ? true : false;
 	App.initDataTables('#notRelationCustomerTable', "#notRelationCustomerLoading", {
 		ajax: {
 			"type": "GET",
@@ -136,7 +115,23 @@ function initNotRelationCustomerTable(){
 				return notRelationCustomerData;
 			}
 		},
-		"columns": initColumns()
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#notRelationCustomerTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "name","title":"客户名称","className": "whiteSpaceNormal"},
+			{"data": "number","title":"集客客户编号","className": "whiteSpaceNormal"},
+			{"data": "user","title":"客户经理","className": "whiteSpaceNormal"},
+			{"data": null,"title":"线路基本信息","className": "whiteSpaceNormal",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpLineManage(\""+data.user+"\")'>查看</a>";
+				}
+			},
+			{"data": "laiyuan","title":"来源","className": "whiteSpaceNormal","visible":visible}
+		]
 	});
 }
 
@@ -165,19 +160,19 @@ function initEmphasisCustomerTable(){
 			}
 		},
 		"columns": [
-			{"data" : null,
+			{"data" : null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#emphasisCustomerTable").pageStart;
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "name"},
-			{"data": "number"},
-			{"data": "number1"},
-			{"data": "user"},
-			{"data": null,
+			{"data": "name","className": "whiteSpaceNormal"},
+			{"data": "number","className": "whiteSpaceNormal"},
+			{"data": "number1","className": "whiteSpaceNormal"},
+			{"data": "user","className": "whiteSpaceNormal"},
+			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.user+"\")'>查看</a>";
 				}
 			},
 		]
@@ -213,19 +208,19 @@ function initCustomerListTable(){
 			}
 		},
 		"columns": [
-			{"data" : null,
+			{"data" : null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#customerListTable").pageStart;
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "name"},
-			{"data": "number"},
-			{"data": "number1"},
-			{"data": "user"},
-			{"data": null,
+			{"data": "name","className": "whiteSpaceNormal"},
+			{"data": "number","className": "whiteSpaceNormal"},
+			{"data": "number1","className": "whiteSpaceNormal"},
+			{"data": "user","className": "whiteSpaceNormal"},
+			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.user+"\")'>查看</a>";
 				}
 			},
 		]
@@ -243,4 +238,17 @@ function reloadPageDataTable(tableId,retainPaging) {
 		table.ajax.reload();
 	}
 }
-
+/*
+ * 跳转线路信息
+ */
+function jumpLineManage(data){
+	var url = "/html/incomeWorktable/lineManage/lineManage.html?id=123&relationType=0&returnbtn=false&loaddata=true";
+	top.showSubpageTab(url,"线路信息");
+}
+/*
+ * 跳转合同信息
+ */
+function jumpContractManage(data){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
+	top.showSubpageTab(url,"履行中合同");
+}

@@ -495,9 +495,13 @@ var App = function() {
 			if(times != 0) {
 				times = times ? times : 200;
 			}
-			pbody.slideToggle(times);
-			console.log(pbody.parent(".form-fieldset"))
 			meicon.toggleClass(icon1).toggleClass(icon2);
+			pbody.slideToggle(times,function(){
+				if(App.isExitsFunction("formFieldsetSlideFn")){
+					var id = me.parents(".form-fieldset").attr("id");
+					formFieldsetSlideFn(id);
+				};
+			});
 //			if(el == '.page-search-more a') {
 //				var panelSearch = me.closest('.page-search');
 //				var resetBtn = panelSearch.find('.page-search-action').find('button[type=reset]');
@@ -902,9 +906,11 @@ var App = function() {
 				return;
 			};
 			if($.fn.DataTable.isDataTable(el)){
+				var isExist = true;
+				$(el+"_wrapper").parent().height($(el+"_wrapper").parent().height());
 				$(el).DataTable().destroy();
 				$(el).empty();
-			}
+			};
 			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];
@@ -982,7 +988,10 @@ var App = function() {
 					$("[data-toggle='tooltip']").tooltip();
 					if(options.drawCallbackFn != undefined){
 						options.drawCallbackFn();
-					}
+					};
+					if(isExist){
+						$(el+"_wrapper").parent().height("");
+					};
 				},
 				"ajax":{
 					beforSend:App.startLoading(btn)

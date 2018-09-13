@@ -495,8 +495,13 @@ var App = function() {
 			if(times != 0) {
 				times = times ? times : 200;
 			}
-			pbody.slideToggle(times);
 			meicon.toggleClass(icon1).toggleClass(icon2);
+			pbody.slideToggle(times,function(){
+				if(App.isExitsFunction("formFieldsetSlideFn")){
+					var id = me.parents(".form-fieldset").attr("id");
+					formFieldsetSlideFn(id);
+				};
+			});
 //			if(el == '.page-search-more a') {
 //				var panelSearch = me.closest('.page-search');
 //				var resetBtn = panelSearch.find('.page-search-action').find('button[type=reset]');
@@ -526,7 +531,7 @@ var App = function() {
 	// Handle formFieldset
 	var handleFormFieldset = function() {
 		if($('.form-fieldset .form-collapse').length) {
-			panelAction('.form-fieldset .form-collapse', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
+			panelAction('.form-fieldset .form-fieldset-tools', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
 		}
 	}
 
@@ -901,9 +906,11 @@ var App = function() {
 				return;
 			};
 			if($.fn.DataTable.isDataTable(el)){
+				var isExist = true;
+				$(el+"_wrapper").parent().height($(el+"_wrapper").parent().height());
 				$(el).DataTable().destroy();
 				$(el).empty();
-			}
+			};
 			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
 				options = arguments[1];
@@ -981,7 +988,10 @@ var App = function() {
 					$("[data-toggle='tooltip']").tooltip();
 					if(options.drawCallbackFn != undefined){
 						options.drawCallbackFn();
-					}
+					};
+					if(isExist){
+						$(el+"_wrapper").parent().height("");
+					};
 				},
 				"ajax":{
 					beforSend:App.startLoading(btn)
@@ -989,7 +999,7 @@ var App = function() {
 			}, options);
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
-		  }).on('xhr.dt', function ( e, settings, json, xhr ) {
+		  	}).on('xhr.dt', function ( e, settings, json, xhr ) {
 	        	App.stopLoading(btn);
 	        	loadEnd();
 	        	if(xhr.responseText.indexOf("会话已经超时") != -1 && xhr.responseJSON == null){

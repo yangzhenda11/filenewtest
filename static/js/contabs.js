@@ -194,7 +194,11 @@ function showSubpageTab(link,title,openNew){
 		if($(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-				animateTab(this);
+				var newDom = $(this);
+				$(this).remove();
+				$(".J_menuTabs .page-tabs-content").append(newDom);
+				animateTab($(".J_menuTab.active"))
+//				animateTab(this);
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();

@@ -1,5 +1,3 @@
-
-//首页+产品列表页进度条
 (function($) {
 	$.fn.svgCircle = function(i) {
 		i = $.extend({

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+	<!--<![endif]-->
+	<!-- BEGIN HEAD -->
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css?t=1536823603310">
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap-fileinput/fileinput.min.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1536823603310" />
+		<link rel="stylesheet" type="text/css" href="/html/incomeWorktable/css/worktableBase.css?t=1536823603310"/>
+	</head>
+
+	<body>
+		<div class="page-content page-content-worktable">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="worktableTitle">
+						当前角色：<span class="roleNameStyle"><i class="icon-jingli iconfont"></i><span id="roleName"></span></span>
+						<span class="loginUserName">您好，<span id="loginUserName"></span>！</span>
+					</div>
+				</div>
+				<div class="col-sm-2 paddingR0" id="processCol">
+    				<div class="portlet portlet-worktable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的待办待阅</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+            				<div class="row processDom">
+								<div class="processItem">
+									<i class="iconfont icon-yujing"></i>我的待办
+									<a>12</a>
+								</div>
+								<div class="processItem">
+									<i class="iconfont icon-email"></i>我的待阅
+									<a>9</a>
+								</div>
+							</div>
+                    	</div>
+               	    </div>
+    			</div>
+    			<div class="col-sm-10" id="workItemCol">
+    				<div class="portlet portlet-worktable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的商务助理</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+            				<div class="row workItemDom" id="workItemDom">
+								<div class="workItem">
+									<img src="/static/img/worktable/kehufuwu.png?t=1536823603310"/>
+									<p>合作方管理</p>
+								</div>
+								<div class="workItem">
+									<img src="/static/img/worktable/lvxinghetong.png?t=1536823603310"/>
+									<p>履行中合同</p>
+								</div>
+								<div class="workItem">
+									<img src="/static/img/worktable/shourugl.png?t=1536823603310"/>
+									<p>收票与付款</p>
+								</div>
+								<div class="workItem">
+									<img src="/static/img/worktable/dingdangl.png?t=1536823603310"/>
+									<p>订单管理</p>
+								</div>
+								<div class="workItem">
+									<img src="/static/img/worktable/fengxianyujing.png?t=1536823603310"/>
+									<p>风险预警</p>
+								</div>
+								<div class="workItem">
+									<img src="/static/img/worktable/qianzhizhiyuangl.png?t=1536823603310"/>
+									<p>前置资源管理</p>
+								</div>
+								<div class="workItem">
+									<img src="/static/img/worktable/hetongbanjie.png?t=1536823603310"/>
+									<p>合同办结</p>
+								</div>
+							</div>
+                    	</div>
+               	    </div>
+    			</div>
+    			<div class="col-sm-12">
+    				<div class="portlet portlet-worktable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的付款总览</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+            				<div class="row expentOverviewDom">
+            					<div id="expentType1"></div>
+            					<div id="expentType2"></div>
+            					<div class="chartsNote">*以上统计数据截至2018年5月20日</div>
+							</div>
+                    	</div>
+               	    </div>
+    			</div>
+    			<div class="col-sm-12">
+    				<div class="portlet portlet-worktable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的重点关注</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                        	<div class="pageSearch">
+								<div class="col-sm-3">
+									<input type="text" class="form-control" maxlength="50" placeholder="查询合同名称/合同编号">
+								</div>
+								<div class="input-group">
+									<button type="button" class="btn red" data-loading-text="加载中.." ><i class="iconfont icon-search"></i>查询</button>
+								</div>
+							</div>
+        					<p class="table-title">履行中合同跟踪</p>
+        					<table class="table table-hover table-bordered table-striped table-align">
+		                    	<thead>
+									<tr>
+										<th>序号</th>
+										<th>合同名称</th>
+										<th>合同编号</th>
+										<th>合作方名称</th>
+										<th>合作方编号</th>
+										<th>含增值税合同金额</th>
+										<th>订单</th>
+										<th>合同履行人</th>
+									</tr>
+								</thead>
+								<tbody id="emphasisClient">
+									<!--<tr class="emptyTr">
+										<td colspan="8">暂无重点关注的合同信息</td>
+									</tr>-->
+									<tr>
+										<td>1</td>
+										<td>设备不含服务和集成</td>
+										<td>CU12-3301-2018-000001</td>
+										<td>华为技术有限公司</td>
+										<td>100231000</td>
+										<td>55,500</td>
+										<td><a>查看</a></td>
+										<td><a>查看</a></td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>中国联通工程采购合同</td>
+										<td>CU12-3301-2018-000002</td>
+										<td>广东质德律师事务所</td>
+										<td>100079124</td>
+										<td>18,000</td>
+										<td><a>查看</a></td>
+										<td><a>查看</a></td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>第三方软件合同</td>
+										<td>CU12-3301-2018-000003</td>
+										<td>中兴技术有限公司</td>
+										<td>100079152</td>
+										<td>3,500</td>
+										<td><a>查看</a></td>
+										<td><a>查看</a></td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>应用软件开发及服务合同</td>
+										<td>CU12-3301-2018-000004</td>
+										<td>德勤管理咨询公司</td>
+										<td>100074632</td>
+										<td>4,500</td>
+										<td><a>查看</a></td>
+										<td><a>查看</a></td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>中国联通集中采购设备合同</td>
+										<td>CU12-3301-2018-000005</td>
+										<td>大成律师事务所</td>
+										<td>100346434</td>
+										<td>5,00</td>
+										<td><a>查看</a></td>
+										<td><a>查看</a></td>
+									</tr>
+								</tbody>
+							</table>
+							<a class="showMore">更多...</a>
+                    	</div>
+               	    </div>
+    			</div>
+			</div>
+		</div>
+		<!--modal-->
+		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+		<!--[if lt IE 9]>
+		  	<script src="/static/plugins/html5shiv.min.js?t=1536823603310"></script>
+		  	<script src="/static/plugins/respond.min.js?t=1536823603310"></script>
+		  	<script src="/static/plugins/ie8.fix.min.js?t=1536823603310"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="/static/plugins/selectivizr-min.js?t=1536823603310"></script>
+		<![endif]-->
+		<!--基础依赖-->
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/datatables.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/ellipsis.js?t=1536823603310"></script>
+		<script src="/static/plugins/selectL2R.min.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/imageview/echarts.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/layer/layer.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/app.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/expenseWorktable/index/index.js?t=1536823603310" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

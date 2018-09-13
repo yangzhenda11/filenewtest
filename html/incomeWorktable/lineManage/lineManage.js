@@ -15,9 +15,7 @@ var relationContractTheadList = [
 	{name:"月租费",data:"mon"},
 	{name:"租用状态",data:"sta"},
 	{name:"客户经理姓名",data:"cname"},
-	{name:"来源",data:"from"},
-	{name:"测试",data:"daihao"},
-	{name:"测试",data:"daihao"}
+	{name:"来源",data:"from"}
 ];
 //未关联合同表格头
 var notRelationContractTheadList = [
@@ -31,9 +29,7 @@ var notRelationContractTheadList = [
 	{name:"月租费",data:"mon"},
 	{name:"租用状态",data:"sta"},
 	{name:"客户经理姓名",data:"cname"},
-	{name:"来源",data:"from"},
-	{name:"测试",data:"daihao"},
-	{name:"测试",data:"daihao"}
+	{name:"来源",data:"from"}
 ];
 
 /*
@@ -117,9 +113,6 @@ function initLineInforTable(){
 function lineInforTableColumns(){
 	var whiteSpaceNormal = "";
 	var theadList = $("#lineInfor input[name='relationType']:checked").val()==1 ? relationContractTheadList : notRelationContractTheadList;
-	if(theadList.length < 14){
-		var whiteSpaceNormal = "whiteSpaceNormal";
-	};
 	var columns = [
 		{"data" : null,"title":"序号","className": whiteSpaceNormal,
 			"render" : function(data, type, full, meta){
@@ -133,7 +126,6 @@ function lineInforTableColumns(){
 			var item = {
 				"data": v.data,
 				"title": v.name,
-				"className": whiteSpaceNormal,
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}

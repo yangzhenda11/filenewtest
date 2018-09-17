@@ -111,13 +111,9 @@ function initLineInforTable(){
 	});
 }
 function lineInforTableColumns(){
-	var whiteSpaceNormal = "";
 	var theadList = $("#lineInfor input[name='relationType']:checked").val()==1 ? relationContractTheadList : notRelationContractTheadList;
-	if(theadList.length < 14){
-		var whiteSpaceNormal = "whiteSpaceNormal";
-	};
 	var columns = [
-		{"data" : null,"title":"序号","className": whiteSpaceNormal,
+		{"data" : null,"title":"序号",
 			"render" : function(data, type, full, meta){
 				var start = App.getDatatablePaging("#lineInforTable").pageStart;
 				return start + meta.row + 1;
@@ -129,7 +125,6 @@ function lineInforTableColumns(){
 			var item = {
 				"data": v.data,
 				"title": v.name,
-				"className": whiteSpaceNormal,
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
@@ -137,8 +132,7 @@ function lineInforTableColumns(){
 		}else{
 			var item = {
 				"data": v.data,
-				"title": v.name,
-				"className": whiteSpaceNormal
+				"title": v.name
 			};
 		};
 		columns.push(item);

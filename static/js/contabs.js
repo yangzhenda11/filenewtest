@@ -142,6 +142,10 @@ function conTabC() {
 	if(o == undefined || $.trim(o).length == 0) {
 		return false;
 	}
+//	if(o == "html/workflow/tasklist/task-hasdone.html"){
+//		layer.alert("当前登录用户配置了两个角色，请处理",{icon:2});
+//		return false;
+//	}
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == o) {
 			if(!$(this).hasClass("active")) {

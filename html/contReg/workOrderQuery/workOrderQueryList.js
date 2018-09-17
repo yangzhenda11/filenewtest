@@ -11,54 +11,55 @@ App.initAjaxSelect2("#wcardStatus",ajaxObj,"dictValue","dictLabel","请选择工
 /*
  * 初始化表格
  */
-App.initDataTables('#workOrderQueryTable', "#submitBtn", {
-	ajax: {
-		"type": "POST",
-        "contentType":"application/json;charset=utf-8",
-        "url": serverPath+'workOrderQuery/workOrderQueryList',
-        "data": function(d) {//自定义传入参数
-        	var searchParmData = getSearchParm();
-        	d = $.extend(d,searchParmData);
-           	return JSON.stringify(d);
-        }
-	},
-	"columns": [
-        {"data" : null,"title":"序号","className": "text-center","width": "5%",
-			"render" : function(data, type, full, meta){
-				var start = App.getDatatablePaging("#workOrderQueryTable").pageStart;
-				return start + meta.row + 1;
-		   	}
-		},
-        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},
-        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
-        {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "14%"},
-        {"data": "wcardNumber","className":"whiteSpaceNormal","title": "工单编号","width": "9%",
-			"render": function(data, type, full, meta) {
-				var result = '<a href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
-				return result;
-			}
-		},
-        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width": "6%"},
-        {"data": "ctreatedDate","title": "创建日期","className":"whiteSpaceNormal","width": "5%",
-	        "render": function(data, type, full, meta) {
-	            return App.formatDateTime(data,"yyyy-MM-dd");
+function getWorkOrderQueryTable(){
+	App.initDataTables('#workOrderQueryTable', "#submitBtn", {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+	        "url": serverPath+'workOrderQuery/workOrderQueryList',
+	        "data": function(d) {//自定义传入参数
+	        	var searchParmData = getSearchParm();
+	        	d = $.extend(d,searchParmData);
+	           	return JSON.stringify(d);
 	        }
-	    },
-	    {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width": "6%"},
-	    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
-        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
-        {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
-        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"}
-	],
-	"columnDefs": [{
-   		"createdCell": function (td, cellData, rowData, row, col) {
-         	if ( col > 0 ) {
-           		$(td).attr("title", $(td).text())
-         	}
-   		}
- 	}]
-});
-
+		},
+		"columns": [
+	        {"data" : null,"title":"序号","className": "text-center","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#workOrderQueryTable").pageStart;
+					return start + meta.row + 1;
+			   	}
+			},
+	        {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},
+	        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
+	        {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "14%"},
+	        {"data": "wcardNumber","className":"whiteSpaceNormal","title": "工单编号","width": "9%",
+				"render": function(data, type, full, meta) {
+					var result = '<a href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
+					return result;
+				}
+			},
+	        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width": "6%"},
+	        {"data": "ctreatedDate","title": "创建日期","className":"whiteSpaceNormal","width": "5%",
+		        "render": function(data, type, full, meta) {
+		            return App.formatDateTime(data,"yyyy-MM-dd");
+		        }
+		    },
+		    {"data": "undertakeName","title": "承办人","className":"whiteSpaceNormal","width": "6%"},
+		    {"data": "unicomPartyId","bVisible":false,"title": "我方主体"},
+	        {"data": "unicomPartyName","title": "我方主体","className":"whiteSpaceNormal","width":"15%"},
+	        {"data": "oppoPartyId","bVisible":false,"title": "对方主体"},
+	        {"data": "oppoPartyName","title": "对方主体","className":"whiteSpaceNormal","width":"15%"}
+		],
+		"columnDefs": [{
+	   		"createdCell": function (td, cellData, rowData, row, col) {
+	         	if ( col > 0 ) {
+	           		$(td).attr("title", $(td).text())
+	         	}
+	   		}
+	 	}]
+	});	
+}
 
 /*
  * 搜索点击事件
@@ -80,11 +81,17 @@ function searchWorkOrder(retainPaging) {
 		layer.msg("签订盖章日期开始日期不能早于截止日期");
 		return;
 	}else{
-		var table = $('#workOrderQueryTable').DataTable();
-		if(retainPaging) {
-			table.ajax.reload(null, false);
-		} else {
-			table.ajax.reload();
+		if($.fn.DataTable.isDataTable("#workOrderQueryTable")){
+			var table = $('#workOrderQueryTable').DataTable();
+			if(retainPaging) {
+				table.ajax.reload(null, false);
+			} else {
+				table.ajax.reload();
+			}
+		}else{
+			$("#emptyTableDom").hide();
+			$("#toolbars").show();
+			getWorkOrderQueryTable();
 		}
 	}
 }

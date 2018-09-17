@@ -142,6 +142,10 @@ function conTabC() {
 	if(o == undefined || $.trim(o).length == 0) {
 		return false;
 	}
+//	if(o == "html/workflow/tasklist/task-hasdone.html"){
+//		layer.alert("当前登录用户配置了两个角色，请处理",{icon:2});
+//		return false;
+//	}
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == o) {
 			if(!$(this).hasClass("active")) {
@@ -150,13 +154,19 @@ function conTabC() {
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == o) {
 						$(this).show().siblings(".J_iframe").hide();
-						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner");
-						var dataTablesDomParent = dataTablesDom.parent();
-						if(dataTablesDom.css("width") != dataTablesDomParent.css("width")){
-							var parentName = $(this)[0].id;
-							var tableId = dataTablesDom.parents(".dataTables_wrapper")[0].id.split("_")[0];
-							$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
-						}
+						var workListDom = $(this).contents().find(".work-list")[0];
+						if(workListDom){
+							return false;
+						};
+						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
+						if(dataTablesDom){
+							var dataTablesDomParent = $(dataTablesDom).parent();
+							if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
+								var parentName = $(this)[0].id;
+								var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
+			$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+							}
+						};
 						return false
 					}
 				})
@@ -194,7 +204,11 @@ function showSubpageTab(link,title,openNew){
 		if($(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-				animateTab(this);
+				var newDom = $(this);
+				$(this).remove();
+				$(".J_menuTabs .page-tabs-content").append(newDom);
+				animateTab($(".J_menuTab.active"))
+//				animateTab(this);
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
@@ -294,13 +308,19 @@ function conTabE() {
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == k) {
 				$(this).show().siblings(".J_iframe").hide();
-				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner");
-				var dataTablesDomParent = dataTablesDom.parent();
-				if(dataTablesDom.css("width") != dataTablesDomParent.css("width")){
-					var parentName = $(this)[0].id;
-					var tableId = dataTablesDom.parents(".dataTables_wrapper")[0].id.split("_")[0];
-$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
-				}
+				var workListDom = $(this).contents().find(".work-list")[0];
+				if(workListDom){
+					return false;
+				};
+				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
+				if(dataTablesDom){
+					var dataTablesDomParent = $(dataTablesDom).parent();
+					if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
+						var parentName = $(this)[0].id;
+						var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
+	$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+					}
+				};
 				return false
 			}
 		});

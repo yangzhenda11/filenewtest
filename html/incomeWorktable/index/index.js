@@ -1,22 +1,48 @@
 var roleType = 2;
-$("#roleName").text("客户经理");
 $("#loginUserName").text("汪雨");
 if(roleType == 1){
+	$("#roleName").text("稽核管理");
 	$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
 	$("#auditCol").removeClass("hidden");
 }else{
+	$("#roleName").text("客户经理");
 	$("#auditCol").remove();
-}
+};
 $(".page-content-worktable").show();
 initIncomeOverview();
 initIncomeAnalysis();
+$("#emphasisRadio input[name='emphasisRadio']").on("change",function(){
+	if($(this).val() == 1){
+		$("#emphasisContractDom").hide(0,function(){
+			$("#emphasisCustomerDom").show();
+//			initEmphasisClientDom();
+		});
+	}else if($(this).val() == 2){
+		$("#emphasisCustomerDom").hide(0,function(){
+			$("#emphasisContractDom").show();
+//			initEmphasisClientDom();
+		});
+	}
+})
+$("#workItemDom").on("click","img",function(){
+	if($(this).data("url")){
+		top.showSubpageTab($(this).data("url"),"客户管理")
+	}
+})
 //我的收入总览图表生成
 function initIncomeOverview(){
 	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
+	var overviewReceivableOption = returnChartsOption('应收金额','合同收入/风险收入\n累计应收金额占比情况',[{value:406957, name:'风险收入：406,957元'},{value:20348, name:'合同收入：20,348元'}],'应收金额');
+	incomeOverviewReceivable.setOption(overviewReceivableOption);
+	var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
+	var overviewReceivedOption = returnEmptyChartsOption('实收金额','合同收入/风险收入\n累计应收金额占比情况',['风险收入：0元','合同收入：0元'],'应收金额：0元');
+	incomeOverviewReceived.setOption(overviewReceivedOption);
+}
+function returnChartsOption(title,subTitle,data,seriesName){
 	var overviewReceivableOption = {
 		title : {
-	        text: '应收金额',
-	        subtext: '合同收入/风险收入\n累计应收金额占比情况',
+	        text: title,
+	        subtext: subTitle,
 	        x:'center',
 	        itemGap: 6,
 	        textStyle: {
@@ -46,7 +72,7 @@ function initIncomeOverview(){
 	    },
 	    series : [
 	        {
-	            name: '应收金额',
+	            name: seriesName,
 	            type: 'pie',
 	            radius : '55%',
 	            center: ['50%', '53%'],
@@ -74,19 +100,13 @@ function initIncomeOverview(){
 	                shadowOffsetX: 0,
 	                shadowColor: 'rgba(0, 0, 0, 0.5)'
 	           	},
-	            data:[
-	                {value:406957, name:'风险收入：406,957元'},
-	                {value:20348, name:'合同收入：20,348元'},
-	            ]
+	            data:data
 	        }
 	    ],
 	    color:['#ed8b00', '#0070c0']
 	};
-	incomeOverviewReceivable.setOption(overviewReceivableOption);
-	var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
-	var overviewReceivedOption = returnEmptyChartsOption('应收金额','合同收入/风险收入\n累计应收金额占比情况',['风险收入：0元','合同收入：0元'],'应收金额：0元');
-	incomeOverviewReceived.setOption(overviewReceivedOption);
-}
+	return overviewReceivableOption;
+};
 function returnEmptyChartsOption(title,subTitle,data,toolTip){
 	var seriesData = [];
 	for(var i = 0; i < data.length; i++){
@@ -138,8 +158,8 @@ function returnEmptyChartsOption(title,subTitle,data,toolTip){
 	        }
 	    ],
 	    color:['#bfbfbf', '#bfbfbf']
-		};
-		return option;
+	};
+	return option;
 };
 function initIncomeAnalysis(){
 	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
@@ -152,7 +172,9 @@ function initIncomeAnalysis(){
 	        }
 	   	},
 	    legend: {
-	        bottom: '0',
+	    	orient: 'vertical',
+	    	top: '40%',
+	        right: '5',
 	        itemWidth: 20,
 	        itemHeight: 8,
 	        selectedMode: false,
@@ -164,40 +186,61 @@ function initIncomeAnalysis(){
 	            type : 'shadow'
 	        }
 	    },
+	    grid: {
+	    	left: '10',
+            right: '100',
+            bottom: '5',
+            top: '50',
+            containLabel: true
+           },
 	    xAxis: {
+	    	axisLine:{
+	    		show:false
+	    	},
+	    	axisTick:{
+	    		show:false
+	    	},
 	        data: ['6月', '7月', '8月', '9月', '10月', '11月', '12月']
 	    },
-	    yAxis: {},
+	    yAxis: {
+	    	axisLine:{
+	    		show:false
+	    	},
+	    	axisTick:{
+	    		show:false
+	    	}
+	    },
 	    series: [
-	    	
-//	        {
-//	        type: 'line',
-////	        lable:{
-////	    		show:true
-////	    	},
-//	        data: [220, 182, 191, 234, 290, 330, 310].map(function(val) {
-//	            return val*2
-//	        })
-//	    },
 	        {
 	        	name: '合同收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        
-		        data: [22000, 18200, 19100, 23400, 29000, 33000, 31000]
+		        barWidth:'45%',
+		        data: [22000, 18200, 19100, 23400, 29000, 13000, 31000]
 		    },
 		    {
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        // barWidth:'30%',
+		        barWidth:'45%',
 		        lable:{
 		        	show:true
 		        },
-		        data: [220000, 182000, 191000, 23400, 290000, 330000, 310000]
+		        data: [220000, 182000, 191000, 234000, 290000, 130000, 310000]
+		    },
+		    {
+		    	name: '收入总计',
+		        type: 'line',
+		        label: {
+	                normal: {
+	                    show: true,
+	                    position: 'top'
+	                }
+	            },
+		        data: [242000, 200200, 210100, 257400, 319000, 143000, 341000]
 		    }
 	    ],
-	    color:['#0070c0', '#ed8b00']
+	    color:['#0070c0', '#ed8b00','#a0a0a0']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
 }

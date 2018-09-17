@@ -1,4 +1,4 @@
-<div class="modal-dialog" role="document">
+<div class="modal-dialog" role="document" style="width: 60%;">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -7,16 +7,26 @@
             <h4 class="modal-title" id="_selectTitle"></h4>
         </div>
         <div class="modal-body">
-            <div id="selectL2RContent" class="row selectL2R">
+            <div id="selectL2RContent" class="row list-body">
                 <div class="col-sm-5">
-                    <div class="panel panel-info">
-                        <div class="panel-heading" id="_selectLTitle"></div>
-                        <div class="panel-body selectL" style="height: 250px;overflow: auto;">
-                            <ul class="list-group" id="selectLUl"></ul>
-                        </div>
+                    <div class="_selectTitle" id="_selectLTitle"></div>
+                    <div class="selectCon" style="height: 250px;overflow: auto;">
+                        <ul class="item-box left-box" id="_selectLCon">
+							<!-- 左边框初始化待选项 -->
+							<li class="item" data-id="xigua">西瓜</li>
+							<li class="item" data-id="pingguo">苹果</li>
+							<li class="item" data-id="xiangjiao">香蕉</li>
+							<li class="item" data-id="boluo">菠萝</li>
+							<li class="item" data-id="caomei">草莓</li>
+							<li class="item" data-id="yali">鸭梨</li>
+							<li class="item" data-id="mitao">蜜桃</li>
+							<li class="item" data-id="sangguo">桑果</li>
+							<li class="item" data-id="yangmei">杨梅</li>
+							<li class="item" data-id="putao">葡萄</li>
+						</ul>
                     </div>
                 </div>
-                <div class="col-sm-2 text-center selectL2R-actions" style="padding-left: 3%;padding-right: 3%;padding-top: 40px;">
+                <div class="col-sm-2 text-center center-box" style="padding-left: 3%;padding-right: 3%;padding-top: 40px;">
                 	<button title="上移" class="selectL2R-up btn btn-danger btn-outline btn-block"><i class="fa fa-angle-up"></i></button>
                     <button title="选择" class="selectL2R-select btn btn-danger btn-outline btn-block"><i class="fa fa-angle-right"></i></button>
                     <button title="选择全部" class="selectL2R-selectAll btn btn-danger btn-outline btn-block"><i class="fa fa-angle-double-right"></i></button>
@@ -25,11 +35,11 @@
                     <button title="下移" class="selectL2R-down btn btn-danger btn-outline btn-block"><i class="fa fa-angle-down"></i></button>
                 </div>
                 <div class="col-sm-5">
-                    <div class="panel panel-success">
-                        <div class="panel-heading" id="_selectRTitle"></div>
-                        <div class="panel-body selectR" style="height: 250px;overflow: auto;">
-                            <ul class="list-group" id="selectRUl"></ul>
-                        </div>
+                	<div class="_selectTitle" id="_selectRTitle"></div>
+                    <div class="selectCon" style="height: 250px;overflow: auto;">
+                        <ul class="item-box right-box" id="_selectRCon">
+							<!-- 右边框存放已选项 -->
+						</ul>
                     </div>
                 </div>
             </div>

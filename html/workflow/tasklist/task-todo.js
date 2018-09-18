@@ -4,9 +4,24 @@ var curStaffOrgId = config.curStaffOrgId;
 var curStaffId = config.curStaffId;
 $(function(){
 	$("#currentId").val(curStaffOrgId);
-	getTableTodo();
 	getFlowKyeList();
 });
+/*
+ * 获取流程类型
+ */
+function getFlowKyeList(){
+	var ajaxObj = {
+	    "url" :  serverPath + "workflowrest/getFlowKeyList",
+	    "type" : "post",
+	    "data" : null,
+	    "callbackFn": initflowTypeSelect2
+	}
+	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
+}
+function initflowTypeSelect2(){
+	App.readCache("searchForm");
+	getTableTodo();
+}
 // 后面构建btn 代码
 var btnModel =  '    \
 	{{#each func}}\
@@ -150,32 +165,7 @@ function getTableTodo(){
 	        	}
 	        },
 	        {"data": "beUserName","title":"发送人","className": "whiteSpaceNormal","width": "10%"}
-//	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
 	    ]
-//	    "columnDefs": [
-//	       {
-//	        targets: -1,
-//	        render: function (a, b, c, d) {
-//	        	var assignee = c.assignee;
-//	        	var buttontitle = "";
-//	        	var fn = "";
-//	        	var style = "";
-//	        	if(curStaffOrgId == assignee){
-//	        		fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-//	        	}else{
-//	        		style = "cursor:not-allowed";
-//	        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-//	        		fn = "layer.msg(\'"+buttontitle+"\')";
-//	        	}
-//	        	var context = [{"name": "处理","placement":"left","title": buttontitle,"style": style,"fn": fn}];
-//	        	if(assignee.indexOf("candidate-") != -1){
-//	        		buttontitle = "该任务为抢单任务，如需处理请先点【申领】按钮领取任务！";
-//	        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-//	        		context = [{"name": "申领","placement":"left","title": buttontitle,"style": style,"fn": fn}];
-//	        	}
-//	            return App.getDataTableBtnTooltip(context);
-//	        }
-//	    }]
 	})
 }
 //校验待办是否已经办理,true标识已经办理，false标识尚未办理
@@ -204,17 +194,7 @@ function checkifdone(taskId){
 	});
 	return result;
 }
-/*
- * 获取流程类型
- */
-function getFlowKyeList(){
-	var ajaxObj = {
-	    "url" :  serverPath + "workflowrest/getFlowKeyList",
-	    "type" : "post",
-	    "data" : null
-	}
-	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
-}
+
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
@@ -258,6 +238,7 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 		};
 		if(isPass == true){
 			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{
 			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){

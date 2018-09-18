@@ -4,9 +4,26 @@ var curStaffOrgId=config.curStaffOrgId;
 var curStaffId=config.curStaffId;
 $(function(){
 	$("#currentIdForDone").val(curStaffOrgId);
-	getTableForDone();
 	getFlowKyeList();
 });
+
+/*
+ * 获取流程类型
+ */
+function getFlowKyeList(){
+	var ajaxObj = {
+	    "url" :  serverPath + "workflowrest/getFlowKeyList",
+	    "type" : "post",
+	    "data" : null,
+	    "callbackFn": initflowTypeSelect2
+	}
+	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
+}
+function initflowTypeSelect2(){
+	App.readCache("searchForm");
+	getTableForDone();
+}
+
 //后面构建btn 代码
 var btnModel =  '    \
 	{{#each func}}\
@@ -71,27 +88,7 @@ function getTableForDone(){
 	        },
 	        {"data": "nowLinkName","title":"当前环节","className": "whiteSpaceNormal","width": "10%"},
 	        {"data": "nowUserName","title":"当前处理人","className": "whiteSpaceNormal","width": "10%"}
-//	        {"data": null,"title":"操作","className": "text-center","width": "5%"}
 	    ]
-//	    "columnDefs": [
-//	       	{
-//	        targets: -1,
-//	        render: function (a, b, c, d) {
-//	        	var assignee = c.assignee;
-//	        	var buttontitle = "";
-//	        	var fn = "";
-//	        	var style = "";
-//	        	if(curStaffOrgId == assignee){
-//	        		fn = "onclick=handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-//	        	}else{
-//	        		style = "cursor:not-allowed";
-//	        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-//	        		fn = "layer.msg(\'"+buttontitle+"\')";
-//	        	}
-//	        	var context = [{"name": "查看","placement":"left","title": buttontitle,"style": style,"fn": fn}];
-//	            return App.getDataTableBtnTooltip(context);
-//	        }
-//	    }]
 	})
 }
 // 查询
@@ -140,14 +137,7 @@ function handleTaskForDone(id, taskDefinitionKey, name, processInstanceId, title
 	$("#goTaskToDoDetailForDone").show();
 	$("#searchContentForDone").hide();
 }
-function getFlowKyeList(){
-	var ajaxObj = {
-	    "url" :  serverPath + "workflowrest/getFlowKeyList",
-	    "type" : "post",
-	    "data" : null
-	}
-	App.initAjaxSelect2("#flowType",ajaxObj,"value","label","全部");
-}
+
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
@@ -190,6 +180,7 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
 		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
+		   		App.setCache("searchForm");
 		   		App.changePresentUrl(src);
 		   	}else{
 		   		layer.msg("获取不到工单主键");

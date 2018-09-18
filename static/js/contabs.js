@@ -6,17 +6,11 @@ $(function() {
 	});
 	$('#actionUl').on('click','.J_menuItem',conTabC);
 	$("#messageTip").on('click',conTabC);
-//	$(".J_menuItem").on("click", conTabC);
 	$(".J_menuTabs").on("click", ".J_menuTab i", conTabH);
 	$(".J_menuTabs").on("click", ".J_menuTab", conTabE);
 	$(".J_menuTabs").bind("contextmenu", function(){
 	    return false;
 	})
-//	$(".J_menuTabs").mousedown(function(e) {
-//	    if (3 == e.which) {
-//	        alert('点击了右键');
-//	    }
-//	})
 //	$(".J_menuTabs").on("dblclick", ".J_menuTab", conTabD);
 	$(".J_tabLeft").on("click", conTabA);
 	$(".J_tabRight").on("click", conTabB);
@@ -255,6 +249,7 @@ function conTabH() {
 			$(this).parents(".J_menuTab").remove();
 			$(".J_mainContent .J_iframe").each(function() {
 				if($(this).data("id") == m) {
+					App.deleteCache($(this).attr("id"));
 					$(this).remove();
 					return false
 				}
@@ -272,6 +267,7 @@ function conTabH() {
 			$(this).parents(".J_menuTab").remove();
 			$(".J_mainContent .J_iframe").each(function() {
 				if($(this).data("id") == m) {
+					App.deleteCache($(this).attr("id"));
 					$(this).remove();
 					return false
 				}
@@ -281,6 +277,7 @@ function conTabH() {
 		$(this).parents(".J_menuTab").remove();
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == m) {
+				App.deleteCache($(this).attr("id"));
 				$(this).remove();
 				return false
 			}

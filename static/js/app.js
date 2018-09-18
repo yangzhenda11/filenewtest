@@ -613,23 +613,6 @@ var App = function() {
 			//handleFixInputPlaceholderForIE(); //IE8 & IE9 input placeholder issue fix
 			handleOnResize(); // set and handle responsive    
 		},
-
-		// main function to initiate core javascript after ajax complete
-        initAjax:function(){
-            // handleiCheck(); // handles custom icheck radio and checkboxes
-            // handleBootstrapSwitch(); // handle bootstrap switch plugin
-            handleScrollers(); // handles slim scrolling contents
-            handleSelect2(); // handle custom Select2 dropdowns
-            handleFormFieldset();
-            handleFileInput();// 上传文件的伪装触发
-            handleDatePicker();
-            // handleFancybox(); // handle fancy box
-            // handleDropdowns(); // handle dropdowns
-            handleTooltips(); // handle bootstrap tooltips
-            handlePopovers(); // handles bootstrap popovers
-            // handleAccordions(); //handles accordions
-            //handleBootstrapConfirmation(); // handle bootstrap confirmations
-        },
 		/*
 		 * @param url  地址
 		 * @param type 请求方式
@@ -1113,8 +1096,9 @@ var App = function() {
             $.each($(obj+" input:hidden"),function(m,n){
             	$(n).val("");
             })
-            
-            form.find('.select2me').trigger("change");
+            try{
+            	form.find('select').trigger("change");
+            }catch(e){};
             form.find('input[type=text]').each(function(){
                 if($(this).data("exactSearch") == true){
                 	$(this).data("exactSearch",false);
@@ -1128,16 +1112,94 @@ var App = function() {
 //          })
         },
         /*
-         * 跳转时获取表单内的参数存储
+         * 页面参数存储
          * 数据格式:
-         * jmpParameters = {
-         * 		pageName:{
-         * 			select:{name:val},
-         * 			val:{}
-         * 		}
+         * _paramCache = {
+         * 		pageId:{
+         * 			el:[{name:name,val:val,isSelect:isSelect},....],
+         * 			.....
+         * 		},
+         * 		.....
          * }
          */
-        
+        setCache: function(el){
+        	var pageId = self.frameElement.getAttribute('id');
+        	var cacheList = [];
+        	$("#"+el).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+				var formName = $(formItem).attr('name');
+				if(formName != undefined){
+					var formType = formItem.type;
+					if(formType == "text" || formType == "hidden" || formType == "select-one") {
+						var val = $(formItem).val();
+						if(val){
+							var cacheItem = {
+								name: formName,
+								val: val
+							};
+							cacheList.push(cacheItem);
+						}
+					}
+				}
+			});
+			if(cacheList.length > 0){
+				if(top._paramCache[pageId] == undefined){
+					top._paramCache[pageId] = {};
+				};
+				top._paramCache[pageId][el] = cacheList;
+			}
+        },
+        /*
+         * 页面参数读取赋值
+         */
+        readCache: function(el){
+        	var pageId = self.frameElement.getAttribute('id');
+			if(top._paramCache[pageId] == undefined){
+				return;
+			}else if(top._paramCache[pageId][el] == undefined){
+				return;
+			}else{
+				var cacheList = top._paramCache[pageId][el];
+				$.each(cacheList, function(k,v) {
+	                var sel = ":input[name='" + v.name + "']";
+	                var obj = $("#"+el).find(sel);
+	                if(obj.length > 0){
+	                    var objType = obj[0].type;
+	                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
+	                        obj.val(v.val);
+	                        if(objType == "select-one"){
+	                        	try{
+	                        		obj.trigger('change');
+	                        	}catch(e){}
+	                        }
+	                    }
+	                }
+				});
+				delete top._paramCache[pageId][el];
+			}
+        },
+        /*
+         * 页面参数是否存在
+         */
+        hasCache: function(el){
+        	var pageId = self.frameElement.getAttribute('id');
+			if(top._paramCache[pageId] == undefined){
+				return false;
+			}else if(top._paramCache[pageId][el] == undefined){
+				return false;
+			}else{
+				return true;
+			}
+        },
+        /*
+         * 页面参数删除
+         */
+        deleteCache: function(pageId){
+			if(top._paramCache[pageId] == undefined){
+				return;
+			}else{
+				delete top._paramCache[pageId];
+			}
+        },
 		/*
 		 * 表单内静态select2内容的初始化
 		 * dom 表单的dom元素
@@ -1223,6 +1285,9 @@ var App = function() {
 			        $.each(data, function (i, item) {
 			            $(dom).append("<option value='" + item[key] + "'>" + item[value] + "</option>");
 			        });
+			        if(ajaxObj.callbackFn){
+			        	ajaxObj.callbackFn(result);
+			        }
 			    }
 	      	} 
 	    },
@@ -1275,49 +1340,7 @@ var App = function() {
 				panelAction('.form-fieldset .form-collapse', '.form-fieldset-title', '.form-fieldset-body', 'fa-angle-up', 'fa-angle-down');
 			}
 		},
-		/**
-         * datatable render 文本信息 btnArray 内容：
-         */
-         getDataTableBtn:function(btnArray){
-         	var btnModel = '    \
-				{{#each btnArray}}\
-    			<button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{#if this.disabled}} disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} onclick="{{this.fn}}">{{this.name}}</button>\
-    			{{/each}}';
-            var template = Handlebars.compile(btnModel);
-            return template({
-                btnArray:btnArray
-            });
-        },
-        getDataTableBtnTooltip:function(btnArray){
-            var btnModel = '    \
-                {{#each btnArray}}\
-                <button type="button" title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
-                {{/each}}';
-            var template = Handlebars.compile(btnModel);
-            return template({
-                btnArray:btnArray
-            });
-        },
-        getDataTableLink:function(btnArray){
-            var linkModel = '    \
-                {{#each btnArray}}\
-                <a title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="top"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="{{this.type}}" onclick="{{this.fn}}">{{this.name}}</a>\
-                {{/each}}';
-            var template = Handlebars.compile(linkModel);
-            return template({
-                btnArray:btnArray
-            });
-        },
-        getDataTableIcon:function(btnArray){
-             var btnModel = '    \
-                {{#each btnArray}}\
-                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn btn-link btn-xs" onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
-                {{/each}}';
-            var template = Handlebars.compile(btnModel);
-            return template({
-                btnArray:btnArray
-            });
-        },
+		
         getDataTableCheckbox:function(itemObj){
             var content = '<label class="ui-checkbox">';
             content += '<input type="checkbox" data-id="' + itemObj.id + '"  data-name="' + itemObj.name + '" value="' + itemObj.id + '" name="td-checkbox">';
@@ -1483,11 +1506,6 @@ var App = function() {
 				$(dom).data('bootstrapValidator').enableFieldValidators(nameList[k], isEnable);
 			}
 		},
-		// init main components
-        initComponents:function(){
-            this.initAjax();
-        },
-        
         // public function to remember last opened popover that needs to be
         // closed on click
         setLastPopedPopover:function(el){
@@ -1610,7 +1628,49 @@ var App = function() {
                 }
             });
         },
-        
+        /**
+         * datatable render 文本信息 btnArray 内容：
+         */
+         getDataTableBtn:function(btnArray){
+         	var btnModel = '    \
+				{{#each btnArray}}\
+    			<button type="button" class="btn primary btn-outline btn-xs {{this.type}}" {{#if this.disabled}} disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} onclick="{{this.fn}}">{{this.name}}</button>\
+    			{{/each}}';
+            var template = Handlebars.compile(btnModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        getDataTableBtnTooltip:function(btnArray){
+            var btnModel = '    \
+                {{#each btnArray}}\
+                <button type="button" title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn primary btn-outline btn-xs {{this.type}}" onclick="{{this.fn}}">{{this.name}}</button>\
+                {{/each}}';
+            var template = Handlebars.compile(btnModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        getDataTableLink:function(btnArray){
+            var linkModel = '    \
+                {{#each btnArray}}\
+                <a title="{{this.title}}" {{#if this.placement}}data-placement="{{this.placement}}"{{else}}data-placement="top"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="{{this.type}}" onclick="{{this.fn}}">{{this.name}}</a>\
+                {{/each}}';
+            var template = Handlebars.compile(linkModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
+        getDataTableIcon:function(btnArray){
+             var btnModel = '    \
+                {{#each btnArray}}\
+                <button type="button" title="{{this.name}}" {{#if this.placement}} data-placement="{{this.placement}}"{{else}}data-placement="right"{{/if}} data-container="body" data-trigger="hover" data-toggle="tooltip" {{#if this.disabled}}disabled="{{this.disabled}}"{{/if}} {{#if this.style}}style="{{this.style}}"{{/if}} class="btn btn-link btn-xs" onclick="{{this.fn}}"><i class="{{this.icon}}"></i></button>\
+                {{/each}}';
+            var template = Handlebars.compile(btnModel);
+            return template({
+                btnArray:btnArray
+            });
+        },
         // function to scroll to the top
         scrollTop:function(){
             App.scrollTo();
@@ -1630,17 +1690,7 @@ var App = function() {
             }
             return el.val();
         },
-        
-        // check for device touch support
-        isTouchDevice:function(){
-            try{
-                document.createEvent("TouchEvent");
-                return true;
-            }catch(e){
-                return false;
-            }
-        },
-        
+                     
         // To get the correct viewport width based on
         // http://andylangton.co.uk/articles/javascript/get-viewport-size-javascript/
         getViewPort:function(){
@@ -1656,11 +1706,7 @@ var App = function() {
                 height:e[a + 'Height']
             };
         },
-        
-        getUniqueID:function(prefix){
-            return 'prefix_' + Math.floor(Math.random() * (new Date()).getTime());
-        },
-        
+              
         // check IE8 mode
         isIE8:function(){
             return isIE8;
@@ -1700,349 +1746,9 @@ var App = function() {
                 return false;
             }
         },
-        
         getResponsiveBreakpoint:function(size){
             return _getResponsiveBreakpoint(size);
         },
-        initDefaultEditDataTables: function(el, options) {
-			if(!$().dataTable) {
-				return;
-			}
-			var drawCallback = function() {};
-			if(options.drawCallback) {
-				drawCallback = options.drawCallback
-			};
-			options = $.extend(true, {
-				"ordering": false,
-				"scrollX": true,
-				"scrollCollapse": true,
-				"sScrollX": "100%",
-				"sScrollXInner": "100%",
-				"bAutoWidth": true,
-				"oLanguage": {
-					"sProcessing": "正在加载数据，请稍候...",
-					"sLengthMenu": "&nbsp;&nbsp;&nbsp;&nbsp;每页显示  _MENU_ 条记录",
-					"sZeroRecords": "没有匹配结果",
-					"sInfo": "当前为第 _START_ 至 _END_ 条记录，共 _TOTAL_ 条记录",
-					"sInfoEmpty": "当前为第 0 至 0 条记录，共 0 项",
-					"sInfoFiltered": "(由 _MAX_ 条记录结果过滤)",
-					"sInfoPostFix": "",
-					"sSearch": "",
-					"sSearchPlaceholder": "输入关键字筛选表格",
-					"sUrl": "",
-					"sDecimal": "",
-					"sThousands": ",",
-					"sEmptyTable": "暂无数据",
-					"sLoadingRecords": "载入中...",
-					"sInfoThousands": ",",
-					"oPaginate": {
-						"sFirst": "首页",
-						"sPrevious": "上页",
-						"sNext": "下页",
-						"sLast": "末页"
-					}
-				},
-				"dom": '<"clearfix"<"table_toolbars pull-left"><"pull-right"B>>t',
-				"processing": false,
-				"paging": false,
-				"language": {
-					"emptyTable": "没有关联的需求信息!",
-					"thousands": ","
-				},
-				"columnDefs": [{
-					"targets": "_all",
-					"defaultContent": ''
-				}],
-				"buttons": [],
-				"drawCallback": function() {
-					$(":checkbox[name='td-checkbox']").prop('checked', false);
-				}
-			}, options);
-			options.drawCallback = function() {
-				if(options.toolbars) {
-					$(el + '_wrapper').find('.table_toolbars').html('').append($(options.toolbars).html());
-					$(options.toolbars).remove();
-				}
-				drawCallback();
-			}
-			var oTable = $(el).dataTable(options);
-			return oTable;
-		},
-		/**
-         * initEditableDatatables 基于initDataTables 实现表格的可编辑 options 新增 addRowBtn
-         * String 触发新增按钮的id或calss选择器 options.columns 新增 isEditable Booleans
-         * 标识当前列是否可编辑 options 新增fnDeleteEditRow Function 为删除一行之后的回调函数 options
-         * 新增fnValidEditRow Function 为保存时校验内容是否符合规范，返回boolean options
-         * 新增fnSaveEditRow Function 为保存一行数据的回调函数
-         * 
-         * 注意：此方法声明的dataTable,调用普通API时，需使用.api()访问
-         */
-        initEditableDatatables:function(el,options){
-            var nEditing = null;
-            var nNew = false;
-            
-            // 添加操作列
-            options.columns.splice(0,0,{
-                "data":null,
-                "title":"操作",
-                "width":'10%',
-                "className":'text-center',
-                "render":function(data,type,row,meta){
-                    var html = '<button class="btn btn-link btn-xs dt-edit" title="编辑">编辑</button>'
-                    html += '<button class="btn btn-link btn-xs dt-delete" title="删除">删除</button>';
-                    return html;
-                }
-            });
-            
-            $(options.addRowBtn).unbind('click').bind('click',function(event){
-                event.preventDefault();
-                if(nEditing){
-                    layer.alert('尚有编辑行未保存，请您先进行保持或取消！',{
-                        icon:0,
-                        skin:'layer-ext-moon'
-                    })
-                }else{
-                    addEmptyRow();
-                }
-            });
-            
-            // options.drawCallback
-            var drawCallback = function() {};
-            if(options.drawCallback){
-                drawCallback = options.drawCallback
-            };
-            
-            options.drawCallback = function(){
-                drawCallback();
-            }
-
-            options.serverSide = false;
-            var oTable = this.initDefaultEditDataTables(el,options,true);
-            var table = $(el);
-            
-            /* 删除一行 */
-            table.off('click','.dt-delete');
-            table.on('click','.dt-delete',function(e){
-                e.preventDefault();
-                var _btn = this;
-                layer.confirm('您确定要删除此记录吗?',{
-                    icon:3,
-                    title:'提示'
-                },function(layerObj){
-                    $(this).parents('tr').removeClass('clicked');
-                    var nRow = $(_btn).parents('tr')[0];
-                    var aData = oTable.fnGetData(nRow); // 当前行的数据
-                    oTable.fnDeleteRow(nRow);
-                    layer.close(layerObj);
-                    // 删除成功，进行ajax数据同步
-                    if( typeof options.fnDeleteEditRow == 'function')
-                        options.fnDeleteEditRow(aData);
-                });
-                
-            });
-            
-            /* 删除编辑行 */
-            table.off('click','.dt-cancel');
-            table.on('click','.dt-cancel',function(e){
-                e.preventDefault();
-                $(this).parents('tr').removeClass('clicked');
-                if(nNew){
-                    oTable.fnDeleteRow(nEditing);
-                    nEditing = null;
-                    nNew = false;
-                }else{
-                    restoreRow(oTable,nEditing);
-                    nEditing = null;
-                }
-            });
-            
-            /* 编辑当前行 */
-            table.off('click','.dt-edit');
-            table.on('click','.dt-edit',function(e){
-                e.preventDefault();
-                var nRow = $(this).parents('tr')[0];
-                if(nEditing !== null && nEditing != nRow){
-                    layer.alert('尚有编辑行未保存，请您先进行保持或取消！',{
-                        icon:0,
-                        skin:'layer-ext-moon'
-                    });
-                }else if(nEditing == nRow && $(this).attr('title') == "保存"){
-                    if( !validRow(oTable,nEditing))
-                        return false;
-                    $(this).parents('tr').removeClass('clicked');
-                    saveRow(oTable,nEditing);
-                    nEditing = null;
-                }else{
-                    $(this).parents('tr').addClass('clicked');
-                    editRow(oTable,nRow);
-                    nEditing = nRow;
-                }
-            });
-            
-            function addEmptyRow(){
-                var newRow = {};
-                for(var i = 0;i < options.columns.length;i++){
-                    var c = options.columns[i];
-                    if(c.data != null && c.data != ''){
-                        newRow[c.data] = '';
-                    }
-                }
-                var aiNew = oTable.fnAddData(newRow);
-                var nRow = oTable.fnGetNodes(aiNew[0]);
-                editRow(oTable,nRow);
-                nEditing = nRow;
-                nNew = true;
-            }
-            
-            /* 复原行 */
-            function restoreRow(oTable,nRow){
-                var oTdEdit = $(nRow).find('td:eq(0)');
-                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="编辑">编辑</button>';
-                oTdEditHtml += '<button class="btn btn-link btn-xs dt-delete" title="删除">删除</button>';
-                oTdEdit.html(oTdEditHtml);
-                var aData = oTable.fnGetData(nRow);
-                var jqTds = $('>td',nRow);
-                var iLen = jqTds.length;
-                for(var i = 1;i < iLen;i++){
-                    var field = $(jqTds[i]).find('select').attr('name');
-                    if( !field){
-                        field = $(jqTds[i]).find('input').attr('name');
-                    }
-                    if(field)
-                        oTable.fnUpdate(aData[field],nRow,i,false);
-                }
-                oTable.fnDraw();
-            }
-            
-            /* 编辑行 */
-            function editRow(oTable,nRow){
-                var oTdEdit = $(nRow).find('td:eq(0)');
-                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="保存">保存</button>';
-                oTdEditHtml += '<button class="btn btn-link btn-xs dt-cancel" title="取消">取消</button>';
-                oTdEdit.html(oTdEditHtml);
-                var aData = oTable.fnGetData(nRow);
-                var clength = $('>td',nRow).length;
-                for(var i = 1;i < clength;i++){
-                    var c = options.columns[i];
-                    var oTd = $('>td:eq(' + i + ')',nRow);
-                    var value = aData[c.data];
-                    if(c.render){
-                        var func = c.render;
-                        value = func(value);
-                    }
-                    var style = "text-align: left;"
-                    if(c.className){
-                        if(c.className == 'text-center'){
-                            style = "text-align: center;"
-                        }else if(c.className == 'text-right'){
-                            style = "text-align: right;"
-                        }
-                    }
-                    if(c.isEditable){
-                        var targetId = c.data + i;
-                        if(c.isSelectData){
-                            var selectHtml = '<select name="' + c.data + '" class="form-control select2me" data-placeholder="' + c.selectPlaceholder + '" id="' + targetId + '" value="' + aData[c.data] +
-                                '" style="width:100%;" ';
-                            if(c.isDisabled){
-                                selectHtml += 'disabled ';
-                            }
-                            selectHtml += '>';
-                            selectHtml += '<option value=""></option>';
-                            var selectListObj = c.isSelectData;
-                            for( var obj in selectListObj){
-                                if(obj == aData[c.data]){
-                                    selectHtml += '<option value="' + obj + '" selected>' + selectListObj[obj] + '</option>';
-                                }else{
-                                    selectHtml += '<option value="' + obj + '">' + selectListObj[obj] + '</option>';
-                                }
-                            }
-                            oTd.html(selectHtml);
-                            App.initFormSelect2(oTd);
-                        }else{
-                            var tdHtml = '<input type="text" class="form-control" id="' + targetId + '" name="' + c.data + '" value="' + value + '" style="width:100%;' + style + '" ';
-                            if(c.onclickHandler){
-                                var clickHanlder = c.onclickHandler + "(" + targetId + ")";
-                                tdHtml += 'onclick="' + clickHanlder + '" placeholder="请选择" ';
-                            }else{
-                                tdHtml += 'placeholder="' + c.title + '" ';
-                            }
-                            if(c.isReadonly){
-                                tdHtml += 'readonly ';
-                            }
-                            tdHtml += '>';
-                            oTd.html(tdHtml);
-                        }
-                    }else{
-                        oTd.html(value);
-                    }
-                    oTable.fnDraw();
-                }
-            }
-            
-            function validRow(oTable,nRow){
-                var aData = oTable.fnGetData(nRow);
-                var preAData = aData;
-                $('input,select',nRow).each(function(index,item){
-                    var name = $(this).attr('name');
-                    var value = $(this).val();
-                    preAData[name] = value;
-                })
-                var flag = true;
-                if( typeof options.fnValidEditRow == 'function'){
-                    flag = options.fnValidEditRow(preAData);
-                }
-                return flag;
-            }
-            /* 保存行 */
-            function saveRow(oTable,nRow){
-                var aData = oTable.fnGetData(nRow);
-                $('input,select',nRow).each(function(index,item){
-                    var tdIndex = $(this).parent('td').index();
-                    var value = $(this).val();
-                    oTable.fnUpdate(value,nRow,tdIndex,false);
-                });
-                var oTdEditHtml = '<button class="btn btn-link btn-xs dt-edit" title="编辑">编辑</button>';
-                oTdEditHtml += '<button class="btn btn-link btn-xs dt-cancel" title="删除">删除</button>';
-                oTable.fnUpdate(oTdEditHtml,nRow,0,false);
-                oTable.fnDraw();
-                if(nNew){
-                    nNew = false;
-                }
-                // 保存数据，进行ajax数据同步等操作
-                if( typeof options.fnSaveEditRow == 'function'){
-                    options.fnSaveEditRow(aData);
-                }
-            }
-            return oTable;
-        },
-        delTableItem:function(el,callback,text){// el 为table的id ；itemName为名称的字段名 ;text为未选中删除记录时,点击删除的提示语
-            var checkedItem = $(el + '_wrapper').find('input[type=checkbox][name=td-checkbox]:checked');
-            if(text == null){
-            	text='请先在表格中勾选您要删除的项目'
-            }
-            if(checkedItem.length == 0){
-                layer.alert(text,{
-                    icon:0,
-                    skin:'layer-ext-moon'
-                })
-                return false;
-            }else{
-                var delStr = [];
-                $.each(checkedItem,function(index,item){
-                    delStr.push(" <span class='text-warning'>" + $(item).attr('data-name') + "</span> ");
-                })
-                layer.confirm('您选择了【' + delStr.join(',') + '】共' + checkedItem.length + '条记录，确定要将其删除吗？',{
-                    btn:[
-                        '删除','取消'
-                    ],
-                    icon:0,
-                    skin:'layer-ext-moon'
-                },function(){
-                    callback(checkedItem);
-                })
-            }
-        },        		
-        
         getDateTimeStamp:function(dateStr){
             return Date.parse(dateStr.replace(/-/gi,"/"));
         },
@@ -2050,36 +1756,7 @@ var App = function() {
         formatStringDate:function(dateStr,formatStr){
             return new Date(App.getDateTimeStamp(dateStr)).Format(formatStr)
         },
-        
-        getDateDiff :function(dateTimeStamp){
-            var minute = 1000 * 60;
-            var hour = minute * 60;
-            var day = hour * 24;
-            var halfamonth = day * 15;
-            var month = day * 30;
-            var now = new Date().getTime();
-            var diffValue = now - dateTimeStamp;
-            if(diffValue < 0){return;}
-            var monthC =diffValue/month;
-            var weekC =diffValue/(7*day);
-            var dayC =diffValue/day;
-            var hourC =diffValue/hour;
-            var minC =diffValue/minute;
-            if(monthC>=1){
-                result="" + parseInt(monthC) + "月前";
-            } else if (weekC >= 1) {
-                result="" + parseInt(weekC) + "周前";
-            } else if (dayC >= 1) {
-                result=""+ parseInt(dayC) +"天前";
-            } else if (hourC >= 1) {
-                result=""+ parseInt(hourC) +"小时前";
-            } else if (minC >= 1) {
-                result=""+ parseInt(minC) +"分钟前";
-            }else
-            result="刚刚";
-            return result;
-        },
-        
+ 
         /**
          * 配置全选 全选checkbox 配置 data-checkAll="chkFlag",chkFlag可以是全选checkbox的value
          * data-fullChecked 默认配置上即认为需要子checkbox全部选中以后触发全选，也可以配置成true or false
@@ -2114,69 +1791,8 @@ var App = function() {
                 })
             })
         },
-        /**
-         * 打开框架页面标签页
-         * @param url 打开标签页的路径
-         * @param title 标签页显示的标题
-         * */
-        openPageTab:function(url,title){
-            window.top.showSubpageTab(url,title);
-        },
-        /**
-         * 打开框架页面标签页
-         * @param url 打开标签页的路径
-         * @param title 标签页显示的标题
-         * */
-        closePageTab:function(url){
-            window.top.closeSubpageTab(url);
-        },
-        /**
-         * options.alertType 1:成功,2:失败,:警告
-         * options.title 提示的标题，不建议自定义；
-         * options.content 提示的内容
-         * options.onSuccess 点击确认后的回调
-         * options.time 自动关闭所需毫秒，默认为0，注意单位是毫秒
-         * */
-        boxAlert:function(options){
-            options = options?options:{};
-            options = $.extend(true,{
-                title:'提示',
-                content:'您已成功操作了您的业务',
-                icon:1,
-                closeBtn:0
-            },options);
-            if('undefinded' != typeof options.alertType){
-                options.icon = options.alertType;
-            }
-            if('function' == typeof options.onSuccess){
-                options.yes = function(crnLayer){
-                    options.onSuccess();
-                    layer.close(crnLayer);
-                }
-            }
-            layer.open(options)
-        },
-        /**
-         * options.title 提示的标题，默认‘提示’；
-         * options.content 提示的内容
-         * options.onSuccess 点击确认后的回调
-         * options.onCancel 点击取消后的回调
-         * 
-         * */
-        boxConfirm:function(options){
-            options = options?options:{};
-            layer.confirm(options.content?options.content:'您确定要执行此操作吗?', {
-                icon: 3, 
-                title:options.title?options.title:'提示'
-            }, function(layerIndex){
-              //do something
-              if('function' == typeof options.onSuccess) options.onSuccess();
-              layer.close(layerIndex);
-            },function(layerIndex){
-                if('function' == typeof options.onCancel) options.onCancel();
-                layer.close(layerIndex);
-            });
-        },
+
+		//工作流相关
         getFlowParam:function(serverPath,businessId,handleType,pathSelect){
         	var flowparam=null;
         	if(businessId.length==0){

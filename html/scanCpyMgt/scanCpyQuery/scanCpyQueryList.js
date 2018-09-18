@@ -1,7 +1,7 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-
+App.readCache("searchForm");
 /*
  * 初始化表格
  */
@@ -174,6 +174,7 @@ $(function(){
 //跳转展示列表页面
 function jumpSanCpyQueryDetail(id){
 	var src = "./scanCpyQueryDetail.html?id="+id;
+	App.setCache("searchForm");
 	App.changePresentUrl(src);
 }
 /*

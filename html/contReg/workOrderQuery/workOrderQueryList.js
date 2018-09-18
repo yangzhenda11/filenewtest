@@ -5,9 +5,16 @@ var serverPath = config.serverPath;
 var ajaxObj = {
     "url" :  serverPath + "dicts/listChildrenByDicttId",
     "type" : "post",
-    "data" : {"dictId": 9040}
+    "data" : {"dictId": 9040},
+    "callbackFn":initWcardStatusSelect2
 }
 App.initAjaxSelect2("#wcardStatus",ajaxObj,"dictValue","dictLabel","请选择工单状态");
+function initWcardStatusSelect2(result){
+	if(App.hasCache("searchForm")){
+		App.readCache("searchForm");
+		searchWorkOrder();
+	}
+}
 /*
  * 初始化表格
  */
@@ -35,7 +42,7 @@ function getWorkOrderQueryTable(){
 	        {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "14%"},
 	        {"data": "wcardNumber","className":"whiteSpaceNormal","title": "工单编号","width": "9%",
 				"render": function(data, type, full, meta) {
-					var result = '<a href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId='+full.wcardId+'">'+data+'</a>';
+					var result = '<a onclick=jumpView(\"'+full.wcardId+'\")>'+data+'</a>';
 					return result;
 				}
 			},
@@ -65,34 +72,17 @@ function getWorkOrderQueryTable(){
  * 搜索点击事件
  */
 function searchWorkOrder(retainPaging) {
-	var ctreatedDateBegin = $("#create_date_begin").val();
-    var ctreatedDateEnd = $("#create_date_end").val();
-	var approveDateBegin = $("#approve_date_begin").val();
-	var approveDateEnd = $("#approve_date_end").val();
-	var sealAndSignDateBegin = $("#sealAndSign_date_begin").val();
-	var sealAndSignDateEnd = $("#sealAndSign_date_end").val();
-	if(!App.checkDate(ctreatedDateBegin,ctreatedDateEnd)){
-		layer.msg("工单创建日期开始日期不能早于截止日期");
-		return;
-	}else if(!App.checkDate(approveDateBegin,approveDateEnd)){
-		layer.msg("合同审批通过日期开始日期不能早于截止日期");
-		return;
-	}else if(!App.checkDate(sealAndSignDateBegin,sealAndSignDateEnd)){
-		layer.msg("签订盖章日期开始日期不能早于截止日期");
-		return;
-	}else{
-		if($.fn.DataTable.isDataTable("#workOrderQueryTable")){
-			var table = $('#workOrderQueryTable').DataTable();
-			if(retainPaging) {
-				table.ajax.reload(null, false);
-			} else {
-				table.ajax.reload();
-			}
-		}else{
-			$("#emptyTableDom").hide();
-			$("#toolbars").show();
-			getWorkOrderQueryTable();
+	if($.fn.DataTable.isDataTable("#workOrderQueryTable")){
+		var table = $('#workOrderQueryTable').DataTable();
+		if(retainPaging) {
+			table.ajax.reload(null, false);
+		} else {
+			table.ajax.reload();
 		}
+	}else{
+		$("#emptyTableDom").hide();
+		$("#toolbars").show();
+		getWorkOrderQueryTable();
 	}
 }
 /*
@@ -210,4 +200,10 @@ function exportResultExcel(){
 	var searchParmData = getSearchParm();
 	var url = serverPath + 'workOrderQuery/workOrderQueryExpoetList' + App.urlEncode(searchParmData);
     location.href = encodeURI(url);
+}
+//跳转工单查看页面
+function jumpView(wcardId){
+	App.setCache("searchForm");
+	var href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+	App.changePresentUrl(href);
 }

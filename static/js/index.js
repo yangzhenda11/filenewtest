@@ -31,6 +31,10 @@ var globalConfig = {
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
+/*
+ * 缓存文件
+ */
+var _paramCache = {}
 //菜单
 var ace_menus = null;
 //跳转参数

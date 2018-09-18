@@ -125,6 +125,15 @@ function conTabB() {
 		}
 	}
 }
+function checkArrLen(roleArr,permArr){
+	var len = 0;
+	$.each(roleArr, function(k,v) {
+		if(isInArray(permArr,v)){
+			len ++;
+		}
+	});
+	return len;
+}
 /*
  * 点击触发的事件
  */
@@ -136,10 +145,22 @@ function conTabC() {
 	if(o == undefined || $.trim(o).length == 0) {
 		return false;
 	}
-//	if(o == "html/workflow/tasklist/task-hasdone.html"){
-//		layer.alert("当前登录用户配置了两个角色，请处理",{icon:2});
-//		return false;
-//	}
+	if(o == "html/incomeWorktable/index/index.html"){
+		var roleArr = globalConfig.curRole;
+		var roleExistLen = checkArrLen(roleArr,[91216,91217,91218,91219]);
+		if(roleExistLen > 1){
+			layer.alert("当前岗位配置了"+roleExistLen+"个收入类租线业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			return false;
+		};
+	};
+	if(o == "html/expenseWorktable/index/index.html"){
+		var roleArr = globalConfig.curRole;
+		var roleExistLen = checkArrLen(roleArr,[91220,91221,91222]);
+		if(roleExistLen > 1){
+			layer.alert("当前岗位配置了"+roleExistLen+"个支出类采购业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			return false;
+		};
+	};
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == o) {
 			if(!$(this).hasClass("active")) {

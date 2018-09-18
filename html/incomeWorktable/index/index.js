@@ -1,16 +1,83 @@
-var roleType = 2;
-$("#loginUserName").text("汪雨");
-if(roleType == 1){
-	$("#roleName").text("稽核管理");
-	$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
-	$("#auditCol").removeClass("hidden");
-}else{
-	$("#roleName").text("客户经理");
-	$("#auditCol").remove();
-};
-$(".page-content-worktable").show();
-initIncomeOverview();
-initIncomeAnalysis();
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+/*
+ * roleType
+ * 收入类租线业务页面角色说明
+ * 取globalConfig.curRole,其中包含以下角色可以进入此页面（已在进入之前判断,只包含以下一个可以进入）
+ * 91216：客户经理
+ * 91217：业务管理
+ * 91218：稽核管理
+ * 91219：商务管理
+ */
+var roleType = "";
+$(function(){
+	//取得角色list中的当前页面所使用的角色
+	checkRoleType();
+	$("#loginUserName").text(config.curStaffName);
+	if(roleType == 91216 || roleType == 91217 || roleType == 91219){
+		if(roleType == 91216){
+			$("#roleName").text("客户经理");
+			$("#captionTitle").text("我的商务助理");
+		}else if(roleType == 91217){
+			$("#roleName").text("业务管理");
+		}else{
+			$("#roleName").text("商务管理");
+		};
+		$("#auditCol").remove();
+	}else if(roleType == 91218){
+		$("#roleName").text("稽核管理");
+		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
+		$("#auditCol").removeClass("hidden");
+	};
+	$(".page-content-worktable").show();
+	//获取商务助手配置内容
+	getAssistantList();
+	
+	initIncomeOverview();
+	initIncomeAnalysis();
+})
+/*
+ * 取得角色list中的当前页面所使用的角色
+ */
+function checkRoleType(){
+	var roleArr = config.curRole;
+	var permArr = [91216,91217,91218,91219];
+	$.each(roleArr, function(k,v) {
+		if(isInArray(permArr,v)){
+			roleType = v;
+			return false;
+		}
+	});
+}
+/*
+ * 获取商务助手配置内容
+ */
+function getAssistantList(){
+	var url = serverPath + "assistant/assistantList";
+	var postData = {
+		roleId: roleType,
+		provinceCode: config.provCode,
+		funType: ""
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+
+	function successCallback(result) {
+//		var data = result.data;
+//		var html = "";
+//		$.each(data, function(k,v) {
+//			html += '<div class="workItem">'+
+//					'<img src="../../../static/img/worktable/" data-url="'+v.funUrl+'"/>'+
+//					'<p>客户管理</p>'+
+//					'</div>';
+//		});
+	}
+	
+}
+
+
+
+
 $("#emphasisRadio input[name='emphasisRadio']").on("change",function(){
 	if($(this).val() == 1){
 		$("#emphasisContractDom").hide(0,function(){

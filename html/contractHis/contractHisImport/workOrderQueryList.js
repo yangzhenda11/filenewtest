@@ -46,7 +46,12 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
  */
 function getSearchParm(){
 	var searchData = {
-        contractNumber : $("#contractNumber").val().trim()
+        contractNumber : $("#contractNumber").val().trim(),
+        provinceCode : $("#provinceCode").val().trim(),
+        orgName : $("#orgName").val().trim(),
+        contractTypeName: $("#contractTypeName").val().trim(),
+        importIdentifier : $("#importIdentifier").val(),
+        contractImportNum: $('#contractNum').val()
 	};
 	return searchData;
 }
@@ -69,6 +74,9 @@ function searchWorkOrder(retainPaging) {
 function searchWorkOrder1() {
     var contractNum = $('#contractNum').val();
     var postData = {
+        provinceCode : $("#provinceCode").val().trim(),
+        orgName : $("#orgName").val().trim(),
+        contractTypeName: $("#contractTypeName").val().trim(),
         contractImportNum: contractNum
     };
     App.formAjaxJson( serverPath+'contractHistoryImportController/saveHistoryContractImport',"post",JSON.stringify(postData),successCallback,null,null,null,null,null);

@@ -41,6 +41,43 @@
 										<span class="input-group-addon searchLableText">合同编号</span>
 										<input id="contractNumber" name="contractNumber" type="text" class="form-control"/>
 									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">省份代码</span>
+										<input id="provinceCode" name="provinceCode" type="text" class="form-control"/>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">OU名称</span>
+										<input id="orgName" name="orgName" type="text" class="form-control"/>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">合同类型</span>
+										<div class="ui-radio-list ui-radio-inline">
+											<select id="contractTypeName" name="contractTypeName" class="form-control select2me">
+												<option value="11">全部</option>
+												<option value="0">其他类</option>
+												<option value="1">收入类</option>
+												<option value="2">支出类</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">已导入数量</span>
+										<select id="importIdentifier" name="importIdentifier" class="form-control select2me">
+											<option value="11">全部</option>
+											<option value="0">已导入合同</option>
+											<option value="1">未导入合同</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-4">
 									<div class="input-group">
 										<span class="input-group-addon searchLableText">导入数量（只支持整数）</span>
 										<input id="contractNum" name="contractNum" type="text" class="form-control"/>

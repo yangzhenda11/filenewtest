@@ -2,7 +2,7 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
-//区域收缩时引用的函数，返回form-fieldset的id
+//区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");

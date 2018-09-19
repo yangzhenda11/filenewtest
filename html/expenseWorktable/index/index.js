@@ -27,6 +27,14 @@ $(function(){
 	
 	
 })
+$("#workItemDom").on("click",".workItem",function(){
+	var moduleUrl = $(this).find("img").data("url");
+	if(moduleUrl){
+		top.showSubpageTab(moduleUrl,$(this).find("p").text());
+	}else{
+		layer.alert("该模块暂未使用。",{icon:2})	
+	}
+})
 /*
  * 取得角色list中的当前页面所使用的角色
  */

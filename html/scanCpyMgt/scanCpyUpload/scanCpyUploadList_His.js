@@ -1,8 +1,6 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-var nowUploadFileNumber = 0;
-var fileUploadFlag = 0;
 
 function convertFilePath(){
 	var url = serverPath + 'contractHistoricalFileController/convertHistoryContractList';

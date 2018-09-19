@@ -3,11 +3,6 @@
 		opts = $.extend({}, opts);
 
 		var selectTitle = $(this);
-//		selectTitle.draggable({
-//			handle:'.list-title',
-//			opacity: 0.5,
-//			helper: 'clone'
-//		}); // 添加拖拽事件
 
 		/**
 		 * 单击列表单击: 改变样式
@@ -35,7 +30,40 @@
 			selectTitle.find('.list-body .left-box').append($(this).removeClass('selected-item'));
 			initItemEvent();
 		}
+		
+		/**
+		 * 上移列表
+		 */
+		var rightMoveUp = function(){
+			var e = $("#_selectRCon").find('.selected-item')
+			if(0 == e.length){
+				layer.msg("请先在右侧列表中选择要移动的内容");
+			}else if(e.length > 1){
+				layer.msg("只能移动一条数据");
+			}else{
+                var beforDom = e.prev("li");
+                if (beforDom.length > 0) {
+                    beforDom.before(e);
+                }
+			}
+		}
 
+		/**
+		 * 下移列表
+		 */
+		var rightMoveDown = function(){
+			var e = $("#_selectRCon").find('.selected-item')
+			if(0 == e.length){
+				layer.msg("请先在右侧列表中选择要移动的内容");
+			}else if(e.length > 1){
+				layer.msg("只能移动一条数据");
+			}else{
+				var afterDom = e.next("li");
+                if (afterDom.length > 0) {
+                    afterDom.after(e);
+                }
+			}
+		}
 		/**
 		 * 初始化列表项选择事件
 		 */
@@ -62,28 +90,6 @@
 		}
 
 		/**
-		 * 获取选择的值
-		 * @return json数组
-		 */
-		function getSelectedValue(){
-			var rightBox = selectTitle.find('.list-body .right-box');
-			var itemValues = [];
-			var itemValue;
-
-			rightBox.find('.item').each(function(){
-				itemValue = {};
-				itemValue[$(this).attr('data-id')] = $(this).text();
-				itemValues.push(itemValue);
-			});
-
-			for(var i = 0; i < itemValues.length; i++){
-				console.log(itemValues[i]);
-			}
-
-			return itemValues;
-		}
-
-		/**
 		 * 初始化添加、移除、获取值按钮事件
 		 */
 		function initBtnEvent(){
@@ -107,8 +113,14 @@
 			btnBox.find('.remove-all').on('click', function(){
 				leftBox.append(rightBox.find('.item').removeClass('selected-item'));
 			});
-
-			selectTitle.find('.list-footer').find('.selected-val').on('click',getSelectedValue);
+			// 上移
+			btnBox.find('.selectLR-up').on('click', function(){
+				rightMoveUp();
+			});
+			// 下移
+			btnBox.find('.selectLR-down').on('click', function(){
+				rightMoveDown();
+			});
 		}
 
 		initItemEvent();
@@ -132,49 +144,49 @@
 	}
 })($);
 (function($) {
-	$.initSelectFn = function(e) {
+	$.initSelectLRFn = function(e) {
 		e = $.extend({
 			title: "选择",
 			leftTitle: "可选择列",
 			rightTitle: "已选择列",
 			modalId: "#commomModal",
-			fluctuation: false
+			fluctuation: true
 		}, e);
-		$(e.modalId).load("/static/data/_selectLR.html",function(ee){
-			$("#_selectTitle").html(e.title);
-			$("#_selectLTitle").text(e.leftTitle);
-			$("#_selectRTitle").text(e.rightTitle);
-//			if(e.fluctuation){
-//				$("#selectL2RContent").find(".selectL2R-selectAll,.selectL2R-deleteAll").remove();
-//			}else{
-//				$("#selectL2RContent").find(".selectL2R-up,.selectL2R-down").remove();
-//			};
-			$.each(e.fullData, function(k,v) {
-				var isNotChoose = true;
-				$.each(e.chooseData, function(m,n) {
-					if(v.id == n.id){
-						$("#selectRUl").append($("<li data-id=\"" + n.id + "\" class=\"list-group-item\">" + n.data + "</li>"));
-                		$("#selectLUl").append($("<li data-id=\"" + n.id + "\" class=\"list-group-item list-group-item-success\">" + n.data + "</li>"));
-                		isNotChoose = false;
-						return true;
-					}
-				});
-				if(isNotChoose){
-					$("#selectLUl").append($("<li data-id=\"" + v.id + "\" class=\"list-group-item\">" + v.data + "</li>"));
-				};
+		$(e.modalId).load("/static/data/_selectLR.html",function(){
+			if(e.fluctuation){
+				$("#selectLRContent").find(".add-all,.remove-all").remove();
+			}else{
+				$("#selectLRContent").find(".selectLR-up,.selectLR-down").remove();
+			};
+			$.each(e.data, function(k,v) {
+				if(v.checked == true){
+					$("#_selectRCon").append('<li class="item" data-id="'+v.id+'">'+v.data+'</li>');
+				}else{
+					$("#_selectLCon").append('<li class="item" data-id="'+v.id+'">'+v.data+'</li>');
+				}
 			});
-//			selectL2R.init('#selectL2RContent');
+			$('#selectLRContent').initSelectList({
+				openDrag: true,
+				openDblClick: true
+			});
 			$(e.modalId).modal("show");
 		});
 	}
 })(jQuery);
 
 (function($) {
-	$.getSelectL2RData = function(d,e) {
-		if(e == "fullData"){
-			return selectL2R.getFullResult(d);
-		}else{
-			return selectL2R.getResult(d);
-		}
+	$.getSelectLRData = function(d,e) {
+		try{
+			var rightBox = $("#selectLRContent").find('.right-box');
+			var itemValues = [];
+			var itemValue;
+
+			rightBox.find('.item').each(function(){
+				itemValue = {};
+				itemValue[$(this).attr('data-id')] = $(this).text();
+				itemValues.push(itemValue);
+			});
+			returnSelectLRData(itemValues)
+		}catch(e){}
 	}
 })(jQuery);

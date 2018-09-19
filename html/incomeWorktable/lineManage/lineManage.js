@@ -55,7 +55,7 @@ if(parm.relationType == "0" || parm.relationType == "1"){
 	$("#relationTypeDom").show();
 };
 
-//区域收缩时引用的函数，返回form-fieldset的id
+//区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	
 }

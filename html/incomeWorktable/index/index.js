@@ -37,6 +37,15 @@ $(function(){
 	initIncomeOverview();
 	initIncomeAnalysis();
 })
+$("#workItemDom").on("click",".workItem",function(){
+	var moduleUrl = $(this).find("img").data("url");
+	if(moduleUrl){
+		alert(moduleUrl);
+		top.showSubpageTab(moduleUrl,$(this).find("p").text());
+	}else{
+		layer.alert("该模块暂未使用。",{icon:2})	
+	}
+})
 /*
  * 取得角色list中的当前页面所使用的角色
  */
@@ -45,7 +54,7 @@ function checkRoleType(){
 	var permArr = [91216,91217,91218,91219];
 	$.each(roleArr, function(k,v) {
 		if(isInArray(permArr,v)){
-			roleType = v;
+			roleType = 91217;
 			return false;
 		}
 	});
@@ -90,11 +99,7 @@ $("#emphasisRadio input[name='emphasisRadio']").on("change",function(){
 		});
 	}
 })
-$("#workItemDom").on("click","img",function(){
-	if($(this).data("url")){
-		top.showSubpageTab($(this).data("url"),"客户管理")
-	}
-})
+
 //我的收入总览图表生成
 function initIncomeOverview(){
 	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));

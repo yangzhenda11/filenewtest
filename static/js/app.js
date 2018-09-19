@@ -498,8 +498,10 @@ var App = function() {
 			meicon.toggleClass(icon1).toggleClass(icon2);
 			pbody.slideToggle(times,function(){
 				if(App.isExitsFunction("formFieldsetSlideFn")){
-					var id = me.parents(".form-fieldset").attr("id");
-					formFieldsetSlideFn(id);
+					if(!pbody.is(':hidden')){
+						var id = me.parents(".form-fieldset").attr("id");
+						formFieldsetSlideFn(id);
+					}
 				};
 			});
 //			if(el == '.page-search-more a') {
@@ -592,7 +594,7 @@ var App = function() {
             handleScrollers(); // handles slim scrolling contents
             // handleFancybox(); // handle fancy box
             handleSelect2(); // handle custom Select2 dropdowns
-            handleDatePicker();
+//          handleDatePicker();
             handlePagesearch();
             //handleFileInput();// 上传文件的伪装触发
             handleFormFieldset();// 表单分区的展开折叠控制

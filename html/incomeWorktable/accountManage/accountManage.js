@@ -1,7 +1,7 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-
+var reloadEmphasisCustomerTable = false;
 //区域收缩时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "emphasisCustomer"){
@@ -13,7 +13,7 @@ function formFieldsetSlideFn(id){
 }
 
 /*
- * 已关联合同客户点击查询事件
+ * 我管理的客户经理点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
  */
 function searchCustomer(){
@@ -25,13 +25,13 @@ function searchCustomer(){
 	}
 }
 /*
- * 已关联合同客户表格初始化
+ * 我管理的客户经理表格初始化
  */
 function initCustomerListTable(){
 	App.initDataTables('#customerListTable', "#customerLoading", {
 		ajax: {
 			"type": "GET",
-			"url": serverPath + 'staffPartner/getStaffPartnerList',
+			"url": serverPath + 'customerManager/listManagementCustomer',
 			"data": function(d) {
 				d.managerStaffName = $("#customerInput").val().trim();
 				return d;
@@ -47,22 +47,70 @@ function initCustomerListTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "name","className": "whiteSpaceNormal"},
-			{"data": "number","className": "whiteSpaceNormal"},
-			{"data": "number1","className": "whiteSpaceNormal"},
-			{"data": "user","className": "whiteSpaceNormal"},
+			{"data": "managerStaffName","className": "whiteSpaceNormal"},
+			{"data": "orgName","className": "whiteSpaceNormal"},
+			{"data": "phone","className": "whiteSpaceNormal"},
+			{"data": "email","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.user+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='jumpContractManage(\""+data.user+"\")' src='/static/img/add.png' />";
+					var editFlag = "add"
+					if(full.isValid == 1){
+						editFlag = "delete";
+					};
+					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\,\""+editFlag+"\"")' src='/static/img/delete.png' />";
 				}
 			}
 		]
 	});
+}
+/*
+ * 我管理的客户经理添加重点关注
+ */
+function addEmphasis(id){
+	var url = serverPath + "customerManager/saveFocusCustomerManager";
+	var postData = {
+		managerStaffOrgId: id
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		console.log(result);
+		reloadPageDataTable("#customerListTable");
+		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+		if(isInitEmphasisCustomerTable){
+			if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+				reloadEmphasisCustomerTable = true;
+			}else{
+				reloadPageDataTable("#emphasisCustomerTable");
+			};
+		}
+	}
+}
+/*
+ * 我管理的客户经理取消重点关注
+ */
+function addEmphasis(id){
+	var url = serverPath + "customerManager/delFocusCustomerManager";
+	var postData = {
+		managerStaffOrgId: id
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		console.log(result);
+		reloadPageDataTable("#customerListTable");
+		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+		if(isInitEmphasisCustomerTable){
+			if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+				reloadEmphasisCustomerTable = true;
+			}else{
+				reloadPageDataTable("#emphasisCustomerTable");
+			};
+		}
+	}
 }
 /*
  * 我重点关注的客户经理点击查询事件
@@ -94,18 +142,18 @@ function initEmphasisCustomerTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "name","className": "whiteSpaceNormal"},
-			{"data": "number","className": "whiteSpaceNormal"},
-			{"data": "number1","className": "whiteSpaceNormal"},
-			{"data": "user","className": "whiteSpaceNormal"},
+			{"data": "managerStaffName","className": "whiteSpaceNormal"},
+			{"data": "orgName","className": "whiteSpaceNormal"},
+			{"data": "phone","className": "whiteSpaceNormal"},
+			{"data": "email","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.user+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='jumpContractManage(\""+data.user+"\")' src='/static/img/delete.png' />";
+					return "<img onclick='deleteEmphasisOfEmp(\""+data.managerStaffOrgId+"\")' src='/static/img/delete.png' />";
 				}
 			}
 		]

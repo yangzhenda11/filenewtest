@@ -15,6 +15,7 @@ $(function(){
 		App.getCommonModal("otherSubject","#oppoPartyName","partnerName","partnerId");
 	})
 	//初始化表格
+	App.readCache("searchForm");
 	initScanCpyReplenishUploadTable();
 })
 /*
@@ -74,6 +75,7 @@ function initScanCpyReplenishUploadTable(){
 //跳转到上传页面
 function jumpContractUploadEdit(id){
 	var src = "./scanCpyReplenishUploadEdit.html?pageType=2&id="+id;
+	App.setCache("searchForm");
 	App.changePresentUrl(src);
 }
 /*

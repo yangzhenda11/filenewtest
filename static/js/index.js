@@ -19,7 +19,9 @@ var globalConfig = {
     /** 当前用户的用户名 */
     curStaffName: "",
     /** 当前用户的id （sys_staff主键） */
-    curStaffId: null,
+    curStaffId: null, 
+    /** 当前用户的角色 （数组存储） */
+    curRole: [],
     /** 当前用户的权限集合 */
     permissions: [],
     /**当前岗位组织省份code */
@@ -31,6 +33,10 @@ var globalConfig = {
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
+/*
+ * 缓存文件
+ */
+var _paramCache = {}
 //菜单
 var ace_menus = null;
 //跳转参数
@@ -56,7 +62,7 @@ $(document).ready(function() {
         globalConfig.permissions = data.permissions;
         globalConfig.orgPath = data.orgPath;
         globalConfig.loginName = data.loginName;
-       
+       	globalConfig.curRole = data.rolestrs.split(",");
         if(data.loginName.indexOf("qc_zj") != -1 || data.loginName.indexOf("qc_gd") != -1){
         	ace_menus = [{
         	 	childrens: [],

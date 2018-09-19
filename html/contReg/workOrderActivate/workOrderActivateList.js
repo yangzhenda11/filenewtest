@@ -1,7 +1,7 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-
+App.readCache("searchForm");
 /*
  * 初始化表格
  */
@@ -103,6 +103,7 @@ function jumpSanCpyQueryDetail(id){
 		var wcardProcess = result.data.wcardProcess;
 		if(wcardProcess == 1){
 			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
+			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{
 			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){

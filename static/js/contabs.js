@@ -6,17 +6,11 @@ $(function() {
 	});
 	$('#actionUl').on('click','.J_menuItem',conTabC);
 	$("#messageTip").on('click',conTabC);
-//	$(".J_menuItem").on("click", conTabC);
 	$(".J_menuTabs").on("click", ".J_menuTab i", conTabH);
 	$(".J_menuTabs").on("click", ".J_menuTab", conTabE);
 	$(".J_menuTabs").bind("contextmenu", function(){
 	    return false;
 	})
-//	$(".J_menuTabs").mousedown(function(e) {
-//	    if (3 == e.which) {
-//	        alert('点击了右键');
-//	    }
-//	})
 //	$(".J_menuTabs").on("dblclick", ".J_menuTab", conTabD);
 	$(".J_tabLeft").on("click", conTabA);
 	$(".J_tabRight").on("click", conTabB);
@@ -131,6 +125,15 @@ function conTabB() {
 		}
 	}
 }
+function checkArrLen(roleArr,permArr){
+	var len = 0;
+	$.each(roleArr, function(k,v) {
+		if(isInArray(permArr,v)){
+			len ++;
+		}
+	});
+	return len;
+}
 /*
  * 点击触发的事件
  */
@@ -142,6 +145,22 @@ function conTabC() {
 	if(o == undefined || $.trim(o).length == 0) {
 		return false;
 	}
+	if(o == "html/incomeWorktable/index/index.html"){
+		var roleArr = globalConfig.curRole;
+		var roleExistLen = checkArrLen(roleArr,[91216,91217,91218,91219]);
+		if(roleExistLen != 1){
+			layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个收入类租线业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			return false;
+		};
+	};
+	if(o == "html/expenseWorktable/index/index.html"){
+		var roleArr = globalConfig.curRole;
+		var roleExistLen = checkArrLen(roleArr,[91220,91221,91222]);
+		if(roleExistLen != 1){
+			layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个支出类采购业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			return false;
+		};
+	};
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == o) {
 			if(!$(this).hasClass("active")) {
@@ -251,6 +270,7 @@ function conTabH() {
 			$(this).parents(".J_menuTab").remove();
 			$(".J_mainContent .J_iframe").each(function() {
 				if($(this).data("id") == m) {
+					App.deleteCache($(this).attr("id"));
 					$(this).remove();
 					return false
 				}
@@ -268,6 +288,7 @@ function conTabH() {
 			$(this).parents(".J_menuTab").remove();
 			$(".J_mainContent .J_iframe").each(function() {
 				if($(this).data("id") == m) {
+					App.deleteCache($(this).attr("id"));
 					$(this).remove();
 					return false
 				}
@@ -277,6 +298,7 @@ function conTabH() {
 		$(this).parents(".J_menuTab").remove();
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == m) {
+				App.deleteCache($(this).attr("id"));
 				$(this).remove();
 				return false
 			}

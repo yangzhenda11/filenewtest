@@ -1,6 +1,7 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+App.readCache("searchForm");
 /*
  * 初始化表格
  */
@@ -94,7 +95,8 @@ function jumpSanCpyQueryDetail(id){
 		var wcardProcess = result.data.wcardProcess;
 		if(wcardProcess == 0 || wcardProcess == 2){
 			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
-App.changePresentUrl(src);
+			App.setCache("searchForm");
+			App.changePresentUrl(src);
 		}else{
 			layer.alert("当前工单的状态已经发生变化，请您重新点击查询更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
 				layer.close(index);
@@ -102,12 +104,7 @@ App.changePresentUrl(src);
 		}
 	}
 }
-/*
- * 检查工单状态是否属于该流程
- */
-function checkWcardProcessId(){
-	
-}
+
 /*
  * 获取查询参数
  */

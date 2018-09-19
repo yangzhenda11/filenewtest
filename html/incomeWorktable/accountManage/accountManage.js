@@ -69,7 +69,7 @@ function initCustomerListTable(){
 					if(full.isValid == 1){
 						editFlag = "delete";
 					};
-					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\,\""+editFlag+"\")' src='/static/img/delete.png' />";
+					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
 		]
@@ -81,28 +81,30 @@ function initCustomerListTable(){
  */
 function emphasisOfCustomer(managerStaffOrgId,editFlag){
 	var url = serverPath + "customerManager/saveFocusCustomerManager";
-	var massage = "已添加重点关注";
+	var massage = "添加";
 	if(editFlag == "delete"){
 		url = serverPath + "customerManager/delFocusCustomerManager";
-		massage = "已取消重点关注";
+		massage = "取消";
 	};
-	var postData = {
-		managerStaffOrgId: id
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		console.log(result);
-		layer.msg(massage);
-		reloadPageDataTable("#customerListTable",true);
-		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-		if(isInitEmphasisCustomerTable){
-			if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-				reloadEmphasisCustomerTable = true;
-			}else{
-				reloadPageDataTable("#emphasisCustomerTable",true);
-			};
+	layer.confirm("确定"+massage+"该客户经理的重点关注?", {icon: 0}, function() {
+    	var postData = {
+			managerStaffOrgId: managerStaffOrgId
+		};
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			console.log(result);
+			layer.msg("已"+massage+"重点关注");
+			reloadPageDataTable("#customerListTable",true);
+			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+			if(isInitEmphasisCustomerTable){
+				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+					reloadEmphasisCustomerTable = true;
+				}else{
+					reloadPageDataTable("#emphasisCustomerTable",true);
+				};
+			}
 		}
-	}
+   	});
 }
 
 /*
@@ -155,23 +157,25 @@ function initEmphasisCustomerTable(){
  * 我重点关注的客户经理取消重点关注
  */
 function deleteEmphasisOfEmp(managerStaffOrgId){
-	var url = serverPath + "customerManager/delFocusCustomerManager";
-	var postData = {
-		managerStaffOrgId: id
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		console.log(result);
-		reloadPageDataTable("#emphasisCustomerTable",true);
-		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-		if(isInitCustomerListTable){
-			if($("#customerList .form-fieldset-body").is(':hidden')){
-				reloadCustomerListTable = true;
-			}else{
-				reloadPageDataTable("#customerListTable",true);
-			};
+	layer.confirm('确定取消该客户经理的重点关注?', {icon: 0}, function() {
+    	var url = serverPath + "customerManager/delFocusCustomerManager";
+		var postData = {
+			managerStaffOrgId: managerStaffOrgId
+		};
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			console.log(result);
+			reloadPageDataTable("#emphasisCustomerTable",true);
+			var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
+			if(isInitCustomerListTable){
+				if($("#customerList .form-fieldset-body").is(':hidden')){
+					reloadCustomerListTable = true;
+				}else{
+					reloadPageDataTable("#customerListTable",true);
+				};
+			}
 		}
-	}
+   	});
 }
 
 /*

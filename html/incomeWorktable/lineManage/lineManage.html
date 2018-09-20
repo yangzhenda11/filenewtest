@@ -87,10 +87,10 @@
 					<div class="form-fieldset-title">
 						<span>手工导入线路信息</span>
 						<div class="form-fieldset-tools">
-							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
+							<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 						</div>
 					</div>
-					<div class="form-fieldset-body">
+					<div class="form-fieldset-body" style="display: none;">
 						<div class="row page-search">
 							<div class="col-sm-3">
 								<input type="text" id="searchImportInput" class="form-control" maxlength="50" placeholder="查询业务信息ID/电路代号">
@@ -100,10 +100,10 @@
 							</div>
 						</div>
 						<div class="toolbars">
-							<button type="button" class="btn blue" onclick="initselectLR();"><i class="iconfont icon-import"></i>导入</button>
-							<button type="button" class="btn blue" onclick="initselectLR();"><i class="iconfont icon-shanchu"></i>删除</button>
-							<button type="button" class="btn blue" onclick="initselectLR();"><i class="iconfont icon-baocun"></i>提交全部</button>
-							<button type="button" class="btn blue" onclick="initselectLR();"><i class="iconfont icon-export"></i>下载模板</button>
+							<button type="button" class="btn blue" onclick="lineImport();"><i class="iconfont icon-import"></i>导入</button>
+							<button type="button" class="btn blue" onclick="lineDelete();"><i class="iconfont icon-shanchu"></i>删除</button>
+							<button type="button" class="btn blue" onclick="lineUpdate();"><i class="iconfont icon-baocun"></i>提交全部</button>
+							<button type="button" class="btn blue" onclick="lineExport();"><i class="iconfont icon-export"></i>下载模板</button>
 						</div>
 						<table id="importlineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 	                    	<thead>
@@ -154,6 +154,7 @@
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/jQueryliestxz/js/list-script.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../demoData.js" type="text/javascript" charset="utf-8"></script>
 		<script src="lineManage.js" type="text/javascript" charset="utf-8"></script>

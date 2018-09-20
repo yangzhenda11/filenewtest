@@ -108,6 +108,17 @@ button:focus{outline: none !important;}
 /*支撑渠道-结束 */
 
 /* 左右选择样式-开始 */
+.selectLR-left,.selectLR-right,.center-box{
+	float: left;
+}
+.selectLR-left,.selectLR-right{
+	width: 45%;
+	padding: 0 10px;
+}
+.center-box{
+	width: 10%;
+	padding-top: 50px;
+}
 .list-body .selectCon{
 	height: 280px;
 	overflow: auto;

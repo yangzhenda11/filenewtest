@@ -21,13 +21,14 @@ function initselectLR() {
  * 显示更多点击确定回调页面方法
  */
 function returnSelectLRData(data) {
-	console.log(data);
+	$("#commomModal").modal("hide");
 	var checkedRelationType = $("#lineInfor input[name='relationType']:checked").val();
 	if(checkedRelationType == 1){
 		relationContractTheadList = data;
 	}else if(checkedRelationType == 0){
 		notRelationContractTheadList = data;
-	}
+	};
+	initLineInforTable();
 }
 /*
  * 线路基本信息未关联合同和已关联合同切换
@@ -133,16 +134,14 @@ function initImportlineTable(){
 			"data": function(d) {
 				d.staffName = $("#searchInput").val().trim();
 				return d;
-			},
-			"dataSrc":function(data){
-				console.log(data)
-				return lineData;
 			}
 		},
 		"columns": [
 			{"data" : null,"className": "whiteSpaceNormal ",
 				"render" : function(data, type, full, meta){
-					var radioHtml = "<label class='ui-radio'><input type='radio' name='checkRadio'><span></span></label>";
+					var start = App.getDatatablePaging("#importlineTable").pageStart;
+					var a =  start + meta.row + 1;
+					var radioHtml = "<label class='ui-checkbox'><input type='checkbox' name='checkImportItem' value="+ full.lineId +"><span></span></label>";
 					return radioHtml;
 				}
 			},
@@ -152,19 +151,76 @@ function initImportlineTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "id","className": "whiteSpaceNormal"},
-			{"data": "daihao","className": "whiteSpaceNormal"},
-			{"data": "name","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"},
-			{"data": "daihao","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"},
-			{"data": "num","className": "whiteSpaceNormal"}
+			{"data": "businessId","className": "whiteSpaceNormal"},
+			{"data": "circuitCode","className": "whiteSpaceNormal"},
+			{"data": "productName","className": "whiteSpaceNormal"},
+			{"data": "contractNumber","className": "whiteSpaceNormal"},
+			{"data": "customerCode","className": "whiteSpaceNormal"},
+			{"data": "customerName","className": "whiteSpaceNormal"},
+			{"data": "startCityName","className": "whiteSpaceNormal"},
+			{"data": "monthRentCost","className": "whiteSpaceNormal"},
+			{"data": "rentState","className": "whiteSpaceNormal"},
+			{"data": "customerManagerName","className": "whiteSpaceNormal"},
+			{"data": "createdDate","className": "whiteSpaceNormal"}
 		]
 	});
+}
+/*
+ * 线路导入
+ */
+function lineImport(){
+	var setting = {
+		title: "线路信息导入",
+		url: 'lineMangerController/importLineExcel',
+		postfix: ["xlsx","xls"],
+		accept: ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
+		extraData: {}
+	};
+	function callback(result){
+		if(result.status == 1){
+			var data = result.data; 
+			layer.msg("成功导入"+data+"条线路信息");
+			$("#commomModal").modal("hide");
+			searchImportline();
+		} else{
+			layer.alert(result.message,{icon:2});
+		}
+	}
+	App.getFileImportModal(setting,callback);
+}
+/*
+ * 下载线路模板
+ */
+function lineExport(){
+	var postData = {
+		templateCode: ""
+	};
+	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "get", postData, successCallback);
+	function successCallback(result) {
+		var key = result.data.fileStoreId;
+		if(key){
+			var url = serverPath + 'fileload/downloadS3?key='+key;
+    		location.href = encodeURI(url);	
+		}else{
+			showLayerErrorMsg("暂无该模板");
+		}
+	}
+}
+/*
+ * 提交全部导入线路
+ */
+function lineUpdate(){
+	alert("提交全部fn");
+}
+/*
+ * 删除选择的线路
+ */
+function lineDelete(){
+	var checkedList = [];
+	$("input[name='checkImportItem']:checked").each(function(k,v) {
+		checkedList.push($(v).val());
+	});
+	console.log(checkedList);
 }
 /*
  * 页面内表格初始化完成之后查询事件

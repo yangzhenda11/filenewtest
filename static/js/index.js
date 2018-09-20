@@ -31,7 +31,9 @@ var globalConfig = {
    	/**是否属于本部：0不属于，1属于 */
    	mainOrgFlag : null,
     /** 当前用户的系统设置 */
-    curConfigs: {}
+    curConfigs: {},
+    /**二阶段用户所选稽核范围 */
+    auditScope: null
 };
 /*
  * 缓存文件

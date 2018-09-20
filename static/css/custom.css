@@ -764,12 +764,7 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 	width: 24px;
 	cursor: pointer;
 }
-.dataTables_scrollHeadInner{
-	/*width: 100% !important;*/
-}
-table{
-	/*width: 100% !important;*/
-}
+
 /*合同修改*/
 .form-fieldset-title{
 	font-size: 14px;

@@ -11,9 +11,11 @@ var serverPath = config.serverPath;
  * 91219：商务经理
  */
 var roleType = "";
+
 $(function(){
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
+	console.log(roleType)
 	$("#loginUserName").text(config.curStaffName);
 	if(roleType == 91216 || roleType == 91217 || roleType == 91219){
 		if(roleType == 91216){
@@ -54,7 +56,7 @@ function checkRoleType(){
 	var permArr = [91216,91217,91218,91219];
 	$.each(roleArr, function(k,v) {
 		if(isInArray(permArr,v)){
-			roleType = 91217;
+			roleType = v;
 			return false;
 		}
 	});

@@ -173,18 +173,26 @@
 
 (function($) {
 	$.getSelectLRData = function(d,e) {
+		var rightBox = $("#selectLRContent").find('.right-box');
+		var leftBox = $("#selectLRContent").find('.left-box');
+		var itemValues = [];
+		var itemValue;
+		rightBox.find('.item').each(function(){
+			itemValue = {
+				id: $(this).attr('data-id'),
+				data: $(this).text(),
+				checked: true
+			};
+			itemValues.push(itemValue);
+		});
+		leftBox.find('.item').each(function(){
+			itemValue = {
+				id: $(this).attr('data-id'),
+				data: $(this).text()
+			};
+			itemValues.push(itemValue);
+		});
 		try{
-			var rightBox = $("#selectLRContent").find('.right-box');
-			var itemValues = [];
-			var itemValue;
-
-			rightBox.find('.item').each(function(){
-				itemValue = {
-					id: $(this).attr('data-id'),
-					data: $(this).text()
-				};
-				itemValues.push(itemValue);
-			});
 			returnSelectLRData(itemValues)
 		}catch(e){}
 	}

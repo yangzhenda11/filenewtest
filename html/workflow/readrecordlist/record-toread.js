@@ -4,9 +4,9 @@ var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 //流程类型下拉框处理
 var ajaxObj = {
-	    "url" :  serverPath + "recordToread/listReadTypeCode",
-	    "type" : "post"
-	}
+    "url" :  serverPath + "recordToread/listReadTypeCode",
+    "type" : "post"
+}
 App.initAjaxSelect2("#readTypeCode",ajaxObj,"value","label","请选择流程类型");
 
 /*
@@ -39,7 +39,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 	        	var style = "";
 	        	var buttontitle = null;
 	        	if(curStaffOrgId == assignee){
-	        			fn = "findDetail()";
+        			fn = "findDetail()";
 	        	}else{
 	        		style = "cursor:not-allowed";
 	        		buttontitle = "当前任务属于您的另一个岗位【" + row.orgName + "】,请点击右上角个人信息切换岗位后处理";
@@ -50,7 +50,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
             }
        	},
         {"data": "readTypeName","title": "流程类型","className":"whiteSpaceNormal","width":"17%"},
-       {"data": "sendDate","title": "接收日期","className":"whiteSpaceNormal","width":"10%",
+       	{"data": "sendDate","title": "接收日期","className":"whiteSpaceNormal","width":"10%",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
@@ -99,21 +99,16 @@ function dataChangeEvent(dom){
 		layer.msg("接收日期开始日期不能早于截止日期");
 	}
 }
-function manualCreation(){
-	$("#manualCreationEditModal").load("_manualCreationEdit.html",function(){
-		$("#manualCreationEditModal").modal("show");
-	});
-}
 /*
  * 获取查询参数
  */
 function getSearchParm(){
 	var searchData = {
-			readTypeCode : $("#readTypeCode").val().trim(),
-			readTitle : $("#readTitle").val().trim(),
-			sendDateBegin : $("#send_date_begin").val().trim(),
-			sendDateEnd : $("#send_date_end").val().trim(),
-			bussId : $("#bussId").val().trim()
+		readTypeCode : $("#readTypeCode").val().trim(),
+		readTitle : $("#readTitle").val().trim(),
+		sendDateBegin : $("#send_date_begin").val().trim(),
+		sendDateEnd : $("#send_date_end").val().trim(),
+		bussId : $("#bussId").val().trim()
 	};
 	return searchData;
 }

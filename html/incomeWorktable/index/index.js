@@ -8,7 +8,7 @@ var serverPath = config.serverPath;
  * 91216：客户经理
  * 91217：业务管理
  * 91218：稽核管理
- * 91219：商务管理
+ * 91219：商务经理
  */
 var roleType = "";
 $(function(){
@@ -22,7 +22,7 @@ $(function(){
 		}else if(roleType == 91217){
 			$("#roleName").text("业务管理");
 		}else{
-			$("#roleName").text("商务管理");
+			$("#roleName").text("商务经理");
 		};
 		$("#auditCol").remove();
 	}else if(roleType == 91218){
@@ -31,11 +31,20 @@ $(function(){
 		$("#auditCol").removeClass("hidden");
 	};
 	$(".page-content-worktable").show();
-	//获取商务助手配置内容
+	//获取商务助理配置内容
 	getAssistantList();
 	
 	initIncomeOverview();
 	initIncomeAnalysis();
+})
+$("#workItemDom").on("click",".workItem",function(){
+	var moduleUrl = $(this).find("img").data("url");
+	if(moduleUrl){
+		alert(moduleUrl);
+		top.showSubpageTab(moduleUrl,$(this).find("p").text());
+	}else{
+		layer.alert("该模块暂未使用。",{icon:2})	
+	}
 })
 /*
  * 取得角色list中的当前页面所使用的角色
@@ -45,34 +54,33 @@ function checkRoleType(){
 	var permArr = [91216,91217,91218,91219];
 	$.each(roleArr, function(k,v) {
 		if(isInArray(permArr,v)){
-			roleType = v;
+			roleType = 91217;
 			return false;
 		}
 	});
 }
 /*
- * 获取商务助手配置内容
+ * 获取商务助理配置内容
  */
 function getAssistantList(){
 	var url = serverPath + "assistant/assistantList";
 	var postData = {
 		roleId: roleType,
 		provinceCode: config.provCode,
-		funType: ""
+		funType: "sr"
 	};
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-
 	function successCallback(result) {
-//		var data = result.data;
-//		var html = "";
-//		$.each(data, function(k,v) {
-//			html += '<div class="workItem">'+
-//					'<img src="../../../static/img/worktable/" data-url="'+v.funUrl+'"/>'+
-//					'<p>客户管理</p>'+
-//					'</div>';
-//		});
+		var data = result.data;
+		var html = "";
+		$.each(data, function(k,v) {
+			html += '<div class="workItem">'+
+					'<img src="/static/img/worktable/'+v.funIconUrl+'" data-url="'+v.funUrl+'"/>'+
+					'<p>'+v.funName+'</p>'+
+					'</div>';
+		});
+		$("#workItemDom").html(html);
 	}
-	
 }
 
 
@@ -91,11 +99,7 @@ $("#emphasisRadio input[name='emphasisRadio']").on("change",function(){
 		});
 	}
 })
-$("#workItemDom").on("click","img",function(){
-	if($(this).data("url")){
-		top.showSubpageTab($(this).data("url"),"客户管理")
-	}
-})
+
 //我的收入总览图表生成
 function initIncomeOverview(){
 	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));

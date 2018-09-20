@@ -163,7 +163,6 @@
 		<script src="../../../static/plugins/imageview/echarts-gl.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/imageview/raphael.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/imageview/sycle.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/jQueryliestxz/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jQueryliestxz/js/list-script.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
@@ -175,18 +174,16 @@
 		<script type="text/javascript">
 			function initselectLR() {
 				var options = {
-					title: "选择显示内容",
-					leftTitle: "可选择列",
-					rightTitle: "已选择列",
 					modalId: "#commomModal",
-					fluctuation: true,
-					fullData: [{
+					data: [{
 							id: "测试1",
-							data: "测试1"
+							data: "测试1",
+							checked: true
 						},
 						{
 							id: "测试2",
-							data: "测试2"
+							data: "测试2",
+							checked: true
 						},
 						{
 							id: "测试3",
@@ -194,7 +191,8 @@
 						},
 						{
 							id: "测试4",
-							data: "测试4"
+							data: "测试4",
+							checked: true
 						},
 						{
 							id: "测试5",
@@ -208,24 +206,14 @@
 							id: "测试7",
 							data: "测试7"
 						}
-					],
-					chooseData: [{
-							id: "测试2",
-							data: "测试2"
-						},
-						{
-							id: "测试6",
-							data: "测试6"
-						}
 					]
 				}
-				$.initSelectFn(options);
+				$.initSelectLRFn(options);
 			}
 			/*
 			 * 点击确定回调的页面方法
 			 */
-			function selectLRQueyFn() {
-				var data = $.getSelectL2RData("#selectL2RContent", "fullData");
+			function returnSelectLRData(data) {
 				console.log(data);
 			}
 			var myChart1 = echarts.init(document.getElementById('im1'));

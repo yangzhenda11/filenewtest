@@ -1,117 +1,115 @@
-$(function(){
-	$("#currentIdToread").val(curStaffOrgId);
-	// 加载表格
-	searchTableToread = $("#searchTableToread").DataTable(dataTableConfig);
-	//searchTableToread.ajax.reload();
-});
-// 后面构建btn 代码
-var btnModel = '    \
-	{{#each func}}\
-    <button type="button" class="user-button btn-sm {{this.type}}" {{this.title}} {{this.fn}}>{{this.name}}</button>\
-    {{/each}}';
-var template = Handlebars.compile(btnModel);
-var searchTableToread;
-// 表格配置信息
-var dataTableConfig = {
-	"ordering": false,// 排序
-	"serverSide": true,// 开启服务器模式
-	"scrollX": true,// 横向滚动
+//系统的全局变量
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+var curStaffOrgId = config.curStaffOrgId;
+//流程类型下拉框处理
+var ajaxObj = {
+    "url" :  serverPath + "recordToread/listReadTypeCode",
+    "type" : "post"
+}
+App.initAjaxSelect2("#readTypeCode",ajaxObj,"value","label","请选择流程类型");
+
+/*
+ * 初始化表格
+ */
+App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 	ajax: {
         "type": "POST",
-        "url":serverPath + 'flowReadRecord/recordToRead',//请求路径
-        "contentType": 'application/x-www-form-urlencoded; charset=UTF-8',
-        "dataType":'json',
-        "data":function(d){// 查询参数
-
-        	d.title = $('#processTitleToread').val();
-        	d.name = $('#linkNameToread').val();
-        	d.createTimeStart = $('#startDateToread').val();
-        	d.createTimeEnd = $('#endDateToread').val();
-        	
-        	return d;
+        "contentType":"application/json;charset=utf-8",
+        "url": serverPath+'recordToread/recordToreadList',
+        "data": function(d) {//自定义传入参数
+			var searchParmData = getSearchParm();
+        	d = $.extend(d,searchParmData);
+           	return JSON.stringify(d);
         }
-	},            
-	columns: [// 对应列
-		{"data": "title","title":"流程标题",className: "text-center"},
-        {"data": "processDefinitionName","title":"流程名称",className: "text-center"},
-        {"data": "name","title":"环节名称",className: "text-center"},
-        {"data": "createTime","title":"接收时间",className: "text-center",
-        	render: function (a, b, c, d) {
-        		return getSmpFormatDateByLong(a, true);
-        	}
-        },
-        {"data": null,"title":"操作",className: "text-center"}
-    ],
-    "columnDefs": [
-		{// 所有列默认值
-			"targets": "_all",
-			"defaultContent": ''
+    },
+    "columns": [
+    	{"data" : null,"title":"序号","className": "text-center","width":"5%",
+			"render" : function(data, type, full, meta){
+				var start = App.getDatatablePaging("#workOrderHandleListTable").pageStart;
+				return start + meta.row + 1;
+		   	}
 		},
-       {// 最后一列添加按钮
-        targets: -1,
-        render: function (a, b, c, d) {
-        	
-        	var currentId = $('#currentIdToread').val();
-        	var assignee = c.receiverId;
-        	
-        	// 按钮显隐设置及方法设置
-        	var disabled = "disabled";
-        	var title = "title=当前任务属于【" + c.orgName + "】，请切换岗位后查看";
-        	var fn = "";
-        	if(currentId == assignee){
-        		disabled = "";
-        		title = "";
-        		fn = "onclick=handleTaskToread(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\',\'" + c.recordId + "\')";
-        	}
-        	
-            var context =
-            {
-                func: [
-                	{"name": "查看", "title": title, "fn": fn, "type": disabled}
-                ]
-            };
-            var html = template(context);
-            return html;
-        }
-    }]
-	,"dom": 'rt<"pull-left mt5"i><"pull-right mt5"p><"clear">'//'rt<"bottom"ip><"clear">' //生成样式
-};
-// 查询
-function serarchToread(){
-	searchTableToread.ajax.reload();
+        {
+            "data": "readTitle",
+            title: "主题",
+            render: function(data, type, row, meta) {
+            	var assignee = row.receivedStaffOrgId
+	        	var fn = "";
+	        	var style = "";
+	        	var buttontitle = null;
+	        	if(curStaffOrgId == assignee){
+        			fn = "findDetail()";
+	        	}else{
+	        		style = "cursor:not-allowed";
+	        		buttontitle = "当前任务属于您的另一个岗位【" + row.orgName + "】,请点击右上角个人信息切换岗位后处理";
+	        		fn = "layer.msg(\'"+buttontitle+"\')";
+	        	}
+	        	var context = [{"name": row.readTitle,"placement":"right","title": buttontitle,"style": style,"fn": fn}]; 	
+	            return App.getDataTableLink(context);
+            }
+       	},
+        {"data": "readTypeName","title": "流程类型","className":"whiteSpaceNormal","width":"17%"},
+       	{"data": "sendDate","title": "接收日期","className":"whiteSpaceNormal","width":"10%",
+	        "render": function(data, type, full, meta) {
+	            return App.formatDateTime(data,"yyyy-MM-dd");
+	        }
+	    },
+        {"data": "staffName","title": "发送人","className":"whiteSpaceNormal","width":"10%"}
+    ],
+	"columnDefs": [{
+   		"createdCell": function (td, cellData, rowData, row, col) {
+         	if ( col > 0 && col < 6) {
+           		$(td).attr("title", $(td).text())
+         	}
+   		}
+ 	}]
+});
+
+function  findDetail  (receivedStaffOrgId,attrbs ) {
+	
 }
 
-//重置查询条件
-function resetCondition(){
-	$('#processTitleToread').val('');
-	$('#linkNameToread').val('');
-	
-	$("input[name='startDateToread']").val('');
-	$("input[name='endDateToread']").val('');
+/*
+ * 搜索点击事件
+ */
+function searchWorkOrderHandle(retainPaging) {
+	var createDateBegin = $("#send_date_begin").val();
+	var createDateEnd = $("#send_date_end").val();
+	if(App.checkDate(createDateBegin,createDateEnd)){
+		var table = $('#workOrderHandleListTable').DataTable();
+		if(retainPaging) {
+			table.ajax.reload(null, false);
+		} else {
+			table.ajax.reload();
+		}
+	}else{
+		layer.msg("接收日期开始日期不能早于截止日期");
+		return;
+	}
+}
+/*
+ * 日期修改时监听事件
+ */
+function dataChangeEvent(dom){
+	var createDateBegin =  $("#send_date_begin").val();
+	var createDateEnd = $("#send_date_end").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		$(dom).val("");
+		layer.msg("接收日期开始日期不能早于截止日期");
+	}
+}
+/*
+ * 获取查询参数
+ */
+function getSearchParm(){
+	var searchData = {
+		readTypeCode : $("#readTypeCode").val().trim(),
+		readTitle : $("#readTitle").val().trim(),
+		sendDateBegin : $("#send_date_begin").val().trim(),
+		sendDateEnd : $("#send_date_end").val().trim(),
+		bussId : $("#bussId").val().trim()
+	};
+	return searchData;
 }
 
-//“查看”按钮触发事件
-function handleTaskToread(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee, recordId) {
-	
-	// 表单加入接收的参数
-	// 阅读记录Id
-	$('#recordIdToread').val(recordId);
-	// 待阅页面中，实际为阅读记录对应的任务ID
-	$('#idToread').val(id);
-	$('#taskDefinitionKeyToread').val(taskDefinitionKey);
-	// 环节名称
-	$('#nameToread').val(name);
-	$('#processInstanceIdToread').val(processInstanceId);
-	// 流程实例名称
-	$('#titleToread').val(title);
-	$('#processDefinitionIdToread').val(processDefinitionId);
-	$('#processDefinitionKeyToread').val(processDefinitionKey);
-	$('#executionIdToread').val(executionId);
-	$('#assigneeIdToread').val(assignee);
-	
-	$("#goRecordToReadDetailToread").load("../workflow/readrecorddetail/record-toread.html");
-	
-	$("#goRecordToReadDetailToread").show();
-	$("#searchContentToread").hide();
-}

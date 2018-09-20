@@ -117,8 +117,25 @@
 				$("#purchase").remove();
 				setSpeedyJump();
 			}else{
-				var valueCallback = {'frameworkAgreement':function(value){return value == 1 ? "是":"否"},
-					'materialAgreement':function(value){return value == 1 ? "是":"否"}}
+				var valueCallback = {'frameworkAgreement':function(value){
+						if(value == null || value == ""){
+							return "";
+						}else if(value == 1){
+							return "是";
+						}else{
+							return "否";
+						}
+					},
+					'materialAgreement':function(value){
+						if(value == null || value == ""){
+							return "";
+						}else if(value == 1){
+							return "是";
+						}else{
+							return "否";
+						}
+					}
+				}
 				App.setFormValues("#purchaseForm",data,valueCallback);
 			}
 		}

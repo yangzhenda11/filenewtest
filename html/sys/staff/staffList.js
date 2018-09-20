@@ -369,40 +369,46 @@ function returnStaffList() {
  */
 function staffOrgRoleManage(staffOrgId, orgName) {
     $('#selectedStaffOrgId').val(staffOrgId);
-    $('#roleModal').load("staffOrgRole.html", function() {
-        /**清空待选、已选 */
-        // $("#havingRoles").empty();
-        // $("#notHavingRoles").empty();
-        $('#roleModal').modal({ show: true, backdrop: 'static' });
-        App.formAjaxJson(serverPath + "staffs/" + globalConfig.curStaffId + "/staffOrgs/" + globalConfig.curStaffOrgId + "/staffRoles/" + staffOrgId, "GET", null, ajaxSuccess);
-
-        function ajaxSuccess(result) {
-            var havingRoles = result.data.havingRoles;
-            var notHavingRoles = result.data.notHavingRoles;
-            for (var i = 0; i < havingRoles.length; i++) {
-                // <option value=\"" + havingRoles[i].ROLE_ID + "\">
-                $("#havingRoles").append($("<li data-id=\"" + havingRoles[i].ROLE_ID + "\" class=\"list-group-item\">" + havingRoles[i].ROLE_NAME + "</li>"));
-                $("#notHavingRoles").append($("<li data-id=\"" + havingRoles[i].ROLE_ID + "\" class=\"list-group-item list-group-item-success\">" + havingRoles[i].ROLE_NAME + "</li>"));
-            }
-            for (var i = 0; i < notHavingRoles.length; i++) {
-                $("#notHavingRoles").append($("<li data-id=\"" + notHavingRoles[i].ROLE_ID + "\" class=\"list-group-item\">" + notHavingRoles[i].ROLE_NAME + "</li>"));
-            }
-            selectL2R.init('#selectL2R-ul');
-        }
-        // $('#getSelectL2R-ul').click(function() {
-        //     var result = selectL2R.getResult('#selectL2R-ul');
-        //     $('#selectL2RResult-ul').text(result);
-        // });
-        $('#roleModal').on('hide.bs.modal', function() {
-            $("#roleModal").empty();
-        })
-    });
+    App.formAjaxJson(serverPath + "staffs/" + globalConfig.curStaffId + "/staffOrgs/" + globalConfig.curStaffOrgId + "/staffRoles/" + staffOrgId, "GET", null, ajaxSuccess);
+    function ajaxSuccess(result) {
+        var havingRoles = result.data.havingRoles;
+        var notHavingRoles = result.data.notHavingRoles;
+        var roleData = [];
+        for (var i = 0; i < havingRoles.length; i++) {
+            var item = {
+            	id: havingRoles[i].ROLE_ID,
+            	data: havingRoles[i].ROLE_NAME,
+            	checked: true
+            };
+            roleData.push(item);
+        };
+        for (var i = 0; i < notHavingRoles.length; i++) {
+            var item = {
+            	id: notHavingRoles[i].ROLE_ID,
+            	data: notHavingRoles[i].ROLE_NAME
+            };
+            roleData.push(item);
+        };
+        var options = {
+			modalId: "#roleModal",
+			data: roleData
+		}
+		$.initSelectLRFn(options);
+    }
 }
 
+/*
+ * 点击确定回调的页面方法
+ */
+function returnSelectLRData(data) {
+	var result = [];
+	$.each(data, function(k,v) {
+		result.push(v.id);
+	});
+	saveStaffOrgRoles(result.join(","));
+}
 
-
-function saveStaffOrgRoles() {
-    var result = selectL2R.getResult('#selectL2R-ul').toString();
+function saveStaffOrgRoles(result) {
     var staffOrgId = $("#selectedStaffOrgId").val();
     var obj = { "roleIds": result, "staffOrgId": staffOrgId, "createBy": globalConfig.curStaffId };
     var url = serverPath + "staffs/" + globalConfig.curStaffId + "/staffOrgs/" + staffOrgId + "/staffRoles?t=" + App.timestamp();

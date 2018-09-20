@@ -39,7 +39,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 	        	var style = "";
 	        	var buttontitle = null;
 	        	if(curStaffOrgId == assignee){
-	        			fn = "findDetail()";
+	        			fn = "findDetail("+row.readId+",'"+row.readTypeUrl+"',"+row.bussId+")";
 	        	}else{
 	        		style = "cursor:not-allowed";
 	        		buttontitle = "当前任务属于您的另一个岗位【" + row.orgName + "】,请点击右上角个人信息切换岗位后处理";
@@ -66,8 +66,19 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
  	}]
 });
 
-function  findDetail  (receivedStaffOrgId,attrbs ) {
-	
+function  findDetail  (readId,url,bussId) {
+	var ajaxObj = {
+		    "url" :  serverPath + "recordToread/changeRecordToreadToHis",
+		    "type" : "post",
+		    "data":{"readId":readId}
+		};
+	var postData = ajaxObj.data;	
+		App.formAjaxJson(ajaxObj.url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			console.log(result);
+//			reloadPageDataTable("#workOrderHandleListTable",true);
+		}
+		top.showSubpageTab(url+"&bussId="+bussId,"demo页面");
 }
 
 /*

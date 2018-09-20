@@ -161,7 +161,11 @@ function initImportlineTable(){
 			{"data": "monthRentCost","className": "whiteSpaceNormal"},
 			{"data": "rentState","className": "whiteSpaceNormal"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal"},
-			{"data": "createdDate","className": "whiteSpaceNormal"}
+			{"data": "createdDate","className": "whiteSpaceNormal",
+				"render": function(data, type, full, meta) {
+		            return App.formatDateTime(data,"yyyy-mm-dd");
+		        }
+			}
 		]
 	});
 }

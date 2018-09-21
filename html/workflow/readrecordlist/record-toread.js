@@ -24,7 +24,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
         }
     },
     "columns": [
-    	{"data" : null,"title":"序号","className": "text-center","width":"5%",
+    	{"data" : null,"title":"序号","className": "text-center",
 			"render" : function(data, type, full, meta){
 				var start = App.getDatatablePaging("#workOrderHandleListTable").pageStart;
 				return start + meta.row + 1;
@@ -33,6 +33,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
         {
             "data": "readTitle",
             title: "主题",
+            "className": "whiteSpaceNormal",
             render: function(data, type, row, meta) {
             	var assignee = row.receivedStaffOrgId
 	        	var fn = "";
@@ -49,13 +50,13 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 	            return App.getDataTableLink(context);
             }
        	},
-        {"data": "readTypeName","title": "流程类型","className":"whiteSpaceNormal","width":"17%"},
-       {"data": "sendDate","title": "接收日期","className":"whiteSpaceNormal","width":"10%",
+        {"data": "readTypeName","title": "流程类型","className":"whiteSpaceNormal"},
+       {"data": "sendDate","title": "接收日期","className":"whiteSpaceNormal",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
 	        }
 	    },
-        {"data": "staffName","title": "发送人","className":"whiteSpaceNormal","width":"10%"}
+        {"data": "staffName","title": "发送人","className":"whiteSpaceNormal"}
     ],
 	"columnDefs": [{
    		"createdCell": function (td, cellData, rowData, row, col) {
@@ -76,7 +77,8 @@ function  findDetail  (readId,url,bussId) {
 		App.formAjaxJson(ajaxObj.url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			console.log(result);
-//			reloadPageDataTable("#workOrderHandleListTable",true);
+			var table = $('#workOrderHandleListTable').DataTable();
+			table.ajax.reload(null, false);
 		}
 		top.showSubpageTab(url+"&bussId="+bussId,"demo页面");
 }

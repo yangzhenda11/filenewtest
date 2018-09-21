@@ -62,6 +62,7 @@ function checkRoleType(){
 		}
 	});
 }
+
 /*
  * 获取商务助理配置内容
  */

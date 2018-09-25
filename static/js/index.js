@@ -24,6 +24,8 @@ var globalConfig = {
     curRole: [],
     /** 当前用户的权限集合 */
     permissions: [],
+    /** 当前用户的数据权限集合 */
+    dataPermission: null,
     /**当前岗位组织省份code */
    	provCode : null,
    	/**登录来源1:系统登录 0:云门户登录 */
@@ -62,6 +64,7 @@ $(document).ready(function() {
         globalConfig.curCompanyId = data.companyId;
         globalConfig.mainOrgFlag = data.mainOrgFlag;
         globalConfig.permissions = data.permissions;
+        globalConfig.dataPermission = data.dataPermission;
         globalConfig.orgPath = data.orgPath;
         globalConfig.loginName = data.loginName;
        	globalConfig.curRole = data.rolestrs.split(",");

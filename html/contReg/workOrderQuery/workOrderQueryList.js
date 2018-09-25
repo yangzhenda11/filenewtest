@@ -24,7 +24,6 @@ function getWorkOrderQueryTable(){
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
 	        "url": serverPath+'workOrderQuery/workOrderQueryList',
-	        "timeout" : 120000,
 	        "data": function(d) {//自定义传入参数
 	        	var searchParmData = getSearchParm();
 	        	d = $.extend(d,searchParmData);

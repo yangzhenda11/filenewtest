@@ -12,7 +12,7 @@ App.initAjaxSelect2("#readTypeCode",ajaxObj,"value","label","请选择流程类�
 /*
  * 初始化表格
  */
-App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
+App.initDataTables('#recordToreadHisListTable', "#searchBtn", {
 	ajax: {
         "type": "POST",
         "contentType":"application/json;charset=utf-8",
@@ -26,7 +26,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
     "columns": [
     	{"data" : null,"title":"序号","className": "text-center",
 			"render" : function(data, type, full, meta){
-				var start = App.getDatatablePaging("#workOrderHandleListTable").pageStart;
+				var start = App.getDatatablePaging("#recordToreadHisListTable").pageStart;
 				return start + meta.row + 1;
 		   	}
 		},
@@ -78,7 +78,7 @@ function searchWorkOrderHandle(retainPaging) {
 	var createDateBegin = $("#send_date_begin").val();
 	var createDateEnd = $("#send_date_end").val();
 	if(App.checkDate(createDateBegin,createDateEnd)){
-		var table = $('#workOrderHandleListTable').DataTable();
+		var table = $('#recordToreadHisListTable').DataTable();
 		if(retainPaging) {
 			table.ajax.reload(null, false);
 		} else {

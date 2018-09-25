@@ -12,7 +12,7 @@ App.initAjaxSelect2("#readTypeCode",ajaxObj,"value","label","请选择流程类�
 /*
  * 初始化表格
  */
-App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
+App.initDataTables('#recordToreadListTable', "#searchBtn", {
 	ajax: {
         "type": "POST",
         "contentType":"application/json;charset=utf-8",
@@ -26,7 +26,7 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
     "columns": [
     	{"data" : null,"title":"序号","className": "text-center",
 			"render" : function(data, type, full, meta){
-				var start = App.getDatatablePaging("#workOrderHandleListTable").pageStart;
+				var start = App.getDatatablePaging("#recordToreadListTable").pageStart;
 				return start + meta.row + 1;
 		   	}
 		},
@@ -39,12 +39,13 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
 	        	var fn = "";
 	        	var style = "";
 	        	var buttontitle = null;
+	        	var readIds=row.readId;
 	        	if(curStaffOrgId == assignee){
-	        			fn = "findDetail("+row.readId+",'"+row.readTypeUrl+"',"+row.bussId+")";
+	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"',"+row.bussId+")";
 	        	}else{
 	        		style = "cursor:not-allowed";
-	        		buttontitle = "当前任务属于您的另一个岗位【" + row.orgName + "】,请点击右上角个人信息切换岗位后处理";
-	        		fn = "layer.msg(\'"+buttontitle+"\')";
+	        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";
+	        		fn = "findOrgName("+assignee+")";//"layer.msg(\'"+buttontitle+"\')";
 	        	}
 	        	var context = [{"name": row.readTitle,"placement":"right","title": buttontitle,"style": style,"fn": fn}]; 	
 	            return App.getDataTableLink(context);
@@ -67,20 +68,38 @@ App.initDataTables('#workOrderHandleListTable', "#submitBtn", {
  	}]
 });
 
-function  findDetail  (readId,url,bussId) {
+function  findDetail  (readIds,url,bussId) {
+	//待阅数据删除
 	var ajaxObj = {
 		    "url" :  serverPath + "recordToread/changeRecordToreadToHis",
 		    "type" : "post",
-		    "data":{"readId":readId}
+		    "data":{"readId":readIds}
 		};
 	var postData = ajaxObj.data;	
 		App.formAjaxJson(ajaxObj.url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			console.log(result);
-			var table = $('#workOrderHandleListTable').DataTable();
-			table.ajax.reload(null, false);
+//			var table = $('#recordToreadListTable').DataTable();
+//			table.ajax.reload(null, false);
 		}
-		top.showSubpageTab(url+"&bussId="+bussId,"demo页面");
+		//直接覆盖原页面
+		App.changePresentUrl(url+"&bussId="+bussId);
+//		top.showSubpageTab(url+"&bussId="+bussId,"demo页面");
+		
+}
+//查询岗位名称
+function  findOrgName  (receivedStaffOrgId) {
+	var ajaxObj = {
+		    "url" :  serverPath + "recordToread/listReadOrgName",
+		    "type" : "post",
+		    "data":{"receivedStaffOrgId":receivedStaffOrgId}
+		};
+	var postData = ajaxObj.data;	
+		App.formAjaxJson(ajaxObj.url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			console.log(result);
+			layer.msg("当前任务属于您的另一个岗位【" + result.data[0].orgName + "】,请点击右上角个人信息切换岗位后处理")
+		}
 }
 
 /*
@@ -90,7 +109,7 @@ function searchWorkOrderHandle(retainPaging) {
 	var createDateBegin = $("#send_date_begin").val();
 	var createDateEnd = $("#send_date_end").val();
 	if(App.checkDate(createDateBegin,createDateEnd)){
-		var table = $('#workOrderHandleListTable').DataTable();
+		var table = $('#recordToreadListTable').DataTable();
 		if(retainPaging) {
 			table.ajax.reload(null, false);
 		} else {

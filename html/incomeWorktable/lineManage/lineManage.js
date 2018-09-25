@@ -253,39 +253,36 @@ function lineImport() {
 /*
  * 下载线路模板
  */
-function lineExport() {
-	var postData = {
-		templateCode : ""
-	};
-	App.formAjaxJson(serverPath + "contractOrderEditorController/downloadContractExcelTemplate", "get", postData, successCallback);
-	function successCallback(result) {
-		var key = result.data.fileStoreId;
-		if (key) {
-			var url = serverPath + 'fileload/downloadS3?key=' + key;
-			location.href = encodeURI(url);
-		} else {
-			showLayerErrorMsg("暂无该模板");
-		}
-	}
+function lineExport() {  
+		var postData = {
+			templateCode: "lineInfoExcel"
+		};
+		App.formAjaxJson(serverPath + "lineMangerController/lineExport", "get", postData, successCallback);
+		function successCallback(result) {
+			var key = result.data.fileStoreId;
+			if(key){
+				var url = serverPath + 'fileload/downloadS3?key='+key;
+	    		location.href = encodeURI(url);	
+			}else{
+				showLayerErrorMsg("暂无该模板");
+			}
+		} 
 }
 /*
  * 提交全部导入线路
  */
 function lineUpdate() {
-	var checkedList = [];
-	$("input[name='checkImportItem']:checked").each(function(k, v) {
-		checkedList.push($(v).val());
-	});
-
-	var postData = {
-		businessId : JSON.stringify(checkedList)
-	}
-	var url = serverPath + "lineMangerController/subLineInfoImportTmp";
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		layer.msg("提交成功");
-		searchImportline();
-	} 
+	layer.confirm("是否提交本公司下的所有线路信息?",
+		{
+			btn : [ '是', '否' ] //按钮
+		}, function() { 
+			var url = serverPath + "lineMangerController/subLineInfoImportTmp";
+			App.formAjaxJson(url, "post",null, successCallback);
+			function successCallback(result) {
+				layer.msg("提交成功");
+				searchImportline();
+			} 
+		})  
 }
 /*
  * 删除选择的线路
@@ -295,7 +292,10 @@ function lineDelete() {
 	$("input[name='checkImportItem']:checked").each(function(k, v) {
 		checkedList.push($(v).val());
 	});
-
+ 	if(checkedList.length==0){
+		layer.msg("至少选择一条记录");
+		return;
+	}
 	var postData = {
 		businessId : JSON.stringify(checkedList)
 	}

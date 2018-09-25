@@ -801,6 +801,7 @@
 			},
 			dataType: "json",
 			cache: !1,
+			timeout: 120000,
 			type: a.sServerMethod,
 			error: function(b, c) {
 				var d = r(a, null, "xhr", [a, null, a.jqXHR]); - 1 === h.inArray(!0, d) && ("parsererror" == c ? J(a, 0, "Invalid JSON response", 1) : 4 === b.readyState && J(a, 0, "Ajax error", 7));

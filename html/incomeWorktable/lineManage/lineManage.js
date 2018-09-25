@@ -2,7 +2,7 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
-var downLoadText = "";
+var importErrorText = "";
 
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
@@ -189,16 +189,16 @@ function lineImport(){
 			$("#commomModal").modal("hide");
 			searchImportline();
 		} else{
-			layer.alert(result.message,{icon:2});
-//			downloadText();
+			importErrorText = result.message;
+			layer.alert("必填项校验失败，请<a onclick='downloadErrorText()'>查看</a>并修改后重新上传！",{icon:2});
 		}
 	}
 	App.getFileImportModal(setting,callback);
 }
 
 // 导出生成文本
-function downloadText() {
-    var blob = new Blob([JSON.stringify(downLoadText)], { type: "text/plain;charset=utf-8" });
+function downloadErrorText() {
+    var blob = new Blob([JSON.stringify(importErrorText)], { type: "text/plain;charset=utf-8" });
     saveAs(blob, "导入错误信息.txt");
 }
 /*

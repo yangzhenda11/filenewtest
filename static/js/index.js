@@ -28,6 +28,8 @@ var globalConfig = {
     dataPermission: null,
     /**当前岗位组织省份code */
    	provCode : null,
+   	/**公司编码 */
+   	companyCode: null,
    	/**登录来源1:系统登录 0:云门户登录 */
    	loginSwitchSuccess : null,
    	/**是否属于本部：0不属于，1属于 */
@@ -67,6 +69,7 @@ $(document).ready(function() {
         globalConfig.dataPermission = data.dataPermission;
         globalConfig.orgPath = data.orgPath;
         globalConfig.loginName = data.loginName;
+        globalConfig.companyCode = data.companyCode;
        	globalConfig.curRole = data.rolestrs.split(",");
         if(data.loginName.indexOf("qc_zj") != -1 || data.loginName.indexOf("qc_gd") != -1){
         	ace_menus = [{

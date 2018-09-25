@@ -280,6 +280,10 @@ function searchMyContractSearch(){
  * 我的合同查询跟踪表格初始化
  */
 function initMyContractSearchTable(){
+	var isInitMyContractSearchTable = $.fn.dataTable.isDataTable("#myContractSearchTable");
+	if(!isInitMyContractSearchTable){
+		$("#myContractSearchTable").html("");
+	}
 	App.initDataTables('#myContractSearchTable', "#myContractSearchLoading", {
 		ajax: {
 			"type": "POST",
@@ -330,20 +334,48 @@ function myContractTableColumns(){
 						return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 					}
 				};
+			}else if(v.id == "signDate" || v.id == "expiryDate"){
+				var item = {
+					"data": v.id,
+					"title": v.data,
+					"render": function(data, type, full, meta){
+		            	return App.formatDateTime(data);
+					}
+				};
+			}else if(v.id == "contractType"){
+				var item = {
+					"data": v.id,
+					"title": v.data,
+					"render": function(data, type, full, meta){
+						var contractType = "其他"
+						if(data == 1){
+							contractType = "收入类";
+						}else if(data == 2){
+							contractType = "支出类";
+						};
+						return contractType;
+					}
+				};
 			}else if(v.id == "contractStatus"){
 				var item = {
 					"data": v.id,
 					"title": v.data,
 					"render": function(data, type, full, meta){
-						return ticketStateType[data.wcardStatus];
+						return ticketStateType[data];
 					}
 				};
-			}else if(v.id == "jumpLiness"){
+			}else if(v.id == "isFixed"){
 				var item = {
-					"data": null,
+					"data": v.id,
 					"title": v.data,
 					"render": function(data, type, full, meta){
-						return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
+						var isFixed = "未知"
+						if(data == 1){
+							isFixed = "是";
+						}else if(data == 2){
+							isFixed = "否";
+						};
+						return isFixed;
 					}
 				};
 			}else{
@@ -398,6 +430,23 @@ function jumpLineManageByContract(contractId){
 function jumpWorkOrderEdit(wcardId){
 //	var url = "/workOrderEdit/workOrderEdit.html?pageType=5&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
 //	top.showSubpageTab(url,"工单处理");
+}
+
+//我的合同查询选择查看更多
+function myContractInitselectLR() {
+	var options = {
+		modalId: "#commomModal",
+		data: contractTheadList
+	}
+	$.initSelectLRFn(options);
+}
+/*
+ * 点击确定回调的页面方法
+ */
+function returnSelectLRData(data) {
+	$("#commomModal").modal("hide");
+	contractTheadList = data;
+	initMyContractSearchTable();
 }
 //我的合同查询表格头
 var contractTheadList = [

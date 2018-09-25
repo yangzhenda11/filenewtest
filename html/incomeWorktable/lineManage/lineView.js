@@ -47,7 +47,6 @@ function searchLineInfor(){
 	if(isInit){
 		reloadPageDataTable("#lineInforTable");
 	}else{
-		$("#lineInforTable").html("");
 		initLineInforTable();
 	}
 }
@@ -56,6 +55,10 @@ function searchLineInfor(){
  * 表头为动态表头，第一次加载时需要去掉其中的内容
  */
 function initLineInforTable(){
+	var isInit = $.fn.dataTable.isDataTable("#lineInforTable");
+	if(!isInit){
+		$("#lineInforTable").html("");
+	}
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "GET",

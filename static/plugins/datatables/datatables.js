@@ -778,6 +778,7 @@
 			}
 			delete b["search"]
 			delete b["columns"]
+			
 			b = JSON.stringify(b);
 		}else{
 			var orderList = b.order;
@@ -788,6 +789,8 @@
 			delete b["search"]
 			delete b["columns"]
 		};
+		
+		console.log(b)
 		n = {
 			data: b,
 			success: function(b) {

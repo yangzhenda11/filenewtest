@@ -2,6 +2,8 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
+var downLoadText = "";
+
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	
@@ -188,9 +190,16 @@ function lineImport(){
 			searchImportline();
 		} else{
 			layer.alert(result.message,{icon:2});
+//			downloadText();
 		}
 	}
 	App.getFileImportModal(setting,callback);
+}
+
+// 导出生成文本
+function downloadText() {
+    var blob = new Blob([JSON.stringify(downLoadText)], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, "导入错误信息.txt");
 }
 /*
  * 下载线路模板

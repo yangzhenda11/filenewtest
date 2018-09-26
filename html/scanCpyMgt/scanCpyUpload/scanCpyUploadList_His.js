@@ -24,7 +24,7 @@ function convertFilePathFTP(){
 	$.ajax({
         url : url,
         type : "post",
-        data : {count:$("#count").val().trim()},
+        data : {count:$("#count").val().trim(),contractNumber:$("#contractNumber").val().trim()},
         global : false
     });
 }

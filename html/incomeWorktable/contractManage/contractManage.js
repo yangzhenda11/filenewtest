@@ -232,7 +232,7 @@ function initMyContractManagerTable(){
 	        	d.contractNumber = $("#contractNumber").val().trim();
 	        	d.customerName = $("#customerName").val().trim();
 	        	d.customerCode = $("#customerCode").val().trim();
-	        	d.contractStatus = $("#contractStatus").val().trim();
+	        	d.contractStatus = $("#contractType").val().trim();
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -294,8 +294,7 @@ function initMyContractSearchTable(){
 	        	d.contractNumber = $("#contractNumberSearch").val().trim();
 	        	d.customerName = $("#customerNameSearch").val().trim();
 	        	d.customerCode = $("#customerCodeSearch").val().trim();
-	        	d.contractStatus = $("#contractStatusSearch").val().trim();
-	        	d.partnerCode = $("#partnerCode").val().trim();
+	        	d.contractStatus = $("#contractTypeSearch").val().trim();
 	        	d.customerManagerName = $("#customerManagerName").val().trim();
 	        	d.signDateBegin = $("#signDateBegin").val();
 	        	d.signDateEnd = $("#signDateEnd").val();
@@ -340,20 +339,6 @@ function myContractTableColumns(){
 					"title": v.data,
 					"render": function(data, type, full, meta){
 		            	return App.formatDateTime(data);
-					}
-				};
-			}else if(v.id == "contractType"){
-				var item = {
-					"data": v.id,
-					"title": v.data,
-					"render": function(data, type, full, meta){
-						var contractType = "其他"
-						if(data == 1){
-							contractType = "收入类";
-						}else if(data == 2){
-							contractType = "支出类";
-						};
-						return contractType;
 					}
 				};
 			}else if(v.id == "contractStatus"){
@@ -456,17 +441,13 @@ var contractTheadList = [
 	{data:"集客客户编号",id:"customerCode",checked:true},
 	{data:"合作方编号",id:"partnerCode",checked:true},
 	{data:"含增值税合同金额",id:"contractValue",checked:true},
-	{data:"客户经理",id:"customerManagerName",checked:true},
+	{data:"客户经理名称",id:"customerManagerName",checked:true},
 	{data:"线路",id:"jumpLine",checked:true},
-	{data:"我方主体",id:"partnerCode"},
-	{data:"客户所属行业",id:"partnerA"},
-	{data:"客户所属公司",id:"managerOrgName"},
-	{data:"客户级别",id:"partnerA"},
+	{data:"我方主体",id:"partnerA"},
 	{data:"签订盖章日期",id:"signDate"},
 	{data:"合同终止日期",id:"expiryDate"},
 	{data:"合同类型",id:"contractType"},
 	{data:"合同状态",id:"contractStatus"},
 	{data:"是否固定金额",id:"isFixed"},
-	{data:"客户经理所属部门",id:"customerManagerName"},
-	{data:"客户经理编码",id:"customerCode"}
+	{data:"客户经理所属部门",id:"managerOrgName"}
 ];

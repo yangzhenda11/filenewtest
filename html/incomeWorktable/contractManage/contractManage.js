@@ -10,7 +10,21 @@ $(function(){
 		$("#myContractManagerList").show();
 	}else{
 		$("#myContractManagerList").remove();
-	}
+	};
+	//我的合同管理合同类型选择
+	$("#contractTypeModal").click(function(){
+		App.getCommonModal("contractType","#contractType","typeFullname","typeCode");
+	})
+	$("#contractType").on("change",function(){
+		$(this).data("exactSearch",false);
+	})
+	//我的合同管理合同类型选择
+	$("#contractTypeSearchModal").click(function(){
+		App.getCommonModal("contractType","#contractTypeSearch","typeFullname","typeCode");
+	})
+	$("#contractTypeSearch").on("change",function(){
+		$(this).data("exactSearch",false);
+	})
 })
 
 //获取工单类型字典
@@ -232,7 +246,11 @@ function initMyContractManagerTable(){
 	        	d.contractNumber = $("#contractNumber").val().trim();
 	        	d.customerName = $("#customerName").val().trim();
 	        	d.customerCode = $("#customerCode").val().trim();
-	        	d.contractStatus = $("#contractType").val().trim();
+	        	if($("#contractType").data("exactSearch")){
+					d.contractType = $("#contractType").data("typeCode");
+				}else{
+					d.contractStatus = $("#contractType").val().trim();
+				};
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -294,12 +312,16 @@ function initMyContractSearchTable(){
 	        	d.contractNumber = $("#contractNumberSearch").val().trim();
 	        	d.customerName = $("#customerNameSearch").val().trim();
 	        	d.customerCode = $("#customerCodeSearch").val().trim();
-	        	d.contractStatus = $("#contractTypeSearch").val().trim();
 	        	d.customerManagerName = $("#customerManagerName").val().trim();
 	        	d.signDateBegin = $("#signDateBegin").val();
 	        	d.signDateEnd = $("#signDateEnd").val();
 	        	d.expiryDateBegin = $("#expiryDateBegin").val();
 	        	d.expiryDateEnd = $("#expiryDateEnd").val();
+	        	if($("#contractTypeSearch").data("exactSearch")){
+					d.contractType = $("#contractTypeSearch").data("typeCode");
+				}else{
+					d.contractStatus = $("#contractTypeSearch").val().trim();
+				};
 	           	return JSON.stringify(d);
 	        }
 		},

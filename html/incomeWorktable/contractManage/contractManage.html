@@ -20,6 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
@@ -141,9 +142,10 @@
 										</div>
 									</div>
 	                                <div class="col-sm-4">
-										<div class="input-group">
-											<span class="input-group-addon">合同类型</span>
-											<input type="text" id="contractType" name="contractType" class="form-control" maxlength="50" />
+	                                	<div class="input-group">
+											<span class="input-group-addon searchLableText">合同类型</span>
+											<input id="contractType" name="contractType" type="text" class="form-control" maxlength="50" />
+											<span class="input-group-addon custorPoint" id="contractTypeModal" ><i class="iconfont icon-search1"></i></span>
 										</div>
 									</div>
 								</div>
@@ -214,6 +216,7 @@
 										<div class="input-group">
 											<span class="input-group-addon">合同类型</span>
 											<input type="text" id="contractTypeSearch" class="form-control" maxlength="50" />
+											<span class="input-group-addon custorPoint" id="contractTypeSearchModal" ><i class="iconfont icon-search1"></i></span>
 										</div>
 									</div>
 	                                <div class="col-sm-4">
@@ -304,6 +307,7 @@
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/jQueryliestxz/js/list-script.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="contractManage.js" type="text/javascript" charset="utf-8"></script>
 	</body>

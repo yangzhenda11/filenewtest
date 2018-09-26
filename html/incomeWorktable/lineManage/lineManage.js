@@ -75,27 +75,14 @@ function initLineInforTable() {
 			"url" : serverPath + 'lineMangerController/listLineInfo',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) {
-				var searchParmData = getSearchParm();
-				d = $.extend(d, searchParmData);
+				d.isRelateContract = $("#lineInfor input[name='relationType']:checked").val();
+				d.businessId = $("#searchInput").val().trim();
 				return JSON.stringify(d);
 			}
 		},
 		"columns" : lineInforTableColumns()
 	});
 }
-
-/*
- * 获取查询参数
- */
-function getSearchParm() {
-	var searchData = {
-		isRelateContract : $("#lineInfor input[name='relationType']:checked").val(),
-
-		businessId : $("#searchInput").val().trim()
-	};
-	return searchData;
-}
-
 
 function lineInforTableColumns() {
 	var theadList = $("#lineInfor input[name='relationType']:checked").val() == 1 ? relationContractTheadList : notRelationContractTheadList;
@@ -111,12 +98,20 @@ function lineInforTableColumns() {
 	];
 	$.each(theadList, function(k, v) {
 		if (v.checked == true) {
-			if (v.data == "mon") {
+			if (v.id == "onceCost" || v.id == "monthRentCost") {
 				var item = {
 					"data" : v.id,
 					"title" : v.data,
 					"render" : function(data, type, full, meta) {
 						return App.unctionToThousands(data);
+					}
+				};
+			} else if (v.id == "finishTime" || v.id == "rentingTime" || v.id == "stopRentingTime" || v.id == "createdDate") {
+				var item = {
+					"data" : v.id,
+					"title" : v.data,
+					"render" : function(data, type, full, meta) {
+						return App.formatDateTime(data);
 					}
 				};
 			} else {
@@ -207,7 +202,10 @@ function initImportlineTable() {
 			},
 			{
 				"data" : "monthRentCost",
-				"className" : "whiteSpaceNormal"
+				"className" : "whiteSpaceNormal",
+				"render" : function(data, type, full, meta) {
+					return App.unctionToThousands(data);
+				}
 			},
 			{
 				"data" : "rentState",
@@ -246,7 +244,7 @@ function lineImport() {
 			searchImportline();
 		} else{
 			importErrorText = result.message;
-			layer.alert("必填项校验失败，请<a onclick='downloadErrorText()'>查看</a>并修改后重新上传！",{icon:2});
+			layer.alert("必填项校验失败，请   <a onclick='downloadErrorText()'>查看</a>  并修改后重新上传！",{icon:2});
 		}
 	}
 	App.getFileImportModal(setting, callback);
@@ -254,8 +252,8 @@ function lineImport() {
 
 // 导出生成文本
 function downloadErrorText() {
-    var blob = new Blob([JSON.stringify(importErrorText)], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, "导入错误信息.txt");
+    var blob = new Blob([importErrorText], { type: "text/plain;charset=utf-8" });
+    saveAs(blob, "线路导入错误信息.txt");
 }
 /*
  * 下载线路模板

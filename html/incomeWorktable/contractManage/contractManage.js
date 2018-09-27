@@ -360,7 +360,7 @@ function myContractTableColumns(){
 					"data": v.id,
 					"title": v.data,
 					"render": function(data, type, full, meta){
-		            	return App.formatDateTime(data);
+		            	return App.formatDateTime(data,"yyyy-MM-dd");
 					}
 				};
 			}else if(v.id == "contractStatus"){

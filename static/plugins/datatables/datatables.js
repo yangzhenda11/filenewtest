@@ -789,8 +789,6 @@
 			delete b["search"]
 			delete b["columns"]
 		};
-		
-		console.log(b)
 		n = {
 			data: b,
 			success: function(b) {

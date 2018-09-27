@@ -2,6 +2,9 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
+$(function(){
+	getFlowKyeList();
+})
 /*
  * 流程类型下拉框处理
  */

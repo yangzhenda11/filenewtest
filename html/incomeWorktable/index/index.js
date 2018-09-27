@@ -91,15 +91,28 @@ function getAssistantList(){
  * 设置初始稽核范围
  */
 function setAuditScope(){
-	App.formAjaxJson(serverPath + 'contractType/listExecuteDept',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
+	var url = serverPath + "auditManager/getAuditRangeById";
+	var postData = {
+		provCode: config.provCode,
+		companyCode: config.companyCode
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result){
 		var data = result.data;
 		if(data.length > 0){
-			var orgName = data[0].orgName;
-			var orgId = data[0].orgId;
-			$("#scope").text(orgName);
-			$("#scope").attr("title",orgName);
-			top.globalConfig.auditScope = orgId;
+			var dataPermission = config.dataPermission;
+			var companyName = data[0].companyName;
+			var provName = data[0].provName;
+			if(dataPermission == 3){
+				$("#scope").text(provName);
+				$("#scope").attr("title",provName);
+				$("#changeScope").show();
+			}else{
+				$("#scope").text(companyName);
+				$("#scope").attr("title",companyName);
+				$("#changeScope").remove();
+			}
+			top.globalConfig.auditScope = companyCode;
 		}
 	}
 }
@@ -120,7 +133,7 @@ function initSopeChooseTree() {
     var treeSetting = {
 		async: {
 			enable: true,
-			url: serverPath + "contractType/listExecuteDept",
+			url: serverPath + "contractType/listCompany",
 			type: "post",
 			dataType: 'json',
 			dataFilter: orgsfilter,
@@ -158,7 +171,7 @@ function initSopeChooseTree() {
 			return null;
 		}
 	};
-	App.formAjaxJson(serverPath + 'contractType/listExecuteDept',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
+	App.formAjaxJson(serverPath + 'contractType/listCompany',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
 	function successCallback(result){
 		var data = result.data;
     	if (data != "") {
@@ -180,11 +193,7 @@ function initSopeChooseTree() {
 //按钮选择
 function chooseScopeTree(){
 	var treeNode = scopeTree.getSelectedNodes()[0];
-	if(treeNode == undefined || treeNode.orgType != 2){
-		layer.msg("请选择部门")
-	}else{
 		setScopeChecked(treeNode);
-	}
 }
 //按钮删除
 function deleteCheckedScope(){

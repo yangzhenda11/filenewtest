@@ -55,7 +55,7 @@ function initPerformContractTable(){
  * 跳转线路信息
  */
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineManage.html?id=123&relationType=1&returnbtn=true";
+	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=1&returnbtn=true";
 	window.location.href = url;
 }
 /*

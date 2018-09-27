@@ -80,6 +80,60 @@
 .workItemDom .workItem p {
   margin: 0;
 }
+#scope {
+  margin: 0;
+  display: inline-block;
+  width: 106px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  top: 4px;
+}
+#changeScope {
+  float: right;
+  padding: 4px 8px;
+  margin-right: 16px;
+}
+.scope-left,
+.scope-rigth,
+.scope-center {
+  float: left;
+}
+.scope-left,
+.scope-rigth {
+  width: 46%;
+  padding: 0 10px;
+}
+.scope-center {
+  width: 8%;
+  padding-top: 100px;
+}
+.scope-center button {
+  margin-bottom: 20px;
+}
+.scope-selectCon {
+  height: 280px;
+  overflow: auto;
+  border: 1px solid #ceadad;
+  border-radius: 3px;
+  background: #fff;
+  padding: 10px 0;
+}
+.scope-selectCon .scopeItem {
+  display: block;
+  text-align: left;
+  padding-left: 16px;
+  font-size: 12px;
+  line-height: 26px;
+}
+.scope-selectCon .scopeItem:hover {
+  background: #c1c7f5;
+  cursor: pointer;
+}
+.scope-selectCon .scopeItem.selected {
+  background: rgba(0, 0, 255, 0.25);
+}
 .incomeOverviewDom,
 .incomeAnalysisDom {
   height: 300px;

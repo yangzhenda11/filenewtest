@@ -4,8 +4,8 @@ var serverPath = config.serverPath;
 
 /*
  * 该dom中可接受的配置参数
- * id:业务id暂定
- * relationType：是否确定是否关联合同 1：已关联  2：未关联
+ * contractId:合同id，根据合同id查询合同下的线路
+ * relationType：是否确定是否关联合同 1：已关联  0：未关联
  * returnbtn：是否显示返回按钮，默认不传值为false
  */
 var parm = App.getPresentParm();
@@ -47,7 +47,6 @@ function searchLineInfor(){
 	if(isInit){
 		reloadPageDataTable("#lineInforTable");
 	}else{
-		$("#lineInforTable").html("");
 		initLineInforTable();
 	}
 }
@@ -56,6 +55,10 @@ function searchLineInfor(){
  * 表头为动态表头，第一次加载时需要去掉其中的内容
  */
 function initLineInforTable(){
+	var isInit = $.fn.dataTable.isDataTable("#lineInforTable");
+	if(!isInit){
+		$("#lineInforTable").html("");
+	}
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "GET",
@@ -80,7 +83,7 @@ function lineInforTableColumns(){
 	];
 	$.each(theadList, function(k,v) {
 		if(v.checked == true){
-			if(v.data == "mon"){
+			if(v.id == "mon"){
 				var item = {
 					"data": v.id,
 					"title": v.data,

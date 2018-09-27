@@ -242,7 +242,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息
  */
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineManage.html?id=123&relationType=0&returnbtn=false&loaddata=true";
+	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=0&returnbtn=false&loaddata=true";
 	top.showSubpageTab(url,"线路信息");
 }
 /*

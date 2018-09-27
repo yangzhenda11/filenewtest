@@ -403,7 +403,9 @@ function staffOrgRoleManage(staffOrgId, orgName) {
 function returnSelectLRData(data) {
 	var result = [];
 	$.each(data, function(k,v) {
-		result.push(v.id);
+		if(v.checked == true){
+			result.push(v.id);
+		}
 	});
 	saveStaffOrgRoles(result.join(","));
 }

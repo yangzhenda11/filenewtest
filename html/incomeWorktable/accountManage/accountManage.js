@@ -92,7 +92,6 @@ function emphasisOfCustomer(managerStaffOrgId,editFlag){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
 			layer.msg("已"+massage+"重点关注");
 			reloadPageDataTable("#customerListTable",true);
 			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
@@ -164,7 +163,7 @@ function deleteEmphasisOfEmp(managerStaffOrgId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
+			layer.msg("已取消重点关注");
 			reloadPageDataTable("#emphasisCustomerTable",true);
 			var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
 			if(isInitCustomerListTable){

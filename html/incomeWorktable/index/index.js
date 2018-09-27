@@ -11,11 +11,9 @@ var serverPath = config.serverPath;
  * 91219：商务经理
  */
 var roleType = "";
-
 $(function(){
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
-	console.log(roleType)
 	$("#loginUserName").text(config.curStaffName);
 	if(roleType == 91216 || roleType == 91217 || roleType == 91219){
 		if(roleType == 91216){
@@ -31,7 +29,6 @@ $(function(){
 		$("#roleName").text("稽核管理");
 		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
 		$("#auditCol").removeClass("hidden");
-		setAuditScope();
 	};
 	$(".page-content-worktable").show();
 	//获取商务助理配置内容
@@ -57,12 +54,11 @@ function checkRoleType(){
 	var permArr = [91216,91217,91218,91219];
 	$.each(roleArr, function(k,v) {
 		if(isInArray(permArr,v)){
-			roleType = v;
+			roleType = 91217;
 			return false;
 		}
 	});
 }
-
 /*
  * 获取商务助理配置内容
  */
@@ -86,154 +82,6 @@ function getAssistantList(){
 		$("#workItemDom").html(html);
 	}
 }
-/***************选择稽核范围开始***********************/
-/*
- * 设置初始稽核范围
- */
-function setAuditScope(){
-	App.formAjaxJson(serverPath + 'contractType/listExecuteDept',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
-	function successCallback(result){
-		var data = result.data;
-		if(data.length > 0){
-			var orgName = data[0].orgName;
-			var orgId = data[0].orgId;
-			$("#scope").text(orgName);
-			$("#scope").attr("title",orgName);
-			top.globalConfig.auditScope = orgId;
-		}
-	}
-}
-/*
- * 选择稽核范围
- */
-function changeScope(){
-	$("#scopeModal").modal("show");
-	if(!scopeTree){
-		initSopeChooseTree();
-	}
-}
-var scopeTree;
-/*
- * 生成稽核部门树————ztree
- */
-function initSopeChooseTree() {
-    var treeSetting = {
-		async: {
-			enable: true,
-			url: serverPath + "contractType/listExecuteDept",
-			type: "post",
-			dataType: 'json',
-			dataFilter: orgsfilter,
-			autoParam: ["orgId=orgId"]
-		},
-		data: {
-			simpleData: {
-				enable: true,
-				idKey: "orgId",
-				pIdKey: "parentId"
-			},
-			key: {
-				name: "orgName"
-			}
-		},
-		view: {
-			selectedMulti: false,
-//			dblClickExpand: false
-		},
-		callback: {
-			onAsyncError: onAsyncError,
-			onDblClick: setInputInfo
-		}
-	};
-	function orgsfilter(treeId, parentNode, responseData) {
-		if(responseData.status == 1){
-			var data = responseData.data;
-			if(data){
-	        	return data;
-			}else{
-				return null;
-			}
-		}else{
-			layer.msg(responseData.message);
-			return null;
-		}
-	};
-	App.formAjaxJson(serverPath + 'contractType/listExecuteDept',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
-	function successCallback(result){
-		var data = result.data;
-    	if (data != "") {
-        	if(scopeTree){
-				scopeTree.destroy();
-			};
-			scopeTree = $.fn.zTree.init($("#scopeTree"), treeSetting, data);
-			var nodes = scopeTree.getNodes();
-            scopeTree.expandNode(nodes[0]);
-        } else {
-            layer.msg("暂无数据，请稍后重试");
-        }
-	}
-    //双击事件 
-    function setInputInfo(event, treeId, treeNode) {
-        setScopeChecked(treeNode);
-    }
-}
-//按钮选择
-function chooseScopeTree(){
-	var treeNode = scopeTree.getSelectedNodes()[0];
-	if(treeNode == undefined || treeNode.orgType != 2){
-		layer.msg("请选择部门")
-	}else{
-		setScopeChecked(treeNode);
-	}
-}
-//按钮删除
-function deleteCheckedScope(){
-	if($("#scopeChecked .scopeItem.selected").length == 0){
-		layer.msg("请选择已选内容进行移除");
-	}else{
-		$("#scopeChecked").html("");
-	}
-}
-//右侧赋值
-function setScopeChecked(treeNode){
-	var name = treeNode.orgName;
-	var orgId = treeNode.orgId;
-	var html = '<div class="scopeItem" data-id='+orgId+'>'+name+'</div>';
-	$("#scopeChecked").html(html);
-}
-$("#scopeChecked").on("click",".scopeItem",function(){
-	if($(this).hasClass("selected")){
-		$(this).removeClass("selected");
-	}else{
-		$(this).addClass("selected");
-	}
-})
-/*
- * 选择稽核范围确定按钮点击
- */
-function setScope(){
-	$("#scopeModal").modal("hide");
-	if($("#scopeChecked .scopeItem").length > 0){
-		var checkedText = $("#scopeChecked .scopeItem").text();
-		var checkedId = $("#scopeChecked .scopeItem").data("id");
-		$("#scope").text(checkedText);
-		$("#scope").attr("title",checkedText);
-		top.globalConfig.auditScope = checkedId;
-	}
-}
-/***************选择稽核范围结束***********************/
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

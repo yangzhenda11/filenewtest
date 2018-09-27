@@ -7,7 +7,7 @@
 <!-- BEGIN HEAD -->
 	<head>
 		<meta charset="UTF-8">
-		<title>履行中合同管理</title>
+		<title>合作方管理</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -26,48 +26,77 @@
 	<body>
 		<div class="page-content">
 			<div class="work-list" style="overflow: hidden;">
-				<div class="form-fieldset" id="performContract">
+				<div class="form-fieldset" id="customerList">
 					<div class="form-fieldset-title">
-						<span>履行中的合同信息</span>
+						<span>我的合作方</span>
 						<div class="form-fieldset-tools">
-							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
+							<a class="form-collapse"><i class="fa fa-angle-down"><!-- 如需要默认展开dowm改成up -->
+							</i></a>
 						</div>
 					</div>
-					<div class="form-fieldset-body">
+					<div class="form-fieldset-body" style="display: none;"><!-- 如需要默认展开dispaly去掉 -->
 						<div class="row page-search">
 							<div class="col-sm-3">
-								<input type="text" class="form-control" maxlength="50" placeholder="查询合同名称/合同编号/客户名称">
+								<input type="text" class="form-control" id="partnerCodeOrName" maxlength="50" placeholder="查询合作方编号/合作方名称">
 							</div>
 							<div class="input-group">
-								<button type="button" id="performContractLoading" class="btn red" data-loading-text="加载中.." onclick="searchPerformContract();"><i class="iconfont icon-search"></i>查询</button>
+								<button type="button" id="customerLoading" class="btn red" data-loading-text="加载中.." onclick="searchCustomer();"><i class="iconfont icon-search"></i>查询</button>
 							</div>
-						</div>
-						<table id="performContractTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+						</div>						
+						<table id="customerListTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 	                    	<thead>
 								<tr>
 									<th>序号</th>
-									<th>合同名称</th>
-									<th>合同编号</th>
-									<th>客户名称</th>
-									<th>集客客户编号</th>
 									<th>合作方编号</th>
-									<th>含增值税合同金额</th>
-									<th>线路</th>
+									<th>合作方名称</th>
+									<th>履行中合同</th>
+									<th>添加重点关注</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td colspan="8">请点击查询按钮加载数据</td>
+									<td colspan="7">请点击查询按钮加载数据</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
-				
+				<div class="form-fieldset" id="emphasisCustomer">
+					<div class="form-fieldset-title">
+						<span>我重点关注的合作方</span>
+						<div class="form-fieldset-tools">
+							<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+						</div>
+					</div>
+					<div class="form-fieldset-body" style="display: none;">
+						<div class="row page-search">
+							<div class="col-sm-3">
+								<input type="text" class="form-control" maxlength="50" id="partnerCodeOrNameFocus" placeholder="查询合作方编号/合作方名称">
+							</div>
+							<div class="input-group">
+								<button type="button" id="emphasisCustomerLoading" class="btn red" data-loading-text="加载中.." onclick="searchEmphasisCustomer();"><i class="iconfont icon-search"></i>查询</button>
+							</div>
+						</div>
+						<table id="emphasisCustomerTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+	                    	<thead>
+								<tr>
+									<th>序号</th>
+									<th>合作方编号</th>
+									<th>合作方名称</th>
+									<th>履行中合同</th>
+									<th>取消重点关注</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="7">请点击查询按钮加载数据</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
-		<!--模态框-->
-		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
 			<script src="../../../static/plugins/html5shiv.min.js"></script>
 			<script src="../../../static/plugins/respond.min.js"></script>
@@ -88,6 +117,6 @@
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../demoData.js" type="text/javascript" charset="utf-8"></script>
-		<script src="performContract.js" type="text/javascript" charset="utf-8"></script>
+		<script src="partnersManage.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

@@ -100,7 +100,7 @@
 					<div class="col-sm-4">
 						<button class="btn red" onclick="fileImport()">文件导入</button>
 					</div>
-					<button class="btn red" onclick="downloadText(testDemo)">下载生成文件</button>
+
 					<div class="form-fieldset" style="clear: both;">
 						<div class="form-fieldset-title">
 							<span><i class="iconfont icon-layers"></i> demo1</span>
@@ -170,16 +170,8 @@
 		<script src="../../../static/plugins/bootstrap-fileinput/fileinput.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/ajaxfileupload/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../plugins/FileSaver.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var testDemo = "测试测试测试";
-			// 导出生成文本
-		    function downloadText(data) {
-		        var blob = new Blob([JSON.stringify(data)], { type: "text/plain;charset=utf-8" });
-		        saveAs(blob, "hello.txt");
-		    }
-			
 			function initselectLR() {
 				var options = {
 					modalId: "#commomModal",

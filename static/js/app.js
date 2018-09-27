@@ -969,7 +969,6 @@ var App = function() {
 	            //},
 				"buttons": [], //'pdf','copy', 'excel', 'colvis'
 				"drawCallback": function() {
-					setTheadStyle();
 					//若有气泡提示气泡
 					$("[data-toggle='tooltip']").tooltip();
 					if(options.drawCallbackFn != undefined){
@@ -979,29 +978,10 @@ var App = function() {
 						$(el+"_wrapper").parent().height("");
 					};
 				},
-				"initComplete": function(settings, json) {
-				    setTheadStyle();
-			 	},
 				"ajax":{
 					beforSend:App.startLoading(btn)
 				}
 			}, options);
-			function setTheadStyle(){
-				var isExist = false;
-				var columnsClass;
-				var columns = options.columns;
-				for(var i = 0; i < columns.length; i++){
-					columnsClass = columns[i].className;
-					if(columnsClass && columnsClass.indexOf("whiteSpaceNormal") != -1){
-						isExist = true;
-						break;
-					}
-				};
-				if(isExist){
-					$(el+"_wrapper").find(".dataTables_scrollHeadInner").css("cssText", "width:100% !important;")
-					$(el+"_wrapper").find(".dataTables_scrollHeadInner table").css("cssText", "width:100% !important;")
-				};
-			}
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
 		  	}).on('xhr.dt', function ( e, settings, json, xhr ) {

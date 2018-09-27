@@ -1,6 +1,7 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+var curStaffOrgId = config.curStaffOrgId;
 //区域展开时判断是否重新加载的标志位
 var reloadCustomerListTable = false;
 var reloadEmphasisCustomerTable = false;
@@ -22,7 +23,7 @@ function formFieldsetSlideFn(id){
 }
 
 /*
- * 我管理的客户经理点击查询事件
+ * 合作方点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
  */
 function searchCustomer(){
@@ -34,16 +35,16 @@ function searchCustomer(){
 	}
 }
 /*
- * 我管理的客户经理表格初始化
+ * 合作方管理表格初始化
  */
 function initCustomerListTable(){
 	App.initDataTables('#customerListTable', "#customerLoading", {
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'customerManager/listManagementCustomer',
+	        "url": serverPath+'partnersManage/searchPartnersManage',
 	        "data": function(d) {
-	        	d.managerStaffName = $("#customerInput").val().trim();
+	        	d.partnerCodeOrName = $("#partnerCodeOrName").val().trim();
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -54,57 +55,75 @@ function initCustomerListTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "managerStaffName","className": "whiteSpaceNormal"},
-			{"data": "orgName","className": "whiteSpaceNormal"},
-			{"data": "phone","className": "whiteSpaceNormal"},
-			{"data": "email","className": "whiteSpaceNormal"},
+			{"data": "partyCode","className": "whiteSpaceNormal"},
+			{"data": "partyName","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.partyId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
 					var editFlag = "add";
-					if(full.isValid == 1){
-						editFlag = "delete";
-					};
-					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
+//					if(full.isValid == 1){
+//						editFlag = "delete";
+//					};
+//					return "<img onclick='emphasisOfCustomer()' src='/static/img/"+editFlag+".png' />";
+					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
 		]
 	});
 }
 /*
- * 我管理的客户经理添加和取消重点关注
+ * 添加和取消重点关注
  * 参数：editFlag  "add":增加 | "delete":取消
  */
-function emphasisOfCustomer(managerStaffOrgId,editFlag){
-	var url = serverPath + "customerManager/saveFocusCustomerManager";
-	var massage = "添加";
-	if(editFlag == "delete"){
-		url = serverPath + "customerManager/delFocusCustomerManager";
-		massage = "取消";
-	};
-	layer.confirm("确定"+massage+"该客户经理的重点关注?", {icon: 0}, function() {
+function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
+	var url = serverPath + "partnersManage/searchReadType";
     	var postData = {
-			managerStaffOrgId: managerStaffOrgId
+    			partyId: partyId,
+    			addStaffOrgId:curStaffOrgId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			console.log(result);
-			layer.msg("已"+massage+"重点关注");
-			reloadPageDataTable("#customerListTable",true);
-			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-			if(isInitEmphasisCustomerTable){
-				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-					reloadEmphasisCustomerTable = true;
-				}else{
-					reloadPageDataTable("#emphasisCustomerTable",true);
-				};
+			if(result.data.length>=1&&editFlag != "delete"){
+				layer.msg("已关注，无需重新关注");
+				return ;
 			}
+				var url = serverPath + "partnersManage/savePartnersFocusManage";
+				var massage = "添加";
+				var postData = {
+		    			partyId: partyId,
+		    			addStaffOrgId:curStaffOrgId
+				};
+				if(editFlag == "delete"){
+					postData = {
+			    			partyId: partyId,
+			    			addStaffOrgId:curStaffOrgId,
+			    			focusId:focusId
+					};
+					url = serverPath + "partnersManage/updatePartnersFocusManage";
+					massage = "取消";
+				};
+				layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
+					App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+					function successCallback(result) {
+						console.log(result);
+						layer.msg("已"+massage+"重点关注");
+						reloadPageDataTable("#customerListTable",true);
+						var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+						if(isInitEmphasisCustomerTable){
+							if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+								reloadEmphasisCustomerTable = true;
+							}else{
+								reloadPageDataTable("#emphasisCustomerTable",true);
+							};
+						}
+					}
+			   	});
 		}
-   	});
 }
 
 /*
@@ -115,16 +134,16 @@ function searchEmphasisCustomer(){
 	reloadPageDataTable("#emphasisCustomerTable");
 }
 /*
- * 我重点关注的客户经理表格初始化
+ * 关注的合作方表格初始化
  */
 function initEmphasisCustomerTable(){
 	App.initDataTables('#emphasisCustomerTable', "#emphasisCustomerLoading", {
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'customerManager/listFocusCustomerManager',
+	        "url": serverPath+'partnersManage/searchPartnersManageFocus',
 	        "data": function(d) {
-	        	d.managerStaffName = $("#emphasisCustomerInput").val().trim();
+	        	d.partnerCodeOrName = $("#partnerCodeOrNameFocus").val().trim();
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -135,49 +154,22 @@ function initEmphasisCustomerTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "managerStaffName","className": "whiteSpaceNormal"},
-			{"data": "orgName","className": "whiteSpaceNormal"},
-			{"data": "phone","className": "whiteSpaceNormal"},
-			{"data": "email","className": "whiteSpaceNormal"},
+			{"data": "partyCode","className": "whiteSpaceNormal"},
+			{"data": "partyName","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.partyId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='deleteEmphasisOfEmp(\""+data.managerStaffOrgId+"\")' src='/static/img/delete.png' />";
+					var editFlag="delete";
+					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
 		]
 	});
 }
-
-/*
- * 我重点关注的客户经理取消重点关注
- */
-function deleteEmphasisOfEmp(managerStaffOrgId){
-	layer.confirm('确定取消该客户经理的重点关注?', {icon: 0}, function() {
-    	var url = serverPath + "customerManager/delFocusCustomerManager";
-		var postData = {
-			managerStaffOrgId: managerStaffOrgId
-		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
-			console.log(result);
-			reloadPageDataTable("#emphasisCustomerTable",true);
-			var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-			if(isInitCustomerListTable){
-				if($("#customerList .form-fieldset-body").is(':hidden')){
-					reloadCustomerListTable = true;
-				}else{
-					reloadPageDataTable("#customerListTable",true);
-				};
-			}
-		}
-   	});
-}
-
 /*
  * 页面内表格初始化完成之后查询事件
  */
@@ -193,7 +185,7 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转合同信息
  */
-function jumpContractManage(data){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
+function jumpContractManage(partyId){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123&partyId="+partyId;
 	top.showSubpageTab(url,"履行中合同");
 }

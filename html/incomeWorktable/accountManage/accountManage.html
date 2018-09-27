@@ -18,12 +18,14 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 	</head>
 	<body>
 		<div class="page-content">
-			<div class="work-list">
+			<div class="work-list" style="overflow: hidden;">
 				<div class="form-fieldset" id="customerList">
 					<div class="form-fieldset-title">
 						<span>我管理的客户经理</span>
@@ -85,7 +87,7 @@
 									<th>联系电话</th>
 									<th>邮箱地址</th>
 									<th>合同清单</th>
-									<th>取消重点关注</th>
+									<th>删除重点关注</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -113,9 +115,11 @@
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../demoData.js" type="text/javascript" charset="utf-8"></script>
 		<script src="accountManage.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

@@ -2724,8 +2724,8 @@ th > .ui-radio.ui-radio-single, td > .ui-radio.ui-radio-single {
 .ui-checkbox > input:disabled ~ span:after {
   border-color: #888888; }
 .form-inline .ui-checkbox {
-  margin-left: 0;
-  margin-right: 0; }
+  margin-left: 15px;
+  margin-right: 15px; }
 th > .ui-checkbox.ui-checkbox-single, td > .ui-checkbox.ui-checkbox-single {
   right: -5px; }
 

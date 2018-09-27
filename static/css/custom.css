@@ -108,17 +108,6 @@ button:focus{outline: none !important;}
 /*支撑渠道-结束 */
 
 /* 左右选择样式-开始 */
-.selectLR-left,.selectLR-right,.center-box{
-	float: left;
-}
-.selectLR-left,.selectLR-right{
-	width: 45%;
-	padding: 0 10px;
-}
-.center-box{
-	width: 10%;
-	padding-top: 50px;
-}
 .list-body .selectCon{
 	height: 280px;
 	overflow: auto;
@@ -698,7 +687,6 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
     top: 2px;
 }
 /*二阶段form-fieldset页样式*/
-.work-list{overflow: hidden;}
 .work-list .form-fieldset{
 	margin-bottom: 8px;
 }
@@ -772,10 +760,9 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 	padding: 0 4px !important;
 }
 .tableImgCon img{
-	width: 20px;
+	width: 24px;
 	cursor: pointer;
 }
-
 /*合同修改*/
 .form-fieldset-title{
 	font-size: 14px;

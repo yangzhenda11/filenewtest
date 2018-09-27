@@ -20,6 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap-fileinput/fileinput.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
 		<link rel="stylesheet" type="text/css" href="../css/worktableBase.css"/>
@@ -45,8 +46,6 @@
             				<div class="row auditDom">
             					<div class="auditItem">
             						<label class='ui-radio'><input type='radio' name='jiheRadio' checked="checked"><span></span></label>按地域：
-            						<p id="scope" title=""></p>
-            						<button id="changeScope" onclick="changeScope();" class="btn red">更改</button>
             					</div>
 								<div class="auditItem">
             						<label class='ui-radio'><input type='radio' name='jiheRadio' disabled="disabled"><span></span></label>按客户：
@@ -277,37 +276,6 @@
 		</div>
 		<!--modal-->
 		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
-		<!--选择稽核范围modal-->
-		<div class="modal fade" id="scopeModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-			<div class="modal-dialog" role="document" style="width: 64%;">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="modal-title">按区域确定稽核范围</h4>
-	                </div>
-	                <div class="modal-body">
-	                	<div class="scope-left">
-	                		<p>稽核范围：</p>
-		                	<div class="scope-selectCon">
-	                			<ul id="scopeTree" class="ztree"></ul>
-		                	</div>
-	                	</div>
-	                	<div class="text-center scope-center">
-	                		<button type="button" class="btn btn-danger btn-outline btn-block" onclick="chooseScopeTree()">></button>
-	                		<button type="button" class="btn btn-danger btn-outline btn-block" onclick="deleteCheckedScope()"><</button>
-	                	</div>
-	                	<div class="scope-rigth">
-	                		<p>已选地区：</p>
-	                		<div class="scope-selectCon" id="scopeChecked"></div>
-	                	</div>
-	                </div>
-	                <div class="modal-footer">
-	                    <button type="button" onclick="setScope()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
-	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
-	                </div>
-	            </div>
-	        </div>
-		</div>
 		<!--[if lt IE 9]>
 		  	<script src="../../../static/plugins/html5shiv.min.js"></script>
 		  	<script src="../../../static/plugins/respond.min.js"></script>
@@ -324,7 +292,6 @@
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/selectL2R.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/imageview/echarts.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="index.js" type="text/javascript" charset="utf-8"></script>

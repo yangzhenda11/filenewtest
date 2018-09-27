@@ -79,21 +79,34 @@
 				return null;
 			}
 		}
-		App.formAjaxJson(serverPath + 'contractType/listExecuteDept',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
-		function successCallback(result){
-			var data = result.data;
-        	if (data != "") {
-	        	if(agentDepartmentTree){
-					agentDepartmentTree.destroy();
-				}
-				agentDepartmentTree = $.fn.zTree.init($("#agentDepartmentTree"), treeSetting, data);
-				// 默认展开第一层
-				var nodes = agentDepartmentTree.getNodes();
-	            agentDepartmentTree.expandNode(nodes[0]);
-            } else {
-                layer.msg("暂无数据，请稍后重试");
-            }
-		}
+         // 获取数据
+        $.ajax({
+	        url : serverPath + 'contractType/listExecuteDept',
+	        type : "post",
+	        data : {'orgId':''},
+	        success : function(result) {
+				if (result.status == 1) {
+					var data = result.data;
+		        	if (data != "") {
+			        	if(agentDepartmentTree){
+							agentDepartmentTree.destroy();
+						}
+						agentDepartmentTree = $.fn.zTree.init($("#agentDepartmentTree"), treeSetting, data);
+						// 默认展开第一层
+						var nodes = agentDepartmentTree.getNodes();
+			            agentDepartmentTree.expandNode(nodes[0]);
+		            } else {
+		                layer.msg("暂无数据，请稍后重试");
+		            }
+				} else {
+					var ms = result.message;
+					layer.msg(ms);
+				};
+	        },
+	        error: function(result) {
+				App.ajaxErrorCallback(result);
+			}
+	    });
         //双击事件 
         function setInputInfo(event, treeId, treeNode) {
             setInputValue(treeNode);

@@ -84,7 +84,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转里程碑查看
  */
 function jumpRiskList(id){
-	var url = "/html/incomeWorktable/milestone/milestoneList.html?id="+id;
+	var url = "/html/incomeWorktable/milestone/milestoneList.html?contractId="+id;
 	App.setCache("contractPageSearch");
 	App.changePresentUrl(url);
 }

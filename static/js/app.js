@@ -1094,6 +1094,9 @@ var App = function() {
 		 * 金额三位加逗号
 		 */
 		unctionToThousands: function(count) {
+			if(count == null){
+				return "";
+			};
             var count = (count || 0).toString(),
                 result = '';
 			var decimals = count.split(".")[1];

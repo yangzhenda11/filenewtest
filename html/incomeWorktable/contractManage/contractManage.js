@@ -6,7 +6,7 @@ var reloadPerformanceContractTable = false;
 var reloadFocusContractTable = false;
 $(function(){
 	var roleArr = config.curRole;
-	if(isInArray(roleArr,91217)){
+	if(isInArray(roleArr,91216)){
 		$("#myContractManagerList").show();
 	}else{
 		$("#myContractManagerList").remove();

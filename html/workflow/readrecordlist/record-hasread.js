@@ -55,8 +55,8 @@ function getTableToreadHisList(){
 		        		fn = "findDetail('"+row.readTypeUrl+"',"+row.bussId+")";
 		        	}else{
 		        		style = "cursor:not-allowed";
-		        		buttontitle = "当前任务属于您的另一个岗位【" + row.orgName + "】,请点击右上角个人信息切换岗位后处理";
-		        		fn = "layer.msg(\'"+buttontitle+"\')";
+		        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";
+		        		fn = "findOrgName("+assignee+")";
 		        	}
 		        	var context = [{"name": row.readTitle,"placement":"right","title": buttontitle,"style": style,"fn": fn}]; 	
 		            return App.getDataTableLink(context);
@@ -79,7 +79,18 @@ function getTableToreadHisList(){
 	 	}]
 	});
 }
-
+//查询岗位名称
+function  findOrgName  (receivedStaffOrgId) {
+	var ajaxObj = {
+	    "url":  serverPath + "recordToread/listReadOrgName",
+	    "type": "post",
+	    "data":{"receivedStaffOrgId":receivedStaffOrgId}
+	};
+	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
+	function successCallback(result) {
+		layer.msg("当前任务属于您的另一个岗位【" + result.data[0].orgName + "】,请点击右上角个人信息切换岗位后处理")
+	}
+}
 
 function  findDetail  (url,bussId) {
 	App.setCache("searchForm");

@@ -101,6 +101,51 @@
 					</div>
 				</div>
 			</div>
+			<div class="modal fade" id="lineSleeptimeModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog" role="document" style="width: 40%;">
+		            <div class="modal-content">
+	                    <div class="modal-header">
+	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                        <h4 class="modal-title">休眠时间</h4>
+	                    </div>
+	                    <div class="modal-body">
+	                    	<input type="hidden" name="milestoneId" id="milestoneId" value="" />
+	                        <textarea name="lineSleeptimeContent" class="form-control" id="lineSleeptimeContent" rows="5" cols=""></textarea>
+	                    </div>
+	                    <div class="modal-footer">
+	                        <button type="submit" onclick="saveLineSleeptime()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>保存</button>
+	                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+	                    </div>
+		            </div>
+		        </div>
+			</div>
+			<div class="modal fade" id="invoiceReturnInfoModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+				<div class="modal-dialog" role="document">
+		            <div class="modal-content">
+	                    <div class="modal-header">
+	                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                        <h4 class="modal-title">近6个月开票回款信息</h4>
+	                    </div>
+	                    <div class="modal-body">
+	                        <table class="table table-striped table-bordered table-hover table-header-fixed table-align">
+								<thead>
+									<tr>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										
+									</tr>
+								</tbody>
+							</table>
+	                    </div>
+	                    <div class="modal-footer">
+	                        <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+	                    </div>
+		            </div>
+		        </div>
+			</div>
 			<!--[if lt IE 9]>
 			<script src="../../../static/plugins/html5shiv.min.js"></script>
 			<script src="../../../static/plugins/respond.min.js"></script>

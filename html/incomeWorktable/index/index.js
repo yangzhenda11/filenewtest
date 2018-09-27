@@ -11,11 +11,10 @@ var serverPath = config.serverPath;
  * 91219：商务经理
  */
 var roleType = "";
-
 $(function(){
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
-	console.log(roleType)
+	//console.log(roleType)
 	$("#loginUserName").text(config.curStaffName);
 	if(roleType == 91216 || roleType == 91217 || roleType == 91219){
 		if(roleType == 91216){
@@ -97,12 +96,13 @@ function setAuditScope(){
 		companyCode: config.companyCode
 	};
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	var dataPermission = config.dataPermission;
 	function successCallback(result){
 		var data = result.data;
-		if(data.length > 0){
+		/*if(data.length > 0){*/
 			var dataPermission = config.dataPermission;
-			var companyName = data[0].companyName;
-			var provName = data[0].provName;
+			var companyName = data.companyName;
+			var provName = data.provName;	
 			if(dataPermission == 3){
 				$("#scope").text(provName);
 				$("#scope").attr("title",provName);
@@ -112,8 +112,8 @@ function setAuditScope(){
 				$("#scope").attr("title",companyName);
 				$("#changeScope").remove();
 			}
-			top.globalConfig.auditScope = companyCode;
-		}
+			/*top.globalConfig.auditScope = companyCode;*/
+		/*}*/
 	}
 }
 /*

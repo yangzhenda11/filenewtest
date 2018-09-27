@@ -43,7 +43,9 @@ function initRiskWarningListTable(){
 	        "contentType":"application/json;charset=utf-8",
 	        "url": serverPath+'riskWarning/listRiskWarning',
 	        "data": function(d) {
-	        	d.managerStaffName = $("#riskWarningfoSearch").val().trim();
+	        	d.contractName = $("#riskWarningfoSearch").val().trim();
+	        	d.contractNumber = $("#riskWarningfoSearch").val().trim();
+	        	d.partnerName = $("#riskWarningfoSearch").val().trim();
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -54,15 +56,16 @@ function initRiskWarningListTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "managerStaffName","className": "whiteSpaceNormal"},
-			{"data": "orgName","className": "whiteSpaceNormal"},
-			{"data": "phone","className": "whiteSpaceNormal"},
-			{"data": "email","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
-				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
-				}
-			},
+			{"data": "contractName","className": "whiteSpaceNormal"},
+			{"data": "contractNumber","className": "whiteSpaceNormal"},
+			{"data": "partnerName","className": "whiteSpaceNormal"},
+			{"data": "partnerCode","className": "whiteSpaceNormal"},
+			{"data": "signDate","className": "whiteSpaceNormal"},
+			{"data": "expiryDate","className": "whiteSpaceNormal"},
+			{"data": "performerOrgName","className": "whiteSpaceNormal"},
+			{"data": "performerStaffName","className": "whiteSpaceNormal"},
+			{"data": "contractValue","className": "whiteSpaceNormal"},
+			{"data": "AccumulativeAmount","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
 					var editFlag = "add";
@@ -75,48 +78,11 @@ function initRiskWarningListTable(){
 		]
 	});
 }
-/*
- * 我管理的客户经理添加和取消重点关注
- * 参数：editFlag  "add":增加 | "delete":取消
- */
-function emphasisOfCustomer(managerStaffOrgId,editFlag){
-	var url = serverPath + "customerManager/saveFocusCustomerManager";
-	var massage = "添加";
-	if(editFlag == "delete"){
-		url = serverPath + "customerManager/delFocusCustomerManager";
-		massage = "取消";
-	};
-	layer.confirm("确定"+massage+"该客户经理的重点关注?", {icon: 0}, function() {
-    	var postData = {
-			managerStaffOrgId: managerStaffOrgId
-		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
-			layer.msg("已"+massage+"重点关注");
-			reloadPageDataTable("#customerListTable",true);
-			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-			if(isInitEmphasisCustomerTable){
-				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-					reloadEmphasisCustomerTable = true;
-				}else{
-					reloadPageDataTable("#emphasisCustomerTable",true);
-				};
-			}
-		}
-   	});
-}
 
-/*
- * 我重点关注的客户经理点击查询事件
- * 已加载表格直接可以刷新操作
- */
-function searchEmphasisCustomer(){
-	reloadPageDataTable("#emphasisCustomerTable");
-}
 /*
  * 我重点关注的客户经理表格初始化
  */
-function initEmphasisCustomerTable(){
+/*function initEmphasisCustomerTable(){
 	App.initDataTables('#emphasisCustomerTable', "#emphasisCustomerLoading", {
 		ajax: {
 			"type": "POST",
@@ -150,33 +116,7 @@ function initEmphasisCustomerTable(){
 			}
 		]
 	});
-}
-
-/*
- * 我重点关注的客户经理取消重点关注
- */
-function deleteEmphasisOfEmp(managerStaffOrgId){
-	layer.confirm('确定取消该客户经理的重点关注?', {icon: 0}, function() {
-    	var url = serverPath + "customerManager/delFocusCustomerManager";
-		var postData = {
-			managerStaffOrgId: managerStaffOrgId
-		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
-			layer.msg("已取消重点关注");
-			reloadPageDataTable("#emphasisCustomerTable",true);
-			var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-			if(isInitCustomerListTable){
-				if($("#customerList .form-fieldset-body").is(':hidden')){
-					reloadCustomerListTable = true;
-				}else{
-					reloadPageDataTable("#customerListTable",true);
-				};
-			}
-		}
-   	});
-}
-
+}*/
 /*
  * 页面内表格初始化完成之后查询事件
  */
@@ -187,12 +127,4 @@ function reloadPageDataTable(tableId,retainPaging) {
 	} else {
 		table.ajax.reload();
 	}
-}
-
-/*
- * 跳转合同信息
- */
-function jumpContractManage(data){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
-	top.showSubpageTab(url,"履行中合同");
 }

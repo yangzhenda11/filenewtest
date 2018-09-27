@@ -236,7 +236,11 @@ function initMyContractManagerTable(){
 	        	d.contractNumber = $("#contractNumber").val().trim();
 	        	d.customerName = $("#customerName").val().trim();
 	        	d.customerCode = $("#customerCode").val().trim();
-	        	d.contractStatus = $("#contractStatus").val().trim();
+	        	if($("#contractType").data("exactSearch")){
+					d.contractTypeCode = $("#contractType").data("typeCode");
+				}else{
+					d.contractType = $("#contractType").val().trim();
+				};
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -292,10 +296,22 @@ function initMyContractSearchTable(){
 	        	d.contractStatus = $("#contractStatusSearch").val().trim();
 	        	d.partnerCode = $("#partnerCode").val().trim();
 	        	d.customerManagerName = $("#customerManagerName").val().trim();
+<<<<<<< HEAD
 	        	d.signDateBegin = $("#signDateBegin").val().trim();
 	        	d.signDateEnd = $("#signDateEnd").val().trim();
 	        	d.expiryDateBegin = $("#expiryDateBegin").val().trim();
 	        	d.expiryDateEnd = $("#expiryDateEnd").val().trim();
+=======
+	        	d.signDateBegin = $("#signDateBegin").val();
+	        	d.signDateEnd = $("#signDateEnd").val();
+	        	d.expiryDateBegin = $("#expiryDateBegin").val();
+	        	d.expiryDateEnd = $("#expiryDateEnd").val();
+	        	if($("#contractTypeSearch").data("exactSearch")){
+					d.contractTypeCode = $("#contractTypeSearch").data("typeCode");
+				}else{
+					d.contractType = $("#contractTypeSearch").val().trim();
+				};
+>>>>>>> 16dc2314cfb652db2d24e923c7fc281b94f25cc6
 	           	return JSON.stringify(d);
 	        }
 		},

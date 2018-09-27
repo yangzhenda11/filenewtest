@@ -82,14 +82,14 @@ function initPerformanceContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractFeasorModal(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
@@ -106,8 +106,38 @@ function initPerformanceContractTable(){
  * 我履行中的合同跟踪添加和取消重点关注
  * 参数：editFlag  "add":增加 | "delete":取消
  */
-function showContractFeasorModal(contractId) {
-	$("#contractFeasorModal").modal("show");
+function showContractPerformerModal(contractId) {
+
+	var url = serverPath + "contractPerformer/contractPerformerList";
+	var postData = {
+        	contractId: contractId
+		};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+
+		if (result.status == 1){
+			var result = result.data;
+			var html = '';
+			for (var i = 0; i < result.length; i++) {
+				var item = result[i];
+				//var startTime = item.startTime == null ? '' : App.formatDateTime(item.startTime);
+				//var endTime = item.endTime == null ? '' : App.formatDateTime(item.endTime);
+				var performerType = item.performerType == 1 ? "是" : "否";
+				html += "<tr>"+
+							"<td class='align-center'>"+(i+1)+"</td>"+
+							"<td>"+item.performerStaffName+"</td>"+
+							"<td>"+item.performerOrgName+"</td>"+
+							"<td>"+performerType+"</td>"+
+							"<td>&nbsp;</td>"+
+							"<td>&nbsp;</td>"+
+							"<td>"+item.addStaff+"</td>"+
+							"<td>"+item.addStaffOrg+"</td>"+
+						"</tr>";
+			}
+			$("#contractPerformerTbody").html(html);
+			$("#contractPerformerModal").modal("show");
+		} 
+	}
 }
 
 /*
@@ -174,14 +204,14 @@ function initFocusContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractFeasorModal(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
@@ -365,8 +395,8 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转订单信息（已关联合同）
  */
 function jumpOrderManageByContract(contractId){
-	alert(contractId);
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
+
+	var url = "/html/expenseWorktable/orderManage/orderManage.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"订单信息");
 }
 

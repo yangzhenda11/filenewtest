@@ -6,7 +6,7 @@ var reloadPerformanceContractTable = false;
 var reloadFocusContractTable = false;
 $(function(){
 	var roleArr = config.curRole;
-	if(isInArray(roleArr,91216)){
+	if(isInArray(roleArr,91217)){
 		$("#myContractManagerList").show();
 	}else{
 		$("#myContractManagerList").remove();
@@ -247,9 +247,9 @@ function initMyContractManagerTable(){
 	        	d.customerName = $("#customerName").val().trim();
 	        	d.customerCode = $("#customerCode").val().trim();
 	        	if($("#contractType").data("exactSearch")){
-					d.contractType = $("#contractType").data("typeCode");
+					d.contractTypeCode = $("#contractType").data("typeCode");
 				}else{
-					d.contractStatus = $("#contractType").val().trim();
+					d.contractType = $("#contractType").val().trim();
 				};
 	           	return JSON.stringify(d);
 	        }
@@ -318,9 +318,9 @@ function initMyContractSearchTable(){
 	        	d.expiryDateBegin = $("#expiryDateBegin").val();
 	        	d.expiryDateEnd = $("#expiryDateEnd").val();
 	        	if($("#contractTypeSearch").data("exactSearch")){
-					d.contractType = $("#contractTypeSearch").data("typeCode");
+					d.contractTypeCode = $("#contractTypeSearch").data("typeCode");
 				}else{
-					d.contractStatus = $("#contractTypeSearch").val().trim();
+					d.contractType = $("#contractTypeSearch").val().trim();
 				};
 	           	return JSON.stringify(d);
 	        }

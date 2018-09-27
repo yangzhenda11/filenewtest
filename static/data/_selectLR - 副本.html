@@ -1,0 +1,42 @@
+<div class="modal-dialog" role="document" style="width: 50%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+            <h4 class="modal-title" id="_selectModalTitle">选择显示内容</h4>
+        </div>
+        <div class="modal-body" id="selectLRContent">
+            <div class="row list-body">
+                <div class="selectLR-left">
+                    <div class="_selectTitle">可选择列：</div>
+                    <div class="selectCon">
+                        <ul class="item-box left-box" id="_selectLCon">
+							<!-- 左边框初始化待选项 -->	
+						</ul>
+                    </div>
+                </div>
+                <div class="text-center center-box">
+                	<button title="上移" class="selectLR-up btn btn-danger btn-outline btn-block"><i class="fa fa-angle-up"></i></button>
+                    <button title="选择" class="add-one btn btn-danger btn-outline btn-block"><i class="fa fa-angle-right"></i></button>
+                    <button title="选择全部" class="add-all btn btn-danger btn-outline btn-block"><i class="fa fa-angle-double-right"></i></button>
+                    <button title="取消" class="remove-one btn btn-warning btn-outline btn-block"><i class="fa fa-angle-left"></i></button>
+                    <button title="取消全部" class="remove-all btn btn-warning btn-outline btn-block"><i class="fa fa-angle-double-left"></i></button>
+                    <button title="下移" class="selectLR-down btn btn-danger btn-outline btn-block"><i class="fa fa-angle-down"></i></button>
+                </div>
+                <div class="selectLR-right">
+                	<div class="_selectTitle">已选择列：</div>
+                    <div class="selectCon">
+                        <ul class="item-box right-box" id="_selectRCon">
+							<!-- 右边框存放已选项 -->
+						</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-circle" onclick="$.getSelectLRData(); "><i class="iconfont icon-baocun"></i>确定</button>
+            <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
+        </div>
+    </div>
+</div>

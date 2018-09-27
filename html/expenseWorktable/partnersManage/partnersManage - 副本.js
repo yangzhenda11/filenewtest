@@ -59,7 +59,8 @@ function initCustomerListTable(){
 			{"data": "partyName","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.partyId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage()'>查看</a>";
+//					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
@@ -158,7 +159,8 @@ function initEmphasisCustomerTable(){
 			{"data": "partyName","className": "whiteSpaceNormal"},
 			{"data": null,"className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.partyId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage()'>查看</a>";
+//					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
@@ -185,7 +187,7 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转合同信息
  */
-function jumpContractManage(partyId){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123&partyId="+partyId;
+function jumpContractManage(data){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
 	top.showSubpageTab(url,"履行中合同");
 }

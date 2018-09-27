@@ -30,10 +30,10 @@ function initLineMilestoneTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'performanceContract/listPerformanceContract',
+	        "url": serverPath+'milestoneMangerController/listMilestoneZx',
 	        "data": function(d) {
-//	        	d.contractId = parm.contractId;
-	        	d.contractInfoSearch = $("#lineInfoInput").val().trim();
+ 	        	d.contractId = parm.contractId;
+	        	d.circuitCode = $("#lineInfoInput").val().trim();
 	           	return JSON.stringify(d);
 	        }
 		},
@@ -58,7 +58,7 @@ function initLineMilestoneTable(){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}
 			},
-			{"data": "milestoneId","className": "whiteSpaceNormal",
+			{"data": "businessId","className": "whiteSpaceNormal",
 				"render": function(data, type, full, meta){
 					return "<a onclick='lineSleeptime(\""+data+"\")'>查看</a>";
 				}
@@ -81,8 +81,8 @@ function initLineMilestoneTable(){
 				"render": function(data, type, full, meta){
 					var html = "<div class='wired'>"+
 						"<span class='leftWired "+getLengendColor(data.lineRenting)+"'></span>"+
-						"<span class='mLegend "+getLengendColor(data.invoiceReturn)+"'></span>"+
-						"<span class='rightWired "+getLengendColor(data.lineRenting)+"'></span>"+
+						"<span class='mLegend "+getLengendColor(data.lineRenting)+"'></span>"+
+						"<span class='rightWired "+getLengendColor(data.invoiceReturn)+"'></span>"+
 					"</div>";
 					return html;
 				}
@@ -93,7 +93,10 @@ function initLineMilestoneTable(){
 					if(data.invoiceReturn == 3 || data.invoiceReturn == null){
 						html += "<span class='mLegend "+getLengendColor(data.invoiceReturn)+"'></span>";
 					}else{
-						html += "<span title='点击查看开票回款信息' data-placement='top' data-container='body' data-trigger='hover' data-toggle='tooltip' class='mLegend "+getLengendColor(data.invoiceReturn)+"' onclick='getInvoiceReturnInfo(data.milestoneId)'></span>";
+						html += "<span title='点击查看开票回款信息' data-placement='top' data-container='body' " +
+								"data-trigger='hover' data-toggle='tooltip' " +
+								"class='mLegend "+getLengendColor(data.invoiceReturn)+"'" +
+										" onclick='getInvoiceReturnInfo(\""+data.businessId+"\" )'></span>";
 					};
 					html += "<span class='rightWired "+getLengendColor(data.lineStopRenting)+"'></span></div>";
 					return html;
@@ -142,14 +145,16 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 获取休眠时间
  */
-function lineSleeptime(milestoneId){
+function lineSleeptime(businessId){
 	var postData = {
-		milestoneId: milestoneId
-	}
-	App.formAjaxJson(serverPath + "", "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		$("#milestoneId").val(milestoneId);
-		$("#lineSleeptimeContent").val(result.data);
+			businessId: businessId
+	};
+ 	App.formAjaxJson(serverPath + "milestoneMangerController/getLineSleeptimeById", "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) { 
+	 
+		$("#businessId").val(businessId);
+		$("#sleepId").val(result.data.sleepId);
+		$("#lineSleeptimeContent").val(result.data.sleepTime);
 		$("#lineSleeptimeModal").modal("show");
 	}
 }
@@ -158,26 +163,46 @@ function lineSleeptime(milestoneId){
  */
 function saveLineSleeptime(){
 	var postData = {
-		milestoneId: $("#milestoneId").val(),
-		lineSleeptimeContent: $("#lineSleeptimeContent").val()
+		 businessId: $("#businessId").val(),
+		 sleepId: $("#sleepId").val(),
+		 sleepTime: $("#lineSleeptimeContent").val()
 	}
-	App.formAjaxJson(serverPath + "", "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(serverPath + "milestoneMangerController/updateLineSleeptime", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		layer.msg("保存成功");
-		$("#lineSleeptimeModal").modal("show");
+		$("#lineSleeptimeModal").modal("hide");
 	}
 }
 /*
  * 获取近6个月开票回款信息
  */
-function getInvoiceReturnInfo(milestoneId){
+function getInvoiceReturnInfo(businessId){
 	var postData = {
-		milestoneId: milestoneId
-	}
-	App.formAjaxJson(serverPath + "", "post", JSON.stringify(postData), successCallback);
+			 businessId: businessId
+		}
+ 	App.formAjaxJson(serverPath + "milestoneMangerController/listLineIncome", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
+ 		var text="<tr><td>账期</td>";
+ 		var text1="<tr><td>是否开票</td>";
+ 		var text2="<tr><td>收款金额</td>";
+ 		var text3="<tr><td>实收金额</td>";
+ 		var text4="<tr><td>欠费金额</td>";
+ 		  for (var int = 0; int < result.data.length; int++) {
+ 			 text+="<td>"+ result.data[int].accountPeriodName+"</td>"
+ 			 text1+="<td>"+ result.data[int].accountPeriodName+"</td>"
+ 			 text2+="<td>"+ App.unctionToThousands(result.data[int].receivableAmount)+"</td>"
+ 			 text3+="<td>"+ App.unctionToThousands(result.data[int].collectedAmount)+"</td>"
+ 			 text4+="<td>"+ App.unctionToThousands(result.data[int].arrearsAmount)+"</td>"
+ 		  } 
+ 		 text+="</tr>";
+ 		text1+="</tr>";
+ 		text2+="</tr>";
+ 		text3+="</tr>";
+ 		text4+="</tr>";
+ 		 debugger;
+ 		$("#invoiceReturnInfoTable").html(text+text1+text2+text3+text4);
 		$("#invoiceReturnInfoModal").modal("show");
-	}
+	}	
 }
 //返回点击
 function returnMilestone(){

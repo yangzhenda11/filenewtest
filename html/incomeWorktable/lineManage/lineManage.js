@@ -119,8 +119,7 @@ function lineInforTableColumns() {
 					"data" : v.id,
 					"title" : v.data
 				};
-			}
-			;
+			};
 			columns.push(item);
 		}
 	});

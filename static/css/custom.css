@@ -459,6 +459,9 @@ table .ui-radio,table .ui-checkbox{
 table i{
 	font-weight: normal;
 }
+.tableSelect{
+	background: #f3f4f6 !important;
+}
 /*
  * datatable表格内文本不折行时添加此元素
  */

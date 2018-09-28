@@ -1,15 +1,11 @@
-.pageTips{
-	width: 400px;
-	color: red;
-}
-/*合同里程碑管理*/
-#performanceContractList .toolbars{
+
+#riskWarningPageSearch .toolbars{
 	position: relative;
 	}
-#performanceContractList .right-toolbars{
+#riskWarningPageSearch .right-toolbars{
 	position: absolute;
 	right: 15px;
-	top: -50px;
+	top: 0;
 }
 .legendItem .legendPic{
 	width: 16px;
@@ -37,6 +33,12 @@ td.milestoneLegend{
 	border-left: none !important;
 	border-right: none !important;
 	/*min-height: 38px !important;*/
+}
+.cycLegend{
+	width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: inline-block;
 }
 .wired{
 	width: 100%;
@@ -66,14 +68,4 @@ td.milestoneLegend{
     -ms-transform: translate(-50%,-40%);
     -o-transform: translate(-50%,-40%);
     transform: translate(-50%,-40%);
-}
-/*收入管理*/
-#incomeAnalysis{
-	text-align: center;
-}
-#incomeAnalysisCharts{
-	width: 90%;
-	height: 400px;
-	display: inline-block;
-	margin-top: 40px;
 }

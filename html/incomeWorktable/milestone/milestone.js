@@ -35,33 +35,33 @@ function initContractTable(){
 	        }
 		},
 		"columns": [
-			{"data" : null,"className": "whiteSpaceNormal",
+			{"data" : null,"className": "whiteSpaceNormal","width":"5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#contractTable").pageStart;
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "customerName","className": "whiteSpaceNormal"},
-			{"data": "customerCode","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width":"23%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width":"10%"},
+			{"data": "customerName","className": "whiteSpaceNormal","width":"12%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width":"10%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width":"8%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width":"7%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "signDate","className": "whiteSpaceNormal",
+			{"data": "signDate","className": "whiteSpaceNormal","width":"10%",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}
 			},
-			{"data": "expiryDate","className": "whiteSpaceNormal",
+			{"data": "expiryDate","className": "whiteSpaceNormal","width":"10%",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal tableImgCon",
+			{"data": "contractId","className": "whiteSpaceNormal","width":"5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpRiskList(\""+data+"\")'>管理</a>";
 				}

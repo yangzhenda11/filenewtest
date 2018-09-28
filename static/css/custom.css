@@ -459,6 +459,9 @@ table .ui-radio,table .ui-checkbox{
 table i{
 	font-weight: normal;
 }
+.tableSelect{
+	background: #f3f4f6 !important;
+}
 /*
  * datatable表格内文本不折行时添加此元素
  */
@@ -546,6 +549,24 @@ table td{
 	border-color: #dc2a32;
 }
 .btn.primary.btn-inline:hover{
+	color: #dc2a32;
+	background: #fff;
+	border-color: #dc2a32;
+}
+.buttonNavTabs{
+	border-bottom: 4px solid #dc2a32;
+}
+.buttonNavTabs button{
+    margin: 0 4px 0 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: 2px solid #dc2a32;
+    border-bottom: none;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.btn.primary.btn-inline.check{
 	color: #dc2a32;
 	background: #fff;
 	border-color: #dc2a32;

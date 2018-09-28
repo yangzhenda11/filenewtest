@@ -14,7 +14,6 @@ var roleType = "";
 $(function(){
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
-	//console.log(roleType)
 	$("#loginUserName").text(config.curStaffName);
 	if(roleType == 91216 || roleType == 91217 || roleType == 91219){
 		if(roleType == 91216){
@@ -112,7 +111,7 @@ function setAuditScope(){
 				$("#scope").attr("title",companyName);
 				$("#changeScope").remove();
 			}
-			/*top.globalConfig.auditScope = companyCode;*/
+			top.globalConfig.auditScope = data.companyCode;
 		/*}*/
 	}
 }
@@ -455,9 +454,6 @@ function initIncomeAnalysis(){
 		        type: 'bar',
 		        stack:'收入预测',
 		        barWidth:'45%',
-		        lable:{
-		        	show:true
-		        },
 		        data: [220000, 182000, 191000, 234000, 290000, 130000, 310000]
 		    },
 		    {

@@ -147,11 +147,10 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function lineSleeptime(businessId){
 	var postData = {
-			businessId: businessId
+		businessId: businessId
 	};
  	App.formAjaxJson(serverPath + "milestoneMangerController/getLineSleeptimeById", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) { 
-	 
 		$("#businessId").val(businessId);
 		$("#sleepId").val(result.data.sleepId);
 		$("#lineSleeptimeContent").val(result.data.sleepTime);
@@ -163,9 +162,9 @@ function lineSleeptime(businessId){
  */
 function saveLineSleeptime(){
 	var postData = {
-		 businessId: $("#businessId").val(),
-		 sleepId: $("#sleepId").val(),
-		 sleepTime: $("#lineSleeptimeContent").val()
+		businessId: $("#businessId").val(),
+		sleepId: $("#sleepId").val(),
+		sleepTime: $("#lineSleeptimeContent").val()
 	}
 	App.formAjaxJson(serverPath + "milestoneMangerController/updateLineSleeptime", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
@@ -182,6 +181,7 @@ function getInvoiceReturnInfo(businessId){
 		}
  	App.formAjaxJson(serverPath + "milestoneMangerController/listLineIncome", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
+ 
  		var text="<tr><td>账期</td>";
  		var text1="<tr><td>是否开票</td>";
  		var text2="<tr><td>收款金额</td>";
@@ -201,6 +201,31 @@ function getInvoiceReturnInfo(businessId){
  		text4+="</tr>";
  		 debugger;
  		$("#invoiceReturnInfoTable").html(text+text1+text2+text3+text4);
+ 
+		var data = result.data;
+		var content = "";
+		var contentObj = {
+			"title":"<tr class='tableSelect'><td id='invoiceReturnInfoTitle'>近6个月开票回款信息</td>",
+			"accountPeriodName":"<tr><td class='tableSelect'>账期</td>",
+			"isInvoice":"<tr><td class='tableSelect'>是否开票</td>",
+			"receivableAmount":"<tr><td class='tableSelect'>收款金额</td>",
+			"collectedAmount":"<tr><td class='tableSelect'>实收金额</td>",
+			"arrearsAmount":"<tr><td class='tableSelect'>欠费金额</td>",
+		};
+		for(var i = 0; i < data.length; i++){
+			var item = data[i];
+			contentObj.accountPeriodName = contentObj.accountPeriodName + "<td>"+ item.accountPeriodName+"</td>";
+			contentObj.isInvoice = contentObj.isInvoice + "<td>"+ item.accountPeriodName+"</td>";
+			contentObj.receivableAmount = contentObj.receivableAmount + "<td>"+ App.unctionToThousands(item.receivableAmount)+"</td>";
+			contentObj.collectedAmount = contentObj.collectedAmount + "<td>"+ App.unctionToThousands(item.collectedAmount)+"</td>";
+			contentObj.arrearsAmount = contentObj.arrearsAmount + "<td>"+ App.unctionToThousands(item.arrearsAmount)+"</td>";
+		};
+ 		$.each(contentObj, function(k,v) {
+ 			content += v + "</tr>";
+ 		});
+ 		$("#invoiceReturnInfoTable").html(content);
+ 		$("#invoiceReturnInfoTitle").attr("colspan",data.length+1);
+ 
 		$("#invoiceReturnInfoModal").modal("show");
 	}	
 }

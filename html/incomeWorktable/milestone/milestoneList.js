@@ -181,6 +181,27 @@ function getInvoiceReturnInfo(businessId){
 		}
  	App.formAjaxJson(serverPath + "milestoneMangerController/listLineIncome", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
+ 
+ 		var text="<tr><td>账期</td>";
+ 		var text1="<tr><td>是否开票</td>";
+ 		var text2="<tr><td>收款金额</td>";
+ 		var text3="<tr><td>实收金额</td>";
+ 		var text4="<tr><td>欠费金额</td>";
+ 		  for (var int = 0; int < result.data.length; int++) {
+ 			 text+="<td>"+ result.data[int].accountPeriodName+"</td>"
+ 			 text1+="<td>"+ result.data[int].isKp+"</td>"
+ 			 text2+="<td>"+ App.unctionToThousands(result.data[int].receivableAmount)+"</td>"
+ 			 text3+="<td>"+ App.unctionToThousands(result.data[int].collectedAmount)+"</td>"
+ 			 text4+="<td>"+ App.unctionToThousands(result.data[int].arrearsAmount)+"</td>"
+ 		  } 
+ 		 text+="</tr>";
+ 		text1+="</tr>";
+ 		text2+="</tr>";
+ 		text3+="</tr>";
+ 		text4+="</tr>";
+ 		 debugger;
+ 		$("#invoiceReturnInfoTable").html(text+text1+text2+text3+text4);
+ 
 		var data = result.data;
 		var content = "";
 		var contentObj = {
@@ -204,6 +225,7 @@ function getInvoiceReturnInfo(businessId){
  		});
  		$("#invoiceReturnInfoTable").html(content);
  		$("#invoiceReturnInfoTitle").attr("colspan",data.length+1);
+ 
 		$("#invoiceReturnInfoModal").modal("show");
 	}	
 }

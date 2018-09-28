@@ -189,7 +189,7 @@ function getInvoiceReturnInfo(businessId){
  		var text4="<tr><td>欠费金额</td>";
  		  for (var int = 0; int < result.data.length; int++) {
  			 text+="<td>"+ result.data[int].accountPeriodName+"</td>"
- 			 text1+="<td>"+ result.data[int].accountPeriodName+"</td>"
+ 			 text1+="<td>"+ result.data[int].isKp+"</td>"
  			 text2+="<td>"+ App.unctionToThousands(result.data[int].receivableAmount)+"</td>"
  			 text3+="<td>"+ App.unctionToThousands(result.data[int].collectedAmount)+"</td>"
  			 text4+="<td>"+ App.unctionToThousands(result.data[int].arrearsAmount)+"</td>"

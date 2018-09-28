@@ -181,41 +181,23 @@ function getInvoiceReturnInfo(businessId){
 		}
  	App.formAjaxJson(serverPath + "milestoneMangerController/listLineIncome", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
- 
- 		var text="<tr><td>账期</td>";
- 		var text1="<tr><td>是否开票</td>";
- 		var text2="<tr><td>收款金额</td>";
- 		var text3="<tr><td>实收金额</td>";
- 		var text4="<tr><td>欠费金额</td>";
- 		  for (var int = 0; int < result.data.length; int++) {
- 			 text+="<td>"+ result.data[int].accountPeriodName+"</td>"
- 			 text1+="<td>"+ result.data[int].isKp+"</td>"
- 			 text2+="<td>"+ App.unctionToThousands(result.data[int].receivableAmount)+"</td>"
- 			 text3+="<td>"+ App.unctionToThousands(result.data[int].collectedAmount)+"</td>"
- 			 text4+="<td>"+ App.unctionToThousands(result.data[int].arrearsAmount)+"</td>"
- 		  } 
- 		 text+="</tr>";
- 		text1+="</tr>";
- 		text2+="</tr>";
- 		text3+="</tr>";
- 		text4+="</tr>";
- 		 debugger;
- 		$("#invoiceReturnInfoTable").html(text+text1+text2+text3+text4);
- 
 		var data = result.data;
 		var content = "";
 		var contentObj = {
-			"title":"<tr class='tableSelect'><td id='invoiceReturnInfoTitle'>近6个月开票回款信息</td>",
 			"accountPeriodName":"<tr><td class='tableSelect'>账期</td>",
-			"isInvoice":"<tr><td class='tableSelect'>是否开票</td>",
+			"isKp":"<tr><td class='tableSelect'>是否开票</td>",
 			"receivableAmount":"<tr><td class='tableSelect'>收款金额</td>",
 			"collectedAmount":"<tr><td class='tableSelect'>实收金额</td>",
 			"arrearsAmount":"<tr><td class='tableSelect'>欠费金额</td>",
 		};
-		for(var i = 0; i < data.length; i++){
-			var item = data[i];
-			contentObj.accountPeriodName = contentObj.accountPeriodName + "<td>"+ item.accountPeriodName+"</td>";
-			contentObj.isInvoice = contentObj.isInvoice + "<td>"+ item.accountPeriodName+"</td>";
+		for(var i = data.length; i > 0; i--){
+			var item = data[i-1];
+			var accountPeriodName = item.accountPeriodName;
+			if(!item.isKp){
+				accountPeriodName = "&nbsp;&nbsp;&nbsp;&nbsp;"
+			};
+			contentObj.accountPeriodName = contentObj.accountPeriodName + "<td>"+ accountPeriodName +"</td>";
+			contentObj.isKp = contentObj.isKp + "<td>"+ item.isKp+"</td>";
 			contentObj.receivableAmount = contentObj.receivableAmount + "<td>"+ App.unctionToThousands(item.receivableAmount)+"</td>";
 			contentObj.collectedAmount = contentObj.collectedAmount + "<td>"+ App.unctionToThousands(item.collectedAmount)+"</td>";
 			contentObj.arrearsAmount = contentObj.arrearsAmount + "<td>"+ App.unctionToThousands(item.arrearsAmount)+"</td>";
@@ -224,8 +206,6 @@ function getInvoiceReturnInfo(businessId){
  			content += v + "</tr>";
  		});
  		$("#invoiceReturnInfoTable").html(content);
- 		$("#invoiceReturnInfoTitle").attr("colspan",data.length+1);
- 
 		$("#invoiceReturnInfoModal").modal("show");
 	}	
 }

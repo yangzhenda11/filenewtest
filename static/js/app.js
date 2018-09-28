@@ -1014,6 +1014,10 @@ var App = function() {
 				}else if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
 		        		layer.alert(xhr.responseJSON.message,{icon:2,title:"错误"});
+		        	}else{
+		        		if(successCallback){
+			        		successCallback(xhr.responseJSON);
+			        	};
 		        	}
 		       	}else if(xhr.status == 401){
 		       		if(top.globalConfig.loginSwitchSuccess == 0){

@@ -19,17 +19,25 @@ var globalConfig = {
     /** 当前用户的用户名 */
     curStaffName: "",
     /** 当前用户的id （sys_staff主键） */
-    curStaffId: null,
+    curStaffId: null, 
+    /** 当前用户的角色 （数组存储） */
+    curRole: [],
     /** 当前用户的权限集合 */
     permissions: [],
+    /** 当前用户的数据权限集合 */
+    dataPermission: null,
     /**当前岗位组织省份code */
    	provCode : null,
+   	/**公司编码 */
+   	companyCode: null,
    	/**登录来源1:系统登录 0:云门户登录 */
    	loginSwitchSuccess : null,
    	/**是否属于本部：0不属于，1属于 */
    	mainOrgFlag : null,
     /** 当前用户的系统设置 */
-    curConfigs: {}
+    curConfigs: {},
+    /**二阶段用户所选稽核范围 */
+    auditScope: null
 };
 /*
  * 缓存文件
@@ -58,9 +66,11 @@ $(document).ready(function() {
         globalConfig.curCompanyId = data.companyId;
         globalConfig.mainOrgFlag = data.mainOrgFlag;
         globalConfig.permissions = data.permissions;
+        globalConfig.dataPermission = data.dataPermission;
         globalConfig.orgPath = data.orgPath;
         globalConfig.loginName = data.loginName;
-       
+        globalConfig.companyCode = data.companyCode;
+       	globalConfig.curRole = data.rolestrs.split(",");
         if(data.loginName.indexOf("qc_zj") != -1 || data.loginName.indexOf("qc_gd") != -1){
         	ace_menus = [{
         	 	childrens: [],

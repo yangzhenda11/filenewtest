@@ -2,7 +2,7 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
-//区域收缩时引用的函数，返回form-fieldset的id
+//区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
@@ -242,7 +242,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息
  */
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineManage.html?id=123&relationType=0&returnbtn=false&loaddata=true";
+	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=0&returnbtn=false&loaddata=true";
 	top.showSubpageTab(url,"线路信息");
 }
 /*

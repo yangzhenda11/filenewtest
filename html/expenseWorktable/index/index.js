@@ -1,6 +1,79 @@
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
+/*
+ * roleType
+ * 收入类租线业务页面角色说明
+ * 取globalConfig.curRole,其中包含以下角色可以进入此页面（已在进入之前判断,只包含以下一个可以进入）
+ * 91220：采购经理/项目经理
+ * 91221：业务管理
+ * 91222：商务经理
+ */
+var roleType = "";
+$(function(){
+	//取得角色list中的当前页面所使用的角色
+	checkRoleType();
+	$("#loginUserName").text(config.curStaffName);
+	if(roleType == 91220){
+		$("#roleName").text("采购经理/项目经理");
+		$("#captionTitle").text("我的商务助理");
+	}else if(roleType == 91221){
+		$("#roleName").text("业务管理");
+	}else if(roleType == 91222){
+		$("#roleName").text("商务经理");
+	};
+	//获取商务助理配置内容
+	getAssistantList();
+	
+	
+})
+$("#workItemDom").on("click",".workItem",function(){
+	var moduleUrl = $(this).find("img").data("url");
+	if(moduleUrl){
+		top.showSubpageTab(moduleUrl,$(this).find("p").text());
+	}else{
+		layer.alert("该模块暂未使用。",{icon:2})	
+	}
+})
+/*
+ * 取得角色list中的当前页面所使用的角色
+ */
+function checkRoleType(){
+	var roleArr = config.curRole;
+	var permArr = [91220,91221,91222];
+	$.each(roleArr, function(k,v) {
+		if(isInArray(permArr,v)){
+			roleType = v;
+			return false;
+		}
+	});
+}
+/*
+ * 获取商务助理配置内容
+ */
+function getAssistantList(){
+	var url = serverPath + "assistant/assistantList";
+	var postData = {
+		roleId: roleType,
+		provinceCode: config.provCode,
+		funType: "zc"
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var html = "";
+		$.each(data, function(k,v) {
+			html += '<div class="workItem">'+
+					'<img src="/static/img/worktable/'+v.funIconUrl+'" data-url="'+v.funUrl+'"/>'+
+					'<p>'+v.funName+'</p>'+
+					'</div>';
+		});
+		$("#workItemDom").html(html);
+	}
+}
 
-$("#loginUserName").text("汪雨");
-$("#roleName").text("采购经理/项目经理");
+
+
 
 //我的付款总览图表生成
 

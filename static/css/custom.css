@@ -108,53 +108,49 @@ button:focus{outline: none !important;}
 /*支撑渠道-结束 */
 
 /* 左右选择样式-开始 */
-.multiselect-my:after {
-    content: '';
-    display: table;
-    clear: both;
+.selectLR-left,.selectLR-right,.center-box{
+	float: left;
 }
-
-.multiselect-my>.multiselect-leftPanel, .multiselect-my>.multiselect-options,
-    .multiselect-my>.multiselect-rightPanel {
-    float: left;
+.selectLR-left,.selectLR-right{
+	width: 45%;
+	padding: 0 10px;
 }
-
-.multiselect-my .panel-body {
-    padding: 0
+.center-box{
+	width: 10%;
+	padding-top: 50px;
 }
-
-.multiselect-my>.multiselect-leftPanel, .multiselect-my>.multiselect-rightPanel
-    {
-    width: 45%;
-    margin-bottom: 0;
+.list-body .selectCon{
+	height: 280px;
+	overflow: auto;
+	border: 1px solid #ceadad;
+	border-radius: 3px;
+	background: #fff;
+	padding: 10px 0;
 }
-
-.multiselect-my>.multiselect-leftPanel input, .multiselect-my>.multiselect-rightPanel input
-    {
-    width: 94%;
-    margin: 10px auto;
+.list-body .item-box-hover{
+	background: #dfd9ff80;
 }
-
-.multiselect-my>.multiselect-leftPanel select, .multiselect-my>.multiselect-rightPanel select
-    {
-    border: none;
+.list-body .item{
+	display: block;
+	text-align: left;
+	padding-left: 16px;
+	font-size: 12px;
+	line-height: 26px;
 }
-
-.multiselect-my>.multiselect-options {
-    width: 10%;
-    padding: 60px 15px 0;
-}
-.selectL2R .panel{
-	margin-bottom: 0;
-}
-.selectL2R-actions{
-	margin-top: 42px;
-}
-#selectL2RContent .list-group{
-	margin-bottom: 0;
-}
-#selectL2RContent .list-group li{
+.list-body .item:hover{
+	background: #c1c7f5;
 	cursor: pointer;
+}
+.list-body .item-placeholder{
+	background: #dfd9ff;
+	border: 1px dashed #999;
+}
+.list-body .item-box .selected-item{
+	background: rgba(0, 0, 255, 0.25);
+}
+._selectTitle{
+	font-size: 14px;
+	padding-bottom: 4px;
 }
 /* 左右选择样式-结束 */
 
@@ -554,6 +550,24 @@ table td{
 	background: #fff;
 	border-color: #dc2a32;
 }
+.buttonNavTabs{
+	border-bottom: 4px solid #dc2a32;
+}
+.buttonNavTabs button{
+    margin: 0 4px 0 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: 2px solid #dc2a32;
+    border-bottom: none;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.btn.primary.btn-inline.check{
+	color: #dc2a32;
+	background: #fff;
+	border-color: #dc2a32;
+}
 /*
  * 编辑框样式
  */
@@ -702,6 +716,7 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
     top: 2px;
 }
 /*二阶段form-fieldset页样式*/
+.work-list{overflow: hidden;}
 .work-list .form-fieldset{
 	margin-bottom: 8px;
 }
@@ -770,6 +785,13 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 }
 .work-list table{
 	margin-top: 6px
+}
+.tableImgCon{
+	padding: 0 4px !important;
+}
+.tableImgCon img{
+	width: 20px;
+	cursor: pointer;
 }
 
 /*合同修改*/

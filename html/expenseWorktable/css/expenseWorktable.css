@@ -1,0 +1,71 @@
+
+#riskWarningPageSearch .toolbars{
+	position: relative;
+	}
+#riskWarningPageSearch .right-toolbars{
+	position: absolute;
+	right: 15px;
+	top: 0;
+}
+.legendItem .legendPic{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	border-radius: 8px;
+	position: relative;
+	top: 4px;
+	margin-right: 8px;
+}
+.green{
+	background: #00cc00;
+}
+.yellow{
+	background: #ffff00;
+}
+.gray{
+	background: #bcbcbc;
+}
+.red{
+	background: #ff0000;
+}
+td.milestoneLegend{
+	padding: 0 !important;
+	border-left: none !important;
+	border-right: none !important;
+	/*min-height: 38px !important;*/
+}
+.cycLegend{
+	width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: inline-block;
+}
+.wired{
+	width: 100%;
+	position: relative;
+}
+.leftWired,.rightWired{
+	display: block;
+	width: 50%;
+	height: 4px;
+}
+.leftWired{
+	float: left;
+}
+.rightWired{
+	float: right;
+}
+.mLegend{
+	width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    cursor: pointer;
+    -webkit-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    transform: translate(-50%,-40%);
+}

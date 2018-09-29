@@ -68,12 +68,21 @@ td.milestoneLegend{
     transform: translate(-50%,-40%);
 }
 /*收入管理*/
-#incomeAnalysis{
-	text-align: center;
-}
-#incomeAnalysisCharts{
-	width: 90%;
-	height: 400px;
+
+#incomeAnalysisCharts,#incomeForecastCharts{
+	width: 100%;
+	height: 450px;
 	display: inline-block;
-	margin-top: 40px;
+	margin-top: 26px;
+}
+.incomeAnalysisTitle p{
+	display: inline-block;
+	margin-right: 24px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.apportionTitle{
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
 }

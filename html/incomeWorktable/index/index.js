@@ -287,11 +287,7 @@ function returnChartsOption(title,subTitle,data,seriesName){
 	    },
 	    tooltip : {
 	        formatter: "{a} <br/>{b} ({d}%)",
-	        position: function (pos, params, dom, rect, size) {
-		      var obj = {top: 60};
-		      obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-		      return obj;
-		  }
+	        confine:"true"
 	    },
 	    legend: {
 	    	orient: "vertical",
@@ -413,9 +409,13 @@ function initIncomeAnalysis(){
 	    },
 	    tooltip : {
 	        trigger: 'axis',
+	        confine:"true",
 	        axisPointer : {
 	            type : 'shadow'
-	        }
+	        },
+	        textStyle:{
+               	align:'left'
+            }
 	    },
 	    grid: {
 	    	left: '10',

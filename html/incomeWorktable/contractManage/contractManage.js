@@ -75,7 +75,7 @@ function initPerformanceContractTable(){
 	        }
 		},
 		"columns": [
-			{"data" : null,"className": "whiteSpaceNormal",
+			{"data" : null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#performanceContractTable").pageStart;
 					return start + meta.row + 1;
@@ -92,7 +92,7 @@ function initPerformanceContractTable(){
 				}
 			},
 			{"data": "customerManagerName","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
@@ -163,7 +163,7 @@ function initFocusContractTable(){
 	        }
 		},
 		"columns": [
-			{"data" : null,"className": "whiteSpaceNormal",
+			{"data" : null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#focusContractTable").pageStart;
 					return start + meta.row + 1;
@@ -180,7 +180,7 @@ function initFocusContractTable(){
 				}
 			},
 			{"data": "customerManagerName","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
@@ -255,7 +255,7 @@ function initMyContractManagerTable(){
 	        }
 		},
 		"columns": [
-			{"data" : null,"className": "whiteSpaceNormal",
+			{"data" : null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#myContractManagerTable").pageStart;
 					return start + meta.row + 1;
@@ -330,7 +330,7 @@ function initMyContractSearchTable(){
 }
 function myContractTableColumns(){
 	var columns = [
-		{"data" : null,"title":"序号",
+		{"data" : null,"title":"序号","width": "5%",
 			"render" : function(data, type, full, meta){
 				var start = App.getDatatablePaging("#myContractSearchTable").pageStart;
 				return start + meta.row + 1;

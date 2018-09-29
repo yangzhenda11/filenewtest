@@ -249,6 +249,6 @@ function jumpLineManage(data){
  * 跳转合同信息
  */
 function jumpContractManage(data){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
+	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode=515200000000005326";
 	top.showSubpageTab(url,"履行中合同");
 }

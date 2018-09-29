@@ -192,7 +192,9 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转合同信息
  */
-function jumpContractManage(data){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
+function jumpContractManage(managerStaffOrgId){
+	/*var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";*/
+	//var managerStaffOrgId = data.managerStaffOrgId;
+	var url = "/html/incomeWorktable/lineManage/contractManage/performContract.html?managerStaffOrgId="+managerStaffOrgId;	
 	top.showSubpageTab(url,"履行中合同");
 }

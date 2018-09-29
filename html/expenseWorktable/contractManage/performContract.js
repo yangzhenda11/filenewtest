@@ -57,7 +57,7 @@ function initPerformContractTable(){
  * 跳转订单信息
  */
 function jumpOrderManageByContract(data){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=1&returnbtn=true";
+	var url = "/html/expenseWorktable/orderManage/orderManage.html?id=123&relationType=1&returnbtn=true&contractId="+data;
 	window.location.href = url;
 }
 /*

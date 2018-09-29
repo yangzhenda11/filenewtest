@@ -24,9 +24,7 @@ function initRiskWarningListTable(){
 	        "contentType":"application/json;charset=utf-8",
 	        "url": serverPath+'riskWarning/listRiskWarning',
 	        "data": function(d) {
-	        	d.contractName = $("#riskWarningfoSearch").val().trim();
-	        	d.contractNumber = $("#riskWarningfoSearch").val().trim();
-	        	d.partnerName = $("#riskWarningfoSearch").val().trim();
+	        	d.riskWarningfoSearch = $("#riskWarningfoSearch").val().trim();
 	           	return JSON.stringify(d);
 	        }
 		},

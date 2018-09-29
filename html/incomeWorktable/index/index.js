@@ -11,21 +11,21 @@ var serverPath = config.serverPath;
  * 91219：商务经理
  */
 var roleType = "";
-$(function(){
+$(function() {
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
 	$("#loginUserName").text(config.curStaffName);
-	if(roleType == 91216 || roleType == 91217 || roleType == 91219){
-		if(roleType == 91216){
+	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
+		if(roleType == 91216) {
 			$("#roleName").text("客户经理");
 			$("#captionTitle").text("我的商务助理");
-		}else if(roleType == 91217){
+		} else if(roleType == 91217) {
 			$("#roleName").text("业务管理");
-		}else{
+		} else {
 			$("#roleName").text("商务经理");
 		};
 		$("#auditCol").remove();
-	}else if(roleType == 91218){
+	} else if(roleType == 91218) {
 		$("#roleName").text("稽核管理");
 		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
 		$("#auditCol").removeClass("hidden");
@@ -34,27 +34,29 @@ $(function(){
 	$(".page-content-worktable").show();
 	//获取商务助理配置内容
 	getAssistantList();
-	
+
 	initIncomeOverview();
 	initIncomeAnalysis();
 })
-$("#workItemDom").on("click",".workItem",function(){
+$("#workItemDom").on("click", ".workItem", function() {
 	var moduleUrl = $(this).find("img").data("url");
-	if(moduleUrl){
+	if(moduleUrl) {
 		alert(moduleUrl);
-		top.showSubpageTab(moduleUrl,$(this).find("p").text());
-	}else{
-		layer.alert("该模块暂未使用。",{icon:2})	
+		top.showSubpageTab(moduleUrl, $(this).find("p").text());
+	} else {
+		layer.alert("该模块暂未使用。", {
+			icon: 2
+		})
 	}
 })
 /*
  * 取得角色list中的当前页面所使用的角色
  */
-function checkRoleType(){
+function checkRoleType() {
 	var roleArr = config.curRole;
-	var permArr = [91216,91217,91218,91219];
-	$.each(roleArr, function(k,v) {
-		if(isInArray(permArr,v)){
+	var permArr = [91216, 91217, 91218, 91219];
+	$.each(roleArr, function(k, v) {
+		if(isInArray(permArr, v)) {
 			roleType = v;
 			return false;
 		}
@@ -64,7 +66,7 @@ function checkRoleType(){
 /*
  * 获取商务助理配置内容
  */
-function getAssistantList(){
+function getAssistantList() {
 	var url = serverPath + "assistant/assistantList";
 	var postData = {
 		roleId: roleType,
@@ -72,14 +74,15 @@ function getAssistantList(){
 		funType: "sr"
 	};
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+
 	function successCallback(result) {
 		var data = result.data;
 		var html = "";
-		$.each(data, function(k,v) {
-			html += '<div class="workItem">'+
-					'<img src="/static/img/worktable/'+v.funIconUrl+'" data-url="'+v.funUrl+'"/>'+
-					'<p>'+v.funName+'</p>'+
-					'</div>';
+		$.each(data, function(k, v) {
+			html += '<div class="workItem">' +
+				'<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/>' +
+				'<p>' + v.funName + '</p>' +
+				'</div>';
 		});
 		$("#workItemDom").html(html);
 	}
@@ -88,39 +91,33 @@ function getAssistantList(){
 /*
  * 设置初始稽核范围
  */
-function setAuditScope(){
-	var url = serverPath + "auditManager/getAuditRangeById";
-	var postData = {
-		provCode: config.provCode,
-		companyCode: config.companyCode
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+function setAuditScope() {
+	var obj = {
+			companyCode: config.companyCode
+		};
+		var url = serverPath + "auditManager/getAuditRangeById";
+		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
 	var dataPermission = config.dataPermission;
-	function successCallback(result){
+	function successCallback(result) {
 		var data = result.data;
-		/*if(data.length > 0){*/
-			var dataPermission = config.dataPermission;
-			var companyName = data.companyName;
-			var provName = data.provName;	
-			if(dataPermission == 3){
-				$("#scope").text(provName);
-				$("#scope").attr("title",provName);
-				$("#changeScope").show();
-			}else{
-				$("#scope").text(companyName);
-				$("#scope").attr("title",companyName);
-				$("#changeScope").remove();
-			}
-			top.globalConfig.auditScope = data.companyCode;
-		/*}*/
+		var dataPermission = config.dataPermission;
+		var orgName = data.orgName;
+		$("#scope").text(orgName);
+		$("#scope").attr("title", orgName);
+		if(dataPermission == 3) {
+			$("#changeScope").show();
+		} else {
+			$("#changeScope").remove();
+		}
+		top.globalConfig.auditScope = data.auditRange;
 	}
 }
 /*
  * 选择稽核范围
  */
-function changeScope(){
+function changeScope() {
 	$("#scopeModal").modal("show");
-	if(!scopeTree){
+	if(!scopeTree) {
 		initSopeChooseTree();
 	}
 }
@@ -129,20 +126,20 @@ var scopeTree;
  * 生成稽核部门树————ztree
  */
 function initSopeChooseTree() {
-    var treeSetting = {
+	var treeSetting = {
 		async: {
 			enable: true,
 			url: serverPath + "contractType/listCompany",
 			type: "post",
 			dataType: 'json',
 			dataFilter: orgsfilter,
-			autoParam: ["orgId=orgId"]
+			autoParam: ["orgCode=orgCode"]
 		},
 		data: {
 			simpleData: {
 				enable: true,
-				idKey: "orgId",
-				pIdKey: "parentId"
+				idKey: "orgCode",
+				pIdKey: "parentCode"
 			},
 			key: {
 				name: "orgName"
@@ -150,126 +147,131 @@ function initSopeChooseTree() {
 		},
 		view: {
 			selectedMulti: false,
-//			dblClickExpand: false
+			//			dblClickExpand: false
 		},
 		callback: {
 			onAsyncError: onAsyncError,
 			onDblClick: setInputInfo
 		}
 	};
+
 	function orgsfilter(treeId, parentNode, responseData) {
-		if(responseData.status == 1){
+		if(responseData.status == 1) {
 			var data = responseData.data;
-			if(data){
-	        	return data;
-			}else{
+			if(data) {
+				return data;
+			} else {
 				return null;
 			}
-		}else{
+		} else {
 			layer.msg(responseData.message);
 			return null;
 		}
 	};
-	App.formAjaxJson(serverPath + 'contractType/listCompany',"post",{'orgId':''},successCallback,null,null,null,null,"formData")
-	function successCallback(result){
+	App.formAjaxJson(serverPath + 'contractType/listCompany', "post", {
+		'orgId': ''
+	}, successCallback, null, null, null, null, "formData")
+
+	function successCallback(result) {
 		var data = result.data;
-    	if (data != "") {
-        	if(scopeTree){
+		if(data != "") {
+			if(scopeTree) {
 				scopeTree.destroy();
 			};
 			scopeTree = $.fn.zTree.init($("#scopeTree"), treeSetting, data);
 			var nodes = scopeTree.getNodes();
-            scopeTree.expandNode(nodes[0]);
-        } else {
-            layer.msg("暂无数据，请稍后重试");
-        }
+			scopeTree.expandNode(nodes[0]);
+		} else {
+			layer.msg("暂无数据，请稍后重试");
+		}
 	}
-    //双击事件 
-    function setInputInfo(event, treeId, treeNode) {
-        setScopeChecked(treeNode);
-    }
+	//双击事件 
+	function setInputInfo(event, treeId, treeNode) {
+		setScopeChecked(treeNode);
+	}
 }
 //按钮选择
-function chooseScopeTree(){
+function chooseScopeTree() {
 	var treeNode = scopeTree.getSelectedNodes()[0];
-		setScopeChecked(treeNode);
+	setScopeChecked(treeNode);
 }
 //按钮删除
-function deleteCheckedScope(){
-	if($("#scopeChecked .scopeItem.selected").length == 0){
+function deleteCheckedScope() {
+	if($("#scopeChecked .scopeItem.selected").length == 0) {
 		layer.msg("请选择已选内容进行移除");
-	}else{
+	} else {
 		$("#scopeChecked").html("");
 	}
 }
 //右侧赋值
-function setScopeChecked(treeNode){
+function setScopeChecked(treeNode) {
 	var name = treeNode.orgName;
-	var orgId = treeNode.orgId;
-	var html = '<div class="scopeItem" data-id='+orgId+'>'+name+'</div>';
+	var orgCode = treeNode.orgCode;
+	var html = '<div class="scopeItem" data-id=' + orgCode + '>' + name + '</div>';
 	$("#scopeChecked").html(html);
 }
-$("#scopeChecked").on("click",".scopeItem",function(){
-	if($(this).hasClass("selected")){
+$("#scopeChecked").on("click", ".scopeItem", function() {
+	if($(this).hasClass("selected")) {
 		$(this).removeClass("selected");
-	}else{
+	} else {
 		$(this).addClass("selected");
 	}
 })
 /*
  * 选择稽核范围确定按钮点击
  */
-function setScope(){
+function setScope() {
 	$("#scopeModal").modal("hide");
-	if($("#scopeChecked .scopeItem").length > 0){
+	if($("#scopeChecked .scopeItem").length > 0) {
 		var checkedText = $("#scopeChecked .scopeItem").text();
-		var checkedId = $("#scopeChecked .scopeItem").data("id");
+		var companyCode = $("#scopeChecked .scopeItem").data("id");
+		var obj = {
+			"companyCode": companyCode,
+		};
+		var url = serverPath + "auditManager/updateAuditRange";
+		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+		function successCallback(result) {
+			layer.msg("更改成功!");
+		}
 		$("#scope").text(checkedText);
-		$("#scope").attr("title",checkedText);
-		top.globalConfig.auditScope = checkedId;
+		$("#scope").attr("title", checkedText);
+		top.globalConfig.auditScope = companyCode;
 	}
 }
+
 /***************选择稽核范围结束***********************/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$("#emphasisRadio input[name='emphasisRadio']").on("change",function(){
-	if($(this).val() == 1){
-		$("#emphasisContractDom").hide(0,function(){
+$("#emphasisRadio input[name='emphasisRadio']").on("change", function() {
+	if($(this).val() == 1) {
+		$("#emphasisContractDom").hide(0, function() {
 			$("#emphasisCustomerDom").show();
-//			initEmphasisClientDom();
+			//			initEmphasisClientDom();
 		});
-	}else if($(this).val() == 2){
-		$("#emphasisCustomerDom").hide(0,function(){
+	} else if($(this).val() == 2) {
+		$("#emphasisCustomerDom").hide(0, function() {
 			$("#emphasisContractDom").show();
-//			initEmphasisClientDom();
+			//			initEmphasisClientDom();
 		});
 	}
 })
 
 //我的收入总览图表生成
-function initIncomeOverview(){
+function initIncomeOverview() {
 	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
-	var overviewReceivableOption = returnChartsOption('应收金额','合同收入/风险收入\n累计应收金额占比情况',[{value:406957, name:'风险收入：406,957元'},{value:20348, name:'合同收入：20,348元'}],'应收金额');
+	var overviewReceivableOption = returnChartsOption('应收金额', '合同收入/风险收入\n累计应收金额占比情况', [{
+		value: 406957,
+		name: '风险收入：406,957元'
+	}, {
+		value: 20348,
+		name: '合同收入：20,348元'
+	}], '应收金额');
 	incomeOverviewReceivable.setOption(overviewReceivableOption);
 	var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
-	var overviewReceivedOption = returnEmptyChartsOption('实收金额','合同收入/风险收入\n累计应收金额占比情况',['风险收入：0元','合同收入：0元'],'应收金额：0元');
+	var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '应收金额：0元');
 	incomeOverviewReceived.setOption(overviewReceivedOption);
 }
-function returnChartsOption(title,subTitle,data,seriesName){
+
+function returnChartsOption(title, subTitle, data, seriesName) {
 	var overviewReceivableOption = {
 		title : {
 	        text: title,
@@ -334,61 +336,64 @@ function returnChartsOption(title,subTitle,data,seriesName){
 	};
 	return overviewReceivableOption;
 };
-function returnEmptyChartsOption(title,subTitle,data,toolTip){
+
+function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 	var seriesData = [];
-	for(var i = 0; i < data.length; i++){
-		var value = i==0 ? 1 : 0;
-		var item = {value:value, name:data[i]};
+	for(var i = 0; i < data.length; i++) {
+		var value = i == 0 ? 1 : 0;
+		var item = {
+			value: value,
+			name: data[i]
+		};
 		seriesData.push(item);
 	};
 	var option = {
-		title : {
-	        text: title,
-	        subtext: subTitle,
-	        x:'center',
-	        itemGap: 6,
-	        textStyle: {
-	        	fontSize:14
-	        },
-	        subtextStyle: {
-	        	lineHeight: 16,
-	        	color: "#333",
-	        	rich: {}
-	        },
-	    },
-	    tooltip : {
-	        formatter: toolTip
-	    },
-	    legend: {
-	    	orient: "vertical",
-	        bottom: '0',
-	        itemWidth: 8,
-	        itemHeight: 8,
-	        selectedMode: false,
-	        itemGap: 5
-	    },
-	    series : [
-	        {
-	            name: '',
-	            type: 'pie',
-	            clockwise: false,
-        		startAngle: 0,
-	            radius : '55%',
-	            center: ['50%', '53%'],
-				label: {
- 					show: false
- 				},
-   				labelLine: {
-   					show: false
-   				},
-	            data: seriesData
-	        }
-	    ],
-	    color:['#bfbfbf', '#bfbfbf']
+		title: {
+			text: title,
+			subtext: subTitle,
+			x: 'center',
+			itemGap: 6,
+			textStyle: {
+				fontSize: 14
+			},
+			subtextStyle: {
+				lineHeight: 16,
+				color: "#333",
+				rich: {}
+			},
+		},
+		tooltip: {
+			formatter: toolTip
+		},
+		legend: {
+			orient: "vertical",
+			bottom: '0',
+			itemWidth: 8,
+			itemHeight: 8,
+			selectedMode: false,
+			itemGap: 5
+		},
+		series: [{
+			name: '',
+			type: 'pie',
+			clockwise: false,
+			startAngle: 0,
+			radius: '55%',
+			center: ['50%', '53%'],
+			label: {
+				show: false
+			},
+			labelLine: {
+				show: false
+			},
+			data: seriesData
+		}],
+		color: ['#bfbfbf', '#bfbfbf']
 	};
 	return option;
 };
-function initIncomeAnalysis(){
+
+function initIncomeAnalysis() {
 	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
 	var incomeAnalysisOption = {
 		title : {

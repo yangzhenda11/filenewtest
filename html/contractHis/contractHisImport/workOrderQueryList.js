@@ -24,7 +24,8 @@ App.initDataTables('#workOrderQueryTable', "#submitBtn", {
 		   	}
 		},
         {"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"15%"},
-        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
+        {"data": "newContractNumber","title": "合同编号","className":"whiteSpaceNormal","width": "10%"},
+        {"data": "provinceCode","title": "省份代码","className":"whiteSpaceNormal","width": "6%"},
         {"data": "contractTypeName","title": "合同类型","className":"whiteSpaceNormal","width": "14%"},
 	    {"data": "empName","title": "承办人","className":"whiteSpaceNormal","width": "6%"},
         {"data": "hrOrgName","title": "承办部门","className":"whiteSpaceNormal","width": "16%"},
@@ -90,3 +91,21 @@ function searchWorkOrder1() {
     }
 }
 
+
+/*
+ * 导入点击事件
+ */
+function searchWorkOrder2() {
+    var postData = {
+        contractImportNum: 100
+    };
+    App.formAjaxJson( serverPath+'contractHistoryImportController/saveProvinceHistoryContractImport',"post",JSON.stringify(postData),successCallback,null,null,null,null,null);
+    function successCallback(result){
+        console.info();
+        if(result.status == 1){
+            layer.msg("导入成功！"+result);
+        } else {
+            layer.msg("导入失败！"+result);
+        }
+    }
+}

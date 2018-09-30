@@ -67,7 +67,8 @@ alert(url);
  * 跳转线路信息
  */
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=1&returnbtn=true";
+ 
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?id="+data+"&relationType=1&returnbtn=true";
 	window.location.href = url;
 }
 /*

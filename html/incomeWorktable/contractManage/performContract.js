@@ -68,9 +68,12 @@ function initPerformContractTable(){
 /*
  * 跳转线路信息
  */
-function jumpLineManage(contractId){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?id="+ contractId +"&relationType=1&returnbtn=true";
-	App.changePresentUrl(url);
+ 
+function jumpLineManage(data){
+ 
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?id="+data+"&relationType=1&returnbtn=true";
+	window.location.href = url;
+ 
 }
 /*
  * 页面内表格初始化完成之后查询事件

@@ -10,6 +10,7 @@ var serverPath = config.serverPath;
  */
 var parm = App.getPresentParm();
 console.log(parm);
+ 
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
@@ -19,7 +20,7 @@ if(parm.relationType == "0"){
 	layer.alert("请确定线路的关联方式",{icon:2})
 };
 function initselectLR() {
-	var theadList = parm.relationType == 1 ? relationContractTheadList : notRelationContractTheadList;
+ 	var theadList = parm.relationType == 1 ? relationContractTheadList : notRelationContractTheadList;
 	var options = {
 		modalId: "#commomModal",
 		data: theadList
@@ -30,6 +31,7 @@ function initselectLR() {
  * 点击确定回调的页面方法
  */
 function returnSelectLRData(data) {
+ 
 	$("#commomModal").modal("hide");
 	if(parm.relationType == 1){
 		relationContractTheadList = data;
@@ -61,11 +63,14 @@ function initLineInforTable(){
 	}
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
-			"type": "GET",
-			"url": serverPath + 'staffPartner/getStaffPartnerList',
+			"type": "POST",
+			"url" : serverPath + 'lineMangerController/listLineInfoForCustomer',
+			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) {
-				d.staffName = $("#searchInput").val().trim();
-				return d;
+				d.isRelateContract =parm.relationType.trim();
+				d.lineId =parm.id.trim();
+				d.businessId = $("#searchInput").val().trim();
+				return  JSON.stringify(d);
 			}
 		},
 		"columns": lineInforTableColumns()

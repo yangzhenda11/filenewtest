@@ -70,10 +70,8 @@ function initPerformContractTable(){
  */
  
 function jumpLineManage(data){
- 
 	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?id="+data+"&relationType=1&returnbtn=true";
-	window.location.href = url;
- 
+	App.changePresentUrl(url);
 }
 /*
  * 页面内表格初始化完成之后查询事件

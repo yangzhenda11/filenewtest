@@ -24,8 +24,8 @@ $(function(){
 	};
 	//获取商务助理配置内容
 	getAssistantList();
-	
-	
+	//获取重点关注履行中合同跟踪
+	getFocusContractTable()
 })
 $("#workItemDom").on("click",".workItem",function(){
 	var moduleUrl = $(this).find("img").data("url");
@@ -71,6 +71,96 @@ function getAssistantList(){
 		$("#workItemDom").html(html);
 	}
 }
+/*
+ * 获取重点关注履行中合同跟踪
+ */
+function getFocusContractTable(){
+	var url = serverPath+'performanceContractPay/listFocusContractPay';
+	var postData = {
+		draw: 1,
+		start: 0,
+		length: 5,
+		order: [],
+		contractInfoSearch: $("#focusContractInput").val().trim()
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(result.recordsTotal > postData.length){
+			$("#showContractMore").show();
+		}else{
+			$("#showContractMore").hide();
+		};
+		if(data.length > 0){
+			var html = "";
+			$.each(data, function(k,v) {
+				html += '<tr>'+
+					'<td>'+ (k+1) + '</td>'+
+					'<td>'+ v.contractName + '</td>'+
+					'<td>'+ v.contractNumber + '</td>'+
+					'<td>'+ v.partnerName + '</td>'+
+					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
+					'<td><a onclick="jumpOrderManageByContract(\''+v.contractId+'\')">查看</a></td>'+
+					'<td><a onclick="showContractPerformerModal(\''+v.contractId+'\')">查看</a></td>';
+			});
+			$("#emphasisClient").html(html);		
+		}else{
+			var emptyTr = '<tr><td colspan="8">暂无重点关注的合同信息</td></tr>'
+			$("#emphasisClient").html(emptyTr);						
+		}
+	}
+}
+/*
+ * 跳转我履行中的合同信息
+ */
+$("#showContractMore").on("click",function(){
+	var url = "/html/expenseWorktable/contractManage/contractManage.html?expandFocusContract=true";
+	top.showSubpageTab(url,"履行中合同");
+})
+/*
+ * 跳转订单信息
+ */
+function jumpOrderManageByContract(contractId){
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractId="+contractId;
+	top.showSubpageTab(url,"订单信息");
+}
+/*
+ * 我履行中的合同跟踪合同履行人查看
+ */
+function showContractPerformerModal(contractId) {
+	var url = serverPath + "contractPerformer/contractPerformerList";
+	App.formAjaxJson(url, "post", JSON.stringify({contractId: contractId}), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var html = '';
+		if(data.length > 0){
+			for (var i = 0; i < data.length; i++){
+				var item = result[i];
+				var performerType = item.performerType == 1 ? "是" : "否";
+				html += "<tr>"+
+							"<td class='align-center'>"+(i+1)+"</td>"+
+							"<td>"+item.performerStaffName+"</td>"+
+							"<td>"+item.performerOrgName+"</td>"+
+							"<td>"+performerType+"</td>"+
+							"<td></td>"+"<td></td>"+
+							"<td>"+item.addStaff+"</td>"+
+							"<td>"+item.addStaffOrg+"</td>"+
+						"</tr>";
+			}
+		}else{
+			html = '<tr><td colspan="8">暂无合同履行人信息</td></tr>'
+		};
+		$("#contractPerformerTbody").html(html);
+		$("#contractPerformerModal").modal("show");
+	}
+}
+
+
+
+
+
+
 
 
 

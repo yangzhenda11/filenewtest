@@ -41,8 +41,16 @@ function getTableToreadHisList(){
 	        {"data": "contractId","title": "合同编号","className":"whiteSpaceNormal"},
 	        {"data": "poNumber","title": "订单编号","className":"whiteSpaceNormal"},
 	        {"data": "orgName","title": "订单所属组织","className":"whiteSpaceNormal"},
-	        {"data": "poAmount","title": "订单不含税金额","className":"whiteSpaceNormal"},
-	        {"data": "receiveAmountHead","title": "累计接收金额","className":"whiteSpaceNormal"},
+	        {"data": "poAmount","title": "订单不含税金额","className":"whiteSpaceNormal",
+	        	"render" : function(data, type, full, meta){
+					return App.unctionToThousands(data);
+			   	}
+	        },
+	        {"data": "receiveAmountHead","title": "累计接收金额","className":"whiteSpaceNormal",
+	        	"render" : function(data, type, full, meta){
+					return App.unctionToThousands(data);
+			   	}
+	        },
 	        {"data": "orderPercentage","title": "接收百分比","className":"whiteSpaceNormal"}
 	    ],
 		"columnDefs": [{

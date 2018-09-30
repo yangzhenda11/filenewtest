@@ -3,16 +3,17 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 //区域展开时判断是否重新加载的标志位
-var reloadCustomerListTable = false;
+//var reloadCustomerListTable = false;
 var reloadEmphasisCustomerTable = false;
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-	if(id == "customerList"){
-		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-		if(isInitCustomerListTable && reloadCustomerListTable){
-			reloadPageDataTable("#customerListTable",true);
-		}
-	}else if(id == "emphasisCustomer"){
+//	if(id == "customerList"){
+//		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
+//		if(isInitCustomerListTable && reloadCustomerListTable){
+//			reloadPageDataTable("#customerListTable",true);
+//		}
+//	}
+	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 		if(isInitEmphasisCustomerTable && reloadEmphasisCustomerTable){
 			reloadPageDataTable("#emphasisCustomerTable",true);

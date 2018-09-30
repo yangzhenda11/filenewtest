@@ -477,6 +477,9 @@ table i{
 th.thAlignCenter{
 	text-align: center;
 }
+.th-align th{
+    text-align: center;
+}
 
 table th{
 	border: 1px solid #ccc;

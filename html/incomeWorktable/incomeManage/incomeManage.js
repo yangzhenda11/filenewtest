@@ -1,6 +1,10 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+//页面变量
+var pageConfig = {
+	isInitForecastCharts: false
+}
 $(function(){
 	initIncomeAnalysisCharts();
 })
@@ -12,7 +16,9 @@ $("#buttonNavTabs").on("click","button",function(){
 })
 $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 	if($(e.target).data("id") == "incomeForecast"){
-		initIncomeForecastCharts();
+		if(!pageConfig.isInitForecastCharts){
+			initIncomeForecastCharts();
+		}
 	};
 })
 /*
@@ -105,7 +111,7 @@ function initIncomeAnalysisCharts(){
 	            type:'bar',
 	            stack: '合同收入',
 	            barGap: 0,
-	            barMaxWidth: 55,
+	            barMaxWidth: 50,
 	            data:[220, 182, 191, 234, 290, 330, 310]
 	        },
 	        {
@@ -119,7 +125,7 @@ function initIncomeAnalysisCharts(){
 	            type:'bar',
 	            stack: '风险收入',
 	            barGap: 0,
-	            barMaxWidth: 55,
+	            barMaxWidth: 50,
 	            data:[62, 82, 91, 84, 109, 110, 120]
 	        }
 	    ],
@@ -227,4 +233,5 @@ function initIncomeForecastCharts(){
 	    color:['#0070c0', '#ed8b00','#a0a0a0']
 	};
 	incomeForecast.setOption(incomeForecastOption);
+	pageConfig.isInitForecastCharts = true;
 }

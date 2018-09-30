@@ -15,8 +15,6 @@ function searchPerformContract(){
  * 我的客户查询表格初始化
  */
 function initPerformContractTable(){
-//	alert(JSON.stringify(parm));
-//	alert(parm.partyId);
 	App.initDataTables('#performContractTable', "#performContractLoading", {
 		ajax: {
 			"type": "POST",
@@ -36,16 +34,16 @@ function initPerformContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "partnerName","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width": "20%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "20%"},
+			{"data": "partnerName","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "15%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": null,"className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}

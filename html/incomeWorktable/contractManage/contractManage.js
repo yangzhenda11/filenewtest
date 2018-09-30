@@ -81,23 +81,23 @@ function initPerformanceContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "customerName","className": "whiteSpaceNormal"},
-			{"data": "customerCode","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerName","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerManagerName","className": "whiteSpaceNormal"},
+			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "8%"},
 			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon",
+			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
 				"render" : function(data, type, full, meta){
 					var editFlag = "add";
 					if(full.isFocus == 1){
@@ -169,23 +169,23 @@ function initFocusContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "customerName","className": "whiteSpaceNormal"},
-			{"data": "customerCode","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerName","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerManagerName","className": "whiteSpaceNormal"},
+			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "8%"},
 			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon",
+			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
 				"render" : function(data, type, full, meta){
 					return "<img onclick='deleteFocusContract(\""+data.contractId+"\",\""+data.focusId+"\")' src='/static/img/delete.png' />";
 				}

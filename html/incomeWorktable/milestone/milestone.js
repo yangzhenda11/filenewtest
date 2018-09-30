@@ -41,22 +41,22 @@ function initContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal","width":"23%"},
-			{"data": "contractNumber","className": "whiteSpaceNormal","width":"10%"},
+			{"data": "contractName","className": "whiteSpaceNormal","width":"20%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width":"12%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width":"12%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width":"10%"},
-			{"data": "partnerCode","className": "whiteSpaceNormal","width":"8%"},
-			{"data": "contractValue","className": "whiteSpaceNormal","width":"7%",
+			{"data": "customerCode","className": "whiteSpaceNormal","width":"12%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width":"10%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width":"8%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "signDate","className": "whiteSpaceNormal","width":"10%",
+			{"data": "signDate","className": "whiteSpaceNormal","width":"8%",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}
 			},
-			{"data": "expiryDate","className": "whiteSpaceNormal","width":"10%",
+			{"data": "expiryDate","className": "whiteSpaceNormal","width":"8%",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}

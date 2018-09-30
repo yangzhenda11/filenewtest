@@ -186,6 +186,6 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转合同信息
  */
 function jumpContractManage(partyId){
-	var url = "/html/expenseWorktable/contractManage/performContract.html?id=123&partyId="+partyId;
+	var url = "/html/expenseWorktable/contractManage/performContract.html?partyId="+partyId;
 	top.showSubpageTab(url,"履行中合同");
 }

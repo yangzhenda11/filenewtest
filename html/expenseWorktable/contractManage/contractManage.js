@@ -88,14 +88,14 @@ function initPerformanceContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpOrderManageByContract(\""+data.+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "7%",
@@ -203,14 +203,14 @@ function initFocusContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpOrderManageByContract(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "7%",

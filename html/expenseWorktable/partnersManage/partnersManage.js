@@ -69,7 +69,6 @@ function initCustomerListTable(){
 //					if(full.isValid == 1){
 //						editFlag = "delete";
 //					};
-//					return "<img onclick='emphasisOfCustomer()' src='/static/img/"+editFlag+".png' />";
 					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
@@ -82,35 +81,34 @@ function initCustomerListTable(){
 function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/searchReadType";
     	var postData = {
-    			partyId: partyId,
-    			addStaffOrgId:curStaffOrgId
+			partyId: partyId,
+			addStaffOrgId: curStaffOrgId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
-			if(result.data.length>=1&&editFlag != "delete"){
+			if(result.data.length>=1 && editFlag != "delete"){
 				layer.msg("已关注，无需重新关注");
 				return ;
 			}
-			test(partyId,curStaffOrgId,focusId,editFlag);
+			emphasisFocus(partyId,curStaffOrgId,focusId,editFlag);
 		}
 }
 /*
  * 添加和取消重点关注
  * 参数：editFlag  "add":增加 | "delete":取消
  */
-function test(partyId,curStaffOrgId,focusId,editFlag){
+function emphasisFocus(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/savePartnersFocusManage";
 	var massage = "添加";
 	var postData = {
-			partyId: partyId,
-			addStaffOrgId:curStaffOrgId
+		partyId: partyId,
+		addStaffOrgId:curStaffOrgId
 	};
 	if(editFlag == "delete"){
 		postData = {
-    			partyId: partyId,
-    			addStaffOrgId:curStaffOrgId,
-    			focusId:focusId
+			partyId: partyId,
+			addStaffOrgId:curStaffOrgId,
+			focusId:focusId
 		};
 		url = serverPath + "partnersManage/updatePartnersFocusManage";
 		massage = "取消";
@@ -118,9 +116,7 @@ function test(partyId,curStaffOrgId,focusId,editFlag){
 	layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
 			layer.msg("已"+massage+"重点关注");
-			reloadPageDataTable("#customerListTable",true);
 			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 			if(isInitEmphasisCustomerTable){
 				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
@@ -131,7 +127,6 @@ function test(partyId,curStaffOrgId,focusId,editFlag){
 			}
 		}
    	});
-
 }
 
 
@@ -174,7 +169,7 @@ function initEmphasisCustomerTable(){
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
 					var editFlag="delete";
-					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
+					return "<img onclick='emphasisFocus(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
 		]

@@ -32,14 +32,54 @@
 				</div>
 				<div class="portlet-body">
 					<div class="buttonNavTabs" id="buttonNavTabs">			
-						<button href="#incomeAnalysis" data-toggle="tab" class="btn primary btn-inline check">收入分析</button>
-						<button href="#incomeForecast" data-toggle="tab" class="btn primary btn-inline">收入预测</button>
+						<button href="#incomeAnalysis" data-id="incomeAnalysis" data-toggle="tab" class="btn primary btn-inline check">收入分析</button>
+						<button href="#incomeForecast" data-id="incomeForecast" data-toggle="tab" class="btn primary btn-inline">收入预测</button>
 					</div>
 					<div class="tab-content">
 					    <div class="tab-pane fade in active" id="incomeAnalysis">
 					    	<div id="incomeAnalysisCharts"></div>
+					    	<div class="form-fieldset">
+								<div class="form-fieldset-title">
+									<span><i class="iconfont icon-layers"></i> 合同收入明细</span>
+								</div>
+								<div class="form-fieldset-body" style="display: none;" id="incomeAnalysisValue">
+									<div class="row">
+										<div class="incomeAnalysisTitle">
+											<p>账期：<span id="">201805</span></p>
+											<p>应收（元）：<span id="">750,000</span></p>
+											<p>欠费（元）：<span id="">200,000</span></p>
+											<p>实收（元）：<span id="">550,000</span></p>
+										</div>
+										<div class="ui-radio-list ui-radio-inline" id="incomeAnalysisRadio">
+											<label class="ui-radio">
+												<input type="radio" value="1" checked="checked" name="incomeType">
+												<span></span>
+												按客户查看
+											</label>
+											<label class="ui-radio">
+												<input type="radio" value="2" name="incomeType">
+												<span></span>
+												按合同查看
+											</label>
+										</div>
+										<table id="incomeTable" class="table table-striped table-bordered table-hover table-header-fixed table-align"></table>
+					               	</div>
+					            </div>
+					        </div>
+					        <div class="work-list">
+								<div class="form-fieldset" id="performanceContractList">
+									<div class="form-fieldset-title">
+										<span>跨省分摊收入</span>
+									</div>
+									<div class="form-fieldset-body">
+										<p class="apportionTitle">2018年度分摊收入情况分析</p>
+									</div>
+								</div>
+							</div>
 					    </div>
-					    <div class="tab-pane fade" id="incomeForecast">svn...</div>
+					    <div class="tab-pane fade" id="incomeForecast">
+					    	<div id="incomeForecastCharts"></div>
+					    </div>
 					</div>
 				</div>
 			</div>

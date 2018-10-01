@@ -1,97 +1,164 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+//页面变量
+var pageConfig = {
+	isInitForecastCharts: false
+}
 $(function(){
-	initIncomeAnalysis();
+	initIncomeAnalysisCharts();
 })
+/*
+ * 标题切换
+ */
 $("#buttonNavTabs").on("click","button",function(){
-	console.log(this)
 	$(this).addClass("check").siblings("button").removeClass("check");
 })
-
-function initIncomeAnalysis(){
+$('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	if($(e.target).data("id") == "incomeForecast"){
+		if(!pageConfig.isInitForecastCharts){
+			initIncomeForecastCharts();
+		}
+	};
+})
+/*
+ * 合同收入明细查看类型切换
+ */
+$("#incomeAnalysisRadio input[name='incomeType']").on("change",function(){
+//	$(this).val()
+})
+/*
+ * 生成收入分析图表
+ */
+function initIncomeAnalysisCharts(){
 	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysisCharts'));
-	option = {
+	var incomeAnalysisOption = {
+		title : {
+	        text: '2018年收入情况分析',
+	        x:'center',
+	        itemGap: 12,
+	        textStyle: {
+	        	fontSize:20
+	        },
+	        subtext: '合同收入：750,000元，风险收入：550,000元，收入总计：1,300,000元',
+	        subtextStyle: {
+	        	color: "#333",
+	        	fontSize: 14,
+	        	fontWeight: "bolder",
+	        	lineHeight: 20,
+	        	rich: {}
+	        }
+	   	},
+	    legend: {
+	    	orient: 'vertical',
+	    	top: '40%',
+	        right: '5',
+	        itemWidth: 10,
+	        itemHeight: 10,
+	        selectedMode: false,
+	        itemGap: 15
+	    },
 	    tooltip : {
 	        trigger: 'axis',
+	        confine:"true",
 	        axisPointer : {
 	            type : 'shadow'
-	        }
-	    },
-	    legend: {
-	        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎','百度','谷歌','必应','其他']
+	        },
+	        textStyle:{
+               	align:'left'
+            },
+            formatter:function (params, ticket, callback) {
+            	var tooltipCon = params[0].name.split("\n\n")[1] + "</br>"
+            	$.each(params, function(k,v) {
+            		tooltipCon += v.stack + v.seriesName + "：" + v.value + "元</br>";
+            	});
+			    return tooltipCon;
+			}
 	    },
 	    grid: {
-	        left: '3%',
-	        right: '4%',
-	        bottom: '3%',
-	        containLabel: true
+	    	left: '10',
+            right: '100',
+            bottom: '5',
+            top: '80',
+            containLabel: true
+        },
+	    xAxis: {
+	    	axisLine:{
+	    		show:false
+	    	},
+	    	axisTick:{
+	    		show:false
+	    	},
+	        data: ['风险收入 合同收入\n\n6月', '风险收入 合同收入\n\n7月', '风险收入 合同收入\n\n8月', '风险收入 合同收入\n\n9月', '风险收入 合同收入\n\n10月', '风险收入 合同收入\n\n11月', '风险收入 合同收入\n\n12月']
 	    },
-	    xAxis : [
-	        {
-	            type : 'category',
-	            data : ['周一','周二','周三','周四','周五','周六','周日']
-	        }
-	    ],
-	    yAxis : [
-	        {
-	            type : 'value'
-	        }
-	    ],
+	    yAxis: {
+	    	axisLine:{
+	    		show:false
+	    	},
+	    	axisTick:{
+	    		show:false
+	    	}
+	    },
 	    series : [
 	        {
-	            name:'邮件营销',
+	            name:'实收金额',
 	            type:'bar',
-	            stack: '广告',
+	            stack: '合同收入',
 	            data:[120, 132, 101, 134, 90, 230, 210]
 	        },
 	        {
-	            name:'联盟广告',
+	            name:'欠费金额',
 	            type:'bar',
-	            stack: '广告',
+	            stack: '合同收入',
+	            barGap: 0,
+	            barMaxWidth: 50,
 	            data:[220, 182, 191, 234, 290, 330, 310]
 	        },
 	        {
-	            name:'视频广告',
+	            name:'实收金额',
 	            type:'bar',
-	            stack: '广告',
-	            data:[150, 232, 201, 154, 190, 330, 410]
-	        },
-	        {
-	            name:'百度',
-	            type:'bar',
-	            barWidth : 5,
-	            stack: '搜索引擎',
+	            stack: '风险收入',
 	            data:[620, 732, 701, 734, 1090, 1130, 1120]
 	        },
 	        {
-	            name:'谷歌',
+	            name:'欠费金额',
 	            type:'bar',
-	            stack: '搜索引擎',
-	            data:[120, 132, 101, 134, 290, 230, 220]
-	        },
-	        {
-	            name:'必应',
-	            type:'bar',
-	            stack: '搜索引擎',
-	            data:[60, 72, 71, 74, 190, 130, 110]
-	        },
-	        {
-	            name:'其他',
-	            type:'bar',
-	            stack: '搜索引擎',
+	            stack: '风险收入',
+	            barGap: 0,
+	            barMaxWidth: 50,
 	            data:[62, 82, 91, 84, 109, 110, 120]
 	        }
-	    ]
+	    ],
+	    color:['#4472c4', '#ff0000','#4472c4','#ff0000']
 	};
-	
-	
-	var incomeAnalysisOption = {
+	incomeAnalysis.setOption(incomeAnalysisOption);
+	incomeAnalysis.on('click', function (params) {
+    	console.log(params);
+    	if($("#incomeAnalysisValue").css("display") == "none"){
+    		$("#incomeAnalysisValue").show();
+    	};
+	});
+}
+/*
+ * 生成收入预测图表
+ */
+function initIncomeForecastCharts(){
+	var incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
+	var incomeForecastOption = {
 		title : {
 	        text: '2018年收入预测分析',
 	        x:'center',
+	        itemGap: 12,
 	        textStyle: {
-	        	fontSize:14
+	        	fontSize:20
+	        },
+	        subtext: '收入预测周期：201806至201812，合同收入：750,000元，风险收入：550,000元，收入总计：1,300,000元',
+	        subtextStyle: {
+	        	color: "#333",
+	        	fontSize: 14,
+	        	fontWeight: "bolder",
+	        	lineHeight: 20,
+	        	rich: {}
 	        }
 	   	},
 	    legend: {
@@ -105,15 +172,19 @@ function initIncomeAnalysis(){
 	    },
 	    tooltip : {
 	        trigger: 'axis',
+	        confine:"true",
 	        axisPointer : {
 	            type : 'shadow'
-	        }
+	        },
+	        textStyle:{
+               	align:'left'
+            }
 	    },
 	    grid: {
 	    	left: '10',
             right: '100',
             bottom: '5',
-            top: '50',
+            top: '80',
             containLabel: true
            },
 	    xAxis: {
@@ -138,17 +209,13 @@ function initIncomeAnalysis(){
 	        	name: '合同收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        barWidth:'45%',
 		        data: [22000, 18200, 19100, 23400, 29000, 13000, 31000]
 		    },
 		    {
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        barWidth:'45%',
-		        lable:{
-		        	show:true
-		        },
+		        barMaxWidth: 55,
 		        data: [220000, 182000, 191000, 234000, 290000, 130000, 310000]
 		    },
 		    {
@@ -165,5 +232,6 @@ function initIncomeAnalysis(){
 	    ],
 	    color:['#0070c0', '#ed8b00','#a0a0a0']
 	};
-	incomeAnalysis.setOption(incomeAnalysisOption);
+	incomeForecast.setOption(incomeForecastOption);
+	pageConfig.isInitForecastCharts = true;
 }

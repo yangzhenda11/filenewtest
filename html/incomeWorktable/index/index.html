@@ -121,7 +121,41 @@
                     	</div>
                	    </div>
     			</div>
-    			<div class="col-sm-12" id="emphasisCol1">
+    			<div class="col-sm-12" style="display: none;" id="emphasisColForAccount">
+    				<div class="portlet portlet-worktable">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的重点关注</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                        	<div class="pageSearch">
+								<div class="col-sm-3">
+									<input type="text" class="form-control" id="focusAccountInput" maxlength="50" placeholder="查询客户经理名称">
+								</div>
+								<div class="input-group">
+									<button type="button" class="btn red" data-loading-text="加载中.." onclick="getFocusAccountTable()"><i class="iconfont icon-search"></i>查询</button>
+								</div>
+							</div>
+        					<p class="table-title">客户经理管理</p>
+        					<table class="table table-hover table-bordered table-striped table-align">
+		                    	<thead>
+									<tr>
+										<th>序号</th>
+										<th>姓名</th>
+										<th>所属组织</th>
+										<th>联系电话</th>
+										<th>邮箱地址</th>
+										<th>合同清单</th>
+									</tr>
+								</thead>
+								<tbody id="focusAccountTbody"></tbody>
+							</table>
+							<a class="showMore" id="showAccountMore" style="display: none;">更多...</a>
+                    	</div>
+               	    </div>
+    			</div>
+    			<div class="col-sm-12" id="emphasisColForOhter" style="display: none;">
     				<div class="portlet portlet-worktable">
                         <div class="portlet-title">
                             <div class="caption">

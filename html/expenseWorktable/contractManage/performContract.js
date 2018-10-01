@@ -2,9 +2,7 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var parm = App.getPresentParm();
-if(!parm.managerStaffOrgId && !parm.customerCode){
-	layer.alert("参数错误，请联系管理员",{icon:2});
-}
+
 //我的客户查询表格初始化
 initPerformContractTable();
 /*
@@ -17,25 +15,14 @@ function searchPerformContract(){
  * 我的客户查询表格初始化
  */
 function initPerformContractTable(){
-	if(parm.customerCode){
-		var url = serverPath + 'performanceContract/listContractByCustomerCode';
-	}else if(parm.managerStaffOrgId){
-		var url = serverPath + 'performanceContract/listContractByManagerStaffOrgId';
-	}else{
-		layer.alert("参数错误，请联系管理员",{icon:2});
-		return;
-	}
 	App.initDataTables('#performContractTable', "#performContractLoading", {
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-			"url": url,
+			"url": serverPath + 'performanceContractPay/listPerformanceContractByPartyId',
 			"data": function(d) {
-				if(parm.customerCode){
-					d.customerCode = parm.customerCode;
-				}else{
-					d.managerStaffOrgId = parm.managerStaffOrgId;
-				};
+//				d.staffName = $("input[name='staffName']").val().trim();
+	        	d.partyId = parm.partyId;
 	        	d.contractInfoSearch = $("#contractInfoInput").val().trim();
 				return JSON.stringify(d);;
 			}
@@ -49,28 +36,26 @@ function initPerformContractTable(){
 			},
 			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "customerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "partnerName","className": "whiteSpaceNormal","width": "20%"},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
-			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "15%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpOrderManageByContract(\""+data+"\")'>查看</a>";
 				}
 			}
 		]
 	});
 }
 /*
- * 跳转线路信息
+ * 跳转订单信息
  */
- 
-function jumpLineManage(data){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?id="+data+"&relationType=1&returnbtn=true";
+function jumpOrderManageByContract(contractId){
+	var url = "/html/expenseWorktable/orderManage/orderManage.html?returnbtn=true&contractId="+contractId;
 	App.changePresentUrl(url);
 }
 /*

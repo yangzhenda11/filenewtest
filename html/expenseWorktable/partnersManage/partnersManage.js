@@ -3,16 +3,17 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 //区域展开时判断是否重新加载的标志位
-var reloadCustomerListTable = false;
+//var reloadCustomerListTable = false;
 var reloadEmphasisCustomerTable = false;
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-	if(id == "customerList"){
-		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-		if(isInitCustomerListTable && reloadCustomerListTable){
-			reloadPageDataTable("#customerListTable",true);
-		}
-	}else if(id == "emphasisCustomer"){
+//	if(id == "customerList"){
+//		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
+//		if(isInitCustomerListTable && reloadCustomerListTable){
+//			reloadPageDataTable("#customerListTable",true);
+//		}
+//	}
+	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 		if(isInitEmphasisCustomerTable && reloadEmphasisCustomerTable){
 			reloadPageDataTable("#emphasisCustomerTable",true);
@@ -68,7 +69,6 @@ function initCustomerListTable(){
 //					if(full.isValid == 1){
 //						editFlag = "delete";
 //					};
-//					return "<img onclick='emphasisOfCustomer()' src='/static/img/"+editFlag+".png' />";
 					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
@@ -76,55 +76,60 @@ function initCustomerListTable(){
 	});
 }
 /*
- * 添加和取消重点关注
- * 参数：editFlag  "add":增加 | "delete":取消
+ * 判断是否已关注
  */
 function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/searchReadType";
     	var postData = {
-    			partyId: partyId,
-    			addStaffOrgId:curStaffOrgId
+			partyId: partyId,
+			addStaffOrgId: curStaffOrgId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
-			if(result.data.length>=1&&editFlag != "delete"){
+			if(result.data.length>=1 && editFlag != "delete"){
 				layer.msg("已关注，无需重新关注");
 				return ;
 			}
-				var url = serverPath + "partnersManage/savePartnersFocusManage";
-				var massage = "添加";
-				var postData = {
-		    			partyId: partyId,
-		    			addStaffOrgId:curStaffOrgId
-				};
-				if(editFlag == "delete"){
-					postData = {
-			    			partyId: partyId,
-			    			addStaffOrgId:curStaffOrgId,
-			    			focusId:focusId
-					};
-					url = serverPath + "partnersManage/updatePartnersFocusManage";
-					massage = "取消";
-				};
-				layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
-					App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-					function successCallback(result) {
-						console.log(result);
-						layer.msg("已"+massage+"重点关注");
-						reloadPageDataTable("#customerListTable",true);
-						var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-						if(isInitEmphasisCustomerTable){
-							if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-								reloadEmphasisCustomerTable = true;
-							}else{
-								reloadPageDataTable("#emphasisCustomerTable",true);
-							};
-						}
-					}
-			   	});
+			emphasisFocus(partyId,curStaffOrgId,focusId,editFlag);
 		}
 }
+/*
+ * 添加和取消重点关注
+ * 参数：editFlag  "add":增加 | "delete":取消
+ */
+function emphasisFocus(partyId,curStaffOrgId,focusId,editFlag){
+	var url = serverPath + "partnersManage/savePartnersFocusManage";
+	var massage = "添加";
+	var postData = {
+		partyId: partyId,
+		addStaffOrgId:curStaffOrgId
+	};
+	if(editFlag == "delete"){
+		postData = {
+			partyId: partyId,
+			addStaffOrgId:curStaffOrgId,
+			focusId:focusId
+		};
+		url = serverPath + "partnersManage/updatePartnersFocusManage";
+		massage = "取消";
+	};
+	layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			layer.msg("已"+massage+"重点关注");
+			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+			if(isInitEmphasisCustomerTable){
+				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+					reloadEmphasisCustomerTable = true;
+				}else{
+					reloadPageDataTable("#emphasisCustomerTable",true);
+				};
+			}
+		}
+   	});
+}
+
+
 
 /*
  * 我重点关注的客户经理点击查询事件
@@ -164,7 +169,7 @@ function initEmphasisCustomerTable(){
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
 					var editFlag="delete";
-					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
+					return "<img onclick='emphasisFocus(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
 		]
@@ -186,6 +191,6 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转合同信息
  */
 function jumpContractManage(partyId){
-	var url = "/html/expenseWorktable/contractManage/performContract.html?id=123&partyId="+partyId;
+	var url = "/html/expenseWorktable/contractManage/performContract.html?partyId="+partyId;
 	top.showSubpageTab(url,"履行中合同");
 }

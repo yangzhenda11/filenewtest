@@ -3,11 +3,16 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 
 function convertFilePath(){
-	var url = serverPath + 'contractHistoricalFileController/convertHistoryContractList';
+	if($("#convertCount").val().trim() == ""){
+		layer.alert("请输入处理件数",{icon:2});
+		return;
+	}
+	var url = serverPath + 'fileload/convertHistoryConvertFile';
 	layer.alert("正在处理中，稍后请查看数据库日志表！",{icon:1});
 	$.ajax({
         url : url,
         type : "post",
+        data : {count:$("#convertCount").val().trim(),contractNumber:$("#convertContractNumber").val().trim()},
         global : false
     });
 }

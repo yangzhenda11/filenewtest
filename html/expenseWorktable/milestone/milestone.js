@@ -22,7 +22,7 @@ function initmilestoneTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'milestone/searchMilestoneInfo',
+	        "url": serverPath+'milestone/getMilestoneInfo',
 	        "data": function(d) {
 	        	d.contractIdOrName = $("#riskWarningfoSearch").val().trim();
 	           	return JSON.stringify(d);
@@ -39,7 +39,10 @@ function initmilestoneTable(){
 			{"data": "contractNumber","className": "whiteSpaceNormal","width":"10%"},
 			{"data": "partyName","className": "whiteSpaceNormal","width":"10%"},
 			{"data": "partyCode","className": "whiteSpaceNormal","width":"8%"},
-			{"data": "contractValue","className": "whiteSpaceNormal","width":"8%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width":"8%",
+	        	"render" : function(data, type, full, meta){
+					return App.unctionToThousands(data);
+			   	}},
 			{"data": "signStampDate","className": "whiteSpaceNormal","width":"7%",
 				"render" : function(data, type, full, meta) {
 					return App.formatDateTime(data,"yyyy-MM-dd");
@@ -50,7 +53,7 @@ function initmilestoneTable(){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal","width":"5%",
+			{"data": "contractNumber","className": "whiteSpaceNormal","width":"5%",
 				"render" : function(data, type, full, meta) {
 					return "<a onclick='jumpOrderManageByContract(\""+data+"\")'>查看</a>";
 				}
@@ -131,7 +134,7 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转订单信息
  */
-function jumpOrderManageByContract(contractId){
-	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractId="+contractId;
+function jumpOrderManageByContract(contractNumber){
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractNumber="+contractNumber;
 	top.showSubpageTab(url,"订单信息");
 }

@@ -43,7 +43,7 @@ function initPerformContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpOrderManageByContract(\""+data+"\")'>查看</a>";
 				}
@@ -54,8 +54,8 @@ function initPerformContractTable(){
 /*
  * 跳转订单信息
  */
-function jumpOrderManageByContract(contractId){
-	var url = "/html/expenseWorktable/orderManage/orderManage.html?returnbtn=true&contractId="+contractId;
+function jumpOrderManageByContract(contractNumber){
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?returnbtn=true&contractNumber="+contractNumber;
 	App.changePresentUrl(url);
 }
 /*

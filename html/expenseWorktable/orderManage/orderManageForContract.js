@@ -23,11 +23,11 @@ function getTableToreadHisList(){
 		ajax: {
 	        "type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'orderManage/getOrderManageInfo',
+	        "url": serverPath+'orderManageForContract/getOrderManageForContractInfo',
 	        "data": function(d) {
 	        	d.contractIdOrPoNumber = $("#contractIdOrPoNumber").val().trim();
 	        	d.returnbtn = parm.returnbtn;
-	        	d.contractNumber = parm.contractId;
+	        	d.contractNumber = parm.contractNumber;
 	           	return JSON.stringify(d);
 	        }
 	    },

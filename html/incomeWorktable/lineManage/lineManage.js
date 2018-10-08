@@ -283,7 +283,7 @@ function lineUpdate() {
 			var url = serverPath + "lineMangerController/subLineInfoImportTmp";
 			App.formAjaxJson(url, "post",null, successCallback);
 			function successCallback(result) {
-				layer.msg("提交成功");
+				layer.msg(result.message);
 				searchImportline();
 			} 
 		})  

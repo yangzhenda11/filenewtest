@@ -39,7 +39,7 @@ function initLineInforTable(){
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'milestoneMangerController/listLineIncomeForCustomer',
+			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomer',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.contractId =parm.id.trim();

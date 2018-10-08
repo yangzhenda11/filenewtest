@@ -2,18 +2,8 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
-var parm = App.getPresentParm();
-console.log(parm);
 $(function(){
 	getTableToreadHisList();
-})
-if(parm.returnbtn == "true"){//下钻页面
-	$("#returnBtn").show();
-}else{
-	$("#returnBtn").remove();
-};
-$("#returnBtn").on("click",function(){
-	window.history.go(-1);
 })
 /*
  * 初始化表格
@@ -26,8 +16,6 @@ function getTableToreadHisList(){
 	        "url": serverPath+'orderManage/getOrderManageInfo',
 	        "data": function(d) {
 	        	d.contractIdOrPoNumber = $("#contractIdOrPoNumber").val().trim();
-	        	d.returnbtn = parm.returnbtn;
-	        	d.contractNumber = parm.contractId;
 	           	return JSON.stringify(d);
 	        }
 	    },

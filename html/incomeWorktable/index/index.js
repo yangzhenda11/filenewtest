@@ -34,6 +34,8 @@ $(function() {
 	$(".page-content-worktable").show();
 	//获取商务助理配置内容
 	getAssistantList();
+	//获取重点关注履行中合同跟踪
+	getFocusEmphasis();
 
 	initIncomeOverview();
 	initIncomeAnalysis();
@@ -44,9 +46,7 @@ $("#workItemDom").on("click", ".workItem", function() {
 		alert(moduleUrl);
 		top.showSubpageTab(moduleUrl, $(this).find("p").text());
 	} else {
-		layer.alert("该模块暂未使用。", {
-			icon: 2
-		})
+		layer.alert("该模块暂未使用。", {icon: 2})
 	}
 })
 /*
@@ -62,7 +62,6 @@ function checkRoleType() {
 		}
 	});
 }
-
 /*
  * 获取商务助理配置内容
  */
@@ -86,6 +85,72 @@ function getAssistantList() {
 		});
 		$("#workItemDom").html(html);
 	}
+}
+/*
+ * 获取重点关注履行中合同跟踪
+ */
+function getFocusEmphasis(){
+	if(roleType == 91217){
+		$("#emphasisColForAccount").show();
+		getFocusAccountTable();
+	}else{
+		$("#emphasisColForOhter").show();
+	}
+}
+/*
+ * 获取重点关注客户经理
+ */
+function getFocusAccountTable(){
+	var url = serverPath + 'customerManager/listFocusCustomerManager';
+	var postData = {
+		draw: 1,
+		start: 0,
+		length: 5,
+		order: [],
+		managerStaffName: $("#focusAccountInput").val().trim()
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(result.recordsTotal > postData.length){
+			$("#showAccountMore").show();
+		}else{
+			$("#showAccountMore").hide();
+		};
+		if(data.length > 0){
+			var html = "";
+			$.each(data, function(k,v) {
+				var itemPhone = v.phone ? v.phone : '';
+				var itemEmail = v.email ? v.email : '';
+				html += '<tr>'+
+					'<td>'+ (k+1) + '</td>'+
+					'<td>'+ v.managerStaffName + '</td>'+
+					'<td>'+ v.orgName + '</td>'+
+					'<td>'+ itemPhone + '</td>'+
+					'<td>'+ itemEmail +'</td>'+
+					'<td><a onclick="jumpContractManage(\''+v.managerStaffOrgId+'\')">查看</a></td>';
+			});
+			$("#focusAccountTbody").html(html);		
+		}else{
+			console.log(12)
+			var emptyTr = '<tr><td colspan="6">暂无重点关注的客户经理信息</td></tr>'
+			$("#focusAccountTbody").html(emptyTr);						
+		}
+	}
+}
+/*
+ * 跳转我的客户经理管理
+ */
+$("#showAccountMore").on("click",function(){
+	var url = "/html/incomeWorktable/accountManage/accountManage.html?expandFocusCustomer=true";
+	top.showSubpageTab(url,"履行中合同");
+})
+/*
+ * 跳转合同信息
+ */
+function jumpContractManage(managerStaffOrgId){
+	var url = "/html/incomeWorktable/contractManage/performContractForAccount.html?managerStaffOrgId="+managerStaffOrgId;
+	top.showSubpageTab(url,"履行中合同");
 }
 /***************选择稽核范围开始***********************/
 /*

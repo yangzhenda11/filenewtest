@@ -26,75 +26,67 @@
 
 	<body>
 		<div class="page-content">
-			<div class="portlet">
-				<div class="portlet-title">
-					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase"> 合同里程碑管理</span>
+			<div class="work-list">
+				<div class="form-fieldset" id="performanceContractList">
+					<div class="form-fieldset-title">
+						<span>合同信息</span>
+						<!--<div class="form-fieldset-tools">
+							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
+						</div>-->
 					</div>
-				</div>
-				<div class="portlet-body">
-					<div class="work-list">
-						<div class="form-fieldset" id="performanceContractList">
-							<div class="form-fieldset-title">
-								<span>合同信息</span>
-								<!--<div class="form-fieldset-tools">
-									<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
-								</div>-->
+					<div class="form-fieldset-body">
+						<div class="row page-search" id="contractPageSearch">
+							<div class="col-sm-3">
+								<input type="text" class="form-control" name="contractInfoInput" id="contractInfoInput" maxlength="50" placeholder="查询合同编号/合同名称">
 							</div>
-							<div class="form-fieldset-body">
-								<div class="row page-search" id="contractPageSearch">
-									<div class="col-sm-3">
-										<input type="text" class="form-control" name="contractInfoInput" id="contractInfoInput" maxlength="50" placeholder="查询合同编号/合同名称">
-									</div>
-									<div class="input-group">
-										<button type="button" id="contractLoading" class="btn red" data-loading-text="加载中.." onclick="searchContract();"><i class="iconfont icon-search"></i>查询</button>
-									</div>
-								</div>
-								<table id="contractTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
-									<thead>
-										<tr>
-											<th>序号</th>
-											<th>合同名称</th>
-											<th>合同编号</th>
-											<th>客户名称</th>
-											<th>集客客户编号</th>
-											<th>合作方编号</th>
-											<th>含增值税合同金额</th>
-											<th>签订盖章日期</th>
-											<th>合同终止日期</th>
-											<th>里程碑</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td colspan="10">请点击查询按钮加载数据</td>
-										</tr>
-									</tbody>
-								</table>
+							<div class="input-group">
+								<button type="button" id="contractLoading" class="btn red" data-loading-text="加载中.." onclick="searchContract();"><i class="iconfont icon-search"></i>查询</button>
 							</div>
 						</div>
+						<table id="contractTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>合同名称</th>
+									<th>合同编号</th>
+									<th>客户名称</th>
+									<th>集客客户编号</th>
+									<th>合作方编号</th>
+									<th>含增值税合同金额</th>
+									<th>签订盖章日期</th>
+									<th>合同终止日期</th>
+									<th>里程碑</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="10">请点击查询按钮加载数据</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
-			<!--[if lt IE 9]>
-			<script src="../../../static/plugins/html5shiv.min.js"></script>
-			<script src="../../../static/plugins/respond.min.js"></script>
-			<script src="../../../static/plugins/ie8.fix.min.js"></script>
-		<![endif]-->
-			<!--[if lte IE 8]>
-			<script src="../../../static/plugins/selectivizr-min.js"></script>
-		<![endif]-->
-			<!--基础依赖-->
-			<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
-			<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-			<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
-			<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
-			<!--业务依赖-->
-			<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-			<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-			<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-			<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-			<script src="milestone.js" type="text/javascript" charset="utf-8"></script>
+		</div>
+		<!--[if lt IE 9]>
+		<script src="../../../static/plugins/html5shiv.min.js"></script>
+		<script src="../../../static/plugins/respond.min.js"></script>
+		<script src="../../../static/plugins/ie8.fix.min.js"></script>
+	<![endif]-->
+		<!--[if lte IE 8]>
+		<script src="../../../static/plugins/selectivizr-min.js"></script>
+	<![endif]-->
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="milestone.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

@@ -42,7 +42,7 @@ function initLineInforTable(){
 			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomer',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
-				d.contractId =parm.id.trim();
+				d.contractId = parm.id;
 				d.businessId = $("#searchInput").val().trim();
 				return  JSON.stringify(d);
 			}
@@ -62,7 +62,7 @@ function lineInforTableColumns(){
 	];
 	$.each(theadList, function(k,v) {
 		if(v.checked == true){
-			if (v.id == "onceCost" || v.id == "monthRentCost") {
+			if (v.id == "onceCost" || v.id == "monthRentCost" || v.id == "receivableAmount" || v.id == "arrearsAmount" || v.id == "collectedAmount") {
 				var item = {
 					"data" : v.id,
 					"title" : v.data,

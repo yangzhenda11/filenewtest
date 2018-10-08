@@ -34,18 +34,18 @@ function initPerformContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "contractNumber","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "partnerName","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "partnerCode","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "partnerName","className": "whiteSpaceNormal","width": "20%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "15%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpOrderManageByContract(\""+data+"\")'>查看</a>";
 				}
 			}
 		]
@@ -54,9 +54,9 @@ function initPerformContractTable(){
 /*
  * 跳转订单信息
  */
-function jumpOrderManageByContract(data){
-	var url = "/html/expenseWorktable/orderManage/orderManage.html?id=123&relationType=1&returnbtn=true&contractId="+data;
-	window.location.href = url;
+function jumpOrderManageByContract(contractNumber){
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?returnbtn=true&contractNumber="+contractNumber;
+	App.changePresentUrl(url);
 }
 /*
  * 页面内表格初始化完成之后查询事件

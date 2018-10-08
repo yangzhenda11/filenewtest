@@ -8,9 +8,7 @@ var serverPath = config.serverPath;
  * relationType：是否确定是否关联合同 1：已关联  0：未关联
  * returnbtn：是否显示返回按钮，默认不传值为false
  */
-var parm = App.getPresentParm();
-console.log(parm);
- 
+var parm = App.getPresentParm(); 
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
@@ -67,10 +65,10 @@ function initLineInforTable(){
 			"url" : serverPath + 'lineMangerController/listLineInfoForCustomer',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) {
-				d.isRelateContract =parm.relationType.trim();
-				d.lineId =parm.id.trim();
+				d.isRelateContract = parm.relationType;
+				d.lineId = parm.id;
 				d.businessId = $("#searchInput").val().trim();
-				return  JSON.stringify(d);
+				return JSON.stringify(d);
 			}
 		},
 		"columns": lineInforTableColumns()

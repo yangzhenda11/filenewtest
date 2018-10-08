@@ -42,7 +42,7 @@ function initCustomerListTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'partnersManage/searchPartnersManage',
+	        "url": serverPath+'partnersManage/getPartnersManageInfo',
 	        "data": function(d) {
 	        	d.partnerCodeOrName = $("#partnerCodeOrName").val().trim();
 	           	return JSON.stringify(d);
@@ -65,10 +65,6 @@ function initCustomerListTable(){
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
 					var editFlag = "add";
-//					if(full.isValid == 1){
-//						editFlag = "delete";
-//					};
-//					return "<img onclick='emphasisOfCustomer()' src='/static/img/"+editFlag+".png' />";
 					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
@@ -79,10 +75,10 @@ function initCustomerListTable(){
  * 判断是否已关注
  */
 function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
-	var url = serverPath + "partnersManage/searchReadType";
+	var url = serverPath + "partnersManage/getReadTypeCode";
     	var postData = {
-    			partyId: partyId,
-    			addStaffOrgId:curStaffOrgId
+    			partyId: partyId,//合作方主体id
+    			addStaffOrgId:curStaffOrgId//登录人岗位id
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
@@ -91,14 +87,14 @@ function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 				layer.msg("已关注，无需重新关注");
 				return ;
 			}
-			test(partyId,curStaffOrgId,focusId,editFlag);
+			handleManage(partyId,curStaffOrgId,focusId,editFlag);
 		}
 }
 /*
  * 添加和取消重点关注
  * 参数：editFlag  "add":增加 | "delete":取消
  */
-function test(partyId,curStaffOrgId,focusId,editFlag){
+function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/savePartnersFocusManage";
 	var massage = "添加";
 	var postData = {
@@ -111,7 +107,7 @@ function test(partyId,curStaffOrgId,focusId,editFlag){
     			addStaffOrgId:curStaffOrgId,
     			focusId:focusId
 		};
-		url = serverPath + "partnersManage/updatePartnersFocusManage";
+		url = serverPath + "partnersManage/delPartnersFocusManage";
 		massage = "取消";
 	};
 	layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
@@ -150,7 +146,7 @@ function initEmphasisCustomerTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'partnersManage/searchPartnersManageFocus',
+	        "url": serverPath+'partnersManage/getPartnersManageFocusInfo',
 	        "data": function(d) {
 	        	d.partnerCodeOrName = $("#partnerCodeOrNameFocus").val().trim();
 	           	return JSON.stringify(d);
@@ -173,7 +169,7 @@ function initEmphasisCustomerTable(){
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
 					var editFlag="delete";
-					return "<img onclick='emphasisOfCustomer(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
+					return "<img onclick='handleManage(\""+data.partyId+"\",\""+curStaffOrgId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
 				}
 			}
 		]

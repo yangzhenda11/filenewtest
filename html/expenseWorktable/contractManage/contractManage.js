@@ -2,9 +2,14 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
-var reloadPerformanceContractTable = false;
+//var reloadPerformanceContractTable = false;
 var reloadFocusContractTable = false;
+//获取参数
+var parm = App.getPresentParm();
 $(function(){
+	if(parm.expandFocusContract){
+		$("#focusContractList .form-fieldset-tools").click();
+	}
 	//我的合同查询合同类型选择
 	$("#contractTypeModal").click(function(){
 		App.getCommonModal("contractType","#contractType","typeFullname","typeCode");
@@ -25,12 +30,13 @@ ticketStateType = App.getDictInfo(9040);
 
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-	if(id == "performanceContractList"){
-		var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
-		if(isInitPerformanceContractTable && reloadPerformanceContractTable){
-			reloadPageDataTable("#performanceContractTable",true);
-		}
-	}else if(id == "focusContractList"){
+//	if(id == "performanceContractList"){
+//		var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
+//		if(isInitPerformanceContractTable && reloadPerformanceContractTable){
+//			reloadPageDataTable("#performanceContractTable",true);
+//		}
+//	}else if(id == "focusContractList"){
+	if(id == "focusContractList"){
 		var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 		if(isInitFocusContractTable && reloadFocusContractTable){
 			reloadPageDataTable("#focusContractTable",true);
@@ -73,26 +79,26 @@ function initPerformanceContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal","width": "18%"},
-			{"data": "contractNumber","className": "whiteSpaceNormal","width": "16%"},
-			{"data": "partnerName","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "partnerCode","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "contractName","className": "whiteSpaceNormal","width": "23%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "partnerName","className": "whiteSpaceNormal","width": "17%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpOrderManageByContract(\""+data.+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "7%",
 				"render" : function(data, type, full, meta){
 					var editFlag = "add";
 					return "<img onclick='focusContract(\""+data.contractId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
@@ -107,34 +113,29 @@ function initPerformanceContractTable(){
  */
 function showContractPerformerModal(contractId) {
 	var url = serverPath + "contractPerformer/contractPerformerList";
-	var postData = {
-        	contractId: contractId
-		};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(url, "post", JSON.stringify({contractId: contractId}), successCallback);
 	function successCallback(result) {
-
-		if (result.status == 1){
-			var result = result.data;
-			var html = '';
-			for (var i = 0; i < result.length; i++) {
+		var data = result.data;
+		var html = '';
+		if(data.length > 0){
+			for (var i = 0; i < data.length; i++) {
 				var item = result[i];
-				//var startTime = item.startTime == null ? '' : App.formatDateTime(item.startTime);
-				//var endTime = item.endTime == null ? '' : App.formatDateTime(item.endTime);
 				var performerType = item.performerType == 1 ? "是" : "否";
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
 							"<td>"+item.performerStaffName+"</td>"+
 							"<td>"+item.performerOrgName+"</td>"+
 							"<td>"+performerType+"</td>"+
-							"<td>&nbsp;</td>"+
-							"<td>&nbsp;</td>"+
+							"<td></td>"+"<td></td>"+
 							"<td>"+item.addStaff+"</td>"+
 							"<td>"+item.addStaffOrg+"</td>"+
 						"</tr>";
 			}
-			$("#contractPerformerTbody").html(html);
-			$("#contractPerformerModal").modal("show");
-		} 
+		}else{
+			html = '<tr><td colspan="8">暂无合同履行人信息</td></tr>'
+		};
+		$("#contractPerformerTbody").html(html);
+		$("#contractPerformerModal").modal("show");
 	}
 }
 
@@ -193,26 +194,26 @@ function initFocusContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal","width": "18%"},
-			{"data": "contractNumber","className": "whiteSpaceNormal","width": "16%"},
-			{"data": "partnerName","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "partnerCode","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "contractName","className": "whiteSpaceNormal","width": "23%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "partnerName","className": "whiteSpaceNormal","width": "17%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpOrderManageByContract(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "7%",
 				"render" : function(data, type, full, meta){
 					return "<img onclick='deleteFocusContract(\""+data.contractId+"\",\""+data.focusId+"\")' src='/static/img/delete.png' />";
 				}
@@ -235,14 +236,14 @@ function deleteFocusContract(contractId, focusId){
 		function successCallback(result) {
 			layer.msg("已取消重点关注");
 			reloadPageDataTable("#focusContractTable",true);
-			var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
-			if(isInitPerformanceContractTable){
-				if($("#performanceContractList .form-fieldset-body").is(':hidden')){
-					reloadPerformanceContractTable = true;
-				}else{
-					reloadPageDataTable("#performanceContractTable",true);
-				};
-			}
+//			var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
+//			if(isInitPerformanceContractTable){
+//				if($("#performanceContractList .form-fieldset-body").is(':hidden')){
+//					reloadPerformanceContractTable = true;
+//				}else{
+//					reloadPageDataTable("#performanceContractTable",true);
+//				};
+//			}
 		}
    	});
 }
@@ -393,7 +394,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转订单信息（已关联合同）
  */
 function jumpOrderManageByContract(contractId){
-	var url = "/html/expenseWorktable/orderManage/orderManage.html?contractId="+contractId;
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractId="+contractId;
 	top.showSubpageTab(url,"订单信息");
 }
 

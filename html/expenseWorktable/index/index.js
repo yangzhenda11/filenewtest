@@ -101,7 +101,7 @@ function getFocusContractTable(){
 					'<td>'+ v.partnerName + '</td>'+
 					'<td>'+ v.partnerCode + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
-					'<td><a onclick="jumpOrderManageByContract(\''+v.contractId+'\')">查看</a></td>'+
+					'<td><a onclick="jumpOrderManageByContract(\''+v.contractNumber+'\')">查看</a></td>'+
 					'<td><a onclick="showContractPerformerModal(\''+v.contractId+'\')">查看</a></td>';
 			});
 			$("#emphasisClient").html(html);		
@@ -121,9 +121,9 @@ $("#showContractMore").on("click",function(){
 /*
  * 跳转订单信息
  */
-function jumpOrderManageByContract(contractId){
-	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractId="+contractId;
-	top.showSubpageTab(url,"订单信息");
+function jumpOrderManageByContract(contractNumber){
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractNumber="+contractNumber;
+	top.showSubpageTab(url,"查看订单信息");
 }
 /*
  * 我履行中的合同跟踪合同履行人查看
@@ -136,7 +136,7 @@ function showContractPerformerModal(contractId) {
 		var html = '';
 		if(data.length > 0){
 			for (var i = 0; i < data.length; i++){
-				var item = result[i];
+				var item = data[i];
 				var performerType = item.performerType == 1 ? "是" : "否";
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+

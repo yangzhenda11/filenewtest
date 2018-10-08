@@ -3,16 +3,10 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
 //区域展开时判断是否重新加载的标志位
-var reloadCustomerListTable = false;
 var reloadEmphasisCustomerTable = false;
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-	if(id == "customerList"){
-		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-		if(isInitCustomerListTable && reloadCustomerListTable){
-			reloadPageDataTable("#customerListTable",true);
-		}
-	}else if(id == "emphasisCustomer"){
+	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 		if(isInitEmphasisCustomerTable && reloadEmphasisCustomerTable){
 			reloadPageDataTable("#emphasisCustomerTable",true);
@@ -82,8 +76,7 @@ function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
-			if(result.data.length>=1&&editFlag != "delete"){
+			if(result.data.length >= 1){
 				layer.msg("已关注，无需重新关注");
 				return ;
 			}
@@ -98,14 +91,14 @@ function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/savePartnersFocusManage";
 	var massage = "添加";
 	var postData = {
-			partyId: partyId,
-			addStaffOrgId:curStaffOrgId
+		partyId: partyId,
+		addStaffOrgId:curStaffOrgId
 	};
 	if(editFlag == "delete"){
 		postData = {
-    			partyId: partyId,
-    			addStaffOrgId:curStaffOrgId,
-    			focusId:focusId
+			partyId: partyId,
+			addStaffOrgId:curStaffOrgId,
+			focusId:focusId
 		};
 		url = serverPath + "partnersManage/delPartnersFocusManage";
 		massage = "取消";
@@ -113,7 +106,6 @@ function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 	layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			console.log(result);
 			layer.msg("已"+massage+"重点关注");
 			reloadPageDataTable("#customerListTable",true);
 			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
@@ -125,11 +117,8 @@ function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 				};
 			}
 		}
-   	});
-
+   });
 }
-
-
 
 /*
  * 我重点关注的客户经理点击查询事件

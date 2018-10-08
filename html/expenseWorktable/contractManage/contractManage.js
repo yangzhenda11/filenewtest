@@ -2,7 +2,6 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
-//var reloadPerformanceContractTable = false;
 var reloadFocusContractTable = false;
 //获取参数
 var parm = App.getPresentParm();
@@ -30,12 +29,6 @@ ticketStateType = App.getDictInfo(9040);
 
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-//	if(id == "performanceContractList"){
-//		var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
-//		if(isInitPerformanceContractTable && reloadPerformanceContractTable){
-//			reloadPageDataTable("#performanceContractTable",true);
-//		}
-//	}else if(id == "focusContractList"){
 	if(id == "focusContractList"){
 		var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 		if(isInitFocusContractTable && reloadFocusContractTable){
@@ -120,8 +113,8 @@ function showContractPerformerModal(contractId) {
 		var html = '';
 		if(data.length > 0){
 			for (var i = 0; i < data.length; i++) {
-				var item = result[i];
-				//var performerType = item.performerType == 1 ? "是" : "否";
+				var item = data[i];
+				var performerType = item.performerType == 1 ? "是" : "否";
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
 							"<td>"+item.performerStaffName+"</td>"+
@@ -146,7 +139,6 @@ function showContractPerformerModal(contractId) {
  */
 function focusContract(contractId){
 	var url = serverPath + "performanceContractPay/saveFocusContractPay";
-
 	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
     	var postData = {
         	contractId: contractId
@@ -244,14 +236,6 @@ function deleteFocusContract(contractId, focusId){
 		function successCallback(result) {
 			layer.msg("已取消重点关注");
 			reloadPageDataTable("#focusContractTable",true);
-//			var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
-//			if(isInitPerformanceContractTable){
-//				if($("#performanceContractList .form-fieldset-body").is(':hidden')){
-//					reloadPerformanceContractTable = true;
-//				}else{
-//					reloadPageDataTable("#performanceContractTable",true);
-//				};
-//			}
 		}
    	});
 }
@@ -303,6 +287,9 @@ function initMyContractSearchTable(){
 		"columns": myContractTableColumns()
 	});
 }
+/*
+ * 动态生成表格列的数据配置
+ */
 function myContractTableColumns(){
 	var columns = [
 		{"data" : null,"title":"序号","width": "5%",
@@ -327,7 +314,7 @@ function myContractTableColumns(){
 					"data": null,
 					"title": v.data,
 					"render": function(data, type, full, meta){
-						return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
+						return "<a onclick='jumpOrderManageByContract(\""+data.contractNumber+"\")'>查看</a>";
 					}
 				};
 			}else if(v.id == "signDate" || v.id == "expiryDate"){
@@ -401,9 +388,9 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转订单信息（已关联合同）
  */
-function jumpOrderManageByContract(contractId){
-	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractId="+contractId;
-	top.showSubpageTab(url,"订单信息");
+function jumpOrderManageByContract(contractNumber){
+	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractNumber="+contractNumber;
+	top.showSubpageTab(url,"查看订单信息");
 }
 
 //我的合同查询选择查看更多

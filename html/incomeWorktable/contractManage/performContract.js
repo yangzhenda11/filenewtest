@@ -22,7 +22,7 @@ function initPerformContractTable(){
 	if(parm.customerCode != null && parm.customerCode != ""){
 		url = serverPath + 'performanceContract/listContractByCustomerCode';
 	}
-alert(url);
+
 	App.initDataTables('#performContractTable', "#performContractLoading", {
 		ajax: {
 			"type": "POST",

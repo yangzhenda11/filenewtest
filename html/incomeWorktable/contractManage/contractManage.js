@@ -81,29 +81,25 @@ function initPerformanceContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "customerName","className": "whiteSpaceNormal"},
-			{"data": "customerCode","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerName","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerManagerName","className": "whiteSpaceNormal"},
+			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "10%"},
 			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon",
+			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "5%",
 				"render" : function(data, type, full, meta){
-					var editFlag = "add";
-					if(full.isFocus == 1){
-						editFlag = "delete";
-					};
-					return "<img onclick='focusContract(\""+data.contractId+"\",\""+data.focusId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
+					return "<img onclick='focusContract(\""+data.contractId+"\")' src='/static/img/add.png' />";
 				}
 			}
 		]
@@ -111,31 +107,32 @@ function initPerformanceContractTable(){
 }
 /*
  * 我履行中的合同跟踪添加和取消重点关注
- * 参数：editFlag  "add":增加 | "delete":取消
+ * 参数：editFlag  "add":增加 | "delete":取消  20181008 delete 统一显示add图片
  */
-function focusContract(contractId, focusId, editFlag){
+function focusContract(contractId){
 	var url = serverPath + "performanceContract/saveFocusContract";
-	var massage = "添加";
-	if(editFlag == "delete"){
-		url = serverPath + "performanceContract/delFocusContractById";
-		massage = "取消";
-	};
-	layer.confirm("确定"+massage+"该合同的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
     	var postData = {
-        	contractId: contractId,
-    		focusId: focusId
+        	contractId: contractId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已"+massage+"重点关注");
-			reloadPageDataTable("#performanceContractTable",true);
-			var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
-			if(isInitFocusContractTable){
-				if($("#focusContractList .form-fieldset-body").is(':hidden')){
-					reloadFocusContractTable = true;
-				}else{
-					reloadPageDataTable("#focusContractTable",true);
-				};
+
+			if(result.data == 1) {
+
+				layer.msg("已添加重点关注");
+				reloadPageDataTable("#performanceContractTable",true);
+				var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
+				if(isInitFocusContractTable){
+					if($("#focusContractList .form-fieldset-body").is(':hidden')){
+						reloadFocusContractTable = true;
+					}else{
+						reloadPageDataTable("#focusContractTable",true);
+					};
+				}
+			}
+			else {
+				layer.msg("已关注，无需重新关注");				
 			}
 		}
    	});
@@ -169,23 +166,23 @@ function initFocusContractTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "customerName","className": "whiteSpaceNormal"},
-			{"data": "customerCode","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerName","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerManagerName","className": "whiteSpaceNormal"},
+			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "10%"},
 			{"data": null,"className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon",
+			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "5%",
 				"render" : function(data, type, full, meta){
 					return "<img onclick='deleteFocusContract(\""+data.contractId+"\",\""+data.focusId+"\")' src='/static/img/delete.png' />";
 				}
@@ -261,18 +258,18 @@ function initMyContractManagerTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "contractName","className": "whiteSpaceNormal"},
-			{"data": "contractNumber","className": "whiteSpaceNormal"},
-			{"data": "customerName","className": "whiteSpaceNormal"},
-			{"data": "customerCode","className": "whiteSpaceNormal"},
-			{"data": "partnerCode","className": "whiteSpaceNormal"},
-			{"data": "contractValue","className": "whiteSpaceNormal",
+			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
+			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerName","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerManagerName","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "10%"},
+			{"data": null,"className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpWorkOrderEdit(\""+data.contractId+"\")'>添加/删除客户经理</a>";
 				}

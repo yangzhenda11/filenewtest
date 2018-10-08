@@ -3,12 +3,11 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-	<!--<![endif]-->
-	<!-- BEGIN HEAD -->
-
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
 	<head>
 		<meta charset="UTF-8">
-		<title>订单管理</title>
+		<title>里程碑管理</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -17,43 +16,78 @@
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<link rel="stylesheet" type="text/css" href="../css/expenseWorktable.css"/>
 	</head>
-
 	<body>
 		<div class="page-content">
 			<div class="work-list">
-				<div class="form-fieldset" id="lineInfor">
+				<div class="form-fieldset" id="milestoneContent">
 					<div class="form-fieldset-title">
-						<span>订单查询</span>
-						<div class="form-fieldset-tools">
-							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
-						</div>
+						<span>里程碑管理</span>
+						<!--<div class="form-fieldset-tools">
+							<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+						</div>-->
 					</div>
-				<div class="form-fieldset-body">
-					<div class="row page-search">
+					<div class="form-fieldset-body">
+						<div class="row page-search" id="milestonePageSearch">
 							<div class="col-sm-3">
-								<input type="text" class="form-control" id="contractIdOrPoNumber" maxlength="50" placeholder="查询合同编号/订单编号">
+								<input type="text" class="form-control" id="riskWarningfoSearch" maxlength="50" placeholder="查询合同名称/合同编号">
 							</div>
 							<div class="input-group">
-								<button type="button" id="customerLoading" class="btn red" data-loading-text="加载中.." onclick="searchCustomer();"><i class="iconfont icon-search"></i>查询</button>
+								<button type="button" id="riskWarningLoading" class="btn red" data-loading-text="加载中.." onclick="searchMilestone();"><i class="iconfont icon-search"></i>查询</button>
 							</div>
+							<div class="right-toolbars">
+								<div class="legendItem">
+									<span class="green legendPic"></span>已完成
+								</div>
+								<div class="legendItem">
+									<span class="yellow legendPic"></span>进行中
+								</div>
+								<div class="legendItem">
+									<span class="gray legendPic"></span>未开始
+								</div>
+								<div class="legendItem">
+									<span class="red legendPic"></span>存在风险/异常
+								</div>
+							</div>
+						</div>						
+						<table id="milestoneTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+	                    	<thead>
+	                    		<tr>
+									<th rowspan="2">序号</th>
+									<th colspan="8">基本信息</th>
+									<th colspan="5">里程碑进展</th>
+								</tr>
+								<tr>
+									<th>合同名称</th>
+									<th>合同编号</th>
+									<th>合作方名称</th>
+									<th>合作方编号</th>
+									<th>含增值税合同金额</th>
+									<th>签订盖章日期</th>
+									<th>合同终止日期</th>
+									<th>订单信息</th>
+									<th>合同签订</th>
+									<th>订单下达</th>
+									<th>接收入库</th>
+									<th>发票</th>
+									<th>付款</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="15">请点击查询按钮加载数据</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-							<div class="toolbars">
-								<button type="button" class="btn blue" id="returnBtn" style="display: none;"><i class="iconfont icon-arrow-left"></i>返回</button>
-							</div>	
-					<table id="orderManagerListTable" class="table table-striped table-bordered table-hover table-header-fixed table-align"></table>
+				</div>
 			</div>
 		</div>
-		</div>
-		</div>
-		<!--模态框-->
-		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
 			<script src="../../../static/plugins/html5shiv.min.js"></script>
 			<script src="../../../static/plugins/respond.min.js"></script>
@@ -69,12 +103,9 @@
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-		<script src="orderManage.js" type="text/javascript" charset="utf-8"></script>
+		<script src="milestone.js" type="text/javascript" charset="utf-8"></script>
 	</body>
-
 </html>

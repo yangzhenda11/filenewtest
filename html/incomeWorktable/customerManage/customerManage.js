@@ -242,13 +242,13 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息
  */
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=0&returnbtn=false&loaddata=true";
+	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=0&returnbtn=false";
 	top.showSubpageTab(url,"线路信息");
 }
 /*
  * 跳转合同信息
  */
-function jumpContractManage(data){
+function jumpContractManage(customerCode){
 	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode=515200000000005326";
 	top.showSubpageTab(url,"查看履行中合同");
 }

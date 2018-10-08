@@ -4,6 +4,13 @@ var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
 var reloadCustomerListTable = false;
 var reloadEmphasisCustomerTable = false;
+//获取参数
+var parm = App.getPresentParm();
+$(function(){
+	if(parm.expandFocusCustomer){
+		$("#emphasisCustomer .form-fieldset-tools").click();
+	}
+})
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "customerList"){
@@ -193,8 +200,6 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转合同信息
  */
 function jumpContractManage(managerStaffOrgId){
-	/*var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";*/
-	//var managerStaffOrgId = data.managerStaffOrgId;
-	var url = "/html/incomeWorktable/contractManage/performContract.html?managerStaffOrgId="+managerStaffOrgId;
+	var url = "/html/incomeWorktable/contractManage/performContractForAccount.html?managerStaffOrgId="+managerStaffOrgId;
 	top.showSubpageTab(url,"履行中合同");
 }

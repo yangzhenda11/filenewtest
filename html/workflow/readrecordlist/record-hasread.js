@@ -10,7 +10,7 @@ $(function(){
  */
 function getFlowKyeList(){
 	var ajaxObj = {
-	    "url" :  serverPath + "recordToread/listReadTypeCode",
+	    "url" :  serverPath + "recordToread/getReadTypeCode",
 	    "type" : "post",
 	    "callbackFn": initflowTypeSelect2
 	}
@@ -28,7 +28,7 @@ function getTableToreadHisList(){
 		ajax: {
 	        "type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'recordToread/recordToreadHisList',
+	        "url": serverPath+'recordToread/getRecordToreadHisList',
 	        "data": function(d) {//自定义传入参数
 				var searchParmData = getSearchParm();
 	        	d = $.extend(d,searchParmData);
@@ -82,7 +82,7 @@ function getTableToreadHisList(){
 //查询岗位名称
 function  findOrgName  (receivedStaffOrgId) {
 	var ajaxObj = {
-	    "url":  serverPath + "recordToread/listReadOrgName",
+	    "url":  serverPath + "recordToread/getReadOrgName",
 	    "type": "post",
 	    "data":{"receivedStaffOrgId":receivedStaffOrgId}
 	};

@@ -13,6 +13,9 @@ var pageConfig = {
 $("#buttonNavTabs").on("click","button",function(){
 	$(this).addClass("check").siblings("button").removeClass("check");
 })
+/*
+ * 标题切换触发事件
+ */
 $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 	var targetId = $(e.target).data("id");
 	if(targetId == "lineDetail"){
@@ -41,6 +44,8 @@ function searchCustomer(){
 			$("#businessDetailsDom").show();
 			pageConfig.isInitContractTable = true;
 			pageConfig.customerCode = data.customerCode;
+			$("#customerCode").text(data.customerCode);
+			$(".customerName").text(data.customerName);
 			if($("#lineDetail").css("display") == "none"){
 				pageConfig.isInitLineTable = true;
 				$('#buttonNavTabs button:first').addClass("check").siblings("button").removeClass("check");
@@ -48,9 +53,6 @@ function searchCustomer(){
 			}else{
 				initLineTable();
 			};
-			$("#customerCode").text(data.customerCode);
-			$(".customerName").text(data.customerName);
-			initLineTable();
 		};
 	}
 }

@@ -1,13 +1,15 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-var curStaffOrgId = config.curStaffOrgId;
 var parm = App.getPresentParm();
-console.log(parm);
 $(function(){
+	if(!parm.contractNumber){
+		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+	};
 	getTableToreadHisList();
 })
-if(parm.returnbtn == "true"){//下钻页面
+if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 }else{
 	$("#returnBtn").remove();
@@ -73,5 +75,3 @@ function searchCustomer(retainPaging) {
 		table.ajax.reload();
 	}
 }
-
-

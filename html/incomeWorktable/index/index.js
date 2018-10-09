@@ -34,7 +34,7 @@ $(function() {
 	$(".page-content-worktable").show();
 	//获取商务助理配置内容
 	getAssistantList();
-	//获取重点关注履行中合同跟踪
+	//重点关注DOM区域生成
 	getFocusEmphasis();
 
 	initIncomeOverview();
@@ -132,7 +132,6 @@ function getFocusAccountTable(){
 			});
 			$("#focusAccountTbody").html(html);		
 		}else{
-			console.log(12)
 			var emptyTr = '<tr><td colspan="6">暂无重点关注的客户经理信息</td></tr>'
 			$("#focusAccountTbody").html(emptyTr);						
 		}
@@ -150,7 +149,7 @@ $("#showAccountMore").on("click",function(){
  */
 function jumpContractManage(managerStaffOrgId){
 	var url = "/html/incomeWorktable/contractManage/performContractForAccount.html?managerStaffOrgId="+managerStaffOrgId;
-	top.showSubpageTab(url,"履行中合同");
+	top.showSubpageTab(url,"查看履行中合同");
 }
 /***************选择稽核范围开始***********************/
 /*
@@ -158,10 +157,10 @@ function jumpContractManage(managerStaffOrgId){
  */
 function setAuditScope() {
 	var obj = {
-			companyCode: config.companyCode
-		};
-		var url = serverPath + "auditManager/getAuditRangeById";
-		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+		companyCode: config.companyCode
+	};
+	var url = serverPath + "auditManager/getAuditRangeById";
+	App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
 	var dataPermission = config.dataPermission;
 	function successCallback(result) {
 		var data = result.data;
@@ -173,7 +172,7 @@ function setAuditScope() {
 			$("#changeScope").show();
 		} else {
 			$("#changeScope").remove();
-		}
+		};
 		top.globalConfig.auditScope = data.auditRange;
 	}
 }

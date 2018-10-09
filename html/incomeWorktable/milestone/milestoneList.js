@@ -3,9 +3,14 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 //获取传参
 var parm = App.getPresentParm();
-if(!parm.contractId){
-	layer.alert("暂无合同主键ID，请联系系统管理员",{icon:2})
-}
+$(function(){
+	if(!parm.contractId){
+		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+	};
+	initLineMilestoneTable();
+})
+
 /*
  * 线路信息里程碑点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
@@ -23,7 +28,7 @@ function searchLineMilestone(){
  */
 function initLineMilestoneTable(){
 	if(!parm.contractId){
-		layer.alert("暂无合同主键ID，请联系系统管理员",{icon:2});
+		layer.alert("页面参数错误，请联系系统管理员",{icon:2});
 		return;
 	}
 	App.initDataTables('#lineTable', "#lineLoading", {

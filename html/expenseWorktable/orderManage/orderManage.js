@@ -6,7 +6,7 @@ $(function(){
 	getTableToreadHisList();
 })
 /*
- * 初始化表格
+ * 初始化订单信息表格
  */
 function getTableToreadHisList(){
 	App.initDataTables('#orderManagerListTable', "#searchBtn", {
@@ -61,5 +61,3 @@ function searchCustomer(retainPaging) {
 		table.ajax.reload();
 	}
 }
-
-

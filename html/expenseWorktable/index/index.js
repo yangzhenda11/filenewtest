@@ -123,7 +123,7 @@ $("#showContractMore").on("click",function(){
  */
 function jumpOrderManageByContract(contractNumber){
 	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractNumber="+contractNumber;
-	top.showSubpageTab(url,"查看订单信息");
+	top.showSubpageTab(url,"订单信息");
 }
 /*
  * 我履行中的合同跟踪合同履行人查看

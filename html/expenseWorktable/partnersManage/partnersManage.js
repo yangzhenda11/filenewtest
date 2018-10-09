@@ -17,7 +17,7 @@ function formFieldsetSlideFn(id){
 }
 
 /*
- * 合作方点击查询事件
+ * 我的合作方点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
  */
 function searchCustomer(){
@@ -29,7 +29,7 @@ function searchCustomer(){
 	}
 }
 /*
- * 合作方管理表格初始化
+ * 我的合作方管理表格初始化
  */
 function initCustomerListTable(){
 	App.initDataTables('#customerListTable', "#customerLoading", {
@@ -70,18 +70,18 @@ function initCustomerListTable(){
  */
 function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/getReadTypeCode";
-    	var postData = {
-    			partyId: partyId,//合作方主体id
-    			addStaffOrgId:curStaffOrgId//登录人岗位id
-		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
-			if(result.data.length >= 1){
-				layer.msg("已关注，无需重新关注");
-				return ;
-			}
-			handleManage(partyId,curStaffOrgId,focusId,editFlag);
+	var postData = {
+			partyId: partyId,//合作方主体id
+			addStaffOrgId:curStaffOrgId//登录人岗位id
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		if(result.data.length >= 1){
+			layer.msg("已关注，无需重新关注");
+			return ;
 		}
+		handleManage(partyId,curStaffOrgId,focusId,editFlag);
+	}
 }
 /*
  * 添加和取消重点关注
@@ -121,14 +121,14 @@ function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 }
 
 /*
- * 我重点关注的客户经理点击查询事件
+ * 我重点关注的合作方点击查询事件
  * 已加载表格直接可以刷新操作
  */
 function searchEmphasisCustomer(){
 	reloadPageDataTable("#emphasisCustomerTable");
 }
 /*
- * 关注的合作方表格初始化
+ * 我重点关注的合作方表格初始化
  */
 function initEmphasisCustomerTable(){
 	App.initDataTables('#emphasisCustomerTable', "#emphasisCustomerLoading", {
@@ -177,9 +177,9 @@ function reloadPageDataTable(tableId,retainPaging) {
 }
 
 /*
- * 跳转合同信息
+ * 跳转履行中合同信息
  */
 function jumpContractManage(partyId){
 	var url = "/html/expenseWorktable/contractManage/performContract.html?partyId="+partyId;
-	top.showSubpageTab(url,"履行中合同");
+	top.showSubpageTab(url,"查看履行中合同");
 }

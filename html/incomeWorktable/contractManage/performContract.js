@@ -2,11 +2,14 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var parm = App.getPresentParm();
-if(!parm.managerStaffOrgId && !parm.customerCode){
-	layer.alert("参数错误，请联系管理员",{icon:2});
-}
-//我的客户查询表格初始化
-initPerformContractTable();
+$(function(){
+	if(!parm.managerStaffOrgId && !parm.customerCode){
+		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+	}
+	//我的客户查询表格初始化
+	initPerformContractTable();
+})
 /*
  * 履行中合同信息查询点击查询事件
  */
@@ -22,9 +25,9 @@ function initPerformContractTable(){
 	}else if(parm.managerStaffOrgId){
 		var url = serverPath + 'performanceContract/listContractByManagerStaffOrgId';
 	}else{
-		layer.alert("参数错误，请联系管理员",{icon:2});
+		layer.alert("参数错误，请联系系统管理员。",{icon:2});
 		return;
-	}
+	};
 	App.initDataTables('#performContractTable', "#performContractLoading", {
 		ajax: {
 			"type": "POST",
@@ -70,7 +73,7 @@ function initPerformContractTable(){
  */
  
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?id="+data+"&relationType=1&returnbtn=true";
+	var url = "/html/incomeWorktable/incomeManage/lineView.html?id="+data+"&relationType=1&returnbtn=true";
 	App.changePresentUrl(url);
 }
 /*

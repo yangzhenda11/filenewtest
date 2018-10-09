@@ -243,7 +243,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function jumpLineManage(data){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?id=123&relationType=0&returnbtn=false";
-	top.showSubpageTab(url,"线路信息");
+	top.showSubpageTab(url,"线路基本信息");
 }
 /*
  * 跳转合同信息

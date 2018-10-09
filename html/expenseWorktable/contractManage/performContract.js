@@ -1,10 +1,16 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+//获取传递的参数
 var parm = App.getPresentParm();
-
-//我的客户查询表格初始化
-initPerformContractTable();
+$(function(){
+	if(!parm.partyId){
+		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+	};
+	//我的客户查询表格初始化
+	initPerformContractTable();
+})
 /*
  * 履行中合同信息查询点击查询事件
  */
@@ -21,7 +27,6 @@ function initPerformContractTable(){
 	        "contentType":"application/json;charset=utf-8",
 			"url": serverPath + 'performanceContractPay/listPerformanceContractByPartyId',
 			"data": function(d) {
-//				d.staffName = $("input[name='staffName']").val().trim();
 	        	d.partyId = parm.partyId;
 	        	d.contractInfoSearch = $("#contractInfoInput").val().trim();
 				return JSON.stringify(d);;

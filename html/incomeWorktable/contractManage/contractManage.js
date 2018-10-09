@@ -2,7 +2,6 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
-var reloadPerformanceContractTable = false;
 var reloadFocusContractTable = false;
 $(function(){
 	var roleArr = config.curRole;
@@ -33,12 +32,7 @@ ticketStateType = App.getDictInfo(9040);
 
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-	if(id == "performanceContractList"){
-		var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
-		if(isInitPerformanceContractTable && reloadPerformanceContractTable){
-			reloadPageDataTable("#performanceContractTable",true);
-		}
-	}else if(id == "focusContractList"){
+	if(id == "focusContractList"){
 		var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 		if(isInitFocusContractTable && reloadFocusContractTable){
 			reloadPageDataTable("#focusContractTable",true);
@@ -92,14 +86,14 @@ function initPerformanceContractTable(){
 				}
 			},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "8%"},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpLineManageByContract(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
+			{"data": "contractId","className": "whiteSpaceNormal tableImgCon","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='focusContract(\""+data.contractId+"\")' src='/static/img/add.png' />";
+					return "<img onclick='focusContract(\""+data+"\")' src='/static/img/add.png' />";
 				}
 			}
 		]
@@ -117,11 +111,8 @@ function focusContract(contractId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-
 			if(result.data == 1) {
-
 				layer.msg("已添加重点关注");
-				reloadPageDataTable("#performanceContractTable",true);
 				var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 				if(isInitFocusContractTable){
 					if($("#focusContractList .form-fieldset-body").is(':hidden')){
@@ -130,8 +121,7 @@ function focusContract(contractId){
 						reloadPageDataTable("#focusContractTable",true);
 					};
 				}
-			}
-			else {
+			} else {
 				layer.msg("已关注，无需重新关注");				
 			}
 		}
@@ -177,9 +167,9 @@ function initFocusContractTable(){
 				}
 			},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "8%"},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpLineManageByContract(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
@@ -205,14 +195,6 @@ function deleteFocusContract(contractId, focusId){
 		function successCallback(result) {
 			layer.msg("已取消重点关注");
 			reloadPageDataTable("#focusContractTable",true);
-			var isInitPerformanceContractTable = $.fn.dataTable.isDataTable("#performanceContractTable");
-			if(isInitPerformanceContractTable){
-				if($("#performanceContractList .form-fieldset-body").is(':hidden')){
-					reloadPerformanceContractTable = true;
-				}else{
-					reloadPageDataTable("#performanceContractTable",true);
-				};
-			}
 		}
    	});
 }
@@ -269,9 +251,9 @@ function initMyContractManagerTable(){
 				}
 			},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "10%"},
-			{"data": null,"className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpWorkOrderEdit(\""+data.contractId+"\")'>添加/删除客户经理</a>";
+					return "<a onclick='jumpWorkOrderEdit(\""+data+"\")'>添加/删除客户经理</a>";
 				}
 			}
 		]
@@ -346,10 +328,10 @@ function myContractTableColumns(){
 				};
 			}else if(v.id == "jumpLine"){
 				var item = {
-					"data": null,
+					"data": "contractId",
 					"title": v.data,
 					"render": function(data, type, full, meta){
-						return "<a onclick='jumpLineManageByContract(\""+data.contractId+"\")'>查看</a>";
+						return "<a onclick='jumpLineManageByContract(\""+data+"\")'>查看</a>";
 					}
 				};
 			}else if(v.id == "signDate" || v.id == "expiryDate"){
@@ -424,12 +406,11 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
-	top.showSubpageTab(url,"线路信息");
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
+	top.showSubpageTab(url,"线路基本信息");
 }
 /*
- * 增加或删除客户经理》》》》跳转工单编辑页面
+ * 增加或删除客户经理  >>>>> 跳转工单编辑页面
  */
 function jumpWorkOrderEdit(wcardId){
 //	var url = "/workOrderEdit/workOrderEdit.html?pageType=5&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;

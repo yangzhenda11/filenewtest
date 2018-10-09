@@ -17,6 +17,14 @@ if(parm.relationType == "0"){
 }else if(parm.relationType == null){
 	layer.alert("请确定线路的关联方式",{icon:2})
 };
+$(function(){
+	if(!parm.id){
+		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+	}
+	//线路信息表格初始化
+	initLineInforTable();
+})
 function initselectLR() {
  	var theadList = parm.relationType == 1 ? relationContractTheadList : notRelationContractTheadList;
 	var options = {
@@ -29,7 +37,6 @@ function initselectLR() {
  * 点击确定回调的页面方法
  */
 function returnSelectLRData(data) {
- 
 	$("#commomModal").modal("hide");
 	if(parm.relationType == 1){
 		relationContractTheadList = data;
@@ -43,15 +50,10 @@ function returnSelectLRData(data) {
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
  */
 function searchLineInfor(){
-	var isInit = $.fn.dataTable.isDataTable("#lineInforTable");
-	if(isInit){
-		reloadPageDataTable("#lineInforTable");
-	}else{
-		initLineInforTable();
-	}
+	reloadPageDataTable("#lineInforTable");
 }
 /*
- * 未关联合同客户表格初始化
+ * 线路信息表格初始化
  * 表头为动态表头，第一次加载时需要去掉其中的内容
  */
 function initLineInforTable(){
@@ -74,6 +76,9 @@ function initLineInforTable(){
 		"columns": lineInforTableColumns()
 	});
 }
+/*
+ * 生成动态线路表格列
+ */
 function lineInforTableColumns(){
 	var theadList = parm.relationType == 1 ? relationContractTheadList : notRelationContractTheadList;
 	var columns = [

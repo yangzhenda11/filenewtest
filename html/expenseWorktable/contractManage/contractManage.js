@@ -81,12 +81,12 @@ function initPerformanceContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
 				}
@@ -106,7 +106,7 @@ function initPerformanceContractTable(){
  */
 function showContractPerformerModal(contractId) {
 	var url = serverPath + "contractPerformer/contractPerformerList";
-	alert(contractId);
+
 	App.formAjaxJson(url, "post", JSON.stringify({contractId: contractId}), successCallback);
 	function successCallback(result) {
 		var data = result.data;
@@ -138,6 +138,7 @@ function showContractPerformerModal(contractId) {
  * 参数：editFlag  "add":增加 | "delete":取消   20181008 delete 统一显示add图片
  */
 function focusContract(contractId){
+
 	var url = serverPath + "performanceContractPay/saveFocusContractPay";
 	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
     	var postData = {
@@ -203,14 +204,14 @@ function initFocusContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpOrderManageByContract(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
-			{"data": "contractId","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='showContractPerformerModal(\""+data+"\")'>查看</a>";
+					return "<a onclick='showContractPerformerModal(\""+data.contractId+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "7%",
@@ -389,6 +390,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转订单信息（已关联合同）
  */
 function jumpOrderManageByContract(contractNumber){
+
 	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractNumber="+contractNumber;
 	top.showSubpageTab(url,"查看订单信息");
 }

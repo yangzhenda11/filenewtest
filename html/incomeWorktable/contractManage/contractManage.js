@@ -424,7 +424,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-	alert(contractId);
+
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }

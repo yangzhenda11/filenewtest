@@ -62,7 +62,7 @@ function initPerformanceContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'performanceContract/listPerformanceContract',
+	        "url": serverPath + 'performanceContract/listPerformanceContract',
 	        "data": function(d) {
 	        	d.contractInfoSearch = $("#contractInfoInput").val().trim();
 	           	return JSON.stringify(d);

@@ -3,6 +3,11 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 //获取传参
 var parm = App.getPresentParm();
+if(parm.returnBtn == "true"){
+	$("#returnBtn").removeClass("hidden");
+}else{
+	$(".legendGroup").css({"float":"left","margin":"5px 0 0 20px"});
+}
 $(function(){
 	if(!parm.contractId){
 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});

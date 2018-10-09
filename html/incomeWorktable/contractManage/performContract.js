@@ -60,9 +60,9 @@ function initPerformContractTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal","width": "5%",
+			{"data": "contractId","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
 				}
 			}
 		]

@@ -45,7 +45,6 @@ $(function() {
 $("#workItemDom").on("click", ".workItem", function() {
 	var moduleUrl = $(this).find("img").data("url");
 	if(moduleUrl) {
-		alert(moduleUrl);
 		top.showSubpageTab(moduleUrl, $(this).find("p").text());
 	} else {
 		layer.alert("该模块暂未使用。", {icon: 2})

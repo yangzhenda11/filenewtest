@@ -32,11 +32,16 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
  * 数据集客客户编号进行查询
  */
 function searchCustomer(){
+	var customerCode = $("#customerNumber").val().trim();
+	if(customerCode == ""){
+		layer.alert("请输入要查询的集客客户编号。",{icon:2});
+		return;
+	};
 	var url = serverPath + "contractIncomeMangerController/getContractIncomeZxById";
 	var postData = {
-		customerCode: $("#customerNumber").val().trim()
+		customerCode: customerCode
 	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback, improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data){
@@ -53,7 +58,13 @@ function searchCustomer(){
 			}else{ 
 				initLineTable();
 			};
-		} 
+		}else{
+			layer.alert("暂无数据",{icon:2});
+		}
+	}
+	function improperCallback(result){
+		var ms = result.message;
+		layer.alert(ms,{icon:2});
 	}
 }
 /*
@@ -169,6 +180,6 @@ function jumpLineManageByContract(contractId){
  * 跳转里程碑查看
  */
 function jumpRiskList(contractId){ 
-	var url = "/html/incomeWorktable/milestone/milestoneList.html?returnBtn=true&contractId="+contractId;
+	var url = "/html/incomeWorktable/milestone/milestoneList.html?contractId="+contractId;
 	top.showSubpageTab(url,"里程碑查看");
 }

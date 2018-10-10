@@ -106,14 +106,13 @@ td.milestoneLegend{
 	margin-top: 3px;
 }
 .businessTitle .businessTitleValue{
-	font-weight: normal;
 	margin-right: 20px;
 	font-weight: bold;
 }
 .businessTableTitle{
+	font-weight: bold;
 	text-align: center;
 	font-size: 18px;
-	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 0px;
 }

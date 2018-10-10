@@ -100,7 +100,7 @@ function initPerformanceContractTable(){
 	});
 }
 /*
- * 我履行中的合同跟踪添加和取消重点关注
+ * 我履行中的合同跟踪添加重点关注
  * 参数：editFlag  "add":增加 | "delete":取消  20181008 delete 统一显示add图片
  */
 function focusContract(contractId){
@@ -406,8 +406,9 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
+
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
-	top.showSubpageTab(url,"线路基本信息");
+	top.showSubpageTab(url,"线路信息");
 }
 /*
  * 增加或删除客户经理  >>>>> 跳转工单编辑页面

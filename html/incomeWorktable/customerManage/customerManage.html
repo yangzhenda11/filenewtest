@@ -36,7 +36,7 @@
 						<div id="relationCustomerDom">
 							<div class="row page-search">
 								<div class="col-sm-3">
-									<input type="text" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编号/合作方编号">
+									<input type="text" id="customerInfoRelateSearch" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编号/合作方编号">
 								</div>
 								<div class="input-group">
 									<button type="button" id="relationCustomerLoading" class="btn red" data-loading-text="加载中.." onclick="searchRelationCustomer();"><i class="iconfont icon-search"></i>查询</button>
@@ -51,11 +51,12 @@
 										<th>合作方编号</th>
 										<th>客户经理</th>
 										<th>履行中合同</th>
+										<th>添加重点关注</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td colspan="6">请点击查询按钮加载数据</td>
+										<td colspan="7">请点击查询按钮加载数据</td>
 									</tr>
 								</tbody>
 							</table>
@@ -75,7 +76,7 @@
 							</div>
 							<div class="row page-search">
 								<div class="col-sm-3">
-									<input type="text" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编号">
+									<input type="text" id="customerInfoUnrelateSearch" name="customerInfoUnrelateSearch" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编号">
 								</div>
 								<div class="input-group">
 									<button type="button" id="notRelationCustomerLoading" class="btn red" data-loading-text="加载中.." onclick="searchNotRelationCustomer();"><i class="iconfont icon-search"></i>查询</button>
@@ -111,7 +112,7 @@
 					<div class="form-fieldset-body" style="display: none;">
 						<div class="row page-search">
 							<div class="col-sm-3">
-								<input type="text" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编号/合作方编号">
+								<input type="text" id="focusCustomerInfoRelateSearch" name="focusCustomerInfoRelateSearch" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编号/合作方编号">
 							</div>
 							<div class="input-group">
 								<button type="button" id="emphasisCustomerLoading" class="btn red" data-loading-text="加载中.." onclick="searchEmphasisCustomer();"><i class="iconfont icon-search"></i>查询</button>
@@ -126,11 +127,12 @@
 									<th>合作方编号</th>
 									<th>客户经理</th>
 									<th>履行中合同</th>
+									<th>删除重点关注</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td colspan="6">请点击查询按钮加载数据</td>
+									<td colspan="7">请点击查询按钮加载数据</td>
 								</tr>
 							</tbody>
 						</table>
@@ -150,19 +152,19 @@
 	                                <div class="col-sm-6">
 										<div class="input-group">
 											<span class="input-group-addon">客户名称</span>
-											<input type="text" class="form-control" maxlength="50" />
+											<input type="text" id="customerNameSearch" class="form-control" maxlength="50" />
 										</div>
 									</div>
 	                                <div class="col-sm-6">
 										<div class="input-group">
 											<span class="input-group-addon">集客客户编号</span>
-											<input type="text" class="form-control" maxlength="50" />
+											<input type="text" id="customerCodeSearch" class="form-control" maxlength="50" />
 										</div>
 									</div>
 	                                <div class="col-sm-6">
 										<div class="input-group">
 											<span class="input-group-addon">合作方编号</span>
-											<input type="text" class="form-control" maxlength="50" />
+											<input type="text" id="partnerCodeSearch" class="form-control" maxlength="50" />
 										</div>
 									</div>
 								</div>

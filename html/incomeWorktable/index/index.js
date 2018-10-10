@@ -34,9 +34,11 @@ $(function() {
 	$(".page-content-worktable").show();
 	//获取商务助理配置内容
 	getAssistantList();
+	//设置待办待阅数量
+	setMessageNumber();
 	//重点关注DOM区域生成
 	getFocusEmphasis();
-
+	
 	initIncomeOverview();
 	initIncomeAnalysis();
 })
@@ -85,6 +87,48 @@ function getAssistantList() {
 		});
 		$("#workItemDom").html(html);
 	}
+}
+/*
+ * 待办待阅数量查询
+ */
+function setMessageNumber(){
+	var todoData = {
+		staffId : config.curStaffId,
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	var toreadData = {
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	App.formAjaxJson(serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
+	App.formAjaxJson(serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
+    function todoSuccessCallback(result) {
+    	$("#todoNum").text(result.recordsTotal);
+    };
+    function todoErrorCallback(result){
+    	$("#todoNum").text("?");
+    };
+    function toreadSuccessCallback(result) {
+    	$("#toreadNum").text(result.recordsTotal);
+    };
+    function toreadErrorCallback(result){
+    	$("#toreadNum").text("?");
+    };
+}
+/*
+ * 待办待阅跳转
+ */
+function jumpWorkflow(type){
+	if(type == "todo"){
+		var url = "html/workflow/tasklist/task-todo.html";
+		top.showSubpageTab(url,"待办事项",null,true);
+	}else if(type == "toread"){
+		var url = "html/workflow/readrecordlist/record-toread.html";
+		top.showSubpageTab(url,"待阅事项",null,true);
+	};
 }
 /*
  * 获取重点关注履行中合同跟踪
@@ -353,6 +397,9 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 	    },
 	    tooltip : {
 	        formatter: "{a} <br/>{b} ({d}%)",
+	        textStyle: {
+	        	fontSize: 12
+	        },
 	        confine:"true"
 	    },
 	    legend: {
@@ -427,7 +474,10 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			},
 		},
 		tooltip: {
-			formatter: toolTip
+			formatter: toolTip,
+			textStyle: {
+	        	fontSize: 12
+	        }
 		},
 		legend: {
 			orient: "vertical",

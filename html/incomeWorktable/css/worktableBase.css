@@ -4,6 +4,9 @@
 .page-content-worktable {
   background: #eee;
 }
+.underline {
+  text-decoration: underline;
+}
 .worktableTitle {
   padding: 8px 0 8px 12px;
   font-size: 12px;
@@ -172,14 +175,31 @@
   font-size: 12px;
   box-sizing: border-box;
 }
-#expentType1 {
+.chartsDom {
+  width: 50%;
+  height: 280px;
+  overflow: auto;
+  float: left;
+  position: relative;
+}
+.chartsDom:first {
   border-right: 1px solid #f3f3f3;
 }
-#expentType1,
-#expentType2 {
-  height: 280px;
-  width: 50%;
-  float: left;
+.chartsContent {
+  height: 100%;
+  width: 300px;
+  margin: 0 auto;
+}
+.chartsValue {
+  width: 80px;
+  height: 32px;
+  position: absolute;
+  top: 126px;
+  left: 50%;
+  margin-left: -40px;
+  font-size: 20px;
+  text-align: center;
+  line-height: 32px;
 }
 .pageSearch {
   margin-bottom: 10px;

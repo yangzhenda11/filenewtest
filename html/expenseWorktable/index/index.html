@@ -46,11 +46,11 @@
             				<div class="row processDom">
 								<div class="processItem">
 									<i class="iconfont icon-yujing"></i>我的待办
-									<a>12</a>
+									<a id="todoNum" class="underline" onclick="jumpWorkflow('todo')" title="跳转至待办事项"></a>
 								</div>
 								<div class="processItem">
 									<i class="iconfont icon-email"></i>我的待阅
-									<a>9</a>
+									<a id="toreadNum" class="underline" onclick="jumpWorkflow('toread')" title="跳转至待阅事项"></a>
 								</div>
 							</div>
                     	</div>
@@ -77,8 +77,14 @@
                         </div>
                         <div class="portlet-body">
             				<div class="row expentOverviewDom">
-            					<div id="expentType1"></div>
-            					<div id="expentType2"></div>
+            					<div class="chartsDom">
+            						<div class="chartsContent" id="expentType1"></div>
+            						<div class="chartsValue" id="expentType1Value">30%</div>
+            					</div>
+            					<div class="chartsDom">
+            						<div class="chartsContent" id="expentType2"></div>
+            						<div class="chartsValue" id="expentType2Value"></div>
+            					</div>
             					<div class="chartsNote">*以上统计数据截至2018年5月20日</div>
 							</div>
                     	</div>

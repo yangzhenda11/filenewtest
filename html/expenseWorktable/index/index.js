@@ -24,6 +24,8 @@ $(function(){
 	};
 	//获取商务助理配置内容
 	getAssistantList();
+	//待办待阅数量查询
+	setMessageNumber();
 	//获取重点关注履行中合同跟踪
 	getFocusContractTable()
 })
@@ -70,6 +72,48 @@ function getAssistantList(){
 		});
 		$("#workItemDom").html(html);
 	}
+}
+/*
+ * 待办待阅数量查询
+ */
+function setMessageNumber(){
+	var todoData = {
+		staffId : config.curStaffId,
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	var toreadData = {
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	App.formAjaxJson(serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
+	App.formAjaxJson(serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
+    function todoSuccessCallback(result) {
+    	$("#todoNum").text(result.recordsTotal);
+    };
+    function todoErrorCallback(result){
+    	$("#todoNum").text("?");
+    };
+    function toreadSuccessCallback(result) {
+    	$("#toreadNum").text(result.recordsTotal);
+    };
+    function toreadErrorCallback(result){
+    	$("#toreadNum").text("?");
+    };
+}
+/*
+ * 待办待阅跳转
+ */
+function jumpWorkflow(type){
+	if(type == "todo"){
+		var url = "html/workflow/tasklist/task-todo.html";
+		top.showSubpageTab(url,"待办事项",null,true);
+	}else if(type == "toread"){
+		var url = "html/workflow/readrecordlist/record-toread.html";
+		top.showSubpageTab(url,"待阅事项",null,true);
+	};
 }
 /*
  * 获取重点关注履行中合同跟踪
@@ -190,14 +234,11 @@ var expentType2Data = [
 var expentType1 = echarts.init(document.getElementById('expentType1'));
 var expentType1Option = initCharts("合同付款（固定金额合同）","固定金额合同累计付款金额情况",expentType1Data);
 expentType1.setOption(expentType1Option);
-expentType1.dispatchAction({
-	type: 'highlight',
-	dataIndex: 0,
-});
+
 
 
 var expentType2 = echarts.init(document.getElementById('expentType2'));
-var expentType2Option = initEmptyCharts("合同付款（框架协议）","框架协议对应的订单累计付款金额情况",expentType2Data);
+var expentType2Option = initCharts("合同付款（框架协议）","框架协议对应的订单累计付款金额情况",expentType2Data,true);
 expentType2.setOption(expentType2Option);
 expentType2.dispatchAction({
 	type: 'highlight',
@@ -205,7 +246,13 @@ expentType2.dispatchAction({
 })
 
 
-function initCharts(title,subtext,data){
+function initCharts(title,subtext,data,isEmpty){
+	var borderWidth = 2;
+	var formatter = "{a} <br/>{b} ({d}%)";
+	if(isEmpty){
+		borderWidth = 0;
+		formatter = title;
+	}
 	var option = {
 		title: {
 			text: title,
@@ -221,6 +268,14 @@ function initCharts(title,subtext,data){
 	        	rich: {}
 	        },
 		},
+		tooltip: {
+			confine:"true",
+	        trigger: 'item',
+	        textStyle: {
+	        	fontSize: 12
+	        },
+	        formatter: formatter
+	    },
 		legend: {
 			orient: 'vertical',
 			top: 'bottom',
@@ -229,30 +284,16 @@ function initCharts(title,subtext,data){
 	        itemGap: 5,
 			selectedMode: false
 		},
-		color: ['#c00000', '#bfbfbf'],
+		color: ['#d11718', '#bfbfbf'],
 		series: [{
 			clockwise: false,
-			hoverAnimation: false,
-			name: '订单付款',
-			silent: true,
+//			hoverAnimation: false,
+			name: title,
 			type: 'pie',
 			radius: ['35%', '60%'],
-			avoidLabelOverlap: false,
 			label: {
 				normal: {
 					show: false,
-					position: 'center',
-					textStyle: {
-						color: '#333'
-					},
-					formatter: '{d}%'
-				},
-				emphasis: {
-					show: true,
-					textStyle: {
-						fontSize: '20',
-//						fontWeight: 'bold'
-					}
 				}
 			},
 			labelLine: {
@@ -261,69 +302,9 @@ function initCharts(title,subtext,data){
 				}
 			},
 			itemStyle: {
-                borderWidth: 2,
+                borderWidth: borderWidth,
                 borderColor: '#ffffff'
 	        },
-			data: data
-		}]
-	};
-	return option;
-};
-function initEmptyCharts(title,subtext,data){
-	var option = {
-		title: {
-			text: title,
-			subtext: subtext,
-			x:'center',
-	        itemGap: 6,
-	        textStyle: {
-	        	fontSize:14
-	        },
-	        subtextStyle: {
-	        	lineHeight: 16,
-	        	color: "#333",
-	        	rich: {}
-	        },
-		},
-		legend: {
-			orient: 'vertical',
-			top: 'bottom',
-			itemWidth: 8,
-	        itemHeight: 8,
-	        itemGap: 5,
-			selectedMode: false
-		},
-		color: ['#c00000', '#bfbfbf'],
-		series: [{
-			clockwise: false,
-			hoverAnimation: false,
-			name: '订单付款',
-			silent: true,
-			type: 'pie',
-			radius: ['35%', '60%'],
-			avoidLabelOverlap: false,
-			label: {
-				normal: {
-					show: false,
-					position: 'center',
-					textStyle: {
-						color: '#333'
-					},
-					formatter: '{d}%'
-				},
-				emphasis: {
-					show: true,
-					textStyle: {
-						fontSize: '20',
-//						fontWeight: 'bold'
-					}
-				}
-			},
-			labelLine: {
-				normal: {
-					show: false
-				}
-			},
 			data: data
 		}]
 	};

@@ -28,7 +28,7 @@ function initContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'milestoneMangerController/listContractBasicInfo',
+	        "url": serverPath+'performanceContract/listContractBasicInfo',
 	        "data": function(d) {
 	        	d.contractName = $("#contractInfoInput").val().trim();
 	           	return JSON.stringify(d);

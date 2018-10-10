@@ -189,7 +189,7 @@ function getInvoiceReturnInfo(businessId){
 	var postData = {
 			 businessId: businessId
 		}
- 	App.formAjaxJson(serverPath + "milestoneMangerController/listLineIncome", "post", JSON.stringify(postData), successCallback);
+ 	App.formAjaxJson(serverPath + "lineIncomeMangerController/listLineIncome", "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		var content = "";

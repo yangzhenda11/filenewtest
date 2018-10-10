@@ -32,7 +32,7 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
  * 数据集客客户编号进行查询
  */
 function searchCustomer(){
-	var url = serverPath + "";
+	var url = serverPath + "contractIncomeMangerController/getContractIncomeZxById";
 	var postData = {
 		customerCode: $("#customerNumber").val().trim()
 	};
@@ -50,10 +50,10 @@ function searchCustomer(){
 				pageConfig.isInitLineTable = true;
 				$('#buttonNavTabs button:first').addClass("check").siblings("button").removeClass("check");
 				$('#buttonNavTabs button:first').tab('show');
-			}else{
+			}else{ 
 				initLineTable();
 			};
-		};
+		} 
 	}
 }
 /*
@@ -63,8 +63,8 @@ function initLineTable(){
 	App.initDataTables('#lineTable', "#loading", {
 		ajax: {
 			"type": "POST",
-	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath + 'performanceContract/listPerformanceContract',
+			"url": serverPath + 'contractIncomeMangerController/listContractIncomeZx',
+	        "contentType":"application/json;charset=utf-8", 
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
 	           	return JSON.stringify(d);
@@ -79,18 +79,18 @@ function initLineTable(){
 			},
 			{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"25%"},
 	        {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"15%"},
-	        {"data": "contractValue","title": "账期","className":"whiteSpaceNormal","width":"10%"},
-	        {"data": "contractValue","title": "月租费","className":"whiteSpaceNormal","width":"10%",
+	        {"data": "accountPeriodName","title": "账期","className":"whiteSpaceNormal","width":"10%"},
+	        {"data": "monthRentCost","title": "月租费","className":"whiteSpaceNormal","width":"10%",
 	        	"render" : function(data, type, full, meta){
 					return App.unctionToThousands(data);
 			   	}
 	        },
-	        {"data": "contractValue","title": "已缴费（元）","className":"whiteSpaceNormal","width":"10%",
+	        {"data": "collectedAmount","title": "已缴费（元）","className":"whiteSpaceNormal","width":"10%",
 	        	"render" : function(data, type, full, meta){
 					return App.unctionToThousands(data);
 			   	}
 	        },
-	        {"data": "contractValue","title": "待缴费（元）","className":"whiteSpaceNormal","width":"10%",
+	        {"data": "arrearsAmount","title": "待缴费（元）","className":"whiteSpaceNormal","width":"10%",
 	        	"render" : function(data, type, full, meta){
 					return App.unctionToThousands(data);
 			   	}
@@ -121,7 +121,7 @@ function initContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath + 'performanceContract/listPerformanceContract',
+	        "url": serverPath + 'contractIncomeMangerController/listContractIncomeZx',
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
 	           	return JSON.stringify(d);
@@ -168,7 +168,7 @@ function jumpLineManageByContract(contractId){
 /*
  * 跳转里程碑查看
  */
-function jumpRiskList(contractId){
-	var url = "/html/incomeWorktable/milestone/milestoneList.html?contractId="+contractId;
+function jumpRiskList(contractId){ 
+	var url = "/html/incomeWorktable/milestone/milestoneList.html?returnBtn=true&contractId="+contractId;
 	top.showSubpageTab(url,"里程碑查看");
 }

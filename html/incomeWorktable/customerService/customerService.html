@@ -3,12 +3,11 @@
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
-	<!--<![endif]-->
-	<!-- BEGIN HEAD -->
-
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
 	<head>
 		<meta charset="UTF-8">
-		<title>查看订单信息</title>
+		<title>客户服务</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -17,18 +16,18 @@
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<link rel="stylesheet" type="text/css" href="../css/incomeWorktable.css"/>
 	</head>
-
 	<body>
 		<div class="page-content">
 			<div class="work-list">
-				<div class="form-fieldset" id="lineInfor">
+				<div class="form-fieldset" id="customerService">
 					<div class="form-fieldset-title">
-						<span>查看订单信息</span>
+						<span>客户服务</span>
 						<!--<div class="form-fieldset-tools">
 							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 						</div>-->
@@ -36,22 +35,44 @@
 					<div class="form-fieldset-body">
 						<div class="row page-search">
 							<div class="col-sm-3">
-								<input type="text" class="form-control" id="contractIdOrPoNumber" maxlength="50" placeholder="查询合同编号/订单编号">
+								<input type="text" id="customerNumber" class="form-control" maxlength="50" placeholder="查询集客客户编号">
 							</div>
 							<div class="input-group">
-								<button type="button" id="customerLoading" class="btn red" data-loading-text="加载中.." onclick="searchCustomer();"><i class="iconfont icon-search"></i>查询</button>
+								<button type="button" id="loading" class="btn red" data-loading-text="加载中.." onclick="searchCustomer();"><i class="iconfont icon-search"></i>查询</button>
+							</div>
+						</div>				
+						<div class="customerServiceTitle">
+							<span class="ititle"><i class="iconfont icon-layers"></i>租线业务详单</span>
+						</div>
+						<div id="businessEmptyDom">
+							请输入集客客户编号进行查询
+						</div>
+						<div id="businessDetailsDom" style="display: none;">
+							<div class="businessTitle">
+								客户名称：<span class="businessTitleValue customerName">招商银行杭州市分行</span>
+								集客客户编号：<span class="businessTitleValue" id="customerCode"></span>
+							</div>
+							<div>
+								<p class="businessTableTitle"><span class="customerName">招商银行杭州市分行</span>租线业务详单</p>
+								<div class="buttonNavTabs" id="buttonNavTabs">
+									<button href="#lineDetail" data-id="lineDetail" data-toggle="tab" class="btn primary btn-inline check">线路账单</button>
+									<button href="#contractDetail" data-id="contractDetail" data-toggle="tab" class="btn primary btn-inline">合同清单</button>
+								</div>
+								<div class="tab-content">
+								    <div class="tab-pane fade in active" id="lineDetail">
+								    	<table id="lineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align"></table>
+								    </div>
+								    <div class="tab-pane fade" id="contractDetail">
+								    	<table id="contractTable" class="table table-striped table-bordered table-hover table-header-fixed table-align"></table>
+								    </div>
+								</div>
 							</div>
 						</div>
-						<div class="toolbars">
-							<button type="button" class="btn blue" id="returnBtn" style="display: none;"><i class="iconfont icon-arrow-left"></i>返回</button>
-						</div>
-						<table id="orderManagerListTable" class="table table-striped table-bordered table-hover table-header-fixed table-align"></table>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--模态框-->
-		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+		
 		<!--[if lt IE 9]>
 			<script src="../../../static/plugins/html5shiv.min.js"></script>
 			<script src="../../../static/plugins/respond.min.js"></script>
@@ -60,16 +81,16 @@
 		<!--[if lte IE 8]>
 			<script src="../../../static/plugins/selectivizr-min.js"></script>
 		<![endif]-->
+		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-		<script src="orderManageForContract.js" type="text/javascript" charset="utf-8"></script>
+		<script src="customerService.js" type="text/javascript" charset="utf-8"></script>
 	</body>
-
 </html>

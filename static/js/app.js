@@ -987,17 +987,17 @@ var App = function() {
 				}
 			}, options);
 			function setTheadStyle(){
-				var isExist = false;
+				var isExistNormal = false;
 				var columnsClass;
 				var columns = options.columns;
 				for(var i = 0; i < columns.length; i++){
 					columnsClass = columns[i].className;
 					if(columnsClass && columnsClass.indexOf("whiteSpaceNormal") != -1){
-						isExist = true;
+						isExistNormal = true;
 						break;
 					}
 				};
-				if(isExist){
+				if(isExistNormal){
 					$(el+"_wrapper").find(".dataTables_scrollHeadInner").css("cssText", "width:100% !important;")
 					$(el+"_wrapper").find(".dataTables_scrollHeadInner table").css("cssText", "width:100% !important;")
 				};

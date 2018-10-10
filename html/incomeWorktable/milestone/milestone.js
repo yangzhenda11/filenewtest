@@ -28,7 +28,7 @@ function initContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'milestoneMangerController/listContractBasicInfo',
+	        "url": serverPath+'performanceContract/listContractBasicInfo',
 	        "data": function(d) {
 	        	d.contractName = $("#contractInfoInput").val().trim();
 	           	return JSON.stringify(d);
@@ -83,8 +83,8 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转里程碑查看
  */
-function jumpRiskList(id){
-	var url = "/html/incomeWorktable/milestone/milestoneList.html?contractId="+id;
+function jumpRiskList(contractId){
+	var url = "/html/incomeWorktable/milestone/milestoneList.html?returnBtn=true&contractId="+contractId;
 	App.setCache("contractPageSearch");
 	App.changePresentUrl(url);
 }

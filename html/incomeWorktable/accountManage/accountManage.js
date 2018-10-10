@@ -65,9 +65,9 @@ function initCustomerListTable(){
 			{"data": "orgName","className": "whiteSpaceNormal"},
 			{"data": "phone","className": "whiteSpaceNormal"},
 			{"data": "email","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": "managerStaffOrgId","className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
@@ -145,14 +145,14 @@ function initEmphasisCustomerTable(){
 			{"data": "orgName","className": "whiteSpaceNormal"},
 			{"data": "phone","className": "whiteSpaceNormal"},
 			{"data": "email","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": "managerStaffOrgId","className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon",
+			{"data": "managerStaffOrgId","className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='deleteEmphasisOfEmp(\""+data.managerStaffOrgId+"\")' src='/static/img/delete.png' />";
+					return "<img onclick='deleteEmphasisOfEmp(\""+data+"\")' src='/static/img/delete.png' />";
 				}
 			}
 		]
@@ -201,5 +201,5 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function jumpContractManage(managerStaffOrgId){
 	var url = "/html/incomeWorktable/contractManage/performContractForAccount.html?managerStaffOrgId="+managerStaffOrgId;
-	top.showSubpageTab(url,"履行中合同");
+	top.showSubpageTab(url,"履行中的合同跟踪");
 }

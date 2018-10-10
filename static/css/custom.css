@@ -94,7 +94,7 @@ button:focus{outline: none !important;}
     text-align: center;
 }
 /*支撑渠道-开始*/
-#appSupport .modal-dialog{width: 50%;top: 20px;}
+#appSupport .modal-dialog{width: 600px;top: 20px;}
 .main-appSupport{padding-top:20px;padding-bottom:20px;font-family: georgia;}
 .main-appSupport li{border-bottom:1px solid #eeeeee;margin-top:0;}
 .main-appSupport li:first-child{border-top:1px solid #eeeeee;}
@@ -561,8 +561,8 @@ table td{
 }
 .buttonNavTabs button{
     margin: 0 4px 0 3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding: 4px 15px;
+    font-size: 13px;
     border: 2px solid #dc2a32;
     border-bottom: none;
     border-radius: 4px;

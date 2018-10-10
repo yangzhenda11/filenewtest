@@ -42,20 +42,25 @@
 							</div>
 						</div>
 						<div class="toolbars">
-							<button type="button" class="btn blue" onclick="returnMilestone()"><i class="iconfont icon-arrow-left"></i>返回</button>
+							<button type="button" id="returnBtn" class="btn blue hidden" onclick="returnMilestone()"><i class="iconfont icon-arrow-left"></i>返回</button>
 							<div class="right-toolbars">
-								<div class="legendItem">
-									<span class="green legendPic"></span>已完成
+								<div class="legendGroup">
+									<div class="legendItem">
+										<span class="green legendPic"></span>已完成
+									</div>
+									<div class="legendItem">
+										<span class="yellow legendPic"></span>进行中
+									</div>
 								</div>
-								<div class="legendItem">
-									<span class="yellow legendPic"></span>进行中
+								<div class="legendGroup">
+									<div class="legendItem">
+										<span class="gray legendPic"></span>未开始
+									</div>
+									<div class="legendItem">
+										<span class="red legendPic"></span>存在风险/异常
+									</div>
 								</div>
-								<div class="legendItem">
-									<span class="gray legendPic"></span>未开始
-								</div>
-								<div class="legendItem">
-									<span class="red legendPic"></span>存在风险/异常
-								</div>
+								
 							</div>
 						</div>
 						<table id="lineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">

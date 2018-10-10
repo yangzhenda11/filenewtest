@@ -136,5 +136,5 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function jumpOrderManageByContract(contractNumber){
 	var url = "/html/expenseWorktable/orderManage/orderManageForContract.html?contractNumber="+contractNumber;
-	top.showSubpageTab(url,"查看订单信息");
+	top.showSubpageTab(url,"订单信息");
 }

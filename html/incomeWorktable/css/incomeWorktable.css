@@ -68,7 +68,6 @@ td.milestoneLegend{
     transform: translate(-50%,-40%);
 }
 /*收入管理*/
-
 #incomeAnalysisCharts,#incomeForecastCharts{
 	width: 100%;
 	height: 450px;
@@ -85,4 +84,36 @@ td.milestoneLegend{
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
+}
+/*客户服务*/
+#businessEmptyDom{
+	text-align: center;
+	margin-top: 10px;
+}
+.customerServiceTitle{
+	border-bottom: 2px solid #f2f2f2;
+	font-weight: bold;
+	padding-left: 4px;
+	font-size: 14px;
+	padding-bottom: 4px;
+	color: #D11718;
+}
+.customerServiceTitle i{
+	margin-right: 6px;
+}
+.businessTitle{
+	margin-left: 26px;
+	margin-top: 3px;
+}
+.businessTitle .businessTitleValue{
+	font-weight: normal;
+	margin-right: 20px;
+	font-weight: bold;
+}
+.businessTableTitle{
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 0px;
 }

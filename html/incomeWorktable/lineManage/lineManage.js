@@ -2,10 +2,11 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
+//错误信息文本
 var importErrorText = "";
-
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id) {
+	
 }
 /*
  * 生成显示更多内容选择区域
@@ -28,8 +29,7 @@ function returnSelectLRData(data) {
 		relationContractTheadList = data;
 	} else if (checkedRelationType == 0) {
 		notRelationContractTheadList = data;
-	}
-	;
+	};
 	initLineInforTable();
 }
 /*
@@ -83,7 +83,9 @@ function initLineInforTable() {
 		"columns" : lineInforTableColumns()
 	});
 }
-
+/*
+ * 动态生成线路信息表格列
+ */
 function lineInforTableColumns() {
 	var theadList = $("#lineInfor input[name='relationType']:checked").val() == 1 ? relationContractTheadList : notRelationContractTheadList;
 	var columns = [
@@ -125,7 +127,6 @@ function lineInforTableColumns() {
 	});
 	return columns;
 }
-;
 /*
  * 手工导入线路信息点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
@@ -258,35 +259,35 @@ function downloadErrorText() {
  * 下载线路模板
  */
 function lineExport() {  
-		var postData = {
-			templateCode: "lineInfoExcel"
-		};
-		App.formAjaxJson(serverPath + "lineMangerController/lineExport", "get", postData, successCallback);
-		function successCallback(result) {
-			var key = result.data.fileStoreId;
-			if(key){
-				var url = serverPath + 'fileload/downloadS3?key='+key;
-	    		location.href = encodeURI(url);	
-			}else{
-				showLayerErrorMsg("暂无该模板");
-			}
-		} 
+	var postData = {
+		templateCode: "lineInfoExcel"
+	};
+	App.formAjaxJson(serverPath + "lineMangerController/lineExport", "get", postData, successCallback);
+	function successCallback(result) {
+		var key = result.data.fileStoreId;
+		if(key){
+			var url = serverPath + 'fileload/downloadS3?key='+key;
+    		location.href = encodeURI(url);	
+		}else{
+			showLayerErrorMsg("暂无该模板");
+		}
+	}
 }
 /*
  * 提交全部导入线路
  */
 function lineUpdate() {
 	layer.confirm("是否提交本公司下的所有线路信息?",
-		{
-			btn : [ '是', '否' ] //按钮
-		}, function() { 
-			var url = serverPath + "lineMangerController/subLineInfoImportTmp";
-			App.formAjaxJson(url, "post",null, successCallback);
-			function successCallback(result) {
-				layer.msg("提交成功");
-				searchImportline();
-			} 
-		})  
+	{
+		btn : [ '是', '否' ] //按钮
+	}, function() { 
+		var url = serverPath + "lineMangerController/subLineInfoImportTmp";
+		App.formAjaxJson(url, "post",null, successCallback);
+		function successCallback(result) {
+			layer.msg("提交成功");
+			searchImportline();
+		}
+	})
 }
 /*
  * 删除选择的线路
@@ -296,20 +297,19 @@ function lineDelete() {
 	$("input[name='checkImportItem']:checked").each(function(k, v) {
 		checkedList.push($(v).val());
 	});
- 	if(checkedList.length==0){
+ 	if(checkedList.length == 0){
 		layer.msg("至少选择一条记录");
 		return;
-	}
+	};
 	var postData = {
 		businessId : JSON.stringify(checkedList)
-	}
+	};
 	var url = serverPath + "lineMangerController/delLineInfoImportTmp";
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		layer.msg("删除成功");
 		searchImportline();
 	}
-
 }
 /*
  * 页面内表格初始化完成之后查询事件

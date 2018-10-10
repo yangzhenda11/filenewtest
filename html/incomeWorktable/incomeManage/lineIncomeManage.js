@@ -116,5 +116,4 @@ var  incomeTheadList = [
 	{data:"应收（元）",id:"receivableAmount",checked:true},
 	{data:"欠费（元）",id:"arrearsAmount",checked:true},
 	{data:"实收（元）",id:"collectedAmount",checked:true} 
-	
 ];

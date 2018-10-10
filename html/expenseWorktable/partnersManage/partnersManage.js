@@ -84,7 +84,7 @@ function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 	}
 }
 /*
- * 添加和取消重点关注
+ * 添加和删除重点关注
  * 参数：editFlag  "add":增加 | "delete":取消
  */
 function handleManage(partyId,curStaffOrgId,focusId,editFlag){

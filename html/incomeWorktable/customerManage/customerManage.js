@@ -250,7 +250,7 @@ function initEmphasisCustomerTable(){
 }
 
 /*
- * 我重点关注的客户（已关联合同）取消重点关注
+ * 我重点关注的客户（已关联合同）删除重点关注
  */
 function deleteFocusCustomer(partyId, focusId){
 	layer.confirm('确定取消该客户的重点关注?', {icon: 0}, function() {
@@ -261,7 +261,7 @@ function deleteFocusCustomer(partyId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已取消重点关注");
+			layer.msg("已删除重点关注");
 			reloadPageDataTable("#emphasisCustomerTable",true);
 			var isInitRelationCustomerTable = $.fn.dataTable.isDataTable("#relationCustomerTable");
 			if(isInitRelationCustomerTable){

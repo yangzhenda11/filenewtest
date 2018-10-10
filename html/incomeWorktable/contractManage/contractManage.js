@@ -182,7 +182,7 @@ function initFocusContractTable(){
 }
 
 /*
- * 我重点关注的合同取消重点关注
+ * 我重点关注的合同删除重点关注
  */
 function deleteFocusContract(contractId, focusId){
 	layer.confirm('确定取消该合同的重点关注?', {icon: 0}, function() {
@@ -193,7 +193,7 @@ function deleteFocusContract(contractId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已取消重点关注");
+			layer.msg("已删除重点关注");
 			reloadPageDataTable("#focusContractTable",true);
 		}
    	});
@@ -406,7 +406,6 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }

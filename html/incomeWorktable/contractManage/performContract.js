@@ -71,7 +71,6 @@ function initPerformContractTable(){
 /*
  * 跳转线路信息
  */
- 
 function jumpLineManage(data){
 	var url = "/html/incomeWorktable/incomeManage/lineView.html?id="+data+"&relationType=1&returnbtn=true";
 	App.changePresentUrl(url);

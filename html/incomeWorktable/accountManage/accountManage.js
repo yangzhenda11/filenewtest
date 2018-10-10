@@ -83,7 +83,7 @@ function initCustomerListTable(){
 	});
 }
 /*
- * 我管理的客户经理添加和取消重点关注
+ * 我管理的客户经理添加和删除重点关注
  * 参数：editFlag  "add":增加 | "delete":取消
  */
 function emphasisOfCustomer(managerStaffOrgId,editFlag){
@@ -160,7 +160,7 @@ function initEmphasisCustomerTable(){
 }
 
 /*
- * 我重点关注的客户经理取消重点关注
+ * 我重点关注的客户经理删除重点关注
  */
 function deleteEmphasisOfEmp(managerStaffOrgId){
 	layer.confirm('确定取消该客户经理的重点关注?', {icon: 0}, function() {
@@ -170,7 +170,7 @@ function deleteEmphasisOfEmp(managerStaffOrgId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已取消重点关注");
+			layer.msg("已删除重点关注");
 			reloadPageDataTable("#emphasisCustomerTable",true);
 			var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
 			if(isInitCustomerListTable){

@@ -1,35 +1,21 @@
 //系统的全局变量
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-var parm = App.getPresentParm();
+var curStaffOrgId = config.curStaffOrgId;
 $(function(){
-	if(!parm.contractNumber){
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
-	};
 	getTableToreadHisList();
 })
-if(parm.returnbtn == "true"){
-	$("#returnBtn").show();
-}else{
-	$("#returnBtn").remove();
-};
-$("#returnBtn").on("click",function(){
-	window.history.go(-1);
-})
 /*
- * 初始化表格
+ * 初始化订单信息表格
  */
 function getTableToreadHisList(){
 	App.initDataTables('#orderManagerListTable', "#searchBtn", {
 		ajax: {
 	        "type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'orderManageForContract/listOrderManageForContractInfo',
+	        "url": serverPath+'orderManage/getOrderManageInfo',
 	        "data": function(d) {
 	        	d.contractIdOrPoNumber = $("#contractIdOrPoNumber").val().trim();
-	        	d.returnbtn = parm.returnbtn;
-	        	d.contractNumber = parm.contractNumber;
 	           	return JSON.stringify(d);
 	        }
 	    },

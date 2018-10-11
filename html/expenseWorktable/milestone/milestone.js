@@ -22,7 +22,7 @@ function initmilestoneTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'milestonePay/getMilestoneInfo',
+	        "url": serverPath+'milestonePay/listMilestoneInfo',
 	        "data": function(d) {
 	        	d.contractIdOrName = $("#riskWarningfoSearch").val().trim();
 	           	return JSON.stringify(d);

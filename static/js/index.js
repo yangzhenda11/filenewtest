@@ -37,7 +37,9 @@ var globalConfig = {
     /** 当前用户的系统设置 */
     curConfigs: {},
     /**二阶段用户所选稽核范围 */
-    auditScope: null
+    auditScope: null,
+    /**ifream */
+    ifreamLen: 0
 };
 /*
  * 缓存文件

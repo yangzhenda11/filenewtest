@@ -26,6 +26,10 @@ $(function(){
 	getAssistantList();
 	//待办待阅数量查询
 	setMessageNumber();
+	//获取合同付款（固定金额合同）图表数据
+	getChartsFixedData();
+	//获取合同付款（框架协议）图表数据
+	getChartsNotFixedData();
 	//获取重点关注履行中合同跟踪
 	getFocusContractTable()
 })
@@ -199,59 +203,150 @@ function showContractPerformerModal(contractId) {
 		$("#contractPerformerModal").modal("show");
 	}
 }
-
-
-
-
-
-
-
-
-
-
-//我的付款总览图表生成
-
-var expentType1Data = [
-	{	
-		value: 100000,
-		name: '累计含税付款金额：100,000元'
-	},
-	{
-		value: 30000,
-		name: '剩余含税未付款金额：30,000元'
+/*
+ * 获取固定金额合同图表数据
+ */
+function getChartsFixedData(){
+	var url = serverPath + "paymentManage/getPaymentManageIsFixedSum";
+	App.formAjaxJson(url, "post", null, successCallback, improperCallbacks);
+	function successCallback(result) {
+		initPaymentFiexdCharts(result.data);
+		setInvoiceChartsNote(result.data.resultData);
 	}
-];
-var expentType2Data = [
-	{	
-		value: 0,
-		name: '累计含税付款金额：0元'
-	},
-	{
-		value: 1,
-		name: '剩余含税未付款金额：0元'
+	function improperCallbacks(result){
+		layer.msg(result.message);
+		initPaymentFiexdCharts();
+		setInvoiceChartsNote();
 	}
-];
-var expentType1 = echarts.init(document.getElementById('expentType1'));
-var expentType1Option = initCharts("合同付款（固定金额合同）","固定金额合同累计付款金额情况",expentType1Data);
-expentType1.setOption(expentType1Option);
-
-
-
-var expentType2 = echarts.init(document.getElementById('expentType2'));
-var expentType2Option = initCharts("合同付款（框架协议）","框架协议对应的订单累计付款金额情况",expentType2Data,true);
-expentType2.setOption(expentType2Option);
-expentType2.dispatchAction({
-	type: 'highlight',
-	dataIndex: 0,
-})
-
-
+}
+/*
+ * 获取框架协议合同图表数据
+ */
+function getChartsNotFixedData(){
+	var url = serverPath + "paymentManage/getPaymentManageNoFixedSum";
+	App.formAjaxJson(url, "post", null, successCallback, improperCallbacks);
+	function successCallback(result) {
+		initPaymentNotFiexdCharts(result.data);
+		setInvoiceChartsNote(result.data.resultData);
+	}
+	function improperCallbacks(result){
+		layer.msg(result.message);
+		initPaymentNotFiexdCharts();
+		setInvoiceChartsNote();
+	}
+}
+//合同付款（固定金额合同）（图表）
+function initPaymentFiexdCharts(data){
+	var paymentChartsFixedOption;
+	var paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
+	var paymentChartsFixedData = [
+		{value: 0,name: '累计含税付款金额：0元'},
+		{value: 1,name: '剩余含税未付款金额：0元'}
+	];
+	if(data){
+		var payVateAmountSumSum = data.payVateAmountSumSum ? data.payVateAmountSumSum : 0;
+		var noPayVateAmountSum = data.noPayVateAmountSum ? data.noPayVateAmountSum : 0;
+		var noPayVateAmountPercent = data.noPayVateAmountPercent ? data.noPayVateAmountPercent : 0;
+		if(payVateAmountSumSum || noPayVateAmountSum){
+			paymentChartsFixedData = [
+				{
+					value: payVateAmountSumSum,
+					name: "累计含税付款金额："+App.unctionToThousands(payVateAmountSumSum)+"元"
+				},
+				{
+					value: noPayVateAmountSum,
+					name: "剩余含税未付款金额："+App.unctionToThousands(noPayVateAmountSum)+"元"
+				}
+			];
+			paymentChartsFixedOption = initCharts("合同付款（固定金额合同）","固定金额合同累计付款金额情况",paymentChartsFixedData);
+			$("#paymentChartsFixedValue").text(parseFloat((noPayVateAmountPercent*100).toPrecision(12)) + "%")
+		}else{
+			paymentChartsFixedOption = initCharts("合同付款（固定金额合同）","固定金额合同累计付款金额情况",paymentChartsFixedData,true);
+			$("#paymentChartsFixedValue").text("0%")
+		}
+	}else{
+		paymentChartsFixedOption = initCharts("合同付款（固定金额合同）","固定金额合同累计付款金额情况",paymentChartsFixedData,true);
+		$("#paymentChartsFixedValue").text("0%")
+	};
+	paymentChartsFixedDom.setOption(paymentChartsFixedOption);
+}
+//合同付款（框架协议）（图表）
+function initPaymentNotFiexdCharts(data){
+	var paymentChartsNotFixedOption;
+	var paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
+	var paymentChartsNotFixedData = [
+		{value: 0,name: '累计含税付款金额：0元'},
+		{value: 1,name: '剩余含税未付款金额：0元'}
+	];
+	if(data){
+		var payVateAmountSumSum = data.payVateAmountSumSum ? data.payVateAmountSumSum : 0;
+		var noPayVateAmountSum = data.noPayVateAmountSum ? data.noPayVateAmountSum : 0;
+		var noPayVateAmountPercent = data.noPayVateAmountPercent ? data.noPayVateAmountPercent : 0;
+		if(payVateAmountSumSum || noPayVateAmountSum){
+			paymentChartsNotFixedData = [
+				{
+					value: payVateAmountSumSum,
+					name: "累计含税付款金额："+App.unctionToThousands(payVateAmountSumSum)+"元"
+				},
+				{
+					value: noPayVateAmountSum,
+					name: "剩余含税未付款金额："+App.unctionToThousands(noPayVateAmountSum)+"元"
+				}
+			];
+			paymentChartsNotFixedOption = initCharts("合同付款（框架协议）","框架协议对应的订单累计付款金额情况",paymentChartsNotFixedData);
+			$("#paymentChartsNotFixedValue").text(parseFloat((noPayVateAmountPercent*100).toPrecision(12)) + "%")
+		}else{
+			paymentChartsNotFixedOption = initCharts("合同付款（框架协议）","框架协议对应的订单累计付款金额情况",paymentChartsNotFixedData,true);
+			$("#paymentChartsNotFixedValue").text("0%")
+		}
+	}else{
+		paymentChartsNotFixedOption = initCharts("合同付款（框架协议）","框架协议对应的订单累计付款金额情况",paymentChartsNotFixedData,true);
+		$("#paymentChartsNotFixedValue").text("0%")
+	};
+	paymentChartsNotFixedDom.setOption(paymentChartsNotFixedOption);
+}
+/*
+ * 设置截止日期
+ */
+var invoiceChartsNoteSum = 0;
+var invoiceChartsNoteText = "";
+function setInvoiceChartsNote(data){
+	invoiceChartsNoteSum++;
+	if(data){
+		var data = data.split("-");
+		var resultData = "";
+		$.each(data, function(k,v) {
+			if(k == 0){
+				resultData += v + "年";
+			}else if(k == 1){
+				resultData += v + "月";
+			}else if(k == 2){
+				resultData += v + "日";
+			}
+		});
+		invoiceChartsNoteText = "*以上统计数据截至" + resultData;
+	}
+	if(invoiceChartsNoteSum == 2){
+		if(invoiceChartsNoteText){
+			$("#invoiceChartsNote").text(invoiceChartsNoteText);
+		}else{
+			$("#invoiceChartsNote").text("*该图表暂未汇总到数据");
+		}
+		
+	}
+}
+/*
+ * 生成环形图配置项
+ */
 function initCharts(title,subtext,data,isEmpty){
 	var borderWidth = 2;
 	var formatter = "{a} <br/>{b} ({d}%)";
 	if(isEmpty){
 		borderWidth = 0;
 		formatter = title;
+		for(var i = 0; i < data.length; i++){
+			formatter += "<br />" + data[i].name;
+		}
 	}
 	var option = {
 		title: {

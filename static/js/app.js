@@ -898,8 +898,11 @@ var App = function() {
 			};
 			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
-				options = arguments[1];
+				var arg1 = arguments[1];
+				var arg2 = arguments[2];
 				btn = "";
+				options = arg1;
+				successCallback = arg2;
 			};
 			options = $.extend(true, {
 				"serverSide": true,

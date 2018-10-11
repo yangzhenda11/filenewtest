@@ -103,7 +103,7 @@ td.milestoneLegend{
     width:80px;
     height: 32px;
     position: absolute;
-    top: 126px;
+    top: 134px;
     left: 50%;
     margin-left: -40px;
     font-size: 20px;
@@ -115,6 +115,9 @@ td.milestoneLegend{
 	right: 0;
 	bottom: -20px;
 }
+.invoiceIncomeTitle{
+	overflow: hidden;
+}
 .invoiceIncomeTitle p{
 	font-weight: bold;
 	float: left;
@@ -122,4 +125,9 @@ td.milestoneLegend{
 .invoiceIncomeTitle span{
 	display: inline-block;
 	min-width: 100px;
+}
+.paymentManageDetailTit{
+	font-weight: bold;
+	margin: 0;
+	font-size: 13px;
 }

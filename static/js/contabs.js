@@ -209,9 +209,10 @@ function conTabC() {
 	return false;
 }
 function showSubpageTab(link,title,openNew,fixed){
+	globalConfig.ifreamLen++;
 	var o = link?link:'',
 		l = title?title:'',
-		m = '',
+		m = "Y" + globalConfig.ifreamLen,
 		k = true;
 	if(o == undefined || $.trim(o).length == 0) {
 		return false

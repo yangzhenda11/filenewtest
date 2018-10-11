@@ -3689,7 +3689,7 @@ Portlets
     background: #f1f4f7; }
   .portlet > .portlet-title {
     padding: 0;
-    border-bottom: 1px solid #f3f3f3; }
+    border-bottom: 1px solid #eee; }
     .portlet > .portlet-title > .caption {
       color: #666; }
       /*合同修改*/

@@ -5,6 +5,31 @@ var serverPath = config.serverPath;
 var reloadRelationCustomerTable = false;
 var reloadEmphasisCustomerTable = false;
 
+$(function(){
+	/*
+	 * 我的客户（未关联合同）功能，稽核管理和商务经理需具备全省权限的角色才可以使用。
+	 * roleType
+	 * 91216：客户经理
+	 * 91217：业务管理
+	 * 91218：稽核管理
+	 * 91219：商务经理
+	 * dataPermission
+	 * 0个人，1部门，2公司，3省分
+	 */
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+
+	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+		if(dataPermission == 3) {
+			$("#notRelationCustomer").show();
+		}
+		else {
+			$("#notRelationCustomer").remove();			
+		}
+	}else{
+		$("#notRelationCustomer").show();
+	};
+})
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "emphasisCustomer"){
@@ -250,7 +275,7 @@ function initEmphasisCustomerTable(){
 }
 
 /*
- * 我重点关注的客户（已关联合同）删除重点关注
+ * 我重点关注的客户（已关联合同）取消重点关注
  */
 function deleteFocusCustomer(partyId, focusId){
 	layer.confirm('确定取消该客户的重点关注?', {icon: 0}, function() {
@@ -261,7 +286,7 @@ function deleteFocusCustomer(partyId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已删除重点关注");
+			layer.msg("已取消重点关注");
 			reloadPageDataTable("#emphasisCustomerTable",true);
 			var isInitRelationCustomerTable = $.fn.dataTable.isDataTable("#relationCustomerTable");
 			if(isInitRelationCustomerTable){

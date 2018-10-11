@@ -65,7 +65,7 @@ function initPaymentDetailTable(){
 			},
 			{"data": "lastPayDate","className": "whiteSpaceNormal",
 				"render": function(data, type, full, meta){
-					return return App.formatDateTime(data, "yyyy-mm-dd");
+					return App.formatDateTime(data, "yyyy-mm-dd");
 				}
 			},
 			{"data": "invoiceStatus","className": "whiteSpaceNormal",

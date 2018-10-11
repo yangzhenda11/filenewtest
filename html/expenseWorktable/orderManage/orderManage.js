@@ -13,7 +13,7 @@ function getTableToreadHisList(){
 		ajax: {
 	        "type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'orderManage/getOrderManageInfo',
+	        "url": serverPath+'orderManage/listOrderManageInfo',
 	        "data": function(d) {
 	        	d.contractIdOrPoNumber = $("#contractIdOrPoNumber").val().trim();
 	           	return JSON.stringify(d);

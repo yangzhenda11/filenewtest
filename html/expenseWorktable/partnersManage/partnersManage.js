@@ -36,7 +36,7 @@ function initCustomerListTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'partnersManage/getPartnersManageInfo',
+	        "url": serverPath+'partnersManage/listPartnersManageInfo',
 	        "data": function(d) {
 	        	d.partnerCodeOrName = $("#partnerCodeOrName").val().trim();
 	           	return JSON.stringify(d);
@@ -134,7 +134,7 @@ function initEmphasisCustomerTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath+'partnersManage/getPartnersManageFocusInfo',
+	        "url": serverPath+'partnersManage/listPartnersManageFocusInfo',
 	        "data": function(d) {
 	        	d.partnerCodeOrName = $("#partnerCodeOrNameFocus").val().trim();
 	           	return JSON.stringify(d);

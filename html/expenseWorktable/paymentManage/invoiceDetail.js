@@ -43,10 +43,10 @@ function initInvoiceDetailTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "invoiceStatus","className": "whiteSpaceNormal",
-				"render" : function(data, type, full, meta){
-					return data == 1 ? "发票正常" : "发票异常"
-				}
+			{"data": "invoiceStatus","className": "whiteSpaceNormal"
+//				"render" : function(data, type, full, meta){
+//					return data == 1 ? "发票正常" : "发票异常"
+//				}
 			}
 		]
 	});

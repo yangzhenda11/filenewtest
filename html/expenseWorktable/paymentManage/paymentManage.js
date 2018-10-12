@@ -72,10 +72,10 @@ function initInvoiceTable(type){
 	};
 	if(type == "fixed"){
 		var totalData = pageData.fixedData;
-		var url = serverPath + "paymentManage/getPaymentManageIsFixed";
+		var url = serverPath + "paymentManage/listPaymentManageIsFixed";
 	}else{
 		var totalData = pageData.notFixedData;
-		var url = serverPath + "paymentManage/getPaymentManageNoFixed";
+		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
 	var contractValueNovatSum = totalData.contractValueNovatSum ? App.unctionToThousands(totalData.contractValueNovatSum) : 0;
 	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
@@ -142,10 +142,10 @@ function initPaymentTable(type){
 	};
 	if(type == "fixed"){
 		var totalData = pageData.fixedData;
-		var url = serverPath + "paymentManage/getPaymentManageIsFixed";
+		var url = serverPath + "paymentManage/listPaymentManageIsFixed";
 	}else{
 		var totalData = pageData.notFixedData;
-		var url = serverPath + "paymentManage/getPaymentManageNoFixed";
+		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
 	var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
 //	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
@@ -179,12 +179,12 @@ function initPaymentTable(type){
 					return data == 1 ? "是" : "否";
 				}
 			},
-			{"data": "payVateAmountSum","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "payVateAmountSum","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}

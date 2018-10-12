@@ -44,7 +44,7 @@ function initRiskWarningListTable(){
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}
 			},
-			{"data": "expiryDate","className": "whiteSpaceNormal","width":"7%",
+			{"data": "expiryDate","className": "whiteSpaceNormal","width":"8%",
 				"render" : function(data, type, full, meta) {
 					return App.formatDateTime(data,"yyyy-MM-dd");
 				}

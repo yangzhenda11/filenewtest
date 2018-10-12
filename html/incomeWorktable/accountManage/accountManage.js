@@ -72,42 +72,36 @@ function initCustomerListTable(){
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					var editFlag = "add";
-					if(full.isValid == 1){
-						editFlag = "delete";
-					};
-					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\",\""+editFlag+"\")' src='/static/img/"+editFlag+".png' />";
+					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\")' src='/static/img/add.png' />";
 				}
 			}
 		]
 	});
 }
 /*
- * 我管理的客户经理添加和删除重点关注
- * 参数：editFlag  "add":增加 | "delete":取消
+ * 我管理的客户经理添加重点关注
+ * 参数：editFlag  "add":增加 
  */
-function emphasisOfCustomer(managerStaffOrgId,editFlag){
+function emphasisOfCustomer(managerStaffOrgId){
 	var url = serverPath + "customerManager/saveFocusCustomerManager";
-	var massage = "添加";
-	if(editFlag == "delete"){
-		url = serverPath + "customerManager/delFocusCustomerManager";
-		massage = "取消";
-	};
-	layer.confirm("确定"+massage+"该客户经理的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
     	var postData = {
 			managerStaffOrgId: managerStaffOrgId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已"+massage+"重点关注");
-			reloadPageDataTable("#customerListTable",true);
-			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-			if(isInitEmphasisCustomerTable){
-				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-					reloadEmphasisCustomerTable = true;
-				}else{
-					reloadPageDataTable("#emphasisCustomerTable",true);
-				};
+			if(result.data == 1) {
+				layer.msg("已添加重点关注");
+				var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+				if(isInitEmphasisCustomerTable){
+					if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+						reloadEmphasisCustomerTable = true;
+					}else{
+						reloadPageDataTable("#emphasisCustomerTable",true);
+					};
+				}
+			} else {
+				layer.msg("已关注，无需重新关注");				
 			}
 		}
    	});

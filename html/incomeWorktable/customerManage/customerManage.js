@@ -328,25 +328,40 @@ function initCustomerListTable(){
 				return JSON.stringify(d);
 			}
 		},
-		"columns": [
-			{"data" : null,"className": "whiteSpaceNormal","width": "5%",
-				"render" : function(data, type, full, meta){
-					var start = App.getDatatablePaging("#customerListTable").pageStart;
-					return start + meta.row + 1;
-				}
-			},
-			{"data": "customerName","className": "whiteSpaceNormal","width": "27%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "partnerCode","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
-				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.customerCode+"\")'>查看</a>";
-				}
-			},
-		]
+		"columns": myCustomerTableColumns()
 	});
 }
+
+function myCustomerTableColumns(){
+	var columns = [
+		{"data" : null,"title":"序号","width": "5%",
+			"render" : function(data, type, full, meta){
+				var start = App.getDatatablePaging("#customerListTable").pageStart;
+				return start + meta.row + 1;
+			}
+		}
+	];
+	$.each(customerTheadList, function(k,v) {
+		if(v.checked == true){
+			if(v.id == "jumpContract"){
+				var item = {
+					"data": "customerCode",
+					"title": v.data,
+					"render": function(data, type, full, meta){
+						return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
+					}
+			};
+			}else{
+				var item = {
+						"data": v.id,
+						"title": v.data
+					};
+			};
+			columns.push(item);
+		}
+	});
+	return columns;
+};
 
 /*
  * 页面内表格初始化完成之后查询事件
@@ -373,3 +388,29 @@ function jumpContractManage(customerCode){
 	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
+
+//我的合同查询选择查看更多
+function myCustomerInitselectLR() {
+	var options = {
+		modalId: "#commomModal",
+		data: customerTheadList
+	}
+	$.initSelectLRFn(options);
+}
+/*
+* 点击确定回调的页面方法
+*/
+function returnSelectLRData(data) {
+	$("#commomModal").modal("hide");
+	customerTheadList = data;
+	initCustomerListTable();
+}
+//我的客户查询表格头
+var customerTheadList = [
+	{data:"客户名称",id:"customerName",checked:true},
+	{data:"集客客户编号",id:"customerCode",checked:true},
+	{data:"合作方编号",id:"partnerCode",checked:true},
+	{data:"客户经理名称",id:"customerManagerName",checked:true},
+	{data:"履行中合同",id:"jumpContract",checked:true},
+	{data:"客户经理编号",id:"customerManagerCode"}
+];

@@ -202,7 +202,7 @@ function setAuditScope() {
 	var obj = {
 		companyCode: config.companyCode
 	};
-	var url = serverPath + "auditManager/getAuditRangeById";
+	var url = serverPath + "auditManager/getAuditRangeByStaffOrgId";
 	App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
 	var dataPermission = config.dataPermission;
 	function successCallback(result) {

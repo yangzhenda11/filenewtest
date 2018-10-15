@@ -3,6 +3,8 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
 var reloadFocusContractTable = false;
+//获取参数
+var parm = App.getPresentParm();
 $(function(){
 	var roleArr = config.curRole;
 	if(isInArray(roleArr,91216)){
@@ -24,6 +26,9 @@ $(function(){
 	$("#contractTypeSearch").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
+	if(parm.expandFocusContractList){
+		$("#focusContractList .form-fieldset-tools").click();
+	}
 })
 
 //获取工单类型字典
@@ -136,7 +141,7 @@ function searchFocusContract(){
 	reloadPageDataTable("#focusContractTable");
 }
 /*
- * 我重点关注的客户经理表格初始化
+ * 我重点关注的合同表格初始化
  */
 function initFocusContractTable(){
 	App.initDataTables('#focusContractTable', "#focusContractLoading", {

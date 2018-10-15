@@ -2,7 +2,6 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
-var reloadCustomerListTable = false;
 var reloadEmphasisCustomerTable = false;
 //获取参数
 var parm = App.getPresentParm();
@@ -13,12 +12,7 @@ $(function(){
 })
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
-	if(id == "customerList"){
-		var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-		if(isInitCustomerListTable && reloadCustomerListTable){
-			reloadPageDataTable("#customerListTable",true);
-		}
-	}else if(id == "emphasisCustomer"){
+	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 		if(isInitEmphasisCustomerTable && reloadEmphasisCustomerTable){
 			reloadPageDataTable("#emphasisCustomerTable",true);
@@ -80,7 +74,6 @@ function initCustomerListTable(){
 }
 /*
  * 我管理的客户经理添加重点关注
- * 参数：editFlag  "add":增加 
  */
 function emphasisOfCustomer(managerStaffOrgId){
 	var url = serverPath + "customerManager/saveFocusCustomerManager";
@@ -166,14 +159,6 @@ function deleteEmphasisOfEmp(managerStaffOrgId){
 		function successCallback(result) {
 			layer.msg("已删除重点关注");
 			reloadPageDataTable("#emphasisCustomerTable",true);
-			var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
-			if(isInitCustomerListTable){
-				if($("#customerList .form-fieldset-body").is(':hidden')){
-					reloadCustomerListTable = true;
-				}else{
-					reloadPageDataTable("#customerListTable",true);
-				};
-			}
 		}
    	});
 }

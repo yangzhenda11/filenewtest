@@ -130,14 +130,38 @@ function jumpWorkflow(type){
 	};
 }
 /*
+ * 重点关注合同和客户切换
+ */
+$("#emphasisRadio input[name='emphasisRadio']").on("change", function() {
+	if($(this).val() == 1) {
+		$("#emphasisContractDom").hide(0, function() {
+			$("#emphasisCustomerDom").show();
+			//			initEmphasisClientDom();
+		});
+	} else if($(this).val() == 2) {
+		$("#emphasisCustomerDom").hide(0, function() {
+			$("#emphasisContractDom").show();
+			//			initEmphasisClientDom();
+		});
+	}
+})
+/*
  * 获取重点关注履行中合同跟踪
  */
 function getFocusEmphasis(){
 	if(roleType == 91217){
 		$("#emphasisColForAccount").show();
+		$("#emphasisColForOhter").remove();
 		getFocusAccountTable();
 	}else{
 		$("#emphasisColForOhter").show();
+		$("#emphasisColForAccount").remove();
+		getFocusCustomerTable();
+		if(roleType == 91218) {
+			$("#emphasisRadio").remove();
+		}else{
+			getFocusContractTable();
+		};
 	}
 }
 /*
@@ -171,7 +195,7 @@ function getFocusAccountTable(){
 					'<td>'+ v.orgName + '</td>'+
 					'<td>'+ itemPhone + '</td>'+
 					'<td>'+ itemEmail +'</td>'+
-					'<td><a onclick="jumpContractManage(\''+v.managerStaffOrgId+'\')">查看</a></td>';
+					'<td><a onclick="jumpContractManageByStaffid(\''+v.managerStaffOrgId+'\')">查看</a></td>';
 			});
 			$("#focusAccountTbody").html(html);		
 		}else{
@@ -188,11 +212,118 @@ $("#showAccountMore").on("click",function(){
 	top.showSubpageTab(url,"履行中合同");
 })
 /*
- * 跳转合同信息
+ * 跳转合同信息（根据客户经理ID）
  */
-function jumpContractManage(managerStaffOrgId){
+function jumpContractManageByStaffid(managerStaffOrgId){
 	var url = "/html/incomeWorktable/contractManage/performContractForAccount.html?managerStaffOrgId="+managerStaffOrgId;
 	top.showSubpageTab(url,"查看履行中合同");
+}
+/*
+ * 获取重点关注客户
+ */
+function getFocusCustomerTable(){
+	var url = serverPath + "customerInfo/listFocusCustomerInfoRelate";
+	var postData = {
+		draw: 1,
+		start: 0,
+		length: 5,
+		order: []
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(result.recordsTotal > postData.length){
+			$("#showCustomerMore").show();
+		}else{
+			$("#showCustomerMore").hide();
+		};
+		if(data.length > 0){
+			var html = "";
+			$.each(data, function(k,v) {
+				html += '<tr>'+
+					'<td>'+ (k+1) + '</td>'+
+					'<td>'+ v.customerName + '</td>'+
+					'<td>'+ v.customerCode + '</td>'+
+					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ v.customerManagerName +'</td>'+
+					'<td><a onclick="jumpContractManageByCustomerCode(\''+v.customerCode+'\')">查看</a></td>';
+			});
+			$("#emphasisCustomerTbody").html(html);		
+		}else{
+			var emptyTr = '<tr><td colspan="6">暂无重点关注的客户信息</td></tr>'
+			$("#emphasisCustomerTbody").html(emptyTr);						
+		}
+	}
+}
+/*
+ * 跳转我的客户管理
+ */
+$("#showCustomerMore").on("click",function(){
+	var url = "/html/incomeWorktable/customerManage/customerManage.html?expandFocusCustomer=true";
+	top.showSubpageTab(url,"客户管理");
+})
+/*
+ * 跳转合同信息（根据客户ID）
+ */
+function jumpContractManageByCustomerCode(customerCode){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
+	top.showSubpageTab(url,"查看履行中合同");
+}
+/*
+ * 获取重点关注合同
+ */
+function getFocusContractTable(){
+	var url = serverPath + "performanceContract/listFocusContract";
+	var postData = {
+		draw: 1,
+		start: 0,
+		length: 5,
+		order: []
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(result.recordsTotal > postData.length){
+			$("#showContractMore").show();
+		}else{
+			$("#showContractMore").hide();
+		};
+		if(data.length > 0){
+			var html = "";
+			$.each(data, function(k,v) {
+				var itemPhone = v.phone ? v.phone : '';
+				var itemEmail = v.email ? v.email : '';
+				html += '<tr>'+
+					'<td>'+ (k+1) + '</td>'+
+					'<td>'+ v.contractName + '</td>'+
+					'<td>'+ v.contractNumber + '</td>'+
+					'<td>'+ v.customerName + '</td>'+
+					'<td>'+ v.customerCode + '</td>'+
+					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
+					'<td>'+ v.customerManagerName + '</td>'+
+					'<td><a onclick="jumpLineManageByContract(\''+v.contractId+'\')">查看</a></td>';
+			});
+			$("#emphasisContractTbody").html(html);		
+		}else{
+			var emptyTr = '<tr><td colspan="9">暂无重点关注的合同信息</td></tr>'
+			$("#emphasisContractTbody").html(emptyTr);						
+		}
+	}
+}
+/*
+ * 跳转履行中合同
+ */
+$("#showContractMore").on("click",function(){
+	var url = "/html/incomeWorktable/contractManage/contractManage.html?expandFocusContractList=true";
+	top.showSubpageTab(url,"履行中合同");
+})
+/*
+ * 跳转线路信息（已关联合同）
+ */
+function jumpLineManageByContract(contractId){
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
+	top.showSubpageTab(url,"线路信息");
 }
 /***************选择稽核范围开始***********************/
 /*
@@ -348,19 +479,7 @@ function setScope() {
 
 /***************选择稽核范围结束***********************/
 
-$("#emphasisRadio input[name='emphasisRadio']").on("change", function() {
-	if($(this).val() == 1) {
-		$("#emphasisContractDom").hide(0, function() {
-			$("#emphasisCustomerDom").show();
-			//			initEmphasisClientDom();
-		});
-	} else if($(this).val() == 2) {
-		$("#emphasisCustomerDom").hide(0, function() {
-			$("#emphasisContractDom").show();
-			//			initEmphasisClientDom();
-		});
-	}
-})
+
 
 //我的收入总览图表生成
 function initIncomeOverview() {

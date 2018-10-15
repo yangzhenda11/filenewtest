@@ -96,18 +96,16 @@ td.milestoneLegend{
 	padding-left: 4px;
 	font-size: 14px;
 	padding-bottom: 4px;
-	color: #D11718;
-}
-.customerServiceTitle i{
-	margin-right: 6px;
 }
 .businessTitle{
-	margin-left: 26px;
-	margin-top: 3px;
+	display: inline-block;
+	color: #333;
 }
 .businessTitle .businessTitleValue{
 	margin-right: 20px;
 	font-weight: bold;
+	min-width: 100px;
+	display: inline-block;
 }
 .businessTableTitle{
 	font-weight: bold;

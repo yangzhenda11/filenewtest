@@ -42,18 +42,19 @@
 							</div>
 						</div>				
 						<div class="customerServiceTitle">
-							<span class="ititle"><i class="iconfont icon-layers"></i>租线业务详单</span>
+							<span class="ititle">
+								<div class="businessTitle">
+									客户名称：<span class="businessTitleValue customerName"></span>
+									集客客户编号：<span class="businessTitleValue" id="customerCode"></span>
+								</div>
+							</span>
 						</div>
 						<div id="businessEmptyDom">
 							请输入集客客户编号进行查询。
 						</div>
 						<div id="businessDetailsDom" style="display: none;">
-							<div class="businessTitle">
-								客户名称：<span class="businessTitleValue customerName">招商银行杭州市分行</span>
-								集客客户编号：<span class="businessTitleValue" id="customerCode"></span>
-							</div>
 							<div>
-								<p class="businessTableTitle"><span class="customerName">招商银行杭州市分行</span>租线业务详单</p>
+								<p class="businessTableTitle"><span class="customerName"></span>租线业务详单</p>
 								<div class="buttonNavTabs" id="buttonNavTabs">
 									<button href="#lineDetail" data-id="lineDetail" data-toggle="tab" class="btn primary btn-inline check">线路账单</button>
 									<button href="#contractDetail" data-id="contractDetail" data-toggle="tab" class="btn primary btn-inline">合同清单</button>

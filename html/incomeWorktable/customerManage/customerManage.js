@@ -4,7 +4,8 @@ var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
 var reloadRelationCustomerTable = false;
 var reloadEmphasisCustomerTable = false;
-
+//获取参数
+var parm = App.getPresentParm();
 $(function(){
 	/*
 	 * 我的客户（未关联合同）功能，稽核管理和商务经理需具备全省权限的角色才可以使用。
@@ -18,7 +19,6 @@ $(function(){
 	 */
 	var roleArr = config.curRole;
 	var dataPermission = config.dataPermission;
-
 	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
 		if(dataPermission == 3) {
 			$("#notRelationCustomer").show();
@@ -29,6 +29,9 @@ $(function(){
 	}else{
 		$("#notRelationCustomer").show();
 	};
+	if(parm.expandFocusCustomer){
+		$("#emphasisCustomer .form-fieldset-tools").click();
+	}
 })
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
@@ -260,9 +263,9 @@ function initEmphasisCustomerTable(){
 			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "19%"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.customerCode+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+customerCode+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",

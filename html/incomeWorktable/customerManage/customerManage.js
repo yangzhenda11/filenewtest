@@ -2,7 +2,6 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //区域展开时判断是否重新加载的标志位
-var reloadRelationCustomerTable = false;
 var reloadEmphasisCustomerTable = false;
 //获取参数
 var parm = App.getPresentParm();
@@ -22,8 +21,7 @@ $(function(){
 	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
 		if(dataPermission == 3) {
 			$("#notRelationCustomer").show();
-		}
-		else {
+		} else {
 			$("#notRelationCustomer").remove();			
 		}
 	}else{
@@ -36,21 +34,6 @@ $(function(){
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "emphasisCustomer"){
-		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-		if(!isInitEmphasisCustomerTable){
-			initEmphasisCustomerTable();
-		}
-	}
-}
-
-//区域展开时引用的函数，返回form-fieldset的id
-function formFieldsetSlideFn(id){
-	if(id == "customerView"){
-		var isInitRelationCustomerTable = $.fn.dataTable.isDataTable("#relationCustomerTable");
-		if(isInitRelationCustomerTable && reloadRelationCustomerTable){
-			reloadPageDataTable("#relationCustomerTable",true);
-		}
-	}else if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 		if(isInitEmphasisCustomerTable && reloadEmphasisCustomerTable){
 			reloadPageDataTable("#emphasisCustomerTable",true);
@@ -87,13 +70,12 @@ function searchRelationCustomer(){
  * 已关联合同客户表格初始化
  */
 function initRelationCustomerTable(){
-
 	App.initDataTables('#relationCustomerTable', "#relationCustomerLoading", {
 		ajax: {
-			"type": "POST",					//请求方式
+			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-			"url": serverPath + 'customerInfo/listCustomerInfoRelate',	//请求地址
-			"data": function(d) {							//自定义传入参数
+			"url": serverPath + 'customerInfo/listCustomerInfoRelate',
+			"data": function(d) {
 	        	d.customerInfoRelateSearch = $("#customerInfoRelateSearch").val().trim();
 				return JSON.stringify(d);
 			}
@@ -109,14 +91,14 @@ function initRelationCustomerTable(){
 			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "19%"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": null,"className": "whiteSpaceNormal","width": "8%",
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.customerCode+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
+			{"data": "partyId","className": "whiteSpaceNormal tableImgCon","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='focusCustomer(\""+data.partyId+"\")' src='/static/img/add.png' />";
+					return "<img onclick='focusCustomer(\""+data+"\")' src='/static/img/add.png' />";
 				}
 			}
 		]
@@ -134,9 +116,7 @@ function focusCustomer(partyId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-
 			if(result.data == 1) {
-
 				layer.msg("已添加重点关注");
 				reloadPageDataTable("#relationCustomerTable",true);
 				var isInitFocusCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
@@ -208,9 +188,9 @@ function initNotRelationCustomerTable(){
 			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal"},
 			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal"},
 			{"data": "customerManagerName","title":"客户经理","className": "whiteSpaceNormal"},
-			{"data": null,"title":"线路基本信息","className": "whiteSpaceNormal","width": "8%",
+			{"data": "customerCode","title":"线路基本信息","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data.customerCode+"\")'>查看</a>";
+					return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": "sourceName","title":"来源","className": "whiteSpaceNormal","visible":visible,
@@ -229,7 +209,6 @@ function initNotRelationCustomerTable(){
 		]
 	});
 }
-
 
 /*
  * 我重点关注点击查询事件
@@ -265,7 +244,7 @@ function initEmphasisCustomerTable(){
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
 			{"data": "customerCode","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+customerCode+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
@@ -291,14 +270,6 @@ function deleteFocusCustomer(partyId, focusId){
 		function successCallback(result) {
 			layer.msg("已取消重点关注");
 			reloadPageDataTable("#emphasisCustomerTable",true);
-			var isInitRelationCustomerTable = $.fn.dataTable.isDataTable("#relationCustomerTable");
-			if(isInitRelationCustomerTable){
-				if($("#customerView .form-fieldset-body").is(':hidden')){
-					reloadRelationCustomerTable = true;
-				}else{
-					reloadPageDataTable("#relationCustomerTable",true);
-				};
-			}
 		}
    	});
 }
@@ -380,8 +351,8 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转线路信息
  */
-function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&returnbtn=false&id="+data;
+function jumpLineManage(customerCode){
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&id="+customerCode;
 	top.showSubpageTab(url,"线路信息");
 }
 /*

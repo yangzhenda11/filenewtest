@@ -291,8 +291,6 @@ function getFocusContractTable(){
 		if(data.length > 0){
 			var html = "";
 			$.each(data, function(k,v) {
-				var itemPhone = v.phone ? v.phone : '';
-				var itemEmail = v.email ? v.email : '';
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
 					'<td>'+ v.contractName + '</td>'+

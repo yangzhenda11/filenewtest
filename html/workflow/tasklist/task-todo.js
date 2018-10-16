@@ -83,26 +83,25 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$("#searchContentForToDo").hide();
 	//}
 }
-function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	
+function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {
 	var flowParam = {
 		"taskDefinitionKey" : taskDefinitionKey,
 		"assignee" : assignee,
 		"processInstanceId" : processInstanceId,
 		"taskId" : id
 	}
-	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,
-			function(data) {
-				if (result.success == 1) {
-					//currentTask=result.flowdata;
-					layer.msg(data.sign);
-					// 成功后刷新列表
-					serarchForToDo(true);
-				} else {
-					layer.msg(data.sign);
-				};
-			});
+	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
+		if (data.success == 1) {
+			if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+				redirectUrl(id,taskDefinitionKey,processInstanceId)
+			}else{
+				layer.msg(data.sign);
+				serarchForToDo(true);
+			}
+		} else {
+			layer.msg(data.sign);
+		};
+	});
 }
 
 /*
@@ -137,23 +136,32 @@ function getTableTodo(){
 		        	var buttontitle = "";
 		        	var fn = "";
 		        	var style = "";
-		        	if(curStaffOrgId == assignee){
-		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
-	        				fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
+		        	if(assignee.indexOf("candidate-") != -1){
+		        		//是抢单模式，点击待办标题先申请任务。
+		        		assignee=assignee.substring(10);
+		        		if(curStaffOrgId == assignee){
+		        			buttontitle="当前任务为抢单模式的任务，请及时处理！";
+		        			fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}else{
-		        			fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        			style = "cursor:not-allowed";
+		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+		        			fn = "layer.msg(\'"+buttontitle+"\')";
 		        		}
 		        	}else{
-		        		style = "cursor:not-allowed";
-		        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-		        		fn = "layer.msg(\'"+buttontitle+"\')";
+		        		//非抢单模式的正常待办
+		        		if(curStaffOrgId == assignee){
+		        			if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
+		        				fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
+		        			}else{
+		        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        			}
+		        		}else{
+		        			style = "cursor:not-allowed";
+		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+		        			fn = "layer.msg(\'"+buttontitle+"\')";
+		        		}
 		        	}
 		        	var context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
-		        	if(assignee.indexOf("candidate-") != -1){
-		        		buttontitle = "该任务为抢单任务，如需处理请先点击领取该任务";
-		        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-		        		context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
-		        	}
 		            return App.getDataTableLink(context);
 				}
 			
@@ -198,7 +206,7 @@ function checkifdone(taskId){
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(taskId,taskDefinitionKey,processInstanceId,notCheckStatus){
+function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
 		var success = data.retCode;
 		if (success == 1){

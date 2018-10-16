@@ -33,7 +33,7 @@ function handleTaskToDo(taskInfo) {
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
 	
-	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR"){
+	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR" || taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
 		$("#goTaskToDoDetailForToDo").remove();
 		$("#searchContentForToDo").hide();
 		$("#businessiframe").show();
@@ -83,7 +83,12 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+		   			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
+					$('#businessiframe').attr("src",src);
+		   		}else{
+		   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		}
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}

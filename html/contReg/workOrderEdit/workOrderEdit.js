@@ -15,6 +15,8 @@ var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
+var isCanUpdateExpiryDate = false;	//是否更新终止日期
+var isCanUpdateCustomerManager = false;	//是否更新客户经理
 var contractStatusObj = {
 	1: "已审批",
 	2: "作废",
@@ -32,10 +34,19 @@ var $workOrderContentForm = $("#workOrderContentForm"),$pageContent = $("#page-c
 /*
  * 页面是待办且为工单处理时才可以编辑
  */
-if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-	isEdit = true;
-};
-
+if(parm.taskFlag == "db"){
+	if(parm.taskDefinitionKey == "GDCL"){
+		isEdit = true;
+	}else if(parm.taskDefinitionKey == "GXZZ"){
+		isCanUpdateExpiryDate = true;
+	}else if(parm.taskDefinitionKey == "KHQR"){
+		if(parm.changeUpdateCustomerManager){
+			isCanUpdateCustomerManager = true;
+		}else{
+			//查看，修改待办为已办
+		}
+	}
+}
 $(function() {
 	if(parm.pageType == 1) {		//工作流页面进入
 		wcardId = parm.businessKey;
@@ -63,13 +74,21 @@ $(function() {
 		}else if(parm.taskDefinitionKey == "GDQR"){
 			$("#flowLable").text("工单确认");
 		};
-	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
+	} else if(parm.pageType == 2) {		//工单处理和工单激活,更新终止日期，更新客户经理页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
-		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
-		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".register,.cancelApprovedBtn,.returnBtn").remove();
+		if(parm.taskFlag == "db"){
+			if(parm.taskDefinitionKey == "GDCL"){
+				$(".sendBackBtn,.activateBtn,.returnBtn,.changeExpiryDateBtn").remove();
+			}else if(parm.taskDefinitionKey == "GDQR"){
+				$(".register,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
+			}else if(parm.taskDefinitionKey == "GXZZ"){
+				$("#toolbarButton button").not(".closeBtn,.changeExpiryDateBtn,.flowhistoryBtn,.flowchartBtn").remove();
+			}else if(parm.taskDefinitionKey == "KHQR"){
+				$("#toolbarButton button").not(".closeBtn,.flowhistoryBtn,.flowchartBtn").remove();
+			};
+		}else{
+			showLayerErrorMsg("入参错误");
 		};
 		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 0);
@@ -953,29 +972,31 @@ function returnContractStatus(){
  */
 function loadComplete() {
 	var contractStatusMs = returnContractStatus();
-	if(!checkWcardProcessId()){
-		if(parm.pageType == 1){
-			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
-				parent.layer.close(index);
-				parent.modal_close();
-			});
-		}else{
-			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
-				layer.close(index);
-				backPage();
-			});
+	if(parm.taskDefinitionKey == "GDCL" || parm.taskDefinitionKey == "GDQR"){
+		if(!checkWcardProcessId()){
+			if(parm.pageType == 1){
+				parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+					parent.layer.close(index);
+					parent.modal_close();
+				});
+			}else{
+				layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+					layer.close(index);
+					backPage();
+				});
+			}
+		}else if(contractStatusMs){
+			if(parm.pageType == 1 && parm.taskFlag == "db"){
+				parent.layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
+					parent.layer.close(index);
+				});
+			}else if(parm.pageType == 2){
+				layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
+					layer.close(index);
+				});
+			}
 		}
-	}else if(contractStatusMs){
-		if(parm.pageType == 1 && parm.taskFlag == "db"){
-			parent.layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
-				parent.layer.close(index);
-			});
-		}else if(parm.pageType == 2){
-			layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
-				layer.close(index);
-			});
-		}
-	}
+	};
 	formSubmit = true;
 	//页面元素初始化
 	App.init();
@@ -989,6 +1010,12 @@ function loadComplete() {
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
+	if(isCanUpdateExpiryDate){
+		srolloOffect("#payerAccountInfo",3);
+	};
+	if(isCanUpdateCustomerManager){
+		srolloOffect("#customerManagerList",2);
+	};
 }
 
 /*
@@ -1402,6 +1429,9 @@ function setHaveRead(){
 function backPage(){
 	if(parm.isucloud == "true"){
 		top.closeWindow();
+	}else if(parm.changeUpdateCustomerManager == "true"){
+		var pageId = self.frameElement.getAttribute('data-id');
+		top.closeIfreamSelf(pageId);
 	}else{
 		window.history.go(-1);
 	}

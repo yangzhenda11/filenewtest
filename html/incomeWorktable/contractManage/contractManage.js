@@ -418,8 +418,8 @@ function jumpLineManageByContract(contractId){
  * 增加或删除客户经理  >>>>> 跳转工单编辑页面
  */
 function jumpWorkOrderEdit(wcardId){
-//	var url = "/workOrderEdit/workOrderEdit.html?pageType=5&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
-//	top.showSubpageTab(url,"工单处理");
+	var url = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=KHQR&changeUpdateCustomerManager=true&wcardId="+ wcardId;
+	top.showSubpageTab(url,"工单处理");
 }
 
 //我的合同查询选择查看更多

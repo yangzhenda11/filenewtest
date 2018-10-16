@@ -83,30 +83,31 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$("#searchContentForToDo").hide();
 	//}
 }
-function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	
+function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {
 	var flowParam = {
 		"taskDefinitionKey" : taskDefinitionKey,
 		"assignee" : assignee,
 		"processInstanceId" : processInstanceId,
 		"taskId" : id
 	}
-	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,
-			function(data) {
-				if (data.success == 1) {
-					//currentTask=result.flowdata;
-					layer.msg(data.sign);
-					// 成功后刷新列表
-					//serarchForToDo(true);
-					// 打开抢到的待办
-					assignee=assignee.substring(10);
-					handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-							processDefinitionId, processDefinitionKey, executionId, assignee)
-				} else {
-					layer.msg(data.sign);
-				};
-			});
+	
+	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
+		if (data.success == 1) {
+			//抢单成功了，顺便打开待办页面，特殊环节不走通用打开待办模式，打开单独个性待办页面。
+			if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+				redirectUrl(id,taskDefinitionKey,processInstanceId)
+			}else{
+				//打开通用待办公共界面。
+				//layer.msg(data.sign);
+				serarchForToDo(true);
+				// 打开抢到的待办方法调用
+				assignee=assignee.substring(10);
+				handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
+			}
+		} else {
+			layer.msg(data.sign);
+		};
+	});
 }
 
 /*
@@ -223,7 +224,13 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+		   			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+					App.setCache("searchForm");
+					App.changePresentUrl(src);
+		   		}else{
+		   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		}
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}

@@ -331,7 +331,19 @@ function conTabI() {
 function conTabJ() {
 	animateTab($(".J_menuTab.active"))
 }
+function closeIfreamSelf(dataId){
+	
+		$(this).parents(".J_menuTab").remove();
+		$(".J_mainContent .J_iframe").each(function() {
+			if($(this).data("id") == m) {
+				App.deleteCache($(this).attr("id"));
+				$(this).remove();
+				return false
+			}
+		});
+		animateTab($(".J_menuTab.active"))
 
+}
 
 function conTabE() {
 	if(!$(this).hasClass("active")) {

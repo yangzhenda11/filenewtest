@@ -66,7 +66,7 @@ function getTableForDone(){
 		        	var fn = "";
 		        	var style = "";
 		        	if(curStaffOrgId == assignee){
-		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
+		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR" || c.taskDefinitionKey == "KHQR" || c.taskDefinitionKey == "GXZZ"){
 		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}else{
 		        			fn = "handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";

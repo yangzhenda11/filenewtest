@@ -94,11 +94,15 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	}
 	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,
 			function(data) {
-				if (result.success == 1) {
+				if (data.success == 1) {
 					//currentTask=result.flowdata;
 					layer.msg(data.sign);
 					// 成功后刷新列表
-					serarchForToDo(true);
+					//serarchForToDo(true);
+					// 打开抢到的待办
+					assignee=assignee.substring(10);
+					handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
+							processDefinitionId, processDefinitionKey, executionId, assignee)
 				} else {
 					layer.msg(data.sign);
 				};

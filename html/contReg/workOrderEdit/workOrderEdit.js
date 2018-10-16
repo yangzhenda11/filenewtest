@@ -15,6 +15,7 @@ var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
+var isCanUpdateExpiryDate = false;	//是否更新终止日期
 var contractStatusObj = {
 	1: "已审批",
 	2: "作废",
@@ -34,6 +35,9 @@ var $workOrderContentForm = $("#workOrderContentForm"),$pageContent = $("#page-c
  */
 if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 	isEdit = true;
+};
+if(parm.taskDefinitionKey == "GXZZ" && parm.taskFlag == "db"){
+	isCanUpdateExpiryDate = true;
 };
 
 $(function() {
@@ -63,13 +67,15 @@ $(function() {
 		}else if(parm.taskDefinitionKey == "GDQR"){
 			$("#flowLable").text("工单确认");
 		};
-	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
+	} else if(parm.pageType == 2) {		//工单处理和工单激活,更新终止日期，更新客户经理页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
+			$(".sendBackBtn,.activateBtn,.returnBtn,.changeExpiryDateBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".register,.cancelApprovedBtn,.returnBtn").remove();
+			$(".register,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
+		}else if(parm.taskDefinitionKey == "GXZZ" && parm.taskFlag == "db"){
+			$("#toolbarButton button").not(".closeBtn,.changeExpiryDateBtn").remove();
 		};
 		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 0);
@@ -953,29 +959,31 @@ function returnContractStatus(){
  */
 function loadComplete() {
 	var contractStatusMs = returnContractStatus();
-	if(!checkWcardProcessId()){
-		if(parm.pageType == 1){
-			parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
-				parent.layer.close(index);
-				parent.modal_close();
-			});
-		}else{
-			layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
-				layer.close(index);
-				backPage();
-			});
+	if(parm.taskDefinitionKey == "GDCL" || parm.taskDefinitionKey == "GDQR"){
+		if(!checkWcardProcessId()){
+			if(parm.pageType == 1){
+				parent.layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+					parent.layer.close(index);
+					parent.modal_close();
+				});
+			}else{
+				layer.alert("当前工单的状态已经发生变化，请您关闭当前页面，点击查询更新数据后处理。",{icon:2,title:"提示",closeBtn:0},function(index){
+					layer.close(index);
+					backPage();
+				});
+			}
+		}else if(contractStatusMs){
+			if(parm.pageType == 1 && parm.taskFlag == "db"){
+				parent.layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
+					parent.layer.close(index);
+				});
+			}else if(parm.pageType == 2){
+				layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
+					layer.close(index);
+				});
+			}
 		}
-	}else if(contractStatusMs){
-		if(parm.pageType == 1 && parm.taskFlag == "db"){
-			parent.layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
-				parent.layer.close(index);
-			});
-		}else if(parm.pageType == 2){
-			layer.alert(contractStatusMs,{icon:2,title:"提示",closeBtn:0},function(index){
-				layer.close(index);
-			});
-		}
-	}
+	};
 	formSubmit = true;
 	//页面元素初始化
 	App.init();
@@ -989,6 +997,9 @@ function loadComplete() {
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
+	if(parm.taskDefinitionKey == "GXZZ" && parm.taskFlag == "db"){
+		srolloOffect("#payerAccountInfo",3);
+	};
 }
 
 /*

@@ -158,6 +158,17 @@
 </div>
 <script type="text/javascript">
 	/*
+	 * 2阶段，更新终止日期
+	 */
+	function changeExpiryDate(){
+		var obj = {
+			wcardId: wcardId,
+			validityId: $("#validityId").val(),
+			expiryDate: $("#expiryDate").val()
+		}
+//		backPage();
+	}
+	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
 	function setPageId_validityId(value){
@@ -296,6 +307,10 @@
 					App.initFormSelect2("#validityForm",true);
 				}
 			};
+			if(isCanUpdateExpiryDate){
+				$("#expiryDate").removeAttr("disabled");
+				$("#expiryDate").css({"cursor":"pointer","background-color":"#fff"})
+			}
 			if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 				$("#adminCommitmentContent").removeClass("hidden");
 				if(fileUploadEdit == true){

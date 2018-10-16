@@ -139,7 +139,7 @@ function getTableTodo(){
 		        	var style = "";
 		        	if(curStaffOrgId == assignee){
 		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
-		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
+	        				fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
 		        		}else{
 		        			fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}
@@ -198,7 +198,7 @@ function checkifdone(taskId){
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
+function redirectUrl(taskId,taskDefinitionKey,processInstanceId,notCheckStatus){
 	$.post(serverPath + "workflowrest/tasktodopath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, null, function(data) {
 		var success = data.retCode;
 		if (success == 1){
@@ -210,7 +210,13 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+		   			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+					App.setCache("searchForm");
+					App.changePresentUrl(src);
+		   		}else{
+		   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		}
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}

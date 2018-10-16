@@ -114,3 +114,13 @@ td.milestoneLegend{
 	margin-top: 10px;
 	margin-bottom: 0px;
 }
+/*风险预警*/
+.warningOverviewChartsDom{
+	height: 340px;
+	text-align: center;
+}
+#warningOverviewCharts{
+	width: 60%;
+	height: 340px;
+	display: inline-block;
+}

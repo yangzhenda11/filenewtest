@@ -345,6 +345,8 @@ function setAuditScope() {
 		} else {
 			$("#changeScope").remove();
 		};
+		var html = '<div class="scopeItem" data-id=' + data.auditRange + '>' + orgName + '</div>';
+		$("#scopeChecked").html(html);
 		top.globalConfig.auditScope = data.auditRange;
 	}
 }

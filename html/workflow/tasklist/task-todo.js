@@ -90,13 +90,19 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, pr
 		"processInstanceId" : processInstanceId,
 		"taskId" : id
 	}
+	
 	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
 		if (data.success == 1) {
+			//抢单成功了，顺便打开待办页面，特殊环节不走通用打开待办模式，打开单独个性待办页面。
 			if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
 				redirectUrl(id,taskDefinitionKey,processInstanceId)
 			}else{
-				layer.msg(data.sign);
+				//打开通用待办公共界面。
+				//layer.msg(data.sign);
 				serarchForToDo(true);
+				// 打开抢到的待办方法调用
+				assignee=assignee.substring(10);
+				handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
 			}
 		} else {
 			layer.msg(data.sign);

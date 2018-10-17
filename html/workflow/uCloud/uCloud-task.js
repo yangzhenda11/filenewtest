@@ -20,6 +20,10 @@ function handleTaskToDo(taskInfo) {
 	var processDefinitionKey=taskInfo.processDefinitionKey;
 	var executionId=taskInfo.executionId;
 	var assignee=taskInfo.assignee;
+	if(assignee.indexOf("candidate-") != -1){
+		//是抢单模式抢到后的待办，处理人需要去掉前缀。
+		assignee=assignee.substring(10);
+	}
 	
 	$('#taskId').val(id);
 	$('#taskDefinitionKey').val(taskDefinitionKey);
@@ -55,7 +59,14 @@ function getTaskInfo(){
 		success:function(result){
 			if (result.success == 1) {
 				taskData=result.taskInfo;
-				handleTaskToDo(taskData)
+				var assignee=taskData.assignee;
+				if(assignee.indexOf("candidate-") != -1){
+					//抢单任务，先抢单再打开待办
+					applyTaskToDo(taskData);
+				}else{
+					//普通待办打开
+					handleTaskToDo(taskData);
+				}
 			} else {
 				layer.msg(result.info);
 			};
@@ -131,4 +142,28 @@ function closeWindow(){
         window.open("", "_self");
         window.close();
     }
+}
+
+function applyTaskToDo(taskInfo) {
+	var id=taskInfo.taskId;
+	var taskDefinitionKey=taskInfo.taskDefinitionKey;
+	var processInstanceId=taskInfo.processInstanceId;
+	var assignee=taskInfo.assignee;
+	
+	var flowParam = {
+		"taskDefinitionKey" : taskDefinitionKey,
+		"assignee" : assignee,
+		"processInstanceId" : processInstanceId,
+		"taskId" : id
+	}
+	
+	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
+		if (data.success == 1) {
+			//抢单成功了，顺便打开待办页面，特殊环节不走通用打开待办模式，打开单独个性待办页面。
+			// 打开抢到的待办方法调用
+			handleTaskToDo(taskInfo)
+		} else {
+			layer.msg(data.sign);
+		};
+	});
 }

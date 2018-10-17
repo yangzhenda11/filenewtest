@@ -94,12 +94,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-		   			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
-					$('#businessiframe').attr("src",src);
-		   		}else{
-		   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
-		   		}
+		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}
@@ -112,6 +107,7 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,null,null,false);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
+		var wcardStatus = result.data.wcardStatus;
 		var isPass = false;
 		if(taskDefinitionKey == "GDCL"){
 			if(wcardProcess == 0 || wcardProcess == 2){
@@ -119,6 +115,10 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 			}
 		}else if(taskDefinitionKey == "GDQR"){
 			if(wcardProcess == 1){
+				isPass = true;
+			}
+		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+			if(wcardStatus == 904030){
 				isPass = true;
 			}
 		};

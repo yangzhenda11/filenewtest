@@ -10,7 +10,7 @@
 			<div class="tableToobarContent hidden" id="customerManagerToolbar">
 				<button type="button" class="btn red" onclick="addCustomerManager()">添加客户经理</button>
 				<button type="button" class="btn red" onclick="delectCustomerManager()">删除客户经理</button>
-				<button type="button" id="saveCustomerManager" class="btn red" onclick="">保存</button>
+				<button type="button" id="saveCustomerManagers" class="btn red" onclick="saveCustomerManager()">保存</button>
 			</div>
 			<table class='table table-hover table-bordered table-striped table-align' id="customerManagerTable" style="width: 70%;">
 				<thead>
@@ -31,8 +31,13 @@
 	</div>
 </div>
 <script type="text/javascript">
+	/*
+	 * 2阶段保存客户经理
+	 */
+	function saveCustomerManager(){
+		var customerManagerList = getValue_customerManagerList(true);
+	}
 	var customerManagerTree = null;
-
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
@@ -146,12 +151,12 @@
 			/*
 			 * isEdit 判断页面是否只能查看
 			 */
-			if(!isEdit && !isCanUpdateCustomerManager){
+			if(!isEdit && !editIdentify.isCanUpdateCustomerManager){
 				$("#customerManagerTable").find("input").attr("disabled","disabled");
 				$("#customerManagerToolbar,.cusManagerCheckbox").remove();
 			}else{
-				if(!isCanUpdateCustomerManager){
-					$("#saveCustomerManager").remove();
+				if(!editIdentify.isCanUpdateCustomerManager){
+					$("#saveCustomerManagers").remove();
 				};
 				$("#customerManagerToolbar").removeClass("hidden");
 			};

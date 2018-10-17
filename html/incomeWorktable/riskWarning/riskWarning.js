@@ -4,16 +4,20 @@ var serverPath = config.serverPath;
 $(function(){
 	//生成预警总览图表
 	initWarningOverviewCharts();
-	riskWarningQFCount();
+	getCount();
 })
 
-function riskWarningQFCount() {
+function getCount() {
 	var postData = { 
 	};
-	var url = serverPath + "contractRiskWarningMangerController/listContractRiskWarningQFCount";
+	var url = serverPath + "riskWarningDetailMangerController/getRiskWarningCount";
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
-		$("#lineIsArrearage").text(result.data);
+		$("#lineIsArrearage").text(result.data.lineIsArrearage);
+		$("#lineRentNotBill").text(result.data.lineRentNotBill);
+		$("#lineRentedHaveBill").text(result.data.lineRentedHaveBill);
+		$("#contractEndHaveLine").text(result.data.contractEndHaveLine);
+		$("#contractEndHaveNewLine").text(result.data.contractEndHaveNewLine);
 	}
 }
  

@@ -418,7 +418,7 @@ function jumpLineManageByContract(contractId){
  * 增加或删除客户经理  >>>>> 跳转工单编辑页面
  */
 function jumpWorkOrderEdit(wcardId){
-	var url = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=KHQR&changeUpdateCustomerManager=true&wcardId="+ wcardId;
+	var url = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=TJKH&wcardId="+ wcardId;
 	top.showSubpageTab(url,"工单处理");
 }
 

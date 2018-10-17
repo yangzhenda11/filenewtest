@@ -43,11 +43,9 @@ if(parm.taskFlag == "db"){
 	}else if(parm.taskDefinitionKey == "GXZZ"){
 		editIdentify.isCanUpdateExpiryDate = true;
 	}else if(parm.taskDefinitionKey == "KHQR"){
-		if(parm.changeUpdateCustomerManager){
-			editIdentify.isCanUpdateCustomerManager = true;
-		}else{
-			//查看，修改待办为已办
-		}
+		//客户经理待办确认，不进行任何操作，待办边已办。
+	}else if(parm.taskDefinitionKey == "TJKH"){
+		editIdentify.isCanUpdateCustomerManager = true;
 	}
 }
 $(function() {
@@ -1446,7 +1444,7 @@ function setHaveRead(){
 function backPage(){
 	if(parm.isucloud == "true"){
 		top.closeWindow();
-	}else if(parm.changeUpdateCustomerManager == "true"){
+	}else if(editIdentify.isCanUpdateCustomerManager == true){
 		var pageId = self.frameElement.getAttribute('data-id');
 		top.closeIfreamSelf(pageId);
 	}else{

@@ -101,8 +101,13 @@ function businessPush(){
 		layer.msg("请填写业务主键！");
 		return;
 	}
-	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
-	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
+	var businessTypeNew=$("#businessTypeNew").val();
+	if(businessTypeNew.length==0){
+		layer.msg("请填写需要校验的业务类型，否则无法准确校验是哪个模板！");
+		return;
+	}
+	//App.getFlowParam 参数，serverPath，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0,businessTypeNew);
 	App.applyCandidateTask(serverPath,flowParam);
 	modal_passBybuss(flowParam);
 	
@@ -141,7 +146,11 @@ function modal_passBybuss(flowParam){
 		});
 }
 function pushReceiveTask(){
-	
+	var businessTypeNew=$("#businessTypeNew").val();
+	if(businessTypeNew.length==0){
+		layer.msg("请填写需要校验的业务类型，否则无法准确校验是哪个模板！");
+		return;
+	}
 	var taskBusinessKey=$("#taskBusinessKey").val();
 	var taskTitle=$("#taskTitle").val();
 	var receiveStatus=$("#receiveStatus").val();
@@ -161,7 +170,7 @@ function pushReceiveTask(){
 	var currentTask=null;
 		$.ajax({
 			type: 'get',
-			url: serverPath+'workflowrest/pushReceiveTask?businessId='+$("#taskBusinessKey").val()+'&taskStatus='+receiveStatus,
+			url: serverPath+'workflowrest/pushReceiveTask?businessId='+$("#taskBusinessKey").val()+'&taskStatus='+receiveStatus+'&businessType='+businessTypeNew,
 			//data: null,
 			dataType: 'json',
 			async: false,
@@ -193,8 +202,13 @@ function applyCandidateTask(){
 		layer.msg("请填写业务主键！");
 		return;
 	}
-	//App.getFlowParam 参数，serverPath，业务主键，handletype，pathSelect
-	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0);
+	var businessTypeNew=$("#businessTypeNew").val();
+	if(businessTypeNew.length==0){
+		layer.msg("请填写需要校验的业务类型，否则无法准确校验是哪个模板！");
+		return;
+	}
+	//App.getFlowParam 参数，serverPath，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
+	var flowParam=App.getFlowParam(serverPath,taskBusinessKey,1,0,businessTypeNew);
 	App.applyCandidateTask(serverPath,flowParam);
 	//modal_applyCandidateTask(flowParam);
 	
@@ -278,7 +292,8 @@ function checkFlow(){
 	if (checkDate.success == 1) {
 		alert("允许创建工单，工单创建失败的流程实例id为："+checkDate.processInstanceId);
 		//1，先把工单创建失败的流程推下去
-		var flowParam=App.getFlowParam(serverPath,businessId,1,0);
+		//参数：业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
+		var flowParam=App.getFlowParam(serverPath,businessId,1,0,businessTypeNew);
 		modal_pushAndStart(flowParam);
 	} else {
 		alert(result.info);

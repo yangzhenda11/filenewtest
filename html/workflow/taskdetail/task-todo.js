@@ -195,7 +195,8 @@ function setUserButton(isShow,businessKey){
 }
 function addCommentByuser(businessKey){
 	//为合同扫描件验证确认环节的“重新上传扫描件”按钮定制的流程推进，handletype=1，pathselect=1
-	var flowParam=App.getFlowParam(serverPath,businessKey,1,0);
+	//重新上传扫描件触发后台验证扫描件待办，因最终合同2.0一阶段没有用后台任务，这个方法已经作废。
+	var flowParam=App.getFlowParam(serverPath,businessKey,1,0,'Contract_san2');
 	flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
 	
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passBybuss)=="function"){
@@ -222,7 +223,7 @@ function setQxspButton(isShow,businessKey){
 
 //为工单处理环节的“取消审批”按钮定制，自己提交自己，流程历史中操作类型为“取消审批”的流程推进，handletype=1，pathselect=1
 function addCommentQxsp(businessKey){
-	var flowParam=App.getFlowParam(serverPath,businessKey,8,1)	//1，0;
+	var flowParam=App.getFlowParam(serverPath,businessKey,8,1,'contract_project2')	//1，0;
 	//flowParam.title=$("#businessiframe")[0].contentWindow.$("#BusinessTile").val();
 	
 	if(typeof(document.getElementById("businessiframe").contentWindow.modal_passQxsp)=="function"){

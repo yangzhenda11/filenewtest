@@ -85,7 +85,7 @@ $(function() {
 				$(".register,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
 			}else if(parm.taskDefinitionKey == "GXZZ"){
 				$("#toolbarButton button").not(".closeBtn,.changeExpiryDateBtn,.flowhistoryBtn,.flowchartBtn").remove();
-			}else if(parm.taskDefinitionKey == "KHQR"){
+			}else if(parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
 				$("#toolbarButton button").not(".closeBtn,.flowhistoryBtn,.flowchartBtn").remove();
 			};
 		}else{
@@ -554,8 +554,8 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
-			      var check = $(this).prop("checked");
-			      $(".checkchild").prop("checked", check);
+			    var check = $(this).prop("checked");
+			    $(".checkchild").prop("checked", check);
 			});
 		})
     });
@@ -949,7 +949,7 @@ function checkWcardProcessId(){
 			if(wcardProcess == 1){
 				isPass = true;
 			}
-		}else if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR"){
+		}else if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
 			if(wcardStatus == "904030"){
 				isPass = true;
 			}
@@ -964,7 +964,7 @@ function checkWcardProcessId(){
  */
 function returnContractStatus(){
 	if(parm.taskFlag == "db"){
-		if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR"){
+		if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
 			if(contractStatus == 8){
 				return false;
 			}else if(contractStatusObj[contractStatus] == undefined){

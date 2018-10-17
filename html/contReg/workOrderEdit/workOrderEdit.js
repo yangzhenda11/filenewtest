@@ -553,10 +553,6 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
-			$(".checkall").click(function () {
-			    var check = $(this).prop("checked");
-			    $(".checkchild").prop("checked", check);
-			});
 		})
     });
 }

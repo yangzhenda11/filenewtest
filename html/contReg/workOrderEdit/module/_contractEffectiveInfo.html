@@ -166,6 +166,7 @@
 			validityId: $("#validityId").val(),
 			expiryDate: $("#expiryDate").val()
 		}
+//		checkWcardIschange();
 //		backPage();
 	}
 	/*
@@ -307,7 +308,7 @@
 					App.initFormSelect2("#validityForm",true);
 				}
 			};
-			if(isCanUpdateExpiryDate){
+			if(editIdentify.isCanUpdateExpiryDate){
 				$("#expiryDate").removeAttr("disabled");
 				$("#expiryDate").css({"cursor":"pointer","background-color":"#fff"})
 			}

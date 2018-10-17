@@ -150,7 +150,7 @@ function getTableTodo(){
 		        	}else{
 		        		//非抢单模式的正常待办
 		        		if(curStaffOrgId == assignee){
-		        			if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
+		        			if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR" || c.taskDefinitionKey == "KHQR" || c.taskDefinitionKey == "GXZZ"){
 		        				fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
 		        			}else{
 		        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
@@ -218,13 +218,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-		   			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
-					App.setCache("searchForm");
-					App.changePresentUrl(src);
-		   		}else{
-		   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
-		   		}
+	   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}
@@ -240,6 +234,7 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
+		var wcardStatus = result.data.wcardStatus;
 		var isPass = false;
 		if(taskDefinitionKey == "GDCL"){
 			if(wcardProcess == 0 || wcardProcess == 2){
@@ -247,6 +242,10 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 			}
 		}else if(taskDefinitionKey == "GDQR"){
 			if(wcardProcess == 1){
+				isPass = true;
+			}
+		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+			if(wcardStatus == 904030){
 				isPass = true;
 			}
 		};

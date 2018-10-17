@@ -139,8 +139,9 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
-			      var check = $(this).prop("checked");
-			      $(".checkchild").prop("checked", check);
+			    var check = $(this).prop("checked");
+			    $("#searchStaffTable .checkchild").prop("checked", check);
+			    checkAllChildStaffCheckbox();
 			});
 		})
     });

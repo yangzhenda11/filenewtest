@@ -32,7 +32,8 @@ function handleTaskForDone(taskInfo) {
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
-	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR" || taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+	var specialList = ["GDCL","GDQR","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForDone").remove();
 		$("#searchContentForDone").hide();
 		$("#businessiframe").show();

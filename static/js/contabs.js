@@ -332,12 +332,17 @@ function conTabJ() {
 	animateTab($(".J_menuTab.active"))
 }
 function closeIfreamSelf(dataId){
-	var m = $(this).parents(".J_menuTab").data("id");
-	var l = $(this).parents(".J_menuTab").width();
-	if($(this).parents(".J_menuTab").hasClass("active")) {
-		if($(this).parents(".J_menuTab").next(".J_menuTab").size()) {
-			var k = $(this).parents(".J_menuTab").next(".J_menuTab:eq(0)").data("id");
-			$(this).parents(".J_menuTab").next(".J_menuTab:eq(0)").addClass("active");
+	var selfDom = null;
+	$("#mainPageTabsContent .J_menuTab").each(function(k,v){
+		if(dataId == $(v).data("id")){
+			selfDom = $(v);
+		}
+	});
+	var l = selfDom.width();
+	if(selfDom.hasClass("active")) {
+		if(selfDom.next(".J_menuTab").size()) {
+			var k = selfDom.next(".J_menuTab:eq(0)").data("id");
+			selfDom.next(".J_menuTab:eq(0)").addClass("active");
 			$(".J_mainContent .J_iframe").each(function() {
 				if($(this).data("id") == k) {
 					$(this).show().siblings(".J_iframe").hide();
@@ -350,27 +355,27 @@ function closeIfreamSelf(dataId){
 					marginLeft: (n + l) + "px"
 				}, "fast")
 			}
-			$(this).parents(".J_menuTab").remove();
+			selfDom.remove();
 			$(".J_mainContent .J_iframe").each(function() {
-				if($(this).data("id") == m) {
+				if($(this).data("id") == dataId) {
 					App.deleteCache($(this).attr("id"));
 					$(this).remove();
 					return false
 				}
 			})
 		}
-		if($(this).parents(".J_menuTab").prev(".J_menuTab").size()) {
-			var k = $(this).parents(".J_menuTab").prev(".J_menuTab:last").data("id");
-			$(this).parents(".J_menuTab").prev(".J_menuTab:last").addClass("active");
+		if(selfDom.prev(".J_menuTab").size()) {
+			var k = selfDom.prev(".J_menuTab:last").data("id");
+			selfDom.prev(".J_menuTab:last").addClass("active");
 			$(".J_mainContent .J_iframe").each(function() {
 				if($(this).data("id") == k) {
 					$(this).show().siblings(".J_iframe").hide();
 					return false
 				}
 			});
-			$(this).parents(".J_menuTab").remove();
+			selfDom.remove();
 			$(".J_mainContent .J_iframe").each(function() {
-				if($(this).data("id") == m) {
+				if($(this).data("id") == dataId) {
 					App.deleteCache($(this).attr("id"));
 					$(this).remove();
 					return false
@@ -378,9 +383,9 @@ function closeIfreamSelf(dataId){
 			})
 		}
 	} else {
-		$(this).parents(".J_menuTab").remove();
+		selfDom.remove();
 		$(".J_mainContent .J_iframe").each(function() {
-			if($(this).data("id") == m) {
+			if($(this).data("id") == dataId) {
 				App.deleteCache($(this).attr("id"));
 				$(this).remove();
 				return false

@@ -77,10 +77,13 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
-	
-	$("#goTaskToDoDetailForToDo").show();
-	$("#searchContentForToDo").hide();
+	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR" || taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+		redirectUrl(id,taskDefinitionKey,processInstanceId);
+	}else{
+		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
+		$("#goTaskToDoDetailForToDo").show();
+		$("#searchContentForToDo").hide();
+	}
 	//}
 }
 function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {
@@ -93,17 +96,12 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, pr
 	
 	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
 		if (data.success == 1) {
-			//抢单成功了，顺便打开待办页面，特殊环节不走通用打开待办模式，打开单独个性待办页面。
-			if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-				redirectUrl(id,taskDefinitionKey,processInstanceId)
-			}else{
-				//打开通用待办公共界面。
-				//layer.msg(data.sign);
-				serarchForToDo(true);
-				// 打开抢到的待办方法调用
-				assignee=assignee.substring(10);
-				handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
-			}
+			//打开通用待办公共界面。
+			//layer.msg(data.sign);
+			serarchForToDo(true);
+			// 打开抢到的待办方法调用
+			assignee=assignee.substring(10);
+			handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
 		} else {
 			layer.msg(data.sign);
 		};
@@ -156,11 +154,7 @@ function getTableTodo(){
 		        	}else{
 		        		//非抢单模式的正常待办
 		        		if(curStaffOrgId == assignee){
-		        			if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR" || c.taskDefinitionKey == "KHQR" || c.taskDefinitionKey == "GXZZ"){
-		        				fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
-		        			}else{
-		        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-		        			}
+	        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}else{
 		        			style = "cursor:not-allowed";
 		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";

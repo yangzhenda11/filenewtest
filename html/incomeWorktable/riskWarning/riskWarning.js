@@ -4,7 +4,20 @@ var serverPath = config.serverPath;
 $(function(){
 	//生成预警总览图表
 	initWarningOverviewCharts();
+	riskWarningQFCount();
 })
+
+function riskWarningQFCount() {
+	var postData = { 
+	};
+	var url = serverPath + "contractRiskWarningMangerController/listContractRiskWarningQFCount";
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		$("#lineIsArrearage").text(result.data);
+	}
+}
+ 
+
 /*
  * 标题切换
  */

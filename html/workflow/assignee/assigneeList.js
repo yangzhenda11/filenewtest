@@ -7,6 +7,7 @@ var tablestr='';
 var dataTableConfig = {};
 var chooseType;
 var _documentHeight = 0;
+var _checkedPerArr = [];
 function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 	$("#wfflowKey").val(flowKey);
 	$("#wflinkCode").val(linkcode);
@@ -22,13 +23,13 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contrac
 	//chooseType=$("#wfstaffSelectType").val();
 	chooseType = staffSelectType;
 	if(chooseType==2){
-		$("#duoxuan").show();
+		$("#duoxuan,#checkedPer").show();
 		tablestr='<input type="checkbox" class="checkall" />';
 	}else if(chooseType==1){
-		$("#duoxuan").hide();
+		$("#duoxuan,#checkedPer").hide();
 		tablestr="操作"
 	}else{
-		$("#duoxuan").hide();
+		$("#duoxuan,#checkedPer").hide();
 		tablestr="未知"
 	};
 	_documentHeight = $(".page-content").height() - 320;
@@ -77,12 +78,10 @@ function setDataTableConfig(){
 			{	"data"      : "",
 				"title"     : tablestr,
 				"width"     : "20",
-				"className" : "text-center",
-		
-				"render"    : function (data, type, row, meta) {
-		        	
+				"className" : "text-center",	
+				"render"    : function (data, type, row, meta) {		        	
 						if(chooseType==2){
-							return '<input type="checkbox"  class="checkchild"  value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
+							return '<input type="checkbox" class="checkchild" value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
 						}else{
 							var fn = "selectStaffValue(\'"+row.ORG_ID+"\',\'"+row.org_code+"\',\'"+row.full_name+"\',\'"+row.STAFF_NAME+"\',\'"+row.STAFF_ORG_ID+"\','"+$("#wfcallbackFun").val()+"')"; 
 							var context =
@@ -178,3 +177,29 @@ function addMultiStaff(){
 	  names=names.substring(0,names.length-1);
 	  eval(funName+"(\'"+ids+"\',\'"+names+"\')");
 }
+/*
+ * 多选点击事件
+ */
+$("#searchStaffTable").on("change",".checkchild",function(){
+	var itemValue = $(this).val().split("-");
+	var item = {
+		id: itemValue[0],
+		name:  itemValue[1]
+	};
+	var index = null;
+	$.each(_checkedPerArr,function(k,v){
+		if(v.id == item.id){
+			index = k;
+			return false;
+		}
+	});
+	if($(this).prop("checked")){
+		if(index == null){
+			_checkedPerArr.push(item);
+		};
+	}else{
+		_checkedPerArr.splice(index,1);
+	};
+	$("#checkedPerLen").text(_checkedPerArr.length);
+});
+

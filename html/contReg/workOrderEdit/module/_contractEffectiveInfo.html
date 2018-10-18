@@ -164,7 +164,7 @@
 		layer.confirm("请确认是否更新",{icon:7,title:"系统提示"},function(index){
 			layer.close(index);
 			if(checkWcardIschange() == false){
-				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"Contract_end_update");
 				postData.validity = {};
 				postData.validity.validityId = $("#validityId").val();
 				postData.wcardId = wcardId;

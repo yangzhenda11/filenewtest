@@ -513,7 +513,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	if(checkWcardIschange()){
 		return false;
 	};
-	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;
 	postData.wcardType = wcardTypeCode;
@@ -590,7 +590,7 @@ function activateContract(){
 		};
 		layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 			layer.close(index);
-			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
 			postData.validity = {};
 			if($("#contractScanCopyUpload")[0]){
 				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
@@ -628,7 +628,7 @@ function cancelApproved(){
 		};
 		layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
 			layer.close(index);
-			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1,"contract_project2");
+			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1);
 			flowParam.wcardId = wcardId;
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
 			function successCallback(result) {
@@ -668,7 +668,7 @@ function setPinfoContent(){
 		if(checkWcardIschange()){
 			return false;
 		};
-		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0,"contract_project2");
+		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0);
 		$("#pinfoContentModal").modal("hide");
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;
@@ -1317,7 +1317,7 @@ function getFlowchart(){
 	if(parm.processInstanceId){
 		var processInstanceId = parm.processInstanceId;
 	}else{
-		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
 		var processInstanceId = flowParams.processInstanceId;
 	};
 	if(processInstanceId != undefined && processInstanceId != ""){
@@ -1349,7 +1349,7 @@ function getFlowhistory(){
 	if(parm.processInstanceId){
 		var processInstanceId = parm.processInstanceId;
 	}else{
-		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
 		var processInstanceId = flowParams.processInstanceId;
 	};
 	if(processInstanceId != undefined && processInstanceId != ""){
@@ -1393,7 +1393,7 @@ function getFlowhistory(){
  */
 function setHaveRead(){
 	if(parm.taskFlag == "db" && parm.taskDefinitionKey == "GDQR" && parm.pageType == 2){
-		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0);
 		$.ajax({
 			url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+flowParams.processInstanceId+'&taskId='+flowParams.taskId+'&businessId='+parm.wcardId, 
 			type:"POST",

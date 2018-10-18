@@ -807,7 +807,9 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 .note{
 	margin: 0;
 }
-
+.table-bordered{
+	border-bottom: none;
+}
 
 
 

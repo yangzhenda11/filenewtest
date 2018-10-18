@@ -71,7 +71,7 @@
 				customerManagerList.push(customerManagerItem);
 			}
 		});
-		//当合同提交时，加校验"至少添加一条客户经理信息";
+		//当合同提交时，若包含租线业务，加校验"至少添加一条客户经理信息";
 		if(isSubmit && $("#mangerRequired i")[0]){
 			if(customerManagerList.length > 0){
 				return customerManagerList;

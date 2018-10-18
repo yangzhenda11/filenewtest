@@ -160,42 +160,21 @@
 	/*
 	 * 2阶段，更新终止日期
 	 */
-	/*function changeExpiryDate(){
-		layer.confirm("请确认是否更新",{icon:7,title:"提示"},function(index){
-			layer.close(index);
-			if(checkWcardIschange() == false){
-				var obj = {
-					wcardId: wcardId,
-					validityId: $("#validityId").val(),
-					expiryDate: $("#expiryDate").val()
-				};
-				var url = serverPath + "contractOrderEditorController/updateExpiryDate";
-				App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
-				function successCallback(result) {
-					layer.alert("更新成功！",{icon:1},function(){
-							backPage();
-						});
-				}
-			}
-			
-		});
-	}*/
 	function changeExpiryDate(){
 		layer.confirm("请确认是否更新",{icon:7,title:"系统提示"},function(index){
 			layer.close(index);
-			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0);
-			console.log(postData);
-			postData.validity = {};
-			postData.validity.validityId = $("#validityId").val();
-			postData.wcardId = wcardId;
-			postData.validity.expiryDate = $("#expiryDate").val();
 			if(checkWcardIschange() == false){
+				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+				postData.validity = {};
+				postData.validity.validityId = $("#validityId").val();
+				postData.wcardId = wcardId;
+				postData.validity.expiryDate = $("#expiryDate").val();
 				var url = serverPath + "contractOrderEditorController/updateExpiryDate";
 				App.formAjaxJson(url, "POST", JSON.stringify(postData), successCallback);
 				function successCallback(result) {
 					layer.alert("更新成功！",{icon:1},function(){
-							backPage();
-						});
+						backPage();
+					});
 				}
 			}
 			

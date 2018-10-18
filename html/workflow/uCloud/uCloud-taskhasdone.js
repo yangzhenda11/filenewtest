@@ -32,8 +32,7 @@ function handleTaskForDone(taskInfo) {
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
-	var specialList = ["GDCL","GDQR","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
-	if(specialList.indexOf(taskDefinitionKey) != -1){
+	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR"){
 		$("#goTaskToDoDetailForDone").remove();
 		$("#searchContentForDone").hide();
 		$("#businessiframe").show();

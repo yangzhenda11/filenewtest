@@ -10,7 +10,6 @@
 			<div class="tableToobarContent hidden" id="customerManagerToolbar">
 				<button type="button" class="btn red" onclick="addCustomerManager()">添加客户经理</button>
 				<button type="button" class="btn red" onclick="delectCustomerManager()">删除客户经理</button>
-				<button type="button" id="saveCustomerManagers" class="btn red" onclick="saveCustomerManager()">保存</button>
 			</div>
 			<table class='table table-hover table-bordered table-striped table-align' id="customerManagerTable" style="width: 70%;">
 				<thead>
@@ -31,13 +30,8 @@
 	</div>
 </div>
 <script type="text/javascript">
-	/*
-	 * 2阶段保存客户经理
-	 */
-	function saveCustomerManager(){
-		var customerManagerList = getValue_customerManagerList(true);
-	}
 	var customerManagerTree = null;
+
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
@@ -71,7 +65,7 @@
 				customerManagerList.push(customerManagerItem);
 			}
 		});
-		//当合同提交时，若包含租线业务，加校验"至少添加一条客户经理信息";
+		//当合同提交时，加校验"至少添加一条客户经理信息";
 		if(isSubmit && $("#mangerRequired i")[0]){
 			if(customerManagerList.length > 0){
 				return customerManagerList;
@@ -151,16 +145,12 @@
 			/*
 			 * isEdit 判断页面是否只能查看
 			 */
-			if(!isEdit && !editIdentify.isCanUpdateCustomerManager){
+			if(!isEdit){
 				$("#customerManagerTable").find("input").attr("disabled","disabled");
 				$("#customerManagerToolbar,.cusManagerCheckbox").remove();
 			}else{
-				if(!editIdentify.isCanUpdateCustomerManager){
-					$("#saveCustomerManagers").remove();
-				};
 				$("#customerManagerToolbar").removeClass("hidden");
 			};
-			
 		}
 	}
 	/*

@@ -7,7 +7,6 @@ var tablestr='';
 var dataTableConfig = {};
 var chooseType;
 var _documentHeight = 0;
-var _checkedPerArr = [];
 function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
 	$("#wfflowKey").val(flowKey);
 	$("#wflinkCode").val(linkcode);
@@ -23,13 +22,13 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contrac
 	//chooseType=$("#wfstaffSelectType").val();
 	chooseType = staffSelectType;
 	if(chooseType==2){
-		$("#duoxuan,#checkedPer").show();
+		$("#duoxuan").show();
 		tablestr='<input type="checkbox" class="checkall" />';
 	}else if(chooseType==1){
-		$("#duoxuan,#checkedPer").hide();
+		$("#duoxuan").hide();
 		tablestr="操作"
 	}else{
-		$("#duoxuan,#checkedPer").hide();
+		$("#duoxuan").hide();
 		tablestr="未知"
 	};
 	_documentHeight = $(".page-content").height() - 320;
@@ -78,17 +77,12 @@ function setDataTableConfig(){
 			{	"data"      : "",
 				"title"     : tablestr,
 				"width"     : "20",
-				"className" : "text-center",	
-				"render"    : function (data, type, row, meta) {		        	
-						if(chooseType == 2){
-							var checkedHtml = "";
-							$.each(_checkedPerArr,function(k,v){
-								if(v.id == row.STAFF_ORG_ID){
-									checkedHtml = 'checked="checked"';
-									return false;
-								}
-							});
-							return '<input type="checkbox" class="checkchild" '+ checkedHtml +' value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
+				"className" : "text-center",
+		
+				"render"    : function (data, type, row, meta) {
+		        	
+						if(chooseType==2){
+							return '<input type="checkbox"  class="checkchild"  value="' + row.STAFF_ORG_ID + '-'+row.STAFF_NAME+'" />';
 						}else{
 							var fn = "selectStaffValue(\'"+row.ORG_ID+"\',\'"+row.org_code+"\',\'"+row.full_name+"\',\'"+row.STAFF_NAME+"\',\'"+row.STAFF_ORG_ID+"\','"+$("#wfcallbackFun").val()+"')"; 
 							var context =
@@ -167,66 +161,20 @@ function resetFun(){
 	$("#searchEfOName").val('');
 } 
 function addMultiStaff(){
-	funName=$("#wfcallbackFun").val();
-	if (_checkedPerArr.length == 0){
-		layer.msg("请选人员，可以多选！",{time:1000});
-		return;
-	}
-  	var ids='';
-  	var names='';
-  	$(_checkedPerArr).each(function(k,v){
-      	ids = ids + v.id + ',';
-      	names= names + v.name + ',';
-	});
-  	ids = ids.substring(0,ids.length-1);
-  	names = names.substring(0,names.length-1);
-  	eval(funName+"(\'"+ids+"\',\'"+names+"\')");
-}
-/*
- * 多选点击事件
- */
-$("#searchStaffTable").on("change",".checkchild",function(){
-	changeCheckedPerLen($(this).val(),$(this).prop("checked"));
-});
-//全选点击事件
-function checkAllChildStaffCheckbox(){
-	$("#searchStaffTable .checkchild").each(function(k,v){
-      	changeCheckedPerLen($(this).val(),$(this).prop("checked"));
-    });
-}
-//给全局变量_checkedPerArr赋值
-function changeCheckedPerLen(data,isChecked){
-	var itemValue = data.split("-");
-	var item = {
-		id: itemValue[0],
-		name:  itemValue[1]
-	};
-	var index = null;
-	$.each(_checkedPerArr,function(k,v){
-		if(v.id == item.id){
-			index = k;
-			return false;
+	  funName=$("#wfcallbackFun").val();
+	  if ($(".checkchild:checked").length == 0){
+			layer.msg("请选人员，可以多选！",{time:1000});
+			return;
 		}
-	});
-	if(isChecked){
-		if(index == null){
-			_checkedPerArr.push(item);
-		};
-	}else{
-		_checkedPerArr.splice(index,1);
-	};
-	$("#checkedPerLen").text(_checkedPerArr.length);
-}
-//点击展示已选择的人员
-function showIscheckedPer(){
-	if(_checkedPerArr.length == 0){
-		layer.msg("暂未选择人员");
-	}else{
-		var personsHtml = "";
-		$.each(_checkedPerArr, function(k,v) {
-			personsHtml += v.name + ",";
-		});
-		personsHtml = personsHtml.substring(0,personsHtml.length-1);
-		layer.alert(personsHtml,{icon:7,title:"已选择人员"});
-	}
+	  var ids='';
+	  var names='';
+	  $(".checkchild:checked").each(function(i){
+	      var value = $(this).val();
+	      value=value.split("-");
+	      ids=ids+value[0]+',';
+	      names=names+value[1]+',';
+	    });
+	  ids=ids.substring(0,ids.length-1);
+	  names=names.substring(0,names.length-1);
+	  eval(funName+"(\'"+ids+"\',\'"+names+"\')");
 }

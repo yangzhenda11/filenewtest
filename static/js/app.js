@@ -1824,15 +1824,15 @@ var App = function() {
             })
         },
 
-		//工作流相关，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
-        getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType){
+		//工作流相关
+        getFlowParam:function(serverPath,businessId,handleType,pathSelect){
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");
         	}else{
         		$.ajax({
         			type: 'get',
-        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect+'&businessType='+businessType,
+        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect,
         			//data: null,
         			dataType: 'json',
         			async: false,

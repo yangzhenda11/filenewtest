@@ -8,18 +8,20 @@ var globalConfig = {
     fileUploadPath: "/",
     /**后台服务地址 */
     serverPath: "/",
-    /** 当前用户的岗位id （sys_staff_org表主键） */
-    curStaffOrgId: null,
     /** 当前用户组织深度*/
     orgPath: null,
     /** 当前用户所在组织的id（sys_org表主键） */
     curOrgId: null,
+    /** 当前用户所在组织的名称 */
+    curOrgName: null,
     /** 当前用户所在组织的上级公司id（sys_org表主键） */
     curCompanyId: null,
     /** 当前用户的用户名 */
     curStaffName: "",
     /** 当前用户的id （sys_staff主键） */
     curStaffId: null, 
+    /** 当前用户的岗位id （sys_staff_org表主键） */
+    curStaffOrgId: null,
     /** 当前用户的角色 （数组存储） */
     curRole: [],
     /** 当前用户的权限集合 */
@@ -61,6 +63,7 @@ $(document).ready(function() {
 		}
         var data = result.data;
         globalConfig.provCode = data.provCode;
+        globalConfig.curOrgName = data.orgName;
         globalConfig.curStaffId = data.staffId;
         globalConfig.curStaffName = data.staffName;
         globalConfig.curStaffOrgId = data.staffOrgId;

@@ -111,15 +111,15 @@ function showContractPerformerModal(contractId) {
 		if(data.length > 0){
 			for (var i = 0; i < data.length; i++) {
 				var item = data[i];
-				var performerType = item.performerType == 1 ? "是" : "否";
+				// var performerType = item.performerType == 1 ? "是" : "否"; delete 20181019
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
 							"<td>"+item.performerStaffName+"</td>"+
 							"<td>"+item.performerOrgName+"</td>"+
-							"<td>"+performerType+"</td>"+
-							"<td></td>"+"<td></td>"+
-							"<td>"+item.addStaff+"</td>"+
-							"<td>"+item.addStaffOrg+"</td>"+
+//							"<td>"+performerType+"</td>"+      delete 20181019
+//							"<td></td>"+"<td></td>"+
+//							"<td>"+item.addStaff+"</td>"+
+//							"<td>"+item.addStaffOrg+"</td>"+
 						"</tr>";
 			}
 		}else{

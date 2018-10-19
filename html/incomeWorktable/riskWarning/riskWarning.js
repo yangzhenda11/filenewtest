@@ -19,7 +19,7 @@ function getCount() {
 		$("#lineRentedHaveBill").text(result.data.lineRentedHaveBill);
 		$("#contractEndHaveLine").text(result.data.contractEndHaveLine);
 		$("#contractEndHaveNewLine").text(result.data.contractEndHaveNewLine);
-		
+		F
 		$("#customDiffTobss").text(result.data.customDiffTobss);
 		$("#customDiffToyzs").text(result.data.customDiffToyzs);
 		$("#customDiffInbss").text(result.data.customDiffInbss);
@@ -63,23 +63,17 @@ function searchTable(tableId){
 		}else if(tableId == "lineRentNotBillTable"){
 			initLineRentNotBillTable();		
 		}else if(tableId == "lineRentedHaveBillTable"){
-<<<<<<< HEAD
 			initLineRentedHaveBillTable();
 		}else if(tableId == "contractEndHaveLineTable"){
 			initContractEndHaveLineTable();
 		}else if(tableId == "contractEndHaveNewLineTable"){
 			initContractEndHaveNewLineTable();
-
-=======
-			initLineRentedHaveBillTable(); 
 		}else if(tableId == "contractEndHaveLineTable"){
 			initContractEndHaveLineTable();
 		}else if(tableId == "contractEndHaveNewLineTable"){
 			initContractEndHaveNewLineTable(); 
 		}else if(tableId == "customDiffTobssTable"){
 			initCustomDiffTobssTable(); 
-			
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
 		}
 		
 	}
@@ -228,12 +222,7 @@ function initLineRentNotBillTable() {
 	});
 }
 
- 
-<<<<<<< HEAD
 
-
-
-=======
 function initCustomDiffTobssTable() {
 	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
 	if (!isInit) {
@@ -303,7 +292,6 @@ function initCustomDiffTobssTable() {
 				});
 			}
 		 
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
 /*
  * 风险类型为2:线路账单异常-线路已止租，有新账单
  * 账单明细中点击查看未写
@@ -327,12 +315,9 @@ function initLineRentedHaveBillTable() {
 				return JSON.stringify(d);
 			}
 		},
-<<<<<<< HEAD
-		"columns" : 
   
-=======
 		"columns" :  
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
+ 
 			[ 
 				{
 					"data" : null,
@@ -525,19 +510,14 @@ function initContractEndHaveNewLineTable() {
 					"title":"客户经理",
 					"className" : "whiteSpaceNormal"
 				} 
-<<<<<<< HEAD
-
-
-=======
  
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
 			]
 	});
 }
  
 
-<<<<<<< HEAD
-function initCustomDiffTobssTable() {
+ 
+function initCustomDiffTobssTable() {/*
 	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
 	if (!isInit) {
 		$("#customDiffTobssTable").html("");
@@ -604,7 +584,7 @@ function initCustomDiffTobssTable() {
 			});
 		}
 	}
-}
+*/}
 
 /*
 =======

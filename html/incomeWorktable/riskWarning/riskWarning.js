@@ -60,14 +60,21 @@ function searchTable(tableId){
 		if(tableId == "lineIsArrearageTable"){
 			initLineIsArrearageTable();
 		}else if(tableId == "lineRentNotBillTable"){
-			
+			initLineRentNotBillTable();		
 		}else if(tableId == "lineRentedHaveBillTable"){
-			
+			initLineRentedHaveBillTable();
+		}else if(tableId == "contractEndHaveLineTable"){
+			initContractEndHaveLineTable();
+		}else if(tableId == "contractEndHaveNewLineTable"){
+			initContractEndHaveNewLineTable();
 		}
 		
 	}
 }
-
+/*
+ * 风险类型为0:线路租用中欠费
+ * 账单明细中点击查看未写
+ */
 function initLineIsArrearageTable() {
 	var isInit = $.fn.dataTable.isDataTable("#lineIsArrearageTable");
 	if (!isInit) {
@@ -90,18 +97,349 @@ function initLineIsArrearageTable() {
 				{
 					"data" : null,
 					"className" : "whiteSpaceNormal",
+					"title":"序号",
 					"render" : function(data, type, full, meta) {
 						var start = App.getDatatablePaging("#lineIsArrearageTable").pageStart;
 						return start + meta.row + 1;
 					}
 				},
 				{
-					"data" : "riskId",
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
 					"className" : "whiteSpaceNormal"
 				} 
+
 			]
 	});
 }
+
+
+/*
+ * 风险类型为1:线路账单异常-线路租用中，无账单
+ * 账单明细中点击查看未写
+ */
+function initLineRentNotBillTable() {
+	var isInit = $.fn.dataTable.isDataTable("#lineRentNotBillTable");
+	if (!isInit) {
+		$("#lineRentNotBillTable").html("");
+	}
+	;
+	App.initDataTables('#lineRentNotBillTable', "#lineRentNotBillLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='1';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#lineRentNotBillTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+
+
+
+/*
+ * 风险类型为2:线路账单异常-线路已止租，有新账单
+ * 账单明细中点击查看未写
+ */
+
+function initLineRentedHaveBillTable() {
+	var isInit = $.fn.dataTable.isDataTable("#lineRentedHaveBillTable");
+	if (!isInit) {
+		$("#lineRentedHaveBillTable").html("");
+	}
+	;
+	App.initDataTables('#lineRentedHaveBillTable', "#lineRentedHaveBillLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='2';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#lineRentedHaveBillTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+
+
+/*
+ * 风险类型为3:合同到期业务未停止-合同已到期，存在未止租线路
+ * 账单明细中点击查看未写
+ */
+function initContractEndHaveLineTable() {
+	var isInit = $.fn.dataTable.isDataTable("#contractEndHaveLineTable");
+	if (!isInit) {
+		$("#contractEndHaveLineTable").html("");
+	}
+	;
+	App.initDataTables('#contractEndHaveLineTable', "#contractEndHaveLineLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='3';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#contractEndHaveLineTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+
+/*
+ * 风险类型为4:合同到期业务未停止-合同已到期，存在新起租线路
+ * 账单明细中点击查看未写
+ */
+function initContractEndHaveNewLineTable() {
+	var isInit = $.fn.dataTable.isDataTable("#contractEndHaveNewLineTable");
+	if (!isInit) {
+		$("#contractEndHaveNewLineTable").html("");
+	}
+	;
+	App.initDataTables('#contractEndHaveNewLineTable', "#contractEndHaveNewLineLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='4';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#contractEndHaveNewLineTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+
 
 /*
  * 页面内表格初始化完成之后查询事件

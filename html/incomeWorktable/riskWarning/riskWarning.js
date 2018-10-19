@@ -18,6 +18,15 @@ function getCount() {
 		$("#lineRentedHaveBill").text(result.data.lineRentedHaveBill);
 		$("#contractEndHaveLine").text(result.data.contractEndHaveLine);
 		$("#contractEndHaveNewLine").text(result.data.contractEndHaveNewLine);
+		
+		$("#customDiffTobss").text(result.data.customDiffTobss);
+		$("#customDiffToyzs").text(result.data.customDiffToyzs);
+		$("#customDiffInbss").text(result.data.customDiffInbss);
+		$("#customDiffInyzsdr").text(result.data.customDiffInyzsdr);
+		
+	/*	$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
+		$("#relatedNotzxPeriod").text(result.data.relatedNotzxPeriod);
+		*/
 	}
 }
  

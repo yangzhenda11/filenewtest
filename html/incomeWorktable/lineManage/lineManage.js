@@ -76,7 +76,7 @@ function initLineInforTable() {
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) {
 				d.isRelateContract = $("#lineInfor input[name='relationType']:checked").val();
-				d.riskType = $("#searchInput").val().trim();
+				d.businessId = $("#searchInput").val().trim();
 				return JSON.stringify(d);
 			}
 		},

@@ -126,7 +126,7 @@ function initInvoiceTable(type){
 			},
 			{"data": null,"title":"发票明细","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpInviceDetail(\""+data.invPayId+"\",\""+data.invoiceNnovateSum+"\")'>查看</a>";
+					return "<a onclick='jumpInviceDetail(\""+data.contractNumber+"\",\""+data.invoiceNnovateSum+"\")'>查看</a>";
 				}
 			}
 		]
@@ -196,7 +196,7 @@ function initPaymentTable(type){
 			},
 			{"data": null,"title":"付款明细","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpPaymentDetail(\""+data.invPayId+"\",\""+data.payVateAmountSum+"\")'>查看</a>";
+					return "<a onclick='jumpPaymentDetail(\""+data.contractNumber+"\",\""+data.payVateAmountSum+"\")'>查看</a>";
 				}
 			}
 		]
@@ -205,15 +205,15 @@ function initPaymentTable(type){
 /*
  * 跳转发票明细
  */
-function jumpInviceDetail(invPayId,invoiceNnovateSum){
-	var url = "/html/expenseWorktable/paymentManage/invoiceDetail.html?invPayId="+invPayId+"&invoiceNnovateSum="+invoiceNnovateSum;
+function jumpInviceDetail(contractNumber,invoiceNnovateSum){
+	var url = "/html/expenseWorktable/paymentManage/invoiceDetail.html?contractNumber="+contractNumber+"&invoiceNnovateSum="+invoiceNnovateSum;
 	top.showSubpageTab(url,"发票明细");
 }
 /*
  * 跳转付款明细
  */
-function jumpPaymentDetail(invPayId,payVateAmountSum){
-	var url = "/html/expenseWorktable/paymentManage/paymentDetail.html?invPayId="+invPayId+"&payVateAmountSum="+payVateAmountSum;
+function jumpPaymentDetail(contractNumber,payVateAmountSum){
+	var url = "/html/expenseWorktable/paymentManage/paymentDetail.html?contractNumber="+contractNumber+"&payVateAmountSum="+payVateAmountSum;
 	top.showSubpageTab(url,"付款明细");
 }
 //发票管理-固定金额合同累计开票金额情况（图表）

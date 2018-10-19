@@ -61,17 +61,14 @@ function searchTable(tableId){
 		}else if(tableId == "lineRentNotBillTable"){
 			initLineRentNotBillTable();		
 		}else if(tableId == "lineRentedHaveBillTable"){
-<<<<<<< HEAD
-			
-		}else if(tableId == "customDiffTobssTable"){
-			initCustomDiffTobssTable();
-=======
-			initLineRentedHaveBillTable();
+			initLineRentedHaveBillTable(); 
 		}else if(tableId == "contractEndHaveLineTable"){
 			initContractEndHaveLineTable();
 		}else if(tableId == "contractEndHaveNewLineTable"){
-			initContractEndHaveNewLineTable();
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
+			initContractEndHaveNewLineTable(); 
+		}else if(tableId == "customDiffTobssTable"){
+			initCustomDiffTobssTable(); 
+			
 		}
 		
 	}
@@ -220,7 +217,7 @@ function initLineRentNotBillTable() {
 	});
 }
 
-<<<<<<< HEAD
+ 
 function initCustomDiffTobssTable() {
 	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
 	if (!isInit) {
@@ -233,10 +230,63 @@ function initCustomDiffTobssTable() {
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) {
 				d.contractName = $("#customDiffTobssInput").val().trim(); 
-=======
-
-
-
+				
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : [
+		 			{
+						"data" : null,
+						"title" : "序号",
+						"className" : "whiteSpaceNormal",
+						"render" : function(data, type, full, meta) {
+							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							return start + meta.row + 1;
+						}
+					}, {
+						"data" : "contractName",
+						"title" : "合同名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "contractNumber",
+						"title" : "合同编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss1",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss1",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss2",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss2",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "diffContent",
+						"title" : "差异描述",
+						"className" : "whiteSpaceNormal",
+						} ,
+						{
+						"data" : "diffContent",
+						"title" : "线路明细",
+						"className" : "whiteSpaceNormal",
+						}
+						]
+				});
+			}
+		 
 /*
  * 风险类型为2:线路账单异常-线路已止租，有新账单
  * 账单明细中点击查看未写
@@ -256,63 +306,11 @@ function initLineRentedHaveBillTable() {
 			"data" : function(d) { 
 				//d.riskType = $("#searchInput").val().trim();
 				d.riskType ='2';
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
+ 
 				return JSON.stringify(d);
 			}
 		},
-		"columns" : 
-<<<<<<< HEAD
-			[
-			{
-				"data" : null,
-				"title" : "序号",
-				"className" : "whiteSpaceNormal",
-				"render" : function(data, type, full, meta) {
-					var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
-					return start + meta.row + 1;
-				}
-			}, {
-				"data" : "contractName",
-				"title" : "合同名称",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "contractNumber",
-				"title" : "合同编号",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerNameBss1",
-				"title" : "客户名称",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerCodeBss1",
-				"title" : "集客客户编号",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerNameBss2",
-				"title" : "客户名称",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerCodeBss2",
-				"title" : "集客客户编号",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "diffContent",
-				"title" : "差异描述",
-				"className" : "whiteSpaceNormal",
-				} ,
-				{
-				"data" : "diffContent",
-				"title" : "线路明细",
-				"className" : "whiteSpaceNormal",
-				}
- 
-=======
+		"columns" :  
 			[ 
 				{
 					"data" : null,
@@ -505,18 +503,13 @@ function initContractEndHaveNewLineTable() {
 					"title":"客户经理",
 					"className" : "whiteSpaceNormal"
 				} 
-
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
+ 
 			]
 	});
 }
+ 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
-/*
+ /*
  * 页面内表格初始化完成之后查询事件
  */
 function reloadPageDataTable(tableId,retainPaging) {

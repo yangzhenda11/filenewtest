@@ -2,9 +2,8 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
-	//生成预警总览图表
-	initWarningOverviewCharts();
-	getCount();
+	//生成预警总览图表 
+	getCount(); 
 })
 
 function getCount() {
@@ -24,9 +23,9 @@ function getCount() {
 		$("#customDiffInbss").text(result.data.customDiffInbss);
 		$("#customDiffInyzsdr").text(result.data.customDiffInyzsdr);
 		
-	/*	$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
+		$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
 		$("#relatedNotzxPeriod").text(result.data.relatedNotzxPeriod);
-		*/
+		initWarningOverviewCharts();
 	}
 }
  
@@ -54,15 +53,17 @@ $("#warningOverviewTr").on("click","a",function(){
 //查询按钮点击统一处理
 function searchTable(tableId){ 
 	var isInitTable = $.fn.dataTable.isDataTable("#"+tableId);
-	if(isInitTable){
+ 	if(isInitTable){
 		reloadPageDataTable("#"+tableId);
-	}else{
+	}else{ 
 		if(tableId == "lineIsArrearageTable"){
 			initLineIsArrearageTable();
 		}else if(tableId == "lineRentNotBillTable"){
 			
 		}else if(tableId == "lineRentedHaveBillTable"){
 			
+		}else if(tableId == "customDiffTobssTable"){
+			initCustomDiffTobssTable();
 		}
 		
 	}
@@ -72,8 +73,7 @@ function initLineIsArrearageTable() {
 	var isInit = $.fn.dataTable.isDataTable("#lineIsArrearageTable");
 	if (!isInit) {
 		$("#lineIsArrearageTable").html("");
-	}
-	;
+	} ;
 	App.initDataTables('#lineIsArrearageTable', "#lineIsArrearageLoading", {
 		ajax : {
 			"type" : "POST",
@@ -103,6 +103,76 @@ function initLineIsArrearageTable() {
 	});
 }
 
+function initCustomDiffTobssTable() {
+	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
+	if (!isInit) {
+		$("#customDiffTobssTable").html("");
+	};
+	App.initDataTables('#customDiffTobssTable', "#customDiffTobssLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffInbss',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) {
+				d.contractName = $("#customDiffTobssInput").val().trim(); 
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[
+			{
+				"data" : null,
+				"title" : "序号",
+				"className" : "whiteSpaceNormal",
+				"render" : function(data, type, full, meta) {
+					var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+					return start + meta.row + 1;
+				}
+			}, {
+				"data" : "contractName",
+				"title" : "合同名称",
+				"className" : "whiteSpaceNormal",
+				},
+				{
+				"data" : "contractNumber",
+				"title" : "合同编号",
+				"className" : "whiteSpaceNormal",
+				},
+				{
+				"data" : "customerNameBss1",
+				"title" : "客户名称",
+				"className" : "whiteSpaceNormal",
+				},
+				{
+				"data" : "customerCodeBss1",
+				"title" : "集客客户编号",
+				"className" : "whiteSpaceNormal",
+				},
+				{
+				"data" : "customerNameBss2",
+				"title" : "客户名称",
+				"className" : "whiteSpaceNormal",
+				},
+				{
+				"data" : "customerCodeBss2",
+				"title" : "集客客户编号",
+				"className" : "whiteSpaceNormal",
+				},
+				{
+				"data" : "diffContent",
+				"title" : "差异描述",
+				"className" : "whiteSpaceNormal",
+				} ,
+				{
+				"data" : "diffContent",
+				"title" : "线路明细",
+				"className" : "whiteSpaceNormal",
+				}
+ 
+			]
+	});
+}
+
 /*
  * 页面内表格初始化完成之后查询事件
  */
@@ -119,12 +189,25 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function initWarningOverviewCharts(){
 	var chartsDom = echarts.init(document.getElementById('warningOverviewCharts'));
+ 
+	var   lineArrearage =parseInt($("#lineIsArrearage").text());
+	var   lineException =parseInt($("#lineRentNotBill").text())+parseInt($("#lineRentedHaveBill").text()) ;
+	
+	var   contractException =parseInt($("#contractEndHaveLine").text())
+	      +parseInt($("#contractEndHaveNewLine").text()) ;
+	var   businessException=
+		parseInt($("#customDiffTobss").text())+
+		parseInt($("#customDiffToyzs").text())+
+		parseInt($("#customDiffInbss").text())+
+		parseInt($("#customDiffInyzsdr").text())+
+		parseInt($("#relatedNotzxBase").text())+
+		parseInt($("#relatedNotzxPeriod").text());
 	var option = {
 		title : {
 	        text: '风险预警总览',
 	        x:'center',
 	        textStyle: {
-	        	fontSize:14
+	        	fontSize:13
 	        }
 	   	},
 	    xAxis: {
@@ -135,7 +218,7 @@ function initWarningOverviewCharts(){
 	        type: 'value'
 	    },
 	    series: [{
-	        data: [12, 20, 15, 30,],
+	        data: [lineArrearage, lineException, contractException, businessException ],
 	        type: 'bar',
 	        barWidth:'45%',
 	        itemStyle: {   

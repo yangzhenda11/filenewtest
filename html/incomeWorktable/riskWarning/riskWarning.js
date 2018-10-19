@@ -52,14 +52,13 @@ $("#warningOverviewTr").on("click","a",function(){
 	},300)
 })
 //查询按钮点击统一处理
-function searchTable(tableId){
-	alert(tableId);
+function searchTable(tableId){ 
 	var isInitTable = $.fn.dataTable.isDataTable("#"+tableId);
 	if(isInitTable){
 		reloadPageDataTable("#"+tableId);
 	}else{
 		if(tableId == "lineIsArrearageTable"){
-
+			initLineIsArrearageTable();
 		}else if(tableId == "lineRentNotBillTable"){
 			
 		}else if(tableId == "lineRentedHaveBillTable"){
@@ -68,6 +67,42 @@ function searchTable(tableId){
 		
 	}
 }
+
+function initLineIsArrearageTable() {
+	var isInit = $.fn.dataTable.isDataTable("#lineIsArrearageTable");
+	if (!isInit) {
+		$("#lineIsArrearageTable").html("");
+	}
+	;
+	App.initDataTables('#lineIsArrearageTable', "#lineIsArrearageLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='0';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#lineIsArrearageTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "riskId",
+					"className" : "whiteSpaceNormal"
+				} 
+			]
+	});
+}
+
 /*
  * 页面内表格初始化完成之后查询事件
  */

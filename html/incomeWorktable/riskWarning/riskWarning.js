@@ -2,11 +2,13 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
-	//生成预警总览图表 
+	//生成预警总览图表
+	debugger;
 	getCount(); 
 })
 
 function getCount() {
+	debugger;
 	var postData = { 
 	};
 	var url = serverPath + "riskWarningDetailMangerController/getRiskWarningCount";
@@ -23,9 +25,9 @@ function getCount() {
 		$("#customDiffInbss").text(result.data.customDiffInbss);
 		$("#customDiffInyzsdr").text(result.data.customDiffInyzsdr);
 		
-		$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
+ 		$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
 		$("#relatedNotzxPeriod").text(result.data.relatedNotzxPeriod);
-		initWarningOverviewCharts();
+		initWarningOverviewCharts(); 
 	}
 }
  
@@ -61,17 +63,12 @@ function searchTable(tableId){
 		}else if(tableId == "lineRentNotBillTable"){
 			initLineRentNotBillTable();		
 		}else if(tableId == "lineRentedHaveBillTable"){
-<<<<<<< HEAD
-			
-		}else if(tableId == "customDiffTobssTable"){
-			initCustomDiffTobssTable();
-=======
 			initLineRentedHaveBillTable();
 		}else if(tableId == "contractEndHaveLineTable"){
 			initContractEndHaveLineTable();
 		}else if(tableId == "contractEndHaveNewLineTable"){
 			initContractEndHaveNewLineTable();
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
+
 		}
 		
 	}
@@ -220,20 +217,7 @@ function initLineRentNotBillTable() {
 	});
 }
 
-<<<<<<< HEAD
-function initCustomDiffTobssTable() {
-	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
-	if (!isInit) {
-		$("#customDiffTobssTable").html("");
-	};
-	App.initDataTables('#customDiffTobssTable', "#customDiffTobssLoading", {
-		ajax : {
-			"type" : "POST",
-			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffInbss',
-			"contentType" : "application/json;charset=utf-8",
-			"data" : function(d) {
-				d.contractName = $("#customDiffTobssInput").val().trim(); 
-=======
+ 
 
 
 
@@ -256,63 +240,12 @@ function initLineRentedHaveBillTable() {
 			"data" : function(d) { 
 				//d.riskType = $("#searchInput").val().trim();
 				d.riskType ='2';
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
+ 
 				return JSON.stringify(d);
 			}
 		},
 		"columns" : 
-<<<<<<< HEAD
-			[
-			{
-				"data" : null,
-				"title" : "序号",
-				"className" : "whiteSpaceNormal",
-				"render" : function(data, type, full, meta) {
-					var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
-					return start + meta.row + 1;
-				}
-			}, {
-				"data" : "contractName",
-				"title" : "合同名称",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "contractNumber",
-				"title" : "合同编号",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerNameBss1",
-				"title" : "客户名称",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerCodeBss1",
-				"title" : "集客客户编号",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerNameBss2",
-				"title" : "客户名称",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "customerCodeBss2",
-				"title" : "集客客户编号",
-				"className" : "whiteSpaceNormal",
-				},
-				{
-				"data" : "diffContent",
-				"title" : "差异描述",
-				"className" : "whiteSpaceNormal",
-				} ,
-				{
-				"data" : "diffContent",
-				"title" : "线路明细",
-				"className" : "whiteSpaceNormal",
-				}
- 
-=======
+  
 			[ 
 				{
 					"data" : null,
@@ -506,16 +439,80 @@ function initContractEndHaveNewLineTable() {
 					"className" : "whiteSpaceNormal"
 				} 
 
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
+
 			]
 	});
 }
 
-<<<<<<< HEAD
-=======
+function initCustomDiffTobssTable() {
+	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
+	if (!isInit) {
+		$("#customDiffTobssTable").html("");
+	};
+	App.initDataTables('#customDiffTobssTable', "#customDiffTobssLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffInbss',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) {
+				d.contractName = $("#customDiffTobssInput").val().trim(); 
+				"columns" : 
+					 
+					[
+					{
+						"data" : null,
+						"title" : "序号",
+						"className" : "whiteSpaceNormal",
+						"render" : function(data, type, full, meta) {
+							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							return start + meta.row + 1;
+						}
+					}, {
+						"data" : "contractName",
+						"title" : "合同名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "contractNumber",
+						"title" : "合同编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss1",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss1",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss2",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss2",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "diffContent",
+						"title" : "差异描述",
+						"className" : "whiteSpaceNormal",
+						} ,
+						{
+						"data" : "diffContent",
+						"title" : "线路明细",
+						"className" : "whiteSpaceNormal",
+						}
+						]
+			});
+		}
+	}
+}
 
-
->>>>>>> 83a9ff19b74b9e85b9371303a10df86a06d5bff7
 /*
  * 页面内表格初始化完成之后查询事件
  */

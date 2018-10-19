@@ -63,23 +63,19 @@ function searchTable(tableId){
 		}else if(tableId == "lineRentNotBillTable"){
 			initLineRentNotBillTable();		
 		}else if(tableId == "lineRentedHaveBillTable"){
-<<<<<<< HEAD
+ 
 			initLineRentedHaveBillTable();
 		}else if(tableId == "contractEndHaveLineTable"){
 			initContractEndHaveLineTable();
 		}else if(tableId == "contractEndHaveNewLineTable"){
 			initContractEndHaveNewLineTable();
-
-=======
-			initLineRentedHaveBillTable(); 
+  
 		}else if(tableId == "contractEndHaveLineTable"){
 			initContractEndHaveLineTable();
 		}else if(tableId == "contractEndHaveNewLineTable"){
 			initContractEndHaveNewLineTable(); 
 		}else if(tableId == "customDiffTobssTable"){
-			initCustomDiffTobssTable(); 
-			
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
+			initCustomDiffTobssTable();  
 		}
 		
 	}
@@ -229,11 +225,6 @@ function initLineRentNotBillTable() {
 }
 
  
-<<<<<<< HEAD
-
-
-
-=======
 function initCustomDiffTobssTable() {
 	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
 	if (!isInit) {
@@ -302,8 +293,7 @@ function initCustomDiffTobssTable() {
 						]
 				});
 			}
-		 
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
+		  
 /*
  * 风险类型为2:线路账单异常-线路已止租，有新账单
  * 账单明细中点击查看未写
@@ -326,13 +316,8 @@ function initLineRentedHaveBillTable() {
  
 				return JSON.stringify(d);
 			}
-		},
-<<<<<<< HEAD
-		"columns" : 
-  
-=======
+		}, 
 		"columns" :  
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
 			[ 
 				{
 					"data" : null,
@@ -525,91 +510,15 @@ function initContractEndHaveNewLineTable() {
 					"title":"客户经理",
 					"className" : "whiteSpaceNormal"
 				} 
-<<<<<<< HEAD
-
-
-=======
  
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
 			]
 	});
 }
- 
-
-<<<<<<< HEAD
-function initCustomDiffTobssTable() {
-	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
-	if (!isInit) {
-		$("#customDiffTobssTable").html("");
-	};
-	App.initDataTables('#customDiffTobssTable', "#customDiffTobssLoading", {
-		ajax : {
-			"type" : "POST",
-			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffInbss',
-			"contentType" : "application/json;charset=utf-8",
-			"data" : function(d) {
-				d.contractName = $("#customDiffTobssInput").val().trim(); 
-				"columns" : 
-					 
-					[
-					{
-						"data" : null,
-						"title" : "序号",
-						"className" : "whiteSpaceNormal",
-						"render" : function(data, type, full, meta) {
-							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
-							return start + meta.row + 1;
-						}
-					}, {
-						"data" : "contractName",
-						"title" : "合同名称",
-						"className" : "whiteSpaceNormal",
-						},
-						{
-						"data" : "contractNumber",
-						"title" : "合同编号",
-						"className" : "whiteSpaceNormal",
-						},
-						{
-						"data" : "customerNameBss1",
-						"title" : "客户名称",
-						"className" : "whiteSpaceNormal",
-						},
-						{
-						"data" : "customerCodeBss1",
-						"title" : "集客客户编号",
-						"className" : "whiteSpaceNormal",
-						},
-						{
-						"data" : "customerNameBss2",
-						"title" : "客户名称",
-						"className" : "whiteSpaceNormal",
-						},
-						{
-						"data" : "customerCodeBss2",
-						"title" : "集客客户编号",
-						"className" : "whiteSpaceNormal",
-						},
-						{
-						"data" : "diffContent",
-						"title" : "差异描述",
-						"className" : "whiteSpaceNormal",
-						} ,
-						{
-						"data" : "diffContent",
-						"title" : "线路明细",
-						"className" : "whiteSpaceNormal",
-						}
-						]
-			});
-		}
-	}
-}
+  
+function initCustomDiffTobssTable() { }
 
 /*
-=======
- /*
->>>>>>> c3bd94fdeb591ab3f1d55dc8b7aaf508756f556f
+
  * 页面内表格初始化完成之后查询事件
  */
 function reloadPageDataTable(tableId,retainPaging) {

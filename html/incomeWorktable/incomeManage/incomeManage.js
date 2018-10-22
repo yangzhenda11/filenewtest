@@ -275,6 +275,10 @@ function initForecastCharts(){
     		// 给收入预测赋值
     		$("#contractIncomeForecastReceivable").text(App.unctionToThousands(params.data));
     		
+    		// 获取radio选中val，然后根据选中值查询
+    		var radioVal = $("input[name='contractIncomeForecastType']:checked").val();
+    		checkContractIncomeForecastRadio(radioVal);
+    		
     		// 风险收入明细div隐藏
     		$("#lineIncomeForecastValue").hide();
     	}
@@ -285,6 +289,10 @@ function initForecastCharts(){
     		$("#lineIncomeForecastAccountPeriod").text(params.name);
     		// 给收入预测赋值
     		$("#lineIncomeForecastReceivable").text(App.unctionToThousands(params.data));
+
+    		// 获取radio选中val，然后根据选中值查询
+    		var radioVal = $("input[name='lineIncomeForecastType']:checked").val();
+    		checkLineIncomeForecastRadio(radioVal);
     		
     		// 合同收入明细div隐藏
     		$("#contractIncomeForecastValue").hide();
@@ -297,12 +305,20 @@ function initForecastCharts(){
  */
 $("#contractIncomeForecastRadio input[name='contractIncomeForecastType']").on("change",function(){
 
-	if($(this).val() == 1){ // 按客户查看
+	checkContractIncomeForecastRadio($(this).val());
+})
+
+/*
+ * 收入预测-合同收入明细判断radio选中数据，根据选中类型查询
+ */
+function checkContractIncomeForecastRadio(valRadio){
+	
+	if(valRadio == 1){ // 按客户查看
 		initContractIncomeForecastTableByCustom();
 	}else{// 按合同查看
 		initContractIncomeForecastTableByContract();
 	}
-})
+}
 
 /*
  * 合同收入预测明细 - 按客户跟踪查询
@@ -404,13 +420,22 @@ function jumpContractManage(customerCode){
  * 收入预测-风险收入明细查看类型切换
  */
 $("#lineIncomeForecastRadio input[name='lineIncomeForecastType']").on("change",function(){
+	
+	checkLineIncomeForecastRadio($(this).val());
+})
 
-	if($(this).val() == 1){ // 按客户查看
+/*
+ * 收入预测-风险收入明细判断radio选中数据，根据选中类型查询
+ */
+function checkLineIncomeForecastRadio(valRadio){
+
+	if(valRadio == 1){ // 按客户查看
 		initLineIncomeForecastTableByCustom();
 	}else{// 按线路查看
 		initLineIncomeForecastTableByLine();
 	}
-})
+}
+
 
 /*
  * 风险收入预测明细 - 按客户跟踪查询

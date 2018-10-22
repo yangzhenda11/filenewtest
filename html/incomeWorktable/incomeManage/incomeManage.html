@@ -79,34 +79,26 @@
 					    </div>
 					    <div class="tab-pane fade" id="incomeForecast">
 					    	<div id="incomeForecastCharts"></div>
-					    	<div class="work-list">
-								预测逻辑说明 
-
-								合同收入部分：
-								
-								固定金额且有固定起止日期的合同（结构化工单中“是否固定金额”为“是”，且“合同有效期确认方式”为“固定起止日期”），按照合同的不含增值税合同金额，将金额均摊到合同起止日期间的各账期内；
-								
-								固定金额但无固定起止日期的合同（结构化工单中“是否固定金额”为“是”，且“合同有效期确认方式”为非“固定起止日期”），按照合同包含线路的月租费情况，默认截至本年年底各账期的收入预计以最近账期的收入为准；
-								
-								非固定金额且有固定起止日期的合同（结构化工单中“是否固定金额”为“否”，且“合同有效期确认方式”为 “固定起止日期”），按照合同包含线路的月租费情况，预测的各账期收入以最近账期的收入为准；
-								
-								非固定金额且无固定起止日期的合同（结构化工单中“是否固定金额”为“否”，且“合同有效期确认方式”为非“固定起止日期”），按照合同包含线路的月租费情况，默认截至本年年底各账期的收入预计以最近账期的收入为准；
-								
-								风险收入部分：
-								
-								有固定起止日期的线路，在终止日期前，各账期的收入预计皆以月租费为准；
-								
-								无固定起止日期的线路，默认截至本年年底各账期的收入预计以月租费为准。
+					    	<div class="remark-list">
+								预测逻辑说明<br />
+								合同收入部分：<br />
+								固定金额且有固定起止日期的合同（结构化工单中“是否固定金额”为“是”，且“合同有效期确认方式”为“固定起止日期”），按照合同的不含增值税合同金额，将金额均摊到合同起止日期间的各账期内；<br />
+								固定金额但无固定起止日期的合同（结构化工单中“是否固定金额”为“是”，且“合同有效期确认方式”为非“固定起止日期”），按照合同包含线路的月租费情况，默认截至本年年底各账期的收入预计以最近账期的收入为准；<br />
+								非固定金额且有固定起止日期的合同（结构化工单中“是否固定金额”为“否”，且“合同有效期确认方式”为 “固定起止日期”），按照合同包含线路的月租费情况，预测的各账期收入以最近账期的收入为准；<br />
+								非固定金额且无固定起止日期的合同（结构化工单中“是否固定金额”为“否”，且“合同有效期确认方式”为非“固定起止日期”），按照合同包含线路的月租费情况，默认截至本年年底各账期的收入预计以最近账期的收入为准；<br />
+								风险收入部分：<br />
+								有固定起止日期的线路，在终止日期前，各账期的收入预计皆以月租费为准；<br />
+								无固定起止日期的线路，默认截至本年年底各账期的收入预计以月租费为准。<br />
 							</div>
 							<div class="form-fieldset" id="contractIncomeForecastValue">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i>合同收入明细</span>
+									<span><i class="iconfont icon-layers"></i> 合同收入明细</span>
 								</div>
 								<div class="form-fieldset-body">
 									<div class="row">
 										<div class="incomeAnalysisTitle">
-											<p>预测期间：<span id="contractIncomeForecastAccountPeriod"></span></p>
-											<p>收入预测：<span id="contractIncomeForecastReceivable"></span></p>
+											<p>预测期间：<span class="minWidth60" id="contractIncomeForecastAccountPeriod"></span></p>
+											<p>收入预测：<span class="minWidth60" id="contractIncomeForecastReceivable"></span></p>
 										</div>
 										<div class="ui-radio-list ui-radio-inline" id="contractIncomeForecastRadio">
 											<label class="ui-radio">
@@ -122,17 +114,17 @@
 										</div>
 										<table id="contractIncomeForecastTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 											<thead>
-												<tr>
+												<tr id="contractIncomeForecastThead">
 													<th>序号</th>
 													<th>客户名称</th>
 													<th>集客客户编号</th>
 													<th>合同收入预测</th>
-													<th>履行中合同</th>											
+													<th>履行中合同</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
-													<td colspan="5">请点击查看方式加载数据</td>
+													<td colspan="10">请点击图表加载数据</td>
 												</tr>
 											</tbody>
 										</table>
@@ -146,8 +138,8 @@
 								<div class="form-fieldset-body">
 									<div class="row">
 										<div class="incomeAnalysisTitle">
-											<p>预测期间：<span id="lineIncomeForecastAccountPeriod"></span></p>
-											<p>收入预测：<span id="lineIncomeForecastReceivable"></span></p>
+											<p>预测期间：<span class="minWidth60" id="lineIncomeForecastAccountPeriod"></span></p>
+											<p>收入预测：<span class="minWidth60" id="lineIncomeForecastReceivable"></span></p>
 										</div>
 										<div class="ui-radio-list ui-radio-inline" id="lineIncomeForecastRadio">
 											<label class="ui-radio">
@@ -163,7 +155,7 @@
 										</div>
 										<table id="lineIncomeForecastTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 											<thead>
-												<tr>
+												<tr id="lineIncomeForecastThead">
 													<th>序号</th>
 													<th>客户名称</th>
 													<th>集客客户编号</th>
@@ -173,7 +165,7 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td colspan="5">请点击查看方式加载数据</td>
+													<td colspan="8">请点击图表加载数据</td>
 												</tr>
 											</tbody>
 										</table>

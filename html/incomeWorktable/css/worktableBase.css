@@ -4,6 +4,9 @@
 .page-content-worktable {
   background: #eee;
 }
+.underline {
+  text-decoration: underline;
+}
 .worktableTitle {
   padding: 8px 0 8px 12px;
   font-size: 12px;
@@ -80,6 +83,60 @@
 .workItemDom .workItem p {
   margin: 0;
 }
+#scope {
+  margin: 0;
+  display: inline-block;
+  width: 106px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  top: 4px;
+}
+#changeScope {
+  float: right;
+  padding: 4px 8px;
+  margin-right: 16px;
+}
+.scope-left,
+.scope-rigth,
+.scope-center {
+  float: left;
+}
+.scope-left,
+.scope-rigth {
+  width: 46%;
+  padding: 0 10px;
+}
+.scope-center {
+  width: 8%;
+  padding-top: 100px;
+}
+.scope-center button {
+  margin-bottom: 20px;
+}
+.scope-selectCon {
+  height: 280px;
+  overflow: auto;
+  border: 1px solid #ceadad;
+  border-radius: 3px;
+  background: #fff;
+  padding: 10px 0;
+}
+.scope-selectCon .scopeItem {
+  display: block;
+  text-align: left;
+  padding-left: 16px;
+  font-size: 12px;
+  line-height: 26px;
+}
+.scope-selectCon .scopeItem:hover {
+  background: #c1c7f5;
+  cursor: pointer;
+}
+.scope-selectCon .scopeItem.selected {
+  background: rgba(0, 0, 255, 0.25);
+}
 .incomeOverviewDom,
 .incomeAnalysisDom {
   height: 300px;
@@ -118,14 +175,31 @@
   font-size: 12px;
   box-sizing: border-box;
 }
-#expentType1 {
-  border-right: 1px solid #f3f3f3;
-}
-#expentType1,
-#expentType2 {
-  height: 280px;
+.chartsDom {
   width: 50%;
+  height: 280px;
+  overflow: auto;
   float: left;
+  position: relative;
+}
+.chartsDom:first-of-type {
+  border-right: 1px solid #eeeeee;
+}
+.chartsContent {
+  height: 100%;
+  width: 300px;
+  margin: 0 auto;
+}
+.chartsValue {
+  width: 80px;
+  height: 32px;
+  position: absolute;
+  top: 126px;
+  left: 50%;
+  margin-left: -40px;
+  font-size: 20px;
+  text-align: center;
+  line-height: 32px;
 }
 .pageSearch {
   margin-bottom: 10px;

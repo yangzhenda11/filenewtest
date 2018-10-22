@@ -125,6 +125,9 @@ function conTabB() {
 		}
 	}
 }
+/*
+ * 取得角色数量
+ */
 function checkArrLen(roleArr,permArr){
 	var len = 0;
 	$.each(roleArr, function(k,v) {
@@ -151,7 +154,12 @@ function conTabC() {
 		if(roleExistLen != 1){
 			layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个收入类租线业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
 			return false;
-		};
+		}else if(isInArray(roleArr, 91218)){
+			if(globalConfig.dataPermission == 0 || globalConfig.dataPermission == 1 || globalConfig.dataPermission == 4){
+				layer.alert("当前稽核管理角色权限范围不足，请联系系统管理员处理。",{icon:2});
+				return false;
+			}
+		}
 	};
 	if(o == "html/expenseWorktable/index/index.html"){
 		var roleArr = globalConfig.curRole;
@@ -179,7 +187,7 @@ function conTabC() {
 							if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
 								var parentName = $(this)[0].id;
 								var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
-			$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+								$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
 							}
 						};
 						return false
@@ -200,10 +208,11 @@ function conTabC() {
 	}
 	return false;
 }
-function showSubpageTab(link,title,openNew){
+function showSubpageTab(link,title,openNew,fixed){
+	globalConfig.ifreamLen++;
 	var o = link?link:'',
 		l = title?title:'',
-		m = '',
+		m = "Y" + globalConfig.ifreamLen,
 		k = true;
 	if(o == undefined || $.trim(o).length == 0) {
 		return false
@@ -219,11 +228,15 @@ function showSubpageTab(link,title,openNew){
 		if($(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-				var newDom = $(this);
-				$(this).remove();
-				$(".J_menuTabs .page-tabs-content").append(newDom);
-				animateTab($(".J_menuTab.active"))
-//				animateTab(this);
+				if(fixed){
+					animateTab(this);
+					isChecked = false;
+				}else{
+					var newDom = $(this);
+					$(this).remove();
+					$(".J_menuTabs .page-tabs-content").append(newDom);
+					animateTab($(".J_menuTab.active"))
+				};
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
@@ -241,7 +254,7 @@ function showSubpageTab(link,title,openNew){
 	if(k) {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
-		var n = '<iframe scrolling="no" class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + dataId + '" seamless></iframe>';
+		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + dataId + '" seamless></iframe>';
 		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))

@@ -22388,7 +22388,7 @@ var dataFormatMixin = {
             value: rawValue,
             color: color,
             marker: getTooltipMarker(color),
-
+			stack: this.get('stack'),
             // Param name list for mapping `a`, `b`, `c`, `d`, `e`
             $vars: ['seriesName', 'name', 'value']
         };

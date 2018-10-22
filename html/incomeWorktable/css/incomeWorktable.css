@@ -1,0 +1,126 @@
+.pageTips{
+	width: 400px;
+	color: red;
+}
+/*合同里程碑管理*/
+#performanceContractList .toolbars{
+	position: relative;
+	}
+#performanceContractList .right-toolbars{
+	position: absolute;
+	right: 15px;
+	top: -50px;
+}
+.legendItem .legendPic{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	border-radius: 8px;
+	position: relative;
+	top: 4px;
+	margin-right: 8px;
+}
+.green{
+	background: #00cc00;
+}
+.yellow{
+	background: #ffff00;
+}
+.gray{
+	background: #bcbcbc;
+}
+.red{
+	background: #ff0000;
+}
+td.milestoneLegend{
+	padding: 0 !important;
+	border-left: none !important;
+	border-right: none !important;
+	/*min-height: 38px !important;*/
+}
+.wired{
+	width: 100%;
+	position: relative;
+}
+.leftWired,.rightWired{
+	display: block;
+	width: 50%;
+	height: 4px;
+}
+.leftWired{
+	float: left;
+}
+.rightWired{
+	float: right;
+}
+.mLegend{
+	width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    cursor: pointer;
+    -webkit-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    transform: translate(-50%,-40%);
+}
+/*收入管理*/
+#incomeAnalysisCharts,#incomeForecastCharts{
+	width: 100%;
+	height: 450px;
+	display: inline-block;
+	margin-top: 26px;
+}
+.incomeAnalysisTitle p{
+	display: inline-block;
+	margin-right: 24px;
+	font-size: 14px;
+	font-weight: bold;
+}
+.apportionTitle{
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+/*客户服务*/
+#businessEmptyDom{
+	text-align: center;
+	margin-top: 10px;
+}
+.customerServiceTitle{
+	border-bottom: 2px solid #f2f2f2;
+	font-weight: bold;
+	padding-left: 4px;
+	font-size: 14px;
+	padding-bottom: 4px;
+}
+.businessTitle{
+	display: inline-block;
+	color: #333;
+}
+.businessTitle .businessTitleValue{
+	margin-right: 20px;
+	font-weight: bold;
+	min-width: 100px;
+	display: inline-block;
+}
+.businessTableTitle{
+	font-weight: bold;
+	text-align: center;
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+/*风险预警*/
+.warningOverviewChartsDom{
+	height: 340px;
+	text-align: center;
+}
+#warningOverviewCharts{
+	width: 60%;
+	height: 340px;
+	display: inline-block;
+}

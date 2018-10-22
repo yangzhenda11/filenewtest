@@ -1,0 +1,133 @@
+/*
+ * 里程碑管理
+ */
+#riskWarningPageSearch .toolbars,#milestonePageSearch .toolbars{
+	position: relative;
+}
+#riskWarningPageSearch .right-toolbars{
+	position: absolute;
+	right: 15px;
+	top: 0;
+}
+#milestonePageSearch{
+	padding: 20px 0 20px;
+}
+#milestonePageSearch .right-toolbars{
+	position: absolute;
+	right: 15px;
+	top: 0;
+}
+.legendItem .legendPic{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	border-radius: 8px;
+	position: relative;
+	top: 4px;
+	margin-right: 8px;
+}
+.green{
+	background: #00cc00;
+}
+.yellow{
+	background: #ffff00;
+}
+.gray{
+	background: #bcbcbc;
+}
+.red{
+	background: #ff0000;
+}
+td.milestoneLegend{
+	padding: 0 !important;
+	border-left: none !important;
+	border-right: none !important;
+	/*min-height: 38px !important;*/
+}
+.cycLegend{
+	width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: inline-block;
+}
+.wired{
+	width: 100%;
+	position: relative;
+}
+.leftWired,.rightWired{
+	display: block;
+	width: 50%;
+	height: 4px;
+}
+.leftWired{
+	float: left;
+}
+.rightWired{
+	float: right;
+}
+.mLegend{
+	width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    cursor: pointer;
+    -webkit-transform: translate(-50%,-40%);
+    -moz-transform: translate(-50%,-40%);
+    -ms-transform: translate(-50%,-40%);
+    -o-transform: translate(-50%,-40%);
+    transform: translate(-50%,-40%);
+}
+/*
+ * 收票与付款
+ */
+.chartsDom{
+    width: 50%;
+    overflow: auto;
+    float: left;
+    height: 340px;
+}
+.chartsBorderContent{
+    width: 340px;
+    height: 300px;
+    border: 1px solid #ccc;
+    margin:15px auto;
+    position: relative;
+}
+.chartsContent{
+    width: 100%;
+  	height: 100%;
+}
+.chartsValue{
+    width:80px;
+    height: 32px;
+    position: absolute;
+    top: 134px;
+    left: 50%;
+    margin-left: -40px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 32px;
+}
+.chartsRemark{
+	position: absolute;
+	right: 0;
+	bottom: -20px;
+}
+.invoiceIncomeTitle{
+	overflow: hidden;
+}
+.invoiceIncomeTitle p{
+	font-weight: bold;
+	float: left;
+}
+.invoiceIncomeTitle span{
+	display: inline-block;
+	min-width: 100px;
+}
+.paymentManageDetailTit{
+	font-weight: bold;
+	margin: 0;
+	font-size: 13px;
+}

@@ -94,7 +94,7 @@ button:focus{outline: none !important;}
     text-align: center;
 }
 /*支撑渠道-开始*/
-#appSupport .modal-dialog{width: 50%;top: 20px;}
+#appSupport .modal-dialog{width: 600px;top: 20px;}
 .main-appSupport{padding-top:20px;padding-bottom:20px;font-family: georgia;}
 .main-appSupport li{border-bottom:1px solid #eeeeee;margin-top:0;}
 .main-appSupport li:first-child{border-top:1px solid #eeeeee;}
@@ -108,6 +108,17 @@ button:focus{outline: none !important;}
 /*支撑渠道-结束 */
 
 /* 左右选择样式-开始 */
+.selectLR-left,.selectLR-right,.center-box{
+	float: left;
+}
+.selectLR-left,.selectLR-right{
+	width: 45%;
+	padding: 0 10px;
+}
+.center-box{
+	width: 10%;
+	padding-top: 50px;
+}
 .list-body .selectCon{
 	height: 280px;
 	overflow: auto;
@@ -123,7 +134,8 @@ button:focus{outline: none !important;}
 	display: block;
 	text-align: left;
 	padding-left: 16px;
-	font-size: 14px;
+	font-size: 12px;
+	line-height: 26px;
 }
 .list-body .item:hover{
 	background: #c1c7f5;
@@ -447,6 +459,9 @@ table .ui-radio,table .ui-checkbox{
 table i{
 	font-weight: normal;
 }
+.tableSelect{
+	background: #f3f4f6 !important;
+}
 /*
  * datatable表格内文本不折行时添加此元素
  */
@@ -461,6 +476,9 @@ table i{
 /*th居中td居左*/
 th.thAlignCenter{
 	text-align: center;
+}
+.th-align th{
+    text-align: center;
 }
 
 table th{
@@ -534,6 +552,24 @@ table td{
 	border-color: #dc2a32;
 }
 .btn.primary.btn-inline:hover{
+	color: #dc2a32;
+	background: #fff;
+	border-color: #dc2a32;
+}
+.buttonNavTabs{
+	border-bottom: 4px solid #dc2a32;
+}
+.buttonNavTabs button{
+    margin: 0 4px 0 3px;
+    padding: 4px 15px;
+    font-size: 13px;
+    border: 2px solid #dc2a32;
+    border-bottom: none;
+    border-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.btn.primary.btn-inline.check{
 	color: #dc2a32;
 	background: #fff;
 	border-color: #dc2a32;
@@ -686,6 +722,7 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
     top: 2px;
 }
 /*二阶段form-fieldset页样式*/
+.work-list{overflow: hidden;}
 .work-list .form-fieldset{
 	margin-bottom: 8px;
 }
@@ -759,9 +796,10 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 	padding: 0 4px !important;
 }
 .tableImgCon img{
-	width: 24px;
+	width: 20px;
 	cursor: pointer;
 }
+
 /*合同修改*/
 .form-fieldset-title{
 	font-size: 14px;

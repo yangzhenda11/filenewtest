@@ -73,9 +73,9 @@
 			selectTitle.find('.list-body .left-box').find('.item').unbind('dblclick');
 			selectTitle.find('.list-body .left-box').find('.item').each(function(){
 				$(this).on("click", itemClickHandler);
-				if(!!opts.openDblClick){
-					$(this).on('dblclick', leftMoveRight);	
-				}
+//				if(!!opts.openDblClick){
+				$(this).on('dblclick', leftMoveRight);	
+//				}
 			});
 
 			// 右边列表项单击、双击事件
@@ -83,9 +83,9 @@
 			selectTitle.find('.list-body .right-box').find('.item').unbind('dblclick');
 			selectTitle.find('.list-body .right-box').find('.item').each(function(){
 				$(this).on('click', itemClickHandler);
-				if(!!opts.openDblClick){
-					$(this).on('dblclick', rightMoveLeft);
-				}
+//				if(!!opts.openDblClick){
+				$(this).on('dblclick', rightMoveLeft);
+//				}
 			});
 		}
 
@@ -126,21 +126,21 @@
 		initItemEvent();
 		initBtnEvent();
 
-		if(!!opts.openDrag){
-			$('.item-box').sortable({
-				placeholder: 'item-placeholder',
-				connectWith: '.item-box',
-				revert: true
-			}).droppable({
-				accept: '.item',
-				hoverClass: 'item-box-hover',
-				drop: function(event, ui){
-					setTimeout(function(){
-						ui.draggable.removeClass('selected-item');
-					}, 500);
-				}
-			}).disableSelection();
-		}
+//		if(!!opts.openDrag){
+//			$('.item-box').sortable({
+//				placeholder: 'item-placeholder',
+//				connectWith: '.item-box',
+//				revert: true
+//			}).droppable({
+//				accept: '.item',
+//				hoverClass: 'item-box-hover',
+//				drop: function(event, ui){
+//					setTimeout(function(){
+//						ui.draggable.removeClass('selected-item');
+//					}, 500);
+//				}
+//			}).disableSelection();
+//		}
 	}
 })($);
 (function($) {
@@ -165,10 +165,7 @@
 					$("#_selectLCon").append('<li class="item" data-id="'+v.id+'">'+v.data+'</li>');
 				}
 			});
-			$('#selectLRContent').initSelectList({
-				openDrag: true,
-				openDblClick: true
-			});
+			$('#selectLRContent').initSelectList();
 			$(e.modalId).modal("show");
 		});
 	}
@@ -176,16 +173,26 @@
 
 (function($) {
 	$.getSelectLRData = function(d,e) {
+		var rightBox = $("#selectLRContent").find('.right-box');
+		var leftBox = $("#selectLRContent").find('.left-box');
+		var itemValues = [];
+		var itemValue;
+		rightBox.find('.item').each(function(){
+			itemValue = {
+				id: $(this).attr('data-id'),
+				data: $(this).text(),
+				checked: true
+			};
+			itemValues.push(itemValue);
+		});
+		leftBox.find('.item').each(function(){
+			itemValue = {
+				id: $(this).attr('data-id'),
+				data: $(this).text()
+			};
+			itemValues.push(itemValue);
+		});
 		try{
-			var rightBox = $("#selectLRContent").find('.right-box');
-			var itemValues = [];
-			var itemValue;
-
-			rightBox.find('.item').each(function(){
-				itemValue = {};
-				itemValue[$(this).attr('data-id')] = $(this).text();
-				itemValues.push(itemValue);
-			});
 			returnSelectLRData(itemValues)
 		}catch(e){}
 	}

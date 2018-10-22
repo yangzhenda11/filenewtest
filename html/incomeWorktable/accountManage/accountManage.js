@@ -1,12 +1,22 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+//区域展开时判断是否重新加载的标志位
 var reloadEmphasisCustomerTable = false;
-//区域收缩时引用的函数，返回form-fieldset的id
+//获取参数
+var parm = App.getPresentParm();
+$(function(){
+	if(parm.expandFocusCustomer){
+		$("#emphasisCustomer .form-fieldset-tools").click();
+	}
+})
+//区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id){
 	if(id == "emphasisCustomer"){
 		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-		if(!isInitEmphasisCustomerTable){
+		if(isInitEmphasisCustomerTable && reloadEmphasisCustomerTable){
+			reloadPageDataTable("#emphasisCustomerTable",true);
+		}else if(isInitEmphasisCustomerTable == false){
 			initEmphasisCustomerTable();
 		}
 	}
@@ -30,15 +40,13 @@ function searchCustomer(){
 function initCustomerListTable(){
 	App.initDataTables('#customerListTable', "#customerLoading", {
 		ajax: {
-			"type": "GET",
-			"url": serverPath + 'customerManager/listManagementCustomer',
-			"data": function(d) {
-				d.managerStaffName = $("#customerInput").val().trim();
-				return d;
-			},
-			"dataSrc":function(data){
-				return relationCustomerData;
-			}
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+	        "url": serverPath+'customerManager/listManagementCustomer',
+	        "data": function(d) {
+	        	d.managerStaffName = $("#customerInput").val().trim();
+	           	return JSON.stringify(d);
+	        }
 		},
 		"columns": [
 			{"data" : null,"className": "whiteSpaceNormal",
@@ -51,18 +59,14 @@ function initCustomerListTable(){
 			{"data": "orgName","className": "whiteSpaceNormal"},
 			{"data": "phone","className": "whiteSpaceNormal"},
 			{"data": "email","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": "managerStaffOrgId","className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					var editFlag = "add"
-					if(full.isValid == 1){
-						editFlag = "delete";
-					};
-					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\,\""+editFlag+"\"")' src='/static/img/delete.png' />";
+					return "<img onclick='emphasisOfCustomer(\""+data.managerStaffOrgId+"\")' src='/static/img/add.png' />";
 				}
 			}
 		]
@@ -71,47 +75,31 @@ function initCustomerListTable(){
 /*
  * 我管理的客户经理添加重点关注
  */
-function addEmphasis(id){
+function emphasisOfCustomer(managerStaffOrgId){
 	var url = serverPath + "customerManager/saveFocusCustomerManager";
-	var postData = {
-		managerStaffOrgId: id
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		console.log(result);
-		reloadPageDataTable("#customerListTable");
-		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-		if(isInitEmphasisCustomerTable){
-			if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-				reloadEmphasisCustomerTable = true;
-			}else{
-				reloadPageDataTable("#emphasisCustomerTable");
-			};
+	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
+    	var postData = {
+			managerStaffOrgId: managerStaffOrgId
+		};
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			if(result.data == 1) {
+				layer.msg("已添加重点关注");
+				var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
+				if(isInitEmphasisCustomerTable){
+					if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
+						reloadEmphasisCustomerTable = true;
+					}else{
+						reloadPageDataTable("#emphasisCustomerTable",true);
+					};
+				}
+			} else {
+				layer.msg("已关注，无需重新关注");				
+			}
 		}
-	}
+   	});
 }
-/*
- * 我管理的客户经理取消重点关注
- */
-function addEmphasis(id){
-	var url = serverPath + "customerManager/delFocusCustomerManager";
-	var postData = {
-		managerStaffOrgId: id
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		console.log(result);
-		reloadPageDataTable("#customerListTable");
-		var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
-		if(isInitEmphasisCustomerTable){
-			if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
-				reloadEmphasisCustomerTable = true;
-			}else{
-				reloadPageDataTable("#emphasisCustomerTable");
-			};
-		}
-	}
-}
+
 /*
  * 我重点关注的客户经理点击查询事件
  * 已加载表格直接可以刷新操作
@@ -125,15 +113,13 @@ function searchEmphasisCustomer(){
 function initEmphasisCustomerTable(){
 	App.initDataTables('#emphasisCustomerTable', "#emphasisCustomerLoading", {
 		ajax: {
-			"type": "GET",
-			"url": serverPath + 'staffPartner/getStaffPartnerList',
-			"data": function(d) {
-				d.managerStaffName = $("#emphasisCustomerInput").val().trim();
-				return d;
-			},
-			"dataSrc":function(data){
-				return relationCustomerData;
-			}
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+	        "url": serverPath+'customerManager/listFocusCustomerManager',
+	        "data": function(d) {
+	        	d.managerStaffName = $("#emphasisCustomerInput").val().trim();
+	           	return JSON.stringify(d);
+	        }
 		},
 		"columns": [
 			{"data" : null,"className": "whiteSpaceNormal",
@@ -146,19 +132,37 @@ function initEmphasisCustomerTable(){
 			{"data": "orgName","className": "whiteSpaceNormal"},
 			{"data": "phone","className": "whiteSpaceNormal"},
 			{"data": "email","className": "whiteSpaceNormal"},
-			{"data": null,"className": "whiteSpaceNormal",
+			{"data": "managerStaffOrgId","className": "whiteSpaceNormal",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data.managerStaffOrgId+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
 				}
 			},
-			{"data": null,"className": "whiteSpaceNormal tableImgCon",
+			{"data": "managerStaffOrgId","className": "whiteSpaceNormal tableImgCon",
 				"render" : function(data, type, full, meta){
-					return "<img onclick='deleteEmphasisOfEmp(\""+data.managerStaffOrgId+"\")' src='/static/img/delete.png' />";
+					return "<img onclick='deleteEmphasisOfEmp(\""+data+"\")' src='/static/img/delete.png' />";
 				}
 			}
 		]
 	});
 }
+
+/*
+ * 我重点关注的客户经理删除重点关注
+ */
+function deleteEmphasisOfEmp(managerStaffOrgId){
+	layer.confirm('确定取消该客户经理的重点关注?', {icon: 0}, function() {
+    	var url = serverPath + "customerManager/delFocusCustomerManager";
+		var postData = {
+			managerStaffOrgId: managerStaffOrgId
+		};
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			layer.msg("已删除重点关注");
+			reloadPageDataTable("#emphasisCustomerTable",true);
+		}
+   	});
+}
+
 /*
  * 页面内表格初始化完成之后查询事件
  */
@@ -174,7 +178,7 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转合同信息
  */
-function jumpContractManage(data){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?id=123";
-	top.showSubpageTab(url,"履行中合同");
+function jumpContractManage(managerStaffOrgId){
+	var url = "/html/incomeWorktable/contractManage/performContractForAccount.html?managerStaffOrgId="+managerStaffOrgId;
+	top.showSubpageTab(url,"履行中的合同跟踪");
 }

@@ -732,7 +732,7 @@ function checkWcardIschange(checked){
 				}
 			}
 		}
-	}
+	};
 	return wcardIschange;
 }
 /*
@@ -802,7 +802,7 @@ function saveContentPost(data,type){
 	if(type == "GDCL"){
 		var url = serverPath + "contractOrderEditorController/saveOrderEditorInfo";
 	}else if(type == "GDQR"){
-		var url = serverPath + "contractOrderEditorController/saveOrderEditorApprovalInfo"
+		var url = serverPath + "contractOrderEditorController/saveOrderEditorApprovalInfo";
 	}
 	App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
 	function successCallback(result) {
@@ -1397,12 +1397,6 @@ function setHaveRead(){
 //		});
 //	}
 //	
-//})
-//$pageContent.on("scroll",function(){
-//	if(tipsIndex){
-//		layer.close(tipsIndex);
-//		tipsIndex = null;
-//	}
 //})
 //返回上一页
 function backPage(){

@@ -498,8 +498,10 @@ var App = function() {
 			meicon.toggleClass(icon1).toggleClass(icon2);
 			pbody.slideToggle(times,function(){
 				if(App.isExitsFunction("formFieldsetSlideFn")){
-					var id = me.parents(".form-fieldset").attr("id");
-					formFieldsetSlideFn(id);
+					if(!pbody.is(':hidden')){
+						var id = me.parents(".form-fieldset").attr("id");
+						formFieldsetSlideFn(id);
+					}
 				};
 			});
 //			if(el == '.page-search-more a') {
@@ -896,8 +898,11 @@ var App = function() {
 			};
 			var pagelengthMenu = top.globalConfig.curConfigs.config_page_size.split(",");
 			if(typeof arguments[1] != "string"){
-				options = arguments[1];
+				var arg1 = arguments[1];
+				var arg2 = arguments[2];
 				btn = "";
+				options = arg1;
+				successCallback = arg2;
 			};
 			options = $.extend(true, {
 				"serverSide": true,
@@ -967,6 +972,7 @@ var App = function() {
 	            //},
 				"buttons": [], //'pdf','copy', 'excel', 'colvis'
 				"drawCallback": function() {
+					setTheadStyle();
 					//若有气泡提示气泡
 					$("[data-toggle='tooltip']").tooltip();
 					if(options.drawCallbackFn != undefined){
@@ -976,10 +982,29 @@ var App = function() {
 						$(el+"_wrapper").parent().height("");
 					};
 				},
+				"initComplete": function(settings, json) {
+				    setTheadStyle();
+			 	},
 				"ajax":{
 					beforSend:App.startLoading(btn)
 				}
 			}, options);
+			function setTheadStyle(){
+				var isExistNormal = false;
+				var columnsClass;
+				var columns = options.columns;
+				for(var i = 0; i < columns.length; i++){
+					columnsClass = columns[i].className;
+					if(columnsClass && columnsClass.indexOf("whiteSpaceNormal") != -1){
+						isExistNormal = true;
+						break;
+					}
+				};
+				if(isExistNormal){
+					$(el+"_wrapper").find(".dataTables_scrollHeadInner").css("cssText", "width:100% !important;")
+					$(el+"_wrapper").find(".dataTables_scrollHeadInner table").css("cssText", "width:100% !important;")
+				};
+			}
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
 		  	}).on('xhr.dt', function ( e, settings, json, xhr ) {
@@ -992,6 +1017,10 @@ var App = function() {
 				}else if(xhr.status == 200){
 		        	if(xhr.responseJSON.status != 1){
 		        		layer.alert(xhr.responseJSON.message,{icon:2,title:"错误"});
+		        	}else{
+		        		if(successCallback){
+			        		successCallback(xhr.responseJSON);
+			        	};
 		        	}
 		       	}else if(xhr.status == 401){
 		       		if(top.globalConfig.loginSwitchSuccess == 0){
@@ -1072,6 +1101,9 @@ var App = function() {
 		 * 金额三位加逗号
 		 */
 		unctionToThousands: function(count) {
+			if(count == null){
+				return "";
+			};
             var count = (count || 0).toString(),
                 result = '';
 			var decimals = count.split(".")[1];

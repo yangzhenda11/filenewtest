@@ -5,6 +5,7 @@
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
+ 
 	<head>
 		<meta charset="UTF-8">
 		<title>风险预警</title>
@@ -35,6 +36,8 @@
 						<button href="#warningOverview" data-id="warningOverview" data-toggle="tab" class="btn primary btn-inline check">风险预警总览</button>
 						<button href="#lineArrearage" data-id="lineArrearage" data-toggle="tab" class="btn primary btn-inline">线路租用中欠费</button>
 						<button href="#lineBillAbnormal" data-id="lineBillAbnormal" data-toggle="tab" class="btn primary btn-inline">线路账单异常</button>
+						<button href="#contractEnd" data-id="contractEnd" data-toggle="tab" class="btn primary btn-inline">合同到期业务未停止</button>
+						<button href="#businessExceptionAbnormal" data-id="businessExceptionAbnormal" data-toggle="tab" class="btn primary btn-inline">业务信息报错</button>
 					</div>
 					<div class="tab-content work-list">
 					    <div class="tab-pane fade in active" id="warningOverview">
@@ -69,18 +72,21 @@
 										<td><a class="underline" data-pane="lineArrearage" id="lineIsArrearage"></a></td>
 										<td><a class="underline" data-pane="lineBillAbnormal" id="lineRentNotBill"></a></td>
 										<td><a class="underline" data-pane="lineBillAbnormal" id="lineRentedHaveBill"></a></td>
-										<td><a class="underline" id="contractEndHaveLine"></a></td>
-										<td><a class="underline" id="contractEndHaveNewLine"></a></td>
-										<td><a class="underline" id="customDiffTobss"></a></td>
-										<td><a class="underline" id="customDiffToyzs"></a></td>
-										<td><a class="underline" id="customDiffInbss"></a></td>
-										<td><a class="underline" id="customDiffInyzsdr"></a></td>
-										<td><a class="underline" id="relatedNotzxBase"></a></td>
-										<td><a class="underline" id="relatedNotzxPeriod"></a></td>
+										<td><a class="underline" data-pane="contractEnd" id="contractEndHaveLine"></a></td>
+										<td><a class="underline" data-pane="contractEnd" id="contractEndHaveNewLine"></a></td>
+								      <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffTobss"></a></td>
+									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffToyzs"></a></td>
+									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffInbss"></a></td>
+									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffInyzsdr"></a></td>
+									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="relatedNotzxBase"></a></td>
+									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="relatedNotzxPeriod"></a></td>
 									</tr>
 								</tbody>
 							</table>
 					    </div>
+					    
+					    
+					    
 					    <div class="tab-pane fade" id="lineArrearage">
 							<div class="form-fieldset" id="lineIsArrearageDom">
 								<div class="form-fieldset-title">
@@ -122,6 +128,7 @@
 							</div>
 					    </div>
 					    <div class="tab-pane fade" id="lineBillAbnormal">
+					    
 					    	<div class="form-fieldset" id="lineRentNotBillDom">
 								<div class="form-fieldset-title">
 									<span>线路租用中，无账单</span>
@@ -160,6 +167,7 @@
 									</table>
 								</div>
 							</div>
+							
 							<div class="form-fieldset" id="lineRentedHaveBillDom">
 								<div class="form-fieldset-title">
 									<span>线路已止租，有新账单</span>
@@ -198,7 +206,263 @@
 									</table>
 								</div>
 							</div>
+					    
+					    </div> 
+					    
+					    <div class="tab-pane fade" id="contractEnd">
+					    				    
+					    	<div class="form-fieldset" id="contractEndHaveLineDom">
+								<div class="form-fieldset-title">
+									<span>合同已到期，存在未止租线路</span>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row page-search">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="contractEndHaveLineInput" maxlength="50" placeholder="查询合同编号/合同名称/客户名称">
+										</div>
+										<div class="input-group">
+											<button type="button" id="contractEndHaveLineLoading" class="btn red" data-loading-text="加载中.." onclick="searchTable('contractEndHaveLineTable');"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+									<table id="contractEndHaveLineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>合同名称</th>
+												<th>合同编号</th>
+												<th>客户名称</th>
+												<th>集客客户编号</th>
+												<th>合作方编号</th>
+												<th>含增值税合同金额</th>
+												<th>客户经理名称</th>
+												<th>账单明细</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="9">请点击查询按钮加载数据</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<div class="form-fieldset" id="contractEndHaveNewLineDom">
+								<div class="form-fieldset-title">
+									<span>合同已到期，存在新起租线路</span>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row page-search">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="contractEndHaveNewLineInput" maxlength="50" placeholder="查询合同编号/合同名称/客户名称">
+										</div>
+										<div class="input-group">
+											<button type="button" id="contractEndHaveNewLineLoading" class="btn red" data-loading-text="加载中.." onclick="searchTable('contractEndHaveNewLineTable');"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+									<table id="contractEndHaveNewLineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>合同名称</th>
+												<th>合同编号</th>
+												<th>客户名称</th>
+												<th>集客客户编号</th>
+												<th>合作方编号</th>
+												<th>含增值税合同金额</th>
+												<th>客户经理名称</th>
+												<th>账单明细</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="9">请点击查询按钮加载数据</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+					   
 					    </div>
+					      
+					      
+					      
+					      
+					      
+					      
+					      
+					      
+					      <div class="tab-pane fade" id="businessExceptionAbnormal">
+							<div class="form-fieldset" id="customDiffTobssDom">
+								<div class="form-fieldset-title">
+									<span>客户信息不一致</span>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row page-search">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="customDiffTobssInput" maxlength="50" placeholder="查询合同编号/合同名称/客户名称">
+										</div>
+										<div class="input-group">
+											<button type="button" id="customDiffTobssLoading" class="btn red" data-loading-text="加载中.." onclick="searchTable('customDiffTobssTable');"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+									<table id="customDiffTobssTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>合同名称</th>
+												<th>合同编号</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>差异描述</th>
+												<th>线路明细</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="9">请点击查询按钮加载数据</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+					        <div class="form-fieldset" id="customDiffToyzsDom">
+								<div class="form-fieldset-title">
+									<span>客户信息不一致</span>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row page-search">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="customDiffToyzsInput" maxlength="50" placeholder="查询合同编号/合同名称/客户名称">
+										</div>
+										<div class="input-group">
+											<button type="button" id="customDiffToyzsLoading" class="btn red" data-loading-text="加载中.." onclick="searchTable('customDiffToyzsTable');"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+									<table id="customDiffToyzsTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>合同名称</th>
+												<th>合同编号</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>差异描述</th>
+												<th>线路明细</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="9">请点击查询按钮加载数据</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+					     				     
+					        <div class="form-fieldset" id="customDiffInbssDom">
+								<div class="form-fieldset-title">
+									<span>BSS系统线路客户信息不一致</span>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row page-search">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="customDiffInbssInput" maxlength="50" placeholder="查询合同编号/合同名称/客户名称">
+										</div>
+										<div class="input-group">
+											<button type="button" id="customDiffInbssLoading" class="btn red" data-loading-text="加载中.." onclick="searchTable('customDiffInbssTable');"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+									<table id="customDiffInbssTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>合同名称</th>
+												<th>合同编号</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>差异描述</th>
+												<th>线路明细</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="9">请点击查询按钮加载数据</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+			
+							<div class="form-fieldset" id="customDiffInyzsdrDom">
+								<div class="form-fieldset-title">
+									<span>一站式系统/手工导入线路客户信息不一致</span>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>
+								<div class="form-fieldset-body">
+									<div class="row page-search">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="customDiffInyzsdrInput" maxlength="50" placeholder="查询合同编号/合同名称/客户名称">
+										</div>
+										<div class="input-group">
+											<button type="button" id="customDiffInyzsdrLoading" class="btn red" data-loading-text="加载中.." onclick="searchTable('customDiffInyzsdrTable');"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+									<table id="customDiffInyzsdrTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+										<thead>
+											<tr>
+												<th>序号</th>
+												<th>合同名称</th>
+												<th>合同编号</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>客户名称</th>
+												<th>集客客户编码</th>
+												<th>差异描述</th>
+												<th>线路明细</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="9">请点击查询按钮加载数据</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+					        
+				        
+					      </div>
+					    
+					    
+					    
+					    
+					  
+					    
 					</div>
 				</div>
 			</div>

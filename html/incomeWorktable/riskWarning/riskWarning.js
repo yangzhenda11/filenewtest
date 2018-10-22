@@ -3,11 +3,12 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
 	//生成预警总览图表
-	initWarningOverviewCharts();
-	getCount();
+	debugger;
+	getCount(); 
 })
 
 function getCount() {
+	debugger;
 	var postData = { 
 	};
 	var url = serverPath + "riskWarningDetailMangerController/getRiskWarningCount";
@@ -18,15 +19,15 @@ function getCount() {
 		$("#lineRentedHaveBill").text(result.data.lineRentedHaveBill);
 		$("#contractEndHaveLine").text(result.data.contractEndHaveLine);
 		$("#contractEndHaveNewLine").text(result.data.contractEndHaveNewLine);
-		
+		 
 		$("#customDiffTobss").text(result.data.customDiffTobss);
 		$("#customDiffToyzs").text(result.data.customDiffToyzs);
 		$("#customDiffInbss").text(result.data.customDiffInbss);
 		$("#customDiffInyzsdr").text(result.data.customDiffInyzsdr);
 		
-	/*	$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
+ 		$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
 		$("#relatedNotzxPeriod").text(result.data.relatedNotzxPeriod);
-		*/
+		initWarningOverviewCharts(); 
 	}
 }
  
@@ -54,26 +55,39 @@ $("#warningOverviewTr").on("click","a",function(){
 //查询按钮点击统一处理
 function searchTable(tableId){ 
 	var isInitTable = $.fn.dataTable.isDataTable("#"+tableId);
-	if(isInitTable){
+ 	if(isInitTable){
 		reloadPageDataTable("#"+tableId);
-	}else{
-		if(tableId == "lineIsArrearageTable"){
+	}else{ 
+		if(tableId == "lineIsArrearageTable"){//线路租用中欠费
 			initLineIsArrearageTable();
-		}else if(tableId == "lineRentNotBillTable"){
-			
-		}else if(tableId == "lineRentedHaveBillTable"){
-			
+		}else if(tableId == "lineRentNotBillTable"){//线路账单异常-线路租用中，无账单
+			initLineRentNotBillTable();		
+		}else if(tableId == "lineRentedHaveBillTable"){//线路账单异常-线路已止租，有新账单
+			initLineRentedHaveBillTable();
+		}else if(tableId == "contractEndHaveLineTable"){//合同到期业务未停止-合同已到期，存在未止租线路
+			initContractEndHaveLineTable();
+		}else if(tableId == "contractEndHaveNewLineTable"){//合同到期业务未停止-合同已到期，存在新起租线路
+			initContractEndHaveNewLineTable();
+		}else if(tableId == "customDiffTobssTable"){//客户信息不一致（沃商务与BSS）
+			initCustomDiffTobssTable();  
+		}else if(tableId == "customDiffToyzsTable"){//客户信息不一致（沃商务与一站式）
+			initCustomDiffToyzsTable();
+		}else if(tableId == "customDiffInbssTable"){// BSS系统内线路客户信息不一致
+			initCustomDiffInbssTable();
+		}else if(tableId == "customDiffInyzsdrTable"){//一站式系统/手工导入线路客户信息不一致 
+			initCustomDiffInyzsdrTable();
 		}
-		
 	}
 }
-
+/*
+ * 风险类型为0:线路租用中欠费
+ * 账单明细中点击查看未写
+ */
 function initLineIsArrearageTable() {
 	var isInit = $.fn.dataTable.isDataTable("#lineIsArrearageTable");
 	if (!isInit) {
 		$("#lineIsArrearageTable").html("");
-	}
-	;
+	} ;
 	App.initDataTables('#lineIsArrearageTable', "#lineIsArrearageLoading", {
 		ajax : {
 			"type" : "POST",
@@ -90,18 +104,669 @@ function initLineIsArrearageTable() {
 				{
 					"data" : null,
 					"className" : "whiteSpaceNormal",
+					"title":"序号",
 					"render" : function(data, type, full, meta) {
 						var start = App.getDatatablePaging("#lineIsArrearageTable").pageStart;
 						return start + meta.row + 1;
 					}
 				},
 				{
-					"data" : "riskId",
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
 					"className" : "whiteSpaceNormal"
 				} 
+
 			]
 	});
 }
+
+
+/*
+ * 风险类型为1:线路账单异常-线路租用中，无账单
+ * 账单明细中点击查看未写
+ */
+function initLineRentNotBillTable() {
+	var isInit = $.fn.dataTable.isDataTable("#lineRentNotBillTable");
+	if (!isInit) {
+		$("#lineRentNotBillTable").html("");
+	}
+	;
+	App.initDataTables('#lineRentNotBillTable', "#lineRentNotBillLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='1';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#lineRentNotBillTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+ 
+ 
+/*
+ * 风险类型为2:线路账单异常-线路已止租，有新账单
+ * 账单明细中点击查看未写
+ */
+
+function initLineRentedHaveBillTable() {
+	var isInit = $.fn.dataTable.isDataTable("#lineRentedHaveBillTable");
+	if (!isInit) {
+		$("#lineRentedHaveBillTable").html("");
+	}
+	;
+	App.initDataTables('#lineRentedHaveBillTable', "#lineRentedHaveBillLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='2';
+ 
+				return JSON.stringify(d);
+			}
+ 
+		},
+  
+		"columns" :  
+ 
+ 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#lineRentedHaveBillTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+
+/*
+ * 风险类型为3:合同到期业务未停止-合同已到期，存在未止租线路
+ * 账单明细中点击查看未写
+ */
+function initContractEndHaveLineTable() {
+	var isInit = $.fn.dataTable.isDataTable("#contractEndHaveLineTable");
+	if (!isInit) {
+		$("#contractEndHaveLineTable").html("");
+	}
+	;
+	App.initDataTables('#contractEndHaveLineTable', "#contractEndHaveLineLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='3';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#contractEndHaveLineTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+
+			]
+	});
+}
+
+
+/*
+ * 风险类型为4:合同到期业务未停止-合同已到期，存在新起租线路
+ * 账单明细中点击查看未写
+ */
+function initContractEndHaveNewLineTable() {
+	var isInit = $.fn.dataTable.isDataTable("#contractEndHaveNewLineTable");
+	if (!isInit) {
+		$("#contractEndHaveNewLineTable").html("");
+	}
+	;
+	App.initDataTables('#contractEndHaveNewLineTable', "#contractEndHaveNewLineLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+				d.riskType ='4';
+				return JSON.stringify(d);
+			}
+		},
+		"columns" : 
+			[ 
+				{
+					"data" : null,
+					"className" : "whiteSpaceNormal",
+					"title":"序号",
+					"render" : function(data, type, full, meta) {
+						var start = App.getDatatablePaging("#contractEndHaveNewLineTable").pageStart;
+						return start + meta.row + 1;
+					}
+				},
+				{
+					"data" : "contractName",
+					"title":"合同名称",
+					"className" : "whiteSpaceNormal"
+				},
+				{
+					"data" : "contractNumber",
+					"title":"合同编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerName",
+					"title":"客户名称",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerCode",
+					"title":"集客客户编号",
+					"className" : "whiteSpaceNormal"
+				}  ,
+				{
+					"data" : "partnerCode",
+					"title":"合作方编号",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "contractValue",
+					"title":"含增值税合同金额",
+					"className" : "whiteSpaceNormal"
+				} ,
+				{
+					"data" : "customerManagerName",
+					"title":"客户经理",
+					"className" : "whiteSpaceNormal"
+				} 
+ 
+			]
+	});
+}
+ 
+
+ /*
+  * 业务信息报错-客户信息不一致（沃商务与BSS）
+  * 线路明细中点击查看未写
+  */
+function initCustomDiffTobssTable() {
+	var isInit = $.fn.dataTable.isDataTable("#customDiffTobssTable");
+	if (!isInit) {
+		$("#customDiffTobssTable").html("");
+	}
+	;
+	App.initDataTables('#customDiffTobssTable', "#customDiffTobssLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffTobss',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+			
+ 
+				return JSON.stringify(d);
+			}
+ 
+		},
+  
+		"columns" :  
+ 
+			 [
+		 			{
+						"data" : null,
+						"title" : "序号",
+						"className" : "whiteSpaceNormal",
+						"render" : function(data, type, full, meta) {
+							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							return start + meta.row + 1;
+						}
+					}, {
+						"data" : "contractName",
+						"title" : "合同名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "contractNumber",
+						"title" : "合同编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss1",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss1",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss2",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss2",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "diffContent",
+						"title" : "差异描述",
+						"className" : "whiteSpaceNormal",
+						} ,
+						{
+						"data" : "diffContent",
+						"title" : "线路明细",
+						"className" : "whiteSpaceNormal",
+						}
+						]
+	});
+}
+
+
+/*
+ * 业务信息报错-客户信息不一致（沃商务与一站式）
+ * 线路明细中点击查看未写
+ */
+function initCustomDiffToyzsTable() {
+	var isInit = $.fn.dataTable.isDataTable("#customDiffToyzsTable");
+	if (!isInit) {
+		$("#customDiffToyzsTable").html("");
+	}
+	;
+	App.initDataTables('#customDiffToyzsTable', "#customDiffToyzsLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffToyzs',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+			
+ 
+				return JSON.stringify(d);
+			}
+ 
+		},
+  
+		"columns" :  
+			 [
+		 			{
+						"data" : null,
+						"title" : "序号",
+						"className" : "whiteSpaceNormal",
+						"render" : function(data, type, full, meta) {
+							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							return start + meta.row + 1;
+						}
+					}, {
+						"data" : "contractName",
+						"title" : "合同名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "contractNumber",
+						"title" : "合同编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss1",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss1",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss2",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss2",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "diffContent",
+						"title" : "差异描述",
+						"className" : "whiteSpaceNormal",
+						} ,
+						{
+						"data" : "diffContent",
+						"title" : "线路明细",
+						"className" : "whiteSpaceNormal",
+						}
+						]
+	});
+}
+
+
+/*
+ * 业务信息报错- BSS系统内线路客户信息不一致
+ * 线路明细中点击查看未写
+ */
+function initCustomDiffInbssTable() {
+	var isInit = $.fn.dataTable.isDataTable("#customDiffInbssTable");
+	if (!isInit) {
+		$("#customDiffInbssTable").html("");
+	}
+	;
+	App.initDataTables('#customDiffInbssTable', "#customDiffInbssLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffInbss',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+			
+ 
+				return JSON.stringify(d);
+			}
+ 
+		},
+  
+		"columns" :  
+			 [
+		 			{
+						"data" : null,
+						"title" : "序号",
+						"className" : "whiteSpaceNormal",
+						"render" : function(data, type, full, meta) {
+							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							return start + meta.row + 1;
+						}
+					}, {
+						"data" : "contractName",
+						"title" : "合同名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "contractNumber",
+						"title" : "合同编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss1",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss1",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss2",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss2",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "diffContent",
+						"title" : "差异描述",
+						"className" : "whiteSpaceNormal",
+						} ,
+						{
+						"data" : "diffContent",
+						"title" : "线路明细",
+						"className" : "whiteSpaceNormal",
+						}
+						]
+	});
+}
+
+
+/*
+ * 业务信息报错-一站式系统/手工导入线路客户信息不一致 
+ * 线路明细中点击查看未写
+ */
+function initCustomDiffInyzsdrTable() {
+	var isInit = $.fn.dataTable.isDataTable("#customDiffInyzsdrTable");
+	if (!isInit) {
+		$("#customDiffInyzsdrTable").html("");
+	}
+	;
+	App.initDataTables('#customDiffInyzsdrTable', "#customDiffInyzsdrLoading", {
+		ajax : {
+			"type" : "POST",
+			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiffInbss',
+			"contentType" : "application/json;charset=utf-8",
+			"data" : function(d) { 
+				//d.riskType = $("#searchInput").val().trim();
+			
+ 
+				return JSON.stringify(d);
+			}
+ 
+		},
+  
+		"columns" :  
+			 [
+		 			{
+						"data" : null,
+						"title" : "序号",
+						"className" : "whiteSpaceNormal",
+						"render" : function(data, type, full, meta) {
+							var start = App.getDatatablePaging("#customDiffInyzsdrTable").pageStart;
+							return start + meta.row + 1;
+						}
+					}, {
+						"data" : "contractName",
+						"title" : "合同名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "contractNumber",
+						"title" : "合同编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss1",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss1",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerNameBss2",
+						"title" : "客户名称",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "customerCodeBss2",
+						"title" : "集客客户编号",
+						"className" : "whiteSpaceNormal",
+						},
+						{
+						"data" : "diffContent",
+						"title" : "差异描述",
+						"className" : "whiteSpaceNormal",
+						} ,
+						{
+						"data" : "diffContent",
+						"title" : "线路明细",
+						"className" : "whiteSpaceNormal",
+						}
+						]
+	});
+}
+
+
 
 /*
  * 页面内表格初始化完成之后查询事件
@@ -119,12 +784,25 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function initWarningOverviewCharts(){
 	var chartsDom = echarts.init(document.getElementById('warningOverviewCharts'));
+ 
+	var   lineArrearage =parseInt($("#lineIsArrearage").text());
+	var   lineException =parseInt($("#lineRentNotBill").text())+parseInt($("#lineRentedHaveBill").text()) ;
+	
+	var   contractException =parseInt($("#contractEndHaveLine").text())
+	      +parseInt($("#contractEndHaveNewLine").text()) ;
+	var   businessException=
+		parseInt($("#customDiffTobss").text())+
+		parseInt($("#customDiffToyzs").text())+
+		parseInt($("#customDiffInbss").text())+
+		parseInt($("#customDiffInyzsdr").text())+
+		parseInt($("#relatedNotzxBase").text())+
+		parseInt($("#relatedNotzxPeriod").text());
 	var option = {
 		title : {
 	        text: '风险预警总览',
 	        x:'center',
 	        textStyle: {
-	        	fontSize:14
+	        	fontSize:13
 	        }
 	   	},
 	    xAxis: {
@@ -135,7 +813,7 @@ function initWarningOverviewCharts(){
 	        type: 'value'
 	    },
 	    series: [{
-	        data: [12, 20, 15, 30,],
+	        data: [lineArrearage, lineException, contractException, businessException ],
 	        type: 'bar',
 	        barWidth:'45%',
 	        itemStyle: {   

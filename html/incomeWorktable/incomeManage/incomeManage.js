@@ -437,6 +437,10 @@ function checkLineIncomeForecastRadio(valRadio){
  * 风险收入预测明细 - 按客户跟踪查询
  */
 function initLineIncomeForecastTableByCustom(){
+	var isInitTable = $.fn.dataTable.isDataTable("#lineIncomeForecastTable");
+	if(!isInitTable){
+		$("#lineIncomeForecastTable").html("");
+	};
 	App.initDataTables('#lineIncomeForecastTable', {
 		ajax: {
 			"type": "POST",
@@ -473,6 +477,10 @@ function initLineIncomeForecastTableByCustom(){
  * 风险收入预测明细 - 按线路跟踪查询
  */
 function initLineIncomeForecastTableByLine(){
+	var isInitTable = $.fn.dataTable.isDataTable("#lineIncomeForecastTable");
+	if(!isInitTable){
+		$("#lineIncomeForecastTable").html("");
+	};
 	App.initDataTables('#lineIncomeForecastTable', {
 		ajax: {
 			"type": "POST",

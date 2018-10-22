@@ -168,7 +168,7 @@ function initForecastCharts(forecastChartsData){
 	        textStyle: {
 	        	fontSize:20
 	        },
-	        subtext: '收入预测周期：'+forecastChartsData.firstAccountPeriod+'至'+forecastChartsData.lastAccountPeriod
+	        subtext: '收入预测周期：'+forecastChartsData.firstAccountPeriod+' 至 '+forecastChartsData.lastAccountPeriod
 	        		+'，合同收入：'+App.unctionToThousands(forecastChartsData.contractIncomeTotal)+'元，'
 	        		+'风险收入：'+App.unctionToThousands(forecastChartsData.lineIncomeTotal)+'元，'
 	        		+'收入总计：'+App.unctionToThousands(forecastChartsData.incomeTotal)+'元',

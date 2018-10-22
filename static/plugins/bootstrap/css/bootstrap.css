@@ -2067,25 +2067,25 @@ th {
 .table-condensed > tfoot > tr > th,
 .table-condensed > tfoot > tr > td {
   padding: 5px; }
-
+/*样式修改表格e7ecf1*/
 .table-bordered {
-  border: 1px solid #e7ecf1; }
+	border: 1px solid #ddd; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td,
   .table-bordered > tbody > tr > th,
   .table-bordered > tbody > tr > td,
   .table-bordered > tfoot > tr > th,
   .table-bordered > tfoot > tr > td {
-    border: 1px solid #e7ecf1; }
+  	border: 1px solid #ddd; }
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td {
     border-bottom-width: 2px; }
+/*样式修改*/
+/*.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #F9F9F9; }*/
 
-.table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #F9F9F9; }
-
-.table-hover > tbody > tr:hover {
-  background-color: #eef1f5; }
+/*.table-hover > tbody > tr:hover {
+  background-color: #eef1f5; }*/
 
 table col[class*="col-"] {
   position: static;
@@ -3556,10 +3556,11 @@ tbody.collapse.in {
   .nav > li {
     position: relative;
     display: block; }
+    /*样式修改padding: 10px 15px;*/
     .nav > li > a {
       position: relative;
       display: block;
-      padding: 10px 15px; }
+      padding: 7px 15px; }
       .nav > li > a:hover, .nav > li > a:focus {
         text-decoration: none;
         background-color: #eeeeee; }

@@ -4823,12 +4823,12 @@ Light Table
       border-radius: 100%; }
   .table.table-light.table-hover > tbody > tr > td:hover,
   .table.table-light.table-hover > tbody > tr > th:hover, .table.table-light.table-hover > tbody > tr:hover > td {
-    background: #f9fafb !important; }
-
+    background: #f9fafb; }
+/*样式修改#f3f4f6*/
 .table-hover > tbody > tr:hover,
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > td.td-split > .table td {
-  background: #f3f4f6 !important; }
+  background: #E9F5FC; }
 
 .table-striped > tbody > tr:nth-of-type(odd) > td.td-split > .table td {
   background-color: #fbfcfd; }
@@ -8070,10 +8070,10 @@ Datatables general customization
 ***/
 .dataTables_wrapper .table tr td, .dataTables_wrapper .table tr th {
   white-space: nowrap; }
-
+/*样式修改#707070*/
 .dataTables_wrapper .table > thead > tr {
-  color: #707070;
-  background: repeat-x #F5F5F5; }
+  color: #333;
+  /*background: repeat-x #F5F5F5;*/ }
 
 .dt-footer-wrapper {
   padding-top: 4px; }
@@ -8166,13 +8166,14 @@ Extended pagination
 /***
 Scroller Extension
 ***/
+/*样式修改表格e7ecf1*/
 .dataTables_scrollHead {
-  border-bottom: 1px solid #e7ecf1 !important; }
+  border-bottom: 1px solid #ddd !important; }
   .dataTables_scrollHead thead th {
     border-bottom: 0 !important; }
-
+/*样式修改表格e7ecf1*/
 .dataTables_scrollBody {
-  border-bottom: 1px solid #e7ecf1 !important; }
+  border-bottom: 1px solid #ddd !important; }
 
 .table-both-scroll .dataTables_scrollBody {
   border-bottom: 0 !important; }

@@ -1039,9 +1039,10 @@ th, td { /*white-space: nowrap;*/ }
   font-weight: bold;
 }
 /*合同修改*/
+/*样式修改height: 45px*/
 .nav-list > li > a {
   display: block;
-  height: 45px;
+  height: 39px;
   line-height: 25px;
   padding-left: 7px;
   text-shadow: none !important;

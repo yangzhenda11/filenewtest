@@ -300,7 +300,7 @@
      */
     function getFirstDepartment(treeNode,type){
     	if (treeNode.orgType == "" || treeNode.orgType == undefined) {
-    		var url = serverPath + "contractType/getPerformerBandOneOrg";			//要修改，url地址
+    		var url = serverPath + "contractType/getPerformerBandOneOrg";
 			var postData = JSON.stringify({orgId:treeNode.parentId});
     		App.formAjaxJson(url, "post", postData, successCallback);
 			function successCallback(result) {

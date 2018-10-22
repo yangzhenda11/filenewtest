@@ -268,9 +268,7 @@
      */
     function addCustomerManagerValue(treeNode) {
         if (treeNode.orgType == "" || treeNode.orgType == undefined) {
-        	var fullName = treeNode.fullName;
-        	var parentId = treeNode.parentId;
-        	var name = treeNode.name;
+			var name = treeNode.name;
         	var staffOrgId = treeNode.staffOrgId;
         	var isExist = false;
         	$.each($("#customerManagerModal .customerManagerItem"),function(k,v){
@@ -279,11 +277,21 @@
         		}
         	});
         	if(!isExist){
-    			var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
+        		var url = serverPath + "contractType/getPerformerBandOneOrg";			//要修改，url地址
+				var postData = {
+					orgId:treeNode.parentId
+				};
+        		App.formAjaxJson(url, "post", postData, successCallback);
+				function successCallback(result) {
+					var data = result.data;
+					var parentId = data.orgId;
+					var fullName =  data.orgName;
+    				var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
         				'<span>'+name+'</span>'+
         				'</div>';
-    			$("#customerManagerChecked").append(html);
-    		};
+    				$("#customerManagerChecked").append(html);
+    			};
+			}
         }
     }
     /*

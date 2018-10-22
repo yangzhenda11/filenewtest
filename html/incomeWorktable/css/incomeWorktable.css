@@ -85,6 +85,13 @@ td.milestoneLegend{
 	font-weight: bold;
 	text-align: center;
 }
+.minWidth60{
+	min-width: 60px;
+	display: inline-block;
+}
+.remark-list{
+	width: 95%;
+}
 /*客户服务*/
 #businessEmptyDom{
 	text-align: center;
@@ -124,3 +131,4 @@ td.milestoneLegend{
 	height: 340px;
 	display: inline-block;
 }
+

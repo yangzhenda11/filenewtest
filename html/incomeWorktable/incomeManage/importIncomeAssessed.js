@@ -1,13 +1,18 @@
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
 $(function(){
-//	getAssessedTbody();
+	getAssessedTbody();
 })
 /*
  * 获取表格
  */
 function getAssessedTbody(){
-	var url = serverPath + "";
-	var postData = JSON.stringify({});
-	App.formAjaxJson(url, "post", postData, successCallback);
+	var url = serverPath + "incomeShare/listIncomeShareImport";
+	var postData = {
+		accountPeriodName: $("#searchInput").val().trim()
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		var data = result.data;
 		var html = "";
@@ -16,8 +21,8 @@ function getAssessedTbody(){
 				html += '<tr>'+
 						'<td><label class="ui-checkbox"><input type="checkbox" name="assessedCheckbox"><span></span></label></td>'+
 						'<td class="orderNumber"></td>'+
-						"<td><div class='form-group'><input type='text' class='form-control accountName' placeholder='请输入账期' maxlength='240' value="+data[i]+" /></div></td>"+
-						"<td><div class='form-group'><input type='text' class='form-control accountNumber' placeholder='请输入分摊收入' maxlength='40' value="+data[i]+" /></div></td>"+
+						"<td><div class='form-group'><input type='text' class='form-control accountName' placeholder='请输入账期' maxlength='240' value="+data[i].accountPeriodName+" /></div></td>"+
+						"<td><div class='form-group'><input type='text' class='form-control accountNumber' placeholder='请输入分摊收入' maxlength='40' value="+data[i].shareValue+" /></div></td>"+
 					"</tr>";
 			};
 			$("#assessedTbody").html(html);
@@ -28,6 +33,14 @@ function getAssessedTbody(){
 	}
 	
 }
+
+/*
+ * 根据账期查询
+ */
+function searchAssessed(){
+	getAssessedTbody();
+}
+
 //新增一行
 function addTbody(){
 	var html = '<tr>'+
@@ -59,7 +72,9 @@ function deleteTbody(){
 }
 //保存表格
 function saveTbody(){
-	
+	$("#assessedTbody tr").each(function(){
+		$(this).find(".accountName").val();
+	})
 }
 //提交表格
 function submitTbody(){
@@ -81,6 +96,7 @@ function addAssessedTbodyEmptyTr(){
  * 表格数据增加序号
  */
 function addAssessedTbodySort(){
+
 	$.each($("#assessedTbody .orderNumber"), function(k,v) {
 		$(v).text(k+1);
 	});

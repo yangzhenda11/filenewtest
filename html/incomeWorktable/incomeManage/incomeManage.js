@@ -8,6 +8,40 @@ var pageConfig = {
 }
 $(function(){
 	initIncomeAnalysisCharts();
+	
+	/*
+	 * 跨省分摊收入按钮: 只有省分权限的稽核能够导入
+	 * 跨省分摊收入: 只有具有省分权限的稽核和商务能够查看，其他权限都看不到
+	 * roleType
+	 * 91216：客户经理
+	 * 91217：业务管理
+	 * 91218：稽核管理
+	 * 91219：商务经理
+	 * dataPermission
+	 * 0个人，1部门，2公司，3省分
+	 */
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+		if(dataPermission == 3) {
+			$("#incomeShareDiv").show();
+
+			// 加载跨省分摊收入数据
+			initIncomeShareTableTable();
+			// 只有省分权限的稽核能够导入
+			if(isInArray(roleArr,91218)){
+				$("#incomeShareButton").show();
+			}
+			else {
+				$("#incomeShareButton").hide();				
+			}
+		} else {
+			$("#incomeShareDiv").hide();	
+			$("#incomeShareButton").hide();				
+		}
+	}else{
+		$("#incomeShareDiv").remove();
+	};
 })
 /*
  * 标题切换
@@ -343,9 +377,9 @@ function initContractIncomeForecastTableByCustom(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"title":"履行中合同","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
 				}
 			}
 		]
@@ -400,7 +434,7 @@ function initContractIncomeForecastTableByContract(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "contractNumber","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+			{"data": "contractId","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
 				}
@@ -521,12 +555,53 @@ function initLineIncomeForecastTableByLine(){
  */
 function jumpLineManage(data){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&id="+data;
-	top.showSubpageTab(url,"线路信息");
+	top.showSubpageTab(url,"查看线路信息");
 }
 /*
  * 跳转合同信息
  */
-function jumpContractManage(customerCode){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
-	top.showSubpageTab(url,"查看履行中合同");
+function jumpContractManage(customerCode, forecastAccountPeriod){
+	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
+				+"&forecastAccountPeriod="+forecastAccountPeriod;
+	top.showSubpageTab(url,"查看合同收入预测");
+}
+
+/*
+ * 收入管理 - 收入分析 - 跨省分摊收入
+ */
+function initIncomeShareTableTable(){
+	App.initDataTables('#incomeShareTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeShare/listIncomeShare',
+			"data": function(d) {
+	        	//d.forecastAccountPeriod = pageConfig.accountPeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#incomeShareTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "provinceCode","title":"组织机构名称","className": "whiteSpaceNormal","width": "30%"},
+			{"data": "accountPeriodName","title":"账期","className": "whiteSpaceNormal","width": "30%"},
+			{"data": "shareValue","title":"分摊收入","className": "whiteSpaceNormal","width": "35%",
+				"render": function(data, type, full, meta){
+				return App.unctionToThousands(data);
+				}
+			},
+		]
+	});
+}
+
+/*
+ * 跳转到跨省分摊收入编辑页面
+ */
+function toIncomeSharePage(){
+	var url = "/html/incomeWorktable/incomeManage/importIncomeAssessed.html";
+	top.showSubpageTab(url,"导入跨省分摊收入");
 }

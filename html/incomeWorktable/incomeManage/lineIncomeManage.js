@@ -3,18 +3,22 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 
 /*
- * 该dom中可接受的配置参数
- * contractId:合同id，根据合同id查询合同下的线路
- * relationType：是否确定是否关联合同 1：已关联  0：未关联
- * returnbtn：是否显示返回按钮，默认不传值为false
+ * 接受的配置参数
  */
 var parm = App.getPresentParm();
 console.log(parm);
- 
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
- 
+$(function(){
+ 	if(parm.contractId){
+ 		$("#parmContractNum").text(parm.contractNumber);
+ 		initLineInforTable();
+ 	}else{
+		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+ 	}
+})
 /*
  * 点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
@@ -42,7 +46,7 @@ function initLineInforTable(){
 			"url" : serverPath + 'milestoneMangerController/listLineIncomeForCustomer',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
-				d.contractId = parm.id;
+				d.contractId = parm.contractId;
 				d.businessId = $("#searchInput").val().trim();
 				return  JSON.stringify(d);
 			}

@@ -132,3 +132,10 @@ td.milestoneLegend{
 	display: inline-block;
 }
 
+.parmTitle{
+	margin-bottom: 6px;
+	font-weight: bold;
+}
+#assessedTbody .form-group{
+	margin: 0;
+}

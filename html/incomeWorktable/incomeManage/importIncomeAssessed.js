@@ -43,6 +43,10 @@ function searchAssessed(){
 
 //新增一行
 function addTbody(){
+	
+	if($("#assessedTbody").find(".emptyTr")){
+		$("#assessedTbody").html("");
+	}	
 	var html = '<tr>'+
 			'<td><label class="ui-checkbox"><input type="checkbox" name="assessedCheckbox"><span></span></label></td>'+
 			'<td class="orderNumber"></td>'+
@@ -72,12 +76,58 @@ function deleteTbody(){
 }
 //保存表格
 function saveTbody(){
+	// 将需要保存的数据拼成json格式提交后台[{key:value,key:value,...},{key:value,key:value,...}...]
+	var dataAll = [];
 	$("#assessedTbody tr").each(function(){
-		$(this).find(".accountName").val();
-	})
+
+		var accountName = $(this).find(".accountName").val();
+		var accountNumber = $(this).find(".accountNumber").val();
+	    if(!/^[0-9]+$/.test(accountName)){
+	    	layer.msg("请输入数字!");
+	    	return;
+	    }
+
+	    if(!/^[0-9]+$/.test(accountNumber)){
+	    	layer.msg("请输入数字!");
+	    	return;
+	    }
+	    
+		var data = {"accountName": accountName,
+				"accountNumber": accountNumber,
+				}
+		dataAll.push(data);
+	});
+	
+	var postData = {
+		incomeShareData : JSON.stringify(dataAll)
+	};
+	var url = serverPath + "incomeShare/saveIncomeShare";
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		layer.msg("保存成功");
+		getAssessedTbody();
+	}
 }
+
 //提交表格
 function submitTbody(){
+	var dataAll = [];
+	$("#assessedTbody tr").each(function(){
+		var data = {"accountName": $(this).find(".accountName").val(),
+				"accountNumber": $(this).find(".accountNumber").val(),
+				}
+		dataAll.push(data);
+	});
+	
+	var postData = {
+		incomeShareData : JSON.stringify(dataAll)
+	};
+	var url = serverPath + "incomeShare/saveSubmitIncomeShare";
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		layer.msg("提交成功");
+		getAssessedTbody();
+	}
 	
 	//关闭当前页面
 	var pageId = self.frameElement.getAttribute('data-id');

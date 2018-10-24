@@ -6,6 +6,9 @@ $(function(){
 	getCount(); 
 })
 
+
+
+
 function getCount() {
 	var postData = { 
 	};
@@ -30,15 +33,29 @@ function getCount() {
 }
  
 
-
-
-
-
-
-
-
-
-
+$(function(){
+	/*
+	 * 风险预警功能，具备全省权限的稽核管理角色和商务经理角色才显示。
+	 * roleType
+	 * 91216：客户经理
+	 * 91217：业务管理
+	 * 91218：稽核管理
+	 * 91219：商务经理
+	 * dataPermission
+	 * 0个人，1部门，2公司，3省分
+	 */
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+		if(dataPermission != 3) {
+			$("#relatedNotzxBaseDom").remove();
+			$("#relatedNotzxPeriodDom").remove();	
+		}
+	}else{
+		$("#relatedNotzxBaseDom").remove();
+		$("#relatedNotzxPeriodDom").remove();
+	};
+})
 
 /*
  * 标题切换
@@ -813,6 +830,7 @@ function initRelatedNotzxPeriodTable() {
 			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForRiskWaring',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
+				debugger;
 				d.contractName = $("#relatedNotzxPeriodInput").val().trim();
 				return JSON.stringify(d);
 			}
@@ -882,15 +900,34 @@ function initWarningOverviewCharts(){
 	var   lineArrearage =parseInt($("#lineIsArrearage").text());
 	var   lineException =parseInt($("#lineRentNotBill").text())+parseInt($("#lineRentedHaveBill").text()) ;
 	
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+	
+	
 	var   contractException =parseInt($("#contractEndHaveLine").text())
 	      +parseInt($("#contractEndHaveNewLine").text()) ;
-	var   businessException=
-		parseInt($("#customDiffTobss").text())+
-		parseInt($("#customDiffToyzs").text())+
-		parseInt($("#customDiffInbss").text())+
-		parseInt($("#customDiffInyzsdr").text())+
-		parseInt($("#relatedNotzxBase").text())+
-		parseInt($("#relatedNotzxPeriod").text());
+	var   businessException=0;
+		
+	 if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+			if(dataPermission == 3) {
+				businessException=
+				parseInt($("#customDiffTobss").text())+
+				parseInt($("#customDiffToyzs").text())+
+				parseInt($("#customDiffInbss").text())+
+				parseInt($("#customDiffInyzsdr").text())+
+				parseInt($("#relatedNotzxBase").text())+
+				parseInt($("#relatedNotzxPeriod").text());
+			}
+		}else{
+			businessException=
+			parseInt($("#customDiffTobss").text())+
+			parseInt($("#customDiffToyzs").text())+
+			parseInt($("#customDiffInbss").text())+
+			parseInt($("#customDiffInyzsdr").text());
+		};
+		
+
+	
 	var option = {
 		title : {
 	        text: '风险预警总览',

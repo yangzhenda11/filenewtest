@@ -567,8 +567,8 @@ table td{
 }
 .buttonNavTabs button{
     margin: 0 4px 0 3px;
-    padding: 4px 15px;
-    font-size: 13px;
+    padding: 2px 15px;
+    font-size: 12px;
     border: 2px solid #dc2a32;
     border-bottom: none;
     border-radius: 4px;

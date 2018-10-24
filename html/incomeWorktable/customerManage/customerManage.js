@@ -201,7 +201,7 @@ function initNotRelationCustomerTable(){
 			},
 			{"data": null,"title":"线路收入信息","className": "whiteSpaceNormal","width": "8%","visible":!visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\",\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\")'>查看</a>";
 				}
 			},
 			{"data": "sourceName","title":"来源","className": "whiteSpaceNormal","visible":visible,
@@ -376,8 +376,8 @@ function jumpContractManage(customerCode){
 /*
  * 跳转线路收入信息
  */
-function jumpLineIncomeManage(contractNumber,contractId){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="+contractNumber+"&contractId="+contractId;
+function jumpLineIncomeManage(customerCode){
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode ;
 	top.showSubpageTab(url,"查看线路收入信息");
 }
 //我的合同查询选择查看更多

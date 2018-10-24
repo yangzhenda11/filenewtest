@@ -126,7 +126,7 @@ Polyline.prototype = {
 	},
 	
 	getAnchors: function(){
-		// вернуть отсортированный массив
+		// еї®з—¦зЇЃпїЅй“—иЂ¦з—±жЎЉй’је›—зќ‡пїЅз€ЁиЂЁжЎ 
 		// ????
 		return this.anchors;
 	},
@@ -155,7 +155,7 @@ Polyline.prototype = {
 		} else if (!index) {
 			index = this.anchors.length;
 		} else {
-			// перебрать anchors, сдвинуть позицию для каждого, начиная с index
+			// й•Ґз–±з‹ѓе›№пїЅanchors, зљІеї¤зњўићЇ й•±зЋ·йІЁпїЅжЅ†пїЅиµ…й©їй’ЅпїЅ зЈ¬йє’зЈ¬пїЅпїЅindex
 			//var anchor = this.getAnchor()
 			for(var i=0; i < this.getAnchorsCount(); i++){
 				var anchor = this.anchors[i];

@@ -130,10 +130,14 @@ input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer; }
 
-button[disabled],
+button[disabled]{
+  cursor: not-allowed;
+  filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#bfbfbf);
+  background: linear-gradient(to bottom,#fff,#bfbfbf);
+   }
 html input[disabled] {
-  cursor: default; }
-
+  cursor: not-allowed;
+}
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;

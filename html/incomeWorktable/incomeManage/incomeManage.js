@@ -104,20 +104,6 @@ function initIncomeAnalysisCharts(){
 	        {
 	            name:'实收金额',
 	            type:'bar',
-	            stack: '合同收入',
-	            data:[120, 132, 101, 134, 90, 230, 210]
-	        },
-	        {
-	            name:'欠费金额',
-	            type:'bar',
-	            stack: '合同收入',
-	            barGap: 0,
-	            barMaxWidth: 50,
-	            data:[220, 182, 191, 234, 290, 330, 310]
-	        },
-	        {
-	            name:'实收金额',
-	            type:'bar',
 	            stack: '风险收入',
 	            data:[620, 732, 701, 734, 1090, 1130, 1120]
 	        },
@@ -128,7 +114,21 @@ function initIncomeAnalysisCharts(){
 	            barGap: 0,
 	            barMaxWidth: 50,
 	            data:[62, 82, 91, 84, 109, 110, 120]
-	        }
+	        },
+	        {
+	            name:'实收金额',
+	            type:'bar',
+	            stack: '合同收入',
+	            data:[{value:120,ii:1}, {value:10,ii:1}, {value:180,ii:1}, {value:220,ii:1}, {value:90,ii:1}, {value:220,ii:1}, {value:130,ii:1}]
+	        },
+	        {
+	            name:'欠费金额',
+	            type:'bar',
+	            stack: '合同收入',
+	            barGap: 0,
+	            barMaxWidth: 50,
+	            data:[220, 182, 191, 234, 290, 330, 310]
+	        },
 	    ],
 	    color:['#4472c4', '#ff0000','#4472c4','#ff0000']
 	};

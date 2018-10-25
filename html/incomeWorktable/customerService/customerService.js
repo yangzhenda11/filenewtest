@@ -34,10 +34,10 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 function searchCustomer(){
 	var customerCode = $("#customerNumber").val().trim();
 	if(customerCode == ""){
-		layer.alert("请输入要查询的集客客户编号。",{icon:2});
+		layer.alert("请输入集客客户编号。",{icon:2});
 		return;
 	};
-	var url = serverPath + "contractIncomeMangerController/getContractIncomeZxById";
+	var url = serverPath + "customerInfo/getCustomerInfoByCustomerCode";
 	var postData = {
 		customerCode: customerCode
 	};
@@ -74,7 +74,7 @@ function initLineTable(){
 	App.initDataTables('#lineTable', "#loading", {
 		ajax: {
 			"type": "POST",
-			"url": serverPath + 'contractIncomeMangerController/listContractIncomeZx',
+			"url": serverPath + 'customerServiceMangerController/listContractIncomeZx',
 	        "contentType":"application/json;charset=utf-8", 
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
@@ -132,7 +132,7 @@ function initContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath + 'contractIncomeMangerController/listContractIncomeZx',
+	        "url": serverPath + 'performanceContract/listContractByCustomerCode',
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
 	           	return JSON.stringify(d);

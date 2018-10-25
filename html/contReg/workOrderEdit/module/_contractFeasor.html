@@ -134,7 +134,7 @@
 	function setFeasorInput(item) {
 		if(item.id != ""){
 			item.name = item.defalutName;
-	    	addFeasorValueForInput(item);
+	    	getFirstDepartment(item,2);
 		}
 	}
 	function getExecutorType(){
@@ -292,77 +292,92 @@
 			}
 	   	});
         function setInputInfo(event, treeId, treeNode) {
-            addFeasorValue(treeNode);
+            getFirstDepartment(treeNode,1);
         }
     }
     /*
-     * 判断是否选的是人员
+     * 后台查询一级部门名称和id
      */
-    function addFeasorValue(treeNode) {
-        if (treeNode.orgType == "" || treeNode.orgType == undefined) {
-        	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
-        	//var firstOrgNode = getCompanyByOrgId(treeNode)[1];
-        	var performerOrgId = treeNode.parentId;
-        	var performerOrgName = treeNode.fullName;
-        	var performerStaffId = treeNode.staffOrgId;
-            if(performerType == 1){
-            	var html = '<div class="feasorItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+    function getFirstDepartment(treeNode,type){
+    	if (treeNode.orgType == "" || treeNode.orgType == undefined) {
+    		var url = serverPath + "contractType/getPerformerBandOneOrg";
+			var postData = JSON.stringify({orgId:treeNode.parentId});
+    		App.formAjaxJson(url, "post", postData, successCallback);
+			function successCallback(result) {
+				var data = result.data;
+				var parentId = data.orgId;
+				var fullName =  data.orgName;
+				if(type == 1){
+					addFeasorValue(treeNode,parentId,fullName);
+				}else if(type ==2){
+					addFeasorValueForInput(treeNode,parentId,fullName);
+				}
+    		};
+        }
+    }
+    /*
+     * 树添加到左侧
+     */
+    function addFeasorValue(treeNode,parentId,fullName) {
+    	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
+    	var performerOrgId = parentId;
+    	var performerOrgName = fullName;
+    	var performerStaffId = treeNode.staffOrgId;
+        if(performerType == 1){
+        	var html = '<div class="feasorItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+        				'<span>'+treeNode.name+'</span>'+
+        				'</div>'
+        	$("#feasorChecked").html(html);
+        }else if(performerType == 2){
+        	var isExist = false;
+        	var companyNode = getCompanyByOrgId(treeNode)[0];
+        	var companyId = companyNode.id;
+    		var companyName = companyNode.name;
+        	$.each($("#feasorModal .feasorItem"),function(k,v){
+        		if($(v).data("companyid") == companyId){
+        			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
+        			isExist = true;
+        			return false;
+        		}
+        	});
+        	if(!isExist){
+        		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
             				'<span>'+treeNode.name+'</span>'+
-            				'</div>'
-            	$("#feasorChecked").html(html);
-            }else if(performerType == 2){
-            	var isExist = false;
-            	var companyNode = getCompanyByOrgId(treeNode)[0];
-            	var companyId = companyNode.id;
-        		var companyName = companyNode.name;
-            	$.each($("#feasorModal .feasorItem"),function(k,v){
-            		if($(v).data("companyid") == companyId){
-            			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
-            			isExist = true;
-            			return false;
-            		}
-            	});
-            	if(!isExist){
-            		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
-	            				'<span>'+treeNode.name+'</span>'+
-	            				'</div>';
-            		$("#feasorChecked").append(html);
-            	};
-            }
+            				'</div>';
+        		$("#feasorChecked").append(html);
+        	};
         }
     }
     /*
      * 模糊搜索添加操作
      */
-    function addFeasorValueForInput(item){
-    	if (item.orgType == "" || item.orgType == undefined) {
-        	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
-        	var performerOrgId = item.parentId;
-        	var performerOrgName = item.fullName;
-        	var performerStaffId = item.staffOrgId;
-            if(performerType == 1){
-            	var html = '<div class="feasorItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+    function addFeasorValueForInput(item,parentId,fullName){
+    	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
+    	var performerOrgId = parentId;
+    	var performerOrgName = fullName;
+    	var performerStaffId = item.staffOrgId;
+        if(performerType == 1){
+        	var html = '<div class="feasorItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+        				'<span>'+item.name+'</span>'+
+        				'</div>'
+        	$("#feasorChecked").html(html);
+        }else if(performerType == 2){
+        	var isExist = false;
+        	var companyId = item.companyId;
+    		var companyName = item.companyName;
+        	$.each($("#feasorModal .feasorItem"),function(k,v){
+        		if($(v).data("companyid") == companyId){
+        			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
+        			isExist = true;
+        			return false;
+        		}
+        	});
+        	if(!isExist){
+        		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
             				'<span>'+item.name+'</span>'+
-            				'</div>'
-            	$("#feasorChecked").html(html);
-            }else if(performerType == 2){
-            	var isExist = false;
-            	var companyId = item.companyId;
-        		var companyName = item.companyName;
-            	$.each($("#feasorModal .feasorItem"),function(k,v){
-            		if($(v).data("companyid") == companyId){
-            			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
-            			isExist = true;
-            			return false;
-            		}
-            	});
-            	if(!isExist){
-            		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
-	            				'<span>'+item.name+'</span>'+
-	            				'</div>';
-            		$("#feasorChecked").append(html);
-            	};
-            }
+            				'</div>';
+        		$("#feasorChecked").append(html);
+        	};
         }
     }
     /*
@@ -373,7 +388,7 @@
         if (treeNode == undefined) {
             layer.msg("请选择人员", {icon: 2})
         } else {
-            addFeasorValue(treeNode);
+            getFirstDepartment(treeNode,1);
         }
     }
     /*

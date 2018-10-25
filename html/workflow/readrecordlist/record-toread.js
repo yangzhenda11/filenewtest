@@ -85,12 +85,13 @@ function getTableToread(){
 function  findDetail(readId,url,bussId) {
 	App.setCache("searchForm");
 	App.changePresentUrl(url+"&bussid="+bussId+"&readid="+readId);
+	changeReadStatus(readId);
 }
 /*
  * 待阅变已阅Fn
  * 参数：readId
  */
-function changeReadStatus(){
+function changeReadStatus(readId){
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
 	    "type" : "post",

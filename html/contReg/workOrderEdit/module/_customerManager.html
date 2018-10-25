@@ -372,6 +372,61 @@
 					$(v).parent().remove();
 				});
 			}
+	   	});
+        function setInputInfo(event, treeId, treeNode) {
+            addCustomerManagerValue(treeNode);
+        }
+    }
+    /*
+     * 判断是否选的是人员
+     */
+    function addCustomerManagerValue(treeNode) {
+        if (treeNode.orgType == "" || treeNode.orgType == undefined) {
+			var name = treeNode.name;
+        	var staffOrgId = treeNode.staffOrgId;
+        	var isExist = false;
+        	$.each($("#customerManagerModal .customerManagerItem"),function(k,v){
+        		if($(v).data("stafforgid") == staffOrgId){
+        			isExist = true;
+        		}
+        	});
+        	if(!isExist){
+        		var url = serverPath + "contractType/getPerformerBandOneOrg";
+				var postData = JSON.stringify({orgId:treeNode.parentId});
+        		App.formAjaxJson(url, "post", postData, successCallback);
+				function successCallback(result) {
+					var data = result.data;
+					var parentId = data.orgId;
+					var fullName =  data.orgName;
+    				var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
+        				'<span>'+name+'</span>'+
+        				'</div>';
+    				$("#customerManagerChecked").append(html);
+    			};
+			}
+        }
+    }
+    /*
+     * 增加右侧内容
+     */
+    function setCustomerManagerValue(){
+    	var treeNode = customerManagerTree.getSelectedNodes()[0];
+        if (treeNode == undefined) {
+            layer.msg("请选择人员", {icon: 2})
+        } else {
+            addCustomerManagerValue(treeNode);
+        }
+    }
+    /*
+     * 删除右侧内容
+     */
+    function delCustomerManagerValue(){
+		if($("#customerManagerModal .customerManagerCheck").length == 0){
+			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
+		}else{
+			$.each($("#customerManagerModal .customerManagerCheck"), function(k,v) {
+				$(v).parent().remove();
+			});
 		}
 		/*
 		 * modal确定按钮点击

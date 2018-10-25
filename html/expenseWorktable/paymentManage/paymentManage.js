@@ -148,11 +148,11 @@ function initPaymentTable(type){
 		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
 	var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
-//	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
-//	var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	var contractValueSum = totalData.contractValueSum ? App.unctionToThousands(totalData.contractValueSum) : 0;
+	var invoiceSumSum = totalData.invoiceSumSum ? App.unctionToThousands(totalData.invoiceSumSum) : 0;
 	$("#payVateAmountSumSum").text(payVateAmountSumSum+"元");
-//	$("#poAmountSumSum").text(poAmountSumSum+"元");
-//	$("#invoiceNnovateSumSum").text(invoiceNnovateSumSum+"元");
+	$("#contractValueSum").text(contractValueSum+"元");
+	$("#invoiceSumSum").text(invoiceSumSum+"元");
 	App.initDataTables('#paymentTable', {
 		ajax: {
 			"type": "POST",
@@ -179,12 +179,12 @@ function initPaymentTable(type){
 					return data == 1 ? "是" : "否";
 				}
 			},
-			{"data": "","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "invoiceSum","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}

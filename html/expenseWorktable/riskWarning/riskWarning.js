@@ -56,7 +56,7 @@ function initRiskWarningListTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "AccumulativeAmount","className": "whiteSpaceNormal","width":"7%",
+			{"data": "payVateAmountSum","className": "whiteSpaceNormal","width":"7%",
 				"render" : function(data, type, full, meta) {
 					return App.unctionToThousands(data);
 				}

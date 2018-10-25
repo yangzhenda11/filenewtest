@@ -35,346 +35,290 @@
 	</div>
 </div>
 <script type="text/javascript">
-		/*
-		 * 2阶段保存客户经理
-		 */
-		function saveCustomerManager(){
-			var customerManagerList = getValue_customerManagerList(true);
-			var postData = JSON.stringify({wcardId:wcardId,customerManagerList:customerManagerList,deleteCustomerManagerList:deleteCustomerManagerList});
-			var url = serverPath + "contractOrderEditorController/saveOrderCustomerManagerInfo";
-			App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
-			function successCallback(result) {
-				var data = result.data;
-				if(data.success == "000"){
-					showLayerErrorMsg(data.message);
-				}else{
-					if(parm.pageType == 1){
-			    		parent.layer.msg("保存成功");
-					}else{
-						layer.msg("保存成功！已给对应客户经理发送了待阅提示！");
-					}
-				}
-			} 
-			function improperCallback(result){
-				debugger;
-				var ms = result.message;
-				showLayerErrorMsg(ms);
-				if(parm.pageType == 1){
-		    		parent.$("#saveButton").attr("disabled",false);
-				}else{
-					$("#saveBtn").attr("disabled",false);
-				}
-			}
-		}
-		/*
-		 * 提示错误信息
-		 * 工作流页面parm.pageType == 1为父级页面提示异常
-		 * 其余当前页面提示异常
-		 */
-		function showLayerErrorMsg(ms,isAlert){
-			if(isAlert){
-				if(parm.pageType == 1){
-					debugger;
-					parent.layer.alert(ms,{icon:2,title:"提示"});
-				}else{
-					layer.alert(ms,{icon:2,title:"提示"});
-				}
+	/*
+	 * 2阶段保存客户经理
+	 */
+	function saveCustomerManager(){
+		var customerManagerList = getValue_customerManagerList(true);
+		var postData = JSON.stringify({wcardId:wcardId,customerManagerList:customerManagerList,deleteCustomerManagerList:deleteCustomerManagerList});
+		var url = serverPath + "contractOrderEditorController/saveOrderCustomerManagerInfo";
+		App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
+		function successCallback(result) {
+			var data = result.data;
+			if(data.success == "000"){
+				showLayerErrorMsg(data.message);
 			}else{
 				if(parm.pageType == 1){
-					debugger;
-					parent.layer.msg(ms);
+		    		parent.layer.msg("保存成功");
 				}else{
-					layer.msg(ms);
+					layer.msg("保存成功！已给对应客户经理发送了待阅提示！");
 				}
 			}
-			window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+		} 
+		function improperCallback(result){
+			var ms = result.message;
+			showLayerErrorMsg(ms);
 		}
-		var customerManagerTree = null;
-		/*
-		 * 设置页面的id值，由保存和提交后回调
-		 */
-		function setPageId_customerManagerListId(value){
-			var valueKey = 0;
-			$.each($("#customerManagerTbody tr"), function(k,v) {
-				if(!$(v).hasClass("emptyTr")){
-					if($(v).data("id") != undefined){
-						$(v).data("id",value[valueKey]);
-						valueKey++;
-					}
+	};
+	var customerManagerTree = null;
+	/*
+	 * 设置页面的id值，由保存和提交后回调
+	 */
+	function setPageId_customerManagerListId(value){
+		var valueKey = 0;
+		$.each($("#customerManagerTbody tr"), function(k,v) {
+			if(!$(v).hasClass("emptyTr")){
+				if($(v).data("id") != undefined){
+					$(v).data("id",value[valueKey]);
+					valueKey++;
 				}
-			});
-		}
-		/*
-		 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
-		 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
-		 */
-		function getValue_customerManagerList(isSubmit){
-			var customerManagerList = [];
-			$.each($("#customerManagerTbody tr"),function(k,v){
-				if(!$(v).hasClass("emptyTr")){
-					var customerManagerItem = {};
-					customerManagerItem.wcardId = wcardId;
-					customerManagerItem.contractNumber = contractNumber;
-					customerManagerItem.managerId = $(v).data("id");
-					customerManagerItem.managerStaffOrgId = $(v).data("stafforgid");
-					customerManagerItem.managerOrgId = $(v).data("parentid");
-					customerManagerItem.managerStaffName = $(v).children().eq(2).text();
-					customerManagerItem.managerOrgName = $(v).children().eq(3).text();
-					customerManagerList.push(customerManagerItem);
-				}
-			});
-			//当合同提交时，加校验"至少添加一条客户经理信息";
-			if(isSubmit && $("#mangerRequired i")[0]){
-				if(customerManagerList.length > 0){
-					return customerManagerList;
-				}else{
-					layer.msg("请至少添加一条客户经理信息");
-					srolloOffect("#customerManagerList");
-					return false;
-				}
-			}else{
-				return customerManagerList;
 			}
-		}
-		/*
-		 * 模糊查询接口，设置模糊查询
-		 */
-		$("#customerManagerInput").typeahead({
-			afterSelect: setCustomerManager,
-			delay: 300,
-			addItem: {"name":"查询不到数据","id":""},
-			clearElement: true,
-			scrollHeight: -10,
-		    source: function (query, process) {
-		        return $.ajax({
-		            url: serverPath+'contractType/listPerformerStaff',
-		            type: 'post',
-		            global: false,
-		            data: {staffName: query,executorType:0},
-		            success: function (result) {
-		            	var data = result.data;
-		            	if(data.length > 0){
-		            		for(var k = 0; k < data.length; k++){
-		            			data[k].defalutName = data[k].name;
-		            			var staffOrgType = data[k].staffOrgType == "J" ? "-兼岗)" : "-主岗)";
-		            			var name = data[k].name + "(" + data[k].loginName +")" + "("+data[k].fullName + staffOrgType;
-		            			data[k].name = name;
-		            		}
-		            	};
-		                return process(data);
-		            },
-					error:function(e){
-						App.ajaxErrorCallback(e);
-					}
-		        });
-		    }
 		});
-		function setCustomerManager(item) {
-			if(item.id != ""){
-				item.name = item.defalutName;
-		    	addCustomerManagerValue(item);
+	}
+	/*
+	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
+	 */
+	function getValue_customerManagerList(isSubmit){
+		var customerManagerList = [];
+		$.each($("#customerManagerTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var customerManagerItem = {};
+				customerManagerItem.wcardId = wcardId;
+				customerManagerItem.contractNumber = contractNumber;
+				customerManagerItem.managerId = $(v).data("id");
+				customerManagerItem.managerStaffOrgId = $(v).data("stafforgid");
+				customerManagerItem.managerOrgId = $(v).data("parentid");
+				customerManagerItem.managerStaffName = $(v).children().eq(2).text();
+				customerManagerItem.managerOrgName = $(v).children().eq(3).text();
+				customerManagerList.push(customerManagerItem);
 			}
-		}
-		//获取客户经理信息
-		getCustomerManagerInfo();
-		/*
-		 * 获取客户经理信息
-		 */
-		function getCustomerManagerInfo() {
-			var url = serverPath + "contractOrderEditorController/listContractCustomerManager";
-			var postData = JSON.stringify({wcardId:wcardId});
-			App.formAjaxJson(url, "post", postData, successCallback);
-			function successCallback(result) {
-				var data = result.data;
-				if(data.length > 0){
-					var html = "";
-					for(var i = 0; i < data.length; i++){
-						//格式化生效时间  毫秒-->日期
-						var createTime = new Date(data[i].createdDate) ;
-						createDateTime = createTime.Format("yyyy-MM-dd hh:mm:ss");
-						//格式化失效时间	 毫秒-->日期
-						var invalidTime = new Date(data[i].invalidDate) ;
-						invalidDateTime = invalidTime.Format("yyyy-MM-dd hh:mm:ss");
-						
-						html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'">'+
-		    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
-		    						'<td class="orderNumber"></td>'+	
-		    						'<td>'+data[i].managerStaffName+'</td>'+
-		    						'<td>'+data[i].managerOrgName+'</td>'+
-		    						'<td>'+createDateTime+'</td>'+
-		    						/* '<td>'+invalidDateTime+'</td>'+ */
-		    						'<td>'+data[i].staffName+'</td>'+
-		    						'<td>'+data[i].orgName+'</td></tr>';
-					};
-					$("#customerManagerTbody").html(html);
-					addCustomerManagerTbodySort();
-					App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
-				};
-				/*
-				 * isEdit 判断页面是否只能查看
-				 */
-				if(!isEdit && !editIdentify.isCanUpdateCustomerManager){
-					$("#customerManagerTable").find("input").attr("disabled","disabled");
-					$("#customerManagerToolbar,.cusManagerCheckbox").remove();
-				}else{
-					if(!editIdentify.isCanUpdateCustomerManager){
-						$("#saveCustomerManagers").remove();
-					};
-					$("#customerManagerToolbar").removeClass("hidden");
-				};
-				
+		});
+		//当合同提交时，加校验"至少添加一条客户经理信息";
+		if(isSubmit && $("#mangerRequired i")[0]){
+			if(customerManagerList.length > 0){
+				return customerManagerList;
+			}else{
+				layer.msg("请至少添加一条客户经理信息");
+				srolloOffect("#customerManagerList");
+				return false;
 			}
+		}else{
+			return customerManagerList;
 		}
-		/*
-		 * 显示选人modal，生成选人树
-		 */
-		function addCustomerManager(){
-			$("#customerManagerChecked").html("");
-			$("#customerManagerInput").val("");
-			var documentHeight = $pageContent.height() - 225;
-			$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
-			initCustomerManagerTree();
-		}
-		//生成树
-		function initCustomerManagerTree() {
-			var performerType = 0;
-		    //选择履行人ztree树配置
-		    var treeSetting = {
-				async: {
-					enable: true,
-					url: serverPath + "contractType/listPerformer",
-					type: "post",
-					dataType: 'json',
-					dataFilter: orgsfilter,
-					autoParam: ["id=orgId","executorType"]
-				},
-				data: {
-					simpleData: {
-						enable: true,
-						idKey: "id",
-						pIdKey: "parentId"
-					},
-					key: {
-						name: "name"
-					}
-				},
-				view: {
-					selectedMulti: false,
-					//dblClickExpand: false
-				},
-				callback: {
-					onAsyncError: onAsyncError,
-					onDblClick: setInputInfo
+	}
+	/*
+	 * 模糊查询接口，设置模糊查询
+	 */
+	$("#customerManagerInput").typeahead({
+		afterSelect: setCustomerManager,
+		delay: 300,
+		addItem: {"name":"查询不到数据","id":""},
+		clearElement: true,
+		scrollHeight: -10,
+	    source: function (query, process) {
+	        return $.ajax({
+	            url: serverPath+'contractType/listPerformerStaff',
+	            type: 'post',
+	            global: false,
+	            data: {staffName: query,executorType:0},
+	            success: function (result) {
+	            	var data = result.data;
+	            	if(data.length > 0){
+	            		for(var k = 0; k < data.length; k++){
+	            			data[k].defalutName = data[k].name;
+	            			var staffOrgType = data[k].staffOrgType == "J" ? "-兼岗)" : "-主岗)";
+	            			var name = data[k].name + "(" + data[k].loginName +")" + "("+data[k].fullName + staffOrgType;
+	            			data[k].name = name;
+	            		}
+	            	};
+	                return process(data);
+	            },
+				error:function(e){
+					App.ajaxErrorCallback(e);
 				}
+	        });
+	    }
+	});
+	function setCustomerManager(item) {
+		if(item.id != ""){
+			item.name = item.defalutName;
+	    	addCustomerManagerValue(item);
+		}
+	}
+	//获取客户经理信息
+	getCustomerManagerInfo();
+	/*
+	 * 获取客户经理信息
+	 */
+	function getCustomerManagerInfo() {
+		var url = serverPath + "contractOrderEditorController/listContractCustomerManager";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			if(data.length > 0){
+				var html = "";
+				for(var i = 0; i < data.length; i++){
+					//格式化生效时间  毫秒-->日期
+//					var createTime = new Date() ;
+//					createDateTime = createTime.Format("yyyy-MM-dd hh:mm:ss");
+					//格式化失效时间	 毫秒-->日期
+//					var invalidTime = new Date(data[i].invalidDate) ;
+//					invalidDateTime = invalidTime.Format("yyyy-MM-dd hh:mm:ss");
+					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'">'+
+	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+	    						'<td class="orderNumber"></td>'+	
+	    						'<td>'+data[i].managerStaffName+'</td>'+
+	    						'<td>'+data[i].managerOrgName+'</td>'+
+	    						'<td>'+App.formatDateTime(data[i].createdDate,"yyyy-MM-dd")+'</td>'+
+	    						/* '<td>'+invalidDateTime+'</td>'+ */
+	    						'<td>'+data[i].staffName+'</td>'+
+	    						'<td>'+data[i].orgName+'</td></tr>';
+				};
+				$("#customerManagerTbody").html(html);
+				addCustomerManagerTbodySort();
+				App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
 			};
-			function orgsfilter(treeId, parentNode, responseData) {
-				if(responseData.status == 1){
-					var data = responseData.data;
-					if(data){
-						for(var i = 0; i < data.length; i++){
+			/*
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(!isEdit && !editIdentify.isCanUpdateCustomerManager){
+				$("#customerManagerTable").find("input").attr("disabled","disabled");
+				$("#customerManagerToolbar,.cusManagerCheckbox").remove();
+			}else{
+				if(!editIdentify.isCanUpdateCustomerManager){
+					$("#saveCustomerManagers").remove();
+				};
+				$("#customerManagerToolbar").removeClass("hidden");
+			};
+			
+		}
+	}
+	/*
+	 * 显示选人modal，生成选人树
+	 */
+	function addCustomerManager(){
+		$("#customerManagerChecked").html("");
+		$("#customerManagerInput").val("");
+		var documentHeight = $pageContent.height() - 225;
+		$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
+		initCustomerManagerTree();
+	}
+	//生成树
+	function initCustomerManagerTree() {
+		var performerType = 0;
+	    //选择履行人ztree树配置
+	    var treeSetting = {
+			async: {
+				enable: true,
+				url: serverPath + "contractType/listPerformer",
+				type: "post",
+				dataType: 'json',
+				dataFilter: orgsfilter,
+				autoParam: ["id=orgId","executorType"]
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "parentId"
+				},
+				key: {
+					name: "name"
+				}
+			},
+			view: {
+				selectedMulti: false,
+				//dblClickExpand: false
+			},
+			callback: {
+				onAsyncError: onAsyncError,
+				onDblClick: setInputInfo
+			}
+		};
+		function orgsfilter(treeId, parentNode, responseData) {
+			if(responseData.status == 1){
+				var data = responseData.data;
+				if(data){
+					for(var i = 0; i < data.length; i++){
+	        			if(data[i].orgType != ""){
+	        				data[i].isParent = "true";
+	        			};
+	        			data[i].executorType = performerType;
+		        	};
+		        	return data;
+				}else{
+					return null;
+				}
+			}else{
+				layer.msg(responseData.message);
+				return null;
+			}
+		}
+	    // 获取第一层数据
+	    $.ajax({
+	        url : serverPath + 'contractType/listPerformer',
+	        type : "post",
+	        data : {'orgId':'','executorType':performerType},
+	        success : function(result) {
+				if (result.status == 1) {
+					$("#customerManagerModal").modal("show");
+					var data = result.data;
+		        	if (data != "") {
+		        		for(var i = 0; i < data.length; i++){
 		        			if(data[i].orgType != ""){
 		        				data[i].isParent = "true";
 		        			};
 		        			data[i].executorType = performerType;
 			        	};
-			        	return data;
-					}else{
-						return null;
-					}
-				}else{
-					layer.msg(responseData.message);
-					return null;
-				}
-			}
-		    // 获取第一层数据
-		    $.ajax({
-		        url : serverPath + 'contractType/listPerformer',
-		        type : "post",
-		        data : {'orgId':'','executorType':performerType},
-		        success : function(result) {
-					if (result.status == 1) {
-						$("#customerManagerModal").modal("show");
-						var data = result.data;
-			        	if (data != "") {
-			        		for(var i = 0; i < data.length; i++){
-			        			if(data[i].orgType != ""){
-			        				data[i].isParent = "true";
-			        			};
-			        			data[i].executorType = performerType;
-				        	};
-			                if (customerManagerTree) {
-			                    customerManagerTree.destroy();
-			                }
-			                customerManagerTree = $.fn.zTree.init($("#customerManagerTree"), treeSetting, data);
-		             		//默认展开第一层
-				            var nodes = customerManagerTree.getNodes();
-				            customerManagerTree.expandNode(nodes[0]);
-			            } else {
-			                layer.msg("暂无数据，请稍后重试");
-			            }
-					} else {
-						var ms = result.message;
-						layer.msg(ms);
-					};
-		        },
-		        error: function(result) {
-					App.ajaxErrorCallback(result);
-				}
-		   	});
-		    function setInputInfo(event, treeId, treeNode) {
-		        addCustomerManagerValue(treeNode);
-		    }
-		}
-		/*
-		 * 判断是否选的是人员
-		 */
-		function addCustomerManagerValue(treeNode) {
-		    if (treeNode.orgType == "" || treeNode.orgType == undefined) {
-		    	var fullName = treeNode.fullName;
-		    	var parentId = treeNode.parentId;
-		    	var name = treeNode.name;
-		    	var staffOrgId = treeNode.staffOrgId;
-		    	var isExist = false;
-		    	$.each($("#customerManagerModal .customerManagerItem"),function(k,v){
-		    		if($(v).data("stafforgid") == staffOrgId){
-		    			isExist = true;
-		    		}
-		    	});
-		    	if(!isExist){
-					var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
-		    				'<span>'+name+'</span>'+
-		    				'</div>';
-					$("#customerManagerChecked").append(html);
+		                if (customerManagerTree) {
+		                    customerManagerTree.destroy();
+		                }
+		                customerManagerTree = $.fn.zTree.init($("#customerManagerTree"), treeSetting, data);
+	             		//默认展开第一层
+			            var nodes = customerManagerTree.getNodes();
+			            customerManagerTree.expandNode(nodes[0]);
+		            } else {
+		                layer.msg("暂无数据，请稍后重试");
+		            }
+				} else {
+					var ms = result.message;
+					layer.msg(ms);
 				};
-		    }
-		}
-		/*
-		 * 增加右侧内容
-		 */
-		function setCustomerManagerValue(){
-			var treeNode = customerManagerTree.getSelectedNodes()[0];
-		    if (treeNode == undefined) {
-		        layer.msg("请选择人员", {icon: 2})
-		    } else {
-		        addCustomerManagerValue(treeNode);
-		    }
-		}
-		/*
-		 * 删除右侧内容
-		 */
-		function delCustomerManagerValue(){
-			if($("#customerManagerModal .customerManagerCheck").length == 0){
-				layer.msg("请点击选择人员名称后进行删除", {icon: 2})
-			}else{
-				$.each($("#customerManagerModal .customerManagerCheck"), function(k,v) {
-					$(v).parent().remove();
-				});
+	        },
+	        error: function(result) {
+				App.ajaxErrorCallback(result);
 			}
-	   	};
-        function setInputInfo(event, treeId, treeNode) {
-            addCustomerManagerValue(treeNode);
-        }
-    
+	   	});
+	    function setInputInfo(event, treeId, treeNode) {
+	        addCustomerManagerValue(treeNode);
+	    }
+	}
+	
+	/*
+	 * 增加右侧内容
+	 */
+	function setCustomerManagerValue(){
+		var treeNode = customerManagerTree.getSelectedNodes()[0];
+	    if (treeNode == undefined) {
+	        layer.msg("请选择人员", {icon: 2})
+	    } else {
+	        addCustomerManagerValue(treeNode);
+	    }
+	}
+	/*
+	 * 删除右侧内容
+	 */
+	function delCustomerManagerValue(){
+		if($("#customerManagerModal .customerManagerCheck").length == 0){
+			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
+		}else{
+			$.each($("#customerManagerModal .customerManagerCheck"), function(k,v) {
+				$(v).parent().remove();
+			});
+		}
+   	};
     /*
      * 判断是否选的是人员
      */
@@ -404,142 +348,97 @@
 			}
         }
     }
-    /*
-     * 增加右侧内容
-     */
-    function setCustomerManagerValue(){
-    	var treeNode = customerManagerTree.getSelectedNodes()[0];
-        if (treeNode == undefined) {
-            layer.msg("请选择人员", {icon: 2})
-        } else {
-            addCustomerManagerValue(treeNode);
-        }
-    }
-    /*
-     * 删除右侧内容
-     */
-    function delCustomerManagerValue(){
-		if($("#customerManagerModal .customerManagerCheck").length == 0){
-			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
-		}else{
-			$.each($("#customerManagerModal .customerManagerCheck"), function(k,v) {
-				$(v).parent().remove();
+	/*
+	 * modal确定按钮点击
+	 */
+	function setCustomerManagerTable(){
+		$("#customerManagerModal").modal("hide");
+		if($("#customerManagerModal .customerManagerItem").length > 0){
+			if($("#customerManagerTbody .emptyTr")[0] != undefined){
+				$("#customerManagerTbody .emptyTr").remove();
+			};
+			$.each($("#customerManagerModal .customerManagerItem"), function(k,v) {
+				var stafforgid = $(v).data("stafforgid");
+				var name = $(v).text();
+				var isExist = false;
+				$.each($("#customerManagerTbody tr"),function(m,n){
+					if(stafforgid == $(n).data("stafforgid")){
+						isExist = true;
+					}
+				})
+				if(!isExist){
+					var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
+	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+	    						'<td class="orderNumber"></td>'+
+	    						'<td>'+name+'</td>'+
+	    						'<td>'+$(v).data("fullname")+'</td>'+
+	    						'<td>'+App.formatDateTime(new Date(),"yyyy-MM-dd")+'</td>'+
+	    						'<td>'+config.curStaffName+'</td>'+
+	    						'<td>'+config.curOrgName+'</td>'+
+	    						'</td></tr>';
+	    						
+	    			$("#customerManagerTbody").append(html);
+				}
 			});
+			addCustomerManagerTbodySort();
+			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
 		}
-    }
-		/*
-		 * modal确定按钮点击
-		 */
-		function setCustomerManagerTable(){
-			var myDate = new Date();//获取系统当前时间
-			var nowDate = myDate.Format("yyyy-MM-dd hh:mm:ss") //获取日期与时间
-			$("#customerManagerModal").modal("hide");
-			if($("#customerManagerModal .customerManagerItem").length > 0){
-				if($("#customerManagerTbody .emptyTr")[0] != undefined){
-					$("#customerManagerTbody .emptyTr").remove();
-				};
-				$.each($("#customerManagerModal .customerManagerItem"), function(k,v) {
-					var stafforgid = $(v).data("stafforgid");
-					var name = $(v).text();
-					var isExist = false;
-					$.each($("#customerManagerTbody tr"),function(m,n){
-						if(stafforgid == $(n).data("stafforgid")){
-							isExist = true;
-						}
-					})
-					if(!isExist){
-						var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
-		    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
-		    						'<td class="orderNumber"></td>'+
-		    						'<td>'+name+'</td>'+
-		    						'<td>'+$(v).data("fullname")+'</td>'+
-		    						'<td>'+nowDate+'</td>'+
-		    						'<td>'+config.curStaffName+'</td>'+
-		    						'<td>'+config.curOrgName+'</td>'+
-		    						'</td></tr>';
-		    						
-		    			$("#customerManagerTbody").append(html);
+	}
+
+	/*
+	 * 删除客户经理
+	 */
+	var deleteCustomerManagerList = [];
+	function delectCustomerManager(){
+		var checkLength = $("#customerManagerTbody input[name='customerManagerCheck']:checked").length;
+		if(checkLength == 0){
+			layer.msg("请勾选客户经理复选框进行删除")
+		}else{
+			layer.confirm("请确认是否需要删除该客户经理。",{icon:7,title:"删除"},function(index){
+				layer.close(index);
+				$("#customerManagerTbody input[name='customerManagerCheck']:checked").each(function(k,v){
+					//获取该行添加人
+					var checkedCreateBy = $(v).parents("tr").children().eq(5).text();
+					if(checkedCreateBy == config.curStaffName){
+						var deleteCustomerManagerItem = {};
+						deleteCustomerManagerItem.managerId = $(v).parents("tr").data("id");
+						deleteCustomerManagerList.push(deleteCustomerManagerItem);
+						$(v).parents("tr").remove();
+					}else{
+						layer.msg("仅可删除自己添加的客户经理。")
 					}
 				});
+				addCustomerManagerTbodyEmptyTr();
 				addCustomerManagerTbodySort();
 				App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
-			}
+			})
 		}
-		/*
-		 * 格式化时间 yyyy-MM-dd hh:mm:ss
-		 */
-		
-		Date.prototype.Format = function (fmt) {
-		    var initDate = {
-		        "M+": this.getMonth() + 1, // 月份
-		        "d+": this.getDate(), // 日
-		        "h+": this.getHours(), // 小时
-		        "m+": this.getMinutes(), // 分
-		        "s+": this.getSeconds(), // 秒
-		    };
-		    if (/(y+)/.test(fmt))
-		        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-		    for (var afterDate in initDate)
-		        if (new RegExp("(" + afterDate + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (initDate[afterDate]) : (("00" + initDate[afterDate]).substr(("" + initDate[afterDate]).length)));
-		            return fmt;
+	};
+	/*
+	 * 若为空增加empty值
+	 */
+	function addCustomerManagerTbodyEmptyTr(){
+		if($("#customerManagerTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="7">暂无客户经理信息</td></tr>';
+			$("#customerManagerTbody").html(html);
 		}
-		/*
-		 * 删除客户经理
-		 */
-		var deleteCustomerManagerList = [];
-		function delectCustomerManager(){
-			var checkLength = $("#customerManagerTbody input[name='customerManagerCheck']:checked").length;
-			
-			if(checkLength == 0){
-				layer.msg("请勾选客户经理复选框进行删除")
-			}else{
-				layer.confirm("请确认是否需要删除该客户经理。",{icon:7,title:"删除"},function(index){
-					layer.close(index);
-					$("#customerManagerTbody input[name='customerManagerCheck']:checked").each(function(k,v){
-						//获取该行添加人
-						var checkedCreateBy = $(v).parents("tr").children().eq(5).text();
-						if(checkedCreateBy == config.curStaffName){
-							var deleteCustomerManagerItem = {};
-							deleteCustomerManagerItem.managerId = $(v).parents("tr").data("id");
-							deleteCustomerManagerList.push(deleteCustomerManagerItem);
-							$(v).parents("tr").remove();
-						}else{
-							layer.msg("仅可删除自己添加的客户经理。")
-						}
-					});
-					addCustomerManagerTbodyEmptyTr();
-					addCustomerManagerTbodySort();
-					App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
-					a = '2';
-					
-				})
-			}
-		};
-		/*
-		 * 若为空增加empty值
-		 */
-		function addCustomerManagerTbodyEmptyTr(){
-			if($("#customerManagerTbody tr").length == 0){
-				var html = '<tr class="emptyTr"><td colspan="7">暂无客户经理信息</td></tr>';
-				$("#customerManagerTbody").html(html);
-			}
+	}
+	/*
+	 * 表格数据增加序号
+	 */
+	function addCustomerManagerTbodySort(){
+		$.each($("#customerManagerTbody .orderNumber"), function(k,v) {
+			$(v).text(k+1);
+		});
+	}
+	/*
+	 * 人员选择点击	事件委托
+	 */
+	$("#customerManagerChecked").on("click","span",function(){
+		if($(this).hasClass("customerManagerCheck")){
+			$(this).removeClass("customerManagerCheck");
+		}else{
+			$(this).addClass("customerManagerCheck");
 		}
-		/*
-		 * 表格数据增加序号
-		 */
-		function addCustomerManagerTbodySort(){
-			$.each($("#customerManagerTbody .orderNumber"), function(k,v) {
-				$(v).text(k+1);
-			});
-		}
-		/*
-		 * 人员选择点击	事件委托
-		 */
-		$("#customerManagerChecked").on("click","span",function(){
-			if($(this).hasClass("customerManagerCheck")){
-				$(this).removeClass("customerManagerCheck");
-			}else{
-				$(this).addClass("customerManagerCheck");
-			}
-		})
+	})
 </script>

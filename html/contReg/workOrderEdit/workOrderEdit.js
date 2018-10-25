@@ -43,8 +43,8 @@ if(parm.taskFlag == "db"){
 	}else if(parm.taskDefinitionKey == "GXZZ"){
 		editIdentify.isCanUpdateExpiryDate = true;
 	}else if(parm.taskDefinitionKey == "KHQR"){
-		//客户经理待办确认，不进行任何操作，待办边已办。
-		customerManagerFinish(wcardId);
+		//客户经理待办确认，不进行任何操作，待办变已办。
+		customerManagerFinish();
 	}else if(parm.taskDefinitionKey == "TJKH"){
 		editIdentify.isCanUpdateCustomerManager = true;
 	}
@@ -620,11 +620,10 @@ function activateContract(){
 	}
 }
 /*
- * 客户经理确认
+ * 客户经理确认待办变已办
  */
-function customerManagerFinish(bussid){
-	debugger;
-	var postData = App.getFlowParam(bussid,1,0,"Customer_add_Process");
+function customerManagerFinish(){
+	var postData = App.getFlowParam(wcardId,1,0,"Customer_add_Process");
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
 }
 /*

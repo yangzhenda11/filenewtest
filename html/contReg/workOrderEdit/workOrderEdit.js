@@ -622,13 +622,8 @@ function activateContract(){
 /*
  * 客户经理确认待办变已办
  */
-<<<<<<< HEAD
 function customerManagerFinish(){
 	var postData = App.getFlowParam(wcardId,1,0,"Customer_add_Process");
-=======
-function customerManagerFinish(bussid){
-	var postData = App.getFlowParam(bussid,1,0,"Customer_add_Process");
->>>>>>> 80c6e39f0f678f3050f9d92cb12c0f9919965545
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
 }
 /*

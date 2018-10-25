@@ -161,7 +161,7 @@
 	 * 2阶段，更新终止日期
 	 */
 	function changeExpiryDate(){
-		layer.confirm("请确认是否更新",{icon:7,title:"系统提示"},function(index){
+		layer.confirm("请确认是否更新？",{icon:7,title:"系统提示"},function(index){
 			layer.close(index);
 			if(checkWcardIschange() == false){
 				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"Contract_end_update");

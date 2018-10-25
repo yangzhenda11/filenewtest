@@ -43,9 +43,9 @@ function searchAssessed(){
 
 //新增一行
 function addTbody(){
-	
+
 	if($("#assessedTbody").find(".emptyTr")){
-		$("#assessedTbody").html("");
+		$("#assessedTbody").find(".emptyTr").remove();
 	}	
 	var html = '<tr>'+
 			'<td><label class="ui-checkbox"><input type="checkbox" name="assessedCheckbox"><span></span></label></td>'+
@@ -118,6 +118,8 @@ function saveTbody(){
 
 //提交表格
 function submitTbody(){
+	// 先执行保存操作
+	saveTbody();
 	var dataAll = [];
 	$("#assessedTbody tr").each(function(){
 		var data = {"accountName": $(this).find(".accountName").val(),

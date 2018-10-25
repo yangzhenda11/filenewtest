@@ -945,7 +945,7 @@ function initIncomeShareTableTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "provinceCode","title":"组织机构名称","className": "whiteSpaceNormal","width": "30%"},
+			{"data": "companyName","title":"组织机构名称","className": "whiteSpaceNormal","width": "30%"},
 			{"data": "accountPeriodName","title":"账期","className": "whiteSpaceNormal","width": "30%"},
 			{"data": "shareValue","title":"分摊收入","className": "whiteSpaceNormal","width": "35%",
 				"render": function(data, type, full, meta){

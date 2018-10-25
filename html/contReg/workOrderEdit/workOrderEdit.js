@@ -623,7 +623,6 @@ function activateContract(){
  * 客户经理确认
  */
 function customerManagerFinish(bussid){
-	debugger;
 	var postData = App.getFlowParam(bussid,1,0,"Customer_add_Process");
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
 }

@@ -189,12 +189,12 @@
 				if(data.length > 0){
 					var html = "";
 					for(var i = 0; i < data.length; i++){
-						//格式化生效时间  毫秒-->日期
+						//格式化添加时间  毫秒-->日期
 						var createTime = new Date(data[i].createdDate) ;
-						createDateTime = createTime.Format("yyyy-MM-dd hh:mm:ss");
+						createDateTime = createTime.Format("yyyy-MM-dd");
 						//格式化失效时间	 毫秒-->日期
-						var invalidTime = new Date(data[i].invalidDate) ;
-						invalidDateTime = invalidTime.Format("yyyy-MM-dd hh:mm:ss");
+						/* var invalidTime = new Date(data[i].invalidDate) ;
+						invalidDateTime = invalidTime.Format("yyyy-MM-dd hh:mm:ss"); */
 						
 						html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'">'+
 		    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
@@ -432,7 +432,7 @@
 		 */
 		function setCustomerManagerTable(){
 			var myDate = new Date();//获取系统当前时间
-			var nowDate = myDate.Format("yyyy-MM-dd hh:mm:ss") //获取日期与时间
+			var nowDate = myDate.Format("yyyy-MM-dd") //获取日期与时间
 			$("#customerManagerModal").modal("hide");
 			if($("#customerManagerModal .customerManagerItem").length > 0){
 				if($("#customerManagerTbody .emptyTr")[0] != undefined){
@@ -473,9 +473,6 @@
 		    var initDate = {
 		        "M+": this.getMonth() + 1, // 月份
 		        "d+": this.getDate(), // 日
-		        "h+": this.getHours(), // 小时
-		        "m+": this.getMinutes(), // 分
-		        "s+": this.getSeconds(), // 秒
 		    };
 		    if (/(y+)/.test(fmt))
 		        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
@@ -501,6 +498,8 @@
 						if(checkedCreateBy == config.curStaffName){
 							var deleteCustomerManagerItem = {};
 							deleteCustomerManagerItem.managerId = $(v).parents("tr").data("id");
+							deleteCustomerManagerItem.contractNumber = contractNumber;
+							deleteCustomerManagerItem.managerStaffOrgId = $(v).parents("tr").data("stafforgid");
 							deleteCustomerManagerList.push(deleteCustomerManagerItem);
 							$(v).parents("tr").remove();
 						}else{

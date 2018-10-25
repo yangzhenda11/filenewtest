@@ -4,7 +4,6 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
-var provinceCode = "";				//合同所属省份
 var wcardId = null;					//工单主键ID
 var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
 var wcardProcess = null;			//工单处理状态  0:草稿/1:复核/2:退回/3:激活
@@ -15,6 +14,10 @@ var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//是否为退回状态标识位
+var contractAttr = {
+	provinceCode: null,				//合同所属省份
+	city: null						//合同所属城市
+}
 var contractStatusObj = {
 	1: "已审批",
 	2: "作废",
@@ -219,8 +222,8 @@ function beforePushProcess(pass){
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。	
 	var assigneeParam = {
-		prov: provinceCode,
-		city: "",
+		prov: contractAttr.provinceCode,
+		city: contractAttr.city,
 		contracType: "",
 		attrA: "",
 		attrB: "",
@@ -474,14 +477,14 @@ function submitContentFn(){
 					srolloOffect("#contractScanCopyUpload");
 					return false;
 				}
-	    	}
+	    	};
     		var flowKey = "Contractproject2Process";
     		var linkcode = "GDQR";
-    		var prov = provinceCode;
+    		var prov = contractAttr.provinceCode;
     		var callbackFun = "submitContentPost";
     		var staffSelectType = 1;
     		var contracType = "";
-    		var city = "",attrA = "",attrB = "",attrC = "";	    		
+    		var city = contractAttr.city,attrA = "",attrB = "",attrC = "";	    		
 			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 		}
 	}
@@ -878,13 +881,15 @@ function getWorkOrderInfo(){
 				if(baseData){
 					getContractOrderBaseInfoData = baseData;
 					contractStatus = baseData.contractStatus;
-					provinceCode = baseData.provinceCode;
+					contractAttr.provinceCode = baseData.provinceCode;
 					contractType = baseData.contractType;
 					if(returnContractStatus()){
 						isEdit = false;
 						fileUploadEdit = false;
 					}
 					setDomContent(domObj);
+					//获取工单所属的地市编码
+					getContractCityCode(baseData.executeDeptId);
 				}else{
 					showLayerErrorMsg("当前工单暂无信息");
 				}
@@ -914,6 +919,21 @@ function setDomContent(domObj) {
 			}
 		});
 	};
+}
+//获取工单所属的地市编码
+function getContractCityCode(executeDeptId){
+	App.formAjaxJson(serverPath + "contractOrderEditorController/getContractCityCode", "get", {executeDeptId:executeDeptId}, successCallback, improperCallback);
+	function successCallback(result) {
+		var orgCode = result.data.orgCode;
+		if(orgCode){
+			contractAttr.city = orgCode;
+		}else{
+			layer.alert("获取地市编码失败，请联系管理员！",{icon:2});
+		}
+	};
+	function improperCallback(result){
+		layer.alert(result.message,{icon:2});
+	}
 }
 /*
  * 检查工单状态是否属于该流程

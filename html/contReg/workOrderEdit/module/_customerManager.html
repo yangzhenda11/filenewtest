@@ -157,6 +157,7 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
+			debugger;
 			if(data.length > 0){
 				var html = "";
 				for(var i = 0; i < data.length; i++){
@@ -166,7 +167,7 @@
 					//格式化失效时间	 毫秒-->日期
 //					var invalidTime = new Date(data[i].invalidDate) ;
 //					invalidDateTime = invalidTime.Format("yyyy-MM-dd hh:mm:ss");
-					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'">'+
+					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdBy="'+data[i].createdBy+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+	
 	    						'<td>'+data[i].managerStaffName+'</td>'+
@@ -398,9 +399,12 @@
 				layer.close(index);
 				$("#customerManagerTbody input[name='customerManagerCheck']:checked").each(function(k,v){
 					//获取该行添加人
-					var checkedCreateBy = $(v).parents("tr").children().eq(5).text();
-					if(checkedCreateBy == config.curStaffName){
+					var checkedCreateBy = $(v).parents("tr").data("createdby");
+					debugger;
+					if(checkedCreateBy == config.curStaffId){
 						var deleteCustomerManagerItem = {};
+						deleteCustomerManagerItem.contractNumber = contractNumber;
+						deleteCustomerManagerItem.managerStaffOrgId = $(v).parents("tr").data("stafforgid");
 						deleteCustomerManagerItem.managerId = $(v).parents("tr").data("id");
 						deleteCustomerManagerList.push(deleteCustomerManagerItem);
 						$(v).parents("tr").remove();

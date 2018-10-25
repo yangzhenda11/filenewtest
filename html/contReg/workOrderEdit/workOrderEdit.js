@@ -623,7 +623,7 @@ function activateContract(){
  * 客户经理确认待办变已办
  */
 function customerManagerFinish(){
-	var postData = App.getFlowParam(wcardId,1,0,"Customer_add_Process");
+	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"Customer_add_Process");
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
 }
 /*

@@ -27,7 +27,7 @@
 				</thead>
 				<tbody id="customerManagerTbody">
 					<tr class="emptyTr">
-						<td colspan="4">暂无客户经理信息</td>
+						<td colspan="7">暂无客户经理信息</td>
 					</tr>
 				</tbody>
 			</table>
@@ -40,8 +40,6 @@
 		 */
 		function saveCustomerManager(){
 			var customerManagerList = getValue_customerManagerList(true);
-			console.log(customerManagerList);
-			debugger;
 			var postData = JSON.stringify({wcardId:wcardId,customerManagerList:customerManagerList,deleteCustomerManagerList:deleteCustomerManagerList});
 			var url = serverPath + "contractOrderEditorController/saveOrderCustomerManagerInfo";
 			App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
@@ -372,11 +370,11 @@
 					$(v).parent().remove();
 				});
 			}
-	   	});
+	   	};
         function setInputInfo(event, treeId, treeNode) {
             addCustomerManagerValue(treeNode);
         }
-    }
+    
     /*
      * 判断是否选的是人员
      */
@@ -428,6 +426,7 @@
 				$(v).parent().remove();
 			});
 		}
+    }
 		/*
 		 * modal确定按钮点击
 		 */

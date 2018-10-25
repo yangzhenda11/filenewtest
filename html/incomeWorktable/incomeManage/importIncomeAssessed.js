@@ -76,6 +76,8 @@ function deleteTbody(){
 }
 //保存表格
 function saveTbody(){
+	
+	var flag = true;
 	// 将需要保存的数据拼成json格式提交后台[{key:value,key:value,...},{key:value,key:value,...}...]
 	var dataAll = [];
 	$("#assessedTbody tr").each(function(){
@@ -84,12 +86,14 @@ function saveTbody(){
 		var accountNumber = $(this).find(".accountNumber").val();
 	    if(!/^[0-9]+$/.test(accountName)){
 	    	layer.msg("请输入数字!");
-	    	return;
+	    	flag = false;
+	    	return false;
 	    }
 
 	    if(!/^[0-9]+$/.test(accountNumber)){
 	    	layer.msg("请输入数字!");
-	    	return;
+	    	flag = false;
+	    	return false;
 	    }
 	    
 		var data = {"accountName": accountName,
@@ -98,14 +102,17 @@ function saveTbody(){
 		dataAll.push(data);
 	});
 	
-	var postData = {
-		incomeShareData : JSON.stringify(dataAll)
-	};
-	var url = serverPath + "incomeShare/saveIncomeShare";
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		layer.msg("保存成功");
-		getAssessedTbody();
+	if(flag) {
+
+		var postData = {
+			incomeShareData : JSON.stringify(dataAll)
+		};
+		var url = serverPath + "incomeShare/saveIncomeShare";
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			layer.msg("保存成功");
+			getAssessedTbody();
+		}
 	}
 }
 

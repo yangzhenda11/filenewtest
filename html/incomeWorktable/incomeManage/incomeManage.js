@@ -234,7 +234,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	incomeAnalysis.on('click', function (params) {
 		// 将账期放入到全局变量中
 		console.log("params",params)
-		pageConfig.incomePeriod = params.name ;
+		pageConfig.incomePeriod = params.data.account ;
     	if(params.stack == "合同收入"){
     		// 风险收入明细div隐藏
     		$("#riskIncomeAnalysisValue").hide();
@@ -281,7 +281,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  })
  //收入分析-合同收入明细-点击单选按钮，获取radio选中项，根据选中类型查询
  function checkIncomeRadio(radioVal){
-	 if(pageConfig.accountPeriod == null){
+	 if(pageConfig.incomePeriod == null){
 			if(radioVal == 1){ 		// 按客户查看
 				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>履行中合同</th>";
 			}else{	
@@ -290,9 +290,11 @@ function initIncomeAnalysisCharts(incomeChartData){
 			}
 			$("#incomeThead").html(theadHtml);
 		}else{
-			if(radioVal == 1){ 		// 按客户查看
+			if(radioVal == 1){ 		
+				// 按客户查看
 				initIncomeTableByCustomer();
-			}else{					// 按合同查看
+			}else{					
+				// 按合同查看
 				initIncomeTableByContract();
 			}
 		}
@@ -320,24 +322,24 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "20%",},
-			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "20%",},
-			{"data": "incomeReceivable","title":"累计应收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "incomeReceivable","title":"累计应收(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeArrears","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "20%",
+			{"data": "incomeArrears","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeCollected","title":"累计实收(元)","className": "whiteSpaceNormal","width": "20%",
+			{"data": "incomeCollected","title":"累计实收(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "20%",
+			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpIncomeContractManage(\""+data+"\")'>查看</a>";
 				}
@@ -378,17 +380,17 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeReceivable","title":"累计应收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeReceivable","title":"累计应收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeArrears","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeArrears","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeCollected","title":"累计实收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeCollected","title":"累计实收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
@@ -410,7 +412,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  })
  // 收入分析-风险收入明细-点击单选按钮，获取radio选中项，根据选中类型查询
  function checkRiskIncomeRadio(radioVal){
-	 if(pageConfig.accountPeriod == null){
+	 if(pageConfig.incomePeriod == null){
 			if(radioVal == 1){ 		// 按客户查看
 				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
 			}else{			
@@ -421,7 +423,8 @@ function initIncomeAnalysisCharts(incomeChartData){
 		}else{
 			if(radioVal == 1){ 		// 按客户查看
 				initRiskIncomeTableByCustomer();
-			}else{					// 按合同查看
+			}else{		
+									// 按合同查看
 				initRiskIncomeTableByContract();
 			}
 		}
@@ -449,24 +452,24 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "incomeReceivable","title":"累计应收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "incomeReceivable","title":"累计应收(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeArrears","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeArrears","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeCollected","title":"累计实收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeCollected","title":"累计实收(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "8%",
+			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpRiskIncomeContractManage(\""+data+"\")'>查看</a>";
 				}
@@ -498,22 +501,22 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "incomeReceivable","title":"应收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "incomeReceivable","title":"应收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeArrears","title":"欠费(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeArrears","title":"欠费(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "incomeCollected","title":"实收(元)","className": "whiteSpaceNormal","width": "27%",
+			{"data": "incomeCollected","title":"实收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}

@@ -44,9 +44,9 @@ function getTableToread(){
 			},
 	        {
 	            "data": "readTitle",
-	            title: "主题",
+	            "title": "主题",
 	            "className": "whiteSpaceNormal",
-	            render: function(data, type, row, meta) {
+	            "render": function(data, type, row, meta) {
 	            	var assignee = row.receivedStaffOrgId
 		        	var fn = "";
 		        	var style = "";

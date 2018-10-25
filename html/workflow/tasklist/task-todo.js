@@ -245,9 +245,9 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 				isPass = true;
 			}
 		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-			if(wcardStatus == 904030){
+		/*	if(wcardStatus == 904030){*/
 				isPass = true;
-			}
+			/*}*/
 		};
 		if(isPass == true){
 			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;

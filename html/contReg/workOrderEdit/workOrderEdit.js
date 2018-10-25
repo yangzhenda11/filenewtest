@@ -44,6 +44,7 @@ if(parm.taskFlag == "db"){
 		editIdentify.isCanUpdateExpiryDate = true;
 	}else if(parm.taskDefinitionKey == "KHQR"){
 		//客户经理待办确认，不进行任何操作，待办边已办。
+		customerManagerFinish(wcardId);
 	}else if(parm.taskDefinitionKey == "TJKH"){
 		editIdentify.isCanUpdateCustomerManager = true;
 	}
@@ -619,6 +620,14 @@ function activateContract(){
 	}
 }
 /*
+ * 客户经理确认
+ */
+function customerManagerFinish(bussid){
+	debugger;
+	var postData = App.getFlowParam(bussid,1,0,"Customer_add_Process");
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
+}
+/*
  * 取消审批点击@功能页面
  */
 function cancelApproved(){
@@ -768,7 +777,7 @@ function saveContent(){
     	};
 		saveContentPost(submitData,"GDQR");
 	}else{
-		//删除多于表格内的数据
+		//删除多余表格内的数据
 		removeMoreThanTablecontent();
 		//检查是否长度超长
 		if(parm.pageType == 1){

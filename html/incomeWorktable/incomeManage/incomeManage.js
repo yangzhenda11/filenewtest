@@ -71,10 +71,8 @@ function initIncomeCharts(){
 	var url = serverPath + "incomeManage/listIncomePosition";
 	App.formAjaxJson(url, "post", null, successCallback);
 	function successCallback(result) {
-		console.log("result",result);
 		var data = result.data;
 		if(data){
-			console.log("data",data);
 			initIncomeAnalysisCharts(data);
 		};
 	}
@@ -83,6 +81,14 @@ function initIncomeCharts(){
  * 生成收入分析图表
  */
 function initIncomeAnalysisCharts(incomeChartData){
+	var incomeChartData = {
+		currentYear: 2018,
+		accountPeriodX: ["201801","201802","201803","201804","201805","201806","201807","201808","201809","201810","201811","201812"],
+		riskIncomeCollectedAmountList: [10000,12000,11000,13000,11000,12300,10000,12000,11000,13000,11000,12300],
+		riskIncomeArrearsAmountList: [7000,8000,8000,8400,7600,8500,8000,7600,8200,7900,8200,8700],
+		incomeCollectedAmountList: [13000,11000,13200,12000,11400,12000,11000,11200,11800,13400,12000,12900],
+		incomeArrearsAmountList: [7000,8000,8000,8400,7600,8500,8000,7600,8200,7900,8200,8700],
+	}
 	// 定义账期集合
 	var acountPeriod = [];
 	// 定义风险收入-实收金额集合
@@ -95,7 +101,9 @@ function initIncomeAnalysisCharts(incomeChartData){
 	var incomeArrearsAmountList = [];
 	// 遍历账期集合，处理账期数据
 	$.each(incomeChartData.accountPeriodX,function(k,v){
-		var a = '风险收入 合同收入\n\n'+v;
+		
+//		var a = '风险收入 合同收入\n\n'+v;
+		var a = '风险 合同\n收入 收入\n'+v;
 		acountPeriod.push(a);
 		// 定义风险收入-实收Item
 		var riskIncomeCollectedAmountItem = {
@@ -148,12 +156,12 @@ function initIncomeAnalysisCharts(incomeChartData){
 	   	},
 	    legend: {
 	    	orient: 'vertical',
-	    	top: '40%',
-	        right: '5',
+	    	top: '10',
+	        right: '30',
 	        itemWidth: 10,
 	        itemHeight: 10,
 	        selectedMode: false,
-	        itemGap: 15
+	        itemGap: 10
 	    },
 	    tooltip : {
 	        trigger: 'axis',
@@ -167,14 +175,14 @@ function initIncomeAnalysisCharts(incomeChartData){
             formatter:function (params, ticket, callback) {
             	var tooltipCon = params[0].name.split("\n\n")[1] + "</br>"
             	$.each(params, function(k,v) {
-            		tooltipCon += v.stack + v.seriesName + "：" + v.value + "元</br>";
+            		tooltipCon += v.stack + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
             	});
 			    return tooltipCon;
 			}
 	    },
 	    grid: {
 	    	left: '10',
-            right: '100',
+            right: '10',
             bottom: '5',
             top: '80',
             containLabel: true
@@ -186,7 +194,14 @@ function initIncomeAnalysisCharts(incomeChartData){
 	    	axisTick:{
 	    		show:false
 	    	},
-//	        data: ['风险收入 合同收入\n\n6月', '风险收入 合同收入\n\n7月', '风险收入 合同收入\n\n8月', '风险收入 合同收入\n\n9月', '风险收入 合同收入\n\n10月', '风险收入 合同收入\n\n11月', '风险收入 合同收入\n\n12月']
+            axisLabel: {
+//          	lineHeight:18
+//          	textStyle:{
+//          		fontSize: 10
+//          	},
+//             interval:0,
+//             rotate:40
+            },
 	    	data: acountPeriod
 	    },
 	    yAxis: {
@@ -638,7 +653,10 @@ function initForecastCharts(forecastChartsData){
 		        label: {
 	                normal: {
 	                    show: true,
-	                    position: 'top'
+	                    position: 'top',
+	                    formatter:function(params){
+		                	return App.unctionToThousands(params.data);
+		                }
 	                }
 	            },
 		        data: forecastChartsData.totalArray

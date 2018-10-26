@@ -1468,8 +1468,12 @@ function backPage(){
 	if(parm.isucloud == "true"){
 		top.closeWindow();
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
-		var pageId = self.frameElement.getAttribute('data-id');
-		top.closeIfreamSelf(pageId);
+		layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+			saveCustomerManager();
+		}, function(){
+			var pageId = self.frameElement.getAttribute('data-id');
+			top.closeIfreamSelf(pageId);
+		});
 	}else{
 		window.history.go(-1);
 	}

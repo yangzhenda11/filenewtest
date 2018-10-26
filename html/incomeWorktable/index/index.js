@@ -741,7 +741,10 @@ function initIncomeAnalysis(incomedata) {
 		        label: {
 	                normal: {
 	                    show: true,
-	                    position: 'top'
+	                    position: 'top',
+	                    formatter:function(params){
+		                	return App.unctionToThousands(params.data);
+		                }
 	                }
 	            },
 		        data: incomedata.totalArray

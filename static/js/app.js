@@ -1824,15 +1824,15 @@ var App = function() {
             })
         },
 
-		//工作流相关
-        getFlowParam:function(serverPath,businessId,handleType,pathSelect){
+		//工作流相关，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
+        getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType,provCode,cityCode,attrA,attrB,attrC){
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");
         	}else{
         		$.ajax({
         			type: 'get',
-        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect,
+        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect+'&businessType='+businessType+'&provCode='+provCode+'&cityCode='+cityCode+'&attrA='+attrA+'&attrB='+attrB+'&attrC='+attrC,
         			//data: null,
         			dataType: 'json',
         			async: false,
@@ -1864,7 +1864,7 @@ var App = function() {
         	}
     		$.ajax({
     			type: 'get',
-    			url: serverPath+'workflowrest/checkFlow?businessType='+businessType+'&businessId='+businessId,
+    			url: serverPath+'workflowrest/checkFlow?businessType='+businessType+'&businessId='+businessId+'&provCode='+provCode+'&cityCode='+cityCode+'&attrA='+attrA+'&attrB='+attrB+'&attrC='+attrC,
     			//data: null,
     			dataType: 'json',
     			async: false,

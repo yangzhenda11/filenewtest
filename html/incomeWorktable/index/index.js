@@ -493,6 +493,7 @@ function getIncomeOverviewData(){
 			var riskIncomeCollectedTotal = data.riskIncomeCollectedTotal;	//风险收入-实收总金额
 			var riskIncomeReceivableTotal = data.riskIncomeReceivableTotal;	//风险收入-应收总金额
 			var lastAccountPeriod = data.lastAccountPeriod;					//统计数据截止日期
+			$("#incomeOverviewNote").html(lastAccountPeriod.substring(0,4)+"年"+lastAccountPeriod.substring(4,6)+"月");
 			var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
 			var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
 			if(incomeReceivableTotal || riskIncomeReceivableTotal){			//应收总金额图表生成
@@ -519,7 +520,6 @@ function getIncomeOverviewData(){
 			};
 			incomeOverviewReceivable.setOption(overviewReceivableOption);
 			incomeOverviewReceived.setOption(overviewReceivedOption);
-
 		};
 	}
 }

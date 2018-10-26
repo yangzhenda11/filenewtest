@@ -1,7 +1,7 @@
 (function($){
 	$.fn.initSelectList = function(opts){
 		opts = $.extend({}, opts);
-
+		console.log(opts.editStaffRole);
 		var selectTitle = $(this);
 
 		/**
@@ -150,7 +150,8 @@
 			leftTitle: "可选择列",
 			rightTitle: "已选择列",
 			modalId: "#commomModal",
-			fluctuation: true
+			fluctuation: true,
+			editStaffRole: false
 		}, e);
 		$(e.modalId).load("/static/data/_selectLR.html",function(){
 			if(e.fluctuation){
@@ -165,7 +166,7 @@
 					$("#_selectLCon").append('<li class="item" data-id="'+v.id+'">'+v.data+'</li>');
 				}
 			});
-			$('#selectLRContent').initSelectList();
+			$('#selectLRContent').initSelectList(e);
 			$(e.modalId).modal("show");
 		});
 	}

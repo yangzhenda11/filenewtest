@@ -389,8 +389,10 @@ function staffOrgRoleManage(staffOrgId, orgName) {
             };
             roleData.push(item);
         };
+        console.log(roleData);
         var options = {
 			modalId: "#roleModal",
+			editStaffRole: true,
 			data: roleData
 		}
 		$.initSelectLRFn(options);

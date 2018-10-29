@@ -477,9 +477,9 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
+			{"data": "customerCode","title":"线路明细","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeContractManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineManage(\""+data+"\")'>查看</a>";
 				}
 			
 			}
@@ -514,6 +514,11 @@ function initIncomeAnalysisCharts(incomeChartData){
 			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "11%",},
 			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "11%",},
 			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
 			{"data": "receivableAmount","title":"应收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -543,6 +548,9 @@ function initIncomeAnalysisCharts(incomeChartData){
  /*
   *  跳转线路信息 jumpRiskIncomeContractManage
   */
+ function jumpIncomeLineManage(){
+	 //跳转线路信息链接
+ }
  
 //=======================================收入分析 end=============================================//
 /*

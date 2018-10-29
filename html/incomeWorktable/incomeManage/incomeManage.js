@@ -95,7 +95,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	var incomeArrearsAmountList = [];
 	// 遍历账期集合，处理账期数据
 	$.each(incomeChartData.accountPeriodX,function(k,v){
-		var acountPeriodItem = '风险收入 合同收入\n\n'+v.substring(5,6)+'月份';
+		var acountPeriodItem = '风险收入 合同收入\n\n'+parseInt(v.substring(4,6))+'月';
 //		var a = '风险 合同\n收入 收入\n'+v;
 		acountPeriod.push(acountPeriodItem);
 		// 定义风险收入-实收Item
@@ -570,6 +570,26 @@ function initIncomeForecastCharts(){
  * 生成收入预测图表
  */
 function initForecastCharts(forecastChartsData){
+	var acountPeriodX = [];
+	var contractIncomeForecastZxArray = [];
+	var lineIncomeForecastArray = [];
+	// 遍历账期集合，处理账期数据
+	$.each(forecastChartsData.accountPeriodX,function(k,v){
+		var acountPeriodItem = parseInt(v.substring(4,6))+'月';
+		acountPeriodX.push(acountPeriodItem);
+		// 收入预测-合同收入Item
+		var contractIncomeForecastZxItem = {
+				value:forecastChartsData.contractIncomeForecastZxArray[k],
+				account:v
+		};
+		contractIncomeForecastZxArray.push(contractIncomeForecastZxItem);
+		// 收入预测-风险收入Item
+		var lineIncomeForecastItem = {
+				value:forecastChartsData.lineIncomeForecastArray[k],
+				account:v
+		};
+		lineIncomeForecastArray.push(lineIncomeForecastItem);
+	})
 	var incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
 	var incomeForecastOption = {
 		title : {
@@ -608,7 +628,14 @@ function initForecastCharts(forecastChartsData){
 	        },
 	        textStyle:{
                	align:'left'
-            }
+            },
+            formatter:function (params, ticket, callback) {
+            	var tooltipCon = params[0].data.account + "</br>"
+            	$.each(params, function(k,v) {
+            		tooltipCon += v.marker + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
+            	});
+			    return tooltipCon;
+			}
 	    },
 	    grid: {
 	    	left: '10',
@@ -624,7 +651,7 @@ function initForecastCharts(forecastChartsData){
 	    	axisTick:{
 	    		show:false
 	    	},
-	        data: forecastChartsData.accountPeriodX
+	        data: acountPeriodX
 	    },
 	    yAxis: {
 	    	axisLine:{
@@ -639,14 +666,14 @@ function initForecastCharts(forecastChartsData){
 	        	name: '合同收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        data: forecastChartsData.contractIncomeForecastZxArray
+		        data: contractIncomeForecastZxArray
 		    },
 		    {
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
 		        barMaxWidth: 55,
-		        data: forecastChartsData.lineIncomeForecastArray
+		        data: lineIncomeForecastArray
 		    },
 		    {
 		    	name: '收入总计',
@@ -669,29 +696,28 @@ function initForecastCharts(forecastChartsData){
 	pageConfig.isInitForecastCharts = true;
 	incomeForecast.on('click', function (params) {
     	// 将账期放入到全局变量中
-    	pageConfig.accountPeriod = params.name;
+    	pageConfig.accountPeriod = params.data.account;
     	if(params.seriesName == "合同收入"){
     		// 风险收入明细div隐藏
     		$("#lineIncomeForecastValue").hide();
     		// 合同收入明细div显示
     		$("#contractIncomeForecastValue").show();
     		// 给预测账期赋值
-    		$("#contractIncomeForecastAccountPeriod").text(params.name);
+    		$("#contractIncomeForecastAccountPeriod").text(params.data.account);
     		// 给收入预测赋值
-    		$("#contractIncomeForecastReceivable").text(App.unctionToThousands(params.data));
+    		$("#contractIncomeForecastReceivable").text(App.unctionToThousands(params.data.value)+" 元");
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='contractIncomeForecastType']:checked").val();
     		checkContractIncomeForecastRadio(radioVal);
-    	}
-    	else if(params.seriesName == "风险收入"){
+    	}else if(params.seriesName == "风险收入"){
     		// 合同收入明细div隐藏
     		$("#contractIncomeForecastValue").hide();
     		// 风险收入明细div显示
     		$("#lineIncomeForecastValue").show();
     		// 给预测账期赋值
-    		$("#lineIncomeForecastAccountPeriod").text(params.name);
+    		$("#lineIncomeForecastAccountPeriod").text(params.data.account);
     		// 给收入预测赋值
-    		$("#lineIncomeForecastReceivable").text(App.unctionToThousands(params.data));
+    		$("#lineIncomeForecastReceivable").text(App.unctionToThousands(params.data.value)+" 元");
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='lineIncomeForecastType']:checked").val();
     		checkLineIncomeForecastRadio(radioVal);

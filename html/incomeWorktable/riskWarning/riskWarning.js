@@ -955,6 +955,7 @@ function initWarningOverviewCharts(){
  * 跳转明细查看
  */
 function jumpRiskList(riskType,contractId){
+	debugger;
 	var url = "/html/incomeWorktable/riskWarning/riskWarningList.html?returnBtn=true&contractId="+contractId+"&riskType="+riskType;
 	top.showSubpageTab(url,"查看线路明细");
 }

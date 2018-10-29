@@ -281,6 +281,8 @@
 	 */
 	function getContractOverInfo() {
 		var data = getContractOrderBaseInfoData;
+		delete data.vatRate
+		console.log(data)
 		var isFixed = data.isFixed;
 		var contractNature = data.contractNature;
 		var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;
@@ -348,7 +350,7 @@
 				}
 			},
 			"vatRate":function(value){
-				if(value == null){
+				if(value == null || value == ""){
 					value = '';
 				}else if(value == "多税率" || value == "0"){
 					value = value;
@@ -358,7 +360,7 @@
 				return value;
 			},
 			"originalVatRate":function(value){
-				if(value == null){
+				if(value == null || value == ""){
 					value = '';
 				}else if(value == "多税率" || value == "0"){
 					value = value;

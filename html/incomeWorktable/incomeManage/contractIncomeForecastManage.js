@@ -77,5 +77,5 @@ function initContractInforTable(){
  */
 function jumpLineManage(contractId){
 	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractId="+contractId;
-	top.showSubpageTab(url,"查看线路收入信息");
+	top.showSubpageTab(url,"线路收入预测");
 }

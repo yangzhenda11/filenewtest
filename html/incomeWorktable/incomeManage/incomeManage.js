@@ -57,12 +57,6 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		}
 	};
 })
-///*
-// * 合同收入明细查看类型切换
-// */
-//$("#incomeAnalysisRadio input[name='incomeType']").on("change",function(){
-////	$(this).val()
-//})
 //=======================================收入分析 start=============================================//
 /*
  * 获取收入分析图表数据
@@ -101,7 +95,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	var incomeArrearsAmountList = [];
 	// 遍历账期集合，处理账期数据
 	$.each(incomeChartData.accountPeriodX,function(k,v){
-		var acountPeriodItem = '风险收入 合同收入\n\n'+v;
+		var acountPeriodItem = '风险收入 合同收入\n\n'+v.substring(5,6)+'月份';
 //		var a = '风险 合同\n收入 收入\n'+v;
 		acountPeriod.push(acountPeriodItem);
 		// 定义风险收入-实收Item

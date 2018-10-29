@@ -233,8 +233,10 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
 	function successCallback(result) {
-		var wcardProcess = result.data.wcardProcess;
-		var wcardStatus = result.data.wcardStatus;
+		var data = result.data;
+		var wcardProcess = data.wcardProcess;
+		var wcardStatus = data.wcardStatus;
+		var contractStatus = data.contractStatus;
 		var isPass = false;
 		if(taskDefinitionKey == "GDCL"){
 			if(wcardProcess == 0 || wcardProcess == 2){
@@ -245,7 +247,7 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 				isPass = true;
 			}
 		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-			if(wcardStatus == 904030){
+			if(wcardStatus == 904030 && contractStatus == 8){
 				isPass = true;
 			}
 		};

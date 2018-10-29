@@ -39,7 +39,7 @@
 						<button href="#contractEnd" data-id="contractEnd" data-toggle="tab" class="btn primary btn-inline">合同到期业务未停止</button>
 						<button href="#businessExceptionAbnormal" data-id="businessExceptionAbnormal" data-toggle="tab" class="btn primary btn-inline">业务信息报错</button>
 					</div>
-					<div class="tab-content work-list">
+					<div class="tab-content">
 					    <div class="tab-pane fade in active" id="warningOverview">
 					    	<div class="warningOverviewChartsDom">
 					    		<div id="warningOverviewCharts"></div>
@@ -62,8 +62,8 @@
 										<th>客户信息不一致（沃商务与一站式）</th>
 										<th>BSS系统内线路客户信息不一致</th>
 										<th>一站式系统/手工导入线路客户信息不一致</th>
-										<th>线路关联非租线合同异常（基本信息）</th>
-										<th>线路关联非租线合同异常（出账信息）</th>
+										<th class="relatedNotzxBaseTit" style="display: none;">线路关联非租线合同异常（基本信息）</th>
+										<th class="relatedNotzxPeriodTit" style="display: none;">线路关联非租线合同异常（出账信息）</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -74,12 +74,12 @@
 										<td><a class="underline" data-pane="lineBillAbnormal" id="lineRentedHaveBill"></a></td>
 										<td><a class="underline" data-pane="contractEnd" id="contractEndHaveLine"></a></td>
 										<td><a class="underline" data-pane="contractEnd" id="contractEndHaveNewLine"></a></td>
-								      <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffTobss"></a></td>
-									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffToyzs"></a></td>
-									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffInbss"></a></td>
-									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffInyzsdr"></a></td>
-									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="relatedNotzxBase"></a></td>
-									   <td><a class="underline" data-pane="businessExceptionAbnormal" id="relatedNotzxPeriod"></a></td>
+								      	<td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffTobss"></a></td>
+									   	<td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffToyzs"></a></td>
+									   	<td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffInbss"></a></td>
+									   	<td><a class="underline" data-pane="businessExceptionAbnormal" id="customDiffInyzsdr"></a></td>
+									   	<td class="relatedNotzxBaseTit" style="display: none;"><a class="underline" data-pane="businessExceptionAbnormal" id="relatedNotzxBase"></a></td>
+									   	<td class="relatedNotzxPeriodTit" style="display: none;"><a class="underline" data-pane="businessExceptionAbnormal" id="relatedNotzxPeriod"></a></td>
 									</tr>
 								</tbody>
 							</table>
@@ -91,7 +91,9 @@
 					        <!-- 线路租用中欠费 -->
 							<div class="form-fieldset" id="lineIsArrearageDom">
 								<div class="form-fieldset-title">
-									<span style="width:120px;">线路已欠费</span>
+									<div class="fieldset-title">
+										<p>线路已欠费</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -133,7 +135,9 @@
 					        <!-- 线路租用中，无账单 -->
 					    	<div class="form-fieldset" id="lineRentNotBillDom">
 								<div class="form-fieldset-title">
-									<span>线路租用中，无账单</span>
+									<div class="fieldset-title">
+										<p>线路租用中，无账单</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -172,7 +176,9 @@
 							<!-- 线路已止租，有新账单 -->
 							<div class="form-fieldset" id="lineRentedHaveBillDom">
 								<div class="form-fieldset-title">
-									<span>线路已止租，有新账单</span>
+									<div class="fieldset-title">
+										<p>线路已止租，有新账单</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -215,7 +221,9 @@
 					    	<!-- 合同已到期，存在未止租线路 -->			    
 					    	<div class="form-fieldset" id="contractEndHaveLineDom">
 								<div class="form-fieldset-title">
-									<span>合同已到期，存在未止租线路</span>
+									<div class="fieldset-title">
+										<p>合同已到期，存在未止租线路</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -254,7 +262,9 @@
                             <!-- 合同已到期，存在新起租线路 -->
 							<div class="form-fieldset" id="contractEndHaveNewLineDom">
 								<div class="form-fieldset-title">
-									<span>合同已到期，存在新起租线路</span>
+									<div class="fieldset-title">
+										<p>合同已到期，存在新起租线路</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -296,7 +306,9 @@
 					        <!-- 客户信息不一致（沃商务与BSS） -->
 							<div class="form-fieldset" id="customDiffTobssDom">
 								<div class="form-fieldset-title">
-									<span style="width:130px;">客户信息不一致</span>
+									<div class="fieldset-title">
+										<p>客户信息不一致（沃商务与BSS）</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -339,7 +351,9 @@
                             <!-- 客户信息不一致（沃商务与一站式） -->
 					        <div class="form-fieldset" id="customDiffToyzsDom">
 								<div class="form-fieldset-title">
-									<span style="width:130px;">客户信息不一致</span>
+									<div class="fieldset-title">
+										<p>客户信息不一致（沃商务系统与一站式/手工导入）</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -361,7 +375,7 @@
 												<th colspan="2">一站式</th>
 												<th rowspan="2">差异描述</th>
 												<th rowspan="2">线路明细</th>
-											</tr>
+											</tr> 
 											<tr>
 												<th>合同名称</th>
 												<th>合同编号</th>
@@ -382,7 +396,9 @@
 					     	<!-- BSS系统内线路客户信息不一致 -->			     
 					        <div class="form-fieldset" id="customDiffInbssDom">
 								<div class="form-fieldset-title">
-									<span>BSS系统线路客户信息不一致</span>
+									<div class="fieldset-title">
+										<p>BSS系统线路客户信息不一致</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -421,7 +437,9 @@
 			                <!--一站式系统/手工导入线路客户信息不一致 -->
 							<div class="form-fieldset" id="customDiffInyzsdrDom">
 								<div class="form-fieldset-title">
-									<span style="width:300px;">一站式系统/手工导入线路客户信息不一致</span>
+									<div class="fieldset-title">
+										<p>一站式系统/手工导入线路客户信息不一致</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -460,7 +478,9 @@
 					        <!-- 线路关联非租线合同异常（基本信息） -->
 					        <div class="form-fieldset" id="relatedNotzxBaseDom">
 								<div class="form-fieldset-title">
-									<span style="width:280px;">线路关联非租线合同异常（基本信息）</span>
+									<div class="fieldset-title">
+										<p>线路关联非租线合同异常（基本信息）</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -503,7 +523,9 @@
 							<!-- 线路关联非租线合同异常（出账信息） -->
 							<div class="form-fieldset" id="relatedNotzxPeriodDom">
 								<div class="form-fieldset-title">
-									<span style="width:280px;">线路关联非租线合同异常（出账信息）</span>
+									<div class="fieldset-title">
+										<p>线路关联非租线合同异常（出账信息）</p><span></span>
+									</div>
 									<div class="form-fieldset-tools">
 										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
 									</div>
@@ -540,14 +562,7 @@
 									</table>
 								</div>
 							</div>
-   
-					      </div>
-					    
-					    
-					    
-					    
-					  
-					    
+					    </div>
 					</div>
 				</div>
 			</div>

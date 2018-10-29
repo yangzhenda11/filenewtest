@@ -11,7 +11,8 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){
- 	if(parm.contractId){
+	debugger;
+ 	if(parm.contractId||parm.contractNumber||customerCode){
  		$("#parmContractNum").text(parm.contractNumber);
  		initLineInforTable();
  	}else{
@@ -43,9 +44,11 @@ function initLineInforTable(){
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'milestoneMangerController/listLineIncomeForCustomer',
+			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomer',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
+				d.customerCode = parm.customerCode;
+				d.contractNumber = parm.contractNumber;
 				d.contractId = parm.contractId;
 				d.businessId = $("#searchInput").val().trim();
 				return  JSON.stringify(d);

@@ -2,11 +2,40 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
+	/*
+	 * 风险预警功能，具备全省权限的稽核管理角色和商务经理角色才显示。
+	 * roleType
+	 * 91216：客户经理
+	 * 91217：业务管理
+	 * 91218：稽核管理
+	 * 91219：商务经理
+	 * dataPermission
+	 * 0个人，1部门，2公司，3省分
+	 */
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+		if(dataPermission != 3) {
+			$("#relatedNotzxBaseDom").remove();
+			$("#relatedNotzxPeriodDom").remove();
+			$(".relatedNotzxBaseTit,.relatedNotzxPeriodTit").remove();
+		}else{
+			$(".relatedNotzxBaseTit,.relatedNotzxPeriodTit").show();
+		}
+	}else{
+		$("#relatedNotzxBaseDom").remove();
+		$("#relatedNotzxPeriodDom").remove();
+		$(".relatedNotzxBaseTit,.relatedNotzxPeriodTit").remove();
+	};
 	//生成预警总览图表
-	getCount(); 
+	getRiskWarningChartData(); 
 })
-
-function getCount() {
+  
+/*
+ * 生成预警总览图表
+ */
+function getRiskWarningChartData() {
+ 
 	var postData = { 
 	};
 	var url = serverPath + "riskWarningDetailMangerController/getRiskWarningCount";
@@ -17,18 +46,15 @@ function getCount() {
 		$("#lineRentedHaveBill").text(result.data.lineRentedHaveBill);
 		$("#contractEndHaveLine").text(result.data.contractEndHaveLine);
 		$("#contractEndHaveNewLine").text(result.data.contractEndHaveNewLine);
-		 
 		$("#customDiffTobss").text(result.data.customDiffTobss);
 		$("#customDiffToyzs").text(result.data.customDiffToyzs);
 		$("#customDiffInbss").text(result.data.customDiffInbss);
 		$("#customDiffInyzsdr").text(result.data.customDiffInyzsdr);
-		
  		$("#relatedNotzxBase").text(result.data.relatedNotzxBase);
 		$("#relatedNotzxPeriod").text(result.data.relatedNotzxPeriod);
 		initWarningOverviewCharts(); 
 	}
 }
- 
 
 /*
  * 标题切换
@@ -37,17 +63,16 @@ $("#buttonNavTabs").on("click","button",function(){
 	$(this).addClass("check").siblings("button").removeClass("check");
 })
 $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-//	$(e.target).data("id")
+//	$(e.target).data("id");
 })
 //风险预警点击跳转
 $("#warningOverviewTr").on("click","a",function(){
 	var paneId = $(this).data("pane");
 	var domId = $(this).attr("id") + "Dom";
-	var scrollTopValue = $("#"+domId).offset().top - 20;
 	$("#buttonNavTabs button[data-id="+paneId+"]").addClass("check").siblings("button").removeClass("check");
 	$("#"+paneId).addClass("active in").siblings("div").removeClass("active in");
 	$("#page-content").animate({
-		scrollTop:scrollTopValue
+		scrollTop: $("#"+domId).offset().top - 20
 	},300)
 })
 //查询按钮点击统一处理
@@ -140,7 +165,7 @@ function initLineIsArrearageTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
 
@@ -208,7 +233,7 @@ function initLineRentNotBillTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
 
@@ -284,7 +309,7 @@ function initLineRentedHaveBillTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
 
@@ -352,7 +377,7 @@ function initContractEndHaveLineTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
 
@@ -420,7 +445,7 @@ function initContractEndHaveNewLineTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
  
@@ -428,6 +453,17 @@ function initContractEndHaveNewLineTable() {
 	});
 }
  
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -493,7 +529,7 @@ function initCustomDiffTobssTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffToDetail(\""+data.contractId+"\",\"Tobss\")'>查看</a>";
 							}
 						}
 						
@@ -563,7 +599,7 @@ function initCustomDiffToyzsTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffToDetail(\""+data.contractId+"\",\"Toyzs\")'>查看</a>";
 							}
 						}
 						]
@@ -632,7 +668,7 @@ function initCustomDiffInbssTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inbss\")'>查看</a>";
 							}
 						}
 						]
@@ -700,7 +736,7 @@ function initCustomDiffInyzsdrTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpRiskList(\""+data.diffContent+"\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inyzsdr\")'>查看</a>";
 							}
 						}
 						]
@@ -792,6 +828,7 @@ function initRelatedNotzxPeriodTable() {
 			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForRiskWaring',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
+				debugger;
 				d.contractName = $("#relatedNotzxPeriodInput").val().trim();
 				return JSON.stringify(d);
 			}
@@ -857,19 +894,30 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function initWarningOverviewCharts(){
 	var chartsDom = echarts.init(document.getElementById('warningOverviewCharts'));
- 
-	var   lineArrearage =parseInt($("#lineIsArrearage").text());
-	var   lineException =parseInt($("#lineRentNotBill").text())+parseInt($("#lineRentedHaveBill").text()) ;
-	
-	var   contractException =parseInt($("#contractEndHaveLine").text())
-	      +parseInt($("#contractEndHaveNewLine").text()) ;
-	var   businessException=
+	var lineArrearage =parseInt($("#lineIsArrearage").text());
+	var lineException =parseInt($("#lineRentNotBill").text())+parseInt($("#lineRentedHaveBill").text());	
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;	
+	var contractException =parseInt($("#contractEndHaveLine").text()) + parseInt($("#contractEndHaveNewLine").text()) ;
+	var businessException = 0;
+		
+	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+		if(dataPermission == 3) {
+			businessException=
+			parseInt($("#customDiffTobss").text())+
+			parseInt($("#customDiffToyzs").text())+
+			parseInt($("#customDiffInbss").text())+
+			parseInt($("#customDiffInyzsdr").text())+
+			parseInt($("#relatedNotzxBase").text())+
+			parseInt($("#relatedNotzxPeriod").text());
+		}
+	}else{
+		businessException=
 		parseInt($("#customDiffTobss").text())+
 		parseInt($("#customDiffToyzs").text())+
 		parseInt($("#customDiffInbss").text())+
-		parseInt($("#customDiffInyzsdr").text())+
-		parseInt($("#relatedNotzxBase").text())+
-		parseInt($("#relatedNotzxPeriod").text());
+		parseInt($("#customDiffInyzsdr").text());
+	};
 	var option = {
 		title : {
 	        text: '风险预警总览',
@@ -901,3 +949,25 @@ function initWarningOverviewCharts(){
 	};
 	chartsDom.setOption(option);
 }
+
+
+/*
+ * 跳转明细查看
+ */
+function jumpRiskList(riskType,contractId){
+	var url = "/html/incomeWorktable/riskWarning/riskWarningList.html?returnBtn=true&contractId="+contractId+"&riskType="+riskType;
+	top.showSubpageTab(url,"查看线路明细");
+}
+ 
+//to 跳转地址
+function jumpCustomDiffToDetail(contractParm,riskType){
+	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractId="+contractParm+"&riskType="+riskType;
+	top.showSubpageTab(url,"查看线路明细");
+}
+
+//in 跳转地址
+function jumpCustomDiffInDetail(contractParm,riskType){
+	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&riskType="+riskType;
+	top.showSubpageTab(url,"查看线路明细");
+}
+ 

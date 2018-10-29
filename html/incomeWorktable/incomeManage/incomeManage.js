@@ -172,9 +172,9 @@ function initIncomeAnalysisCharts(incomeChartData){
                	align:'left'
             },
             formatter:function (params, ticket, callback) {
-            	var tooltipCon = params[0].name.split("\n\n")[1] + "</br>"
+            	var tooltipCon = params[0].data.account + "</br>"
             	$.each(params, function(k,v) {
-            		tooltipCon += v.stack + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
+            		tooltipCon += v.marker + v.stack + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
             	});
 			    return tooltipCon;
 			}

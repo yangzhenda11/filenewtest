@@ -34,7 +34,7 @@ $(function(){
 			}else{
 				$("#incomeShareButton").remove();				
 			}
-		}else{
+		} else {
 			$("#incomeShareDiv").remove();	
 			$("#incomeShareButton").remove();				
 		}
@@ -73,14 +73,6 @@ function initIncomeCharts(){
  * 生成收入分析图表
  */
 function initIncomeAnalysisCharts(incomeChartData){
-//	var incomeChartData = {
-//		currentYear: 2018,
-//		accountPeriodX: ["201801","201802","201803","201804","201805","201806","201807","201808","201809","201810","201811","201812"],
-//		riskIncomeCollectedAmountList: [10000,12000,11000,13000,11000,12300,10000,12000,11000,13000,11000,12300],
-//		riskIncomeArrearsAmountList: [7000,8000,8000,8400,7600,8500,8000,7600,8200,7900,8200,8700],
-//		incomeCollectedAmountList: [13000,11000,13200,12000,11400,12000,11000,11200,11800,13400,12000,12900],
-//		incomeArrearsAmountList: [7000,8000,8000,8400,7600,8500,8000,7600,8200,7900,8200,8700],
-//	}
 	// 定义账期集合
 	var acountPeriod = [];
 	// 定义风险收入-实收金额集合
@@ -91,10 +83,15 @@ function initIncomeAnalysisCharts(incomeChartData){
 	var incomeCollectedAmountList = [];
 	// 定义合同收入-欠费金额集合
 	var incomeArrearsAmountList = [];
+	var domWidth = $("#incomeAnalysisCharts").width();
 	// 遍历账期集合，处理账期数据
+	if(domWidth/(incomeChartData.accountPeriodX.length) < 140){
+		var acountPeriodItemTit = '风险  合同\n收入  收入\n\n';
+	}else{
+		var acountPeriodItemTit = '风险收入 合同收入\n\n';
+	};
 	$.each(incomeChartData.accountPeriodX,function(k,v){
-		var acountPeriodItem = '风险收入 合同收入\n\n'+parseInt(v.substring(4,6))+'月';
-//		var a = '风险 合同\n收入 收入\n'+v;
+		var acountPeriodItem = acountPeriodItemTit + parseInt(v.substring(4,6)) + '月';
 		acountPeriod.push(acountPeriodItem);
 		// 定义风险收入-实收Item
 		var riskIncomeCollectedAmountItem = {

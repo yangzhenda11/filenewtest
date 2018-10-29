@@ -11,7 +11,7 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){
- 	if(parm.contractId){
+ 	if(parm.customerCode){
  		$("#customerCodeNum").text(parm.customerCode);
  		initContractInforTable();
  	}else{
@@ -32,11 +32,11 @@ function initContractInforTable(){
 	App.initDataTables('#contractInforTable', {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'income/listContractIncomeByCustomerCode',
+			"url" : serverPath + 'incomeManage/listContractIncomeZxByCustomerCode',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;
-				d.forecastAccountPeriod = parm.forecastAccountPeriod;
+				d.accountPeriodName = parm.accountPeriodName;
 				return  JSON.stringify(d);
 			}
 		},

@@ -57,12 +57,6 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		}
 	};
 })
-///*
-// * 合同收入明细查看类型切换
-// */
-//$("#incomeAnalysisRadio input[name='incomeType']").on("change",function(){
-////	$(this).val()
-//})
 //=======================================收入分析 start=============================================//
 /*
  * 获取收入分析图表数据
@@ -101,7 +95,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	var incomeArrearsAmountList = [];
 	// 遍历账期集合，处理账期数据
 	$.each(incomeChartData.accountPeriodX,function(k,v){
-		var acountPeriodItem = '风险收入 合同收入\n\n'+v;
+		var acountPeriodItem = '风险收入 合同收入\n\n'+v.substring(5,6)+'月份';
 //		var a = '风险 合同\n收入 收入\n'+v;
 		acountPeriod.push(acountPeriodItem);
 		// 定义风险收入-实收Item
@@ -483,9 +477,9 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
+			{"data": "customerCode","title":"线路明细","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeContractManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineManage(\""+data+"\")'>查看</a>";
 				}
 			
 			}
@@ -520,6 +514,11 @@ function initIncomeAnalysisCharts(incomeChartData){
 			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "11%",},
 			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "11%",},
 			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
 			{"data": "receivableAmount","title":"应收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -549,6 +548,9 @@ function initIncomeAnalysisCharts(incomeChartData){
  /*
   *  跳转线路信息 jumpRiskIncomeContractManage
   */
+ function jumpIncomeLineManage(){
+	 //跳转线路信息链接
+ }
  
 //=======================================收入分析 end=============================================//
 /*

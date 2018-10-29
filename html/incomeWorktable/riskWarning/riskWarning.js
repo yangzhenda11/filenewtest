@@ -3,13 +3,13 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 $(function(){
 	//生成预警总览图表
-	getCount(); 
+	getRiskWarningChartData(); 
 })
 
 
 
 
-function getCount() {
+function getRiskWarningChartData() {
 	var postData = { 
 	};
 	var url = serverPath + "riskWarningDetailMangerController/getRiskWarningCount";

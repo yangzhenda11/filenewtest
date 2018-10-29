@@ -99,8 +99,10 @@ $(function() {
 		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
-		$("#toolbarBtn,#flowNote").remove();
+		$("#toolbarButton,#flowNote").remove();
+		$("#toolbarBtn").css("height","90px");
 		$pageContent.removeClass("hidden");
+		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 4) {		//工单查询页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();

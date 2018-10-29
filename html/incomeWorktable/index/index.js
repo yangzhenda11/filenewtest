@@ -484,7 +484,9 @@ function setScope() {
  */
 function getIncomeOverviewData(){
 	var url = serverPath + "incomeManage/listIncomePosition";
-	App.formAjaxJson(url, "post", null, successCallback);
+	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
+	var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data){
@@ -493,9 +495,7 @@ function getIncomeOverviewData(){
 			var riskIncomeCollectedTotal = data.riskIncomeCollectedTotal;	//风险收入-实收总金额
 			var riskIncomeReceivableTotal = data.riskIncomeReceivableTotal;	//风险收入-应收总金额
 			var lastAccountPeriod = data.lastAccountPeriod;					//统计数据截止日期
-			$("#incomeOverviewNote").html(lastAccountPeriod.substring(0,4)+"年"+lastAccountPeriod.substring(4,6)+"月");
-			var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
-			var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
+			$("#incomeOverviewNote").html(lastAccountPeriod.substring(0,4)+"年"+parseInt(lastAccountPeriod.substring(4,6))+"月");
 			if(incomeReceivableTotal || riskIncomeReceivableTotal){			//应收总金额图表生成
 				var overviewReceivableOption = returnChartsOption('应收金额', '合同收入/风险收入\n累计应收金额占比情况', [{
 					value: riskIncomeReceivableTotal,
@@ -522,18 +522,30 @@ function getIncomeOverviewData(){
 			incomeOverviewReceived.setOption(overviewReceivedOption);
 		};
 	}
+	function improperCallback(result){
+		layer.msg(result.message);
+		var overviewReceivableOption = returnEmptyChartsOption('应收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '应收金额：0元');
+		var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
+		incomeOverviewReceivable.setOption(overviewReceivableOption);
+		incomeOverviewReceived.setOption(overviewReceivedOption);
+		$("#chartsNote").html("*该图表暂未汇总到数据");
+	}
 }
 /*
  * 获取收入预测图表数据
  */
 function getIncomeAnalysisData(){
 	var url = serverPath + "incomeForecast/getIncomeForecastChartData";
-	App.formAjaxJson(url, "post", null, successCallback);
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data){
 			initIncomeAnalysis(data);
 		};
+	}
+	function improperCallback(result){
+		layer.msg(result.message);
+		$("#incomeAnalysis").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
 	}
 }
 
@@ -669,6 +681,11 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
  * 收入预测图表生成
  */
 function initIncomeAnalysis(incomedata) {
+	var accountPeriodX = [];
+	$.each(incomedata.accountPeriodX,function(k,v){
+		var acountPeriodXItem = parseInt(v.substring(4,6)) + '月';
+		accountPeriodX.push(acountPeriodXItem);
+	});
 	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
 	var incomeAnalysisOption = {
 		title : {
@@ -711,7 +728,7 @@ function initIncomeAnalysis(incomedata) {
 	    	axisTick:{
 	    		show:false
 	    	},
-	        data: incomedata.accountPeriodX
+	        data: accountPeriodX
 	    },
 	    yAxis: {
 	    	axisLine:{
@@ -732,7 +749,7 @@ function initIncomeAnalysis(incomedata) {
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        barMaxWidth: 55,
+		        barMaxWidth: 45,
 		        data: incomedata.lineIncomeForecastArray
 		    },
 		    {

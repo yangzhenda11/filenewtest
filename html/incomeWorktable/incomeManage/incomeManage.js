@@ -57,12 +57,6 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		}
 	};
 })
-///*
-// * 合同收入明细查看类型切换
-// */
-//$("#incomeAnalysisRadio input[name='incomeType']").on("change",function(){
-////	$(this).val()
-//})
 //=======================================收入分析 start=============================================//
 /*
  * 获取收入分析图表数据
@@ -101,7 +95,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	var incomeArrearsAmountList = [];
 	// 遍历账期集合，处理账期数据
 	$.each(incomeChartData.accountPeriodX,function(k,v){
-		var acountPeriodItem = '风险收入 合同收入\n\n'+v;
+		var acountPeriodItem = '风险收入 合同收入\n\n'+v.substring(5,6)+'月份';
 //		var a = '风险 合同\n收入 收入\n'+v;
 		acountPeriod.push(acountPeriodItem);
 		// 定义风险收入-实收Item
@@ -483,9 +477,9 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
+			{"data": "customerCode","title":"线路明细","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeContractManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineManage(\""+data+"\")'>查看</a>";
 				}
 			
 			}
@@ -520,6 +514,11 @@ function initIncomeAnalysisCharts(incomeChartData){
 			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "11%",},
 			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "11%",},
 			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
 			{"data": "receivableAmount","title":"应收(元)","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -544,11 +543,14 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeContractManage(customerCode, forecastAccountPeriod){
  	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
  				+"&forecastAccountPeriod="+forecastAccountPeriod;
- 	top.showSubpageTab(url,"查看合同收入预测");
+ 	top.showSubpageTab(url,"合同收入预测");
  }
  /*
   *  跳转线路信息 jumpRiskIncomeContractManage
   */
+ function jumpIncomeLineManage(){
+	 //跳转线路信息链接
+ }
  
 //=======================================收入分析 end=============================================//
 /*
@@ -571,7 +573,7 @@ function initForecastCharts(forecastChartsData){
 	var incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
 	var incomeForecastOption = {
 		title : {
-	        text: forecastChartsData.currentYear+'年收入预测分析',
+	        text: forecastChartsData.currentYear+'年收入预测情况',
 	        x:'center',
 	        itemGap: 12,
 	        textStyle: {
@@ -668,7 +670,7 @@ function initForecastCharts(forecastChartsData){
 	incomeForecast.on('click', function (params) {
     	// 将账期放入到全局变量中
     	pageConfig.accountPeriod = params.name;
-    	if(params.stack == "合同收入"){
+    	if(params.seriesName == "合同收入"){
     		// 风险收入明细div隐藏
     		$("#lineIncomeForecastValue").hide();
     		// 合同收入明细div显示
@@ -681,7 +683,7 @@ function initForecastCharts(forecastChartsData){
     		var radioVal = $("input[name='contractIncomeForecastType']:checked").val();
     		checkContractIncomeForecastRadio(radioVal);
     	}
-    	else if(params.stack == "风险收入"){
+    	else if(params.seriesName == "风险收入"){
     		// 合同收入明细div隐藏
     		$("#contractIncomeForecastValue").hide();
     		// 风险收入明细div显示
@@ -717,7 +719,7 @@ function checkContractIncomeForecastRadio(valRadio){
 	}else{
 		if(valRadio == 1){ 		// 按客户查看
 			initContractIncomeForecastTableByCustom();
-		}else{					// 按合同查看
+		}else{					// 按线路查看
 			initContractIncomeForecastTableByContract();
 		}
 	}
@@ -933,7 +935,7 @@ function initLineIncomeForecastTableByLine(){
  */
 function jumpLineManage(data){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&id="+data;
-	top.showSubpageTab(url,"查看线路信息");
+	top.showSubpageTab(url,"线路基本信息");
 }
 /*
  * 跳转合同信息
@@ -941,7 +943,7 @@ function jumpLineManage(data){
 function jumpContractManage(customerCode, forecastAccountPeriod){
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
 				+"&forecastAccountPeriod="+forecastAccountPeriod;
-	top.showSubpageTab(url,"查看合同收入预测");
+	top.showSubpageTab(url,"合同收入预测");
 }
 
 /*

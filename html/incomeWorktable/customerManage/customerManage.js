@@ -364,7 +364,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function jumpLineManage(customerCode){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&id="+customerCode;
-	top.showSubpageTab(url,"查看线路信息");
+	top.showSubpageTab(url,"线路基本信息");
 }
 /*
  * 跳转合同信息
@@ -378,7 +378,7 @@ function jumpContractManage(customerCode){
  */
 function jumpLineIncomeManage(customerCode){
 	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode ;
-	top.showSubpageTab(url,"查看线路收入信息");
+	top.showSubpageTab(url,"线路收入信息");
 }
 //我的合同查询选择查看更多
 function myCustomerInitselectLR() {

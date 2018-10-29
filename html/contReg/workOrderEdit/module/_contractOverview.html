@@ -281,8 +281,6 @@
 	 */
 	function getContractOverInfo() {
 		var data = getContractOrderBaseInfoData;
-		delete data.vatRate
-		console.log(data)
 		var isFixed = data.isFixed;
 		var contractNature = data.contractNature;
 		var ourPartyName = data.ourPartyName == null ? "" : data.ourPartyName;

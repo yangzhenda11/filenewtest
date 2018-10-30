@@ -61,12 +61,16 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
  */
 function initIncomeCharts(){
 	var url = serverPath + "incomeManage/listIncomePosition";
-	App.formAjaxJson(url, "post", null, successCallback);
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data){
 			initIncomeAnalysisCharts(data);
 		};
+	}
+	function improperCallback(result){
+		layer.msg(result.message);
+		$("#incomeAnalysisCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
 	}
 }
 /*
@@ -553,12 +557,16 @@ function initIncomeAnalysisCharts(incomeChartData){
  */
 function initIncomeForecastCharts(){
 	var url = serverPath + "incomeForecast/getIncomeForecastChartData";
-	App.formAjaxJson(url, "post", null, successCallback);
+	App.formAjaxJson(url, "post", null, successCallback, improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		if(data){
 			initForecastCharts(data);
 		};
+	}
+	function improperCallback(result){
+		layer.msg(result.message);
+		$("#incomeForecastCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
 	}
 }
 /*

@@ -159,23 +159,15 @@
 		App.formAjaxJson(url, "post", postData, successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			debugger;
 			if(data.length > 0){
 				var html = "";
 				for(var i = 0; i < data.length; i++){
-					//格式化生效时间  毫秒-->日期
-//					var createTime = new Date() ;
-//					createDateTime = createTime.Format("yyyy-MM-dd hh:mm:ss");
-					//格式化失效时间	 毫秒-->日期
-//					var invalidTime = new Date(data[i].invalidDate) ;
-//					invalidDateTime = invalidTime.Format("yyyy-MM-dd hh:mm:ss");
 					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdBy="'+data[i].createdBy+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+	
 	    						'<td>'+data[i].managerStaffName+'</td>'+
 	    						'<td>'+data[i].managerOrgName+'</td>'+
 	    						'<td>'+App.formatDateTime(data[i].createdDate,"yyyy-MM-dd")+'</td>'+
-	    						/* '<td>'+invalidDateTime+'</td>'+ */
 	    						'<td>'+data[i].staffName+'</td>'+
 	    						'<td>'+data[i].orgName+'</td></tr>';
 				};
@@ -370,7 +362,7 @@
 					}
 				})
 				if(!isExist){
-					var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
+					var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'" data-createdBy="'+config.curStaffOrgId+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+name+'</td>'+
@@ -402,8 +394,7 @@
 				$("#customerManagerTbody input[name='customerManagerCheck']:checked").each(function(k,v){
 					//获取该行添加人
 					var checkedCreateBy = $(v).parents("tr").data("createdby");
-					debugger;
-					if(checkedCreateBy == config.curStaffId){
+					if(checkedCreateBy == config.curStaffOrgId){
 						var deleteCustomerManagerItem = {};
 						deleteCustomerManagerItem.contractNumber = contractNumber;
 						deleteCustomerManagerItem.managerStaffOrgId = $(v).parents("tr").data("stafforgid");
@@ -416,7 +407,7 @@
 				});
 				addCustomerManagerTbodyEmptyTr();
 				addCustomerManagerTbodySort();
-				App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
+				App.checkAllFn("#+customerManagerCheckAll","customerManagerCheck");
 			})
 		}
 	};

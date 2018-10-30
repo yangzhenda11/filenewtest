@@ -16,7 +16,8 @@ var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识�
 var isCancelApproved = false;		//是否为退回状态标识位
 var contractAttr = {
 	provinceCode: null,				//合同所属省份
-	city: null						//合同所属城市
+	city: null,						//合同所属城市
+	executeDeptCode: null			//承办人所在部门编码
 }
 var contractStatusObj = {
 	1: "已审批",
@@ -72,9 +73,8 @@ $(function() {
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
 			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".register,.cancelApprovedBtn,.returnBtn").remove();
+			$(".registerBtn,.cancelApprovedBtn,.returnBtn").remove();
 		};
-		$pageContent.removeClass("hidden");
 		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
@@ -480,13 +480,18 @@ function submitContentFn(){
 					return false;
 				}
 	    	};
-    		var flowKey = "Contractproject2Process";
-    		var linkcode = "GDQR";
+	    	var pathSelect = 0;
+	    	if(contractAttr.executeDeptCode == "00450080365"){
+	    		pathSelect = 1;
+	    	};
+	    	var flowParam = App.getFlowParam(serverPath,wcardId,1,pathSelect,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+    		var flowKey = flowParam.processDefinitionKey;
+    		var linkcode = flowParam.taskDefinitionKey;
     		var prov = contractAttr.provinceCode;
+    		var city = contractAttr.city
     		var callbackFun = "submitContentPost";
     		var staffSelectType = 1;
-    		var contracType = "";
-    		var city = contractAttr.city,attrA = "",attrB = "",attrC = "";	    		
+    		var contracType = "",attrA = "",attrB = "",attrC = "";	    		
 			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 		}
 	}
@@ -855,10 +860,7 @@ function getWorkOrderInfo(){
 				if(parm.pageType == 1){
 					//显示取消审批按钮
 					parent.setQxspButton(true,parm.businessKey);
-				}
-				if(parm.pageType == 2){
-					$("#cancelApprovedBtn").removeClass("hidden");
-				}
+				};
 			}else{
 				$("#cancelApprovedBtn").remove();
 			};
@@ -884,14 +886,14 @@ function getWorkOrderInfo(){
 					getContractOrderBaseInfoData = baseData;
 					contractStatus = baseData.contractStatus;
 					contractAttr.provinceCode = baseData.provinceCode;
+					contractAttr.executeDeptCode = baseData.executeDeptCode;
 					contractType = baseData.contractType;
 					if(returnContractStatus()){
 						isEdit = false;
 						fileUploadEdit = false;
-					}
-					setDomContent(domObj);
+					};
 					//获取工单所属的地市编码
-					getContractCityCode(baseData.executeDeptId);
+					getContractCityCode(baseData.executeDeptId,domObj);
 				}else{
 					showLayerErrorMsg("当前工单暂无信息");
 				}
@@ -902,7 +904,41 @@ function getWorkOrderInfo(){
 		$(".wcardType").text(wcardType);
 	}
 }
-
+//获取工单所属的地市编码
+function getContractCityCode(executeDeptId,domObj){
+	App.formAjaxJson(serverPath + "contractOrderEditorController/getContractCityCode", "get", {executeDeptId:executeDeptId}, successCallback, improperCallback);
+	function successCallback(result) {
+		var orgCode = result.data.orgCode;
+		if(orgCode){
+			contractAttr.city = orgCode;
+			if(parm.taskDefinitionKey == "GDQR"){
+				if(contractAttr.executeDeptCode == "00450080365" || contractAttr.provinceCode == "hi" || contractAttr.provinceCode == "sc"){
+					var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+					console.log(flowParam);
+					if(flowParam.nowtaskDefinitionKey == "BMQR"){
+						
+					}else if(flowParam.nowtaskDefinitionKey == "GSQR"){
+						
+					}
+//					sendBackBtn	//退回合同承办人
+//					saveBtn	//保存按钮
+				}else{
+					$("#activateBtn").click(activateContract);		//走原激活方法
+				}
+			};
+			$pageContent.removeClass("hidden");
+			//设置各dom元素
+			setDomContent(domObj);
+			//如果为工单待办激活请求已阅接口
+			setHaveRead();
+		}else{
+			layer.alert("获取地市编码失败，请联系管理员！",{icon:2});
+		}
+	};
+	function improperCallback(result){
+		layer.alert(result.message,{icon:2});
+	}
+}
 /*
  * 设置dom元素，并load进入
  */
@@ -921,21 +957,6 @@ function setDomContent(domObj) {
 			}
 		});
 	};
-}
-//获取工单所属的地市编码
-function getContractCityCode(executeDeptId){
-	App.formAjaxJson(serverPath + "contractOrderEditorController/getContractCityCode", "get", {executeDeptId:executeDeptId}, successCallback, improperCallback);
-	function successCallback(result) {
-		var orgCode = result.data.orgCode;
-		if(orgCode){
-			contractAttr.city = orgCode;
-		}else{
-			layer.alert("获取地市编码失败，请联系管理员！",{icon:2});
-		}
-	};
-	function improperCallback(result){
-		layer.alert(result.message,{icon:2});
-	}
 }
 /*
  * 检查工单状态是否属于该流程
@@ -1005,8 +1026,6 @@ function loadComplete() {
 	getBusiProcessInfoID();
 	//加载快捷跳转
 	setSpeedyJump();
-	//如果为工单待办激活请求已阅接口
-	setHaveRead();
 	//增加事件委托，input失去焦点时检查是否maxLength超长
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);

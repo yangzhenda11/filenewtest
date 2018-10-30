@@ -11,8 +11,9 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){ 
+	debugger;
  	if(parm.contractId||parm.contractNumber||parm.customerCode){
- 		debugger;
+
  		if(null!=parm.contractId){
  			$("#parmContractNum").text('合同ID:'+parm.contractId);
  		}else if(null!=parm.contractNumber){
@@ -48,10 +49,17 @@ function initLineInforTable(){
 	if(!isInit){
 		$("#lineInforTable").html("");
 	}
+	var  url="";
+	if(null!=parm.customerCode){
+		url=serverPath + 'incomeForecast/listLineIncomeForecast';
+		}else{
+			url=serverPath + 'incomeForecast/listLineIncomeForecastByContractId';
+		}
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
+ 
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'incomeForecast/listLineIncomeForecastByContractId',
+			"url" :url ,
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;

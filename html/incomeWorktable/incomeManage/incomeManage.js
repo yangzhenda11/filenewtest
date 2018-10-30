@@ -854,9 +854,9 @@ function initContractIncomeForecastTableByContract(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "contractId","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeLineForecastByContract(\""+data.contractName+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineForecastByContract(\""+data.contractNumber+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
 				}
 			}
 		]
@@ -921,7 +921,7 @@ function initLineIncomeForecastTableByCustom(){
 			},
 			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeLineForecastByCustomer((\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\"))'>查看</a>";
+					return "<a onclick='jumpIncomeLineForecastByCustomer(\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
 				}
 			}
 		]
@@ -984,7 +984,7 @@ function jumpContractManage(customerCode, forecastAccountPeriod){
  *  参数:账期 合同编码
  */
 function jumpIncomeLineForecastByContract(contractNumber, forecastAccountPeriod){
-	 var accountPeriodName = pageConfig.incomePeriod;
+
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?contractNumber="+contractNumber
 	 			+"&forecastAccountPeriod="+forecastAccountPeriod;
 	 top.showSubpageTab(url,"线路收入预测");
@@ -994,7 +994,7 @@ function jumpIncomeLineForecastByContract(contractNumber, forecastAccountPeriod)
  *  参数:账期 客户编码
  */
 function jumpIncomeLineForecastByCustomer(customerCode, forecastAccountPeriod){
-	 var accountPeriodName = pageConfig.incomePeriod;
+ 
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?customerCode="
 		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod;
 	 top.showSubpageTab(url,"线路收入预测");

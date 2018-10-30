@@ -11,9 +11,7 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){ 
-	debugger;
  	if(parm.contractId||parm.contractNumber||parm.customerCode){
-
  		if(null!=parm.contractId){
  			$("#parmContractNum").text('合同ID:'+parm.contractId);
  		}else if(null!=parm.contractNumber){
@@ -22,7 +20,7 @@ $(function(){
  			$("#parmContractNum").text('客户编号:'+parm.customerCode);
  		}
  		
- 		initLineInforTable();
+ 		initLineIncomeforTable();
  	}else{
 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
@@ -32,53 +30,61 @@ $(function(){
  * 点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
  */
-function searchLineInfor(){
-	var isInit = $.fn.dataTable.isDataTable("#lineInforTable");
+function searchLineIncomefor(){
+	var isInit = $.fn.dataTable.isDataTable("#lineIncomeforTable");
 	if(isInit){
-		reloadPageDataTable("#lineInforTable");
+		reloadPageDataTable("#lineIncomeforTable");
 	}else{
-		initLineInforTable();
+		initLineIncomeforTable();
 	}
 }
 /*
  * 未关联合同客户表格初始化
  * 表头为动态表头，第一次加载时需要去掉其中的内容
  */
-function initLineInforTable(){
-	var isInit = $.fn.dataTable.isDataTable("#lineInforTable");
+function initLineIncomeforTable(){
+	var isInit = $.fn.dataTable.isDataTable("#lineIncomeforTable");
 	if(!isInit){
-		$("#lineInforTable").html("");
+		$("#lineIncomeforTable").html("");
 	}
-	var  url="";
-	if(null!=parm.customerCode){
-		url=serverPath + 'incomeForecast/listLineIncomeForecast';
-		}else{
-			url=serverPath + 'incomeForecast/listLineIncomeForecastByContractId';
-		}
-	App.initDataTables('#lineInforTable', "#lineInforLoading", {
- 
-		ajax: {
-			"type": "POST",
-			"url" :url ,
-			"contentType" : "application/json;charset=utf-8",
-			"data": function(d) { 
-				d.customerCode = parm.customerCode;
-				d.contractNumber = parm.contractNumber;
-				d.contractId = parm.contractId;
-				d.forecastAccountPeriod = parm.forecastAccountPeriod;
-				 
- 				return  JSON.stringify(d);
-			}
-		},
-		"columns": lineInforTableColumns()
-	});
+
+	if (null != parm.customerCode) {
+		App.initDataTables('#lineIncomeforTable', "#lineIncomeforLoading", {
+			ajax: {
+				"type": "POST",
+				"url" :serverPath + 'incomeForecast/listLineIncomeForecast' ,
+				"contentType" : "application/json;charset=utf-8",
+				"data": function(d) { 
+					d.customerCode = parm.customerCode; 
+					d.forecastAccountPeriod = parm.forecastAccountPeriod;
+	 				return  JSON.stringify(d);
+				}
+			},
+			"columns": lineIncomeforTableColumns()
+		});
+	} else { 
+		App.initDataTables('#lineIncomeforTable', "#lineIncomeforLoading", {
+			ajax: {
+				"type": "POST",
+				"url" :serverPath + 'incomeForecast/listLineIncomeForecastByContractId' ,
+				"contentType" : "application/json;charset=utf-8",
+				"data": function(d) { 
+ 					d.contractNumber = parm.contractNumber;
+					d.contractId = parm.contractId;
+					d.forecastAccountPeriod = parm.forecastAccountPeriod;
+	 				return  JSON.stringify(d);
+				}
+			},
+			"columns": lineIncomeforTableColumns()
+		});
+	}
 }
-function lineInforTableColumns(){
+function lineIncomeforTableColumns(){
 	var theadList = incomeTheadList ;
 	var columns = [
 		{"data" : null,"title":"序号",
 			"render" : function(data, type, full, meta){
-				var start = App.getDatatablePaging("#lineInforTable").pageStart;
+				var start = App.getDatatablePaging("#lineIncomeforTable").pageStart;
 				return start + meta.row + 1;
 			}
 		}
@@ -123,7 +129,7 @@ function initselectLR() {
 function returnSelectLRData(data) {
 	$("#commomModal").modal("hide");
 	incomeTheadList = data; 
-	initLineInforTable();
+	initLineIncomeforTable();
 }
 
 /*

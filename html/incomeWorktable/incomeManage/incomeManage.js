@@ -854,9 +854,9 @@ function initContractIncomeForecastTableByContract(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "contractId","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineForecastByContract(\""+data.contractNumber+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
 				}
 			}
 		]
@@ -919,9 +919,9 @@ function initLineIncomeForecastTableByCustom(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "customerCode","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineForecastByCustomer(\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
 				}
 			}
 		]
@@ -971,19 +971,33 @@ function initLineIncomeForecastTableByLine(){
 	});
 }
 /*
- * 跳转线路信息
- */
-function jumpLineManage(data){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&id="+data;
-	top.showSubpageTab(url,"线路基本信息");
-}
-/*
  * 跳转合同信息
  */
 function jumpContractManage(customerCode, forecastAccountPeriod){
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
 				+"&forecastAccountPeriod="+forecastAccountPeriod;
 	top.showSubpageTab(url,"合同收入预测");
+}
+
+/*
+ *  合同收入预测明细 - 按合同跟踪查询-跳转线路预测明细
+ *  参数:账期 合同编码
+ */
+function jumpIncomeLineForecastByContract(contractNumber, forecastAccountPeriod){
+
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?contractNumber="+contractNumber
+	 			+"&forecastAccountPeriod="+forecastAccountPeriod;
+	 top.showSubpageTab(url,"线路收入预测");
+}
+/*
+ * 风险收入预测明细 - 按客户跟踪查询-跳转线路预测明细
+ *  参数:账期 客户编码
+ */
+function jumpIncomeLineForecastByCustomer(customerCode, forecastAccountPeriod){
+ 
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?customerCode="
+		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod;
+	 top.showSubpageTab(url,"线路收入预测");
 }
 
 /*

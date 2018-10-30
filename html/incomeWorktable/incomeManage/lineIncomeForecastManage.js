@@ -11,7 +11,9 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){ 
+	debugger;
  	if(parm.contractId||parm.contractNumber||parm.customerCode){
+
  		if(null!=parm.contractId){
  			$("#parmContractNum").text('合同ID:'+parm.contractId);
  		}else if(null!=parm.contractNumber){
@@ -47,17 +49,25 @@ function initLineInforTable(){
 	if(!isInit){
 		$("#lineInforTable").html("");
 	}
+	var  url="";
+	if(null!=parm.customerCode){
+		url=serverPath + 'incomeForecast/listLineIncomeForecast';
+		}else{
+			url=serverPath + 'incomeForecast/listLineIncomeForecastByContractId';
+		}
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
+ 
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomer',
+			"url" :url ,
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;
 				d.contractNumber = parm.contractNumber;
 				d.contractId = parm.contractId;
-				d.businessId = $("#searchInput").val().trim();
-				return  JSON.stringify(d);
+				d.forecastAccountPeriod = parm.forecastAccountPeriod;
+				 
+ 				return  JSON.stringify(d);
 			}
 		},
 		"columns": lineInforTableColumns()
@@ -75,7 +85,7 @@ function lineInforTableColumns(){
 	];
 	$.each(theadList, function(k,v) {
 		if(v.checked == true){
-			if (v.id == "onceCost" || v.id == "monthRentCost" || v.id == "receivableAmount" || v.id == "arrearsAmount" || v.id == "collectedAmount") {
+			if (v.id == "forecastReceivable" || v.id == "monthRentCost"  ) {
 				var item = {
 					"data" : v.id,
 					"title" : v.data,
@@ -83,15 +93,7 @@ function lineInforTableColumns(){
 						return App.unctionToThousands(data);
 					}
 				};
-			} else if (v.id == "finishTime" || v.id == "rentingTime" || v.id == "stopRentingTime" || v.id == "createdDate") {
-				var item = {
-					"data" : v.id,
-					"title" : v.data,
-					"render" : function(data, type, full, meta) {
-						return App.formatDateTime(data);
-					}
-				};
-			} else {
+			}   else {
 				var item = {
 					"data" : v.id,
 					"title" : v.data
@@ -103,21 +105,6 @@ function lineInforTableColumns(){
 	return columns;
 };
 
-/*
- * 页面内表格初始化完成之后查询事件
- */
-function reloadPageDataTable(tableId,retainPaging) {
-	var table = $(tableId).DataTable();
-	if(retainPaging) {
-		table.ajax.reload(null, false);
-	} else {
-		table.ajax.reload();
-	}
-}
-$("#returnBtn").on("click",function(){
-	 window.history.go(-1);
-})
-  
 /*
  * 生成显示更多内容选择区域
  */
@@ -139,16 +126,28 @@ function returnSelectLRData(data) {
 	initLineInforTable();
 }
 
-
+/*
+ * 页面内表格初始化完成之后查询事件
+ */
+function reloadPageDataTable(tableId,retainPaging) {
+	var table = $(tableId).DataTable();
+	if(retainPaging) {
+		table.ajax.reload(null, false);
+	} else {
+		table.ajax.reload();
+	}
+}
+$("#returnBtn").on("click",function(){
+	 window.history.go(-1);
+})
+  
 var  incomeTheadList = [
 	{data:"业务信息ID",id:"businessId",checked:true},
 	{data:"电路代号",id:"circuitCode",checked:true},
 	{data:"产品名称",id:"productName",checked:true}, 
 	{data:"发起分公司",id:"startCityName",checked:true},
 	{data:"租用范围",id:"rentingScope",checked:true},
-	{data:"账期",id:"accountPeriodName",checked:true}, 
-	{data:"月租费",id:"monthRentCost",checked:true}, 
-	{data:"应收（元）",id:"receivableAmount",checked:true},
-	{data:"欠费（元）",id:"arrearsAmount",checked:true},
-	{data:"实收（元）",id:"collectedAmount",checked:true} 
+	{data:"账期",id:"forecastAccountPeriod",checked:true}, 
+	{data:"月租费",id:"monthRentCost",checked:true},
+	{data:"预测金额",id:"forecastReceivable",checked:true} 
 ];

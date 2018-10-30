@@ -986,7 +986,7 @@ function jumpContractManage(customerCode, forecastAccountPeriod){
 function jumpIncomeLineForecastByContract(contractNumber, forecastAccountPeriod){
 	 var accountPeriodName = pageConfig.incomePeriod;
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?contractNumber="+contractNumber
-	 			+"&accountPeriodName="+forecastAccountPeriod;
+	 			+"&forecastAccountPeriod="+forecastAccountPeriod;
 	 top.showSubpageTab(url,"线路收入预测");
 }
 /*
@@ -996,7 +996,7 @@ function jumpIncomeLineForecastByContract(contractNumber, forecastAccountPeriod)
 function jumpIncomeLineForecastByCustomer(customerCode, forecastAccountPeriod){
 	 var accountPeriodName = pageConfig.incomePeriod;
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?customerCode="
-		       +customerCode+"&accountPeriodName="+forecastAccountPeriod;
+		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod;
 	 top.showSubpageTab(url,"线路收入预测");
 }
 

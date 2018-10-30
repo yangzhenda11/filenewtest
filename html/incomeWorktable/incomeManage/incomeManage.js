@@ -542,7 +542,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeContractManage(customerCode){
  	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
  				+"&forecastAccountPeriod="+pageConfig.incomePeriod;
- 	top.showSubpageTab(url,"合同收入预测");
+ 	top.showSubpageTab(url,"合同收入");
  }
  /*
   *  合同收入-按合同查询-跳转线路明细方法jumpIncomeLineByContract  

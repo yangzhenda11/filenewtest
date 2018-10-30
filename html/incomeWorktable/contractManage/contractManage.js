@@ -417,7 +417,7 @@ function jumpLineManageByContract(contractId){
 
 
 function jumpGetWcardIdByContractId(contractId){
-	var postData = JSON.stringify({contractId:"2263985804169519119"});
+	var postData = JSON.stringify({contractId:contractId});
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardIdByContractId","post",postData, successCallback,null,null,false);
 	function successCallback(result){
 		var wcardId = result.data.wcardId;
@@ -441,7 +441,7 @@ function jumpWorkOrderEdit(wcardId){
 				5: "终止解除",
 				6: "终止履行",
 				7: "办结",
-				8: "履行中"   //广义履行中
+				8: "履行中"   
 			};
 			if((wcardStatus == 904030 && contractStatus == 8) || (wcardStatus == 904040 && contractStatus == 4) || (wcardStatus == 904050 && contractStatus == 5) || (wcardStatus == 904060 && contractStatus == 6)){
 				var href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=TJKH&wcardId="+wcardId;

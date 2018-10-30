@@ -83,7 +83,8 @@ function initContractInforTable(){
 /*
  * 跳转线路信息（已关联合同）
  */
-function jumpLineManage(contractId){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="+contractNumber;
-	top.showSubpageTab(url,"线路收入");
+function jumpLineManage(contractNumber){
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="
+		+contractNumber+"&returnbtn=true";
+	App.changePresentUrl(url);
 }

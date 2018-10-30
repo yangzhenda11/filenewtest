@@ -417,7 +417,7 @@ function jumpLineManageByContract(contractId){
 
 
 function jumpGetWcardIdByContractId(contractId){
-	var postData = JSON.stringify({contractId:"2367388206938193941"});
+	var postData = JSON.stringify({contractId:"2263985804169519119"});
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardIdByContractId","post",postData, successCallback,null,null,false);
 	function successCallback(result){
 		var wcardId = result.data.wcardId;
@@ -430,6 +430,7 @@ function jumpGetWcardIdByContractId(contractId){
 function jumpWorkOrderEdit(wcardId){
 		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId","get",{wcardId:wcardId}, successCallback,null,null,false);
 		function successCallback(result) {
+			debugger;
 			var contractStatus = result.data.contractStatus;
 			var wcardStatus = result.data.wcardStatus;
 			var contractStatusObj = {
@@ -442,11 +443,11 @@ function jumpWorkOrderEdit(wcardId){
 				7: "办结",
 				8: "履行中"   //广义履行中
 			};
-			if(wcardStatus == 904030 && contractStatus == 8 || wcardStatus == 904040 && contractStatus == 4|| wcardStatus == 904050 && contractStatus == 5 || wcardStatus == 904060 && contractStatus == 6){
+			if((wcardStatus == 904030 && contractStatus == 8) || (wcardStatus == 904040 && contractStatus == 4) || (wcardStatus == 904050 && contractStatus == 5) || (wcardStatus == 904060 && contractStatus == 6)){
 				var href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=TJKH&wcardId="+wcardId;
 				top.showSubpageTab(href,"工单编辑");
 			}else{
-				layer.alert("该合同状态为"+contractStatusObj.contractStatus+"，不能添加/删除客户经理。",{icon:2,title:"流程状态错误"},function(index){
+				layer.alert("该合同状态为"+contractStatusObj[contractStatus]+"，不能添加/删除客户经理。",{icon:2,title:"流程状态错误"},function(index){
 					layer.close(index);
 				});
 			}

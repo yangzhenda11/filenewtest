@@ -398,9 +398,9 @@ function initIncomeAnalysisCharts(incomeChartData){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+			{"data": "contractNumber","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeLineManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineByContract(\""+data+"\")'>查看</a>";
 				}
 			}
 		]
@@ -449,7 +449,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 			}
 		},
 		"columns": [
-			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+			{"data" : "","title":"序号","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
 					var start = App.getDatatablePaging("#riskIncomeTable").pageStart;
 					return start + meta.row + 1;
@@ -474,7 +474,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 			},
 			{"data": "customerCode","title":"线路明细","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeLineManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeLineByCustomer(\""+data+"\")'>查看</a>";
 				}
 			
 			}
@@ -535,18 +535,29 @@ function initIncomeAnalysisCharts(incomeChartData){
  /*
   * 跳转合同信息
   */
- function jumpIncomeContractManage(customerCode, forecastAccountPeriod){
+ function jumpIncomeContractManage(customerCode){
  	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
- 				+"&forecastAccountPeriod="+forecastAccountPeriod;
+ 				+"&forecastAccountPeriod="+pageConfig.incomePeriod;
  	top.showSubpageTab(url,"合同收入预测");
  }
  /*
-  *  跳转线路信息 jumpRiskIncomeContractManage
+  *  合同收入-按合同查询-跳转线路明细方法jumpIncomeLineByContract  
+  *  参数:账期 合同编码
   */
- function jumpIncomeLineManage(){
-	 //跳转线路信息链接
+ function jumpIncomeLineByContract(contractNumber){
+	 var accountPeriodName = pageConfig.incomePeriod;
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="+contractNumber+"&accountPeriodName="+accountPeriodName;
+	 top.showSubpageTab(url,"线路明细");
  }
- 
+ /*
+  *  风险收入-按客户查询-跳转线路明细方法jumpIncomeLineByCustomer
+  *  参数:账期 客户编码
+  */
+ function jumpIncomeLineByCustomer(customerCode){
+	 var accountPeriodName = pageConfig.incomePeriod;
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode+"&accountPeriodName="+accountPeriodName;
+	 top.showSubpageTab(url,"线路明细");
+ }
 //=======================================收入分析 end=============================================//
 /*
  * 生成收入预测图表数据

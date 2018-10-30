@@ -12,7 +12,6 @@ if(parm.returnbtn == "true"){
 };
 $(function(){ 
  	if(parm.contractId||parm.contractNumber||parm.customerCode){
- 		debugger;
  		if(null!=parm.contractId){
  			$("#parmContractNum").text('合同ID:'+parm.contractId);
  		}else if(null!=parm.contractNumber){
@@ -119,6 +118,28 @@ $("#returnBtn").on("click",function(){
 	 window.history.go(-1);
 })
   
+/*
+ * 生成显示更多内容选择区域
+ */
+function initselectLR() {
+	var theadList =  incomeTheadList;
+	var options = {
+		modalId : "#commomModal",
+		data : theadList
+	}
+	$.initSelectLRFn(options);
+}
+
+/*
+ * 显示更多点击确定回调页面方法
+ */
+function returnSelectLRData(data) {
+	$("#commomModal").modal("hide");
+	incomeTheadList = data; 
+	initLineInforTable();
+}
+
+
 var  incomeTheadList = [
 	{data:"业务信息ID",id:"businessId",checked:true},
 	{data:"电路代号",id:"circuitCode",checked:true},

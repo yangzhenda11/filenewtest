@@ -77,13 +77,13 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR" || taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-		redirectUrl(id,taskDefinitionKey,processInstanceId);
-	}else{
+//	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR" || taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+//		redirectUrl(id,taskDefinitionKey,processInstanceId);
+//	}else{
 		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
 		$("#goTaskToDoDetailForToDo").show();
 		$("#searchContentForToDo").hide();
-	}
+//	}
 	//}
 }
 function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {

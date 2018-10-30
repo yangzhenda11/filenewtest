@@ -913,15 +913,8 @@ function getContractCityCode(executeDeptId,domObj){
 			contractAttr.city = orgCode;
 			if(parm.taskDefinitionKey == "GDQR"){
 				if(contractAttr.executeDeptCode == "00450080365" || contractAttr.provinceCode == "hi" || contractAttr.provinceCode == "sc"){
-					var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
-					console.log(flowParam);
-					if(flowParam.nowtaskDefinitionKey == "BMQR"){
-						
-					}else if(flowParam.nowtaskDefinitionKey == "GSQR"){
-						
-					}
-//					sendBackBtn	//退回合同承办人
-//					saveBtn	//保存按钮
+					//特殊省份GDQR设置自定义规则
+					setCustomRule();
 				}else{
 					$("#activateBtn").click(activateContract);		//走原激活方法
 				}
@@ -957,6 +950,38 @@ function setDomContent(domObj) {
 			}
 		});
 	};
+}
+/*
+ * 特殊省份GDQR设置自定义规则
+ * contractAttr.executeDeptCode == "00450080365" 广西省本部承办部门为战略客户部（部门编码：00450080365）
+ * contractAttr.provinceCode == "hi" 海南省
+ * contractAttr.provinceCode == "sc" 四川省
+ */
+function setCustomRule(){
+	var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+	console.log(flowParam);
+	if(contractAttr.executeDeptCode == "00450080365"){
+		if(flowParam.nowtaskDefinitionKey == "BMQR"){		//部门合同管理员盖章确认
+		
+		}else if(flowParam.nowtaskDefinitionKey == "GSQR"){	//公司合同管理员盖章确认
+			
+		}
+	}else if(contractAttr.provinceCode == "hi"){
+		if(flowParam.nowtaskDefinitionKey == "GZGZ"){		//公章管理员盖章
+		
+		}else if(flowParam.nowtaskDefinitionKey == "HTGD"){	//合同管理员归档
+			
+		}
+	}else if(contractAttr.provinceCode == "sc"){
+		if(flowParam.nowtaskDefinitionKey == "BMQR"){		//部门合同管理员审核
+		
+		}else if(flowParam.nowtaskDefinitionKey == "GSQR"){	//公司合同管理员审核
+			
+		}
+	}
+//					sendBackBtn	//退回合同承办人
+//					saveBtn	//保存按钮
+//					activateBtn激活按钮
 }
 /*
  * 检查工单状态是否属于该流程

@@ -551,7 +551,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeLineByContract(contractNumber){
 	 var accountPeriodName = pageConfig.incomePeriod;
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="+contractNumber+"&accountPeriodName="+accountPeriodName;
-	 top.showSubpageTab(url,"线路明细");
+	 top.showSubpageTab(url,"线路收入");
  }
  /*
   *  风险收入-按客户查询-跳转线路明细方法jumpIncomeLineByCustomer
@@ -560,7 +560,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeLineByCustomer(customerCode){
 	 var accountPeriodName = pageConfig.incomePeriod;
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode+"&accountPeriodName="+accountPeriodName;
-	 top.showSubpageTab(url,"线路明细");
+	 top.showSubpageTab(url,"线路收入");
  }
 //=======================================收入分析 end=============================================//
 /*

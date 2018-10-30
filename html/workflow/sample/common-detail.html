@@ -39,15 +39,16 @@
 
 					<div class="toolbarBtn">
 						<div id="toolbarBtnContent">
-							<button id="showPanel" type="button" class="btn blue" onclick="flowStart();">发起</button>
-							<button id="showPanel" type="button" class="btn purple" onclick="businessPush();">业务功能入口模拟流程推动的提交</button>
-							<button id="showPanel" type="button" class="btn red" onclick="pushReceiveTask();">后台自动任务模拟提交</button>
-							<button id="showPanel" type="button" class="btn blue" onclick="applyCandidateTask();">后台申领任务</button>
+							<button id="showPanel1" type="button" class="btn blue" onclick="flowStart();">发起（直接选择流程模板下拉）</button>
+							<button id="showPanel2" type="button" class="btn blue" onclick="flowStart1();">发起（通过业务类型、省分、地市、ABC预留参数匹配流程模板）</button>
+							<button id="showPanel3" type="button" class="btn purple" onclick="businessPush();">业务功能入口模拟流程推动的提交（业务反查和操作待办）</button>
+							<button id="showPanel4" type="button" class="btn red" onclick="pushReceiveTask();">触发后台自动任务模拟提交（ReceiveTask）</button>
+							<button id="showPanel5" type="button" class="btn blue" onclick="applyCandidateTask();">后台申领任务(抢单)</button>
 						</div>
 					</div>
 					<div class="toolbarBtn">
 						<div id="toolbarBtnContent">
-							<button id="showPanel" type="button" class="btn red" onclick="startBybussType();">根据业务类型后台模拟启动流程</button>
+							<button id="showPanel" type="button" class="btn red" onclick="startBybussType();">根据业务类型，省分，地市，ABC预留参数后台匹配模板启动流程</button>
 							<button id="showPanel" type="button" class="btn purple" onclick="startFlowAuto();">手动触发后台轮询发起流程任务</button>
 							<button id="showPanel" type="button" class="btn red" onclick="checkFlow();">手动创建工单的验证</button>
 						</div>
@@ -127,15 +128,45 @@
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="businessType" class="control-label">业务类型（用于选择启动模板）：<i class="iconfont icon-mi required"></i></label>
+									<label for="businessType" class="control-label">业务类型（只用于选择启动模板）：<i class="iconfont icon-mi required"></i></label>
 									<div class="valiParent">
 										<input type="text" class="form-control" id="businessType" value="" />
 									</div>
 								</div>
 								<div class="col-sm-6 form-group">
-									<label for="businessType" class="control-label">业务类型（用于检查这个流程是否在运行，与业务主键组合使用）：<i class="iconfont icon-mi required"></i></label>
+									<label for="businessTypeNew" class="control-label">业务类型（其它模拟按钮会用到，一般与业务主键、省分、地市、预留abc参数组合使用）：<i class="iconfont icon-mi required"></i></label>
 									<div class="valiParent">
 										<input type="text" class="form-control" id="businessTypeNew" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="provCode" class="control-label">省分编码，用于匹配流程模板<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="provCode" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="cityCode" class="control-label">地市编码，用于匹配流程模板<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="cityCode" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="attrA" class="control-label">attrA预留参数A，用于匹配流程模板<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="attrA" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="attrB" class="control-label">attrB预留参数B，用于匹配流程模板<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="attrB" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="attrC" class="control-label">attrC预留参数C，用于匹配流程模板<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="attrC" value="" />
 									</div>
 								</div>
 							</div>

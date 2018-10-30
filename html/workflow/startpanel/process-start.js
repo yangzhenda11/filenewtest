@@ -161,11 +161,17 @@ function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);
 }
 //根据业务标识选择流程模板。参数：businesscode:PRO,PDM,ACC
-function getProcessDefinitionKey(businesscode){
-	
+function getProcessDefinitionKey(businessParm){
+	var businesscode=businessParm.businesscode;
+	var provCode=businessParm.provCode ;//省分，非必传，如传递则与其他参数唯一确定一个流程模板
+	var cityCode=businessParm.cityCode; //地市，非必传，如传递则与其他参数唯一确定一个流程模板
+	var attrA=businessParm.attrA ; //预留字段，非必传，如传递则与其他参数唯一确定一个流程模板
+	var attrB=businessParm.attrB ; //预留字段，非必传，如传递则与其他参数唯一确定一个流程模板
+	var attrC=businessParm.attrC; //预留字段，非必传，如传递则与其他参数唯一确定一个流程模板
+	$('#processDefinitionKey').val('');
 	$.ajax({  
         type : "post",  
-     	url : serverPath + "workflowrest/getprocessDefinitionKey/" + businesscode,
+     	url : serverPath + "workflowrest/getprocessDefinitionKey?businesscode=" + businesscode+"&provCode="+provCode+"&cityCode="+cityCode+"&attrA="+attrA+"&attrB="+attrB+"&attrC="+attrC,
         async : false,
         success : function(data){
             var success = data.retCode;

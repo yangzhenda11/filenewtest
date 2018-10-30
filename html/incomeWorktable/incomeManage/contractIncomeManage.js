@@ -71,7 +71,7 @@ function initContractInforTable(){
 							return App.unctionToThousands(data);
 						}
 					},
-					{"data": "contractId","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+					{"data": "contractNumber","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
 						"render" : function(data, type, full, meta){
 							return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
 						}
@@ -84,6 +84,6 @@ function initContractInforTable(){
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManage(contractId){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractId="+contractId;
-	top.showSubpageTab(url,"查看线路收入信息");
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="+contractNumber;
+	top.showSubpageTab(url,"线路收入");
 }

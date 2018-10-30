@@ -9,8 +9,9 @@
 		<div class="row" id="customerManagerContent">
 			<div class="tableToobarContent hidden" id="customerManagerToolbar">
 				<button type="button" class="btn red" onclick="addCustomerManager()">添加客户经理</button>
-				<button type="button" class="btn red" onclick="delectCustomerManager()">删除客户经理</button>
-				<button type="button" id="saveCustomerManagers" class="btn red" onclick="saveCustomerManager()">保存</button>
+				<button type="button" class="btn red" id="delManaForGDCL" onclick="delectCustomerManagerForGDCL()">删除客户经理</button>
+				<button type="button" class="btn red" id="delManaForTJKH" onclick="delectCustomerManagerForTJKH()">删除客户经理</button>
+				<button type="button" class="btn red" id="saveCustomerManagers" onclick="saveCustomerManager()">保存</button>
 			</div>
 			<table class='table table-hover table-bordered table-striped table-align' id="customerManagerTable" style="width: 70%;">
 				<thead>
@@ -162,7 +163,7 @@
 			if(data.length > 0){
 				var html = "";
 				for(var i = 0; i < data.length; i++){
-					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdBy="'+data[i].createdBy+'">'+
+					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdby="'+data[i].createdBy+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+	
 	    						'<td>'+data[i].managerStaffName+'</td>'+
@@ -182,12 +183,13 @@
 				$("#customerManagerTable").find("input").attr("disabled","disabled");
 				$("#customerManagerToolbar,.cusManagerCheckbox").remove();
 			}else{
-				if(!editIdentify.isCanUpdateCustomerManager){
-					$("#saveCustomerManagers").remove();
+				if(editIdentify.isCanUpdateCustomerManager){
+					$("#delManaForGDCL").remove();
+				}else{
+					$("#saveCustomerManagers,#delManaForTJKH").remove();
 				};
 				$("#customerManagerToolbar").removeClass("hidden");
 			};
-			
 		}
 	}
 	/*
@@ -379,12 +381,31 @@
 			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
 		}
 	}
+	/*
+	 * 删除客户经理（工单处理）
+	 */
+	function delectCustomerManagerForGDCL(){
+		var checkLength = $("#customerManagerTbody input[name='customerManagerCheck']:checked").length;
+		if(checkLength == 0){
+			layer.msg("请勾选客户经理复选框进行删除")
+		}else{
+			layer.confirm("是否删除？",{icon:7,title:"删除"},function(index){
+				layer.close(index);
+				$("#customerManagerTbody input[name='customerManagerCheck']:checked").each(function(k,v){
+					$(v).parents("tr").remove();
+				});
+				addCustomerManagerTbodyEmptyTr();
+				addCustomerManagerTbodySort();
+				App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
+			})
+		}
+	};
 
 	/*
-	 * 删除客户经理
+	 * 删除客户经理（编辑客户经理）
 	 */
 	var deleteCustomerManagerList = [];
-	function delectCustomerManager(){
+	function delectCustomerManagerForTJKH(){
 		var checkLength = $("#customerManagerTbody input[name='customerManagerCheck']:checked").length;
 		if(checkLength == 0){
 			layer.msg("请勾选客户经理复选框进行删除")

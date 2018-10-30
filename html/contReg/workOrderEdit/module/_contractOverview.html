@@ -348,7 +348,7 @@
 				}
 			},
 			"vatRate":function(value){
-				if(value == null){
+				if(value == null || value == ""){
 					value = '';
 				}else if(value == "多税率" || value == "0"){
 					value = value;
@@ -358,7 +358,7 @@
 				return value;
 			},
 			"originalVatRate":function(value){
-				if(value == null){
+				if(value == null || value == ""){
 					value = '';
 				}else if(value == "多税率" || value == "0"){
 					value = value;
@@ -405,12 +405,12 @@
 		if(parm.pageType == 1){
 			parent.layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
 				parent.layer.close(index);
-				top.showSubpageTab(href,"工单查看",true);
+				top.showSubpageTab(href,"关联工单查看",true);
 			})
 		}else{
 			layer.confirm("开启新页面来查看此关联工单",{icon:7,title:"提示"},function(index){
 				layer.close(index);
-				top.showSubpageTab(href,"工单查看",true);
+				top.showSubpageTab(href,"关联工单查看",true);
 			})
 		}
 	}

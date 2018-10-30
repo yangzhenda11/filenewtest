@@ -4,7 +4,6 @@ var parm = App.getPresentParm();
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var formSubmit = false;				//全局加载成功标识位
-var provinceCode = "";				//合同所属省份
 var wcardId = null;					//工单主键ID
 var wcardTypeCode = null;			//工单类型，0：其他，1：收入类-租线合同，2：支出类-采购合同
 var wcardProcess = null;			//工单处理状态  0:草稿/1:复核/2:退回/3:激活
@@ -16,6 +15,10 @@ var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var fileUploadEdit = true;			//*特殊* 文件上传域是否可以编辑标识位
 var isCancelApproved = false;		//*特殊* 是否为退回状态标识位
+var contractAttr = {
+	provinceCode: null,				//合同所属省份
+	city: null						//合同所属城市
+};
 var editIdentify = {						//2阶段新增标志位
 	isCanUpdateExpiryDate: false,			//*特殊* 是否可以更新终止日期
 	isCanUpdateCustomerManager: false		//*特殊* 是否可以更新客户经理
@@ -96,8 +99,10 @@ $(function() {
 		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
-		$("#toolbarBtn,#flowNote").remove();
+		$("#toolbarButton,#flowNote").remove();
+		$("#toolbarBtn").css("height","90px");
 		$pageContent.removeClass("hidden");
+		App.fixToolBars("toolbarBtnContent", 0);
 	} else if(parm.pageType == 4) {		//工单查询页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
@@ -240,8 +245,8 @@ function beforePushProcess(pass){
 	}
 	//2,设置下一步选人的参数，用于匹配通用规则选人。	
 	var assigneeParam = {
-		prov: provinceCode,
-		city: "",
+		prov: contractAttr.provinceCode,
+		city: contractAttr.city,
 		contracType: "",
 		attrA: "",
 		attrB: "",
@@ -498,11 +503,11 @@ function submitContentFn(){
 	    	}
     		var flowKey = "Contractproject2Process";
     		var linkcode = "GDQR";
-    		var prov = provinceCode;
+    		var prov = contractAttr.provinceCode;
     		var callbackFun = "submitContentPost";
     		var staffSelectType = 1;
     		var contracType = "";
-    		var city = "",attrA = "",attrB = "",attrC = "";	    		
+    		var city = contractAttr.city,attrA = "",attrB = "",attrC = "";	    		
 			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 		}
 	}
@@ -514,7 +519,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	if(checkWcardIschange()){
 		return false;
 	};
-	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+	var postData = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 	postData.assignee = STAFF_ORG_ID;
 	postData.wcardId = wcardId;
 	postData.wcardType = wcardTypeCode;
@@ -591,7 +596,7 @@ function activateContract(){
 		};
 		layer.confirm("注意：合同激活后将进入履行阶段。",{icon:7,title:"提示"},function(index){
 			layer.close(index);
-			var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+			var postData = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 			postData.validity = {};
 			if($("#contractScanCopyUpload")[0]){
 				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
@@ -623,7 +628,7 @@ function activateContract(){
  * 客户经理确认待办变已办
  */
 function customerManagerFinish(){
-	var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"Customer_add_Process");
+	var postData = App.getFlowParam(serverPath,wcardId,1,0,"Customer_add_Process",contractAttr.provinceCode,contractAttr.city,"","","");
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
 }
 /*
@@ -636,7 +641,7 @@ function cancelApproved(){
 		};
 		layer.confirm("请确认是否取消该工单的审批。",{icon:7,title:"提示"},function(index){
 			layer.close(index);
-			var flowParam = App.getFlowParam(serverPath,parm.wcardId,8,1,"contract_project2");
+			var flowParam = App.getFlowParam(serverPath,wcardId,8,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 			flowParam.wcardId = wcardId;
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
 			function successCallback(result) {
@@ -676,7 +681,7 @@ function setPinfoContent(){
 		if(checkWcardIschange()){
 			return false;
 		};
-		var flowParam = App.getFlowParam(serverPath,parm.wcardId,2,0,"contract_project2");
+		var flowParam = App.getFlowParam(serverPath,wcardId,2,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		$("#pinfoContentModal").modal("hide");
 		flowParam.pinfoContent = pinfoContent;
 		flowParam.busiId = wcardId;
@@ -700,7 +705,7 @@ function returnProcess(){
 			var postData = {
 				"processInstanceId": parm.processInstanceId,
 				"taskId": parm.taskId,
-				"wcardId": parm.wcardId
+				"wcardId": wcardId
 			};
 			App.formAjaxJson(serverPath+"contractOrderEditorController/saveOrderWithdrawProcess", "post", JSON.stringify(postData), successCallback);
 			function successCallback(result) {
@@ -900,15 +905,15 @@ function getWorkOrderInfo(){
 				if(baseData){
 					getContractOrderBaseInfoData = baseData;
 					contractStatus = baseData.contractStatus;
-					provinceCode = baseData.provinceCode;
+					contractAttr.provinceCode = baseData.provinceCode;
 					contractType = baseData.contractType;
-					if(parm.taskDefinitionKey == "GDCL" || parm.taskDefinitionKey == "GDQR"){
-						if(contractStatus != 1 && parm.taskFlag == "db"){
-							isEdit = false;
-							fileUploadEdit = false;
-						}
-					};
+					if(contractStatus != 1){
+						isEdit = false;
+						fileUploadEdit = false;
+					}
 					setDomContent(domObj);
+					//获取工单所属的地市编码
+					getContractCityCode(baseData.executeDeptId);
 				}else{
 					showLayerErrorMsg("当前工单暂无信息");
 				}
@@ -939,6 +944,22 @@ function setDomContent(domObj) {
 		});
 	};
 }
+//获取工单所属的地市编码
+function getContractCityCode(executeDeptId){
+	App.formAjaxJson(serverPath + "contractOrderEditorController/getContractCityCode", "get", {executeDeptId:executeDeptId}, successCallback, improperCallback);
+	function successCallback(result) {
+		var orgCode = result.data.orgCode;
+		if(orgCode){
+			contractAttr.city = orgCode;
+		}else{
+			layer.alert("获取地市编码失败，请联系管理员！",{icon:2});
+		}
+	};
+	function improperCallback(result){
+		layer.alert(result.message,{icon:2});
+	}
+}
+
 /*
  * 检查工单状态是否属于该流程
  */
@@ -1325,7 +1346,7 @@ function getFlowchart(){
 	if(parm.processInstanceId){
 		var processInstanceId = parm.processInstanceId;
 	}else{
-		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+		var flowParams = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		var processInstanceId = flowParams.processInstanceId;
 	};
 	if(processInstanceId != undefined && processInstanceId != ""){
@@ -1357,7 +1378,7 @@ function getFlowhistory(){
 	if(parm.processInstanceId){
 		var processInstanceId = parm.processInstanceId;
 	}else{
-		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+		var flowParams = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		var processInstanceId = flowParams.processInstanceId;
 	};
 	if(processInstanceId != undefined && processInstanceId != ""){
@@ -1401,9 +1422,9 @@ function getFlowhistory(){
  */
 function setHaveRead(){
 	if(parm.taskFlag == "db" && parm.taskDefinitionKey == "GDQR" && parm.pageType == 2){
-		var flowParams = App.getFlowParam(serverPath,parm.wcardId,1,0,"contract_project2");
+		var flowParams = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		$.ajax({
-			url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+flowParams.processInstanceId+'&taskId='+flowParams.taskId+'&businessId='+parm.wcardId, 
+			url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+flowParams.processInstanceId+'&taskId='+flowParams.taskId+'&businessId='+wcardId, 
 			type:"POST",
 			success:function(result){
 				if (result.success == 1) {
@@ -1449,8 +1470,12 @@ function backPage(){
 	if(parm.isucloud == "true"){
 		top.closeWindow();
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
-		var pageId = self.frameElement.getAttribute('data-id');
-		top.closeIfreamSelf(pageId);
+		layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+			saveCustomerManager();
+		}, function(){
+			var pageId = self.frameElement.getAttribute('data-id');
+			top.closeIfreamSelf(pageId);
+		});
 	}else{
 		window.history.go(-1);
 	}

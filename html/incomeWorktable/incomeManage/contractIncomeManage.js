@@ -85,6 +85,6 @@ function initContractInforTable(){
  */
 function jumpLineManage(contractNumber){
 	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="
-		+contractNumber+"&returnbtn=true";
+		+contractNumber+"&accountPeriodName="+parm.forecastAccountPeriod+"&returnbtn=true";
 	App.changePresentUrl(url);
 }

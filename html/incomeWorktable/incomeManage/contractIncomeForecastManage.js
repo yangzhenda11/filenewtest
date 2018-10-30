@@ -76,7 +76,7 @@ function initContractInforTable(){
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManage(contractNumber){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="
-		+contractNumber+"&returnbtn=true";
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?contractNumber="
+		+contractNumber+"&accountPeriodName="+parm.forecastAccountPeriod+"&returnbtn=true";
 	App.changePresentUrl(url);
 }

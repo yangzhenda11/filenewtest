@@ -10,7 +10,7 @@ $(function(){
 	if(isInArray(roleArr,91216)){
 		$("#myContractManagerList").show();
 	}else{
-		$("#myContractManagerList").remove();
+		$("#myContractManagerList").show();
 	};
 	//我的合同管理合同类型选择
 	$("#contractTypeModal").click(function(){
@@ -258,7 +258,7 @@ function initMyContractManagerTable(){
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractId","className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpWorkOrderEdit(\""+data+"\")'>添加/删除客户经理</a>";
+					return "<a onclick='jumpGetWcardIdByContractId(\""+data+"\")'>添加/删除客户经理</a>";
 				}
 			}
 		]
@@ -414,33 +414,44 @@ function jumpLineManageByContract(contractId){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }
+
+
+function jumpGetWcardIdByContractId(contractId){
+	var postData = JSON.stringify({contractId:"2367388206938193941"});
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardIdByContractId","post",postData, successCallback,null,null,false);
+	function successCallback(result){
+		var wcardId = result.data.wcardId;
+		jumpWorkOrderEdit(wcardId);
+	}
+}
 /*
  * 增加或删除客户经理  >>>>> 跳转工单编辑页面
  */
 function jumpWorkOrderEdit(wcardId){
-	var wcardId = "2367388206938193945";
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback,null,null,false);
-	function successCallback(result) {
-		var contractStatus = result.data.contractStatus;
-		var wcardStatus = result.data.wcardStatus;
-		var contractStatusObj = {
-			1: "已审批",
-			2: "作废",
-			3: "作废申请中",
-			4: "变更补充",
-			5: "终止解除",
-			7: "办结",
-			8: "履行中"
-		};
-		if(wcardStatus == 904030 && contractStatus == 8){
-			var href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=TJKH&wcardId="+wcardId;
-			top.showSubpageTab(href,"工单编辑");
-		}else{
-			layer.alert("该合同状态为"+contractStatusObj.contractStatus+"，不能添加/删除客户经理。",{icon:2,title:"流程状态错误"},function(index){
-				layer.close(index);
-			});
+		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId","get",{wcardId:wcardId}, successCallback,null,null,false);
+		function successCallback(result) {
+			var contractStatus = result.data.contractStatus;
+			var wcardStatus = result.data.wcardStatus;
+			var contractStatusObj = {
+				1: "已审批",
+				2: "作废",
+				3: "作废申请中",
+				4: "变更补充",
+				5: "终止解除",
+				6: "终止履行",
+				7: "办结",
+				8: "履行中"   //广义履行中
+			};
+			if(wcardStatus == 904030 && contractStatus == 8 || wcardStatus == 904040 && contractStatus == 4|| wcardStatus == 904050 && contractStatus == 5 || wcardStatus == 904060 && contractStatus == 6){
+				var href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=TJKH&wcardId="+wcardId;
+				top.showSubpageTab(href,"工单编辑");
+			}else{
+				layer.alert("该合同状态为"+contractStatusObj.contractStatus+"，不能添加/删除客户经理。",{icon:2,title:"流程状态错误"},function(index){
+					layer.close(index);
+				});
+			}
 		}
-	}
+	
 }
 
 //我的合同查询选择查看更多

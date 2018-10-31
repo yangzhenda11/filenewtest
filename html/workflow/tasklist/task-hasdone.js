@@ -180,7 +180,14 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
+		   		var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+				var editTaskDefinitionKey = "";
+				if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
+					editTaskDefinitionKey = "GDQR";
+				}else{
+					editTaskDefinitionKey = taskDefinitionKey;
+				};
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
 		   		App.setCache("searchForm");
 		   		App.changePresentUrl(src);
 		   	}else{

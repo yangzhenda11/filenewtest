@@ -88,6 +88,7 @@ function flowStart(){
 	//3,传递选人参数，用于个性选人等。
 	var assigneeParam = { 
 			"prov": "sd",  //省分，来自需求工单，必传
+			"orgCods":$("#orgCode").val()
 			}
 	setAssigneeParam(assigneeParam);
 	
@@ -418,4 +419,48 @@ function modal_pushAndStart(flowParam){
 			//2,启动新的流程
 			startBybussType();
 		});
+}
+
+function selectstaffSH(){
+	var flowKey = "";
+    var linkcode ="";
+    //下一步要提交的环节是否是候选人环节
+    var idcandidate=0;
+    var prov=$("#provCode").val();
+	var staffSelectType=1;
+	var callbackFun='getassignee';
+	var orgCodes=$("#orgCode").val();
+	if(prov.length==0){
+		layer.msg("请填写上海的省分简码sh！");
+		return;
+	}
+	if(orgCodes.length==0){
+		layer.msg("请填写上海的合同的承办部门！");
+		return;
+	}
+	if(idcandidate==1){
+		layer.msg("因下一步环节是候选人抢单环节，所以强制切换选人模式为多选！");
+		staffSelectType=2;
+	}
+	if(staffSelectType==2){
+		callbackFun="getassignees";
+	}
+    
+    jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes);
+}
+function jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes){
+
+	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
+    $("#PandJstaffiframetaskSH").load(frameSrc,function() {
+    	$("#PandJstaffiframetaskSH").modal('show');
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,null,null,null,null,null,orgCodes);
+    	$("#PandJstaffiframetaskSH").off('shown.bs.modal').on('shown.bs.modal', function (e) {
+			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
+			$(".checkall").click(function () {
+			    var check = $(this).prop("checked");
+			    $("#searchStaffTable .checkchild").prop("checked", check);
+			    checkAllChildStaffCheckbox();
+			});
+		})
+    });
 }

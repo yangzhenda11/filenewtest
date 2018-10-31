@@ -109,7 +109,14 @@ function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceI
 		data: canWithDrawForDoneData,
 		success:function(data){
 			var canWithDraw = data.canWithDraw;
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
+			var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+			var editTaskDefinitionKey = "";
+			if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
+				editTaskDefinitionKey = "GDQR";
+			}else{
+				editTaskDefinitionKey = taskDefinitionKey;
+			};
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
 	   		$('#businessiframe').attr("src",src);
 		},
 		error:function(e){

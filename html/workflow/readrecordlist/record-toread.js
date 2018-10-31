@@ -44,9 +44,9 @@ function getTableToread(){
 			},
 	        {
 	            "data": "readTitle",
-	            title: "主题",
+	            "title": "主题",
 	            "className": "whiteSpaceNormal",
-	            render: function(data, type, row, meta) {
+	            "render": function(data, type, row, meta) {
 	            	var assignee = row.receivedStaffOrgId
 		        	var fn = "";
 		        	var style = "";
@@ -85,12 +85,13 @@ function getTableToread(){
 function  findDetail(readId,url,bussId) {
 	App.setCache("searchForm");
 	App.changePresentUrl(url+"&bussid="+bussId+"&readid="+readId);
+	changeReadStatus(readId);
 }
 /*
  * 待阅变已阅Fn
  * 参数：readId
  */
-function changeReadStatus(){
+function changeReadStatus(readId){
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
 	    "type" : "post",

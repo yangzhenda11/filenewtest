@@ -77,32 +77,36 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
-	
-	$("#goTaskToDoDetailForToDo").show();
-	$("#searchContentForToDo").hide();
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
+	if(specialList.indexOf(c.taskDefinitionKey) != -1){
+		redirectUrl(id,taskDefinitionKey,processInstanceId);
+	}else{
+		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
+		$("#goTaskToDoDetailForToDo").show();
+		$("#searchContentForToDo").hide();
+	}
 	//}
 }
-function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	
+function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {
 	var flowParam = {
 		"taskDefinitionKey" : taskDefinitionKey,
 		"assignee" : assignee,
 		"processInstanceId" : processInstanceId,
 		"taskId" : id
 	}
-	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,
-			function(data) {
-				if (result.success == 1) {
-					//currentTask=result.flowdata;
-					layer.msg(data.sign);
-					// 成功后刷新列表
-					serarchForToDo(true);
-				} else {
-					layer.msg(data.sign);
-				};
-			});
+	
+	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
+		if (data.success == 1) {
+			//打开通用待办公共界面。
+			//layer.msg(data.sign);
+			serarchForToDo(true);
+			// 打开抢到的待办方法调用
+			assignee=assignee.substring(10);
+			handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
+		} else {
+			layer.msg(data.sign);
+		};
+	});
 }
 
 /*
@@ -137,23 +141,28 @@ function getTableTodo(){
 		        	var buttontitle = "";
 		        	var fn = "";
 		        	var style = "";
-		        	if(curStaffOrgId == assignee){
-		        		if(c.taskDefinitionKey == "GDCL" || c.taskDefinitionKey == "GDQR"){
-		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.processInstanceId  + "\')";
+		        	if(assignee.indexOf("candidate-") != -1){
+		        		//是抢单模式，点击待办标题先申请任务。
+		        		assignee=assignee.substring(10);
+		        		if(curStaffOrgId == assignee){
+		        			buttontitle="当前任务为抢单模式的任务，请及时处理！";
+		        			fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}else{
-		        			fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        			style = "cursor:not-allowed";
+		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+		        			fn = "layer.msg(\'"+buttontitle+"\')";
 		        		}
 		        	}else{
-		        		style = "cursor:not-allowed";
-		        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-		        		fn = "layer.msg(\'"+buttontitle+"\')";
+		        		//非抢单模式的正常待办
+		        		if(curStaffOrgId == assignee){
+	        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		}else{
+		        			style = "cursor:not-allowed";
+		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+		        			fn = "layer.msg(\'"+buttontitle+"\')";
+		        		}
 		        	}
 		        	var context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
-		        	if(assignee.indexOf("candidate-") != -1){
-		        		buttontitle = "该任务为抢单任务，如需处理请先点击领取该任务";
-		        		fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-		        		context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
-		        	}
 		            return App.getDataTableLink(context);
 				}
 			
@@ -210,7 +219,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+	   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}
@@ -225,19 +234,31 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
 	function successCallback(result) {
-		var wcardProcess = result.data.wcardProcess;
+		var data = result.data;
+		var wcardProcess = data.wcardProcess;
+		var wcardStatus = data.wcardStatus;
+		var contractStatus = data.contractStatus;
 		var isPass = false;
+		var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+		var editTaskDefinitionKey = "";
 		if(taskDefinitionKey == "GDCL"){
 			if(wcardProcess == 0 || wcardProcess == 2){
 				isPass = true;
+				editTaskDefinitionKey = "GDCL";
 			}
-		}else if(taskDefinitionKey == "GDQR"){
+		}else if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
 			if(wcardProcess == 1){
 				isPass = true;
+				editTaskDefinitionKey = "GDQR";
+			}
+		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+			if(wcardStatus == 904030 && contractStatus == 8){
+				isPass = true;
+				editTaskDefinitionKey = taskDefinitionKey;
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
 			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{

@@ -155,6 +155,11 @@ function initLineIsArrearageTable() {
 				{
 					"data" : "contractValue",			
 					"className" : "whiteSpaceNormal"
+						, "render" : function(data, type, full, meta) {
+							return App.unctionToThousands(data);
+						}	
+						
+						
 				} ,
 				{
 					"data" : "customerManagerName",
@@ -505,19 +510,19 @@ function initCustomDiffTobssTable() {
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerNameBss1",
+						"data" : "customerName",
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerCodeBss1",
+						"data" : "customerCode",
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerNameBss2",
+						"data" : "customerNameBss",
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerCodeBss2",
+						"data" : "customerCodeBss",
 						"className" : "whiteSpaceNormal",
 						},
 						{
@@ -529,7 +534,7 @@ function initCustomDiffTobssTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpCustomDiffToDetail(\""+data.contractId+"\",\"Tobss\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffToDetail(\""+data.contractId+"\",\"Tobss\",\""+data.diffContent+"\")'>查看</a>";
 							}
 						}
 						
@@ -575,19 +580,19 @@ function initCustomDiffToyzsTable() {
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerNameBss1",
+						"data" : "customerName",
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerCodeBss1",
+						"data" : "customerCode",
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerNameBss2",
+						"data" : "customerNameYzs",
 						"className" : "whiteSpaceNormal",
 						},
 						{
-						"data" : "customerCodeBss2",
+						"data" : "customerCodeYzs",
 						"className" : "whiteSpaceNormal",
 						},
 						{
@@ -599,7 +604,7 @@ function initCustomDiffToyzsTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpCustomDiffToDetail(\""+data.contractId+"\",\"Toyzs\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffToDetail(\""+data.contractId+"\",\"Toyzs\",\""+data.diffContent+"\")'>查看</a>";
 							}
 						}
 						]
@@ -668,7 +673,7 @@ function initCustomDiffInbssTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inbss\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inbss\",\""+data.diffContent+"\")'>查看</a>";
 							}
 						}
 						]
@@ -736,7 +741,7 @@ function initCustomDiffInyzsdrTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inyzsdr\")'>查看</a>";
+							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inyzsdr\",\""+data.diffContent+"\")'>查看</a>";
 							}
 						}
 						]
@@ -954,21 +959,20 @@ function initWarningOverviewCharts(){
 /*
  * 跳转明细查看
  */
-function jumpRiskList(riskType,contractId){
-	debugger;
+function jumpRiskList(riskType,contractId){ 
 	var url = "/html/incomeWorktable/riskWarning/riskWarningList.html?returnBtn=true&contractId="+contractId+"&riskType="+riskType;
 	top.showSubpageTab(url,"查看线路明细");
 }
  
 //to 跳转地址
-function jumpCustomDiffToDetail(contractParm,riskType){
-	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractId="+contractParm+"&riskType="+riskType;
-	top.showSubpageTab(url,"查看线路明细");
+function jumpCustomDiffToDetail(contractParm,riskType,diffContent){
+	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractId="+contractParm+"&riskType="+riskType+"&diffContent="+encodeURI(diffContent);
+ 	top.showSubpageTab(url,"线路差异明细");
 }
 
 //in 跳转地址
-function jumpCustomDiffInDetail(contractParm,riskType){
-	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&riskType="+riskType;
-	top.showSubpageTab(url,"查看线路明细");
+function jumpCustomDiffInDetail(contractParm,riskType,diffContent){
+	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&riskType="+riskType+"&diffContent="+encodeURI(diffContent)  ;
+ 	top.showSubpageTab(url,"线路差异明细");
 }
  

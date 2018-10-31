@@ -1,7 +1,9 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
-
+$(function(){
+	searchLineInfor();
+})
 /*
  * 该dom中可接受的配置参数
  */
@@ -17,6 +19,7 @@ if(!parm.contractId){
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
  */
 function searchLineInfor(){
+ 
 	var isInit = $.fn.dataTable.isDataTable("#lineInforTable");
 	if(isInit){
 		reloadPageDataTable("#lineInforTable");
@@ -51,12 +54,33 @@ function initLineInforTable(){
 			{"data": "businessId","className": "whiteSpaceNormal"},
 			{"data": "circuitCode","className": "whiteSpaceNormal"},
 			{"data": "productName","className": "whiteSpaceNormal"},
-			{"data": "rentingTime","className": "whiteSpaceNormal"},
-			{"data": "stopRentingTime","className": "whiteSpaceNormal"},
+			{"data": "rentingTime","className": "whiteSpaceNormal"
+				,
+				"render" : function(data, type, full, meta) {
+					return App.formatDateTime(data, "yyyy-mm-dd");
+				}},
+			{"data": "stopRentingTime","className": "whiteSpaceNormal"
+				,
+				"render" : function(data, type, full, meta) {
+					return App.formatDateTime(data, "yyyy-mm-dd");
+				}},
 			{"data": "accountPeriodName","className": "whiteSpaceNormal"},
-			{"data": "receivableAmount","className": "whiteSpaceNormal"},
-			{"data": "arrearsAmount","className": "whiteSpaceNormal"},
-			{"data": "collectedAmount","className": "whiteSpaceNormal"}
+			{"data": "receivableAmount",
+					"className": "whiteSpaceNormal"
+				, "render" : function(data, type, full, meta) {
+							return App.unctionToThousands(data);
+						}	
+			
+			},
+			{"data": "arrearsAmount","className": "whiteSpaceNormal"
+				, "render" : function(data, type, full, meta) {
+					return App.unctionToThousands(data);
+				}	
+			},
+			{"data": "collectedAmount","className": "whiteSpaceNormal"
+				, "render" : function(data, type, full, meta) {
+					return App.unctionToThousands(data);
+				}	}
 		]
 	});
 }

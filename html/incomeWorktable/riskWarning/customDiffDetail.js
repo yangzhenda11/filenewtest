@@ -5,13 +5,24 @@ var serverPath = config.serverPath;
 /*
  * 该dom中可接受的配置参数
  */
-var parm = App.getPresentParm();
-debugger;
+var parmUrl = App.getPresentParm("true");
+var parmUrlLength = parmUrl.indexOf("?") + 1;
+parmUrl = parmUrl.substr(parmUrlLength);   
+parmUrl = parmUrl.split("&");  
+var parm = [];
+console.log(parmUrl)
+$.each(parmUrl,function(k,v){
+ 
+	parm[v.split("=")[0]] = v.split("=")[1];
+	  
+})
 console.log(parm);
 //if(!parm.contractId){
 //	layer.alert("页面参数错误，请联系系统管理员",{icon:2});
 //}
-
+$(function(){
+	searchLineInfor();
+})
 
 /*
  * 点击查询事件
@@ -30,7 +41,6 @@ function searchLineInfor(){
  * 表头为动态表头，第一次加载时需要去掉其中的内容
  */
 function initLineInforTable(){
-	debugger;
      var  riskType=parm.riskType;
      var  path=""; 
       if(riskType){
@@ -43,10 +53,11 @@ function initLineInforTable(){
 			"url" : serverPath + 'riskWarningDetailMangerController/listCustomDiff'+path+'Detail',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
-				debugger;
 				d.customerName = $("#searchInput").val().trim();
 				d.contractNumber=parm.contractNumber;
 				d.contractId=parm.contractId;
+				d.diffContent=decodeURI(parm.diffContent); 
+				debugger;
 				return  JSON.stringify(d);
 			}
 		},
@@ -73,7 +84,11 @@ function initLineInforTable(){
 			{"data": "rentingScope",
 				"className": "whiteSpaceNormal",},
 			{"data": "monthRentCost",
-				"className": "whiteSpaceNormal",}
+				"className": "whiteSpaceNormal",
+			  "render" : function(data, type, full, meta) {
+					return App.unctionToThousands(data);
+				}		
+			}
 		]
 			
 	});

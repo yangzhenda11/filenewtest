@@ -78,7 +78,7 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
 	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
-	if(specialList.indexOf(c.taskDefinitionKey) != -1){
+	if(specialList.indexOf(taskDefinitionKey) != -1){
 		redirectUrl(id,taskDefinitionKey,processInstanceId);
 	}else{
 		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");

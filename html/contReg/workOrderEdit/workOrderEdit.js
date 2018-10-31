@@ -917,9 +917,11 @@ function getContractCityCode(executeDeptId,domObj){
 					setCustomRule();
 				}else{
 					$("#activateBtn").click(activateContract);		//走原激活方法
+					$pageContent.removeClass("hidden");
 				}
-			};
-			$pageContent.removeClass("hidden");
+			}else{
+				$pageContent.removeClass("hidden");
+			}
 			//设置各dom元素
 			setDomContent(domObj);
 			//如果为工单待办激活请求已阅接口
@@ -978,7 +980,8 @@ function setCustomRule(){
 		}else if(flowParam.nowtaskDefinitionKey == "GSQR"){	//公司合同管理员审核
 			
 		}
-	}
+	};
+	$pageContent.removeClass("hidden");
 //					sendBackBtn	//退回合同承办人
 //					saveBtn	//保存按钮
 //					activateBtn激活按钮

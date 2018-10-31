@@ -37,7 +37,7 @@ function handleTaskToDo(taskInfo) {
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
 	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
-	if(specialList.indexOf(c.taskDefinitionKey) != -1){
+	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForToDo").remove();
 		$("#searchContentForToDo").hide();
 		$("#businessiframe").show();

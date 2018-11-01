@@ -564,7 +564,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
 /*
  * 激活按钮点击@功能页面
  */
-function activateContract(){
+function activateContract(chooseLinkcode){
 	if(formSubmit){
 		if(checkWcardIschange()){
 			return false;
@@ -605,6 +605,9 @@ function activateContract(){
 			postData.wcardId = wcardId;
 			postData.contractId = contractId;
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
+			if(chooseLinkcode){
+				postData.taskDefinitionKey = chooseLinkcode;
+			};
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
 				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
@@ -674,7 +677,7 @@ function pushGDQRWorkflowOfDepart(){
  * 工单处理第一步
  * 推下一步提交后台@功能页面
  */
-function pushGDQRDataOfDepart(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
+function pushGDQRDataOfDepart(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun,chooseLinkcode){
 	$("#PandJstaffiframetask").modal("hide");
 	if(checkWcardIschange()){
 		return false;
@@ -688,6 +691,9 @@ function pushGDQRDataOfDepart(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,
 	postData.validity.validityId = $("#validityId").val();
 	if($("#contractScanCopyUpload")[0]){
 		postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
+	};
+	if(chooseLinkcode){
+		postData.taskDefinitionKey = chooseLinkcode;
 	};
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessDepart", "post", JSON.stringify(postData), successCallback,improperCallback);
@@ -804,10 +810,14 @@ function chooseAssigneeChange(){
 	if(chooseLink){
 		var linkcode = chooseLink.split(",")[0];
 		if(linkcode == "endevent1"){
+			$("#assigneeNameForStartDom").hide();
 			$("#assigneeNameForStart").val("");
 			$("#assigneeIdForStart").val("");
+		}else{
+			$("#assigneeNameForStartDom").show();
 		}
 	}else{
+		$("#assigneeNameForStartDom").show();
 		$("#assigneeNameForStart").val("");
 		$("#assigneeIdForStart").val("");
 	}
@@ -850,13 +860,13 @@ function chooseAssigneeConfirm(){
 	if(chooseLink){
 		var linkcode = chooseLink.split(",")[0];
 		if(linkcode == "endevent1"){
-			activateContract();
+			activateContract(linkcode);
 		}else{
 			var staffOrgId = $("#assigneeIdForStart").val()
 			if(staffOrgId == ""){
 				layer.msg("请选择下一步环节办理人员",{offset: '170px'});
 			}else{
-				pushGDQRDataOfDepart("","","","",staffOrgId)
+				pushGDQRDataOfDepart("","","","",staffOrgId,"",linkcode)
 			}
 		}
 	}else{

@@ -2069,7 +2069,8 @@ th {
   padding: 5px; }
 
 .table-bordered {
-  border: 1px solid #e7ecf1; }
+  border: 1px solid #e7ecf1; 
+  border-bottom: none;}
   .table-bordered > thead > tr > th,
   .table-bordered > thead > tr > td,
   .table-bordered > tbody > tr > th,

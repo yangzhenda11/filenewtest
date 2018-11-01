@@ -479,6 +479,7 @@ function initContractEndHaveNewLineTable() {
   * 线路明细中点击查看未写
   */
 function initCustomDiffTobssTable() {
+	
 	App.initDataTables('#customDiffTobssTable', "#customDiffTobssLoading", {
 		ajax : {
 			"type" : "POST",
@@ -548,7 +549,6 @@ function initCustomDiffTobssTable() {
  * 线路明细中点击查看未写
  */
 function initCustomDiffToyzsTable() {
-
 	App.initDataTables('#customDiffToyzsTable', "#customDiffToyzsLoading", {
 		ajax : {
 			"type" : "POST",
@@ -568,7 +568,7 @@ function initCustomDiffToyzsTable() {
 						"data" : null,
 						"className" : "whiteSpaceNormal",
 						"render" : function(data, type, full, meta) {
-							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							var start = App.getDatatablePaging("#customDiffToyzsTable").pageStart;
 							return start + meta.row + 1;
 						}
 					}, {
@@ -637,7 +637,7 @@ function initCustomDiffInbssTable() {
 						"data" : null,
 						"className" : "whiteSpaceNormal",
 						"render" : function(data, type, full, meta) {
-							var start = App.getDatatablePaging("#customDiffTobssTable").pageStart;
+							var start = App.getDatatablePaging("#customDiffInbssTable").pageStart;
 							return start + meta.row + 1;
 						}
 					}, {

@@ -212,14 +212,14 @@
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	                    <h4 class="modal-title">选择下一步环节</h4>
 	                </div>
-	                <div class="modal-body">
+	                <div class="modal-body" style="min-height: 200px;">
                 		<div class="form-body">
 							<div class="form-group" style="margin: 14px 0;">
 								<input type="hidden" name="flowProcessDefinitionKey" id="flowProcessDefinitionKey" value="" />
 								<label for="linkForStart">下一步环节<i class="iconfont icon-mi required"></i></label>
 								<select class="form-control" id="linkForStart" name="linkForStart" onchange="chooseAssigneeChange()"></select>
 							</div>
-							<div class="form-group" style="margin: 14px 0 30px;">
+							<div class="form-group" id="assigneeNameForStartDom">
 								<label for="assigneeNameForStart">办理人员 <i class="iconfont icon-mi required"></i></label>
 								<div class="input-group">
 									<input type="text" name="assigneeNameForStart" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" />

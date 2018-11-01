@@ -430,7 +430,6 @@ function jumpGetWcardIdByContractId(contractId){
 function jumpWorkOrderEdit(wcardId){
 		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId","get",{wcardId:wcardId}, successCallback,null,null,false);
 		function successCallback(result) {
-			debugger;
 			var contractStatus = result.data.contractStatus;
 			var wcardStatus = result.data.wcardStatus;
 			var contractStatusObj = {

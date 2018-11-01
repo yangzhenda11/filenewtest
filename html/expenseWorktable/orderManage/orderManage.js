@@ -2,7 +2,6 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
-debugger;
 var companyCode = config.curStaffOrgId;
 $(function(){
 	getTableToreadHisList();

@@ -833,7 +833,6 @@ function initRelatedNotzxPeriodTable() {
 			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForRiskWaring',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
-				debugger;
 				d.contractName = $("#relatedNotzxPeriodInput").val().trim();
 				return JSON.stringify(d);
 			}

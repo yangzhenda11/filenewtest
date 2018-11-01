@@ -5,25 +5,13 @@ var serverPath = config.serverPath;
 /*
  * 该dom中可接受的配置参数
  */
-var parmUrl = App.getPresentParm("true");
-var parmUrlLength = parmUrl.indexOf("?") + 1;
-parmUrl = parmUrl.substr(parmUrlLength);   
-parmUrl = parmUrl.split("&");  
-var parm = [];
-console.log(parmUrl)
-$.each(parmUrl,function(k,v){
- 
-	parm[v.split("=")[0]] = v.split("=")[1];
-	  
-})
-console.log(parm);
+var parm = App.getPresentParm();
 //if(!parm.contractId){
 //	layer.alert("页面参数错误，请联系系统管理员",{icon:2});
 //}
 $(function(){
 	searchLineInfor();
 })
-
 /*
  * 点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
@@ -54,10 +42,9 @@ function initLineInforTable(){
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerName = $("#searchInput").val().trim();
-				d.contractNumber=parm.contractNumber;
-				d.contractId=parm.contractId;
-				d.diffContent=decodeURI(parm.diffContent); 
-				debugger;
+				d.contractNumber = parm.contractNumber;
+				d.contractId = parm.contractId;
+				d.diffContent = parm.diffContent; 
 				return  JSON.stringify(d);
 			}
 		},

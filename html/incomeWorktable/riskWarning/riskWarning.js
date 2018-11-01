@@ -930,6 +930,20 @@ function initWarningOverviewCharts(){
 	        	fontSize:13
 	        }
 	   	},
+	   	tooltip : {
+	        trigger: 'axis',
+	        confine:"true",
+	        axisPointer : {
+	            type : 'shadow'
+	        },
+	        textStyle:{
+               	align:'left'
+           	},
+           	formatter:function (params, ticket, callback) {
+            	var	tooltipCon = "风险预警总览</br>" + params[0].marker + params[0].name + "：" + params[0].value + "个";
+			    return tooltipCon;
+			}
+	    },
 	    xAxis: {
 	        type: 'category',
 	        data: ['线路租用中欠费', '线路账单异常', '合同到期业务未停止', '业务信息报错']

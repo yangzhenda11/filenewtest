@@ -69,10 +69,13 @@ function getAssistantList(){
 		var data = result.data;
 		var html = "";
 		$.each(data, function(k,v) {
-			html += '<div class="workItem">'+
-					'<img src="/static/img/worktable/'+v.funIconUrl+'" data-url="'+v.funUrl+'"/>'+
-					'<p>'+v.funName+'</p>'+
-					'</div>';
+			html += '<div class="workItem">' +
+				'<div class="workItemImg">'+
+//					'<span class="badge badge-Worktable">3</span>' +
+					'<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/>' +
+				'</div>'+
+				'<p>' + v.funName + '</p>' +
+				'</div>';
 		});
 		$("#workItemDom").html(html);
 	}
@@ -185,15 +188,15 @@ function showContractPerformerModal(contractId) {
 		if(data.length > 0){
 			for (var i = 0; i < data.length; i++){
 				var item = data[i];
-				var performerType = item.performerType == 1 ? "是" : "否";
+//				var performerType = item.performerType == 1 ? "是" : "否";
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
 							"<td>"+item.performerStaffName+"</td>"+
 							"<td>"+item.performerOrgName+"</td>"+
-							"<td>"+performerType+"</td>"+
-							"<td></td>"+"<td></td>"+
-							"<td>"+item.addStaff+"</td>"+
-							"<td>"+item.addStaffOrg+"</td>"+
+//							"<td>"+performerType+"</td>"+
+//							"<td></td>"+"<td></td>"+
+//							"<td>"+item.addStaff+"</td>"+
+//							"<td>"+item.addStaffOrg+"</td>"+
 						"</tr>";
 			}
 		}else{

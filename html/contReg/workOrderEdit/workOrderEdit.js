@@ -88,7 +88,7 @@ $(function() {
 			if(parm.taskDefinitionKey == "GDCL"){
 				$(".sendBackBtn,.activateBtn,.returnBtn,.changeExpiryDateBtn").remove();
 			}else if(parm.taskDefinitionKey == "GDQR"){
-				$(".register,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
+				$(".registerBtn,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
 			}else if(parm.taskDefinitionKey == "GXZZ"){
 				$("#toolbarButton button").not(".closeBtn,.changeExpiryDateBtn,.flowhistoryBtn,.flowchartBtn").remove();
 			}else if(parm.taskDefinitionKey == "KHQR"){

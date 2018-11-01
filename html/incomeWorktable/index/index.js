@@ -81,7 +81,10 @@ function getAssistantList() {
 		var html = "";
 		$.each(data, function(k, v) {
 			html += '<div class="workItem">' +
-				'<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/>' +
+				'<div class="workItemImg">'+
+//					'<span class="badge badge-Worktable">3</span>' +
+					'<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/>' +
+				'</div>'+
 				'<p>' + v.funName + '</p>' +
 				'</div>';
 		});
@@ -712,7 +715,14 @@ function initIncomeAnalysis(incomedata) {
 	        },
 	        textStyle:{
                	align:'left'
-            }
+           	},
+           	formatter:function (params, ticket, callback) {
+            	var tooltipCon = params[0].name + "</br>"
+            	$.each(params, function(k,v) {
+            		tooltipCon += v.marker + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
+            	});
+			    return tooltipCon;
+			}
 	    },
 	    grid: {
 	    	left: '10',

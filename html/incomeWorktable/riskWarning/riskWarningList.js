@@ -8,7 +8,7 @@ $(function(){
  * 该dom中可接受的配置参数
  */
 var parm = App.getPresentParm();
-console.log(parm);
+
 if(!parm.contractId){
 	layer.alert("页面参数错误，请联系系统管理员",{icon:2});
 }

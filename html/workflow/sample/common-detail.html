@@ -173,13 +173,22 @@
 										<input type="text" class="form-control" id="attrC" value="" />
 									</div>
 								</div>
+								<div class="col-sm-6 form-group">
+									<label for="orgCode" class="control-label">合同承办部门code（测试上海选人）<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="orgCode" value="" />
+                                        <button id="selectstaff" onclick="selectstaffSH();" type="button" class="btn primary">选择人员</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
+        <!--modal-->
+        <div class="modal fade" id="PandJstaffiframetaskSH" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+        
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>

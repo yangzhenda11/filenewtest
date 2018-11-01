@@ -120,6 +120,7 @@ function selectstaff(){
     var prov=$("#wprov").val();
 	var staffSelectType=$("#wStaffSelectType").val();
 	var callbackFun='getassignee';
+	var orgCodes=$("#worgCode").val();
 	if(idcandidate==1){
 		layer.msg("因下一步环节是候选人抢单环节，所以强制切换选人模式为多选！");
 		staffSelectType=2;
@@ -128,14 +129,14 @@ function selectstaff(){
 		callbackFun="getassignees";
 	}
     
-    jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes);
 }
-function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType){
+function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes){
 
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	$("#PandJstaffiframetask").modal('show');
-    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType);
+    	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,null,null,null,null,null,orgCodes);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
@@ -159,6 +160,8 @@ function getassignees(STAFF_ORG_IDS,STAFF_NAMES){
 }
 function setAssigneeParam(assigneeParam){
 	$("#wprov").val(assigneeParam.prov);
+	$("#worgCode").val(assigneeParam.orgCods);
+	
 }
 //根据业务标识选择流程模板。参数：businesscode:PRO,PDM,ACC
 function getProcessDefinitionKey(businessParm){

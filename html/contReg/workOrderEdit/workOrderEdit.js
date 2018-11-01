@@ -486,11 +486,6 @@ function submitContentFn(){
 	    	if(contractAttr.executeDeptCode == "00450080365"){
 	    		pathSelect = 1;
 	    	};
-	    	if(contractAttr.provinceCode == "hi"){
-	    		var flowOrgCodes = contractAttr.executeDeptCode;
-	    	}else{
-	    		var flowOrgCodes = "";
-	    	};
 	    	var flowParam = App.getFlowParam(serverPath,wcardId,1,pathSelect,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
     		var flowKey = flowParam.processDefinitionKey;
     		var linkcode = flowParam.taskDefinitionKey;
@@ -498,6 +493,7 @@ function submitContentFn(){
     		var city = contractAttr.city
     		var callbackFun = "submitContentPost";
     		var staffSelectType = 1;
+    		var flowOrgCodes = contractAttr.executeDeptCode;
     		var contracType = "",attrA = "",attrB = "",attrC = "";	    		
 			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,flowOrgCodes);
 		}
@@ -555,8 +551,9 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
-			      var check = $(this).prop("checked");
-			      $(".checkchild").prop("checked", check);
+			      	var check = $(this).prop("checked");
+			      	$(".checkchild").prop("checked", check);
+			      	checkAllChildStaffCheckbox();
 			});
 		})
     });
@@ -666,7 +663,8 @@ function pushGDQRWorkflowOfDepart(){
 		var city = contractAttr.city
 		var callbackFun = "pushGDQRDataOfDepart";
 		var staffSelectType = 1;
-		var contracType = "",attrA = "",attrB = "",attrC = "",flowOrgCodes = "";	    		
+		var flowOrgCodes = contractAttr.executeDeptCode;
+		var contracType = "",attrA = "",attrB = "",attrC = "";	    		
 		jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,flowOrgCodes);
 	}else{
 		showLayerErrorMsg("页面加载失败");
@@ -837,7 +835,8 @@ function chooseAssignee(){
 			var city = contractAttr.city
 			var callbackFun = "setAssigneeIdForStart";
 			var staffSelectType = 1;
-			var contracType = "",attrA = "",attrB = "",attrC = "",flowOrgCodes = "";	    		
+			var flowOrgCodes = contractAttr.executeDeptCode;
+			var contracType = "",attrA = "",attrB = "",attrC = "";	    		
 			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,flowOrgCodes);
 		}
 	}else{

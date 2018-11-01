@@ -63,7 +63,7 @@
 	/*
 	 * 当为查询进入、已办进入、合同退回或者退回申请中时 为不可编辑
 	 */
-	if(parm.pageType == 0 || parm.pageType == 3 || parm.pageType == 4 || parm.taskFlag == "yb" || fileUploadEdit == false){
+	if(parm.pageType == 0 || parm.pageType == 3 || parm.pageType == 4 || parm.taskFlag == "yb" || specialDomEdit == false){
 		$("#contractTextUploadBtn").attr("disabled","disabled");
 		var scanCpyUploadFormIsEdit = false;
 	}else{

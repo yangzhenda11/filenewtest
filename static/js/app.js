@@ -1400,16 +1400,16 @@ var App = function() {
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
 				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);   
+				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
 				    }
-				}   
-				return theRequest;   
+				}
+				return theRequest;
         	}
         },
         getQueryString : function(name){
         	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
 		    var r = window.location.search.substr(1).match(reg); 
-		    if (r != null) return unescape(r[2]); 
+		    if (r != null) return decodeURI(r[2]);
 		    return null; 
         },
         /*

@@ -66,7 +66,7 @@ function getTableForDone(){
 		        	var fn = "";
 		        	var style = "";
 		        	if(curStaffOrgId == assignee){
-		        		var specialList = ["GDCL","GDQR","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
 		        		if(specialList.indexOf(c.taskDefinitionKey) != -1){
 		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}else{
@@ -180,7 +180,14 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
+		   		var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+				var editTaskDefinitionKey = "";
+				if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
+					editTaskDefinitionKey = "GDQR";
+				}else{
+					editTaskDefinitionKey = taskDefinitionKey;
+				};
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
 		   		App.setCache("searchForm");
 		   		App.changePresentUrl(src);
 		   	}else{

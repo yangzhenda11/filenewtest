@@ -561,7 +561,7 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
 /*
  * 激活按钮点击@功能页面
  */
-function activateContract(chooseLinkcode){
+function activateContract(e,chooseLinkcode){
 	if(formSubmit){
 		if(checkWcardIschange()){
 			return false;
@@ -859,7 +859,7 @@ function chooseAssigneeConfirm(){
 	if(chooseLink){
 		var linkcode = chooseLink.split(",")[0];
 		if(linkcode == "endevent1"){
-			activateContract(linkcode);
+			activateContract(null,linkcode);
 		}else{
 			var staffOrgId = $("#assigneeIdForStart").val()
 			if(staffOrgId == ""){

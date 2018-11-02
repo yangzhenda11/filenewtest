@@ -377,7 +377,7 @@ function jumpContractManage(customerCode){
  * 跳转线路收入信息
  */
 function jumpLineIncomeManage(customerCode){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode ;
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManageForBss.html?customerCode="+customerCode ;
 	top.showSubpageTab(url,"线路收入信息");
 }
 //我的合同查询选择查看更多

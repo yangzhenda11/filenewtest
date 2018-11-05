@@ -80,13 +80,12 @@ function getAssistantList() {
 		var data = result.data;
 		var html = "";
 		$.each(data, function(k, v) {
-			html += '<div class="workItem">' +
-				'<div class="workItemImg">'+
-//					'<span class="badge badge-Worktable">3</span>' +
-					'<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/>' +
-				'</div>'+
-				'<p>' + v.funName + '</p>' +
-				'</div>';
+			var funCode = v.funCode;
+			html += '<div class="workItem"><div class="workItemImg">';
+			if(funCode == "KHGL" || funCode == "LXZHT_SR" || funCode == "FXYJ_SR"){
+				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
+			};
+			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
 		});
 		$("#workItemDom").html(html);
 	}

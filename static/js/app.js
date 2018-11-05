@@ -958,7 +958,7 @@ var App = function() {
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,
-				"pageLength": pagelengthMenu[0],
+				"pageLength": Number(pagelengthMenu[0]),
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
 					"thousands": ","

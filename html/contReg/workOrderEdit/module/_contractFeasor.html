@@ -305,8 +305,13 @@
     		App.formAjaxJson(url, "post", postData, successCallback);
 			function successCallback(result) {
 				var data = result.data;
-				var parentId = data.orgId;
-				var fullName =  data.orgName;
+				if(data){
+					var parentId = data.orgId;
+					var fullName =  data.orgName;
+				}else{
+					var parentId = treeNode.parentId;
+					var fullName =  treeNode.fullName;
+				};
 				if(type == 1){
 					addFeasorValue(treeNode,parentId,fullName);
 				}else if(type ==2){

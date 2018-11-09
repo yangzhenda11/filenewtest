@@ -91,9 +91,9 @@ function initRelationCustomerTable(){
 			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "19%"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
 				}
 			},
 			{"data": "partyId","className": "whiteSpaceNormal tableImgCon","width": "8%",
@@ -194,14 +194,14 @@ function initNotRelationCustomerTable(){
 			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal"},
 			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal"},
 			{"data": "customerManagerName","title":"客户经理","className": "whiteSpaceNormal"},
-			{"data": "customerCode","title":"线路基本信息","className": "whiteSpaceNormal","width": "8%","visible":visible,
+			{"data": null,"title":"线路基本信息","className": "whiteSpaceNormal","width": "8%","visible":visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpLineManage(\""+data.customerCode+"\,\""+data.customerName+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"title":"线路收入信息","className": "whiteSpaceNormal","width": "8%","visible":!visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\")'>查看</a>";
+					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\,\""+data.customerName+"\")'>查看</a>";
 				}
 			},
 			{"data": "sourceName","title":"来源","className": "whiteSpaceNormal","visible":visible,
@@ -253,9 +253,9 @@ function initEmphasisCustomerTable(){
 			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "19%"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "8%",
+			{"data": null,"className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
+					return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"className": "whiteSpaceNormal tableImgCon","width": "8%",
@@ -330,10 +330,10 @@ function myCustomerTableColumns(){
 		if(v.checked == true){
 			if(v.id == "jumpContract"){
 				var item = {
-					"data": "customerCode",
+					"data": "",
 					"title": v.data,
 					"render": function(data, type, full, meta){
-						return "<a onclick='jumpContractManage(\""+data+"\")'>查看</a>";
+						return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
 					}
 			};
 			}else{
@@ -362,22 +362,25 @@ function reloadPageDataTable(tableId,retainPaging) {
 /*
  * 跳转线路信息
  */
-function jumpLineManage(customerCode){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=0&id="+customerCode;
+function jumpLineManage(customerCode, customerName){
+	var url = "/html/incomeWorktable/lineManage/lineView.html?" 
+		+ "relationType=0&id="+customerCode+"&customerName="+customerName;
 	top.showSubpageTab(url,"线路基本信息");
 }
 /*
  * 跳转合同信息
  */
-function jumpContractManage(customerCode){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
+function jumpContractManage(customerCode, customerName, partnerCode){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?" 
+		+ "customerCode="+customerCode+"&customerName="+customerName+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
 /*
  * 跳转线路收入信息
  */
-function jumpLineIncomeManage(customerCode){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManageForBss.html?customerCode="+customerCode ;
+function jumpLineIncomeManage(customerCode, customerName){
+	var url = "/html/incomeWorktable/incomeManage/lineIncomeManageForBss.html?" 
+		+ "customerCode="+customerCode+"&customerName="+customerName;
 	top.showSubpageTab(url,"线路收入信息");
 }
 //我的合同查询选择查看更多

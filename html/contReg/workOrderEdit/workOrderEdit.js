@@ -558,7 +558,7 @@ function submitContentPost(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,cal
 	}
 	function improperCallback(result){
 		var ms = result.message;
-		showLayerErrorMsg(ms);
+		layer.alert(ms,{icon:2});
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 	}
 }

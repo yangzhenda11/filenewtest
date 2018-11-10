@@ -304,7 +304,7 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 		}
 		function improperCallbackFn1(result){
 			parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
-			showLayerErrorMsg(result.message);
+			layer.alert(result.message,{icon:2});
 		}
 	}else if(handleType == 2 && parm.taskDefinitionKey == "GDQR"){		//工单退回点击@工作流
 		var pinfoContent = $('#comment', parent.document).val();
@@ -347,7 +347,7 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 			}
 			function improperCallbackFn3(result){
 				parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
-				showLayerErrorMsg(result.message);
+				layer.alert(result.message,{icon:2});
 			}
 		});
 	}
@@ -637,7 +637,7 @@ function activateContract(e,chooseLinkcode){
 			}
 			function improperCallback(result){
 				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
-				showLayerErrorMsg(result.message);
+				layer.alert(ms,{icon:2});
 			}
 		});
 	}else{
@@ -773,7 +773,7 @@ function pushGDQRWorkflowOfCompany(){
 			}
 			function improperCallback(result){
 				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
-				showLayerErrorMsg(result.message);
+				layer.alert(result.message,{icon:2});
 			}
 		});
 	}else{

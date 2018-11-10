@@ -1930,7 +1930,11 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
     			top.window.location.href = "/login.html";
     		});
 		}
-	}else{
+	}else if(XMLHttpRequest.status == 0){
+   		layer.alert("请求终止", {icon: 2,title:"错误"});
+    }else if(XMLHttpRequest.status == 504){
+   		layer.alert("请求超时", {icon: 2,title:"错误"});
+    }else{
 		layer.alert("接口请求超时", {icon: 2,title:"错误"});
 	};
 }

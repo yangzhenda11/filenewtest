@@ -92,8 +92,9 @@ jQuery(function($) {
 		$.each(menus,function(index,menuinfo){
 			if(menuinfo.childrens.length != 0){
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
+				console.log(menuinfo.icon);
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle'  href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
-				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'> "+menuinfo.name+" </span>");
 				$("#"+menuinfo.id+"a").append("<b class='arrow fa fa-angle-down'></b>");
 				$("#"+menuinfo.id).append("<b class='arrow'></b>");
@@ -103,7 +104,7 @@ jQuery(function($) {
 			}else{
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle J_menuItem' href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
-				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"fa fa-circle":menuinfo.icon)+"'></span>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'>"+menuinfo.name+"</span>");
 				$("#"+menuinfo.id).append("<b class='arrow'></b>");
 			};

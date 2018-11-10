@@ -24,13 +24,13 @@
 	</head>
 	<body>
 		<div class="page-content">
-			<div class="portlet">
-				<div class="portlet-title">
-					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase">收入管理</span>
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>收入管理</p><span></span>
 					</div>
 				</div>
-				<div class="portlet-body">
+				<div class="form-fieldset-body">
 					<div class="buttonNavTabs" id="buttonNavTabs">			
 						<button href="#incomeAnalysis" data-id="incomeAnalysis" data-toggle="tab" class="btn primary btn-inline check">收入分析</button>
 						<button href="#incomeForecast" data-id="incomeForecast" data-toggle="tab" class="btn primary btn-inline">收入预测</button>
@@ -41,10 +41,15 @@
 					    	<div id="incomeAnalysisCharts"></div>
 					    	<div class="form-fieldset" id="contractIncomeAnalysisValue">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 合同收入明细</span>
+									<div class="fieldset-title">
+										<p>合同收入明细</p><span></span>
+									</div>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
 								</div>
-								<div class="form-fieldset-body">
-									<div class="row">
+								<div class="form-fieldset-body" id="incomeAnalysisValue">
+									<div class="paddingLR10">
 										<div class="incomeAnalysisTitle">
 											<p>账期：<span class="accuontPeriod minWidth60"></span></p>
 											<p>应收（元）：<span id="incomeReceivable" class="minWidth60"></span></p>
@@ -82,11 +87,16 @@
 											</tbody>
 										</table>
 					               	</div>
-					            </div>
+					           	</div>
 					        </div>
 					        <div class="form-fieldset" style="display: none;" id="riskIncomeAnalysisValue">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 风险收入明细</span>
+									<div class="fieldset-title">
+										<p>风险收入明细</p><span></span>
+									</div>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
 								</div>	
 								<div class="form-fieldset-body">
 									<div class="row">
@@ -129,14 +139,15 @@
 					               	</div>
 					            </div>
 					        </div>
-					        <div class="work-list" id="incomeShareDiv" style="display: none;">
+					        <div id="incomeShareDiv" style="display: none;">
 								<div class="form-fieldset" id="performanceContractList">
 									<div class="form-fieldset-title">
-										<span>跨省分摊收入</span>
+										<div class="fieldset-title">
+											<p>跨省分摊收入</p><span></span>
+										</div>
 									</div>
 									<div class="form-fieldset-body">
 										<p class="apportionTitle">2018年度分摊收入情况分析</p>
-										
 										<table id="incomeShareTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 											<thead>
 												<tr id="incomeShareThead">
@@ -159,7 +170,7 @@
 					    </div>
 					    <div class="tab-pane fade" id="incomeForecast">
 					    	<div id="incomeForecastCharts"></div>
-					    	<div class="remark-list">
+					    	<div class="remark-list" style="margin-bottom: 16px;">
 								预测逻辑说明<br />
 								合同收入部分：<br />
 								固定金额且有固定起止日期的合同（结构化工单中“是否固定金额”为“是”，且“合同有效期确认方式”为“固定起止日期”），按照合同的不含增值税合同金额，将金额均摊到合同起止日期间的各账期内；<br />
@@ -172,10 +183,15 @@
 							</div>
 							<div class="form-fieldset" id="contractIncomeForecastValue">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 合同收入明细</span>
+									<div class="fieldset-title">
+										<p>合同收入明细</p><span></span>
+									</div>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="row">
+									<div class="paddingLR10">
 										<div class="incomeAnalysisTitle">
 											<p>预测期间：<span class="minWidth60" id="contractIncomeForecastAccountPeriod"></span></p>
 											<p>收入预测：<span class="minWidth60" id="contractIncomeForecastReceivable"></span></p>
@@ -213,10 +229,15 @@
 					        </div>
 					   		<div class="form-fieldset" style="display: none;" id="lineIncomeForecastValue">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 风险收入明细</span>
+									<div class="fieldset-title">
+										<p>风险收入明细</p><span></span>
+									</div>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="row">
+									<div class="paddingLR10">
 										<div class="incomeAnalysisTitle">
 											<p>预测期间：<span class="minWidth60" id="lineIncomeForecastAccountPeriod"></span></p>
 											<p>收入预测：<span class="minWidth60" id="lineIncomeForecastReceivable"></span></p>

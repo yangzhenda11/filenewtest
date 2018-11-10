@@ -660,12 +660,17 @@ var App = function() {
 					}
 				},
 				error: function(result) {
+					loadEnd();
 					if(errorCallback){
 						errorCallback(result);
-					}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
+					}else if(result.status == 0){
+						layer.alert("请求终止", {icon: 2,title:"错误"});
+	        		}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 		        			top.window.location.href = "/login";
 		        		});
+					}else if(result.status == 504){
+						layer.alert("请求超时", {icon: 2,title:"错误"});
 					}else if(result.status == 401){
 						if(top.globalConfig.loginSwitchSuccess == 0){
 							top.window.location.href = "/overtime.html";
@@ -682,10 +687,14 @@ var App = function() {
 		},
 		//使用$.ajax中错误的回调事件
 		ajaxErrorCallback: function(result){
-			if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
+			if(result.status == 0){
+				layer.alert("请求终止", {icon: 2,title:"错误"});
+    		}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 				layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
         			top.window.location.href = "/login";
         		});
+			}else if(result.status == 504){
+				layer.alert("请求超时", {icon: 2,title:"错误"});
 			}else if(result.status == 401){
 				if(top.globalConfig.loginSwitchSuccess == 0){
 					top.window.location.href = "/overtime.html";
@@ -1030,6 +1039,10 @@ var App = function() {
 		        			top.window.location.href = "/login.html";
 		        		});
 					}
+		        }else if(xhr.status == 0){
+		       		layer.alert("请求终止", {icon: 2,title:"错误"});
+		        }else if(xhr.status == 504){
+		       		layer.alert("请求超时", {icon: 2,title:"错误"});
 		        }else{
         			layer.alert("接口错误", {icon: 2,title:"错误"});
         		}
@@ -1930,7 +1943,11 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
     			top.window.location.href = "/login.html";
     		});
 		}
-	}else{
+	}else if(XMLHttpRequest.status == 0){
+   		layer.alert("请求终止", {icon: 2,title:"错误"});
+    }else if(XMLHttpRequest.status == 504){
+   		layer.alert("请求超时", {icon: 2,title:"错误"});
+    }else{
 		layer.alert("接口错误", {icon: 2,title:"错误"});
 	};
 }

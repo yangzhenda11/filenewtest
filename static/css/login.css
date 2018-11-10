@@ -22,7 +22,7 @@ input,button{outline: none !important;}
 .login-form-body .form-group .form-control{ padding: 10px 12px;line-height:22px;height:42px; padding-left: 40px;}
 .login-form-body .form-group{ position: relative;}
 .login-form-body .form-group i{ position: absolute;left: 10px; top: 5px; color: #fdab29; font-size: 22px;}
-.login-btn{ font-size:20px; padding-top:12px; padding-bottom:8px;background: #fdab29;color: #fff;}
+.login-btn{ font-size:20px; padding-top:12px; padding-bottom:8px;background: #fdab29;color: #fff;border: 1px solid #fdab29;}
 .login-btn:hover{ color: #fff;}
 .login-btn:focus{ color: #fff;}
 .login-btn:active{ color: #fff;}

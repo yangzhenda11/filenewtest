@@ -1870,8 +1870,8 @@ function getBusiProcessInfoID(){
 					busiProcess += "<p>【"+ o +"】  合同管理员-"+createdName+"  审核意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
 				}
 			};
-			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><span><i class="iconfont icon-layers"></i> 工单处理意见</span><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
-				'<div class="row">'+busiProcess+'</div></div></div>';
+			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><div class="fieldset-title"><p>工单处理意见</p><span></span></div><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
+				busiProcess+'</div></div>';
 			if(isCancelApproved && parm.taskFlag == "db"){
 				$("#workOrderContent").prepend(html);
 			}else{

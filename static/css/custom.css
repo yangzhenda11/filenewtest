@@ -2,7 +2,8 @@
 body{overflow: hidden;}
 ul,ol{list-style: none;margin: 0;padding: 0;}
 button:focus{outline: none !important;}
-.table thead{background: #f5f5f5;}
+/*样式修改#f5f5f5*/
+.table thead{background: #E9F0FA;}
 /* 解决iconfont 在谷歌浏览器下锯齿加粗-开始 */
 .iconfont {
     -webkit-font-smoothing: antialiased;
@@ -183,6 +184,7 @@ button:focus{outline: none !important;}
     position: relative;
     display: table;
     width: 100%;
+    /*background:url(../img/book_bg.gif) repeat-x;*/
 }
 
 .page-search .page-search-form, .page-search .page-search-action {
@@ -411,6 +413,10 @@ button:focus{outline: none !important;}
   padding-left: 0;
   padding-right: 0;
 }
+.paddingLR10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .fullWidth{
 	width: 100%;
 }
@@ -528,7 +534,7 @@ table td{
  * 列表页样式重置
  */
 .form-fieldset > .form-fieldset-body{
-	padding-top: 15px;
+	padding-top: 5px;
 }
 .form-fieldset-body .control-label{
 	text-align: right;
@@ -561,8 +567,8 @@ table td{
 }
 .buttonNavTabs button{
     margin: 0 4px 0 3px;
-    padding: 4px 15px;
-    font-size: 13px;
+    padding: 2px 15px;
+    font-size: 12px;
     border: 2px solid #dc2a32;
     border-bottom: none;
     border-radius: 4px;
@@ -697,12 +703,13 @@ table td{
 /*
  * 仿input框
  */
+/*样式修改*/
 .divInput{
     cursor: not-allowed;
     background: #f5f5f5;
     border: 1px solid #ececec;
     padding: 4px 12px;
-    border-radius: 3px;
+    /*border-radius: 3px;*/
     color: #767676;
     min-height: 30px;
     white-space: pre;
@@ -775,7 +782,6 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 	background: #d11718;
 	color: #fff;
 }
-
 .work-list .form-fieldset-body{
 	padding: 10px 0;
 }
@@ -789,8 +795,8 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 .work-list .form-fieldset-body .input-group>.form-control{
 	margin-top: 0px;
 }
-.work-list table{
-	margin-top: 6px
+table{
+	margin-top: 5px
 }
 .tableImgCon{
 	padding: 0 4px !important;
@@ -810,6 +816,66 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
 .table-bordered{
 	border-bottom: none;
 }
-
-
-
+.toolbars{
+	padding-top: 5px;
+	border-top: 1px solid #EEF1F5;
+}
+/*样式修改按钮*/
+.btn{
+	background: linear-gradient(to bottom,#fff,#c3daf5);
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#C3DAF5);
+  	margin-bottom: 0;
+  	font-weight: normal;
+  	text-align: center;
+  	vertical-align: middle;
+  	touch-action: manipulation;
+  	cursor: pointer;
+  	border: 1px solid #2C59AA;
+  	white-space: nowrap;
+  	padding: 3px 10px;
+  	font-size: 12px;
+  	color: #000000;
+  	-webkit-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+}
+/*.btn:hover{
+	color: #000000;
+	border-color: #adadad;
+}*/
+.btn:active{
+	color: #000000;
+	background: linear-gradient(to bottom,#fff,#96c3f7);
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#96c3f7);
+}
+.btn > i{
+	display: none;
+}
+.modal-header,.modal-footer{
+	padding: 10px 15px;
+}
+.form-fieldset > .form-fieldset-title > .fieldsetChangeTitle{
+	position: absolute;
+	top: 0;
+	z-index: 999;
+	background: #ccc;
+	padding: 0 10px;
+	height: 25px;
+	color: #000;
+	font-family: "新宋体";
+	font-size: 13px;
+	font-weight: bold;
+}
+.form-fieldset > .form-fieldset-title > .fieldsetChangeTitle.checked{
+	background: #d11718;
+	color: #fff;
+}
+.row.page-search{
+	padding: 5px 0 0;
+}
+.btn.red{
+	color: #333;
+	background: linear-gradient(to bottom,#fff,#c3daf5);
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#C3DAF5);
+}

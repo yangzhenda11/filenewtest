@@ -228,12 +228,11 @@ function initIncomeAnalysisCharts(incomeChartData){
 	        {
 	            name:'欠费金额',
 	            type:'bar',
-	            stack: '合同收入',
+	            stack: '风险收入',
 	            barGap: 0,
 	            barMaxWidth: 50,
 	            data: incomeArrearsAmountList
 	        }
-	        
 	    ],
 	    color:['#4472c4', '#ff0000','#4472c4','#ff0000']
 	};

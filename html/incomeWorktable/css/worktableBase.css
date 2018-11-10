@@ -11,6 +11,8 @@
   padding: 8px 0 8px 12px;
   font-size: 12px;
   background: #fff;
+  background: #D11718;
+  color: #fff;
   margin-bottom: 6px;
   border-radius: 4px;
 }
@@ -27,9 +29,10 @@
 }
 .portlet-worktable {
   overflow: hidden;
-  border-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   font-size: 14px;
-  border-top-width: 1px !important;
+  border-top: 2px solid #D11718 !important;
   margin-bottom: 6px;
 }
 .portlet-worktable i {
@@ -37,9 +40,13 @@
   font-size: 20px;
   position: relative;
   top: 1px;
+  color: #D11718;
 }
 .portlet-worktable .portlet-title .caption {
   padding: 6px 0;
+}
+.portlet-worktable .portlet-title {
+  border: none;
 }
 .processDom,
 .workItemDom,

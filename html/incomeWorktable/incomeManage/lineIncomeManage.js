@@ -11,7 +11,10 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){ 
- 	if(parm.contractId||parm.contractNumber||parm.customerCode){
+ 	if(!parm.contractId && !parm.contractNumber && !parm.customerCode && !parm.customerName){
+ 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+ 		return;
+ 	}else{
  		if(null!=parm.contractId){
  			$("#parmContractNum").text('合同ID:'+parm.contractId);
  		}else if(null!=parm.contractNumber){
@@ -19,11 +22,7 @@ $(function(){
  		}else if(null!=parm.customerCode){
  			$("#parmContractNum").text('客户编号:'+parm.customerCode);
  		}
- 		
  		initLineInforTable();
- 	}else{
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
  	}
 })
 /*
@@ -56,6 +55,7 @@ function initLineInforTable(){
 				d.customerCode = parm.customerCode;
 				d.contractNumber = parm.contractNumber;
 				d.contractId = parm.contractId;
+				d.customerName = parm.customerName;
  				return  JSON.stringify(d);
 			}
 		},

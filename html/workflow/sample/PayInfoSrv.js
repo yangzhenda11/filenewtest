@@ -24,7 +24,11 @@ function flowStart(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
-//			layer.msg("" + result.data[0].orgName + "")
+			if(null==result.data.value||"0"==result.data.value){
+				layer.msg("无返回数据");
+			}else{
+				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+			}
 		}
 }
 //该方法为发起查询采购订单行信息服务。
@@ -59,7 +63,11 @@ function flowStart2(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
-//			layer.msg("" + result.data[0].orgName + "")
+			if(null==result.data.value||"0"==result.data.value){
+				layer.msg("无返回数据");
+			}else{
+				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+			}
 		}
 }
 //该方法为发起查询采购订单接收信息服务
@@ -90,7 +98,11 @@ function flowStart3(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
-//			layer.msg("" + result.data[0].orgName + "")
+			if(null==result.data.value||"0"==result.data.value){
+				layer.msg("无返回数据");
+			}else{
+				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+			}
 		}
 }
 //该方法为发起查询应付实付信息服务
@@ -122,7 +134,11 @@ function flowStart4(){
 		    	}
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
-		function successCallback(result) {
-//			layer.msg("" + result.data[0].orgName + "")
-		}
+			function successCallback(result) {
+				if(null==result.data.value||"0"==result.data.value){
+					layer.msg("无返回数据");
+				}else{
+					layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+				}
+			}
 }

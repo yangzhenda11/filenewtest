@@ -5,7 +5,7 @@ var serverPath = config.serverPath;
 var reloadEmphasisCustomerTable = false;
 //获取参数
 var parm = App.getPresentParm();
-$(function(){
+$(function(){ 
 	/*
 	 * 我的客户（未关联合同）功能，稽核管理和商务经理需具备全省权限的角色才可以使用。
 	 * roleType
@@ -196,12 +196,12 @@ function initNotRelationCustomerTable(){
 			{"data": "customerManagerName","title":"客户经理","className": "whiteSpaceNormal"},
 			{"data": null,"title":"线路基本信息","className": "whiteSpaceNormal","width": "8%","visible":visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data.customerCode+"\,\""+data.customerName+"\")'>查看</a>";
+					return "<a onclick='jumpLineManage(\""+data.customerCode+"\",\""+data.customerName+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"title":"线路收入信息","className": "whiteSpaceNormal","width": "8%","visible":!visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\,\""+data.customerName+"\")'>查看</a>";
+					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\",\""+data.customerName+"\")'>查看</a>";
 				}
 			},
 			{"data": "sourceName","title":"来源","className": "whiteSpaceNormal","visible":visible,

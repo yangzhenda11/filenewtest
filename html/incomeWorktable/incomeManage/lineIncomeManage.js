@@ -141,6 +141,7 @@ function returnSelectLRData(data) {
 
 
 var  incomeTheadList = [
+	{data:"服务号码",id:"serviceNumber",checked:true},
 	{data:"业务信息ID",id:"businessId",checked:true},
 	{data:"电路代号",id:"circuitCode",checked:true},
 	{data:"产品名称",id:"productName",checked:true}, 

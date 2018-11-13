@@ -54,7 +54,7 @@ function initLineIncomeforTable(){
 				"type": "POST",
 				"url" :serverPath + 'incomeForecast/listLineIncomeForecast' ,
 				"contentType" : "application/json;charset=utf-8",
-				"data": function(d) { 
+				"data": function(d) {
 					d.customerCode = parm.customerCode; 
 					d.customerName = parm.customerName; 
 					d.forecastAccountPeriod = parm.forecastAccountPeriod;
@@ -149,6 +149,7 @@ $("#returnBtn").on("click",function(){
 })
   
 var  incomeTheadList = [
+	{data:"服务号码",id:"serviceNumber",checked:true},
 	{data:"业务信息ID",id:"businessId",checked:true},
 	{data:"电路代号",id:"circuitCode",checked:true},
 	{data:"产品名称",id:"productName",checked:true}, 

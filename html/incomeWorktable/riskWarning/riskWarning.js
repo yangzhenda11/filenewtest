@@ -986,7 +986,6 @@ function jumpCustomDiffToDetail(contractParm,riskType,diffContent){
 //in 跳转地址
 function jumpCustomDiffInDetail(contractParm,riskType,diffContent){
 	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&riskType="+riskType+"&diffContent="+encodeURI(diffContent)  ;
- 	
 	top.showSubpageTab(url,"线路差异明细");
 }
  

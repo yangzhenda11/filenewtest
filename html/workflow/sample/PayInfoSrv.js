@@ -92,8 +92,8 @@ function flowStart3(){
 					    	"vendorname":$("#vendornameHeadReceived").val(),
 					    	"ponumber":$("#ponumberHeadReceived").val(),
 					    	"itemnumber":$("#itemnumberHeadReceived").val(),
-					    	"startlastupdatedate":$("#startlastupdatedateReceived").val(),
-					    	"endlastupdatedate":$("#endlastupdatedateReceived").val()
+					    	"startlastupdatedate":$("#startlastupdatedateHeadReceived").val(),
+					    	"endlastupdatedate":$("#endlastupdatedateHeadReceived").val()
 		    	}
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);

@@ -53,6 +53,7 @@ function initLineInforTable(){
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;
+				d.customerName = parm.customerName;
 				d.contractNumber = parm.contractNumber;
 				d.contractId = parm.contractId;
 				d.customerName = parm.customerName;

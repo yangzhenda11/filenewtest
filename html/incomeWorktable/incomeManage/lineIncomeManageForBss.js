@@ -43,12 +43,11 @@ function initLineInforTable(){
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomer',
+			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomerForBss',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;
-				d.contractNumber = parm.contractNumber;
-				d.contractId = parm.contractId;
+				d.customerName = parm.customerName; 
 				d.businessId = $("#searchInput").val().trim();
 				return  JSON.stringify(d);
 			}

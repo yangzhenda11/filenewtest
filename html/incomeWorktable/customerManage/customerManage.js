@@ -364,7 +364,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  */
 function jumpLineManage(customerCode, customerName){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?" 
-		+ "relationType=0&id="+customerCode+"&customerName="+customerName;
+		+ "relationType=0&customerCode="+customerCode+"&customerName="+customerName;
 	top.showSubpageTab(url,"线路基本信息");
 }
 /*

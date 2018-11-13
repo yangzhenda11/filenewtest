@@ -55,6 +55,7 @@ function initLineIncomeforTable(){
 				"contentType" : "application/json;charset=utf-8",
 				"data": function(d){ 
 					d.customerCode = parm.customerCode; 
+					d.customerName = parm.customerName; 
 					d.forecastAccountPeriod = parm.forecastAccountPeriod;
 					d.customerName = parm.customerName;
 	 				return  JSON.stringify(d);

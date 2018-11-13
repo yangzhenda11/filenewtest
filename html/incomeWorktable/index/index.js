@@ -323,7 +323,7 @@ $("#showContractMore").on("click",function(){
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }
 /***************选择稽核范围开始***********************/

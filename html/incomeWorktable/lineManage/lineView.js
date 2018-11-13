@@ -68,7 +68,9 @@ function initLineInforTable(){
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) {
 				d.isRelateContract = parm.relationType;
-				d.contractId = parm.id;
+				d.contractId = parm.contractId;
+				d.customerCode = parm.customerCode;
+				d.customerName = parm.customerName; 
 				d.businessId = $("#searchInput").val().trim();
 				return JSON.stringify(d);
 			}

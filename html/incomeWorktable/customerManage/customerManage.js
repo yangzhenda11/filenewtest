@@ -363,6 +363,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息
  */
 function jumpLineManage(customerCode, customerName){
+	debugger;
 	var url = "/html/incomeWorktable/lineManage/lineView.html?" 
 		+ "relationType=0&customerCode="+customerCode+"&customerName="+customerName;
 	top.showSubpageTab(url,"线路基本信息");

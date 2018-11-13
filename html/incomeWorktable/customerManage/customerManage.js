@@ -5,7 +5,7 @@ var serverPath = config.serverPath;
 var reloadEmphasisCustomerTable = false;
 //获取参数
 var parm = App.getPresentParm();
-$(function(){
+$(function(){ 
 	/*
 	 * 我的客户（未关联合同）功能，稽核管理和商务经理需具备全省权限的角色才可以使用。
 	 * roleType

@@ -491,10 +491,10 @@ th.thAlignCenter{
 }
 
 table th{
-	border: 1px solid #ccc;
+	border: 1px solid #ddd;
 }
 table td{
-	border: 1px solid #ccc;
+	border: 1px solid #ddd;
 }
 /*
  * ztree最大高度
@@ -731,73 +731,7 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
     position: relative;
     top: 2px;
 }
-/*二阶段form-fieldset页样式*/
-.work-list{overflow: hidden;}
-.work-list .form-fieldset{
-	margin-bottom: 8px;
-}
-.work-list .form-fieldset-title{
-	border-bottom: 2px solid #d11718;
-	padding: 0;
-	height: 32px;
-	line-height: 32px;
-	color: #fff;
-	background: #eee;
-	cursor: pointer;
-}
-.work-list .form-fieldset > .form-fieldset-title > span{
-	width: 240px;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 999;
-	padding-left: 10px;
-	background: #D11718;
-	background: linear-gradient(-135deg, transparent 15px, #D11718 0);
-}
-.work-list .form-fieldset > .form-fieldset-title > .form-fieldset-tools{
-	width: 100%;
-	height: 32px;
-	top: 0;
-	right: 0;
-}
-.work-list .form-fieldset > .form-fieldset-title > .form-fieldset-tools a{
-	float: right;
-	padding-top: 0;
-	padding-bottom: 0;
-	line-height: 40px;
-	margin-right: 10px;
-}
-.work-list .form-fieldset > .form-fieldset-title > .form-fieldset-tools a i{
-	color: #d11718 !important;
-	font-size: 30px !important;
-}
-.work-list .form-fieldset > .form-fieldset-title > .fieldsetChangeTitle{
-	position: absolute;
-	top: 0;
-	z-index: 999;
-	background: #ccc;
-	padding: 0 10px;
-	height: 30px;
-	color: #333;
-}
-.work-list .form-fieldset > .form-fieldset-title > .fieldsetChangeTitle.checked{
-	background: #d11718;
-	color: #fff;
-}
-.work-list .form-fieldset-body{
-	padding: 10px 0;
-}
-.work-list .form-fieldset-body .row.page-search{
-	padding: 8px 0 0 0;
-	border: none;
-}
-.work-list .form-fieldset-body .page-search-form .form-control{
-	margin-top: 5px;
-}
-.work-list .form-fieldset-body .input-group>.form-control{
-	margin-top: 0px;
-}
+
 table{
 	margin-top: 5px
 }

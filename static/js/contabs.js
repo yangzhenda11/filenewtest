@@ -5,7 +5,6 @@ $(function() {
 		}
 	});
 	$('#actionUl').on('click','.J_menuItem',conTabC);
-	$("#messageTip").on('click',conTabC);
 	$(".J_menuTabs").on("click", ".J_menuTab i", conTabH);
 	$(".J_menuTabs").on("click", ".J_menuTab", conTabE);
 	$(".J_menuTabs").bind("contextmenu", function(){
@@ -177,10 +176,6 @@ function conTabC() {
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == o) {
 						$(this).show().siblings(".J_iframe").hide();
-						var workListDom = $(this).contents().find(".work-list")[0];
-						if(workListDom){
-							return false;
-						};
 						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
 						if(dataTablesDom){
 							var dataTablesDomParent = $(dataTablesDom).parent();
@@ -202,13 +197,22 @@ function conTabC() {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + o + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
 		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
-		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
+		$(".J_mainContent").find("iframe.J_iframe").hide();
+		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))
 	}
 	return false;
 }
-function showSubpageTab(link,title,openNew,fixed){
+/*
+ * 系统打开新tab页
+ * link：页面地址，可在？后加参数
+ * title：tab页标题
+ * isParam：是否包含参数匹配，默认为false。true时将配置全部路径包括？后的参数
+ * isRefresh：若页面存在是否要刷新页面，默认为true
+ * isFixed：若页面存在打开页面时在tab页之后显示（默认在tab页最后显示）还是定位到原来的位置
+ */
+function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 	globalConfig.ifreamLen++;
 	var o = link?link:'',
 		l = title?title:'',
@@ -217,20 +221,17 @@ function showSubpageTab(link,title,openNew,fixed){
 	if(o == undefined || $.trim(o).length == 0) {
 		return false
 	};
-	if(openNew){
+	if(isParam){
 		var dataId = o;
-		var isChecked = false;
 	}else{
 		var dataId = o.split('?')[0];
-		var isChecked = true;
-	}
+	};
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-				if(fixed){
+				if(isFixed){
 					animateTab(this);
-					isChecked = false;
 				}else{
 					var newDom = $(this);
 					$(this).remove();
@@ -240,7 +241,7 @@ function showSubpageTab(link,title,openNew,fixed){
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
-						if(isChecked){
+						if(isRefresh){
 							$(this)[0].src = o;
 						};
 						return false
@@ -255,7 +256,8 @@ function showSubpageTab(link,title,openNew,fixed){
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
 		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + dataId + '" seamless></iframe>';
-		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
+		$(".J_mainContent").find("iframe.J_iframe").hide();
+		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))
 	}
@@ -402,10 +404,6 @@ function conTabE() {
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == k) {
 				$(this).show().siblings(".J_iframe").hide();
-				var workListDom = $(this).contents().find(".work-list")[0];
-				if(workListDom){
-					return false;
-				};
 				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
 				if(dataTablesDom){
 					var dataTablesDomParent = $(dataTablesDom).parent();

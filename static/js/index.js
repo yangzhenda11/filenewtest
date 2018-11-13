@@ -43,9 +43,7 @@ var globalConfig = {
     /**ifream */
     ifreamLen: 0
 };
-/*
- * 缓存文件
- */
+//缓存文件
 var _paramCache = {}
 //菜单
 var ace_menus = null;
@@ -54,7 +52,6 @@ var jmpParameters = new Object();
 $(document).ready(function() {
 	//获取用户基本信息
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, null, null, false);
-
     function successCallback(result) {
     	//系统默认配置
     	var defaultCurConfigs = {
@@ -76,6 +73,7 @@ $(document).ready(function() {
         globalConfig.loginName = data.loginName;
         globalConfig.companyCode = data.companyCode;
        	globalConfig.curRole = data.rolestrs.split(",");
+       	//为稽核时特殊处理
         if(data.loginName.indexOf("qc_zj") != -1 || data.loginName.indexOf("qc_gd") != -1){
         	ace_menus = [{
         	 	childrens: [],
@@ -87,15 +85,9 @@ $(document).ready(function() {
         	 	pid: "1",
         	 	uri: "html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html"
         	}];
-        	$("#tabPageFiexd").text("合同扫描件上传");
-			$("#tabPageFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-        	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
         }else{
         	ace_menus = data.menus;
-        	$("#tabPageFiexd").text("待办事项");
-			$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-        	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
-        }
+        };
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
             for (var i = 0; i < data.staffOrgs.length; i++) {
@@ -145,15 +137,10 @@ $(document).ready(function() {
     		messageSpace = 30;
     	}
       	var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
-        //请求用户信息成功后加载首页列表
-        var userLoginName = globalConfig.loginName;
-        if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
-			$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-        }else{
-        	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
-        };
         //请求用户信息成功后加载公告列表
         getIndexNotiveTableInfo(true);
+        //请求用户信息成功后加载首页列表
+        getHomePage();
     }
     function improperCallback(result){
     	if(result.status == 9002){
@@ -169,6 +156,29 @@ $(document).ready(function() {
     	}
     }
 })
+
+
+/****************************待办数量查询*****************************/
+function setMessageTipNumber(){
+	var messageIntervalData = {
+		staffId : globalConfig.curStaffId,
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", messageIntervalData, messageSuccessCallback,null,messageErrorCallback,false);
+    function messageSuccessCallback(result) {
+        if(result){
+        	$("#messageTipNumber").text(result.recordsTotal);
+        }
+    }
+    function messageErrorCallback(result){
+    	$("#messageTipNumber").text("?");
+    }
+};
+/****************************待办数量查询*****************************/
+
+/****************************子页面权限处理*****************************/
 // 页面权限过滤
 function data_permFilter(obj) {
     var e = obj.querySelectorAll('[data-permcheck]');
@@ -194,8 +204,9 @@ function data_tpFilter(permCheck) {
         return false;
     }
 }
+/****************************子页面权限处理*****************************/
 
-//切换岗位
+/****************************切换岗位*****************************/
 function changeStaffOrg(staffOrgId) {
 	App.formAjaxJson(globalConfig.serverPath + "validateOrgId/" + staffOrgId, "GET", null,changeStationSuccess,improperCallback);
 	function changeStationSuccess(result){
@@ -237,6 +248,44 @@ function changeStaffOrg(staffOrgId) {
     	};
     	layer.alert(message,{icon:2,title:"提示"});
     };
+}
+/****************************切换岗位*****************************/
+
+/****************************修改密码*****************************/
+function updatePasswd() {
+    $('#editPasswd').modal('show');
+    $('#passwdForm input').val("");
+    if (!$('#passwdForm').data('bootstrapValidator')) {
+    	validatePassword();
+    }
+}
+$("#editPasswd").on('hide.bs.modal',function(e){
+	$('#passwdForm').bootstrapValidator('resetForm', true);
+});
+function changePasswd() {
+      App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),"GET", null, keyPairCallback, null, null, null, false);
+
+    function keyPairCallback(result) {
+        var passwd = $("#passwdForm input[name='passwd']").val();
+        var modulus = result.data.modulus,
+            exponent = result.data.exponent;
+        if (passwd.length != 256) {
+            var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
+        }
+        var pwd = RSAUtils.encryptedString(publicKey, passwd);
+        App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(),"GET", { "passwd": pwd }, passwdCallback, passwdErrorCallbacks, null, null, false);
+
+        function passwdCallback(result) {
+            if (result.data) {
+                layer.alert("用户["+globalConfig.curStaffName+"]的密码已经修改，为安全起见需退出系统重新登录,点击确认按钮退出系统!",{icon:1,closeBtn:0},function () {
+                    logout();
+                });
+            }
+        }
+        function passwdErrorCallbacks() {
+            layer.msg("修改密码失败！");
+        }
+    }
 }
 /*
  * 表单验证
@@ -284,46 +333,10 @@ function validatePassword() {
         changePasswd();
 	})
 };
+/****************************修改密码*****************************/
 
-function updatePasswd() {
-    $('#editPasswd').modal('show');
-    $('#passwdForm input').val("");
-    if (!$('#passwdForm').data('bootstrapValidator')) {
-    	validatePassword();
-    }
-}
-$("#editPasswd").on('hide.bs.modal',function(e){
-	$('#passwdForm').bootstrapValidator('resetForm', true);
-});
-function changePasswd() {
-      App.formAjaxJson(globalConfig.serverPath + "upfKeyPair?" + App.timestamp(),"GET", null, keyPairCallback, null, null, null, false);
-
-    function keyPairCallback(result) {
-        var passwd = $("#passwdForm input[name='passwd']").val();
-        var modulus = result.data.modulus,
-            exponent = result.data.exponent;
-        if (passwd.length != 256) {
-            var publicKey = RSAUtils.getKeyPair(exponent, '', modulus);
-        }
-        var pwd = RSAUtils.encryptedString(publicKey, passwd);
-        App.formAjaxJson(globalConfig.serverPath + "staffs/" + globalConfig.curStaffId + "/main/passwd?" + App.timestamp(),"GET", { "passwd": pwd }, passwdCallback, passwdErrorCallbacks, null, null, false);
-
-        function passwdCallback(result) {
-            if (result.data) {
-                layer.alert("用户["+globalConfig.curStaffName+"]的密码已经修改，为安全起见需退出系统重新登录,点击确认按钮退出系统!",{icon:1,closeBtn:0},function () {
-                    logout();
-                });
-            }
-        }
-
-        function passwdErrorCallbacks() {
-            layer.msg("修改密码失败！");
-        }
-    }
-}
-/*
- * 退出登录
- */
+/****************************退出登录*****************************/
+//退出登录
 function logout() {
 	layer.confirm('是否要退出系统？退出系统后,浏览器当前窗口会自动关闭。', {
         icon: 0
@@ -362,45 +375,10 @@ function clearAllCookie() {
         }
     }
 }
-/*
- * 待办数量查询
- */
-function setMessageTipNumber(){
-	var messageIntervalData = {
-		staffId : globalConfig.curStaffId,
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", messageIntervalData, messageSuccessCallback,null,messageErrorCallback,false);
-    function messageSuccessCallback(result) {
-        if(result){
-        	$("#messageTipNumber").text(result.recordsTotal);
-        }
-    }
-    function messageErrorCallback(result){
-    	$("#messageTipNumber").text("?");
-    }
-};
-/*
- * 菜单隐藏实现
- */
-var $hidemenu = $('#hidemenu');
-$hidemenu.click(function() {
-    $('body').removeClass('hideNavbar');
-    $(this).hide();
-})
+/****************************退出登录*****************************/
 
-function hideNavbar() {
-    $('body').addClass('hideNavbar');
-    $hidemenu.show();
-}
-//用户信息划过显示
-$("#loginInfoCon").hover(function(){
-	$("#user-menu").show();
-},function(){
-	$("#user-menu").hide();
-})
+
+/****************************首页公告*****************************/
 /*
  * 请求用户信息成功后加载公告列表
  */
@@ -532,12 +510,40 @@ function viewNotify(notifyId) {
 		getIndexNotiveTableInfo();
 	}
 }
+/****************************首页公告*****************************/
+
+/****************************首页按钮事件实现*****************************/
+/*
+ * 待办按钮跳转待办
+ */
+function openTasktodo(){
+	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
+}
 /*
  * 支撑modal打开
  */
 function appSupportShow(){
 	$("#appSupport").modal("show");
 }
+/*
+ * 菜单隐藏实现
+ */
+var $hidemenu = $('#hidemenu');
+$hidemenu.click(function() {
+    $('body').removeClass('hideNavbar');
+    $(this).hide();
+})
+
+function hideNavbar() {
+    $('body').addClass('hideNavbar');
+    $hidemenu.show();
+}
+//用户信息划过显示
+$("#loginInfoCon").hover(function(){
+	$("#user-menu").show();
+},function(){
+	$("#user-menu").hide();
+})
 /*
  * 全屏实现
  */
@@ -613,3 +619,23 @@ function checkFullscreen() {
         $("#fullScreen").parent().attr("title", "点击全屏")
     }
 }
+/****************************首页按钮事件实现*****************************/
+
+
+/****************************首屏显示处理*****************************/
+//请求用户信息成功后加载首页列表
+function getHomePage(){
+	var userLoginName = globalConfig.loginName;
+    if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
+    	$("#tabPageFiexd").text("合同扫描件上传");
+		$("#tabPageFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+    	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
+		$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+    }else{
+    	$("#tabPageFiexd").text("待办事项");
+		$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
+    	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
+    	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
+    };
+}
+/****************************首屏显示处理*****************************/

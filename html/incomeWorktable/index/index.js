@@ -126,10 +126,10 @@ function setMessageNumber(){
 function jumpWorkflow(type){
 	if(type == "todo"){
 		var url = "html/workflow/tasklist/task-todo.html";
-		top.showSubpageTab(url,"待办事项",null,true);
+		top.showSubpageTab(url,"待办事项",false,false,true);
 	}else if(type == "toread"){
 		var url = "html/workflow/readrecordlist/record-toread.html";
-		top.showSubpageTab(url,"待阅事项",null,true);
+		top.showSubpageTab(url,"待阅事项",false,false,true);
 	};
 }
 /*

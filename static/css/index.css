@@ -3,6 +3,9 @@ html {
     height: 100%;
     overflow: hidden;
 }
+#sidebar{
+	overflow: inherit;
+}
 #hidemenu{
 	display: none;
 	position: fixed;

@@ -50,8 +50,8 @@ th, td { /*white-space: nowrap;*/ }
   border-right: 1px solid #ddd;
 }
 .table-bordered>tbody>tr>td{
-  border:none;
-  border-right: 1px solid #ddd;
+  /*border:none;*/
+  /*border-right: 1px solid #ddd;*/
 }
 .min-padding-left {
   padding-left:3px;
@@ -141,6 +141,7 @@ th, td { /*white-space: nowrap;*/ }
   box-shadow: none;
   background: #fff;
   position: relative;
+  border-bottom: 1px solid #eee;
 }
 .navbar .navbar-text,
 .navbar .navbar-link {
@@ -148,7 +149,6 @@ th, td { /*white-space: nowrap;*/ }
 }
 .navbar-container{
 	overflow: hidden;
-	border-bottom: 1px solid #eee;
 }
 /*合同修改*/
 .navbar .navbar-brand {

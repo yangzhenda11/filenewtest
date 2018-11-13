@@ -92,7 +92,6 @@ jQuery(function($) {
 		$.each(menus,function(index,menuinfo){
 			if(menuinfo.childrens.length != 0){
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
-				console.log(menuinfo.icon);
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle'  href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
 				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'> "+menuinfo.name+" </span>");
@@ -113,7 +112,7 @@ jQuery(function($) {
 	function enableSidebar() {
 		if(ace_menus){
 			menu(ace_menus,"actionUl");
-			if($("#actionUl li:first")[0]){
+			if(!$("#sidebar").hasClass("menu-min") && $("#actionUl li:first")[0]){
 				$("#actionUl li:first").addClass("open");
 			}
 		}

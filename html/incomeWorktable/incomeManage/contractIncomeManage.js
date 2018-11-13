@@ -11,12 +11,12 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){
- 	if(parm.customerCode){
+ 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode && !parm.contractId){
+ 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+ 	}else{
  		$("#customerCodeNum").text(parm.customerCode);
  		initContractInforTable();
- 	}else{
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
  	}
 })
 
@@ -36,8 +36,11 @@ function initContractInforTable(){
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;
+				d.customerName = parm.customerName;
 				d.accountPeriodName = parm.accountPeriodName;
-				return  JSON.stringify(d);
+				d.partnerCode = parm.partnerCode;
+				d.contractId = parm.contractId;
+				return JSON.stringify(d);
 			}
 		},
 		"columns": [

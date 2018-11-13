@@ -196,12 +196,12 @@ function initNotRelationCustomerTable(){
 			{"data": "customerManagerName","title":"客户经理","className": "whiteSpaceNormal"},
 			{"data": null,"title":"线路基本信息","className": "whiteSpaceNormal","width": "8%","visible":visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineManage(\""+data.customerCode+"\,\""+data.customerName+"\")'>查看</a>";
+					return "<a onclick='jumpLineManage(\""+data.customerCode+"\",\""+data.customerName+"\")'>查看</a>";
 				}
 			},
 			{"data": null,"title":"线路收入信息","className": "whiteSpaceNormal","width": "8%","visible":!visible,
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\,\""+data.customerName+"\")'>查看</a>";
+					return "<a onclick='jumpLineIncomeManage(\""+data.customerCode+"\",\""+data.customerName+"\")'>查看</a>";
 				}
 			},
 			{"data": "sourceName","title":"来源","className": "whiteSpaceNormal","visible":visible,

@@ -108,7 +108,6 @@ function searchTable(tableId){
 }
 /*
  * 风险类型为0:线路租用中欠费
- * 账单明细中点击查看未写
  */
 function initLineIsArrearageTable() {
 	App.initDataTables('#lineIsArrearageTable', "#lineIsArrearageLoading", {
@@ -181,7 +180,6 @@ function initLineIsArrearageTable() {
 
 /*
  * 风险类型为1:线路账单异常-线路租用中，无账单
- * 账单明细中点击查看未写
  */
 function initLineRentNotBillTable() {
 	App.initDataTables('#lineRentNotBillTable', "#lineRentNotBillLoading", {
@@ -250,7 +248,6 @@ function initLineRentNotBillTable() {
  
 /*
  * 风险类型为2:线路账单异常-线路已止租，有新账单
- * 账单明细中点击查看未写
  */
 
 function initLineRentedHaveBillTable() {
@@ -325,7 +322,6 @@ function initLineRentedHaveBillTable() {
 
 /*
  * 风险类型为3:合同到期业务未停止-合同已到期，存在未止租线路
- * 账单明细中点击查看未写
  */
 function initContractEndHaveLineTable() {
 	App.initDataTables('#contractEndHaveLineTable', "#contractEndHaveLineLoading", {
@@ -382,7 +378,7 @@ function initContractEndHaveLineTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpRiskListContractEnd(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
 
@@ -393,7 +389,6 @@ function initContractEndHaveLineTable() {
 
 /*
  * 风险类型为4:合同到期业务未停止-合同已到期，存在新起租线路
- * 账单明细中点击查看未写
  */
 function initContractEndHaveNewLineTable() {
 	App.initDataTables('#contractEndHaveNewLineTable', "#contractEndHaveNewLineLoading", {
@@ -450,7 +445,7 @@ function initContractEndHaveNewLineTable() {
 					"className": "whiteSpaceNormal",
 					"width":"5%",
 					"render" : function(data, type, full, meta){
-					return "<a onclick='jumpRiskList(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpRiskListContractEnd(\""+data.riskType+"\",\""+data.contractId+"\")'>查看</a>";
 					}
 				}
  
@@ -476,7 +471,6 @@ function initContractEndHaveNewLineTable() {
 
  /*
   * 业务信息报错-客户信息不一致（沃商务与BSS）
-  * 线路明细中点击查看未写
   */
 function initCustomDiffTobssTable() {
 	
@@ -546,7 +540,6 @@ function initCustomDiffTobssTable() {
 
 /*
  * 业务信息报错-客户信息不一致（沃商务与一站式）
- * 线路明细中点击查看未写
  */
 function initCustomDiffToyzsTable() {
 	App.initDataTables('#customDiffToyzsTable', "#customDiffToyzsLoading", {
@@ -614,7 +607,6 @@ function initCustomDiffToyzsTable() {
 
 /*
  * 业务信息报错- BSS系统内线路客户信息不一致
- * 线路明细中点击查看未写
  */
 function initCustomDiffInbssTable() {
 	
@@ -673,7 +665,9 @@ function initCustomDiffInbssTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inbss\",\""+data.diffContent+"\")'>查看</a>";
+								console.log("WWWWWWWWWWWWWWWWWWWWWWW",data);
+						return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inbss\",\""+data.diffContent+"\",\""+data.customerNameBss1+"\",\""+data.customerNameBss2+"\",\""+data.customerCodeBss1+"\")'>查看</a>";
+					
 							}
 						}
 						]
@@ -683,7 +677,6 @@ function initCustomDiffInbssTable() {
 
 /*
  * 业务信息报错-一站式系统/手工导入线路客户信息不一致 
- * 线路明细中点击查看未写
  */
 function initCustomDiffInyzsdrTable() {
 
@@ -741,7 +734,8 @@ function initCustomDiffInyzsdrTable() {
 							"className": "whiteSpaceNormal",
 							"width":"5%",
 							"render" : function(data, type, full, meta){
-							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inyzsdr\",\""+data.diffContent+"\")'>查看</a>";
+
+							return "<a onclick='jumpCustomDiffInDetail(\""+data.contractNumber+"\",\"Inyzsdr\",\""+data.diffContent+"\",\""+data.customerNameBss1+"\",\""+data.customerNameBss2+"\",\""+data.customerCodeBss1+"\")'>查看</a>";
 							}
 						}
 						]
@@ -848,6 +842,10 @@ function initRelatedNotzxPeriodTable() {
 							var start = App.getDatatablePaging("#relatedNotzxPeriodTable").pageStart;
 							return start + meta.row + 1;
 						}
+					}
+				,{
+						"data":"serviceNumber",
+					    "className" : "whiteSpaceNormal",
 					}
 		 			,{
 						"data":"businessId",
@@ -970,10 +968,20 @@ function initWarningOverviewCharts(){
 
 
 /*
- * 跳转明细查看
+ *线路已欠费，线路租用中欠费            跳转明细查看
  */
 function jumpRiskList(riskType,contractId){ 
 	var url = "/html/incomeWorktable/riskWarning/riskWarningList.html?returnBtn=true&contractId="+contractId+"&riskType="+riskType;
+	top.showSubpageTab(url,"查看线路明细");
+}
+
+
+
+/*
+ *合同到期业务未停止      跳转明细查看
+ */
+function jumpRiskListContractEnd(riskType,contractId){ 
+	var url = "/html/incomeWorktable/riskWarning/riskWarningContractEndList.html?returnBtn=true&contractId="+contractId+"&riskType="+riskType;
 	top.showSubpageTab(url,"查看线路明细");
 }
  
@@ -984,8 +992,9 @@ function jumpCustomDiffToDetail(contractParm,riskType,diffContent){
 }
 
 //in 跳转地址
-function jumpCustomDiffInDetail(contractParm,riskType,diffContent){
-	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&riskType="+riskType+"&diffContent="+encodeURI(diffContent)  ;
- 	top.showSubpageTab(url,"线路差异明细");
+function jumpCustomDiffInDetail(contractParm,riskType,diffContent,customerNameBss1,customerNameBss2,customerCodeBss1){
+	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&customerNameBss1="+customerNameBss1+"&riskType="+riskType+"&customerNameBss2="+customerNameBss2+"&customerCodeBss1="+customerCodeBss1+"&diffContent="+encodeURI(diffContent);
+
+	top.showSubpageTab(url,"线路差异明细");
 }
  

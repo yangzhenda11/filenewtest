@@ -247,6 +247,15 @@ function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 						return false
 					}
 				})
+			}else{
+				if(isRefresh){
+					$(".J_mainContent .J_iframe").each(function() {
+						if($(this).data("id") == dataId) {
+							$(this)[0].src = o;
+							return false
+						}
+					})
+				}
 			}
 			k = false;
 			return false

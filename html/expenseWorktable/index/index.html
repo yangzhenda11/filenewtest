@@ -28,104 +28,74 @@
 
 	<body>
 		<div class="page-content page-content-worktable">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="worktableTitle">
-						当前角色：<span class="roleNameStyle"><i class="icon-jingli iconfont"></i><span id="roleName"></span></span>
-						<span class="loginUserName">您好，<span id="loginUserName"></span>！</span>
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>支出类采购业务合同履行工作台</p><span></span>
 					</div>
 				</div>
-				<div class="col-sm-2 paddingR0" id="processCol">
-    				<div class="portlet portlet-worktable">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的待办待阅</span>
-                            </div>
-                        </div>
-                        <div class="portlet-body">
-            				<div class="row processDom">
-								<div class="processItem">
-									<i class="iconfont icon-yujing"></i>我的待办
-									<a id="todoNum" class="underline" onclick="jumpWorkflow('todo')" title="跳转至待办事项"></a>
-								</div>
-								<div class="processItem">
-									<i class="iconfont icon-email"></i>我的待阅
-									<a id="toreadNum" class="underline" onclick="jumpWorkflow('toread')" title="跳转至待阅事项"></a>
-								</div>
-							</div>
-                    	</div>
-               	    </div>
-    			</div>
-    			<div class="col-sm-10" id="workItemCol">
-    				<div class="portlet portlet-worktable">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i><span id="captionTitle">我的管理助手</span></span>
-                            </div>
-                        </div>
-                        <div class="portlet-body">
-            				<div class="row workItemDom" id="workItemDom"></div>
-                    	</div>
-               	    </div>
-    			</div>
-    			<div class="col-sm-12">
-    				<div class="portlet portlet-worktable">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的付款总览</span>
-                            </div>
-                        </div>
-                        <div class="portlet-body">
-            				<div class="row expentOverviewDom">
-            					<div class="chartsDom">
-            						<div class="chartsContent" id="paymentChartsFixed"></div>
-            						<div class="chartsValue" id="paymentChartsFixedValue"></div>
-            					</div>
-            					<div class="chartsDom">
-            						<div class="chartsContent" id="paymentChartsNotFixed"></div>
-            						<div class="chartsValue" id="paymentChartsNotFixedValue"></div>
-            					</div>
-            					<div class="chartsNote" id="invoiceChartsNote"></div>
-							</div>
-                    	</div>
-               	    </div>
-    			</div>
-    			<div class="col-sm-12">
-    				<div class="portlet portlet-worktable">
-                        <div class="portlet-title">
-                            <div class="caption">
-                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的重点关注</span>
-                            </div>
-                        </div>
-                        <div class="portlet-body">
-                        	<div class="pageSearch">
-								<div class="col-sm-3">
-									<input type="text" class="form-control" id="focusContractInput" maxlength="50" placeholder="查询合同名称/合同编号">
-								</div>
-								<div class="input-group">
-									<button type="button" class="btn red" data-loading-text="加载中.." onclick="getFocusContractTable()"><i class="iconfont icon-search"></i>查询</button>
-								</div>
-							</div>
-        					<p class="table-title">履行中合同跟踪</p>
-        					<table class="table table-hover table-bordered table-striped table-align">
-		                    	<thead>
-									<tr>
-										<th style="width: 5%;">序号</th>
-										<th style="width: 24%;">合同名称</th>
-										<th style="width: 15%;">合同编号</th>
-										<th style="width: 20%;">合作方名称</th>
-										<th style="width: 12%;">合作方编号</th>
-										<th style="width: 12%;">含增值税合同金额</th>
-										<th style="width: 5%;">订单</th>
-										<th style="width: 7%;">合同履行人</th>
-									</tr>
-								</thead>
-								<tbody id="emphasisClient"></tbody>
-							</table>
-							<a class="showMore" id="showContractMore" style="display: none;">更多...</a>
-                    	</div>
-               	    </div>
-    			</div>
+				<div class="form-fieldset-body">
+					<div class="row">
+		    			<div class="col-sm-12">
+		    				<div class="portlet portlet-worktable">
+		                        <div class="portlet-title">
+		                            <div class="caption">
+		                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的付款总览</span>
+		                            </div>
+		                        </div>
+		                        <div class="portlet-body">
+		            				<div class="row expentOverviewDom">
+		            					<div class="chartsDom">
+		            						<div class="chartsContent" id="paymentChartsFixed"></div>
+		            						<div class="chartsValue" id="paymentChartsFixedValue"></div>
+		            					</div>
+		            					<div class="chartsDom">
+		            						<div class="chartsContent" id="paymentChartsNotFixed"></div>
+		            						<div class="chartsValue" id="paymentChartsNotFixedValue"></div>
+		            					</div>
+		            					<div class="chartsNote" id="invoiceChartsNote"></div>
+									</div>
+		                    	</div>
+		               	    </div>
+		    			</div>
+		    			<div class="col-sm-12">
+		    				<div class="portlet portlet-worktable">
+		                        <div class="portlet-title">
+		                            <div class="caption">
+		                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的重点关注</span>
+		                            </div>
+		                        </div>
+		                        <div class="portlet-body">
+		                        	<div class="pageSearch">
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="focusContractInput" maxlength="50" placeholder="查询合同名称/合同编号">
+										</div>
+										<div class="input-group">
+											<button type="button" class="btn red" data-loading-text="加载中.." onclick="getFocusContractTable()"><i class="iconfont icon-search"></i>查询</button>
+										</div>
+									</div>
+		        					<p class="table-title">履行中合同跟踪</p>
+		        					<table class="table table-hover table-bordered table-striped table-align">
+				                    	<thead>
+											<tr>
+												<th style="width: 5%;">序号</th>
+												<th style="width: 24%;">合同名称</th>
+												<th style="width: 15%;">合同编号</th>
+												<th style="width: 20%;">合作方名称</th>
+												<th style="width: 12%;">合作方编号</th>
+												<th style="width: 12%;">含增值税合同金额</th>
+												<th style="width: 5%;">订单</th>
+												<th style="width: 7%;">合同履行人</th>
+											</tr>
+										</thead>
+										<tbody id="emphasisClient"></tbody>
+									</table>
+									<a class="showMore" id="showContractMore" style="display: none;">更多...</a>
+		                    	</div>
+		               	    </div>
+		    			</div>
+	    			</div>
+	    		</div>
 			</div>
 		</div>
 		<!--modal-->

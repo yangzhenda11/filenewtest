@@ -1833,7 +1833,9 @@ function setHaveRead(){
 //返回上一页
 function backPage(){
 	if(parm.isucloud == "true"){
-		top.closeWindow();
+		layer.confirm("是否关闭此页面?",{icon:7,title:"提示"},function(index){
+			top.closeWindow();
+		});
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
 		layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
 			saveCustomerManager();

@@ -13,33 +13,12 @@ var roleType = "";
 $(function(){
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
-	$("#loginUserName").text(config.curStaffName);
-	if(roleType == 91220){
-		$("#roleName").text("采购经理/项目经理");
-		$("#captionTitle").text("我的商务助理");
-	}else if(roleType == 91221){
-		$("#roleName").text("业务管理");
-	}else if(roleType == 91222){
-		$("#roleName").text("商务经理");
-	};
-	//获取商务助理配置内容
-	getAssistantList();
-	//待办待阅数量查询
-	setMessageNumber();
 	//获取合同付款（固定金额合同）图表数据
 	getChartsFixedData();
 	//获取合同付款（框架协议）图表数据
 	getChartsNotFixedData();
 	//获取重点关注履行中合同跟踪
 	getFocusContractTable()
-})
-$("#workItemDom").on("click",".workItem",function(){
-	var moduleUrl = $(this).find("img").data("url");
-	if(moduleUrl){
-		top.showSubpageTab(moduleUrl,$(this).find("p").text());
-	}else{
-		layer.alert("该模块暂未使用。",{icon:2})	
-	}
 })
 /*
  * 取得角色list中的当前页面所使用的角色
@@ -53,73 +32,6 @@ function checkRoleType(){
 			return false;
 		}
 	});
-}
-/*
- * 获取商务助理配置内容
- */
-function getAssistantList(){
-	var url = serverPath + "assistant/assistantList";
-	var postData = {
-		roleId: roleType,
-		provinceCode: config.provCode,
-		funType: "zc"
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		var data = result.data;
-		var html = "";
-		$.each(data, function(k, v) {
-			var funCode = v.funCode;
-			html += '<div class="workItem"><div class="workItemImg">';
-			if(funCode == "HZFGL" || funCode == "LXZHT_ZC" || funCode == "FXYJ_ZC"){
-				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
-			};
-			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
-		});
-		$("#workItemDom").html(html);
-	}
-}
-/*
- * 待办待阅数量查询
- */
-function setMessageNumber(){
-	var todoData = {
-		staffId : config.curStaffId,
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	var toreadData = {
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	App.formAjaxJson(serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
-	App.formAjaxJson(serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
-    function todoSuccessCallback(result) {
-    	$("#todoNum").text(result.recordsTotal);
-    };
-    function todoErrorCallback(result){
-    	$("#todoNum").text("?");
-    };
-    function toreadSuccessCallback(result) {
-    	$("#toreadNum").text(result.recordsTotal);
-    };
-    function toreadErrorCallback(result){
-    	$("#toreadNum").text("?");
-    };
-}
-/*
- * 待办待阅跳转
- */
-function jumpWorkflow(type){
-	if(type == "todo"){
-		var url = "html/workflow/tasklist/task-todo.html";
-		top.showSubpageTab(url,"待办事项",false,false,true);
-	}else if(type == "toread"){
-		var url = "html/workflow/readrecordlist/record-toread.html";
-		top.showSubpageTab(url,"待阅事项",false,false,true);
-	};
 }
 /*
  * 获取重点关注履行中合同跟踪

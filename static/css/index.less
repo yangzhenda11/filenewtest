@@ -90,6 +90,7 @@ html {
 }
 .auditDom .auditItem{
     padding-left: 25px;
+    padding-top: 4px;
     .ui-radio{padding-left: 25px;top: 5px;}
 }
 .processDom .processItem{
@@ -113,6 +114,24 @@ html {
     top: 0;
     background: #d11718;
 }
+#worktabledropdown{
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    .dropdown-menu{
+        top: 8px;
+        min-width: 120px;
+        background: #fff;
+        .choose a{
+            color: red;
+        }
+        a{
+            font-size: 12px;
+            padding: 4px 14px;
+        }
+    }
+}
+
 //选择稽核范围
 #scope{
     margin: 0;

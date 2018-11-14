@@ -131,12 +131,17 @@ $(document).ready(function() {
 	        }
 	    }
 	    //消息定时器
-    	setMessageTipNumber();
     	var messageSpace = globalConfig.curConfigs.message_space;
     	if(messageSpace == null || messageSpace >= 30){
     		messageSpace = 30;
-    	}
-      	var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
+    	};
+    	if(checkPageRoleType("income") || checkPageRoleType("expense")){
+    		setWorktableMessageNumber();
+			var messageInterval = setInterval(setWorktableMessageNumber, messageSpace*60000);
+		}else{
+			setMessageTipNumber();
+			var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
+		};
         //请求用户信息成功后加载公告列表
         getIndexNotiveTableInfo(true);
         //请求用户信息成功后加载首页列表
@@ -159,6 +164,7 @@ $(document).ready(function() {
 
 
 /****************************待办数量查询*****************************/
+//无工作台角色
 function setMessageTipNumber(){
 	var messageIntervalData = {
 		staffId : globalConfig.curStaffId,
@@ -175,7 +181,47 @@ function setMessageTipNumber(){
     function messageErrorCallback(result){
     	$("#messageTipNumber").text("?");
     }
-};
+}
+//存在工作台角色
+function setWorktableMessageNumber(){
+	var todoData = {
+		staffId : globalConfig.curStaffId,
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	var toreadData = {
+		draw : 999,
+		start : 0,
+		length : 0
+	};
+	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
+	App.formAjaxJson(globalConfig.serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
+    function todoSuccessCallback(result) {
+    	$("#todoNum,#messageTipNumber").text(result.recordsTotal);
+    };
+    function todoErrorCallback(result){
+    	$("#todoNum,#messageTipNumber").text("?");
+    };
+    function toreadSuccessCallback(result) {
+    	$("#toreadNum").text(result.recordsTotal);
+    };
+    function toreadErrorCallback(result){
+    	$("#toreadNum").text("?");
+    };
+}
+/*
+ * 待办待阅跳转
+ */
+function jumpWorkflow(type){
+	if(type == "todo"){
+		var url = "html/workflow/tasklist/task-todo.html";
+		top.showSubpageTab(url,"待办事项",false,false,true);
+	}else if(type == "toread"){
+		var url = "html/workflow/readrecordlist/record-toread.html";
+		top.showSubpageTab(url,"待阅事项",false,false,true);
+	};
+}
 /****************************待办数量查询*****************************/
 
 /****************************子页面权限处理*****************************/
@@ -625,85 +671,215 @@ function checkFullscreen() {
 /****************************首屏显示处理*****************************/
 //请求用户信息成功后加载首页列表
 //系统的全局变量获取
-var config = top.globalConfig;
-var serverPath = config.serverPath;
+var serverPath = globalConfig.serverPath;
 function getHomePage(){
+	var userLoginName = globalConfig.loginName;
+    if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
+    	$("#contractWorktable").remove();
+    	$("#content-tabs").css("top","-1px");
+		$("#content-main").css("top","33px");
+		$("#main-content").show();
+		showSubpageTab("html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html","合同扫描件上传",false,false,true);
+    }else{
+    	if(checkPageRoleType("income") || checkPageRoleType("expense")){
+    		setWorktableRoleName();
+    		if(checkPageRoleType("income",true)){
+	    		setIncomeHomePage();
+	    	}else if(checkPageRoleType("expense",true)){
+	    		setExpenseHomePage();
+	    	}
+    	}else{
+    		$("#contractWorktable").remove();
+	    	$("#content-tabs").css("top","-1px");
+			$("#content-main").css("top","33px");
+			$("#main-content").show();
+	    	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
+    	};
+    };
+}
+//设置工作台标题
+function setWorktableRoleName(){
 	$("#content-tabs").css("top","128px");
-	$("#content-main").css("top","170px");
-	
-//	var userLoginName = globalConfig.loginName;
-//  if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
-//  	$("#tabPageFiexd").text("合同扫描件上传");
-//		$("#tabPageFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-//  	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
-//		$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-//  }else{
-//  	$("#tabPageFiexd").text("待办事项");
-//		$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-//  	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
-//  	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
-//  };
-//取得角色list中的当前页面所使用的角色
-	checkRoleType();
-	$("#loginUserName").text(config.curStaffName);
+	$("#content-main").css("top","162px");
+	$("#main-content").show();
+	$("#loginUserName").text(globalConfig.curStaffName);
+	if(checkPageRoleType("income") && checkPageRoleType("expense")){
+		var incomeRoleType = getWorktableRoleType("income");
+		var expenseRoleType = getWorktableRoleType("expense");
+		$("#worktabledropdown").hover(function(){
+			$("#worktableRoleMenu").show();
+		},function(){
+			$("#worktableRoleMenu").hide();
+		});
+		$("#worktableRoleMenu").on("click","li",function(){
+			if($("#worktableRoleName").data("type") != $(this).data("type")){
+				if($(this).data("type") == "income"){
+					$(this).addClass("choose").siblings().removeClass("choose");
+					$("#worktableRoleName").text(getWorktableRoleName(incomeRoleType));
+					$("#worktableRoleName").data("type","income");
+					setIncomeHomePage();
+				}else if($(this).data("type") == "expense"){
+					$(this).addClass("choose").siblings().removeClass("choose");
+					$("#worktableRoleName").text(getWorktableRoleName(expenseRoleType));
+					$("#worktableRoleName").data("type","expense");
+					setExpenseHomePage();
+				}
+			}
+		})
+		$("#worktableRoleName").text(getWorktableRoleName(incomeRoleType));
+		$("#worktableRoleName").data("type","income");
+		var worktableRoleMenuHtml = "<li class='choose' data-type='income'><a>"+getWorktableRoleName(incomeRoleType)+"</a></li>"+
+					"<li data-type='expense'><a>"+getWorktableRoleName(expenseRoleType)+"</a></li>";
+		$("#worktableRoleMenu").html(worktableRoleMenuHtml);
+	}else{
+		$("#worktableRoleMenu").remove();
+		if(checkPageRoleType("income")){
+			var roleType = getWorktableRoleType("income");
+			$("#worktableRoleName").text(getWorktableRoleName(roleType));
+		}else{
+			var roleType = getWorktableRoleType("expense");
+			$("#worktableRoleName").text(getWorktableRoleName(roleType));
+		}
+	}
+}
+//根据类型加载不同的页面
+function checkPageRoleType(type,isAlert){
+	var roleArr = globalConfig.curRole;
+	if(type == "income"){
+		var roleExistLen = checkWorktableArrLen(roleArr,[91216,91217,91218,91219]);
+		if(roleExistLen == 0){
+			return false;
+		}else if(roleExistLen > 1){
+			if(isAlert){
+				layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个收入类租线业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			};
+			return false;
+		}else{
+			if(isInArray(roleArr, 91218)){
+				if(globalConfig.dataPermission == 0 || globalConfig.dataPermission == 1 || globalConfig.dataPermission == 4){
+					if(isAlert){
+						layer.alert("当前稽核管理角色权限范围不足，请联系系统管理员处理。",{icon:2});
+					};
+					return false;
+				}
+			};
+			return true;
+		}
+	}else if(type == "expense"){
+		var roleExistLen = checkWorktableArrLen(roleArr,[91220,91221,91222]);
+		if(roleExistLen == 0){
+			return false;
+		}else if(roleExistLen > 1){
+			if(isAlert){
+				layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个支出类采购业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			};
+			return false;
+		}else{
+			return true;
+		}
+	}
+}
+//取得角色数量
+function checkWorktableArrLen(roleArr,permArr){
+	var len = 0;
+	$.each(roleArr, function(k,v) {
+		if(isInArray(permArr,v)){
+			len ++;
+		}
+	});
+	return len;
+}
+//根据类型取得角色list中的当前页面所使用的角色
+function getWorktableRoleType(type) {
+	if(type == "income"){
+		var permArr = [91216, 91217, 91218, 91219];
+	}else if(type == "expense"){
+		var permArr = [91220,91221,91222];
+	};
+	var roleArr = globalConfig.curRole;
+	var worktableRoleType = null;
+	$.each(roleArr, function(k, v) {
+		if(isInArray(permArr, v)) {
+			worktableRoleType = v;
+			return false;
+		}
+	});
+	return worktableRoleType;
+}
+//根据角色id翻译角色名称
+function getWorktableRoleName(roleType){
+	var roleName = "";
+	if(roleType == 91216) {
+		roleName = "客户经理（收入类租线业务）";
+	} else if(roleType == 91217) {
+		roleName = "业务管理（收入类租线业务）";
+	} else if(roleType == 91218) {
+		roleName = "稽核管理（收入类租线业务）";
+	} else if(roleType == 91219) {
+		roleName = "商务经理（收入类租线业务）";
+	} else if(roleType == 91220){
+		roleName = "采购经理/项目经理（支出类采购业务）";
+	}else if(roleType == 91221){
+		roleName = "业务管理（支出类采购业务）";
+	}else if(roleType == 91222){
+		roleName = "商务经理（支出类采购业务）";
+	};
+	return roleName;
+}
+//设置收入类履行工作台主页
+function setIncomeHomePage(){
+	var roleType = getWorktableRoleType("income");
 	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
 		if(roleType == 91216) {
-			$("#roleName").text("客户经理");
-			$("#captionTitle").text("我的商务助理");
-		} else if(roleType == 91217) {
-			$("#roleName").text("业务管理");
+			$("#worktableCaption").text("我的商务助理");
 		} else {
-			$("#roleName").text("商务经理");
+			$("#worktableCaption").text("我的管理助手");
 		};
-		$("#auditCol").remove();
+		$("#auditCol").addClass("hidden");
 	} else if(roleType == 91218) {
-		$("#roleName").text("稽核管理");
+		$("#worktableCaption").text("我的管理助手");
 		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
 		$("#auditCol").removeClass("hidden");
 		setAuditScope();
 	};
-	$(".page-content-worktable").show();
-	//获取商务助理配置内容
-	getAssistantList();
-	/*
- * 取得角色list中的当前页面所使用的角色
- */
-function checkRoleType() {
-	var roleArr = config.curRole;
-	var permArr = [91216, 91217, 91218, 91219];
-	$.each(roleArr, function(k, v) {
-		if(isInArray(permArr, v)) {
-			roleType = v;
-			return false;
-		}
-	});
+	getAssistantList(roleType,"sr");
+	showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
 }
-/*
- * 获取商务助理配置内容
- */
-function getAssistantList() {
-	var url = serverPath + "assistant/assistantList";
+//设置支出类履行工作台主页
+function setExpenseHomePage(){
+	var roleType = getWorktableRoleType("expense");
+	$("#auditCol").addClass("hidden");
+	$("#workItemCol").removeClass("col-sm-7").addClass("col-sm-10");
+	if(roleType == 91220){
+		$("#worktableCaption").text("我的商务助理");
+	}else{
+		$("#worktableCaption").text("我的管理助手");
+	};
+	getAssistantList(roleType,"zc");
+	showSubpageTab("html/expenseWorktable/index/index.html","支出类采购业务",false,false,true);
+}
+//获取商务助理配置内容
+function getAssistantList(roleType,funType) {
+	var url = globalConfig.serverPath + "assistant/assistantList";
 	var postData = {
 		roleId: roleType,
-		provinceCode: config.provCode,
-		funType: "sr"
+		provinceCode: globalConfig.provCode,
+		funType: funType
 	};
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-
 	function successCallback(result) {
 		var data = result.data;
 		var html = "";
+		var specialList = ["KHGL","LXZHT_SR","FXYJ_SR","HZFGL","LXZHT_ZC","FXYJ_ZC"];
 		$.each(data, function(k, v) {
-			var funCode = v.funCode;
 			html += '<div class="workItem"><div class="workItemImg">';
-			if(funCode == "KHGL" || funCode == "LXZHT_SR" || funCode == "FXYJ_SR"){
+			if(specialList.indexOf(v.funCode) != -1){
 				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
 			};
 			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
 		});
 		$("#workItemDom").html(html);
 	}
-}
 }
 $("#workItemDom").on("click", ".workItem", function() {
 	var moduleUrl = $(this).find("img").data("url");
@@ -713,4 +889,162 @@ $("#workItemDom").on("click", ".workItem", function() {
 		layer.alert("该模块暂未使用。", {icon: 2})
 	}
 })
+
 /****************************首屏显示处理*****************************/
+
+
+/***************选择稽核范围开始***********************/
+/*
+ * 设置初始稽核范围
+ */
+function setAuditScope() {
+	var obj = {
+		companyCode: globalConfig.companyCode
+	};
+	var url = globalConfig.serverPath + "auditManager/getAuditRangeByStaffOrgId";
+	App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+	var dataPermission = globalConfig.dataPermission;
+	function successCallback(result) {
+		var data = result.data;
+		var orgName = data.orgName;
+		$("#scope").text(orgName);
+		$("#scope").attr("title", orgName);
+		if(dataPermission == 3) {
+			$("#changeScope").show();
+		} else {
+			$("#changeScope").remove();
+		};
+		var html = '<div class="scopeItem" data-id=' + data.auditRange + '>' + orgName + '</div>';
+		$("#scopeChecked").html(html);
+		globalConfig.auditScope = data.auditRange;
+	}
+}
+/*
+ * 选择稽核范围
+ */
+function changeScope() {
+	$("#scopeModal").modal("show");
+	if(!scopeTree) {
+		initSopeChooseTree();
+	}
+}
+var scopeTree;
+/*
+ * 生成稽核部门树————ztree
+ */
+function initSopeChooseTree() {
+	var treeSetting = {
+		async: {
+			enable: true,
+			url: globalConfig.serverPath + "contractType/listCompany",
+			type: "post",
+			dataType: 'json',
+			dataFilter: orgsfilter,
+			autoParam: ["orgCode=orgCode"]
+		},
+		data: {
+			simpleData: {
+				enable: true,
+				idKey: "orgCode",
+				pIdKey: "parentCode"
+			},
+			key: {
+				name: "orgName"
+			}
+		},
+		view: {
+			selectedMulti: false,
+			//			dblClickExpand: false
+		},
+		callback: {
+			onAsyncError: onAsyncError,
+			onDblClick: setInputInfo
+		}
+	};
+
+	function orgsfilter(treeId, parentNode, responseData) {
+		if(responseData.status == 1) {
+			var data = responseData.data;
+			if(data) {
+				return data;
+			} else {
+				return null;
+			}
+		} else {
+			layer.msg(responseData.message);
+			return null;
+		}
+	};
+	App.formAjaxJson(globalConfig.serverPath + 'contractType/listCompany', "post", {
+		'orgId': ''
+	}, successCallback, null, null, null, null, "formData")
+
+	function successCallback(result) {
+		var data = result.data;
+		if(data != "") {
+			if(scopeTree) {
+				scopeTree.destroy();
+			};
+			scopeTree = $.fn.zTree.init($("#scopeTree"), treeSetting, data);
+			var nodes = scopeTree.getNodes();
+			scopeTree.expandNode(nodes[0]);
+		} else {
+			layer.msg("暂无数据，请稍后重试");
+		}
+	}
+	//双击事件 
+	function setInputInfo(event, treeId, treeNode) {
+		setScopeChecked(treeNode);
+	}
+}
+//按钮选择
+function chooseScopeTree() {
+	var treeNode = scopeTree.getSelectedNodes()[0];
+	setScopeChecked(treeNode);
+}
+//按钮删除
+function deleteCheckedScope() {
+	if($("#scopeChecked .scopeItem.selected").length == 0) {
+		layer.msg("请选择已选内容进行移除");
+	} else {
+		$("#scopeChecked").html("");
+	}
+}
+//右侧赋值
+function setScopeChecked(treeNode) {
+	var name = treeNode.orgName;
+	var orgCode = treeNode.orgCode;
+	var html = '<div class="scopeItem" data-id=' + orgCode + '>' + name + '</div>';
+	$("#scopeChecked").html(html);
+}
+$("#scopeChecked").on("click", ".scopeItem", function() {
+	if($(this).hasClass("selected")) {
+		$(this).removeClass("selected");
+	} else {
+		$(this).addClass("selected");
+	}
+})
+/*
+ * 选择稽核范围确定按钮点击
+ */
+function setScope() {
+	$("#scopeModal").modal("hide");
+	if($("#scopeChecked .scopeItem").length > 0) {
+		var checkedText = $("#scopeChecked .scopeItem").text();
+		var companyCode = $("#scopeChecked .scopeItem").data("id");
+		var obj = {
+			"companyCode": companyCode,
+		};
+		var url = serverPath + "auditManager/updateAuditRange";
+		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+		function successCallback(result) {
+			layer.msg("更改成功");
+		}
+		$("#scope").text(checkedText);
+		$("#scope").attr("title", checkedText);
+		globalConfig.auditScope = companyCode;
+		showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,true,true);
+	}
+}
+
+/***************选择稽核范围结束***********************/

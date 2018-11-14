@@ -115,6 +115,7 @@ html {
 }
 .auditDom .auditItem {
   padding-left: 25px;
+  padding-top: 4px;
 }
 .auditDom .auditItem .ui-radio {
   padding-left: 25px;
@@ -157,6 +158,23 @@ html {
   right: -12px;
   top: 0;
   background: #d11718;
+}
+#worktabledropdown {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+#worktabledropdown .dropdown-menu {
+  top: 8px;
+  min-width: 120px;
+  background: #fff;
+}
+#worktabledropdown .dropdown-menu .choose a {
+  color: red;
+}
+#worktabledropdown .dropdown-menu a {
+  font-size: 12px;
+  padding: 4px 14px;
 }
 #scope {
   margin: 0;

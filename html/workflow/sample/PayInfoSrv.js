@@ -27,7 +27,7 @@ function flowStart(){
 			if(null==result.data.value||"0"==result.data.value){
 				layer.msg("无返回数据");
 			}else{
-				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+				layer.msg(result.data.label+";"+result.data.value);
 			}
 		}
 }
@@ -101,7 +101,7 @@ function flowStart3(){
 			if(null==result.data.value||"0"==result.data.value){
 				layer.msg("无返回数据");
 			}else{
-				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+				layer.msg(result.data.label+";"+result.data.value);
 			}
 		}
 }
@@ -138,7 +138,7 @@ function flowStart4(){
 				if(null==result.data.value||"0"==result.data.value){
 					layer.msg("无返回数据");
 				}else{
-					layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+					layer.msg(result.data.label+";"+result.data.value);
 				}
 			}
 }

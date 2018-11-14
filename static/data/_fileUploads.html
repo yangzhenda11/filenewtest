@@ -79,7 +79,7 @@
 	var fileUploadMaxNumeber = 99;
 	function setParm(setting){
 		if(App.IEVersionVA(10)){
-			layer.alert("您的浏览器版本较低，请升级到最新IE浏览器(IE9+ 不包括IE9)或使用谷歌、360等浏览器来上传文件",{icon:2},function(index){
+			layer.alert("您的浏览器版本较低，请升级到最新IE浏览器(IE9+ 不包括IE9)或使用谷歌、360等浏览器来上传文件。",{icon:2,closeBtn:0},function(index){
 				layer.close(index);
 				$("#commomModal").modal("hide");
 			});

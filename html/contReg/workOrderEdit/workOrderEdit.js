@@ -29,7 +29,7 @@ var contractStatusObj = {
 	7: "办结",
 	8: "履行中"
 }
-var saveOrderApprovalProcessNum = 0;
+
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
 var orderLayerIndex = null;				//layer提示index
 //预定义dom元素
@@ -316,8 +316,6 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 			parent.$("#in-footer").modal("hide");
 			parent.$("#out-footers button").not("#backTolist").attr("disabled",true);
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallbackFn3, improperCallbackFn3);
-			saveOrderApprovalProcessNum++;
-			console.log("调用激活接口...第"+(saveOrderApprovalProcessNum)+"次请求。")
 			function successCallbackFn3(result) {
 				parent.$("#out-footers button").not("#backTolist").attr("disabled",false);
 				var data = result.data;
@@ -607,8 +605,6 @@ function activateContract(e,chooseLinkcode){
 				postData.taskDefinitionKey = chooseLinkcode;
 			};
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcess", "post", JSON.stringify(postData), successCallback, improperCallback);
-			saveOrderApprovalProcessNum++;
-			console.log("调用激活接口...第"+(saveOrderApprovalProcessNum)+"次请求。")
 			function successCallback(result) {
 				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 				var data = result.data;
@@ -738,8 +734,6 @@ function pushGDQRWorkflowOfCompany(){
 			postData.contractId = contractId;
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessCompany", "post", JSON.stringify(postData), successCallback, improperCallback);
-			saveOrderApprovalProcessNum++;
-			console.log("调用激活接口...第"+(saveOrderApprovalProcessNum)+"次请求。")
 			function successCallback(result) {
 				$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 				var data = result.data;

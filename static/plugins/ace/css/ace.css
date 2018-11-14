@@ -3518,20 +3518,23 @@ body.mob-safari .sidebar.sidebar-fixed {
  * 样式修改background: #fafafa
  */
 .content-tabs {
-	position: relative;
-	height: 41px;
+	position: absolute;
+	height: 34px;
+	width: 100%;
 	background: #f8f8f8;
-	line-height: 40px
+	line-height: 33px
 }
 .content-tabs {
-	border-bottom: solid 1px #ccc
+	border-bottom: solid 1px #ddd;
+	border-top: solid 1px #ddd;
+	
 }
 
 .content-tabs .roll-nav,
 .page-tabs-list {
 	position: absolute;
-	width: 40px;
-	height: 40px;
+	width: 32px;
+	height: 32px;
 	text-align: center;
 	color: #999;
 	z-index: 2;
@@ -3551,8 +3554,8 @@ body.mob-safari .sidebar.sidebar-fixed {
 .content-tabs button {
 	background: #fff;
 	border: 0;
-	height: 40px;
-	width: 40px;
+	height: 32px;
+	width: 32px;
 	outline: 0
 }
 
@@ -3561,9 +3564,9 @@ body.mob-safari .sidebar.sidebar-fixed {
 }
 
 div.page-tabs {
-	margin-left: 40px;
+	margin-left: 34px;
 	width: 100000px;
-	height: 40px;
+	height: 34px;
 	overflow: hidden
 }
 
@@ -3591,24 +3594,24 @@ div.page-tabs .page-tabs-content {
 }
 
 .roll-right.J_tabRight {
-	right: 80px
+	right: 64px
 }
 
 .roll-right.btn-group {
-	right: 40px;
-	width: 40px;
+	right: 32px;
+	width: 32px;
 	padding: 0
 }
 
 .roll-right.btn-group button {
-	width: 40px;
+	width: 34px;
 	white-space: nowrap;
 }
 
 .roll-right.J_tabRefresh {
 	background: #fff;
-	height: 40px;
-	width: 40px;
+	height: 32px;
+	width: 32px;
 	outline: 0
 }
 
@@ -3620,7 +3623,6 @@ div.page-tabs .page-tabs-content {
 	position: absolute;
 	left: 10px;
 	right: 10px;
-	top: 41px;
 	bottom: 0;
 	overflow: hidden;
 }

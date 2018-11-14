@@ -106,7 +106,72 @@
 				</div>
 			</div>
 			<div class="main-content">
-				<div class="row content-tabs">
+				<div class="row" id="contractWorktable">
+					<div class="col-sm-12">
+						<div class="worktableTitle">
+							当前角色：<span class="roleNameStyle"><i class="icon-jingli iconfont"></i><span id="roleName"></span></span>
+							<span class="loginUserName">您好，<span id="loginUserName"></span>！</span>
+						</div>
+					</div>
+					<!--<div class="col-sm-3 paddingR0" id="auditCol">
+	    				<div class="portlet portlet-worktable">
+	                        <div class="portlet-title">
+	                            <div class="caption">
+	                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的稽核范围</span>
+	                            </div>
+	                        </div>
+	                        <div class="portlet-body">
+	            				<div class="row auditDom">
+	            					<div class="auditItem">
+	            						<label class='ui-radio'><input type='radio' name='jiheRadio' checked="checked"><span></span></label>按地域：
+	            						<p id="scope" title=""></p>
+	            						<button id="changeScope" onclick="changeScope();" class="btn red">更改</button>
+	            					</div>
+									<div class="auditItem">
+	            						<label class='ui-radio'><input type='radio' name='jiheRadio' disabled="disabled"><span></span></label>按客户：
+	            					</div>
+	            					<div class="auditItem">
+	            						<label class='ui-radio'><input type='radio' name='jiheRadio' disabled="disabled"><span></span></label>按客户经理：
+	            					</div>
+								</div>
+	                    	</div>
+	               	    </div>
+	    			</div>-->
+					<div class="col-sm-2 paddingR0" id="processCol">
+	    				<div class="portlet portlet-worktable">
+	                        <div class="portlet-title">
+	                            <div class="caption">
+	                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i>我的待办待阅</span>
+	                            </div>
+	                        </div>
+	                        <div class="portlet-body">
+	            				<div class="row processDom">
+									<div class="processItem">
+										<i class="iconfont icon-yujing"></i>我的待办
+										<a id="todoNum" class="underline" onclick="jumpWorkflow('todo')" title="跳转至待办事项"></a>
+									</div>
+									<div class="processItem">
+										<i class="iconfont icon-email"></i>我的待阅
+										<a id="toreadNum" class="underline" onclick="jumpWorkflow('toread')" title="跳转至待阅事项"></a>
+									</div>
+								</div>
+	                    	</div>
+	               	    </div>
+	    			</div>
+	    			<div class="col-sm-10" id="workItemCol">
+	    				<div class="portlet portlet-worktable">
+	                        <div class="portlet-title">
+	                            <div class="caption">
+	                                <span class="caption-subject uppercase"><i class="icon-jichuguanli iconfont"></i><span id="captionTitle">我的管理助手</span></span>
+	                            </div>
+	                        </div>
+	                        <div class="portlet-body">
+	            				<div class="row workItemDom" id="workItemDom"></div>
+	                    	</div>
+	               	    </div>
+	    			</div>
+	    		</div>
+				<div class="row content-tabs" id="content-tabs">
 					<button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
 					<div class="page-tabs J_menuTabs">
 						<div class="page-tabs-content" id="mainPageTabsContent">

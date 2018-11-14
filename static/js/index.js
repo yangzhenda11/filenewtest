@@ -624,18 +624,93 @@ function checkFullscreen() {
 
 /****************************首屏显示处理*****************************/
 //请求用户信息成功后加载首页列表
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
 function getHomePage(){
-	var userLoginName = globalConfig.loginName;
-    if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
-    	$("#tabPageFiexd").text("合同扫描件上传");
-		$("#tabPageFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-    	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
-		$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-    }else{
-    	$("#tabPageFiexd").text("待办事项");
-		$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-    	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
-    	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
-    };
+	$("#content-tabs").css("top","128px");
+	$("#content-main").css("top","170px");
+	
+//	var userLoginName = globalConfig.loginName;
+//  if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
+//  	$("#tabPageFiexd").text("合同扫描件上传");
+//		$("#tabPageFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+//  	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
+//		$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
+//  }else{
+//  	$("#tabPageFiexd").text("待办事项");
+//		$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
+//  	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
+//  	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
+//  };
+//取得角色list中的当前页面所使用的角色
+	checkRoleType();
+	$("#loginUserName").text(config.curStaffName);
+	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
+		if(roleType == 91216) {
+			$("#roleName").text("客户经理");
+			$("#captionTitle").text("我的商务助理");
+		} else if(roleType == 91217) {
+			$("#roleName").text("业务管理");
+		} else {
+			$("#roleName").text("商务经理");
+		};
+		$("#auditCol").remove();
+	} else if(roleType == 91218) {
+		$("#roleName").text("稽核管理");
+		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
+		$("#auditCol").removeClass("hidden");
+		setAuditScope();
+	};
+	$(".page-content-worktable").show();
+	//获取商务助理配置内容
+	getAssistantList();
+	/*
+ * 取得角色list中的当前页面所使用的角色
+ */
+function checkRoleType() {
+	var roleArr = config.curRole;
+	var permArr = [91216, 91217, 91218, 91219];
+	$.each(roleArr, function(k, v) {
+		if(isInArray(permArr, v)) {
+			roleType = v;
+			return false;
+		}
+	});
 }
+/*
+ * 获取商务助理配置内容
+ */
+function getAssistantList() {
+	var url = serverPath + "assistant/assistantList";
+	var postData = {
+		roleId: roleType,
+		provinceCode: config.provCode,
+		funType: "sr"
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+
+	function successCallback(result) {
+		var data = result.data;
+		var html = "";
+		$.each(data, function(k, v) {
+			var funCode = v.funCode;
+			html += '<div class="workItem"><div class="workItemImg">';
+			if(funCode == "KHGL" || funCode == "LXZHT_SR" || funCode == "FXYJ_SR"){
+				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
+			};
+			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
+		});
+		$("#workItemDom").html(html);
+	}
+}
+}
+$("#workItemDom").on("click", ".workItem", function() {
+	var moduleUrl = $(this).find("img").data("url");
+	if(moduleUrl) {
+		top.showSubpageTab(moduleUrl, $(this).find("p").text());
+	} else {
+		layer.alert("该模块暂未使用。", {icon: 2})
+	}
+})
 /****************************首屏显示处理*****************************/

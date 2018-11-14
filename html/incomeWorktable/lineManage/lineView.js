@@ -17,11 +17,7 @@ if(parm.relationType == "0"){
 }else if(parm.relationType == null){
 	layer.alert("请确定线路的关联方式",{icon:2})
 };
-$(function(){
-	if(!parm.id){
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
-	}
+$(function(){ 
 	//线路信息表格初始化
 	initLineInforTable();
 })

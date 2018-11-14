@@ -992,6 +992,7 @@ function jumpCustomDiffToDetail(contractParm,riskType,diffContent){
 }
 
 //in 跳转地址
+
 function jumpCustomDiffInDetail(contractParm,riskType,diffContent,customerNameBss1,customerNameBss2,customerCodeBss1){
 	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&customerNameBss1="+customerNameBss1+"&riskType="+riskType+"&customerNameBss2="+customerNameBss2+"&customerCodeBss1="+customerCodeBss1+"&diffContent="+encodeURI(diffContent);
 

@@ -30,7 +30,7 @@
 						<p>线路收入信息</p><span></span>
 					</div>
 					<div class="form-fieldset-body">
-					<div class="parmTitle">
+						<div class="parmTitle">
 							<span id="parmContractNum"></span>
 						</div> 
 					 
@@ -38,36 +38,30 @@
 							<button type="button" class="btn blue" onclick="initselectLR()"><i class="iconfont icon-chakan"></i>选择显示内容</button>
 							<button type="button" class="btn blue" id="returnBtn" style="display: none;"><i class="iconfont icon-arrow-left"></i>返回</button>
 						</div>
-					</div>-->
-					<div class="parmTitle">
-						合同编号：<span id="parmContractNum"></span>
+						<table id="lineInforTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+	                    	<thead>
+								<tr>
+									<th>序号</th>
+									<th>服务号码</th>
+									<th>业务信息ID</th>
+									<th>电路代号</th>
+									<th>产品名称</th>
+									<th>发起分公司</th>
+									<th>租用范围</th>
+									<th>账期</th>
+									<th>月租费</th>
+									<th>应收（元）</th>
+									<th>欠费（元）</th>
+									<th>实收（元）</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="11">请点击查询按钮加载数据</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<div class="toolbars">
-						<button type="button" class="btn blue" onclick="initselectLR()"><i class="iconfont icon-chakan"></i>选择显示内容</button>
-						<button type="button" class="btn blue" id="returnBtn" style="display: none;"><i class="iconfont icon-arrow-left"></i>返回</button>
-					</div>
-					<table id="lineInforTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
-                    	<thead>
-							<tr>
-								<th>序号</th>
-								<th>业务信息ID</th>
-								<th>电路代号</th>
-								<th>产品名称</th>
-								<th>发起分公司</th>
-								<th>租用范围</th>
-								<th>账期</th>
-								<th>月租费</th>
-								<th>应收（元）</th>
-								<th>欠费（元）</th>
-								<th>实收（元）</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td colspan="11">请点击查询按钮加载数据</td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 			</div>
 		</div>

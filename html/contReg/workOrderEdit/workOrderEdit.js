@@ -1785,7 +1785,9 @@ function setHaveRead(){
 //返回上一页
 function backPage(){
 	if(parm.isucloud == "true"){
-		top.closeWindow();
+		layer.confirm("是否关闭此页面?",{icon:7,title:"提示"},function(index){
+			top.closeWindow();
+		});
 	}else{
 		window.history.go(-1);
 	}

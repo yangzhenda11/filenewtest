@@ -43,7 +43,7 @@ function initLineInforTable(){
 			"data": function(d) { 
 				d.customerName = $("#searchInput").val().trim();
 				d.contractNumber = parm.contractNumber;
-				d.customerNameBss1=parm.customerNameBss2;
+				d.customerNameBss1=parm.customerNameBss1;
 			    d.customerNameBss2=parm.customerNameBss2;
 			    d.customerCodeBss1=parm.customerCodeBss1;
 				d.contractId = parm.contractId;

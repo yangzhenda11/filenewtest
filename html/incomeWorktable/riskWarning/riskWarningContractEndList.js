@@ -51,7 +51,6 @@ function initLineInforTable(){
 					return start + meta.row + 1;
 				}
 			},
-			{"data": "serviceNumber","className": "whiteSpaceNormal"},
 			{"data": "businessId","className": "whiteSpaceNormal"},
 			{"data": "circuitCode","className": "whiteSpaceNormal"},
 			{"data": "productName","className": "whiteSpaceNormal"},

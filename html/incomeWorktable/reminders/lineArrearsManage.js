@@ -45,14 +45,14 @@ function initLineInforTable(){
 							return start + meta.row + 1;
 						}
 					},
-					{"data": "serviceNumber","title":"服务号码","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "accountPeriodName","title":"账期","className": "whiteSpaceNormal","width": "10%"},
-					{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "10%",
+					{"data": "serviceNumber","title":"服务号码","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "accountPeriodName","title":"账期","className": "whiteSpaceNormal","width": "7%"},
+					{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "7%",
 						"render": function(data, type, full, meta){
 							return App.unctionToThousands(data);
 						}

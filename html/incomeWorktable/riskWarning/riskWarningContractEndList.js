@@ -55,13 +55,11 @@ function initLineInforTable(){
 			{"data": "circuitCode","className": "whiteSpaceNormal"},
 			{"data": "productName","className": "whiteSpaceNormal"},
 			{"data": "rentingTime","className": "whiteSpaceNormal"
-				,
-				"render" : function(data, type, full, meta) {
+				,"render" : function(data, type, full, meta) {
 					return App.formatDateTime(data, "yyyy-mm-dd");
 				}},
 			{"data": "stopRentingTime","className": "whiteSpaceNormal"
-				,
-				"render" : function(data, type, full, meta) {
+				,"render" : function(data, type, full, meta) {
 					return App.formatDateTime(data, "yyyy-mm-dd");
 				}},
 			{"data": "accountPeriodName","className": "whiteSpaceNormal"},

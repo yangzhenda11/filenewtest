@@ -116,7 +116,7 @@ function initLineIsArrearageTable() {
 			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
-				d.contractName = $("#lineIsArrearageInput").val().trim();
+				d.contractNumber = $("#lineIsArrearageInput").val().trim();	
 				d.riskType ='0';
 				return JSON.stringify(d);
 			}
@@ -188,7 +188,7 @@ function initLineRentNotBillTable() {
 			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
-				d.contractName = $("#lineRentNotBillInput").val().trim();
+				d.contractNumber = $("#lineRentNotBillInput").val().trim();
 				d.riskType ='1';
 				return JSON.stringify(d);
 			}
@@ -257,7 +257,7 @@ function initLineRentedHaveBillTable() {
 			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
-				d.contractName = $("#lineRentedHaveBillInput").val().trim();
+				d.contractNumber = $("#lineRentedHaveBillInput").val().trim();
 				
 				d.riskType ='2';
  
@@ -330,7 +330,7 @@ function initContractEndHaveLineTable() {
 			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
-				d.contractName = $("#contractEndHaveLineInput").val().trim();
+				d.contractNumber = $("#contractEndHaveLineInput").val().trim();
 				d.riskType ='3';
 				return JSON.stringify(d);
 			}
@@ -397,7 +397,7 @@ function initContractEndHaveNewLineTable() {
 			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetail',
 			"contentType" : "application/json;charset=utf-8",
 			"data" : function(d) { 
-				d.contractName = $("#contractEndHaveNewLineInput").val().trim();
+				d.contractNumber = $("#contractEndHaveNewLineInput").val().trim();
 				d.riskType ='4';
 				return JSON.stringify(d);
 			}

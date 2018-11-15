@@ -27,19 +27,11 @@
 			<div class="work-list">
 				<div class="form-fieldset" id="lineInfor">
 					<div class="form-fieldset-title">
-						<span>线路收入信息</span>
-						<!--<div class="form-fieldset-tools">
-							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
-						</div>-->
+						<span>欠费详情</span>
 					</div>
 					<div class="form-fieldset-body">
-					<div class="parmTitle">
-							<span id="parmContractNum"></span>
-						</div> 
-					 
-						<div class="toolbars">
-							<button type="button" class="btn blue" onclick="initselectLR()"><i class="iconfont icon-chakan"></i>选择显示内容</button>
-							<button type="button" class="btn blue" id="returnBtn" style="display: none;"><i class="iconfont icon-arrow-left"></i>返回</button>
+						<div class="parmTitle" style="text-align:center">
+							<span id="customerCodeNum" style="font-size:large;font-weight:bold;color:#F00">欠费详情</span>
 						</div>
 						<table id="lineInforTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 	                    	<thead>
@@ -53,14 +45,14 @@
 									<th>租用范围</th>
 									<th>账期</th>
 									<th>月租费</th>
-									<th>应收（元）</th>
-									<th>欠费（元）</th>
-									<th>实收（元）</th>
+									<th>应收金额</th>
+									<th>实收金额</th>
+									<th>欠费金额</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td colspan="11">请点击查询按钮加载数据</td>
+									<td colspan="10">查无数据</td>
 								</tr>
 							</tbody>
 						</table>

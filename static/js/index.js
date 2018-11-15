@@ -214,6 +214,7 @@ function setWorktableMessageNumber(){
  * 待办待阅跳转
  */
 function jumpWorkflow(type){
+	$("#workItemDom").find("p").removeClass("red");
 	if(type == "todo"){
 		var url = "html/workflow/tasklist/task-todo.html";
 		top.showSubpageTab(url,"待办事项",false,false,true);
@@ -563,6 +564,7 @@ function viewNotify(notifyId) {
  * 待办按钮跳转待办
  */
 function openTasktodo(){
+	$("#workItemDom").find("p").removeClass("red");
 	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
 }
 /*
@@ -882,8 +884,10 @@ function getAssistantList(roleType,funType) {
 	}
 }
 $("#workItemDom").on("click", ".workItem", function() {
+	$("#workItemDom").find("p").removeClass("red");
 	var moduleUrl = $(this).find("img").data("url");
 	if(moduleUrl) {
+		$(this).find("p").addClass("red");
 		top.showSubpageTab(moduleUrl, $(this).find("p").text());
 	} else {
 		layer.alert("该模块暂未使用。", {icon: 2})

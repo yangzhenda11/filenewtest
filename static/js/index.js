@@ -701,8 +701,8 @@ function getHomePage(){
 }
 //设置工作台标题
 function setWorktableRoleName(){
-	$("#content-tabs").css("top","128px");
-	$("#content-main").css("top","162px");
+	$("#content-tabs").css("top","122px");
+	$("#content-main").css("top","156px");
 	$("#main-content").show();
 	$("#loginUserName").text(globalConfig.curStaffName);
 	if(checkPageRoleType("income") && checkPageRoleType("expense")){

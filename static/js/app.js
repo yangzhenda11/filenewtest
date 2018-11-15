@@ -1168,59 +1168,76 @@ var App = function() {
          * }
          */
         setCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-        	var cacheList = [];
-        	$("#"+el).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
-				var formName = $(formItem).attr('name');
-				if(formName != undefined){
-					var formType = formItem.type;
-					if(formType == "text" || formType == "hidden" || formType == "select-one") {
-						var val = $(formItem).val();
-						if(val){
-							var cacheItem = {
-								name: formName,
-								val: val
-							};
-							cacheList.push(cacheItem);
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		var cacheList = [];
+	        	$("#"+elArr[i]).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+					var formName = $(formItem).attr('name');
+					if(formName != undefined){
+						var formType = formItem.type;
+						if(formType == "text" || formType == "hidden" || formType == "select-one") {
+							var val = $(formItem).val();
+							if(val){
+								var cacheItem = {
+									name: formName,
+									val: val
+								};
+								cacheList.push(cacheItem);
+							}
 						}
 					}
+				});
+				if(cacheList.length > 0){
+					if(top._paramCache[pageId] == undefined){
+						top._paramCache[pageId] = {};
+					};
+					top._paramCache[pageId][elArr[i]] = cacheList;
 				}
-			});
-			if(cacheList.length > 0){
-				if(top._paramCache[pageId] == undefined){
-					top._paramCache[pageId] = {};
-				};
-				top._paramCache[pageId][el] = cacheList;
-			}
+        	}
         },
         /*
          * 页面参数读取赋值
          */
         readCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-			if(top._paramCache[pageId] == undefined){
+        	if(top._paramCache[pageId] == undefined){
 				return;
-			}else if(top._paramCache[pageId][el] == undefined){
-				return;
-			}else{
-				var cacheList = top._paramCache[pageId][el];
-				$.each(cacheList, function(k,v) {
-	                var sel = ":input[name='" + v.name + "']";
-	                var obj = $("#"+el).find(sel);
-	                if(obj.length > 0){
-	                    var objType = obj[0].type;
-	                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
-	                        obj.val(v.val);
-	                        if(objType == "select-one"){
-	                        	try{
-	                        		obj.trigger('change');
-	                        	}catch(e){}
-	                        }
-	                    }
-	                }
-				});
-				delete top._paramCache[pageId][el];
-			}
+			};
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		if(top._paramCache[pageId][elArr[i]] == undefined){
+					return;
+				}else{
+					var cacheList = top._paramCache[pageId][elArr[i]];
+					$.each(cacheList, function(k,v) {
+		                var sel = ":input[name='" + v.name + "']";
+		                var obj = $("#"+elArr[i]).find(sel);
+		                if(obj.length > 0){
+		                    var objType = obj[0].type;
+		                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
+		                        obj.val(v.val);
+		                        if(objType == "select-one"){
+		                        	try{
+		                        		obj.trigger('change');
+		                        	}catch(e){}
+		                        }
+		                    }
+		                }
+					});
+					delete top._paramCache[pageId][elArr[i]];
+				}
+        	}
         },
         /*
          * 页面参数是否存在
@@ -2008,6 +2025,26 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
  */
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+/*
+ * indexOf()兼容IE8
+ */
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (elt /*, from*/) {
+        var len = this.length >>> 0;
+        var from = Number(arguments[1]) || 0;
+        from = (from < 0)
+             ? Math.ceil(from)
+             : Math.floor(from);
+        if (from < 0)
+            from += len;
+        for (; from < len; from++) {
+            if (from in this &&
+                this[from] === elt)
+                return from;
+        }
+        return -1;
+    }
 }
 /*
  * datatable跳转至第**页

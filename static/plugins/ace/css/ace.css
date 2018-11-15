@@ -155,8 +155,8 @@ th, td { /*white-space: nowrap;*/ }
   color: #000;
   font-size: 22px;
   text-shadow: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   height: auto;
 }
 .navbar .navbar-brand>span{
@@ -169,9 +169,9 @@ th, td { /*white-space: nowrap;*/ }
 }
 .navbar-container .navbar-buttons{
 		position: relative;
-    top: 14px;
+    top: 2px;
     width: 750px;
-    height: 76px;
+    height: 65px;
 		background: url(../../../img/top_bg.gif);
 }
 @media (max-width: 1140px) {
@@ -1815,6 +1815,8 @@ body.mob-safari .sidebar.sidebar-fixed {
   display: none !important;
   height: auto !important;
   visibility: visible !important;
+  max-height: 260px;
+  overflow: auto;
 }
 .sidebar.menu-min .nav-list > li > .submenu:before {
   display: none;
@@ -3500,7 +3502,7 @@ body.mob-safari .sidebar.sidebar-fixed {
  * 样式修改top:50px
  */
 #navbar .logo {
-	height: 60px;
+	height: 54px;
 	display: inline-block !important;
 	margin-right: 10px;
 	vertical-align: middle;
@@ -3508,7 +3510,7 @@ body.mob-safari .sidebar.sidebar-fixed {
 /*
  * 样式修改top:50px
  */
-.main-container{position: absolute;left: 0;right: 0;top:81px;bottom: 0;transition: all .5s;}
+.main-container{position: absolute;left: 0;right: 0;top:67px;bottom: 0;transition: all .5s;}
 .hideNavbar #navbar{transition: all .5s;}
 .hideNavbar .main-container{top: 0;}
 .sidebar{max-height: 100%;}

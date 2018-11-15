@@ -138,7 +138,7 @@ function saveTbody(){
 			else {
 
 				// 主表已存在返回存在的账期名称
-				layer.msg("账期："+result.data+" 在正式表已存在");
+				layer.msg(""+result.data+" 账期的收入分摊数据已存在，请核实");
 			}
 		}
 	}
@@ -203,7 +203,7 @@ function submitTbody(){
 			else {
 
 				// 主表已存在返回存在的账期名称
-				layer.msg("账期："+result.data+" 在正式表已存在");
+				layer.msg(""+result.data+" 账期的收入分摊数据已存在，请核实");
 			}
 		}
 	}
@@ -227,7 +227,7 @@ function submitData() {
 		else {
 
 			// 主表已存在返回存在的账期名称
-			layer.msg("账期："+result.data+" 在正式表已存在");
+			layer.msg(""+result.data+" 账期的收入分摊数据已存在，请核实");
 		}
 	}
 }

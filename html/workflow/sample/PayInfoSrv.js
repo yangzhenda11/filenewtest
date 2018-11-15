@@ -86,7 +86,7 @@ function flowStart3(){
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIOrderReceiveInfo",
 		    "type": "post",
-		    "data":{"provincecode":provincecode,
+		    "data":{"provinceCode":provincecode,
 					    	"orgname":orgname,
 					    	"vendornum":$("#vendornumHeadReceived").val(),
 					    	"vendorname":$("#vendornameHeadReceived").val(),

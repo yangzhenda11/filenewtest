@@ -35,7 +35,7 @@ function initLineInforTable(){
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetailAll',
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetailAllForContractEnd',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.businessId = $("#searchInput").val().trim();

@@ -25,9 +25,9 @@ function flowStart(){
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
 			if(null==result.data.value||"0"==result.data.value){
-				layer.msg("无返回数据");
+				layer.alert("无返回数据");
 			}else{
-				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+				layer.alert(result.data.label+";"+result.data.value);
 			}
 		}
 }
@@ -64,9 +64,9 @@ function flowStart2(){
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
 			if(null==result.data.value||"0"==result.data.value){
-				layer.msg("无返回数据");
+				layer.alert("无返回数据");
 			}else{
-				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+				layer.alert(result.data.label+";"+result.data.value);
 			}
 		}
 }
@@ -99,9 +99,9 @@ function flowStart3(){
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
 			if(null==result.data.value||"0"==result.data.value){
-				layer.msg("无返回数据");
+				layer.alert("无返回数据");
 			}else{
-				layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+				layer.alert(result.data.label+";"+result.data.value);
 			}
 		}
 }
@@ -136,9 +136,9 @@ function flowStart4(){
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 			function successCallback(result) {
 				if(null==result.data.value||"0"==result.data.value){
-					layer.msg("无返回数据");
+					layer.alert("无返回数据");
 				}else{
-					layer.msg(result.data.label+";共接收保存："+result.data.value+"条数据");
+					layer.alert(result.data.label+";"+result.data.value);
 				}
 			}
 }

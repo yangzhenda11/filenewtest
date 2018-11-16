@@ -1399,8 +1399,12 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
-				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
+				    for(var i = 0; i < strs.length; i ++) {
+				    	var strsItem = decodeURI(strs[i].split("=")[1]);
+				    	if(strsItem == "null"){
+				    		strsItem = null;
+				    	}
+				        theRequest[strs[i].split("=")[0]] = strsItem;   
 				    }
 				}
 				return theRequest;

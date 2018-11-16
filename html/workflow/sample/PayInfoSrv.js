@@ -7,10 +7,12 @@ function flowStart(){
 		layer.msg("请填写省份代码！");
 		return;
 	}
-//	if(contractnumber.length==0){
-//		layer.msg("请填合同编号！");
-//		return;
-//	}
+	var createDateBegin =  $("#startlastupdatedateHeadInfo").val();
+	var createDateEnd = $("#endlastupdatedateHeadInfo").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		layer.msg("结束日期不能早于起始日期");
+		return;
+	}
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIOrderHeadInfo",
 		    "type": "post",
@@ -46,10 +48,12 @@ function flowStart2(){
 		layer.msg("请填写OU名称！");
 		return;
 	}
-//	if(ponumber.length==0){
-//		layer.msg("请填写采购订单号！");
-//		return;
-//	}
+	var createDateBegin =  $("#startlastupdatedateHeadLine").val();
+	var createDateEnd = $("#endlastupdatedateHeadLine").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		layer.msg("结束日期不能早于起始日期");
+		return;
+	}
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIOrderRowInfo",
 		    "type": "post",
@@ -79,10 +83,12 @@ function flowStart3(){
 		layer.msg("请填写省份代码！");
 		return;
 	}
-//	if(orgnameHead.length==0){
-//		layer.msg("请填OU名称！");
-//		return;
-//	}
+	var createDateBegin =  $("#startlastupdatedateHeadReceived").val();
+	var createDateEnd = $("#endlastupdatedateHeadReceived").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		layer.msg("结束日期不能早于起始日期");
+		return;
+	}
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIOrderReceiveInfo",
 		    "type": "post",
@@ -115,14 +121,12 @@ function flowStart4(){
 		layer.msg("请填写省份代码！");
 		return;
 	}
-//	if(contractnumber.length==0){
-//		layer.msg("请填合同编号！");
-//		return;
-//	}
-//	if(contractid.length==0){
-//		layer.msg("请填合同流水号！");
-//		return;
-//	}
+	var createDateBegin =  $("#startlastupdatedatePayment").val();
+	var createDateEnd = $("#endlastupdatedatePayment").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		layer.msg("结束日期不能早于起始日期");
+		return;
+	}
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIInvoicePaymentRow",
 		    "type": "post",

@@ -35,7 +35,7 @@ function initLineInforTable(){
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetailAll',
+			"url" : serverPath + 'riskWarningDetailMangerController/listRiskWarningDetailAllForContractEnd',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.businessId = $("#searchInput").val().trim();
@@ -55,13 +55,11 @@ function initLineInforTable(){
 			{"data": "circuitCode","className": "whiteSpaceNormal"},
 			{"data": "productName","className": "whiteSpaceNormal"},
 			{"data": "rentingTime","className": "whiteSpaceNormal"
-				,
-				"render" : function(data, type, full, meta) {
+				,"render" : function(data, type, full, meta) {
 					return App.formatDateTime(data, "yyyy-mm-dd");
 				}},
 			{"data": "stopRentingTime","className": "whiteSpaceNormal"
-				,
-				"render" : function(data, type, full, meta) {
+				,"render" : function(data, type, full, meta) {
 					return App.formatDateTime(data, "yyyy-mm-dd");
 				}},
 			{"data": "accountPeriodName","className": "whiteSpaceNormal"},

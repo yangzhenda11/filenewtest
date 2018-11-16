@@ -6,7 +6,7 @@ var serverPath = config.serverPath;
  * 接受的配置参数
  */
 var parm = App.getPresentParm();
-console.log(parm);
+console.log("parm",parm);
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
@@ -15,7 +15,15 @@ $(function(){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
- 		$("#customerCodeNum").text(parm.customerCode);
+ 	    // 异步获取欠费账期
+ 		var postData = {
+ 				businessId: parm.bussid
+ 		};
+		App.formAjaxJson(serverPath + 'reminders/getArrearsAccount', "post",JSON.stringify(postData) , successCallback);
+		function successCallback(result) {
+			var data = result.data;
+ 		$("#arrearsAccount").text(data);
+		}
  		initContractInforTable();
  	}
 })
@@ -76,7 +84,7 @@ function initContractInforTable(){
 							return "<a onclick='jumpLineManage(\""+data.dataSummaryDate+"\",\""+data.contractId+"\")'>查看</a>";
 						}
 					}
-				]
+			]
 	});
 }
 

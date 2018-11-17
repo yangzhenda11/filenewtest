@@ -77,19 +77,19 @@ $(function() {
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 			$(".registerBtn,.cancelApprovedBtn,.returnBtn").remove();
 		};
-		App.fixToolBars("toolbarBtnContent", 0);
+		fixToolBars();
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		wcardId = parm.wcardId;
 		$("#toolbarButton,#flowNote").remove();
 		$("#toolbarBtn").css("height","90px");
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);
+		fixToolBars();
 	} else if(parm.pageType == 4) {		//工单查询页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);
+		fixToolBars();
 	} else if(parm.pageType == 3) {		//已办页面进入
 		wcardId = parm.wcardId;
 		$("#flowNote").remove();
@@ -98,14 +98,13 @@ $(function() {
 			$(".returnBtn").remove();
 		}
 		$pageContent.removeClass("hidden");
-		App.fixToolBars("toolbarBtnContent", 0);
+		fixToolBars();
 	};
 	//加载验证壳
 	validate();
 	//请求工单模块，获取基本信息及各模块的url
 	getWorkOrderInfo();
 })
-
 /*
  * 工作流相关
  */
@@ -309,6 +308,7 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 			if($("#contractScanCopyUpload")[0]){
 	    		postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
 	    	};
+	    	postData.performerList = getValue_performerList(true);
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -596,6 +596,7 @@ function activateContract(e,chooseLinkcode){
 			if($("#contractScanCopyUpload")[0]){
 				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
 	    	};
+	    	postData.performerList = getValue_performerList(true);
 			postData.validity.adminCommitment = adminCommitment;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -692,6 +693,7 @@ function pushGDQRDataOfDepart(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,
 	if(chooseLinkcode){
 		postData.taskDefinitionKey = chooseLinkcode;
 	};
+	postData.performerList = getValue_performerList(true);
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessDepart", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
@@ -732,6 +734,7 @@ function pushGDQRWorkflowOfCompany(){
 			var postData = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 			postData.wcardId = wcardId;
 			postData.contractId = contractId;
+			postData.performerList = getValue_performerList(true);
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessCompany", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {
@@ -1825,4 +1828,24 @@ function getBusiProcessInfoID(){
 			}
 		}
 	}
+}
+/*
+ * 滚动固定
+ */
+function fixToolBars(){
+	$(".page-content").scroll(function(){
+		var topScroll = $(".page-content").scrollTop();
+		if(topScroll > 0){
+			$("#scrollTopTool").css("display","block");
+			$("#toolbarBtnContent").css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
+		}else{
+			$("#scrollTopTool").css("display","none");
+			$("#toolbarBtnContent").css({"position":"static","width":"100%","padding-top":"0"});
+		}
+	});
+	$("#scrollTopTool").on("click",function(){
+		$pageContent.animate({
+			scrollTop:0
+		},300)
+	})
 }

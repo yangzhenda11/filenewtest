@@ -1426,7 +1426,6 @@ var App = function() {
         fixToolBars : function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
-				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
 					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
 				}else{

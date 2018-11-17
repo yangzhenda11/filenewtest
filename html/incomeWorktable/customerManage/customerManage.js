@@ -330,7 +330,7 @@ function myCustomerTableColumns(){
 		if(v.checked == true){
 			if(v.id == "jumpContract"){
 				var item = {
-					"data": "",
+					"data": null,
 					"title": v.data,
 					"render": function(data, type, full, meta){
 						return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";

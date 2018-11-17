@@ -331,7 +331,7 @@ function modal_pass(root, taskDefinition, assignee, processInstanceId, taskId, c
 			if($("#contractScanCopyUpload")[0]){
 	    		postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
 	    	};
-	    	postData.performerList = getValue_performerList(true);
+	    	postData.performerList = getValue_performerList(true,true);
 			postData.validity.adminCommitment = 1;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -619,7 +619,7 @@ function activateContract(e,chooseLinkcode){
 			if($("#contractScanCopyUpload")[0]){
 				postData.contractScanCopyUpload = getValue_contractScanCopyUpload(true);
 	    	};
-	    	postData.performerList = getValue_performerList(true);
+	    	postData.performerList = getValue_performerList(true,true);
 			postData.validity.adminCommitment = adminCommitment;
 			postData.validity.validityId = $("#validityId").val();
 			postData.wcardId = wcardId;
@@ -723,7 +723,7 @@ function pushGDQRDataOfDepart(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,
 	if(chooseLinkcode){
 		postData.taskDefinitionKey = chooseLinkcode;
 	};
-	postData.performerList = getValue_performerList(true);
+	postData.performerList = getValue_performerList(true,true);
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessDepart", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
@@ -764,7 +764,7 @@ function pushGDQRWorkflowOfCompany(){
 			var postData = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 			postData.wcardId = wcardId;
 			postData.contractId = contractId;
-			postData.performerList = getValue_performerList(true);
+			postData.performerList = getValue_performerList(true,true);
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 			App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessCompany", "post", JSON.stringify(postData), successCallback, improperCallback);
 			function successCallback(result) {

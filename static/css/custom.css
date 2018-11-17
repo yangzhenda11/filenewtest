@@ -725,6 +725,7 @@ table td{
 	color: #fff;
 	line-height: 40px;
 	display: none;
+	z-index: 999;
 }
 #scrollTopTool:after{
     position: absolute;

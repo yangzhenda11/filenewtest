@@ -1453,7 +1453,7 @@ var App = function() {
 			$(dom).on("click",function(){
 				$(".page-content").animate({
 					scrollTop:0
-				},0)
+				},300)
 			})
         },
         /*

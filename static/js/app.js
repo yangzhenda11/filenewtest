@@ -1427,15 +1427,33 @@ var App = function() {
          * dom.操作按钮父级ID值
          * dixScrollTop.滚动固定的高度
          */
-        fixToolBars : function(dom,dixScrollTop){
+        fixToolBars: function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
-				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
 					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
+			})
+        },
+         /*
+         * 回到顶部固定操作按钮
+         * dom.操作按钮ID值
+         */
+        fixScrollTopTool: function(dom){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				if(topScroll > 0){
+					$(dom).css("display","block");
+				}else{
+					$(dom).css("display","none");
+				}
+			});
+			$(dom).on("click",function(){
+				$(".page-content").animate({
+					scrollTop:0
+				},0)
 			})
         },
         /*

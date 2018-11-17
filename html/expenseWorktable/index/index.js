@@ -1,6 +1,7 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+App.fixScrollTopTool("#scrollTopTool");
 /*
  * roleType
  * 收入类租线业务页面角色说明

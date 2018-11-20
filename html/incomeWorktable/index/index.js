@@ -190,14 +190,12 @@ function getFocusAccountTable(){
 		if(data.length > 0){
 			var html = "";
 			$.each(data, function(k,v) {
-				var itemPhone = v.phone ? v.phone : '';
-				var itemEmail = v.email ? v.email : '';
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.managerStaffName + '</td>'+
-					'<td>'+ v.orgName + '</td>'+
-					'<td>'+ itemPhone + '</td>'+
-					'<td>'+ itemEmail +'</td>'+
+					'<td>'+ App.checkEmptyData(v.managerStaffName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.orgName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.phone) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.email) +'</td>'+
 					'<td><a onclick="jumpContractManageByStaffid(\''+v.managerStaffOrgId+'\')">查看</a></td>';
 			});
 			$("#focusAccountTbody").html(html);		
@@ -245,10 +243,10 @@ function getFocusCustomerTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.customerName + '</td>'+
-					'<td>'+ v.customerCode + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
-					'<td>'+ v.customerManagerName +'</td>'+
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerManagerName) +'</td>'+
 					'<td><a onclick="jumpContractManageByCustomerCode(\''+v.customerCode+'\')">查看</a></td>';
 			});
 			$("#emphasisCustomerTbody").html(html);		
@@ -296,13 +294,13 @@ function getFocusContractTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.contractName + '</td>'+
-					'<td>'+ v.contractNumber + '</td>'+
-					'<td>'+ v.customerName + '</td>'+
-					'<td>'+ v.customerCode + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractNumber) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
-					'<td>'+ v.customerManagerName + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerManagerName) + '</td>'+
 					'<td><a onclick="jumpLineManageByContract(\''+v.contractId+'\')">查看</a></td>';
 			});
 			$("#emphasisContractTbody").html(html);		

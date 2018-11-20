@@ -446,7 +446,7 @@ var relationContractTheadList = [
 	},
 	{
 		data : "添加人账号",
-		id : "createdCode"
+		id : "createdBy"
 	},
 	{
 		data : "导入时间",
@@ -572,7 +572,7 @@ var notRelationContractTheadList = [
 	},
 	{
 		data : "添加人账号",
-		id : "createdCode"
+		id : "createdBy"
 	},
 	{
 		data : "导入时间",

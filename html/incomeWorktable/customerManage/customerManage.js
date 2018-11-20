@@ -301,6 +301,10 @@ function searchCustomerList(){
  * 我的客户查询表格初始化
  */
 function initCustomerListTable(){
+	var isInitCustomerListTable = $.fn.dataTable.isDataTable("#customerListTable");
+	if(!isInitCustomerListTable){
+		$("#customerListTable").html("");
+	}
 	App.initDataTables('#customerListTable', "#customerListLoading", {
 		ajax: {
 			"type": "POST",

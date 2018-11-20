@@ -16,7 +16,7 @@ function flowStart(){
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIOrderHeadInfo",
 		    "type": "post",
-		    "data":{"provincecode":provincecode,
+		    "data":{"provinceCode":provincecode,
 					    	"contractnumber":contractnumber,
 					    	"orgname":$("#orgnameHeadInfo").val(),
 					    	"ponumber":$("#ponumberHeadInfo").val(),
@@ -26,11 +26,7 @@ function flowStart(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
-			if(null==result.data.value||"0"==result.data.value){
-				layer.alert("无返回数据");
-			}else{
 				layer.alert(result.data.label+";"+result.data.value);
-			}
 		}
 }
 //该方法为发起查询采购订单行信息服务。
@@ -57,7 +53,7 @@ function flowStart2(){
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIOrderRowInfo",
 		    "type": "post",
-		    "data":{"provincecode":provincecode,
+		    "data":{"provinceCode":provincecode,
 					    	"orgname":orgname,
 					    	"poheaderid":$("#poheaderidHeadLine").val(),
 					    	"ponumber":$("#ponumberHeadLine").val(),
@@ -67,11 +63,7 @@ function flowStart2(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
-			if(null==result.data.value||"0"==result.data.value){
-				layer.alert("无返回数据");
-			}else{
 				layer.alert(result.data.label+";"+result.data.value);
-			}
 		}
 }
 //该方法为发起查询采购订单接收信息服务
@@ -104,11 +96,7 @@ function flowStart3(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
-			if(null==result.data.value||"0"==result.data.value){
-				layer.alert("无返回数据");
-			}else{
 				layer.alert(result.data.label+";"+result.data.value);
-			}
 		}
 }
 //该方法为发起查询应付实付信息服务
@@ -130,7 +118,7 @@ function flowStart4(){
 	var ajaxObj = {
 		    "url":  "/payInfoSrv/saveTIInvoicePaymentRow",
 		    "type": "post",
-		    "data":{"provincecode":provincecode,
+		    "data":{"provinceCode":provincecode,
 					    	"contractnumber":contractnumber,
 					    	"contractid":contractid,
 					    	"stateactupaymentdate":$("#startlastupdatedatePayment").val(),
@@ -139,10 +127,6 @@ function flowStart4(){
 		};
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 			function successCallback(result) {
-				if(null==result.data.value||"0"==result.data.value){
-					layer.alert("无返回数据");
-				}else{
 					layer.alert(result.data.label+";"+result.data.value);
-				}
 			}
 }

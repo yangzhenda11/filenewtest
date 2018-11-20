@@ -1471,7 +1471,7 @@ var App = function() {
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
 				if(topScroll > dixScrollTop){
-					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
+					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"#fff","padding-top":"6px"});
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}

@@ -253,9 +253,9 @@ function initIncomeAnalysisCharts(incomeChartData){
     		var incomeReceivable = (params.data.value)+(params.data.other);
     		$("#incomeReceivable").text(App.unctionToThousands(incomeReceivable));
     		// 给合同收入-欠费赋值
-    		$("#incomeArrears").text(App.unctionToThousands(params.data.other));
+    		$("#incomeArrears").text(App.unctionToThousands(params.data.value));
     		// 给合同收入-实收赋值
-    		$("#incomeCollected").text(App.unctionToThousands(params.data.value));
+    		$("#incomeCollected").text(App.unctionToThousands(params.data.other));
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='incomeType']:checked").val();
     		checkIncomeRadio(radioVal);

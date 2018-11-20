@@ -190,14 +190,12 @@ function getFocusAccountTable(){
 		if(data.length > 0){
 			var html = "";
 			$.each(data, function(k,v) {
-				var itemPhone = v.phone ? v.phone : '';
-				var itemEmail = v.email ? v.email : '';
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.managerStaffName + '</td>'+
-					'<td>'+ v.orgName + '</td>'+
-					'<td>'+ itemPhone + '</td>'+
-					'<td>'+ itemEmail +'</td>'+
+					'<td>'+ App.checkEmptyData(v.managerStaffName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.orgName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.phone) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.email) +'</td>'+
 					'<td><a onclick="jumpContractManageByStaffid(\''+v.managerStaffOrgId+'\')">查看</a></td>';
 			});
 			$("#focusAccountTbody").html(html);		
@@ -245,11 +243,11 @@ function getFocusCustomerTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.customerName + '</td>'+
-					'<td>'+ v.customerCode + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
-					'<td>'+ v.customerManagerName +'</td>'+
-					'<td><a onclick="jumpContractManageByCustomerCode(\''+v.customerCode+'\')">查看</a></td>';
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerManagerName) +'</td>'+
+					"<td><a onclick='jumpContractManage(\""+v.customerCode+"\",\""+v.customerName+"\",\""+v.partnerCode+"\")'>查看</a></td>";
 			});
 			$("#emphasisCustomerTbody").html(html);		
 		}else{
@@ -266,10 +264,11 @@ $("#showCustomerMore").on("click",function(){
 	top.showSubpageTab(url,"客户管理");
 })
 /*
- * 跳转合同信息（根据客户ID）
+ * 跳转合同信息
  */
-function jumpContractManageByCustomerCode(customerCode){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
+function jumpContractManage(customerCode, customerName, partnerCode){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?" 
+		+ "customerCode="+customerCode+"&customerName="+customerName+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
 /*
@@ -296,13 +295,13 @@ function getFocusContractTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.contractName + '</td>'+
-					'<td>'+ v.contractNumber + '</td>'+
-					'<td>'+ v.customerName + '</td>'+
-					'<td>'+ v.customerCode + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractNumber) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
-					'<td>'+ v.customerManagerName + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerManagerName) + '</td>'+
 					'<td><a onclick="jumpLineManageByContract(\''+v.contractId+'\')">查看</a></td>';
 			});
 			$("#emphasisContractTbody").html(html);		

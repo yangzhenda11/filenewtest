@@ -1059,6 +1059,16 @@ var App = function() {
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
 		},
+		/**
+		 * 检查是否为null，为null时返回""
+		 */
+		checkEmptyData: function(data){
+			if(data == null){
+				return "";
+			}else{
+				return data;
+			}
+		},
 		/*
 		 * 时间戳转时间
 		 * type 不传默认返回 yyyy-MM-dd HH:mm:ss
@@ -1399,8 +1409,12 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
-				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
+				    for(var i = 0; i < strs.length; i ++) {
+				    	var strsItem = decodeURI(strs[i].split("=")[1]);
+				    	if(strsItem == "null"){
+				    		strsItem = null;
+				    	}
+				        theRequest[strs[i].split("=")[0]] = strsItem;   
 				    }
 				}
 				return theRequest;
@@ -1423,15 +1437,33 @@ var App = function() {
          * dom.操作按钮父级ID值
          * dixScrollTop.滚动固定的高度
          */
-        fixToolBars : function(dom,dixScrollTop){
+        fixToolBars: function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
-				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
 					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
+			})
+        },
+         /*
+         * 回到顶部固定操作按钮
+         * dom.操作按钮ID值
+         */
+        fixScrollTopTool: function(dom){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				if(topScroll > 0){
+					$(dom).css("display","block");
+				}else{
+					$(dom).css("display","none");
+				}
+			});
+			$(dom).on("click",function(){
+				$(".page-content").animate({
+					scrollTop:0
+				},300)
 			})
         },
         /*

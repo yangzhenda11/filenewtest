@@ -46,6 +46,7 @@ function initLineInforTable(){
 	if(!isInit){
 		$("#lineInforTable").html("");
 	}
+	debugger;
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
@@ -57,6 +58,7 @@ function initLineInforTable(){
 				d.contractNumber = parm.contractNumber;
 				d.contractId = parm.contractId;
 				d.customerName = parm.customerName;
+				d.accountPeriodName = parm.accountPeriodName;
  				return  JSON.stringify(d);
 			}
 		},

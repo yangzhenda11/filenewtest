@@ -141,5 +141,4 @@ var  incomeTheadList = [
 	{data:"发起分公司",id:"startCityName",checked:true},
 	{data:"租用范围",id:"rentingScope",checked:true}, 
 	{data:"月租费",id:"monthRentCost",checked:true}, 
-	{data:"租用状态",id:"rentState",checked:true} 
-];
+ ];

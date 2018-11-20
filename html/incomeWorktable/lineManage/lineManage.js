@@ -308,7 +308,7 @@ function lineExport() {
  * 提交全部导入线路
  */
 function lineUpdate() {
-	layer.confirm("是否提交本公司下的所有线路信息?",
+	layer.confirm("是否提交本人导入的所有线路信息?",
 	{
 		btn : [ '是', '否' ] //按钮
 	}, function() { 

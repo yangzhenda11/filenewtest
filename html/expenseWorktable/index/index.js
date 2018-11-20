@@ -146,10 +146,10 @@ function getFocusContractTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.contractName + '</td>'+
-					'<td>'+ v.contractNumber + '</td>'+
-					'<td>'+ v.partnerName + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractNumber) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
 					'<td><a onclick="jumpOrderManageByContract(\''+v.contractNumber+'\')">查看</a></td>'+
 					'<td><a onclick="showContractPerformerModal(\''+v.contractId+'\')">查看</a></td>';
@@ -190,8 +190,8 @@ function showContractPerformerModal(contractId) {
 //				var performerType = item.performerType == 1 ? "是" : "否";
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
-							"<td>"+item.performerStaffName+"</td>"+
-							"<td>"+item.performerOrgName+"</td>"+
+							"<td>"+App.checkEmptyData(item.performerStaffName)+"</td>"+
+							"<td>"+App.checkEmptyData(item.performerOrgName)+"</td>"+
 //							"<td>"+performerType+"</td>"+
 //							"<td></td>"+"<td></td>"+
 //							"<td>"+item.addStaff+"</td>"+

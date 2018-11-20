@@ -198,7 +198,7 @@ function deleteFocusContract(contractId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已删除重点关注");
+			layer.msg("已取消重点关注");
 			reloadPageDataTable("#focusContractTable",true);
 		}
    	});

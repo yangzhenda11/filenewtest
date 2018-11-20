@@ -1072,6 +1072,16 @@ var App = function() {
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
 		},
+		/**
+		 * 检查是否为null，为null时返回""
+		 */
+		checkEmptyData: function(data){
+			if(data == null){
+				return "";
+			}else{
+				return data;
+			}
+		},
 		/*
 		 * 时间戳转时间
 		 * type 不传默认返回 yyyy-MM-dd HH:mm:ss

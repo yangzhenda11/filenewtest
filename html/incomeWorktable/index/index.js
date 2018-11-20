@@ -247,7 +247,7 @@ function getFocusCustomerTable(){
 					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
 					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.checkEmptyData(v.customerManagerName) +'</td>'+
-					'<td><a onclick="jumpContractManageByCustomerCode(\''+v.customerCode+'\')">查看</a></td>';
+					"<td><a onclick='jumpContractManage(\""+v.customerCode+"\",\""+v.customerName+"\",\""+v.partnerCode+"\")'>查看</a></td>";
 			});
 			$("#emphasisCustomerTbody").html(html);		
 		}else{
@@ -264,10 +264,11 @@ $("#showCustomerMore").on("click",function(){
 	top.showSubpageTab(url,"客户管理");
 })
 /*
- * 跳转合同信息（根据客户ID）
+ * 跳转合同信息
  */
-function jumpContractManageByCustomerCode(customerCode){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
+function jumpContractManage(customerCode, customerName, partnerCode){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?" 
+		+ "customerCode="+customerCode+"&customerName="+customerName+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
 /*

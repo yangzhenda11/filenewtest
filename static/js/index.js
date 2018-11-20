@@ -90,8 +90,8 @@ $(document).ready(function() {
         }else{
         	ace_menus = data.menus;
         	$("#tabPageFiexd").text("待办事项");
-			$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-        	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
+//			$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
+//      	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
         }
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
@@ -147,10 +147,10 @@ $(document).ready(function() {
         if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
 			$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
         }else{
-        	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
+//      	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
         };
         //请求用户信息成功后加载公告列表
-        getIndexNotiveTableInfo(true);
+//      getIndexNotiveTableInfo(true);
     }
     function improperCallback(result){
     	if(result.status == 9002){
@@ -583,18 +583,18 @@ function exitFullscreen() {
     }
 }
 //全屏相关事件监听事件
-document.addEventListener("fullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("mozfullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("webkitfullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("MSFullscreenChange", function(e) {
-    checkFullscreen();
-});
+//document.addEventListener("fullscreenchange", function(e) {
+//  checkFullscreen();
+//});
+//document.addEventListener("mozfullscreenchange", function(e) {
+//  checkFullscreen();
+//});
+//document.addEventListener("webkitfullscreenchange", function(e) {
+//  checkFullscreen();
+//});
+//document.addEventListener("MSFullscreenChange", function(e) {
+//  checkFullscreen();
+//});
 
 function checkFullscreen() {
     var fullscreenElement =

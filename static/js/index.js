@@ -89,9 +89,11 @@ $(document).ready(function() {
         	$("#iframeFiexd").attr("data-id","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html")
         }else{
         	ace_menus = data.menus;
-        	$("#tabPageFiexd").text("待办事项");
-//			$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-//      	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html")
+        	if(!App.IEVersionVA(10)){
+        		$("#tabPageFiexd").text("待办事项");
+				$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
+	        	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
+        	}
         }
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
@@ -147,10 +149,14 @@ $(document).ready(function() {
         if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
 			$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
         }else{
-//      	$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
+        	if(!App.IEVersionVA(10)){
+        		$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
+        	}
         };
         //请求用户信息成功后加载公告列表
-//      getIndexNotiveTableInfo(true);
+        if(!App.IEVersionVA(10)){
+    		getIndexNotiveTableInfo(true);
+    	}
     }
     function improperCallback(result){
     	if(result.status == 9002){

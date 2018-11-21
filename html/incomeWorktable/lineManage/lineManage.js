@@ -2,12 +2,43 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 
+
+
+$(function(){
+	/*
+	 * 风险预警功能，具备全省权限的稽核管理角色和商务经理角色才显示。
+	 * roleType
+	 * 91216：客户经理
+	 * 91217：业务管理
+	 * 91218：稽核管理
+	 * 91219：商务经理
+	 * dataPermission
+	 * 0个人，1部门，2公司，3省分
+	 */
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+	if(isInArray(roleArr,91218)){
+		if(dataPermission != 3) {
+			$("#relationTypeDom").hide();
+		}
+	}else{
+		$("#relationTypeDom").hide();
+	};
+})
+
+$(function(){
+	searchLineInfor();
+})
+
 //错误信息文本
 var importErrorText = "";
 //区域展开时引用的函数，返回form-fieldset的id
 function formFieldsetSlideFn(id) {
 	
 }
+
+
+
 /*
  * 生成显示更多内容选择区域
  */
@@ -446,7 +477,7 @@ var relationContractTheadList = [
 	},
 	{
 		data : "添加人账号",
-		id : "createdCode"
+		id : "createdBy"
 	},
 	{
 		data : "导入时间",
@@ -572,7 +603,7 @@ var notRelationContractTheadList = [
 	},
 	{
 		data : "添加人账号",
-		id : "createdCode"
+		id : "createdBy"
 	},
 	{
 		data : "导入时间",

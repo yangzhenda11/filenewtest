@@ -100,7 +100,15 @@ function lineIncomeforTableColumns(){
 						return App.unctionToThousands(data);
 					}
 				};
-			}   else {
+			} else if (v.id == "finishTime" || v.id == "rentingTime" || v.id == "stopRentingTime" || v.id == "createdDate") {
+				var item = {
+						"data" : v.id,
+						"title" : v.data,
+						"render" : function(data, type, full, meta) {
+							return App.formatDateTime(data);
+						}
+					};
+				}   else {
 				var item = {
 					"data" : v.id,
 					"title" : v.data

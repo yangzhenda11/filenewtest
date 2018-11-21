@@ -150,7 +150,7 @@ function initEmphasisCustomerTable(){
  * 我重点关注的客户经理删除重点关注
  */
 function deleteEmphasisOfEmp(managerStaffOrgId){
-	layer.confirm('确定不再重点关注该客户经理?', {icon: 0}, function() {
+	layer.confirm('确定不再重点关注该客户经理？', {icon: 0}, function() {
     	var url = serverPath + "customerManager/delFocusCustomerManager";
 		var postData = {
 			managerStaffOrgId: managerStaffOrgId

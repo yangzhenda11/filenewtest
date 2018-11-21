@@ -1839,12 +1839,33 @@ function backPage(){
 	if(parm.isucloud == "true"){
 		top.closeWindow();
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
-		layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
-			saveCustomerManager();
-		}, function(){
-			var pageId = self.frameElement.getAttribute('data-id');
-			top.closeIfreamSelf(pageId);
-		});
+		var customerManagerList = getValue_customerManagerList(true);
+		if(customerManagerList.length != getCustomerManagerInfoList.length){
+			layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+				saveCustomerManager();
+			}, function(){
+				var pageId = self.frameElement.getAttribute('data-id');
+				top.closeIfreamSelf(pageId);
+			});
+		}else{
+			for (var i = 0; i < customerManagerList.length; i++) {
+				for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
+					if(customerManagerList[i].managerId != getCustomerManagerInfoList[j].managerId){
+						layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+							saveCustomerManager();
+						}, function(){
+							var pageId = self.frameElement.getAttribute('data-id');
+							top.closeIfreamSelf(pageId);
+						});
+					}else{
+						var pageId = self.frameElement.getAttribute('data-id');
+						top.closeIfreamSelf(pageId);
+					}
+				}
+				
+			}
+		}
+		
 	}else{
 		window.history.go(-1);
 	}

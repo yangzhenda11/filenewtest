@@ -15,7 +15,8 @@ $(function(){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
- 		$("#customerCodeNum").text(parm.customerCode);
+ 		$("#customerCodeNum").text(parm.customerCode != null ? parm.customerCode : "");
+ 		$("#customerName").text(parm.customerName != null ? parm.customerName : "");
  		initContractInforTable();
  	}
 })

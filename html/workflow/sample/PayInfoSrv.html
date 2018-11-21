@@ -276,6 +276,46 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="portlet-body">
+					<!--引入流程启动公共界面  -->
+					<div id="startProcess"></div>
+					<div class="toolbarBtn">
+						<div id="toolbarBtnContent">
+							<button id="showPanel1" type="button" class="btn blue" onclick="flowStart5();">四个接口调用信息服务</button>
+						</div>
+					</div>
+					<div class="form-fieldset">
+						<div class="form-fieldset-title">
+							<span><i class="iconfont icon-layers"></i> 业务信息</span>
+							<div class="form-fieldset-tools">
+								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
+							</div>
+						</div>
+						<div class="form-fieldset-body">
+							<div class="row defaultFieldsetForm">
+								<div class="col-sm-6 form-group">
+									<label for="provincecodeAllInfo" class="control-label">省份代码：<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" class="form-control" id="provincecodeAllInfo" value="" />
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="startlastupdatedateAllInfo" class="control-label">最后更新时间开始：<i class="iconfont icon-mi required"></i></label>
+										<div class="valiParent">
+									<input type="text" id="startlastupdatedateAllInfo" name="startlastupdatedateAllInfo" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" /> 
+									</div>
+								</div>
+								<div class="col-sm-6 form-group">
+									<label for="endlastupdatedateAllInfo" class="control-label">最后更新时间结束：<i class="iconfont icon-mi required"></i></label>
+									<div class="valiParent">
+										<input type="text" id="endlastupdatedateAllInfo" name="endlastupdatedateAllInfo" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" /> 
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		

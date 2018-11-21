@@ -14,7 +14,7 @@ function flowStart(){
 		return;
 	}
 	var ajaxObj = {
-		    "url":  "/payInfoSrv/saveTIOrderHeadInfo",
+		    "url":  "/payInfoSrv/saveAllInfo",
 		    "type": "post",
 		    "data":{"provinceCode":provincecode,
 					    	"contractnumber":contractnumber,
@@ -128,5 +128,42 @@ function flowStart4(){
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 			function successCallback(result) {
 					layer.alert(result.data.label+";"+result.data.value);
+			}
+}
+//四个接口调用
+function flowStart5(){
+	//业务表单校验等。
+	var provincecode=$("#provincecodeAllInfo").val();
+	var startlastupdatedateAllInfo=$("#startlastupdatedateAllInfo").val();
+	var endlastupdatedateAllInfo=$("#endlastupdatedateAllInfo").val();
+	if(provincecode.length==0){
+		layer.msg("请填写省份代码！");
+		return;
+	}
+	if(startlastupdatedateAllInfo.length==0){
+		layer.msg("请填写起始日期！");
+		return;
+	}
+	if(endlastupdatedateAllInfo.length==0){
+		layer.msg("请填写结束日期！");
+		return;
+	}
+	var createDateBegin =  $("#startlastupdatedateAllInfo").val();
+	var createDateEnd = $("#endlastupdatedateAllInfo").val();
+	if(!App.checkDate(createDateBegin,createDateEnd)){
+		layer.msg("结束日期不能早于起始日期");
+		return;
+	}
+	var ajaxObj = {
+		    "url":  "/payInfoSrv/saveAllInfo",
+		    "type": "post",
+		    "data":{"provinceCode":provincecode,
+					    	"startlastupdatedate":$("#startlastupdatedateAllInfo").val(),
+					    	"endlastupdatedate":$("#endlastupdatedateAllInfo").val()
+		    	}
+		};
+		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
+			function successCallback(result) {
+//					layer.alert(result.data.label+";"+result.data.value);
 			}
 }

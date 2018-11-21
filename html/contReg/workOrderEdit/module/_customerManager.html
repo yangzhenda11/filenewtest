@@ -337,8 +337,13 @@
         		App.formAjaxJson(url, "post", postData, successCallback);
 				function successCallback(result) {
 					var data = result.data;
-					var parentId = data.orgId;
-					var fullName =  data.orgName;
+					if(data){
+						var parentId = data.orgId;
+						var fullName =  data.orgName;
+					}else{
+						var parentId = treeNode.parentId;
+						var fullName =  treeNode.fullName;
+					};
     				var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
         				'<span>'+name+'</span>'+
         				'</div>';

@@ -17,11 +17,7 @@ if(parm.relationType == "0"){
 }else if(parm.relationType == null){
 	layer.alert("请确定线路的关联方式",{icon:2})
 };
-$(function(){
-	if(!parm.id){
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
-	}
+$(function(){ 
 	//线路信息表格初始化
 	initLineInforTable();
 })
@@ -68,7 +64,9 @@ function initLineInforTable(){
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) {
 				d.isRelateContract = parm.relationType;
-				d.contractId = parm.id;
+				d.contractId = parm.contractId;
+				d.customerCode = parm.customerCode;
+				d.customerName = parm.customerName; 
 				d.businessId = $("#searchInput").val().trim();
 				return JSON.stringify(d);
 			}
@@ -163,7 +161,7 @@ var relationContractTheadList = [
 	{data:"一次性费用",id:"onceCost"},
 	{data:"客户经理账号",id:"customerManagerCode"},
 	{data:"添加人姓名",id:"createdBy"},
-	{data:"添加人账号",id:"createdCode"},
+	{data:"添加人账号",id:"createdBy"},
 	{data:"导入时间",id:"createdDate"}
 ];
 //未关联合同表格头
@@ -194,6 +192,6 @@ var notRelationContractTheadList = [
 	{data:"一次性费用",id:"onceCost"},
 	{data:"客户经理账号",id:"customerManagerCode"},
 	{data:"添加人姓名",id:"createdBy"},
-	{data:"添加人账号",id:"createdCode"},
+	{data:"添加人账号",id:"createdBy"},
 	{data:"导入时间",id:"createdDate"}
 ];

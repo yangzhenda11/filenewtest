@@ -34,7 +34,7 @@ function initLineInforTable(){
       if(riskType){
     	  path=riskType;
       }
- 
+
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
@@ -43,6 +43,9 @@ function initLineInforTable(){
 			"data": function(d) { 
 				d.customerName = $("#searchInput").val().trim();
 				d.contractNumber = parm.contractNumber;
+				d.customerNameBss1=parm.customerNameBss1;
+			    d.customerNameBss2=parm.customerNameBss2;
+			    d.customerCodeBss1=parm.customerCodeBss1;
 				d.contractId = parm.contractId;
 				d.diffContent = parm.diffContent; 
 				return  JSON.stringify(d);
@@ -59,6 +62,8 @@ function initLineInforTable(){
 			{"data": "customerName",
 				"className": "whiteSpaceNormal",},
 			{"data": "customerCode",
+				"className": "whiteSpaceNormal",},
+			{"data": "serviceNumber",
 				"className": "whiteSpaceNormal",},
 			{"data": "businessId",
 				"className": "whiteSpaceNormal",},

@@ -62,7 +62,7 @@
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
-	function getValue_performerList(isSubmit){
+	function getValue_performerList(isSubmit,isActivate){
 		var performerDataList = [];
 		$.each($("#feasorTbody tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
@@ -73,8 +73,13 @@
 				performerDataItem.performerId = $(v).data("id");
 				performerDataItem.performerOrgId = $(v).data("orgid");
 				performerDataItem.performerStaffId = $(v).data("stafforgid");
-				performerDataItem.performerStaffName = $(v).children().eq(2).text();
-				performerDataItem.performerOrgName = $(v).children().eq(3).text();
+				if(isActivate){
+					performerDataItem.performerStaffName = $(v).children().eq(1).text();
+					performerDataItem.performerOrgName = $(v).children().eq(2).text();
+				}else{
+					performerDataItem.performerStaffName = $(v).children().eq(2).text();
+					performerDataItem.performerOrgName = $(v).children().eq(3).text();
+				};
 				performerDataList.push(performerDataItem);
 			}
 		});
@@ -305,8 +310,13 @@
     		App.formAjaxJson(url, "post", postData, successCallback);
 			function successCallback(result) {
 				var data = result.data;
-				var parentId = data.orgId;
-				var fullName =  data.orgName;
+				if(data){
+					var parentId = data.orgId;
+					var fullName =  data.orgName;
+				}else{
+					var parentId = treeNode.parentId;
+					var fullName =  treeNode.fullName;
+				};
 				if(type == 1){
 					addFeasorValue(treeNode,parentId,fullName);
 				}else if(type ==2){

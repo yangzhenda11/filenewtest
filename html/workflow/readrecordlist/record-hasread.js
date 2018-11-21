@@ -2,6 +2,7 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
+alert(serverPath);
 $(function(){
 	getFlowKyeList();
 })
@@ -9,6 +10,7 @@ $(function(){
  * 流程类型下拉框处理
  */
 function getFlowKyeList(){
+
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/getReadTypeCode",
 	    "type" : "post",
@@ -52,7 +54,7 @@ function getTableToreadHisList(){
 		        	var style = "";
 		        	var buttontitle = null;
 		        	if(curStaffOrgId == assignee){
-		        		fn = "findDetail('"+row.readTypeUrl+"',"+row.bussId+")";
+		        		fn = "findDetail('"+row.readTypeUrl+"','"+row.bussId+"')";
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";

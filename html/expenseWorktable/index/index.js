@@ -68,11 +68,13 @@ function getAssistantList(){
 	function successCallback(result) {
 		var data = result.data;
 		var html = "";
-		$.each(data, function(k,v) {
-			html += '<div class="workItem">'+
-					'<img src="/static/img/worktable/'+v.funIconUrl+'" data-url="'+v.funUrl+'"/>'+
-					'<p>'+v.funName+'</p>'+
-					'</div>';
+		$.each(data, function(k, v) {
+			var funCode = v.funCode;
+			html += '<div class="workItem"><div class="workItemImg">';
+			if(funCode == "HZFGL" || funCode == "LXZHT_ZC" || funCode == "FXYJ_ZC"){
+				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
+			};
+			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
 		});
 		$("#workItemDom").html(html);
 	}
@@ -144,10 +146,10 @@ function getFocusContractTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.contractName + '</td>'+
-					'<td>'+ v.contractNumber + '</td>'+
-					'<td>'+ v.partnerName + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractNumber) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
 					'<td><a onclick="jumpOrderManageByContract(\''+v.contractNumber+'\')">查看</a></td>'+
 					'<td><a onclick="showContractPerformerModal(\''+v.contractId+'\')">查看</a></td>';
@@ -185,15 +187,15 @@ function showContractPerformerModal(contractId) {
 		if(data.length > 0){
 			for (var i = 0; i < data.length; i++){
 				var item = data[i];
-				var performerType = item.performerType == 1 ? "是" : "否";
+//				var performerType = item.performerType == 1 ? "是" : "否";
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
-							"<td>"+item.performerStaffName+"</td>"+
-							"<td>"+item.performerOrgName+"</td>"+
-							"<td>"+performerType+"</td>"+
-							"<td></td>"+"<td></td>"+
-							"<td>"+item.addStaff+"</td>"+
-							"<td>"+item.addStaffOrg+"</td>"+
+							"<td>"+App.checkEmptyData(item.performerStaffName)+"</td>"+
+							"<td>"+App.checkEmptyData(item.performerOrgName)+"</td>"+
+//							"<td>"+performerType+"</td>"+
+//							"<td></td>"+"<td></td>"+
+//							"<td>"+item.addStaff+"</td>"+
+//							"<td>"+item.addStaffOrg+"</td>"+
 						"</tr>";
 			}
 		}else{

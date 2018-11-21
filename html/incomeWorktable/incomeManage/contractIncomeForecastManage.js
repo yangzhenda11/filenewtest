@@ -9,12 +9,13 @@ var parm = App.getPresentParm();
 console.log(parm);
 
 $(function(){
- 	if(parm.customerCode){
- 		$("#customerCodeNum").text(parm.customerCode);
- 		initContractInforTable();
+ 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode){
+ 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+ 		return;
  	}else{
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
+ 		$("#customerCodeNum").text(parm.customerCode != null ? parm.customerCode : "");
+ 		$("#customerName").text(parm.customerName != null ? parm.customerName : "");
+ 		initContractInforTable();
  	}
 })
 
@@ -33,6 +34,8 @@ function initContractInforTable(){
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
 				d.customerCode = parm.customerCode;
+				d.customerName = parm.customerName;
+				d.partnerCode = parm.partnerCode;
 				d.forecastAccountPeriod = parm.forecastAccountPeriod;
 				return  JSON.stringify(d);
 			}

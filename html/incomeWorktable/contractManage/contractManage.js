@@ -19,7 +19,7 @@ $(function(){
 	$("#contractType").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	//我的合同管理合同类型选择
+	//我的合同查询合同类型选择
 	$("#contractTypeSearchModal").click(function(){
 		App.getCommonModal("contractType","#contractTypeSearch","typeFullname","typeCode");
 	})
@@ -110,14 +110,14 @@ function initPerformanceContractTable(){
  */
 function focusContract(contractId){
 	var url = serverPath + "performanceContract/saveFocusContract";
-	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定重点关注该合同？", {icon: 0}, function() {
     	var postData = {
         	contractId: contractId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			if(result.data == 1) {
-				layer.msg("已添加重点关注");
+				layer.msg("重点关注成功！");
 				var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 				if(isInitFocusContractTable){
 					if($("#focusContractList .form-fieldset-body").is(':hidden')){
@@ -127,7 +127,7 @@ function focusContract(contractId){
 					};
 				}
 			} else {
-				layer.msg("已关注，无需重新关注");				
+				layer.msg("已重点关注，无需重新关注！");				
 			}
 		}
    	});
@@ -190,7 +190,7 @@ function initFocusContractTable(){
  * 我重点关注的合同删除重点关注
  */
 function deleteFocusContract(contractId, focusId){
-	layer.confirm('确定取消该合同的重点关注?', {icon: 0}, function() {
+	layer.confirm('确定不再重点关注该合同？', {icon: 0}, function() {
     	var url = serverPath + "performanceContract/delFocusContractById";
 		var postData = {
 			contractId: contractId,
@@ -198,7 +198,7 @@ function deleteFocusContract(contractId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已删除重点关注");
+			layer.msg("取消重点关注成功！");
 			reloadPageDataTable("#focusContractTable",true);
 		}
    	});
@@ -411,7 +411,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }
 

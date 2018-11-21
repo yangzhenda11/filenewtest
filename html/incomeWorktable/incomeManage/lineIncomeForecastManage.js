@@ -11,7 +11,10 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){ 
- 	if(parm.contractId||parm.contractNumber||parm.customerCode){
+ 	if(!parm.contractId && !parm.contractNumber && !parm.customerCode && !parm.customerName){
+ 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+		return;
+ 	}else{
  		if(null!=parm.contractId){
  			$("#parmContractNum").text('合同ID:'+parm.contractId);
  		}else if(null!=parm.contractNumber){
@@ -19,11 +22,7 @@ $(function(){
  		}else if(null!=parm.customerCode){
  			$("#parmContractNum").text('客户编号:'+parm.customerCode);
  		}
- 		
  		initLineIncomeforTable();
- 	}else{
-		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
-		return;
  	}
 })
 /*
@@ -47,16 +46,18 @@ function initLineIncomeforTable(){
 	if(!isInit){
 		$("#lineIncomeforTable").html("");
 	}
-
+debugger;
 	if (null != parm.customerCode) {
 		App.initDataTables('#lineIncomeforTable', "#lineIncomeforLoading", {
 			ajax: {
 				"type": "POST",
 				"url" :serverPath + 'incomeForecast/listLineIncomeForecast' ,
-				"contentType" : "application/json;charset=utf-8",
-				"data": function(d) { 
+				"contentType" : "application/json;charset=utf-8", 
+				"data": function(d){  
 					d.customerCode = parm.customerCode; 
+					d.customerName = parm.customerName; 
 					d.forecastAccountPeriod = parm.forecastAccountPeriod;
+					d.customerName = parm.customerName;
 	 				return  JSON.stringify(d);
 				}
 			},
@@ -148,6 +149,7 @@ $("#returnBtn").on("click",function(){
 })
   
 var  incomeTheadList = [
+	{data:"服务号码",id:"serviceNumber",checked:true},
 	{data:"业务信息ID",id:"businessId",checked:true},
 	{data:"电路代号",id:"circuitCode",checked:true},
 	{data:"产品名称",id:"productName",checked:true}, 
@@ -155,5 +157,43 @@ var  incomeTheadList = [
 	{data:"租用范围",id:"rentingScope",checked:true},
 	{data:"账期",id:"forecastAccountPeriod",checked:true}, 
 	{data:"月租费",id:"monthRentCost",checked:true},
-	{data:"预测金额",id:"forecastReceivable",checked:true} 
+	{data:"预测金额",id:"forecastReceivable",checked:true} ,
+	
+	
+	{data:"合同编号",id:"contractNumber" },
+	{data:"客户名称",id:"customerManagerName" },
+	{data:"集客系统客户编号",id:"customerManagerCode" },
+	{data:"接入速率/带宽",id:"accessRate" },
+ 
+	{
+		data : "A端/CE端城市",
+		id : "acCity"
+	},
+	{
+		data : "A端/CE端装机地址",
+		id : "acInstallAddr"
+	},
+	{
+		data : "Z端/PE端城市",
+		id : "zpCity"
+	},
+	{
+		data : "Z端/PE端装机地址",
+		id : "zpInstallAddr"
+	},
+	{
+		data : "全程竣工时间",
+		id : "finishTime"
+	},
+	{
+		data : "起租时间",
+		id : "rentingTime"
+	},
+	{
+		data : "止租时间",
+		id : "stopRentingTime"
+	} 
+	
+	
+	
 ];

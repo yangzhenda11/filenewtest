@@ -7,7 +7,7 @@
 <!-- BEGIN HEAD -->
 	<head>
 		<meta charset="UTF-8">
-		<title>线路明细</title>
+		<title>合同收入信息</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -20,46 +20,39 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<link rel="stylesheet" type="text/css" href="../css/incomeWorktable.css"/>
 	</head>
 	<body>
 		<div class="page-content">
 			<div class="work-list">
 				<div class="form-fieldset" id="lineInfor">
 					<div class="form-fieldset-title">
-						<span>线路明细</span>
-						<!--<div class="form-fieldset-tools">
-							<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
-						</div>-->
+						<span>合同欠费</span>
 					</div>
 					<div class="form-fieldset-body">
-						<div class="row page-search">
-							<div class="col-sm-3">
-								<input type="text" id="searchInput" class="form-control" maxlength="50" placeholder="查询电路代号/业务信息ID/服务号码">
-							</div>
-							<div class="input-group">
-								<button type="button" id="lineInforLoading" class="btn red" data-loading-text="加载中.." onclick="searchLineInfor();"><i class="iconfont icon-search"></i>查询</button>
-							</div>
+						<div class="parmTitle" style="text-align:center">
+<!-- 							集客客户编号：<span id="customerCodeNum"></span> -->
+							<span id="arrearsAccount" style="font-size:large;font-weight:bold;color:#F00"></span>
 						</div>
-						
-						<table id="lineInforTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+						<table id="contractInforTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
 	                    	<thead>
 								<tr>
 									<th>序号</th>
-									<th>服务号码</th>
-									<th>业务信息ID</th>
-									<th>电路代号</th>
-									<th>产品名称</th>
-									<th>起租时间</th>
-									<th>止租时间</th>
-									<th>账期</th>
-									<th>应收（元）</th>
-									<th>欠费（元）</th>
-									<th>实收（元）</th>
+									<th>合同名称</th>
+									<th>合同编号</th>
+									<th>客户名称</th>
+									<th>集客客户编号</th>
+									<th>合作方编号</th>
+									<th>含增值税合同金额</th>
+									<th>累计应收金额</th>
+									<th>累计欠费金额</th>
+									<th>累计实收金额</th>
+									<th>线路明细</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td colspan="10">请点击查询按钮加载数据</td>
+									<td colspan="10">查无数据</td>
 								</tr>
 							</tbody>
 						</table>
@@ -88,6 +81,6 @@
 		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
 		<script src="../../../static/plugins/jQueryliestxz/js/list-script.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-		<script src="riskWarningList.js" type="text/javascript" charset="utf-8"></script> 
+		<script src="contractArrearsManage.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

@@ -6,17 +6,24 @@ var serverPath = config.serverPath;
  * 接受的配置参数
  */
 var parm = App.getPresentParm();
-console.log(parm);
+console.log("parm",parm);
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){
- 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode){
+ 	if(!parm.customerCode && !parm.bussid){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
- 		$("#customerCodeNum").text(parm.customerCode != null ? parm.customerCode : "");
- 		$("#customerName").text(parm.customerName != null ? parm.customerName : "");
+ 	    // 异步获取欠费账期
+ 		var postData = {
+ 				businessId: parm.bussid
+ 		};
+		App.formAjaxJson(serverPath + 'reminders/getArrearsAccount', "post",JSON.stringify(postData) , successCallback);
+		function successCallback(result) {
+			var data = result.data;
+ 		$("#arrearsAccount").text(data);
+		}
  		initContractInforTable();
  	}
 })
@@ -33,13 +40,10 @@ function initContractInforTable(){
 	App.initDataTables('#contractInforTable', {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'incomeManage/listContractIncomeZxByCustomerCode',
+			"url" : serverPath + 'reminders/listArrearsContractByBussId',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
-				d.customerCode = parm.customerCode;
-				d.customerName = parm.customerName;
-				d.accountPeriodName = parm.accountPeriodName;
-				d.partnerCode = parm.partnerCode;
+				d.businessId = parm.bussid;
 				return JSON.stringify(d);
 			}
 		},
@@ -50,44 +54,44 @@ function initContractInforTable(){
 							return start + meta.row + 1;
 						}
 					},
-					{"data": "contractName","title":"合同名称","className": "whiteSpaceNormal","width": "17%"},
+					{"data": "contractName","title":"合同名称","className": "whiteSpaceNormal","width": "10%"},
 					{"data": "contractNumber","title":"合同编号","className": "whiteSpaceNormal","width": "10%"},
 					{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "10%"},
 					{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "10%"},
+					{"data": "partnerCode","title":"合作方编号","className": "whiteSpaceNormal","width": "10%"},
 					{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
 						"render": function(data, type, full, meta){
 							return App.unctionToThousands(data);
 						}
 					},
-					{"data": "receivableAmount","title":"累计应收（元）","className": "whiteSpaceNormal","width": "10%",
+					{"data": "receivableAmount","title":"累计应收金额","className": "whiteSpaceNormal","width": "10%",
 						"render": function(data, type, full, meta){
 							return App.unctionToThousands(data);
 						}
 					},
-					{"data": "arrearsAmount","title":"累计欠费（元）","className": "whiteSpaceNormal","width": "10%",
+					{"data": "arrearsAmount","title":"累计欠费金额","className": "whiteSpaceNormal","width": "10%",
 						"render": function(data, type, full, meta){
 							return App.unctionToThousands(data);
 						}
 					},
-					{"data": "collectedAmount","title":"累计实收（元）","className": "whiteSpaceNormal","width": "10%",
+					{"data": "collectedAmount","title":"累计实收金额","className": "whiteSpaceNormal","width": "10%",
 						"render": function(data, type, full, meta){
 							return App.unctionToThousands(data);
 						}
 					},
-					{"data": "contractNumber","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+					{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "10%",
 						"render" : function(data, type, full, meta){
-							return "<a onclick='jumpLineManage(\""+data+"\")'>查看</a>";
+							return "<a onclick='jumpLineManage(\""+data.dataSummaryDate+"\",\""+data.contractId+"\")'>查看</a>";
 						}
 					}
-				]
+			]
 	});
 }
 
 /*
  * 跳转线路信息（已关联合同）
  */
-function jumpLineManage(contractNumber){
-	var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="
-		+contractNumber+"&accountPeriodName="+parm.accountPeriodName+"&returnbtn=true";
+function jumpLineManage(dataSummaryDate,contractId){
+	var url = "/html/incomeWorktable/reminders/lineArrearsManage.html?dataSummaryDate="+dataSummaryDate+"&contractId="+contractId;
 	App.changePresentUrl(url);
 }

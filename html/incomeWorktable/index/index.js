@@ -80,10 +80,12 @@ function getAssistantList() {
 		var data = result.data;
 		var html = "";
 		$.each(data, function(k, v) {
-			html += '<div class="workItem">' +
-				'<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/>' +
-				'<p>' + v.funName + '</p>' +
-				'</div>';
+			var funCode = v.funCode;
+			html += '<div class="workItem"><div class="workItemImg">';
+			if(funCode == "KHGL" || funCode == "LXZHT_SR" || funCode == "FXYJ_SR"){
+				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
+			};
+			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
 		});
 		$("#workItemDom").html(html);
 	}
@@ -188,14 +190,12 @@ function getFocusAccountTable(){
 		if(data.length > 0){
 			var html = "";
 			$.each(data, function(k,v) {
-				var itemPhone = v.phone ? v.phone : '';
-				var itemEmail = v.email ? v.email : '';
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.managerStaffName + '</td>'+
-					'<td>'+ v.orgName + '</td>'+
-					'<td>'+ itemPhone + '</td>'+
-					'<td>'+ itemEmail +'</td>'+
+					'<td>'+ App.checkEmptyData(v.managerStaffName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.orgName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.phone) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.email) +'</td>'+
 					'<td><a onclick="jumpContractManageByStaffid(\''+v.managerStaffOrgId+'\')">查看</a></td>';
 			});
 			$("#focusAccountTbody").html(html);		
@@ -243,11 +243,11 @@ function getFocusCustomerTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.customerName + '</td>'+
-					'<td>'+ v.customerCode + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
-					'<td>'+ v.customerManagerName +'</td>'+
-					'<td><a onclick="jumpContractManageByCustomerCode(\''+v.customerCode+'\')">查看</a></td>';
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerManagerName) +'</td>'+
+					"<td><a onclick='jumpContractManage(\""+v.customerCode+"\",\""+v.customerName+"\",\""+v.partnerCode+"\")'>查看</a></td>";
 			});
 			$("#emphasisCustomerTbody").html(html);		
 		}else{
@@ -264,10 +264,11 @@ $("#showCustomerMore").on("click",function(){
 	top.showSubpageTab(url,"客户管理");
 })
 /*
- * 跳转合同信息（根据客户ID）
+ * 跳转合同信息
  */
-function jumpContractManageByCustomerCode(customerCode){
-	var url = "/html/incomeWorktable/contractManage/performContract.html?customerCode="+customerCode;
+function jumpContractManage(customerCode, customerName, partnerCode){
+	var url = "/html/incomeWorktable/contractManage/performContract.html?" 
+		+ "customerCode="+customerCode+"&customerName="+customerName+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
 /*
@@ -294,13 +295,13 @@ function getFocusContractTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ v.contractName + '</td>'+
-					'<td>'+ v.contractNumber + '</td>'+
-					'<td>'+ v.customerName + '</td>'+
-					'<td>'+ v.customerCode + '</td>'+
-					'<td>'+ v.partnerCode + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.contractNumber) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
-					'<td>'+ v.customerManagerName + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerManagerName) + '</td>'+
 					'<td><a onclick="jumpLineManageByContract(\''+v.contractId+'\')">查看</a></td>';
 			});
 			$("#emphasisContractTbody").html(html);		
@@ -321,7 +322,7 @@ $("#showContractMore").on("click",function(){
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }
 /***************选择稽核范围开始***********************/
@@ -712,7 +713,14 @@ function initIncomeAnalysis(incomedata) {
 	        },
 	        textStyle:{
                	align:'left'
-            }
+           	},
+           	formatter:function (params, ticket, callback) {
+            	var tooltipCon = params[0].name + "</br>"
+            	$.each(params, function(k,v) {
+            		tooltipCon += v.marker + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
+            	});
+			    return tooltipCon;
+			}
 	    },
 	    grid: {
 	    	left: '10',

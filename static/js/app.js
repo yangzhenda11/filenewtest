@@ -675,7 +675,7 @@ var App = function() {
 			        		});
 						}
 	        		}else{
-	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        			layer.alert("接口请求超时", {icon: 2,title:"错误"});
 	        		};
 				}
 			});
@@ -695,7 +695,7 @@ var App = function() {
 	        		});
 				}
     		}else{
-    			layer.alert("接口错误", {icon: 2,title:"错误"});
+    			layer.alert("接口请求超时", {icon: 2,title:"错误"});
     		};
 		},
 		//datatable中button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
@@ -958,7 +958,7 @@ var App = function() {
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,
-				"pageLength": pagelengthMenu[0],
+				"pageLength": Number(pagelengthMenu[0]),
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
 					"thousands": ","
@@ -1031,7 +1031,7 @@ var App = function() {
 		        		});
 					}
 		        }else{
-        			layer.alert("接口错误", {icon: 2,title:"错误"});
+        			layer.alert("接口请求超时", {icon: 2,title:"错误"});
         		}
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';
@@ -1058,6 +1058,16 @@ var App = function() {
 			var getTimestamp=new Date().getTime();
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
+		},
+		/**
+		 * 检查是否为null，为null时返回""
+		 */
+		checkEmptyData: function(data){
+			if(data == null){
+				return "";
+			}else{
+				return data;
+			}
 		},
 		/*
 		 * 时间戳转时间
@@ -1399,8 +1409,12 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
-				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
+				    for(var i = 0; i < strs.length; i ++) {
+				    	var strsItem = decodeURI(strs[i].split("=")[1]);
+				    	if(strsItem == "null"){
+				    		strsItem = null;
+				    	}
+				        theRequest[strs[i].split("=")[0]] = strsItem;   
 				    }
 				}
 				return theRequest;
@@ -1423,15 +1437,33 @@ var App = function() {
          * dom.操作按钮父级ID值
          * dixScrollTop.滚动固定的高度
          */
-        fixToolBars : function(dom,dixScrollTop){
+        fixToolBars: function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
-				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
 					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
+			})
+        },
+         /*
+         * 回到顶部固定操作按钮
+         * dom.操作按钮ID值
+         */
+        fixScrollTopTool: function(dom){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				if(topScroll > 0){
+					$(dom).css("display","block");
+				}else{
+					$(dom).css("display","none");
+				}
+			});
+			$(dom).on("click",function(){
+				$(".page-content").animate({
+					scrollTop:0
+				},300)
 			})
         },
         /*
@@ -1930,8 +1962,12 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
     			top.window.location.href = "/login.html";
     		});
 		}
-	}else{
-		layer.alert("接口错误", {icon: 2,title:"错误"});
+	}else if(XMLHttpRequest.status == 0){
+   		layer.alert("请求终止", {icon: 2,title:"错误"});
+    }else if(XMLHttpRequest.status == 504){
+   		layer.alert("请求超时", {icon: 2,title:"错误"});
+    }else{
+		layer.alert("接口请求超时", {icon: 2,title:"错误"});
 	};
 }
 /*

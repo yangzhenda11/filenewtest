@@ -11,7 +11,7 @@ if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
 $(function(){
- 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode && !parm.contractId){
+ 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
@@ -40,7 +40,6 @@ function initContractInforTable(){
 				d.customerName = parm.customerName;
 				d.accountPeriodName = parm.accountPeriodName;
 				d.partnerCode = parm.partnerCode;
-				d.contractId = parm.contractId;
 				return JSON.stringify(d);
 			}
 		},

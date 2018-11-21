@@ -348,7 +348,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 			},
 			{"data": null,"title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpIncomeContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\",\""+data.contractId+"\")'>查看</a>";
+					return "<a onclick='jumpIncomeContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
 				}
 			
 			}
@@ -539,11 +539,10 @@ function initIncomeAnalysisCharts(incomeChartData){
  /*
   * 合同收入-按客户查看-跳转合同信息
   */
- function jumpIncomeContractManage(customerCode,customerName,partnerCode,contractId){
+ function jumpIncomeContractManage(customerCode,customerName,partnerCode){
 	var accountPeriodName = pageConfig.incomePeriod;
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
-	+"&customerName="+customerName+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode
-	+"&contractId="+contractId;
+	+"&customerName="+customerName+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode;
  	top.showSubpageTab(url,"合同收入");
  }
  /*
@@ -803,7 +802,7 @@ function initContractIncomeForecastTableByCustom(){
 			{"data": null,"title":"履行中合同","className": "whiteSpaceNormal","width": "8%",
 				"render" : function(data, type, full, meta){
 					return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\"," +
-							"\""+data.customerName+"\",\""+data.partnerCode+"\",\""+data.contractId+"\")'>查看</a>";
+							"\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
 				}
 			}
 		]
@@ -977,10 +976,9 @@ function initLineIncomeForecastTableByLine(){
 /*
  * 跳转合同信息
  */
-function jumpContractManage(customerCode,forecastAccountPeriod,customerName,partnerCode,contractId){
+function jumpContractManage(customerCode,forecastAccountPeriod,customerName,partnerCode){
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
-			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+customerName+"&partnerCode="+partnerCode
-			+"&contractId="+contractId;
+			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+customerName+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"合同收入预测");
 }
 

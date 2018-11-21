@@ -154,7 +154,7 @@
 	/*
 	 * 获取客户经理信息
 	 */
-	var getCustomerManagerInfoList = {};
+	var getCustomerManagerInfoList = [];
 	function getCustomerManagerInfo() {
 		var url = serverPath + "contractOrderEditorController/listContractCustomerManager";
 		var postData = JSON.stringify({wcardId:wcardId});
@@ -164,6 +164,7 @@
 			if(data.length > 0){
 				var html = "";
 				for(var i = 0; i < data.length; i++){
+					debugger;
 					getCustomerManagerInfoList.push(data[i]);
 					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdby="'+data[i].createdBy+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+

@@ -9,11 +9,12 @@ var parm = App.getPresentParm();
 console.log(parm);
 
 $(function(){
- 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode && !parm.contractId){
+ 	if(!parm.customerCode && !parm.customerName && !parm.partnerCode){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
  		return;
  	}else{
- 		$("#customerCodeNum").text(parm.customerCode);
+ 		$("#customerCodeNum").text(parm.customerCode != null ? parm.customerCode : "");
+ 		$("#customerName").text(parm.customerName != null ? parm.customerName : "");
  		initContractInforTable();
  	}
 })
@@ -35,7 +36,6 @@ function initContractInforTable(){
 				d.customerCode = parm.customerCode;
 				d.customerName = parm.customerName;
 				d.partnerCode = parm.partnerCode;
-				d.contractId = parm.contractId;
 				d.forecastAccountPeriod = parm.forecastAccountPeriod;
 				return  JSON.stringify(d);
 			}
@@ -80,6 +80,6 @@ function initContractInforTable(){
  */
 function jumpLineManage(contractNumber){
 	var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?contractNumber="
-		+contractNumber+"&accountPeriodName="+parm.forecastAccountPeriod+"&returnbtn=true";
+		+contractNumber+"&forecastAccountPeriod="+parm.forecastAccountPeriod+"&returnbtn=true";
 	App.changePresentUrl(url);
 }

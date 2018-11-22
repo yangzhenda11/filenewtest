@@ -45,13 +45,13 @@ function searchAssessed(){
 //新增一行
 function addTbody(){
 
-	if($("#assessedTbody").find(".emptyTr")){
+	if($("#assessedTbody").find(".emptyTr")[0]){
 		$("#assessedTbody").find(".emptyTr").remove();
 	}	
 	var html = '<tr data-id="100000">'+
 			'<td><label class="ui-checkbox"><input type="checkbox" name="assessedCheckbox"><span></span></label></td>'+
 			'<td class="orderNumber"></td>'+
-			"<td><div class='form-group'><input type='text' class='form-control accountName' placeholder='请输入账期 eg:201801' maxlength='240' /></div></td>"+
+			"<td><div class='form-group'><input type='text' class='form-control accountName' placeholder='请输入账期 例如:201801' maxlength='6' /></div></td>"+
 			"<td><div class='form-group'><input type='text' class='form-control accountNumber' placeholder='请输入分摊收入' maxlength='40' /></div></td>"+
 		"</tr>";
 	$("#assessedTbody").append(html);
@@ -146,8 +146,17 @@ function saveTbody(){
 
 //提交表格
 function submitTbody(){
+console.log($("#assessedTbody").find(".emptyTr"));
 
 	var flag = true;
+	// 判断列表是否为null
+	if($("#assessedTbody").find(".emptyTr")[0]){
+
+    	layer.msg("没有可提交的数据，请先添加分摊数据!");
+    	flag = false;
+    	return false;
+	}
+	
 	// 将需要保存的数据拼成json格式提交后台[{key:value,key:value,...},{key:value,key:value,...}...]
 	var dataAll = [];
 	var accountNameArray = []; // 记录账期
@@ -188,24 +197,27 @@ function submitTbody(){
 
 	if(flag) {
 
-		var postData = {
-			incomeShareData : JSON.stringify(dataAll),
-			incomeShareDelData : JSON.stringify(deleteList)
-		};
 		var url = serverPath + "incomeShare/saveIncomeShare";
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
+		layer.confirm("<div style='text-align:center'>提交成功后无法修改，<br/>是否确定提交？</div>", {icon:7,title:"提示",btn:['提交','取消']}, function() {
 
-			if(result.data == 0) { 
-				// 保存成功 执行提交操作
-				submitData();
-			}
-			else {
+			var postData = {
+				incomeShareData : JSON.stringify(dataAll),
+				incomeShareDelData : JSON.stringify(deleteList)
+			};
+			App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+			function successCallback(result) {
 
-				// 主表已存在返回存在的账期名称
-				layer.msg(""+result.data+" 账期的收入分摊数据已存在，请核实");
+				if(result.data == 0) { 
+					// 保存成功 执行提交操作
+					submitData();
+				}
+				else {
+
+					// 主表已存在返回存在的账期名称
+					layer.msg(""+result.data+" 账期的收入分摊数据已存在，请核实");
+				}
 			}
-		}
+	   	});
 	}
 }
 

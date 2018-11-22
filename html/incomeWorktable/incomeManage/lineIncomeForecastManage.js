@@ -46,7 +46,7 @@ function initLineIncomeforTable(){
 	if(!isInit){
 		$("#lineIncomeforTable").html("");
 	}
-
+debugger;
 	if (null != parm.customerCode) {
 		App.initDataTables('#lineIncomeforTable', "#lineIncomeforLoading", {
 			ajax: {
@@ -100,7 +100,15 @@ function lineIncomeforTableColumns(){
 						return App.unctionToThousands(data);
 					}
 				};
-			}   else {
+			} else if (v.id == "finishTime" || v.id == "rentingTime" || v.id == "stopRentingTime" || v.id == "createdDate") {
+				var item = {
+						"data" : v.id,
+						"title" : v.data,
+						"render" : function(data, type, full, meta) {
+							return App.formatDateTime(data);
+						}
+					};
+				}   else {
 				var item = {
 					"data" : v.id,
 					"title" : v.data
@@ -157,5 +165,43 @@ var  incomeTheadList = [
 	{data:"租用范围",id:"rentingScope",checked:true},
 	{data:"账期",id:"forecastAccountPeriod",checked:true}, 
 	{data:"月租费",id:"monthRentCost",checked:true},
-	{data:"预测金额",id:"forecastReceivable",checked:true} 
+	{data:"预测金额",id:"forecastReceivable",checked:true} ,
+	
+	
+	{data:"合同编号",id:"contractNumber" },
+	{data:"客户名称",id:"customerManagerName" },
+	{data:"集客系统客户编号",id:"customerManagerCode" },
+	{data:"接入速率/带宽",id:"accessRate" },
+ 
+	{
+		data : "A端/CE端城市",
+		id : "acCity"
+	},
+	{
+		data : "A端/CE端装机地址",
+		id : "acInstallAddr"
+	},
+	{
+		data : "Z端/PE端城市",
+		id : "zpCity"
+	},
+	{
+		data : "Z端/PE端装机地址",
+		id : "zpInstallAddr"
+	},
+	{
+		data : "全程竣工时间",
+		id : "finishTime"
+	},
+	{
+		data : "起租时间",
+		id : "rentingTime"
+	},
+	{
+		data : "止租时间",
+		id : "stopRentingTime"
+	} 
+	
+	
+	
 ];

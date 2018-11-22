@@ -47,9 +47,6 @@ if(parm.taskFlag == "db"){
 		isEdit = true;
 	}else if(parm.taskDefinitionKey == "GXZZ"){
 		editIdentify.isCanUpdateExpiryDate = true;
-	}else if(parm.taskDefinitionKey == "KHQR"){
-		//客户经理待办确认，不进行任何操作，待办变已办。
-		customerManagerFinish();
 	}else if(parm.taskDefinitionKey == "TJKH"){
 		editIdentify.isCanUpdateCustomerManager = true;
 	}
@@ -1250,6 +1247,10 @@ function getContractCityCode(executeDeptId,domObj){
 			$pageContent.removeClass("hidden");
 			//设置各dom元素
 			setDomContent(domObj);
+			//客户经理待办确认，不进行任何操作，待办变已办。
+			if(parm.taskDefinitionKey == "KHQR"){
+				customerManagerFinish();
+			};
 			//如果为工单待办激活请求已阅接口
 			setHaveRead();
 		}else{

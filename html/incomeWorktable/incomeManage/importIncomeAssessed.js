@@ -45,7 +45,7 @@ function searchAssessed(){
 //新增一行
 function addTbody(){
 
-	if($("#assessedTbody").find(".emptyTr")){
+	if($("#assessedTbody").find(".emptyTr")[0]){
 		$("#assessedTbody").find(".emptyTr").remove();
 	}	
 	var html = '<tr data-id="100000">'+
@@ -146,8 +146,17 @@ function saveTbody(){
 
 //提交表格
 function submitTbody(){
+console.log($("#assessedTbody").find(".emptyTr"));
 
 	var flag = true;
+	// 判断列表是否为null
+	if($("#assessedTbody").find(".emptyTr")[0]){
+
+    	layer.msg("没有可提交的数据，请先添加分摊数据!");
+    	flag = false;
+    	return false;
+	}
+	
 	// 将需要保存的数据拼成json格式提交后台[{key:value,key:value,...},{key:value,key:value,...}...]
 	var dataAll = [];
 	var accountNameArray = []; // 记录账期

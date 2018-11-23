@@ -985,7 +985,9 @@ function returnContractStatus(){
 				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
 			}
 		}else{
-			if(contractStatusObj[contractStatus] == undefined){
+			if(contractStatus == 1){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
 				return "当前合同状态未知，请稍后操作。";
 			}else{
 				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';

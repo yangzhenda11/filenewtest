@@ -31,19 +31,22 @@
 	}
 	
 	.fileImportChoose {
-		padding: 4px 15px;
-		height: 32px;
+		padding: 2px 15px;
+		height: 30px;
 		line-height: 24px;
 		position: relative;
 		cursor: pointer;
 		color: #fff;
-		background: #e43a45;
-		border: 1px solid #e43a45;
+		background: #2e6da4;
+		border: 1px solid #2e6da4;
 		border-radius: 4px;
 		overflow: hidden;
 		display: inline-block;
 		*display: inline;
 		*zoom: 1
+	}
+	.fileImportChoose i{
+		margin-right: 6px;
 	}
 	
 	.fileImportChoose input {
@@ -55,12 +58,14 @@
 		filter: alpha(opacity=0);
 		cursor: pointer
 	}
-	
+	.filePickerBtnList{
+		display: inline-block;
+	}
 	.fileImportChoose:hover {
 		color: #fff;
-		background: #cf1c28;
-		border-color: #c61b26;
-		text-decoration: none
+		background: #2b79bd;
+		border-color: #2b79bd;
+		text-decoration: none;
 	}
 	#fileImportName{
 		color: #337ab7;
@@ -68,16 +73,9 @@
 	.fileImportBtn{
 		margin: 0 10px;
 	}
-	
-	.chooseImportFile{
-		border-color: #2e6da4;
-		color: #fff;
-		background: #337ab7;
-	}
-	.chooseImportFile:hover{
-		border-color: #2e6da4;
-		color: #fff;
-		background: #337ab7;
+	#fileuploadLoading{
+		width: 100%;
+		margin: 20px 0;
 	}
 </style>
 <div class="modal-dialog" role="document">
@@ -87,40 +85,20 @@
 			<h4 class="modal-title" id="fileUploadModalLabel"></h4>
 		</div>
 		<div class="modal-body fileImportModalBody">
+			<img id="fileuploadLoading" style="display: none;" src="/static/img/loading2.gif"/>
 			<form id='fileImportModalForm' action='' method='post' enctype="multipart/form-data">
 				<div class="form-group col-sm-12">
 					<label for="partnerCode" class="control-label">文件</label>
 					<div class="valiParent">
 						<a class="fileImportChoose" id="fileImportChoose">
-							<input type="file" name="file" id="importFileInput" accept="" />点击选择文件
+							<i class="glyphicon glyphicon-folder-open"></i><input type="file" name="file" id="importFileInput" accept="" />选择文件
 						</a>
 						<div id="fileImportResult" class="hidden">
 							<a id="fileImportName"></a>
-							<button type="button" class="btn red fileImportBtn" onclick="fileImportPost()">导入</button>
-							<button type="button" class="btn yellow" onclick="resetFileImport()">重置</button>
-						</div>
-						
-					</div>
-				</div>
-				<!--<div class="form-group col-sm-12">
-					<label for="partnerCode" class="control-label">文件</label>
-					<div class="valiParent">
-						<div class="input-group">
-							<input type="text" id="fileInput" name="fileInput" disabled="disabled" class="form-control">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-repeat"></i>  重置</span>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-upload"></i>  导入</span>
-							<div class="input-group-addon btn chooseImportFile"><i class="glyphicon glyphicon-folder-open"></i> 选择文件
-							<input type="file" name="file" id="importFileInput" class="hidden" accept="" />
-							</div>
-						</div>
-						
-					</div>
-				</div>-->
-				<div class="form-group col-sm-12 hidden" id="scheduleDiv">
-					<label for="partnerCode" class="control-label">进度</label>
-					<div class="valiParent">
-						<div class="progress" id="scheduleProgress">
-							<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="schedule"></div>
+							<div class="filePickerBtnList">
+				        		<button type="button" class="btn red fileImportBtn" onclick="fileImportPost()"><i class="iconfont icon-import"></i>导入文件</button>
+								<button type="button" class="btn yellow" onclick="resetFileImport()"><i class="iconfont icon-reset"></i>删除文件</button>
+				        	</div>
 						</div>
 					</div>
 				</div>
@@ -143,35 +121,49 @@
 	var config = top.globalConfig;
 	var serverPath = config.serverPath;
 	var fileImportCallback = null;
-	var fileImportUrl = '';
-	var fileImportPostfix = null;
+	var _fileImportObj = {
+		fileImportUrl: "",
+		fileImportPostfix: [],
+		extraData: ""
+	}; 
 	/*
 	 * 检测选择文件按钮点击
 	 */
 	$("#importFileInput").on("change",function(){
-	    var filePath=$(this).val();
-	    if(filePath){
-			var tempFileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
-			var fileName = tempFileName.split(".");
-			var reg = fileName[fileName.length-1];
+	    var filePath = $(this).val();
+	    var fileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
+	    if(fileName){
+	    	var fileImportPostfix = _fileUploadObj.fileImportPostfix;
+			var fileNameList = fileName.split(".");
+			var reg = fileNameList[fileNameList.length-1];
 			var flag = false;
+			//IE10以上判断文件大小
+			if(!App.IEVersionVA(10)){
+				var chooseFile = document.getElementById("uploadFileInput").files[0];
+				if(chooseFile.size/1048576 > 10){
+					layer.msg("文件超过10M的限制，请重新选择");
+					$("#uploadFileInput").val("");
+				    return false;
+				}
+			};
 			//判断是否含有特殊字符
 			var regEn = /[`~!@#$%^&*+<>?:"{},.\/;'[\]]/im,
 		    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
-			if(regEn.test(fileName[0]) || regCn.test(fileName[0])) {
-				layer.alert("名称不能包含特殊字符",{title:"格式错误",icon:2});
+			if(regEn.test(fileNameList[0]) || regCn.test(fileNameList[0])) {
+				layer.msg("名称不能包含特殊字符");
 				$("#importFileInput").val("");
 			    return false;
 			}
 			//循环遍历附件类型
-			if(fileImportPostfix.length == 0){
-				flag = true;
-			}
-			for(var i = 0;i<fileImportPostfix.length;i++){
-				if(fileImportPostfix[i].toLowerCase() == reg.toLowerCase()){
-					flag = true;
-					break;
+			if(fileImportPostfix.length > 0){
+				for(var i = 0;i < fileImportPostfix.length;i++){
+					if(fileImportPostfix[i].toLowerCase() == reg.toLowerCase()){
+						flag = true;
+						break;
+					}
 				}
+			}else{
+				flag = true;
 			};
 			if(!flag){
 				var typeText = "";
@@ -185,7 +177,7 @@
 			}else{
 				$("#fileImportChoose").addClass("hidden");
 		        $("#fileImportResult").removeClass("hidden");
-		        $("#fileImportName").html(tempFileName);
+		        $("#fileImportName").html(fileName);
 			}
 	   	}
 	})
@@ -196,88 +188,60 @@
 		$("#commomModal").modal("show");
 		var emptyFn = function() {};
 		fileImportCallback = callback == null || callback == "" ? emptyFn : callback;
-		fileImportUrl = setting.url;
+		_fileImportObj.fileImportUrl = setting.url;
 		if(setting.postfix){
-			fileImportPostfix = setting.postfix;
+			_fileImportObj.fileImportPostfix = setting.postfix;
 		}
 		if(setting.accept) {
 			$("#importFileInput").attr("accept", setting.accept);
 		};
 		if(setting.extraData) {
-			$.each(setting.extraData, function(k, v) {
-				var html = '<input type="hidden" name="' + k + '" value="' + v + '" />';
-				$("#fileImportModalForm").append(html);
-			});
+			_fileImportObj.extraData = setting.extraData;
 		};
 	}
 	/*
 	 * 文件导入上传
 	 */
 	function fileImportPost() {
-		$("#fileImportModalForm").ajaxSubmit({
-			dataType: 'json',
-			url: serverPath + fileImportUrl,
-			resetForm: "true",
-			timeout: 30000,
-			beforeSend: function() {
-				//resetProgerss();
-			},
-			success: function(result) {
-				resetFileImport();
-				fileImportCallback(result);
-			},
-			error: function(result) {
-				App.ajaxErrorCallback(result);
-			}
-		})
+		if($("#importFileInput").val()){
+			$("#fileImportModalForm").ajaxSubmit({
+				dataType: 'json',
+				url: serverPath + _fileImportObj.fileImportUrl,
+				resetForm: "true",
+				timeout: 30000,
+				data: _fileImportObj.extraData,
+				beforeSubmit:function(a,b,c) {
+					//分别为数组形式的表单数据，jQuery表单对象，以及传入ajaxForm/ajaxSubmit中的Options对象
+					//返回false时取消上传
+					$("#fileImportModalForm").hide();
+					$("#fileuploadLoading").show();
+				},
+				success: function(result) {
+					$("#fileuploadLoading").hide();
+					$("#fileImportModalForm").show();
+					fileImportCallback(result);
+				},
+				error: function(result) {
+					$("#fileuploadLoading").hide();
+					$("#fileImportModalForm").show();
+					App.ajaxErrorCallback(result);
+				},
+				complete: function(xhr) {
+                	//请求完成
+                	resetFileImport();
+            	}
+			})
+		}else{
+			layer.msg("请选择文件");	
+		}
 	}
 	/*
 	 * 文件重置
 	 */
 	function resetFileImport(){
-		$("#fileImportChoose").removeClass("hidden");
 		$("#fileImportResult").addClass("hidden");
+		$("#fileImportChoose").removeClass("hidden");
 		$("#importFileInput").val("");
 		$("#fileImportName").html("");
 	}
-	
-//	var scheduleLen = null;
-//	var progersstimer = null;
-//
-//	function resetProgerss() {
-//		scheduleLen = 8;
-//		$("#schedule").css("width", "8%");
-//		$("#scheduleDiv").removeClass("hidden progress-bar-success progress-bar-danger");
-//		startProgerss();
-//	}
-//	//进度条开始控制 
-//	function startProgerss() {
-//		scheduleLen += 1;
-//		$("#schedule").css("width", scheduleLen + "%");
-//		$("#schedule").text("导入中");
-//		if(scheduleLen < 95) {
-//			progersstimer = setTimeout(startProgerss, 30);
-//		}
-//	}
-//	//进度条结束控制 
-//	function endProgerss(parm) {
-//		clearTimeout(progersstimer);
-//		runEndProgerss();
-//
-//		function runEndProgerss() {
-//			scheduleLen += 1;
-//			$("#schedule").css("width", scheduleLen + "%");
-//			if(scheduleLen < 100) {
-//				endProgersstimer = setTimeout(runEndProgerss, 10);
-//			} else {
-//				if(parm) {
-//					$("#schedule").text("导入成功");
-//					$("#schedule").addClass("progress-bar-success");
-//				} else {
-//					$("#schedule").text("导入失败");
-//					$("#schedule").addClass("progress-bar-danger");
-//				}
-//			}
-//		}
-//	}
 </script>

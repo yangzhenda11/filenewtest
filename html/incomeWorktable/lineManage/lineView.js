@@ -161,7 +161,7 @@ var relationContractTheadList = [
 	{data:"一次性费用",id:"onceCost"},
 	{data:"客户经理账号",id:"customerManagerCode"},
 	{data:"添加人姓名",id:"createdBy"},
-	{data:"添加人账号",id:"createdCode"},
+	{data:"添加人账号",id:"createdBy"},
 	{data:"导入时间",id:"createdDate"}
 ];
 //未关联合同表格头
@@ -192,6 +192,6 @@ var notRelationContractTheadList = [
 	{data:"一次性费用",id:"onceCost"},
 	{data:"客户经理账号",id:"customerManagerCode"},
 	{data:"添加人姓名",id:"createdBy"},
-	{data:"添加人账号",id:"createdCode"},
+	{data:"添加人账号",id:"createdBy"},
 	{data:"导入时间",id:"createdDate"}
 ];

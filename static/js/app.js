@@ -675,7 +675,7 @@ var App = function() {
 			        		});
 						}
 	        		}else{
-	        			layer.alert("接口请求超时", {icon: 2,title:"错误"});
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
 	        		};
 				}
 			});
@@ -695,7 +695,7 @@ var App = function() {
 	        		});
 				}
     		}else{
-    			layer.alert("接口请求超时", {icon: 2,title:"错误"});
+    			layer.alert("接口错误", {icon: 2,title:"错误"});
     		};
 		},
 		//datatable中button点击或者提交后台时显示提交中的禁用选项(设置：data-loading-text)
@@ -1031,7 +1031,7 @@ var App = function() {
 		        		});
 					}
 		        }else{
-        			layer.alert("接口请求超时", {icon: 2,title:"错误"});
+        			layer.alert("接口错误", {icon: 2,title:"错误"});
         		}
 		    });
 			$.fn.dataTable.ext.errMode = 'throw';
@@ -1967,7 +1967,7 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
     }else if(XMLHttpRequest.status == 504){
    		layer.alert("请求超时", {icon: 2,title:"错误"});
     }else{
-		layer.alert("接口请求超时", {icon: 2,title:"错误"});
+		layer.alert("接口错误", {icon: 2,title:"错误"});
 	};
 }
 /*

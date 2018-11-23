@@ -139,10 +139,10 @@
 			var flag = false;
 			//IE10以上判断文件大小
 			if(!App.IEVersionVA(10)){
-				var chooseFile = document.getElementById("uploadFileInput").files[0];
+				var chooseFile = document.getElementById("importFileInput").files[0];
 				if(chooseFile.size/1048576 > 10){
 					layer.msg("文件超过10M的限制，请重新选择");
-					$("#uploadFileInput").val("");
+					$("#importFileInput").val("");
 				    return false;
 				}
 			};

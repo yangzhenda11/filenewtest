@@ -156,6 +156,8 @@ $(document).ready(function() {
         //请求用户信息成功后加载公告列表
         if(!App.IEVersionVA(10)){
     		getIndexNotiveTableInfo(true);
+    	}else{
+    		$("#ieSupport").modal("show");
     	}
     }
     function improperCallback(result){

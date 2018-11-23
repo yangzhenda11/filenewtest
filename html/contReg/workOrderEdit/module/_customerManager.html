@@ -53,7 +53,10 @@
 					if(parm.pageType == 1){
 			    		parent.layer.msg("保存成功");
 					}else{
+						debugger;
 						layer.msg("保存成功！已给对应客户经理发送了待阅提示！");
+						getCustomerManagerInfoList = [];
+						getCustomerManagerInfo();
 					}
 				}
 			} 
@@ -154,7 +157,7 @@
 	/*
 	 * 获取客户经理信息
 	 */
-	var getCustomerManagerInfoList = {};
+	var getCustomerManagerInfoList = [];
 	function getCustomerManagerInfo() {
 		var url = serverPath + "contractOrderEditorController/listContractCustomerManager";
 		var postData = JSON.stringify({wcardId:wcardId});
@@ -165,6 +168,7 @@
 				var html = "";
 				for(var i = 0; i < data.length; i++){
 					getCustomerManagerInfoList.push(data[i]);
+					debugger;
 					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdby="'+data[i].createdBy+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+	

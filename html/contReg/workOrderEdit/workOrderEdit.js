@@ -1837,6 +1837,9 @@ function setHaveRead(){
 //})
 //返回上一页
 function backPage(){
+	var isSave = false;
+	var customerManagerCompList = [];
+	var getCustomerManagerInfoCompList = [];
 	if(parm.isucloud == "true"){
 		top.closeWindow();
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
@@ -1850,20 +1853,28 @@ function backPage(){
 			});
 		}else{
 			for (var i = 0; i < customerManagerList.length; i++) {
-				for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
-					if(customerManagerList[i].managerId != getCustomerManagerInfoList[j].managerId){
-						layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
-							saveCustomerManager();
-						}, function(){
-							var pageId = self.frameElement.getAttribute('data-id');
-							top.closeIfreamSelf(pageId);
-						});
-					}else{
-						var pageId = self.frameElement.getAttribute('data-id');
-						top.closeIfreamSelf(pageId);
-					}
+				customerManagerCompList.push(customerManagerList[i].managerId);
+			}
+			for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
+				getCustomerManagerInfoCompList.push(getCustomerManagerInfoList[j].managerId);
+			}
+			customerManagerCompList.sort();
+			getCustomerManagerInfoCompList.sort();
+			for (var q = 0; q < customerManagerCompList.length; q++) {
+				if(customerManagerCompList[q] != getCustomerManagerInfoCompList[q]){
+					isSave = true;
 				}
-				
+			}
+			if(isSave == true){
+				layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+					saveCustomerManager();
+				}, function(){
+					var pageId = self.frameElement.getAttribute('data-id');
+					top.closeIfreamSelf(pageId);
+				});
+			}else{
+				var pageId = self.frameElement.getAttribute('data-id');
+				top.closeIfreamSelf(pageId);
 			}
 		}
 		

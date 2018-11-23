@@ -60,27 +60,41 @@ function addTbody(){
 }
 //删除表格
 var deleteList = [];
-function deleteTbody(){
-	var checkInvoiceLength = $("#assessedTbody input[name='assessedCheckbox']:checked").length;
-	if(checkInvoiceLength == 0){
-		layer.msg("请勾选要删除的分摊收入信息");
-	}else{
-		layer.confirm("是否要删除这"+checkInvoiceLength+"条数据？",{icon:7,title:"提示"},function(index){
-			layer.close(index);
-			$.each($("#assessedTbody input[name='assessedCheckbox']:checked"), function(k,v) {
-				deleteList.push($(v).parents("tr").data("id"));
-				$(v).parents("tr").remove();
-			});
-			addAssessedTbodySort();
-			App.checkAllFn("#assessedCheckAll","assessedCheckbox");
-			addAssessedTbodyEmptyTr();
-		})
+function deleteTbody(){// 判断列表是否为null
+	if($("#assessedTbody").find(".emptyTr")[0]){
+
+    	layer.msg("没有可删除的数据，请先添加分摊数据！");
+	}
+	else {
+
+		var checkInvoiceLength = $("#assessedTbody input[name='assessedCheckbox']:checked").length;
+		if(checkInvoiceLength == 0){
+			layer.msg("请勾选要删除的分摊收入信息");
+		}else{
+			layer.confirm("是否要删除这"+checkInvoiceLength+"条数据？",{icon:7,title:"提示"},function(index){
+				layer.close(index);
+				$.each($("#assessedTbody input[name='assessedCheckbox']:checked"), function(k,v) {
+					deleteList.push($(v).parents("tr").data("id"));
+					$(v).parents("tr").remove();
+				});
+				addAssessedTbodySort();
+				App.checkAllFn("#assessedCheckAll","assessedCheckbox");
+				addAssessedTbodyEmptyTr();
+			})
+		}
 	}
 }
 //保存表格
 function saveTbody(){
 	
 	var flag = true;
+	// 判断列表是否为null
+	if($("#assessedTbody").find(".emptyTr")[0]){
+
+    	layer.msg("没有可保存的数据，请先添加分摊数据！");
+    	flag = false;
+    	return false;
+	}
 	// 将需要保存的数据拼成json格式提交后台[{key:value,key:value,...},{key:value,key:value,...}...]
 	var dataAll = [];
 	var accountNameArray = []; // 记录账期
@@ -152,7 +166,7 @@ console.log($("#assessedTbody").find(".emptyTr"));
 	// 判断列表是否为null
 	if($("#assessedTbody").find(".emptyTr")[0]){
 
-    	layer.msg("没有可提交的数据，请先添加分摊数据!");
+    	layer.msg("没有可提交的数据，请先添加分摊数据！");
     	flag = false;
     	return false;
 	}

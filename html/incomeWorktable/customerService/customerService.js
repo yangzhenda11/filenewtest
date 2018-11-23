@@ -132,7 +132,7 @@ function initContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath + 'performanceContract/listContractByCustomerCode',
+	        "url": serverPath + 'performanceContract/listContractByCustomerCodeForCustomerService',
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
 	           	return JSON.stringify(d);

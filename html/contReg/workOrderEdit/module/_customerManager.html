@@ -46,7 +46,6 @@
 			var getCustomerManagerInfoCompList = [];
 			var customerManagerList = getValue_customerManagerList(true);
 
-			debugger;
 			if(customerManagerList.length != getCustomerManagerInfoList.length){
 				isSave = true;
 			}else{
@@ -64,6 +63,8 @@
 					}
 				}
 			}
+			
+			
 			if(isSave == true){
 				var postData = JSON.stringify({wcardId:wcardId,customerManagerList:customerManagerList,deleteCustomerManagerList:deleteCustomerManagerList});
 				var url = serverPath + "contractOrderEditorController/saveOrderCustomerManagerInfo";

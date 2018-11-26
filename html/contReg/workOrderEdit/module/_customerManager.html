@@ -46,17 +46,22 @@
 			var getCustomerManagerInfoCompList = [];
 			var customerManagerList = getValue_customerManagerList(true);
 
-			for (var i = 0; i < customerManagerList.length; i++) {
-				customerManagerCompList.push(customerManagerList[i].managerId);
-			}
-			for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
-				getCustomerManagerInfoCompList.push(getCustomerManagerInfoList[j].managerId);
-			}
-			customerManagerCompList.sort();
-			getCustomerManagerInfoCompList.sort();
-			for (var q = 0; q < customerManagerCompList.length; q++) {
-				if(customerManagerCompList[q] != getCustomerManagerInfoCompList[q]){
-					isSave = true;
+			debugger;
+			if(customerManagerList.length != getCustomerManagerInfoList.length){
+				isSave = true;
+			}else{
+				for (var i = 0; i < customerManagerList.length; i++) {
+					customerManagerCompList.push(customerManagerList[i].managerId);
+				}
+				for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
+					getCustomerManagerInfoCompList.push(getCustomerManagerInfoList[j].managerId);
+				}
+				customerManagerCompList.sort();
+				getCustomerManagerInfoCompList.sort();
+				for (var q = 0; q < customerManagerCompList.length; q++) {
+					if(customerManagerCompList[q] != getCustomerManagerInfoCompList[q]){
+						isSave = true;
+					}
 				}
 			}
 			if(isSave == true){

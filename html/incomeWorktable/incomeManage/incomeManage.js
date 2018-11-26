@@ -543,7 +543,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeContractManage(customerCode,customerName,partnerCode){
 	var accountPeriodName = pageConfig.incomePeriod;
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
-	+"&customerName="+customerName+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode;
+	+"&customerName="+encodeURI(customerName)+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode;
  	top.showSubpageTab(url,"合同收入");
  }
  /*
@@ -562,7 +562,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeLineByCustomer(customerCode,customerName){
 	 var accountPeriodName = pageConfig.incomePeriod;
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode
-	 +"&customerName="+customerName+"&accountPeriodName="+accountPeriodName; 
+	 +"&customerName="+encodeURI(customerName)+"&accountPeriodName="+accountPeriodName; 
 	 top.showSubpageTab(url,"线路收入");
  }
 //=======================================收入分析 end=============================================//
@@ -979,7 +979,7 @@ function initLineIncomeForecastTableByLine(){
  */
 function jumpContractManage(customerCode,forecastAccountPeriod,customerName,partnerCode){
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
-			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+customerName+"&partnerCode="+partnerCode;
+			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+encodeURI(customerName)+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"合同收入预测");
 }
 
@@ -1000,7 +1000,7 @@ function jumpIncomeLineForecastByContract(contractNumber,forecastAccountPeriod){
 function jumpIncomeLineForecastByCustomer(customerCode,forecastAccountPeriod,customerName){
  
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?customerCode="
-		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+customerName;
+		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+encodeURI(customerName);
 	 top.showSubpageTab(url,"线路收入预测");
 }
 

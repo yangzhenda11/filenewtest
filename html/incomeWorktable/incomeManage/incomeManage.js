@@ -64,6 +64,7 @@ function initIncomeCharts(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
+		console.log("data",data);
 		if(data){
 			initIncomeAnalysisCharts(data);
 		};
@@ -271,9 +272,9 @@ function initIncomeAnalysisCharts(incomeChartData){
     		var riskIncomeReceivable = (params.data.value)+(params.data.other);
     		$("#riskIncomeReceivable").text(App.unctionToThousands(riskIncomeReceivable));
     		// 给风险收入-欠费赋值
-    		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.value));
+    		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.other));
     		// 给风险收入-实收赋值
-    		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.other));
+    		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.value));
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='riskIncomeType']:checked").val();
     		checkRiskIncomeRadio(radioVal);

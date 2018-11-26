@@ -133,15 +133,15 @@
 	    var filePath = $(this).val();
 	    var fileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
 	    if(fileName){
-	    	var fileImportPostfix = _fileUploadObj.fileImportPostfix;
+	    	var fileImportPostfix = _fileImportObj.fileImportPostfix;
 			var fileNameList = fileName.split(".");
 			var reg = fileNameList[fileNameList.length-1];
 			var flag = false;
 			//IE10以上判断文件大小
 			if(!App.IEVersionVA(10)){
 				var chooseFile = document.getElementById("importFileInput").files[0];
-				if(chooseFile.size/1048576 > 10){
-					layer.msg("文件超过10M的限制，请重新选择");
+				if(chooseFile.size/1048576 > 100){
+					layer.msg("文件超过100M的限制，请重新选择");
 					$("#importFileInput").val("");
 				    return false;
 				}
@@ -204,36 +204,69 @@
 	 */
 	function fileImportPost() {
 		if($("#importFileInput").val()){
-			$("#fileImportModalForm").ajaxSubmit({
-				dataType: 'json',
-				url: serverPath + _fileImportObj.fileImportUrl,
-				resetForm: "true",
-				timeout: 30000,
-				data: _fileImportObj.extraData,
-				beforeSubmit:function(a,b,c) {
-					//分别为数组形式的表单数据，jQuery表单对象，以及传入ajaxForm/ajaxSubmit中的Options对象
-					//返回false时取消上传
-					$("#fileImportModalForm").hide();
-					$("#fileuploadLoading").show();
-				},
-				success: function(result) {
+			$("#fileImportModalForm").hide();
+			$("#fileuploadLoading").show();
+			$.ajaxFileUpload({
+				'url': serverPath + _fileImportObj.fileImportUrl,
+				'fileElementId': "importFileInput",
+				'data': _fileImportObj.extraData,
+				'contentType': "text/html",
+				'dataType': 'JSON',
+	            'processData': true,
+				'success': function(result) {
+					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileImportModalForm").show();
-					fileImportCallback(result);
+					try{
+						var result = JSON.parse(result);
+						fileImportCallback(result);
+					}catch(e){
+						layer.msg("导入失败");
+					}
 				},
-				error: function(result) {
+				'error': function(result){
+					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileImportModalForm").show();
-					App.ajaxErrorCallback(result);
-				},
-				complete: function(xhr) {
-                	//请求完成
-                	resetFileImport();
-            	}
-			})
+					layer.msg("导入失败");
+				}
+			});
 		}else{
 			layer.msg("请选择文件");	
 		}
+//		if($("#importFileInput").val()){
+//			$("#fileImportModalForm").ajaxSubmit({
+//				dataType: 'text',
+//				url: serverPath + _fileImportObj.fileImportUrl,
+//				resetForm: "true",
+//				timeout: 30000,
+//				data: _fileImportObj.extraData,
+//				beforeSubmit:function(a,b,c) {
+//					//分别为数组形式的表单数据，jQuery表单对象，以及传入ajaxForm/ajaxSubmit中的Options对象
+//					//返回false时取消上传
+//					$("#fileImportModalForm").hide();
+//					$("#fileuploadLoading").show();
+//				},
+//				success: function(result) {
+//					var result = JSON.parse(result);
+//					$("#fileuploadLoading").hide();
+//					$("#fileImportModalForm").show();
+//					fileImportCallback(result);
+//				},
+//				error: function(result) {
+//					alert(JSON.stringify(result));
+//					$("#fileuploadLoading").hide();
+//					$("#fileImportModalForm").show();
+//					App.ajaxErrorCallback(result);
+//				},
+//				complete: function(xhr) {
+//              	//请求完成
+//              	resetFileImport();
+//          	}
+//			})
+//		}else{
+//			layer.msg("请选择文件");	
+//		}
 	}
 	/*
 	 * 文件重置

@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group col-sm-12" id="fileUploadProgress" style="display: none;">
+				<!--<div class="form-group col-sm-12" id="fileUploadProgress" style="display: none;">
 					<label for="partnerCode" class="control-label">导入进度</label>
 					<div class="valiParent">
 					<div class="progress">
@@ -111,11 +111,11 @@
 					 	</div>
 					</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="form-group col-sm-12">
 					<label for="partnerCode" class="control-label">导入说明</label>
 					<div class="valiParent" id="fileUpliadExplain" style="color: red;">
-						<i class="iconfont icon-mi required"></i>请按照下载模板中文件的格式和内容进行导入。</br>
+						<i class="iconfont icon-mi required"></i>文件大小不能超过100M。
 					</div>
 				</div>
 			</form>
@@ -154,8 +154,8 @@
 			//IE10以上判断文件大小
 			if(!App.IEVersionVA(10)){
 				var chooseFile = document.getElementById("uploadFileInput").files[0];
-				if(chooseFile.size/1048576 > 10){
-					layer.msg("文件超过10M的限制，请重新选择");
+				if(chooseFile.size/1048576 > 100){
+					layer.msg("文件超过100M的限制，请重新选择");
 					$("#uploadFileInput").val("");
 				    return false;
 				}
@@ -231,59 +231,111 @@
 	 * 文件上传
 	 */
 	function fileUploadPost() {
-		var $fileUploadProgressBar = $("#fileUploadProgressBar");
-		var $fileUploadProgressVal = $("#fileUploadProgressVal");
 		if($("#uploadFileInput").val()){
-			$("#fileUploadModalForm").ajaxSubmit({
-				dataType: 'json',
-				url: fileUploadPath + _fileUploadObj.url,
-				resetForm: "true",
-				timeout: 30000,
-				data: _fileUploadObj.extraData,
-				beforeSubmit:function(a,b,c) {
-					//分别为数组形式的表单数据，jQuery表单对象，以及传入ajaxForm/ajaxSubmit中的Options对象
-					//返回false时取消上传
-					$fileUploadProgressBar.width("0%");
-	                $fileUploadProgressVal.html("0%");
-	                $("#fileUploadProgress").show();
-				},
-				uploadProgress: function(event, position, total, percentComplete) {//上传的过程
-	                var percentVal = percentComplete + '%';
-	                $fileUploadProgressBar.width(percentVal);
-	                $fileUploadProgressVal.html(percentVal);
-	            },
-				success: function(result) {
-					resetFileUpload();
-					if(result.status == 1){
-			    		layer.msg("上传成功");
-			    		var displayName = _fileUploadObj.extraData.displayName;
-			    		if(displayName == "" || displayName == undefined){
-			    			var itemInfo = {
-				    			name:_fileUploadObj.fileName,
-				    			data:result.data
+			$("#fileUploadModalForm").hide();
+			$("#fileuploadLoading").show();
+			$.ajaxFileUpload({
+				'url': fileUploadPath + _fileUploadObj.url,
+				'fileElementId': "uploadFileInput",
+				'data': _fileUploadObj.extraData,
+				'contentType': "text/html",
+				'dataType': 'JSON',
+	            'processData': true,
+				'success': function(result) {
+					console.log(result);
+					$("#fileuploadLoading").hide();
+					$("#fileUploadModalForm").show();
+					try{
+						var result = JSON.parse(result);
+						resetFileUpload();
+						if(result.status == 1){
+				    		layer.msg("上传成功");
+				    		var displayName = _fileUploadObj.extraData.displayName;
+				    		if(displayName == "" || displayName == undefined){
+				    			var itemInfo = {
+					    			name:_fileUploadObj.fileName,
+					    			data:result.data
+					    		};
+				    		}else{
+				    			var itemInfo = {
+					    			name:displayName,
+					    			data:result.data
+					    		};
 				    		};
-			    		}else{
-			    			var itemInfo = {
-				    			name:displayName,
-				    			data:result.data
-				    		};
-			    		};
-			    		_fileUploadObj.resultObj.push(itemInfo);
-			    		fileUploadSuccessCallback();
-			    	}else{
-			    		layer.alert(result.message,{icon:2,title:"错误"});
-			    	}
+				    		_fileUploadObj.resultObj.push(itemInfo);
+				    		fileUploadSuccessCallback();
+				    	}else{
+				    		layer.alert(result.message,{icon:2,title:"错误"});
+				    	};
+					}catch(e){
+						layer.msg("上传失败");
+					}
 				},
-				error: function(result) {
-					App.ajaxErrorCallback(result);
-				},
-				complete: function(xhr) {
-                	$("#fileUploadProgress").hide();
-            	}
-			})
+				'error': function(result){
+					console.log(result);
+					$("#fileuploadLoading").hide();
+					$("#fileUploadModalForm").show();
+					layer.msg("上传失败");
+				}
+			});
 		}else{
 			layer.msg("请选择文件");	
 		}
+//		var $fileUploadProgressBar = $("#fileUploadProgressBar");
+//		var $fileUploadProgressVal = $("#fileUploadProgressVal");
+//		if($("#uploadFileInput").val()){
+//			$("#fileUploadModalForm").ajaxSubmit({
+//				dataType: 'text',
+//				url: fileUploadPath + _fileUploadObj.url,
+//				resetForm: "true",
+//				timeout: 30000,
+//				data: _fileUploadObj.extraData,
+//				beforeSubmit:function(a,b,c) {
+//					//分别为数组形式的表单数据，jQuery表单对象，以及传入ajaxForm/ajaxSubmit中的Options对象
+//					//返回false时取消上传
+//					$fileUploadProgressBar.width("0%");
+//	                $fileUploadProgressVal.html("0%");
+//	                $("#fileUploadProgress").show();
+//				},
+//				uploadProgress: function(event, position, total, percentComplete) {//上传的过程
+//	                var percentVal = percentComplete + '%';
+//	                $fileUploadProgressBar.width(percentVal);
+//	                $fileUploadProgressVal.html(percentVal);
+//	            },
+//				success: function(result) {
+//					var result = JSON.parse(result);
+//					resetFileUpload();
+//					if(result.status == 1){
+//			    		layer.msg("上传成功");
+//			    		var displayName = _fileUploadObj.extraData.displayName;
+//			    		if(displayName == "" || displayName == undefined){
+//			    			var itemInfo = {
+//				    			name:_fileUploadObj.fileName,
+//				    			data:result.data
+//				    		};
+//			    		}else{
+//			    			var itemInfo = {
+//				    			name:displayName,
+//				    			data:result.data
+//				    		};
+//			    		};
+//			    		_fileUploadObj.resultObj.push(itemInfo);
+//			    		fileUploadSuccessCallback();
+//			    	}else{
+//			    		layer.alert(result.message,{icon:2,title:"错误"});
+//			    	}
+//				},
+//				error: function(result) {
+//					alert(JSON.stringify(result));
+//					App.ajaxErrorCallback(result);
+//				},
+//				complete: function(xhr) {
+//              	$("#fileUploadProgress").hide();
+//          	}
+//			})
+//		}else{
+//			layer.msg("请选择文件");	
+//		}
 	}
 	/*
 	 * 文件重置

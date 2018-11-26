@@ -2,7 +2,6 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
-alert(serverPath);
 $(function(){
 	getFlowKyeList();
 })
@@ -10,7 +9,6 @@ $(function(){
  * 流程类型下拉框处理
  */
 function getFlowKyeList(){
-
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/getReadTypeCode",
 	    "type" : "post",

@@ -235,7 +235,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	            data: incomeArrearsAmountList
 	        }
 	    ],
-	    color:['#4472c4', '#ff0000','#4472c4','#ff0000']
+	    color:['#FD6D64', '#73D2FD','#FD6D64','#73D2FD']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
 	incomeAnalysis.on('click', function (params) {
@@ -706,7 +706,7 @@ function initForecastCharts(forecastChartsData){
 		        data: forecastChartsData.totalArray
 		    }
 	    ],
-	    color:['#0070c0', '#ed8b00','#a0a0a0']
+	    color:['#FD6D64', '#73D2FD','#DBDBDB']
 	};
 	incomeForecast.setOption(incomeForecastOption);
 	pageConfig.isInitForecastCharts = true;

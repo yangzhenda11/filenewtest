@@ -92,9 +92,9 @@ $(document).ready(function() {
         if (data.staffOrgs.length > 0) {
             for (var i = 0; i < data.staffOrgs.length; i++) {
                 if (data.staffOrgId == data.staffOrgs[i].staffOrgId) {
-                    $(".user-menu").prepend("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:red;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
+                    $("#user-staff").append("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:red;\">" + data.staffOrgs[i].orgName + "</a> </li>");
                 } else {
-                    $(".user-menu").prepend("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:black;\"> <i class=\"ace-icon fa fa-cube\"></i> " + data.staffOrgs[i].orgName + "</a> </li>");
+                    $("#user-staff").append("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:black;\">" + data.staffOrgs[i].orgName + "</a> </li>");
                 }
             }
         };
@@ -135,13 +135,8 @@ $(document).ready(function() {
     	if(messageSpace == null || messageSpace >= 30){
     		messageSpace = 30;
     	};
-    	if(checkPageRoleType("income") || checkPageRoleType("expense")){
-    		setWorktableMessageNumber();
-			var messageInterval = setInterval(setWorktableMessageNumber, messageSpace*60000);
-		}else{
-			setMessageTipNumber();
-			var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
-		};
+		setWorktableMessageNumber();
+		var messageInterval = setInterval(setWorktableMessageNumber, messageSpace*60000);
         //请求用户信息成功后加载公告列表
         getIndexNotiveTableInfo(true);
         //请求用户信息成功后加载首页列表
@@ -163,26 +158,7 @@ $(document).ready(function() {
 })
 
 
-/****************************待办数量查询*****************************/
-//无工作台角色
-function setMessageTipNumber(){
-	var messageIntervalData = {
-		staffId : globalConfig.curStaffId,
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", messageIntervalData, messageSuccessCallback,null,messageErrorCallback,false);
-    function messageSuccessCallback(result) {
-        if(result){
-        	$("#messageTipNumber").text(result.recordsTotal);
-        }
-    }
-    function messageErrorCallback(result){
-    	$("#messageTipNumber").text("?");
-    }
-}
-//存在工作台角色
+/****************************待办待阅数量查询*****************************/
 function setWorktableMessageNumber(){
 	var todoData = {
 		staffId : globalConfig.curStaffId,
@@ -198,10 +174,10 @@ function setWorktableMessageNumber(){
 	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
 	App.formAjaxJson(globalConfig.serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
     function todoSuccessCallback(result) {
-    	$("#todoNum,#messageTipNumber").text(result.recordsTotal);
+    	$("#todoNum").text(result.recordsTotal);
     };
     function todoErrorCallback(result){
-    	$("#todoNum,#messageTipNumber").text("?");
+    	$("#todoNum").text("?");
     };
     function toreadSuccessCallback(result) {
     	$("#toreadNum").text(result.recordsTotal);
@@ -210,20 +186,8 @@ function setWorktableMessageNumber(){
     	$("#toreadNum").text("?");
     };
 }
-/*
- * 待办待阅跳转
- */
-function jumpWorkflow(type){
-	$("#workItemDom").find("p").removeClass("red");
-	if(type == "todo"){
-		var url = "html/workflow/tasklist/task-todo.html";
-		top.showSubpageTab(url,"待办事项",false,false,true);
-	}else if(type == "toread"){
-		var url = "html/workflow/readrecordlist/record-toread.html";
-		top.showSubpageTab(url,"待阅事项",false,false,true);
-	};
-}
-/****************************待办数量查询*****************************/
+
+/****************************待办待阅数量查询*****************************/
 
 /****************************子页面权限处理*****************************/
 // 页面权限过滤
@@ -564,8 +528,15 @@ function viewNotify(notifyId) {
  * 待办按钮跳转待办
  */
 function openTasktodo(){
-	$("#workItemDom").find("p").removeClass("red");
+	$("#workItemDom").find("p").removeClass("workItemChecked");
 	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
+}
+/*
+ * 待阅按钮跳转待办
+ */
+function openReadcord(){
+	$("#workItemDom").find("p").removeClass("workItemChecked");
+	showSubpageTab("html/workflow/readrecordlist/record-toread.html","待阅事项",false,false,true);
 }
 /*
  * 支撑modal打开
@@ -677,72 +648,55 @@ var serverPath = globalConfig.serverPath;
 function getHomePage(){
 	var userLoginName = globalConfig.loginName;
     if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
-    	$("#contractWorktable").remove();
-    	$("#content-tabs").css("top","-1px");
-		$("#content-main").css("top","33px");
-		$("#main-content").show();
 		showSubpageTab("html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html","合同扫描件上传",false,false,true);
     }else{
     	if(checkPageRoleType("income") || checkPageRoleType("expense")){
-    		setWorktableRoleName();
+      		setWorktableRoleName();
     		if(checkPageRoleType("income",true)){
 	    		setIncomeHomePage();
 	    	}else if(checkPageRoleType("expense",true)){
 	    		setExpenseHomePage();
 	    	}
     	}else{
-    		$("#contractWorktable").remove();
-	    	$("#content-tabs").css("top","-1px");
-			$("#content-main").css("top","33px");
-			$("#main-content").show();
 	    	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
     	};
     };
 }
-//设置工作台标题
+//设置角色切换
 function setWorktableRoleName(){
-	$("#content-tabs").css("top","122px");
-	$("#content-main").css("top","156px");
-	$("#main-content").show();
-	$("#loginUserName").text(globalConfig.curStaffName);
+	$("#user-role").show();
 	if(checkPageRoleType("income") && checkPageRoleType("expense")){
 		var incomeRoleType = getWorktableRoleType("income");
 		var expenseRoleType = getWorktableRoleType("expense");
-		$("#worktabledropdown").hover(function(){
-			$("#worktableRoleMenu").show();
-		},function(){
-			$("#worktableRoleMenu").hide();
-		});
-		$("#worktableRoleMenu").on("click","li",function(){
-			if($("#worktableRoleName").data("type") != $(this).data("type")){
-				if($(this).data("type") == "income"){
+		$("#user-role").on("click","li",function(){
+			if($(this).hasClass("roleItem")){
+				if(!$(this).hasClass("choose")){
 					$(this).addClass("choose").siblings().removeClass("choose");
-					$("#worktableRoleName").text(getWorktableRoleName(incomeRoleType));
-					$("#worktableRoleName").data("type","income");
-					setIncomeHomePage();
-				}else if($(this).data("type") == "expense"){
-					$(this).addClass("choose").siblings().removeClass("choose");
-					$("#worktableRoleName").text(getWorktableRoleName(expenseRoleType));
-					$("#worktableRoleName").data("type","expense");
-					setExpenseHomePage();
+					if($(this).data("type") == "income"){
+						$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(incomeRoleType,true));
+	    				setIncomeHomePage();
+					}else if($(this).data("type") == "expense"){
+						$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(expenseRoleType,true));
+						setExpenseHomePage();
+					}
 				}
 			}
-		})
-		$("#worktableRoleName").text(getWorktableRoleName(incomeRoleType));
-		$("#worktableRoleName").data("type","income");
-		var worktableRoleMenuHtml = "<li class='choose' data-type='income'><a>"+getWorktableRoleName(incomeRoleType)+"</a></li>"+
-					"<li data-type='expense'><a>"+getWorktableRoleName(expenseRoleType)+"</a></li>";
-		$("#worktableRoleMenu").html(worktableRoleMenuHtml);
+		});
+		$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(incomeRoleType,true));
+		var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='income'><a>"+getWorktableRoleName(incomeRoleType)+"</a></li>"+
+					"<li class='roleItem' data-type='expense'><a>"+getWorktableRoleName(expenseRoleType)+"</a></li>";
 	}else{
-		$("#worktableRoleMenu").remove();
 		if(checkPageRoleType("income")){
 			var roleType = getWorktableRoleType("income");
-			$("#worktableRoleName").text(getWorktableRoleName(roleType));
+			$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(roleType,true));
+			var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='income'><a>"+getWorktableRoleName(roleType)+"</a></li>";
 		}else{
 			var roleType = getWorktableRoleType("expense");
-			$("#worktableRoleName").text(getWorktableRoleName(roleType));
+			$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(roleType,true));
+			var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='income'><a>"+getWorktableRoleName(roleType)+"</a></li>";
 		}
-	}
+	};
+	$("#user-role").append(worktableRoleMenuHtml);
 }
 //根据类型加载不同的页面
 function checkPageRoleType(type,isAlert){
@@ -809,7 +763,7 @@ function getWorktableRoleType(type) {
 	return worktableRoleType;
 }
 //根据角色id翻译角色名称
-function getWorktableRoleName(roleType){
+function getWorktableRoleName(roleType,hasNote){
 	var roleName = "";
 	if(roleType == 91216) {
 		roleName = "客户经理（收入类租线业务）";
@@ -826,6 +780,9 @@ function getWorktableRoleName(roleType){
 	}else if(roleType == 91222){
 		roleName = "商务经理（支出类采购业务）";
 	};
+	if(hasNote && roleName){
+		roleName = roleName.substring(0,roleName.indexOf("（"));
+	}
 	return roleName;
 }
 //设置收入类履行工作台主页
@@ -884,10 +841,10 @@ function getAssistantList(roleType,funType) {
 	}
 }
 $("#workItemDom").on("click", ".workItem", function() {
-	$("#workItemDom").find("p").removeClass("red");
+	$("#workItemDom").find("p").removeClass("workItemChecked");
 	var moduleUrl = $(this).find("img").data("url");
 	if(moduleUrl) {
-		$(this).find("p").addClass("red");
+		$(this).find("p").addClass("workItemChecked");
 		top.showSubpageTab(moduleUrl, $(this).find("p").text());
 	} else {
 		layer.alert("该模块暂未使用。", {icon: 2})

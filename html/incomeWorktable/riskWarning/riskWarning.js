@@ -956,7 +956,7 @@ function initWarningOverviewCharts(){
 	        itemStyle: {   
                 normal:{  
                     color: function (params){
-                        var colorList = ['#00a3e2', '#ffc100','#bfbfbf','#85be23'];
+                        var colorList = ['#FD6D64', '#FECB35','#9469F4','#73D2FD'];
                         return colorList[params.dataIndex];
                     }
                 },

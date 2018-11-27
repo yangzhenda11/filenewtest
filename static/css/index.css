@@ -3,6 +3,39 @@ html {
   height: 100%;
   overflow: hidden;
 }
+.dropdown-header,#user-staff a,#user-role a{
+	padding: 6px 4px 6px 14px;
+    color: #6e6e6e;
+    text-decoration: none;
+    display: block;
+    clear: both;
+    font-weight: 300;
+    line-height: 18px;
+    white-space: nowrap;
+    font-size: 13px;
+    margin-top: 1px;
+}
+#user-staff a,#user-role a{
+	padding-left: 40px;
+}
+#user-staff a:hover{
+	background: #fee188;
+}
+#user-role a:hover{
+	background: #fee188;
+}
+#user-role .choose a{
+	color: red;
+}
+.user-menu  i{
+	font-size: 120%;
+	color: #888;
+	margin-right: 8px;
+}
+.navbar-header{
+	width: 260px;
+}
+
 #sidebar {
   overflow: inherit;
 }
@@ -60,8 +93,17 @@ html {
 /*
  * 合同履行工作台
  */
+#worktableCol{
+	margin-left: 260px;
+	margin-right: 530px;
+	height: 100%;
+}
 #contractWorktable {
   margin-top: 4px;
+}
+.workItemChecked{
+	color: red;
+	font-weight: bold;
 }
 #contractWorktable .portlet-body {
   padding-top: 2px;
@@ -106,44 +148,26 @@ html {
   font-size: 14px;
   margin-right: 4px;
 }
-.processDom,
-.workItemDom,
-.auditDom {
-  height: 54px;
-}
-.auditDom .auditItem {
-  padding-left: 25px;
-  padding-top: 4px;
-}
-.auditDom .auditItem .ui-radio {
-  padding-left: 25px;
-  top: 5px;
-}
-.processDom .processItem {
-  padding: 8px 0 0 20px;
-}
-.processDom .processItem i {
-  font-size: 20px;
-  margin-right: 10px;
-  position: relative;
-  top: 2px;
-}
-.processDom .processItem a {
-  margin-left: 5px;
-  position: relative;
-  top: 1px;
-}
-.workItemDom {
+/*.workItemDom {
   display: table;
   width: 100%;
+  height: 54px;
 }
 .workItemDom .workItem {
   display: table-cell;
   text-align: center;
+}*/
+.workItemDom{
+	text-align: center;
+}
+.workItemDom .workItem {
+  display: inline-block;
+  text-align: center;
+  margin: 10px 12px;
 }
 .workItemDom .workItem .workItemImg {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   position: relative;
   margin: 0 auto;
@@ -160,23 +184,6 @@ html {
   right: -12px;
   top: 0;
   background: #d11718;
-}
-#worktabledropdown {
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-}
-#worktabledropdown .dropdown-menu {
-  top: 8px;
-  min-width: 120px;
-  background: #fff;
-}
-#worktabledropdown .dropdown-menu .choose a {
-  color: red;
-}
-#worktabledropdown .dropdown-menu a {
-  font-size: 12px;
-  padding: 4px 14px;
 }
 #scope {
   margin: 0;

@@ -444,7 +444,7 @@ function initCharts(title,data,isEmpty){
 	        bottom: 10,
 			selectedMode: false
 		},
-		color: ['#d11718', '#bfbfbf'],
+		color: ['#FD6D64', '#DBDBDB'],
 		series: [{
 			clockwise: false,
 //			hoverAnimation: false,

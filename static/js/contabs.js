@@ -140,7 +140,7 @@ function checkArrLen(roleArr,permArr){
  * 点击触发的事件
  */
 function conTabC() {
-	$("#workItemDom").find("p").removeClass("red");
+	$("#workItemDom").find("p").removeClass("workItemChecked");
 	var o = $(this).attr("href"),
 		m = $(this).data("index"),
 		l = $.trim($(this).text()),

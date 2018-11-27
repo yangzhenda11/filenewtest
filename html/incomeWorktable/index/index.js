@@ -333,8 +333,9 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 	        {
 	            name: seriesName,
 	            type: 'pie',
-	            radius : '55%',
-	            center: ['50%', '53%'],
+//	            radius : '55%',
+//	            center: ['50%', '53%'],
+				radius: ['33%', '53%'],
 	            clockwise: false,
 	            startAngle: 0,
 //	            hoverAnimation: false,
@@ -362,7 +363,7 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 	            data:data
 	        }
 	    ],
-	    color:['#ed8b00', '#0070c0']
+	    color:['#FD6D64', '#73D2FD']
 	};
 	return overviewReceivableOption;
 };
@@ -411,8 +412,9 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			type: 'pie',
 			clockwise: false,
 			startAngle: 0,
-			radius: '55%',
-			center: ['50%', '53%'],
+//			radius: '55%',
+//			center: ['50%', '53%'],
+			radius: ['33%', '53%'],
 			label: {
 				show: false
 			},
@@ -421,7 +423,7 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			},
 			data: seriesData
 		}],
-		color: ['#bfbfbf', '#bfbfbf']
+		color: ['#DBDBDB', '#DBDBDB']
 	};
 	return option;
 };
@@ -522,7 +524,7 @@ function initIncomeAnalysis(incomedata) {
 		        data: incomedata.totalArray
 		    }
 	    ],
-	    color:['#0070c0', '#ed8b00','#a0a0a0']
+	    color:['#FD6D64', '#73D2FD','#DBDBDB']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
 }

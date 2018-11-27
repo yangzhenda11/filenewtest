@@ -64,6 +64,7 @@ function initIncomeCharts(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
+		console.log("data",data);
 		if(data){
 			initIncomeAnalysisCharts(data);
 		};
@@ -270,9 +271,9 @@ function initIncomeAnalysisCharts(incomeChartData){
     		var riskIncomeReceivable = (params.data.value)+(params.data.other);
     		$("#riskIncomeReceivable").text(App.unctionToThousands(riskIncomeReceivable));
     		// 给风险收入-欠费赋值
-    		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.value));
+    		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.other));
     		// 给风险收入-实收赋值
-    		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.other));
+    		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.value));
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='riskIncomeType']:checked").val();
     		checkRiskIncomeRadio(radioVal);
@@ -541,7 +542,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeContractManage(customerCode,customerName,partnerCode){
 	var accountPeriodName = pageConfig.incomePeriod;
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
-	+"&customerName="+customerName+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode;
+	+"&customerName="+encodeURI(customerName)+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode;
  	top.showSubpageTab(url,"合同收入");
  }
  /*
@@ -560,7 +561,7 @@ function initIncomeAnalysisCharts(incomeChartData){
  function jumpIncomeLineByCustomer(customerCode,customerName){
 	 var accountPeriodName = pageConfig.incomePeriod;
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode
-	 +"&customerName="+customerName+"&accountPeriodName="+accountPeriodName; 
+	 +"&customerName="+encodeURI(customerName)+"&accountPeriodName="+accountPeriodName; 
 	 top.showSubpageTab(url,"线路收入");
  }
 //=======================================收入分析 end=============================================//
@@ -977,7 +978,7 @@ function initLineIncomeForecastTableByLine(){
  */
 function jumpContractManage(customerCode,forecastAccountPeriod,customerName,partnerCode){
 	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
-			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+customerName+"&partnerCode="+partnerCode;
+			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+encodeURI(customerName)+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"合同收入预测");
 }
 
@@ -998,7 +999,7 @@ function jumpIncomeLineForecastByContract(contractNumber,forecastAccountPeriod){
 function jumpIncomeLineForecastByCustomer(customerCode,forecastAccountPeriod,customerName){
  
 	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?customerCode="
-		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+customerName;
+		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+encodeURI(customerName);
 	 top.showSubpageTab(url,"线路收入预测");
 }
 

@@ -43,28 +43,54 @@
 	 */
 	function saveCustomerManager(){
 		if(checkWcardIschange() == false){
+			var isSave = false;
+			var customerManagerCompList = [];
+			var getCustomerManagerInfoCompList = [];
 			var customerManagerList = getValue_customerManagerList(true);
-			var postData = JSON.stringify({wcardId:wcardId,customerManagerList:customerManagerList,deleteCustomerManagerList:deleteCustomerManagerList});
-			var url = serverPath + "contractOrderEditorController/saveOrderCustomerManagerInfo";
-			App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
-			function successCallback(result) {
-				var data = result.data;
-				if(data.success == "000"){
-					showLayerErrorMsg(data.message);
-				}else{
-					if(parm.pageType == 1){
-			    		parent.layer.msg("保存成功");
-					}else{
-						debugger;
-						layer.msg("保存成功！已给对应客户经理发送了待阅提示！");
-						getCustomerManagerInfoList = [];
-						getCustomerManagerInfo();
+
+			if(customerManagerList.length != getCustomerManagerInfoList.length){
+				isSave = true;
+			}else{
+				for (var i = 0; i < customerManagerList.length; i++) {
+					customerManagerCompList.push(customerManagerList[i].managerId);
+				}
+				for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
+					getCustomerManagerInfoCompList.push(getCustomerManagerInfoList[j].managerId);
+				}
+				customerManagerCompList.sort();
+				getCustomerManagerInfoCompList.sort();
+				for (var q = 0; q < customerManagerCompList.length; q++) {
+					if(customerManagerCompList[q] != getCustomerManagerInfoCompList[q]){
+						isSave = true;
 					}
 				}
-			} 
-			function improperCallback(result){
-				var ms = result.message;
-				showLayerErrorMsg(ms);
+			}
+			
+			
+			if(isSave == true){
+				var postData = JSON.stringify({wcardId:wcardId,customerManagerList:customerManagerList,deleteCustomerManagerList:deleteCustomerManagerList});
+				var url = serverPath + "contractOrderEditorController/saveOrderCustomerManagerInfo";
+				App.formAjaxJson(url, "post", postData, successCallback,improperCallback);
+				function successCallback(result) {
+					var data = result.data;
+					if(data.success == "000"){
+						showLayerErrorMsg(data.message);
+					}else{
+						if(parm.pageType == 1){
+				    		parent.layer.msg("保存成功");
+						}else{
+							layer.msg("保存成功！已给对应客户经理发送了待阅提示！");
+							getCustomerManagerInfoList = [];
+							getCustomerManagerInfo();
+						}
+					}
+				} 
+				function improperCallback(result){
+					var ms = result.message;
+					showLayerErrorMsg(ms);
+				}
+			}else{
+				layer.msg("没有需要保存的客户经理！");
 			}
 		}
 	};
@@ -170,7 +196,6 @@
 				var html = "";
 				for(var i = 0; i < data.length; i++){
 					getCustomerManagerInfoList.push(data[i]);
-					debugger;
 					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'" data-createdby="'+data[i].createdBy+'">'+
 	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+	

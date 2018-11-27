@@ -21,6 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/webuploader/webuploader.css"/>
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
@@ -240,6 +241,44 @@
 	            </div>
 	        </div>
 		</div>
+		<!--下一步modal-->
+		<div class="modal fade" id="chooseFlowLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">选择下一步环节</h4>
+	                </div>
+	                <div class="modal-body" style="min-height: 200px;">
+                		<div class="form-body">
+							<div class="form-group" style="margin: 14px 0;">
+								<input type="hidden" name="flowProcessDefinitionKey" id="flowProcessDefinitionKey" value="" />
+								<label for="linkForStart">下一步环节<i class="iconfont icon-mi required"></i></label>
+								<select class="form-control" id="linkForStart" name="linkForStart" onchange="chooseAssigneeChange()"></select>
+							</div>
+							<div class="form-group" id="assigneeNameForStartDom">
+								<label for="assigneeNameForStart">办理人员 <i class="iconfont icon-mi required"></i></label>
+								<div class="input-group">
+									<input type="text" name="assigneeNameForStart" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" />
+									<input type="hidden" name="assigneeIdForStart" class="form-control" id="assigneeIdForStart" />
+									<span class="input-group-btn">
+                                    	<button onclick="chooseAssignee();" type="button" class="btn primary">选择人员</button>
+                                	</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="comment">办理意见 <i class="iconfont icon-mi required"></i></label>
+								<textarea name="comment" id="comment" class="form-control" rows="3" required autofocus maxlength="125"></textarea>
+							</div>
+						</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" onclick="chooseAssigneeConfirm()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
+	                </div>
+	            </div>
+	        </div>
+		</div>
 		<!--选人modal-->
     	<div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     	<!--公共modal(用于上传文件)-->
@@ -270,6 +309,7 @@
 		<script src="../../../static/plugins/ChinaNumToEnglishNum.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/webuploader/webuploader.withoutimage.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 		<script src="_jumpIconList.js" type="text/javascript" charset="utf-8"></script>
 		<script src="workOrderEdit.js" type="text/javascript" charset="utf-8"></script>

@@ -93,6 +93,126 @@ function saveBtnClick(){
 	}
 }
 /*
+ * 推动工作流打开填写意见选择环人员页面
+ */
+function chooseFlowLink(handleType,pathSelect,callback){
+	var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+	var processDefinitionKey = flowParam.processDefinitionKey;
+	var taskId = flowParam.taskId;
+	var handleType = 1;					//前进为1，回退为2
+	var isHistoryBack = false; //该环节在进行回退的时候是否进行历史记录进行匹配
+	var isUsePushExpression = false;//在流程推进的时候是否使用表达式进行匹配
+	var isUseBackExpression = false;//在流程回退的时候是否使用表达式进行匹配
+	var pathSelect = 0;		//路由，无特殊为0
+	var processData = null;
+	$.ajax({
+		type: 'get',
+		url: serverPath + "workflowrest/tasklink/" + taskId + "/" + handleType + "/branch/"+isHistoryBack+"/"+isUsePushExpression+"/"+isUseBackExpression+"/"+pathSelect,
+		data: processData,
+		dataType: 'json',
+		contentType: "application/json",
+		success: function(result){
+			if(result.retCode == 0){
+				layer.alert("未找到可流转环节，异常请处理！",{icon:2});
+			}else{
+				var data = result.dataRows;
+				if(data){
+					var linkForStartHtml = "<option value=''>请选择下一步办理步骤</option>";
+					$.each(data, function(k,v) {
+						linkForStartHtml += "<option value='"+v.value+"'>"+ v.label +"</option>";
+					});
+					$("#linkForStart").html(linkForStartHtml);
+	                var select2Options = {
+	                    placeholder:"请选择下一步办理步骤",
+	                    language: 'zh-CN',
+	                    width: '100%',
+	                    allowClear: true,
+	                    minimumResultsForSearch: -1
+	                };
+	                $("#linkForStart").select2(select2Options);
+				};
+				$("#flowProcessDefinitionKey").val(processDefinitionKey);
+				$("#workFlowChooseLinkModal").modal("show");
+			}
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+	});
+}
+/*
+ * 下一步多环节时的下拉框选择
+ */
+function chooseAssigneeChange(){
+	var chooseLink = $("#linkForStart").val();
+	if(chooseLink){
+		var linkcode = chooseLink.split(",")[0];
+		if(linkcode == "endevent1"){
+			$("#assigneeNameForStartDom").hide();
+			$("#assigneeNameForStart").val("");
+			$("#assigneeIdForStart").val("");
+		}else{
+			$("#assigneeNameForStartDom").show();
+		}
+	}else{
+		$("#assigneeNameForStartDom").show();
+		$("#assigneeNameForStart").val("");
+		$("#assigneeIdForStart").val("");
+	}
+}
+/*
+ * 下一步多环节时的选人
+ */
+function chooseAssignee(){
+	var chooseLink = $("#linkForStart").val();
+	if(chooseLink){
+		var linkcode = chooseLink.split(",")[0];
+		if(linkcode == "endevent1"){
+			layer.msg("下一步环节为结束时不需要选人",{offset: '170px'});
+		}else{
+			var flowKey = $("#flowProcessDefinitionKey").val();
+			var prov = contractAttr.provinceCode;
+			var city = contractAttr.city
+			var callbackFun = "setAssigneeIdForStart";
+			var staffSelectType = 1;
+			var flowOrgCodes = contractAttr.executeDeptCode;
+			var contracType = "",attrA = "",attrB = "",attrC = "";	    		
+			jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,flowOrgCodes);
+		}
+	}else{
+		layer.msg("请选择下一步环节",{offset: '170px'});
+	}
+}
+/*
+ * 下一步多环节时的选人回调
+ */
+function setAssigneeIdForStart(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID,callbackFun){
+	$("#assigneeNameForStart").val(STAFF_NAME);
+	$("#assigneeIdForStart").val(STAFF_ORG_ID);
+	$("#PandJstaffiframetask").modal("hide");
+}
+/*
+ * 下一步多环节时的modal确认按钮点击
+ */
+function chooseAssigneeConfirm(){
+	var chooseLink = $("#linkForStart").val();
+	if(chooseLink){
+		var linkcode = chooseLink.split(",")[0];
+		if(linkcode == "endevent1"){
+			activateContract(null,linkcode);
+		}else{
+			var staffOrgId = $("#assigneeIdForStart").val()
+			if(staffOrgId == ""){
+				layer.msg("请选择下一步环节办理人员",{offset: '170px'});
+			}else{
+				pushGDQRDataOfDepart("","","","",staffOrgId,"",linkcode)
+			}
+		}
+	}else{
+		layer.msg("请选择下一步环节",{offset: '170px'});
+	}
+}
+/*
  * 注册按钮点击@功能页面
  */
 function submitContent(){

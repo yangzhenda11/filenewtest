@@ -843,9 +843,9 @@ function getAssistantList(roleType,funType) {
 	}
 }
 $("#workItemDom").on("click", ".workItem", function() {
-	$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 	var moduleUrl = $(this).data("url");
 	if(moduleUrl) {
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 		$(this).addClass("workItemChecked");
 		top.showSubpageTab(moduleUrl, $(this).find("p").text());
 	} else {

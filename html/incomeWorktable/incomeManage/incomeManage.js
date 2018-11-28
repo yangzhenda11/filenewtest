@@ -216,7 +216,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 			    name:'欠费金额',
 			    type:'bar',
 			    stack: '风险收入',
-			    barGap: 0,
+			    barGap: 0.05,
 			    barMaxWidth: 50,
 			    data: riskIncomeArrearsAmountList
 			},
@@ -230,7 +230,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 	            name:'欠费金额',
 	            type:'bar',
 	            stack: '合同收入',
-	            barGap: 0,
+	            barGap: 0.05,
 	            barMaxWidth: 50,
 	            data: incomeArrearsAmountList
 	        }

@@ -98,10 +98,6 @@ html {
     left: 290px;
     background: #fff;
 }
-.workItemChecked{
-    color: red;
-    font-weight: bold;
-}
 //#contractWorktable {
 //margin-top: 4px;
 //}
@@ -157,8 +153,10 @@ html {
   display: table-cell;
   text-align: center;
 }*/
-.workItemDom{
-    text-align: left;
+.workItemChecked{
+    top: -2px;
+    font-weight: bold;
+    border-bottom: 2px solid #d11718 !important;
 }
 .workItemDom .workItem {
     border: 1px solid #eee;
@@ -172,21 +170,23 @@ html {
     background: #fff;
     cursor: pointer;
     position: relative;
-    .workItemTost{
-        display: none;
-        border-radius: 4px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: #DBDBDB;
-        opacity: 0.3;
-        filter:Alpha(opacity=20);
-    }
+//  .workItemTost{
+//      display: none;
+//      border-radius: 4px;
+//      position: absolute;
+//      top: 0;
+//      left: 0;
+//      bottom: 0;
+//      right: 0;
+//      background: #DBDBDB;
+//      opacity: 0.3;
+//      filter:Alpha(opacity=20);
+//  }
 }
 .workItemDom .workItem:hover{
-    .workItemTost{display: block;}
+    border: none !important;
+    box-shadow: 0 5px 12px rgba(144, 0, 0, 0.87);
+//  .workItemTost{display: block;}
 }
 .workItemDom .workItem .workItemImg {
   width: 40px;

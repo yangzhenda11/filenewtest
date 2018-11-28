@@ -100,10 +100,6 @@ html {
   left: 290px;
   background: #fff;
 }
-.workItemChecked {
-  color: red;
-  font-weight: bold;
-}
 /*.workItemDom {
   display: table;
   width: 100%;
@@ -113,8 +109,10 @@ html {
   display: table-cell;
   text-align: center;
 }*/
-.workItemDom {
-  text-align: left;
+.workItemChecked {
+  top: -2px;
+  font-weight: bold;
+  border-bottom: 2px solid #d11718 !important;
 }
 .workItemDom .workItem {
   border: 1px solid #eee;
@@ -129,20 +127,9 @@ html {
   cursor: pointer;
   position: relative;
 }
-.workItemDom .workItem .workItemTost {
-  display: none;
-  border-radius: 4px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: #DBDBDB;
-  opacity: 0.3;
-  filter: alpha(opacity=20);
-}
-.workItemDom .workItem:hover .workItemTost {
-  display: block;
+.workItemDom .workItem:hover {
+  border: none !important;
+  box-shadow: 0 5px 12px rgba(144, 0, 0, 0.87);
 }
 .workItemDom .workItem .workItemImg {
   width: 40px;

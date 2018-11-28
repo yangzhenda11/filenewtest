@@ -116,25 +116,15 @@
   border-top-left-radius: 17px;
   border-bottom-left-radius: 17px;
 }
-#chooseScope .scopeTitle,
-#chooseScope .scopNote {
+#chooseScope .scopeTitle {
   display: inline-block;
   line-height: 34px;
   position: relative;
   top: -4px;
 }
-#chooseScope .scopNote {
-  display: none;
-}
 #chooseScope i {
   line-height: 34px;
   font-size: 24px;
-}
-#chooseScope:hover .scopNote {
-  display: inline-block;
-}
-#chooseScope:hover .scopeTitle {
-  display: none;
 }
 #chooseScope:hover #scopMenu {
   display: block;
@@ -150,10 +140,21 @@
   background: #fff;
   padding: 4px 0;
 }
+#scopMenu .scopMenu-header {
+  padding-left: 6px;
+}
+#scopMenu .scopMenu-header i {
+  margin-right: 2px;
+  line-height: 10px;
+  font-size: 16px;
+}
+#scopMenu .scopMenu-header:hover {
+  background: #fff;
+}
 #scopMenu li {
   white-space: nowrap;
   text-align: left;
-  padding: 6px 14px;
+  padding: 4px 14px 4px 24px;
   color: #6e6e6e;
 }
 #scopMenu li:hover {

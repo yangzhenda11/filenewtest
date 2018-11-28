@@ -140,7 +140,9 @@ function checkArrLen(roleArr,permArr){
  * 点击触发的事件
  */
 function conTabC() {
-	$("#workItemDom").find("p").removeClass("workItemChecked");
+	if($("#workItemDom")[0]){
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+	};
 	var o = $(this).attr("href"),
 		m = $(this).data("index"),
 		l = $.trim($(this).text()),
@@ -210,8 +212,8 @@ function conTabC() {
  * link：页面地址，可在？后加参数
  * title：tab页标题
  * isParam：是否包含参数匹配，默认为false。true时将配置全部路径包括？后的参数
- * isRefresh：若页面存在是否要刷新页面，默认为true
- * isFixed：若页面存在打开页面时在tab页之后显示（默认在tab页最后显示）还是定位到原来的位置
+ * isRefresh：若页面存在是否要刷新页面，默认为false
+ * isFixed：若页面存在打开页面时在tab页之后显示（默认在tab页最后显示）还是定位到原来的位置，默认为false
  */
 function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 	globalConfig.ifreamLen++;
@@ -329,6 +331,15 @@ function conTabH() {
 			}
 		});
 		animateTab($(".J_menuTab.active"))
+	};
+	if($("#workItemDom")[0]){
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+		var activeId = $(".J_menuTab.active").data("id");
+		$.each($("#workItemDom .workItem"), function(key,val) {
+			if($(val).data("url") == activeId){
+				$(val).addClass("workItemChecked");
+			}
+		});
 	}
 	return false
 }
@@ -420,14 +431,22 @@ function conTabE() {
 					if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
 						var parentName = $(this)[0].id;
 						var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
-	$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+						$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
 					}
 				};
 				return false
 			}
 		});
 		$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-		animateTab(this)
+		if($("#workItemDom")[0]){
+			$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+			$.each($("#workItemDom .workItem"), function(n,m) {
+				if($(m).data("url") == k){
+					$(m).addClass("workItemChecked");
+				}
+			});
+		};
+		animateTab(this);
 	}
 }
 //function conTabD() {

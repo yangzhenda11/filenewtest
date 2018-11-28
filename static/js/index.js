@@ -528,14 +528,14 @@ function viewNotify(notifyId) {
  * 待办按钮跳转待办
  */
 function openTasktodo(){
-	$("#workItemDom").find("p").removeClass("workItemChecked");
+	$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
 }
 /*
  * 待阅按钮跳转待办
  */
 function openReadcord(){
-	$("#workItemDom").find("p").removeClass("workItemChecked");
+	$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 	showSubpageTab("html/workflow/readrecordlist/record-toread.html","待阅事项",false,false,true);
 }
 /*
@@ -648,6 +648,7 @@ var serverPath = globalConfig.serverPath;
 function getHomePage(){
 	var userLoginName = globalConfig.loginName;
     if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
+    	$("#workItemDom").remove();
 		showSubpageTab("html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html","合同扫描件上传",false,false,true);
     }else{
     	if(checkPageRoleType("income") || checkPageRoleType("expense")){
@@ -658,6 +659,7 @@ function getHomePage(){
 	    		setExpenseHomePage();
 	    	}
     	}else{
+    		$("#workItemDom").remove();
 	    	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
     	};
     };
@@ -831,23 +833,23 @@ function getAssistantList(roleType,funType) {
 		var html = "";
 		var specialList = ["KHGL","LXZHT_SR","FXYJ_SR","HZFGL","LXZHT_ZC","FXYJ_ZC"];
 		$.each(data, function(k, v) {
-			html += '<div class="workItem"><div class="workItemImg">';
+			html += '<div class="workItem" data-url="' + v.funUrl + '"><div class="workItemImg">';
 			if(specialList.indexOf(v.funCode) != -1){
 				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
 			};
-			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p><div class="workItemTost"></div></div>';
+			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" /></div><p>' + v.funName + '</p><div class="workItemTost"></div></div>';
 		});
 		$("#workItemDom").html(html);
 	}
 }
 $("#workItemDom").on("click", ".workItem", function() {
-	$("#workItemDom").find("p").removeClass("workItemChecked");
-	var moduleUrl = $(this).find("img").data("url");
+	$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+	var moduleUrl = $(this).data("url");
 	if(moduleUrl) {
-		$(this).find("p").addClass("workItemChecked");
+		$(this).addClass("workItemChecked");
 		top.showSubpageTab(moduleUrl, $(this).find("p").text());
 	} else {
-		layer.alert("该模块暂未使用。", {icon: 2})
+		layer.alert("该模块暂未使用。", {icon: 2});
 	}
 })
 

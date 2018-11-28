@@ -208,7 +208,7 @@
 	        </div>
 		</div>
 		<!--选择下一步modal-->
-		<div class="modal fade" id="workFlowChooseLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+		<!--<div class="modal fade" id="workFlowChooseLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -240,9 +240,9 @@
 	                </div>
 	            </div>
 	        </div>
-		</div>
+		</div>-->
 		<!--下一步modal-->
-		<!--<div class="modal fade" id="chooseFlowLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+		<div class="modal fade" id="workFlowChooseLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
 	            <div class="modal-content">
 	                <div class="modal-header">
@@ -253,6 +253,9 @@
                 		<div class="form-body">
 							<div class="form-group" style="margin: 14px 0;">
 								<input type="hidden" name="flowProcessDefinitionKey" id="flowProcessDefinitionKey" value="" />
+								<input type="hidden" name="isBackFlow" id="isBackFlow" value="" />
+								<input type="hidden" name="isCommon" id="isCommon" value="" />
+								<input type="hidden" name="workFlowLinkCallback" id="workFlowLinkCallback" value="" />
 								<label for="linkForStart">下一步环节<i class="iconfont icon-mi required"></i></label>
 								<select class="form-control" id="linkForStart" name="linkForStart" onchange="chooseAssigneeChange()"></select>
 							</div>
@@ -267,7 +270,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="comment">办理意见 <i class="iconfont icon-mi required"></i></label>
+								<label for="comment">办理意见 <span id="commentLable"></span></label>
 								<textarea name="comment" id="comment" class="form-control" rows="3" required autofocus maxlength="125"></textarea>
 							</div>
 						</div>
@@ -278,7 +281,7 @@
 	                </div>
 	            </div>
 	        </div>
-		</div>-->
+		</div>
 		<!--选人modal-->
     	<div class="modal fade" id="PandJstaffiframetask" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     	<!--公共modal(用于上传文件)-->

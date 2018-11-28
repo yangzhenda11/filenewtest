@@ -180,8 +180,10 @@
 	 * 验证大于0的整数
 	 */
 	function retInteger(val){
+		console.log(val);
 		var ret = /^[0-9]*$/;
       	var result = ret.test(val);
+      	console.log(result);
       	return result;
 	}
 	//整数验证

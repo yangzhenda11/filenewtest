@@ -149,14 +149,14 @@ th, td { /*white-space: nowrap;*/ }
 }
 .navbar-container{
 	overflow: hidden;
-	height: 79px;
+	height: 99px;
 }
 /*合同修改*/
 .navbar .navbar-brand {
   color: #000;
   font-size: 22px;
   text-shadow: none;
-  padding-top: 10px;
+  padding-top: 20px;
   height: auto;
 }
 .navbar .navbar-brand>span{
@@ -169,7 +169,7 @@ th, td { /*white-space: nowrap;*/ }
 }
 .navbar-container .navbar-buttons{
 		position: relative;
-    top: 12px;
+    top: 30px;
     width: 530px;
     height: 70px;
 		background: url(../../../img/top_bg.gif);
@@ -234,7 +234,7 @@ th, td { /*white-space: nowrap;*/ }
 }*/
 .ace-nav {
  	position: absolute;
- 	top: 14px;
+ 	top: 20px;
  	right: 10px;
 }
 .ace-nav > li {
@@ -3510,7 +3510,7 @@ body.mob-safari .sidebar.sidebar-fixed {
 /*
  * 样式修改top:50px
  */
-.main-container{position: absolute;left: 0;right: 0;top:80px;bottom: 0;transition: all .5s;}
+.main-container{position: absolute;left: 0;right: 0;top:100px;bottom: 0;transition: all .5s;}
 .hideNavbar #navbar{transition: all .5s;}
 .hideNavbar .main-container{top: 0;}
 .sidebar{max-height: 100%;}

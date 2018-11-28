@@ -1,185 +1,211 @@
 html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
-#sidebar{
-    overflow: inherit;
+.dropdown-header,#user-staff a,#user-role a{
+    padding: 6px 4px 6px 14px;
+    color: #6e6e6e;
+    text-decoration: none;
+    display: block;
+    clear: both;
+    font-weight: 300;
+    line-height: 18px;
+    white-space: nowrap;
+    font-size: 13px;
+    margin-top: 1px;
 }
-#hidemenu{
-    display: none;
-    position: fixed;
-    right: 10px;
-    top: 50px;
-    background: #d11718;
-    color: #FFF;
-    padding: 10px;
-    border-radius: 0;
-    z-index: 9999;
-    border-radius: 20px;
+#user-staff a,#user-role a{
+    padding-left: 40px;
 }
-#hidemenu a{color: #FFF;}
-.notiveViewTitle{
+#user-staff a:hover{
+    background: #fee188;
+}
+#user-role a:hover{
+    background: #fee188;
+}
+#user-role .choose a{
     color: red;
 }
-.red{
-    color: red;
+.user-menu  i{
+    font-size: 120%;
+    color: #888;
+    margin-right: 8px;
 }
-.notiveDetailTitleCon{
-    border-bottom: 1px dashed #efefef;
+.navbar-header{
+    width: 260px;
 }
-.notifyContent{
-    margin-bottom: 10px;
+
+#sidebar {
+  overflow: inherit;
 }
-.notiveDetailTitle{
-    float: left;
-    font-size: 18px;
+#hidemenu {
+  display: none;
+  position: fixed;
+  right: 10px;
+  top: 50px;
+  background: #d11718;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 0;
+  z-index: 9999;
+  border-radius: 20px;
 }
-.notiveDetailAttribute{
-    float: right;
-    font-size: 14px;
-    position: relative;
-    top: 12px;
+#hidemenu a {
+  color: #FFF;
 }
-.notiveDetailFileCon{
-    padding-top: 10px;
+.notiveViewTitle {
+  color: red;
 }
-#notiveFileList{
-    font-size: 12px;
+.red {
+  color: red;
 }
-#notiveFileList i{font-size: 20px;margin-right: 6px;}
-#notiveFileList p{margin-bottom: 15px;padding-left: 20px;}
+.notiveDetailTitleCon {
+  border-bottom: 1px dashed #efefef;
+}
+.notifyContent {
+  margin-bottom: 10px;
+}
+.notiveDetailTitle {
+  float: left;
+  font-size: 18px;
+}
+.notiveDetailAttribute {
+  float: right;
+  font-size: 14px;
+  position: relative;
+  top: 12px;
+}
+.notiveDetailFileCon {
+  padding-top: 10px;
+}
+#notiveFileList {
+  font-size: 12px;
+}
+#notiveFileList i {
+  font-size: 20px;
+  margin-right: 6px;
+}
+#notiveFileList p {
+  margin-bottom: 15px;
+  padding-left: 20px;
+}
 /*
  * 合同履行工作台
  */
-#contractWorktable{
-    margin-top: 4px;
-    .portlet-body{
-        padding-top: 2px;
-    }
-}
-#contractWorktable .portlet-worktable{
-    overflow: hidden;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top: 2px solid #D11718 !important;
-    padding-bottom: 4px;
-    margin: 0;
-    i{margin-right: 4px;font-size: 16px;position: relative;top: 1px;color: #D11718;}
-    .portlet-title{border: none;}
-    .caption{padding: 0;}
-    .caption-subject{font-size: 13px;}
-}
-.worktableTitle{
-    padding: 4px 6px 4px 12px;
-    font-size: 12px;
-    background: #fff;
-    background: #D11718;
-    color: #fff;
-    margin-bottom: 4px;
-    border-radius: 4px;
-    .loginUserName{float: right;}
-    .roleNameStyle{
-        i{font-size: 14px;margin-right: 4px;}
-    }
-}
-.processDom,.workItemDom,.auditDom{
-    height: 54px;
-}
-.auditDom .auditItem{
-    padding-left: 25px;
-    padding-top: 4px;
-    .ui-radio{padding-left: 25px;top: 5px;}
-}
-.processDom .processItem{
-    padding: 8px 0 0 20px;
-    i{font-size: 20px;margin-right: 10px;position: relative;top: 2px;}
-    a{margin-left: 5px;position: relative;top: 1px;}
-}
-.workItemDom{
-    display: table;
-    width: 100%;
-    .workItem{
-        display: table-cell;
-        text-align: center;
-        .workItemImg{width: 36px;height: 36px;cursor: pointer;position: relative;margin: 0 auto;}
-        p{margin: 0;}
-    }
-    img{width: 100%;height: 100%;}
-}
-.badge-Worktable{
+#worktableCol{
     position: absolute;
-    right: -12px;
-    top: 0;
-    background: #d11718;
+    left: 290px;
+    background: #fff;
 }
-#worktabledropdown{
+.workItemChecked{
+    color: red;
+    font-weight: bold;
+}
+//#contractWorktable {
+//margin-top: 4px;
+//}
+//#contractWorktable .portlet-body {
+//padding-top: 2px;
+//}
+//#contractWorktable .portlet-worktable {
+//overflow: hidden;
+//border-bottom-left-radius: 4px;
+//border-bottom-right-radius: 4px;
+//border-top: 2px solid #D11718 !important;
+//padding-bottom: 4px;
+//margin: 0;
+//}
+//#contractWorktable .portlet-worktable i {
+//margin-right: 4px;
+//font-size: 16px;
+//position: relative;
+//top: 1px;
+//color: #D11718;
+//}
+//#contractWorktable .portlet-worktable .portlet-title {
+//border: none;
+//}
+//#contractWorktable .portlet-worktable .caption {
+//padding: 0;
+//}
+//#contractWorktable .portlet-worktable .caption-subject {
+//font-size: 13px;
+//}
+//.worktableTitle {
+//padding: 4px 6px 4px 12px;
+//font-size: 12px;
+//background: #fff;
+//background: #D11718;
+//color: #fff;
+//margin-bottom: 4px;
+//border-radius: 4px;
+//}
+//.worktableTitle .loginUserName {
+//float: right;
+//}
+//.worktableTitle .roleNameStyle i {
+//font-size: 14px;
+//margin-right: 4px;
+//}
+/*.workItemDom {
+  display: table;
+  width: 100%;
+  height: 54px;
+}
+.workItemDom .workItem {
+  display: table-cell;
+  text-align: center;
+}*/
+.workItemDom{
+    text-align: left;
+}
+.workItemDom .workItem {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    display: inline-block;
+    text-align: center;
+    margin: 8px 4px 0;
+    width: 80px;
+    height: 80px;
+    background: #fff;
     cursor: pointer;
     position: relative;
-    display: inline-block;
-    .dropdown-menu{
-        top: 8px;
-        min-width: 120px;
-        background: #fff;
-        .choose a{
-            color: red;
-        }
-        a{
-            font-size: 12px;
-            padding: 4px 14px;
-        }
+    .workItemTost{
+        display: none;
+        border-radius: 4px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: #DBDBDB;
+        opacity: 0.3;
+        filter:Alpha(opacity=20);
     }
+}
+.workItemDom .workItem:hover{
+    .workItemTost{display: block;}
+}
+.workItemDom .workItem .workItemImg {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  position: relative;
+  margin: 10px auto 0;
+}
+.workItemDom .workItem p {
+  margin: 0;
+}
+.workItemDom img {
+  width: 100%;
+  height: 100%;
+}
+.badge-Worktable {
+  position: absolute;
+  right: -12px;
+  top: 0;
+  background: #d11718;
 }
 
-//选择稽核范围
-#scope{
-    margin: 0;
-    display: inline-block;
-    width: 106px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: relative;
-    top: 4px;
-}
-#changeScope{
-    float: right;
-    padding: 4px 8px;
-    margin-right: 16px;
-}
-.scope-left,.scope-rigth,.scope-center{
-    float: left;
-}
-.scope-left,.scope-rigth{
-    width: 46%;
-    padding: 0 10px;
-}
-.scope-center{
-    width: 8%;
-    padding-top: 100px;
-}
-.scope-center button{
-    margin-bottom: 20px;
-}
-.scope-selectCon{
-    height: 280px;
-    overflow: auto;
-    border: 1px solid #ceadad;
-    border-radius: 3px;
-    background: #fff;
-    padding: 10px 0;
-}
-.scope-selectCon .scopeItem{
-    display: block;
-    text-align: left;
-    padding-left: 16px;
-    font-size: 12px;
-    line-height: 26px;
-}
-.scope-selectCon .scopeItem:hover{
-    background: #c1c7f5;
-    cursor: pointer;
-}
-.scope-selectCon .scopeItem.selected{
-    background: rgba(0, 0, 255, 0.25);
-}

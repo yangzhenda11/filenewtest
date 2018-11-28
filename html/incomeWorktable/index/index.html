@@ -28,13 +28,23 @@
 	<body>
 		<div class="page-content page-content-worktable">
 			<div class="form-fieldset" id="lineInfor">
-				<div class="form-fieldset-title">
+				<!--<div class="form-fieldset-title">
 					<div class="fieldset-title">
 						<p>收入类租线业务合同履行工作台</p><span></span>
 					</div>
-				</div>
-				<div class="form-fieldset-body">
+				</div>-->
+				<div class="form-fieldset-body" style="padding-top: 0;">
 					<div class="row">
+						<div id="chooseScope">
+							<i class="iconfont icon-location"></i>
+							<span class="scopeTitle" id="scopeTitle">稽核范围</span>
+							<span class="scopNote">稽核范围</span>
+							<ul id="scopMenu">
+								<li class="choosed" onclick="changeScope()">按地域：<span class="scopeLi" id="scope"></span</li>
+								<li class="isDisabled">按客户：</li>
+								<li class="isDisabled">按客户经理：</li>
+							</ul>
+						</div>
 		    			<div class="col-sm-5 paddingR0">
 		    				<div class="portlet portlet-worktable">
 		                        <div class="portlet-title">
@@ -178,6 +188,37 @@
 			</div>
 		</div>
 		<!--modal-->
+		<!--选择稽核范围modal-->
+		<div class="modal fade" id="scopeModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document" style="width: 50%;">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">按地域确定稽核范围</h4>
+	                </div>
+	                <div class="modal-body">
+	                	<div class="scope-left">
+	                		<p>稽核范围：</p>
+		                	<div class="scope-selectCon">
+	                			<ul id="scopeTree" class="ztree"></ul>
+		                	</div>
+	                	</div>
+	                	<div class="text-center scope-center">
+	                		<button type="button" class="btn btn-danger btn-outline btn-block" onclick="chooseScopeTree()">></button>
+	                		<button type="button" class="btn btn-danger btn-outline btn-block" onclick="deleteCheckedScope()"><</button>
+	                	</div>
+	                	<div class="scope-rigth">
+	                		<p>已选地区：</p>
+	                		<div class="scope-selectCon" id="scopeChecked"></div>
+	                	</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" onclick="setScope()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
+	                </div>
+	            </div>
+	        </div>
+		</div>
 		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
 		  	<script src="../../../static/plugins/html5shiv.min.js"></script>

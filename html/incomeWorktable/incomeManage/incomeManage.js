@@ -64,7 +64,6 @@ function initIncomeCharts(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		console.log("data",data);
 		if(data){
 			initIncomeAnalysisCharts(data);
 		};
@@ -210,6 +209,8 @@ function initIncomeAnalysisCharts(incomeChartData){
 			    name:'实收金额',
 			    type:'bar',
 			    stack: '风险收入',
+			    barGap: 0,
+			    barMaxWidth: 50,
 			    data: riskIncomeCollectedAmountList
 			},
 			{
@@ -224,23 +225,24 @@ function initIncomeAnalysisCharts(incomeChartData){
 	            name:'实收金额',
 	            type:'bar',
 	            stack: '合同收入',
+	            barGap: 0,
+			    barMaxWidth: 50,
 	            data: incomeCollectedAmountList
 	        },
 	        {
 	            name:'欠费金额',
 	            type:'bar',
-	            stack: '风险收入',
+	            stack: '合同收入',
 	            barGap: 0,
 	            barMaxWidth: 50,
 	            data: incomeArrearsAmountList
 	        }
 	    ],
-	    color:['#FD6D64', '#73D2FD','#FD6D64','#73D2FD']
+	    color:['#73D2FD','#FD6D64','#73D2FD','#FD6D64']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
 	incomeAnalysis.on('click', function (params) {
 		// 将账期放入到全局变量中
-		console.log("params",params)
 		pageConfig.incomePeriod = params.data.account;
     	if(params.stack == "合同收入"){
     		// 风险收入明细div隐藏
@@ -702,7 +704,7 @@ function initForecastCharts(forecastChartsData){
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        barMaxWidth: 55,
+		        barMaxWidth: 50,
 		        data: lineIncomeForecastArray
 		    },
 		    {
@@ -720,7 +722,7 @@ function initForecastCharts(forecastChartsData){
 		        data: forecastChartsData.totalArray
 		    }
 	    ],
-	    color:['#FD6D64', '#73D2FD','#DBDBDB']
+	    color:['#73D2FD', '#FD6D64','#DBDBDB']
 	};
 	incomeForecast.setOption(incomeForecastOption);
 	pageConfig.isInitForecastCharts = true;

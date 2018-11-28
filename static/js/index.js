@@ -171,7 +171,7 @@ function setWorktableMessageNumber(){
 		start : 0,
 		length : 0
 	};
-	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
+	App.formAjaxJson(globalConfig.serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback,false);
 	App.formAjaxJson(globalConfig.serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
     function todoSuccessCallback(result) {
     	$("#todoNum").text(result.recordsTotal);
@@ -788,32 +788,32 @@ function getWorktableRoleName(roleType,hasNote){
 //设置收入类履行工作台主页
 function setIncomeHomePage(){
 	var roleType = getWorktableRoleType("income");
-	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
-		if(roleType == 91216) {
-			$("#worktableCaption").text("我的商务助理");
-		} else {
-			$("#worktableCaption").text("我的管理助手");
-		};
-		$("#auditCol").addClass("hidden");
-	} else if(roleType == 91218) {
-		$("#worktableCaption").text("我的管理助手");
-		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
-		$("#auditCol").removeClass("hidden");
-		setAuditScope();
-	};
+//	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
+//		if(roleType == 91216) {
+//			$("#worktableCaption").text("我的商务助理");
+//		} else {
+//			$("#worktableCaption").text("我的管理助手");
+//		};
+//		$("#auditCol").addClass("hidden");
+//	} else if(roleType == 91218) {
+//		$("#worktableCaption").text("我的管理助手");
+//		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
+//		$("#auditCol").removeClass("hidden");
+////		setAuditScope();
+//	};
 	getAssistantList(roleType,"sr");
 	showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
 }
 //设置支出类履行工作台主页
 function setExpenseHomePage(){
 	var roleType = getWorktableRoleType("expense");
-	$("#auditCol").addClass("hidden");
-	$("#workItemCol").removeClass("col-sm-7").addClass("col-sm-10");
-	if(roleType == 91220){
-		$("#worktableCaption").text("我的商务助理");
-	}else{
-		$("#worktableCaption").text("我的管理助手");
-	};
+//	$("#auditCol").addClass("hidden");
+//	$("#workItemCol").removeClass("col-sm-7").addClass("col-sm-10");
+//	if(roleType == 91220){
+//		$("#worktableCaption").text("我的商务助理");
+//	}else{
+//		$("#worktableCaption").text("我的管理助手");
+//	};
 	getAssistantList(roleType,"zc");
 	showSubpageTab("html/expenseWorktable/index/index.html","支出类采购业务",false,false,true);
 }
@@ -835,7 +835,7 @@ function getAssistantList(roleType,funType) {
 			if(specialList.indexOf(v.funCode) != -1){
 				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
 			};
-			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
+			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p><div class="workItemTost"></div></div>';
 		});
 		$("#workItemDom").html(html);
 	}
@@ -854,158 +854,3 @@ $("#workItemDom").on("click", ".workItem", function() {
 /****************************首屏显示处理*****************************/
 
 
-/***************选择稽核范围开始***********************/
-/*
- * 设置初始稽核范围
- */
-function setAuditScope() {
-	var obj = {
-		companyCode: globalConfig.companyCode
-	};
-	var url = globalConfig.serverPath + "auditManager/getAuditRangeByStaffOrgId";
-	App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
-	var dataPermission = globalConfig.dataPermission;
-	function successCallback(result) {
-		var data = result.data;
-		var orgName = data.orgName;
-		$("#scope").text(orgName);
-		$("#scope").attr("title", orgName);
-		if(dataPermission == 3) {
-			$("#changeScope").show();
-		} else {
-			$("#changeScope").remove();
-		};
-		var html = '<div class="scopeItem" data-id=' + data.auditRange + '>' + orgName + '</div>';
-		$("#scopeChecked").html(html);
-		globalConfig.auditScope = data.auditRange;
-	}
-}
-/*
- * 选择稽核范围
- */
-function changeScope() {
-	$("#scopeModal").modal("show");
-	if(!scopeTree) {
-		initSopeChooseTree();
-	}
-}
-var scopeTree;
-/*
- * 生成稽核部门树————ztree
- */
-function initSopeChooseTree() {
-	var treeSetting = {
-		async: {
-			enable: true,
-			url: globalConfig.serverPath + "contractType/listCompany",
-			type: "post",
-			dataType: 'json',
-			dataFilter: orgsfilter,
-			autoParam: ["orgCode=orgCode"]
-		},
-		data: {
-			simpleData: {
-				enable: true,
-				idKey: "orgCode",
-				pIdKey: "parentCode"
-			},
-			key: {
-				name: "orgName"
-			}
-		},
-		view: {
-			selectedMulti: false,
-			//			dblClickExpand: false
-		},
-		callback: {
-			onAsyncError: onAsyncError,
-			onDblClick: setInputInfo
-		}
-	};
-
-	function orgsfilter(treeId, parentNode, responseData) {
-		if(responseData.status == 1) {
-			var data = responseData.data;
-			if(data) {
-				return data;
-			} else {
-				return null;
-			}
-		} else {
-			layer.msg(responseData.message);
-			return null;
-		}
-	};
-	App.formAjaxJson(globalConfig.serverPath + 'contractType/listCompany', "post", {
-		'orgId': ''
-	}, successCallback, null, null, null, null, "formData")
-
-	function successCallback(result) {
-		var data = result.data;
-		if(data != "") {
-			if(scopeTree) {
-				scopeTree.destroy();
-			};
-			scopeTree = $.fn.zTree.init($("#scopeTree"), treeSetting, data);
-			var nodes = scopeTree.getNodes();
-			scopeTree.expandNode(nodes[0]);
-		} else {
-			layer.msg("暂无数据，请稍后重试");
-		}
-	}
-	//双击事件 
-	function setInputInfo(event, treeId, treeNode) {
-		setScopeChecked(treeNode);
-	}
-}
-//按钮选择
-function chooseScopeTree() {
-	var treeNode = scopeTree.getSelectedNodes()[0];
-	setScopeChecked(treeNode);
-}
-//按钮删除
-function deleteCheckedScope() {
-	if($("#scopeChecked .scopeItem.selected").length == 0) {
-		layer.msg("请选择已选内容进行移除");
-	} else {
-		$("#scopeChecked").html("");
-	}
-}
-//右侧赋值
-function setScopeChecked(treeNode) {
-	var name = treeNode.orgName;
-	var orgCode = treeNode.orgCode;
-	var html = '<div class="scopeItem" data-id=' + orgCode + '>' + name + '</div>';
-	$("#scopeChecked").html(html);
-}
-$("#scopeChecked").on("click", ".scopeItem", function() {
-	if($(this).hasClass("selected")) {
-		$(this).removeClass("selected");
-	} else {
-		$(this).addClass("selected");
-	}
-})
-/*
- * 选择稽核范围确定按钮点击
- */
-function setScope() {
-	$("#scopeModal").modal("hide");
-	if($("#scopeChecked .scopeItem").length > 0) {
-		var checkedText = $("#scopeChecked .scopeItem").text();
-		var companyCode = $("#scopeChecked .scopeItem").data("id");
-		var obj = {
-			"companyCode": companyCode,
-		};
-		var url = serverPath + "auditManager/updateAuditRange";
-		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
-		function successCallback(result) {
-			layer.msg("更改成功");
-		}
-		$("#scope").text(checkedText);
-		$("#scope").attr("title", checkedText);
-		globalConfig.auditScope = companyCode;
-		showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,true,true);
-	}
-}
-
-/***************选择稽核范围结束***********************/

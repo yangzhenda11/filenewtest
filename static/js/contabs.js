@@ -453,3 +453,13 @@ function conTabE() {
 //	var l = $('.J_iframe[data-id="' + $(this).data("id") + '"]');
 //	var k = l.attr("src")
 //}
+
+function closeAlltabs(){
+	$("#content-main").children(".J_iframe").each(function(k,v) {
+		$(v).remove()
+	});
+	$("#mainPageTabsContent").children(".J_menuTab").each(function(k,v) {
+		$(v).remove()
+	});
+	$("#mainPageTabsContent").css("margin-left", "0");
+}

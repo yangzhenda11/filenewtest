@@ -269,7 +269,7 @@ function getIncomeOverviewData(){
 				}, {
 					value: incomeCollectedTotal,
 					name: '合同收入：'+App.unctionToThousands(incomeCollectedTotal)+'元'
-				}], '应收金额');
+				}], '实收金额');
 			}else{
 				var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 			};
@@ -343,7 +343,7 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 //	            center: ['50%', '53%'],
 				radius: ['30%', '53%'],
 	            clockwise: false,
-	            startAngle: 0,
+//	            startAngle: 0,
 //	            hoverAnimation: false,
 				label: {
  					color: "#333",
@@ -417,7 +417,7 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			name: '',
 			type: 'pie',
 			clockwise: false,
-			startAngle: 0,
+//			startAngle: 0,
 //			radius: '55%',
 //			center: ['50%', '53%'],
 			radius: ['30%', '53%'],

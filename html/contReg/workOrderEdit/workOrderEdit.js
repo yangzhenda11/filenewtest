@@ -464,9 +464,6 @@ function pushGDQRWorkflowOfDepart(){
  * 推下一步提交后台@功能页面
  */
 function pushGDQRDataOfDepart(chooseObj){
-	if(checkWcardIschange()){
-		return false;
-	};
 	var postData = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 	postData.wcardId = wcardId;
 	postData.contractId = contractId;
@@ -550,6 +547,30 @@ function pushGDQRWorkflowOfCompanyPost(chooseObj){
  */
 function chooseWorkflowLink(){
 	if(formSubmit){
+		if($("#contractScanCopyUpload")[0]){
+			var scanCopyUploadData = getValue_contractScanCopyUpload(true);
+			if(!scanCopyUploadData.bodyDoc.bodyDocStoreId){
+				if(wcardTypeCode == 2){
+    				var ms = "请上传合同签订盖章页扫描件后进行工单激活";
+				}else{
+					var ms = "请上传合同正文扫描件后进行工单激活";
+				};
+				showLayerErrorMsg(ms);
+				srolloOffect("#contractScanCopyUpload");
+				return false;
+			}
+    	};
+    	var adminCommitmentValue = $("#adminCommitmentContent input[name='adminCommitment']:checked").val();
+		if(adminCommitmentValue == 1){
+			var adminCommitment = 1;
+		}else{
+			var adminCommitment = 0;
+		};
+		if(adminCommitment == 0){
+			showLayerErrorMsg("请勾选合同管理员确认信息");
+			srolloOffect("#adminCommitmentContent");
+			return false;
+		};
 		chooseFlowLink(1,0,false,false,"chooseWorkflowLinkPost");
 	}else{
 		showLayerErrorMsg("页面加载失败");
@@ -618,6 +639,35 @@ function setPinfoContent(chooseObj){
 		});
 	}
 }
+/*
+ * 工单确认为第三环节时退回上一步
+ */
+function sendBackLastStep(){
+	if(formSubmit){
+		chooseFlowLink(2,1,true,false,"sendBackLastStepPost");
+	}else{
+		showLayerErrorMsg("页面加载失败");
+		return false;
+	}
+}
+/*
+ * 工单确认为第三环节时退回上一步提交
+ */
+function sendBackLastStepPost(chooseObj){
+	var btnData = $("#sendBackBtn").data("btnname");
+	layer.confirm("是否要退回"+btnData+"？",{icon:7,title:"提示"},function(index){
+		layer.close(index);
+		var postData = App.getFlowParam(serverPath,wcardId,2,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+		postData.wcardId = wcardId;
+		postData.comment = chooseObj.commentVal;
+		App.formAjaxJson(serverPath + "contractOrderEditorController/saveWorkflowBackLastStep", "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			layer.alert("退回成功",{icon:1},function(index){
+				backPage();
+			});
+		}
+	});
+}
 //撤回@功能页面
 function returnProcess(){
 	if(formSubmit){
@@ -642,38 +692,6 @@ function returnProcess(){
 		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
-}
-/*
- * 工单确认为第三环节时退回上一步
- */
-function sendBackLastStep(){
-	if(formSubmit){
-		chooseFlowLink(2,1,true,false,"sendBackLastStepPost");
-	}else{
-		showLayerErrorMsg("页面加载失败");
-		return false;
-	}
-}
-/*
- * 工单确认为第三环节时退回上一步提交
- */
-function sendBackLastStepPost(chooseObj){
-	var btnData = $("#sendBackBtn").data("btnname");
-	layer.confirm("是否要退回"+btnData+"？",{icon:7,title:"提示"},function(index){
-		layer.close(index);
-			if(checkWcardIschange()){
-			return false;
-		};
-		var postData = App.getFlowParam(serverPath,wcardId,2,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
-		postData.wcardId = wcardId;
-		postData.comment = chooseObj.commentVal;
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveWorkflowBackLastStep", "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
-			layer.alert("退回成功",{icon:1},function(index){
-				backPage();
-			});
-		}
-	});
 }
 /*
  * 检查工单状态和合同状态是否发生了改变
@@ -1103,7 +1121,7 @@ function getContentValue(isSubmit) {
 			showLayerErrorMsg(errordata);
 		}else{
 			showLayerErrorMsg("当前工单表单校验未通过，请检查");
-		}
+		};
     	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	return false;
 	}else if(isPass == true){

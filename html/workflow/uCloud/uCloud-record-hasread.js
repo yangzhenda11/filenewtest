@@ -12,11 +12,7 @@ $(function(){
 
 function getInitInfo(){
 	var ajaxObj = {
-<<<<<<< HEAD
 		    "url" :  serverPath+"recordToread/selectByReadTypeCode",
-=======
-		    "url" :  "/recordToread/selectByReadTypeCode",
->>>>>>> eb44b9b1453ddb6026370bffe6e4b1ee2c62ec2f
 		    "type" : "post",
 		    "data": {"readTypeCode":readTypeCode}
 		};

@@ -952,7 +952,7 @@ function initWarningOverviewCharts(){
 	    series: [{
 	        data: [lineArrearage, lineException, contractException, businessException ],
 	        type: 'bar',
-	        barWidth:'45%',
+	        barWidth:'40%',
 	        itemStyle: {   
                 normal:{  
                     color: function (params){

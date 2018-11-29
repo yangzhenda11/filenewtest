@@ -210,6 +210,8 @@ function initIncomeAnalysisCharts(incomeChartData){
 			    name:'实收金额',
 			    type:'bar',
 			    stack: '风险收入',
+			    barGap: 0.05,
+	            barMaxWidth: 50,
 			    data: riskIncomeCollectedAmountList
 			},
 			{
@@ -224,6 +226,8 @@ function initIncomeAnalysisCharts(incomeChartData){
 	            name:'实收金额',
 	            type:'bar',
 	            stack: '合同收入',
+	            barGap: 0.05,
+	            barMaxWidth: 50,
 	            data: incomeCollectedAmountList
 	        },
 	        {

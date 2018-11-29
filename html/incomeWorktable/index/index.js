@@ -269,7 +269,7 @@ function getIncomeOverviewData(){
 				}, {
 					value: incomeCollectedTotal,
 					name: '合同收入：'+App.unctionToThousands(incomeCollectedTotal)+'元'
-				}], '应收金额');
+				}], '实收金额');
 			}else{
 				var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 			};

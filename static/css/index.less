@@ -208,4 +208,18 @@ html {
   top: 0;
   background: #d11718;
 }
-
+#workItemDom{white-space:nowrap;}
+@media screen and (max-width: 1360px){
+    #navbar{padding-left: 0;}
+    .navbar .navbar-brand{font-size: 20px;margin-right:0px;}
+    #navbar .logo{height: 48px;}
+    .ace-nav{right: 4px;}
+    .ace-nav > li{margin-right: 6px;}
+    #worktableCol{left: 240px;}
+}
+@media screen and (max-width: 1270px){
+    #worktableCol{left: 240px;right: 340px;top:0;bottom:0;overflow: auto;}
+    #workItemDom{margin: 0;}
+    #workItemDom .workItem{height: 70px;}
+    #workItemDom .workItem .workItemImg{margin-top: 4px;}
+}

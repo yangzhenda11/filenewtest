@@ -126,7 +126,7 @@ function initInvoiceTable(type){
 			},
 			{"data": null,"title":"发票明细","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpInviceDetail(\""+data.invPayId+"\",\""+data.invoiceNnovateSum+"\")'>查看</a>";
+					return "<a onclick='jumpInviceDetail(\""+data.contractNumber+"\",\""+data.invoiceNnovateSum+"\")'>查看</a>";
 				}
 			}
 		]
@@ -148,11 +148,11 @@ function initPaymentTable(type){
 		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
 	var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
-//	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
-//	var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	var contractValueSum = totalData.contractValueSum ? App.unctionToThousands(totalData.contractValueSum) : 0;
+	var invoiceSumSum = totalData.invoiceSumSum ? App.unctionToThousands(totalData.invoiceSumSum) : 0;
 	$("#payVateAmountSumSum").text(payVateAmountSumSum+"元");
-//	$("#poAmountSumSum").text(poAmountSumSum+"元");
-//	$("#invoiceNnovateSumSum").text(invoiceNnovateSumSum+"元");
+	$("#contractValueSum").text(contractValueSum+"元");
+	$("#invoiceSumSum").text(invoiceSumSum+"元");
 	App.initDataTables('#paymentTable', {
 		ajax: {
 			"type": "POST",
@@ -179,12 +179,12 @@ function initPaymentTable(type){
 					return data == 1 ? "是" : "否";
 				}
 			},
-			{"data": "","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "invoiceSum","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
@@ -196,7 +196,7 @@ function initPaymentTable(type){
 			},
 			{"data": null,"title":"付款明细","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpPaymentDetail(\""+data.invPayId+"\",\""+data.payVateAmountSum+"\")'>查看</a>";
+					return "<a onclick='jumpPaymentDetail(\""+data.contractNumber+"\",\""+data.payVateAmountSum+"\")'>查看</a>";
 				}
 			}
 		]
@@ -205,15 +205,15 @@ function initPaymentTable(type){
 /*
  * 跳转发票明细
  */
-function jumpInviceDetail(invPayId,invoiceNnovateSum){
-	var url = "/html/expenseWorktable/paymentManage/invoiceDetail.html?invPayId="+invPayId+"&invoiceNnovateSum="+invoiceNnovateSum;
+function jumpInviceDetail(contractNumber,invoiceNnovateSum){
+	var url = "/html/expenseWorktable/paymentManage/invoiceDetail.html?contractNumber="+contractNumber+"&invoiceNnovateSum="+invoiceNnovateSum;
 	top.showSubpageTab(url,"发票明细");
 }
 /*
  * 跳转付款明细
  */
-function jumpPaymentDetail(invPayId,payVateAmountSum){
-	var url = "/html/expenseWorktable/paymentManage/paymentDetail.html?invPayId="+invPayId+"&payVateAmountSum="+payVateAmountSum;
+function jumpPaymentDetail(contractNumber,payVateAmountSum){
+	var url = "/html/expenseWorktable/paymentManage/paymentDetail.html?contractNumber="+contractNumber+"&payVateAmountSum="+payVateAmountSum;
 	top.showSubpageTab(url,"付款明细");
 }
 //发票管理-固定金额合同累计开票金额情况（图表）
@@ -444,7 +444,7 @@ function initCharts(title,data,isEmpty){
 	        bottom: 10,
 			selectedMode: false
 		},
-		color: ['#d11718', '#bfbfbf'],
+		color: ['#FD6D64', '#DBDBDB'],
 		series: [{
 			clockwise: false,
 //			hoverAnimation: false,

@@ -50,8 +50,8 @@ th, td { /*white-space: nowrap;*/ }
   border-right: 1px solid #ddd;
 }
 .table-bordered>tbody>tr>td{
-  border:none;
-  border-right: 1px solid #ddd;
+  /*border:none;*/
+  /*border-right: 1px solid #ddd;*/
 }
 .min-padding-left {
   padding-left:3px;
@@ -130,34 +130,56 @@ th, td { /*white-space: nowrap;*/ }
     border-bottom-left-radius: 0 !important;
 }
 
-
+/*
+ * 样式修改#d11718
+ */
 .navbar {
   margin: 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 10px;
   border-width: 0;
-  border-radius: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
-  min-height: 45px;
-  background: #d11718;
+  background: #fff;
+  position: relative;
+  border-bottom: 1px solid #eee;
 }
 .navbar .navbar-text,
 .navbar .navbar-link {
   color: #ffffff;
 }
+.navbar-container{
+	overflow: hidden;
+	height: 99px;
+}
 /*合同修改*/
 .navbar .navbar-brand {
-  color: #ffffff;
+  color: #000;
   font-size: 22px;
   text-shadow: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 20px;
   height: auto;
+}
+.navbar .navbar-brand>span{
+	position: relative;
+	top: 8px;
 }
 .navbar .navbar-brand:hover,
 .navbar .navbar-brand:focus {
-  color: #ffffff;
+  color: #000;
+}
+.navbar-container .navbar-buttons{
+		position: relative;
+    top: 30px;
+    width: 530px;
+    height: 70px;
+		background: url(/static/img/top_bg.gif);
+}
+@media (max-width: 1140px) {
+  .navbar-container .navbar-buttons{
+		width: 400px;
+		height: 89px;
+			background: url(/static/img/top_bg.gif);
+	}
 }
 /**
 @media (min-width: @grid-float-breakpoint) {
@@ -168,19 +190,10 @@ th, td { /*white-space: nowrap;*/ }
   }
 }
 */
-@media only screen and (min-width: 992px) {
-  .navbar-container {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
-.navbar-container.container {
-  padding-left: 0;
-  padding-right: 0;
-}
-.ace-nav {
+/*样式修改注释*/
+/*.ace-nav {
   height: 50px;
-  margin: 0 !important;f
+  margin: 0 !important;
 }
 .ace-nav > li {
   line-height: 50px;
@@ -218,6 +231,46 @@ th, td { /*white-space: nowrap;*/ }
   left: -10px;
   padding-right: 5px;
   padding-left: 5px;
+}*/
+.ace-nav {
+ 	position: absolute;
+ 	top: 20px;
+ 	right: 10px;
+}
+.ace-nav > li {
+  float: left;
+  margin-right:12px;
+}
+.ace-nav > li > a {
+  background-color: #d11718;
+  color: #FFF;
+  display: block;
+  line-height: inherit;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 20px;
+  padding: 0 8px;
+  position: relative;
+}
+.ace-nav > li > a > .ace-icon {
+  display: inline-block;
+  font-size: 16px;
+  color: #FFF;
+  text-align: center;
+  width: 20px;
+}
+.ace-nav > li > a > .badge {
+  position: absolute;
+  top: -7px;
+  left: 24px;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+#loginInfoCon .userloginInfo{
+	width: auto;
+	padding: 0 6px;
 }
 .ace-nav > li > a:hover,
 .ace-nav > li > a:focus,
@@ -381,11 +434,12 @@ th, td { /*white-space: nowrap;*/ }
 .ace-nav > li .dropdown-menu {
   z-index: 1031;
 }
+/*样式修改max-width: 40px;*/
 .ace-nav .nav-user-photo {
   margin: -4px 8px 0 0;
   border-radius: 100% !important;
   border: 2px solid #FFF;
-  max-width: 40px;
+  max-width: 34px;
 }
 .ace-nav li.dropdown-footer a .ace-icon {
   display: inline-block;
@@ -585,7 +639,7 @@ th, td { /*white-space: nowrap;*/ }
   font-size: 120%;
 }
 .user-info {
-  max-width: 100px;
+  /*max-width: 100px;*/
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1039,9 +1093,10 @@ th, td { /*white-space: nowrap;*/ }
   font-weight: bold;
 }
 /*合同修改*/
+/*样式修改height: 45px*/
 .nav-list > li > a {
   display: block;
-  height: 45px;
+  height: 39px;
   line-height: 25px;
   padding-left: 7px;
   text-shadow: none !important;
@@ -1078,9 +1133,10 @@ th, td { /*white-space: nowrap;*/ }
 .main-container.container .sidebar.sidebar-fixed:not(.h-sidebar) .nav-list > li:before {
   left: 0;
 }
-.nav-list > li:hover:before {
+/*样式修改*/
+/*.nav-list > li:hover:before {
   display: block;
-}
+}*/
 .nav-list > li a > .arrow {
   display: block;
   width: 14px !important;
@@ -1759,6 +1815,8 @@ body.mob-safari .sidebar.sidebar-fixed {
   display: none !important;
   height: auto !important;
   visibility: visible !important;
+  max-height: 260px;
+  overflow: auto;
 }
 .sidebar.menu-min .nav-list > li > .submenu:before {
   display: none;
@@ -3440,34 +3498,46 @@ body.mob-safari .sidebar.sidebar-fixed {
     border-radius: 2px !important;
     border:2px solid rgba(255,255,255,.8);
 }
-
+/*
+ * 样式修改top:50px
+ */
 #navbar .logo {
-	height: 40px;
+	height: 54px;
 	display: inline-block !important;
 	margin-right: 10px;
 	vertical-align: middle;
-	margin-top: -5px;
 }
-.main-container{position: absolute;left: 0;right: 0;top:50px;bottom: 0;transition: all .5s;}
+/*
+ * 样式修改top:50px
+ */
+.main-container{position: absolute;left: 0;right: 0;top:100px;bottom: 0;transition: all .5s;}
 .hideNavbar #navbar{transition: all .5s;}
 .hideNavbar .main-container{top: 0;}
 .sidebar{max-height: 100%;}
 .main-content{position:relative;height:100%!important;padding:0 10px;}
+
+/*
+ * 样式修改background: #fafafa
+ */
 .content-tabs {
-	position: relative;
-	height: 41px;
-	background: #fafafa;
-	line-height: 40px
+	position: absolute;
+	height: 38px;
+	top: -1px;
+	width: 100%;
+	background: #f8f8f8;
+	line-height: 37px
 }
 .content-tabs {
-	border-bottom: solid 1px #ccc
+	border-bottom: solid 1px #ddd;
+	border-top: solid 1px #ddd;
+	
 }
 
 .content-tabs .roll-nav,
 .page-tabs-list {
 	position: absolute;
-	width: 40px;
-	height: 40px;
+	width: 38px;
+	height: 36px;
 	text-align: center;
 	color: #999;
 	z-index: 2;
@@ -3487,8 +3557,8 @@ body.mob-safari .sidebar.sidebar-fixed {
 .content-tabs button {
 	background: #fff;
 	border: 0;
-	height: 40px;
-	width: 40px;
+	height: 32px;
+	width: 32px;
 	outline: 0
 }
 
@@ -3497,9 +3567,9 @@ body.mob-safari .sidebar.sidebar-fixed {
 }
 
 div.page-tabs {
-	margin-left: 40px;
+	margin-left: 38px;
 	width: 100000px;
-	height: 40px;
+	height: 38px;
 	overflow: hidden
 }
 
@@ -3527,24 +3597,24 @@ div.page-tabs .page-tabs-content {
 }
 
 .roll-right.J_tabRight {
-	right: 80px
+	right: 64px
 }
 
 .roll-right.btn-group {
-	right: 40px;
-	width: 40px;
+	right: 32px;
+	width: 32px;
 	padding: 0
 }
 
 .roll-right.btn-group button {
-	width: 40px;
+	width: 34px;
 	white-space: nowrap;
 }
 
 .roll-right.J_tabRefresh {
 	background: #fff;
-	height: 40px;
-	width: 40px;
+	height: 32px;
+	width: 32px;
 	outline: 0
 }
 
@@ -3556,8 +3626,8 @@ div.page-tabs .page-tabs-content {
 	position: absolute;
 	left: 10px;
 	right: 10px;
-	top: 41px;
 	bottom: 0;
+	top: 38px;
 	overflow: hidden;
 }
 .page-tabs a {
@@ -3568,11 +3638,12 @@ div.page-tabs .page-tabs-content {
 	color: #ccc;
 	margin-left: 2px;
 }
-
+/*样式修改*/
 .page-tabs a.active {
 	position: relative;
 	background: #FFF;
-	color: #ca5952;
+	color: #d11718;
+	font-weight: bold;
 }
 .page-tabs a.active:after{
 	content: '';
@@ -3581,7 +3652,7 @@ div.page-tabs .page-tabs-content {
 	bottom: 0;
 	width: 100%;
 	height:0;
-	border-bottom: 1px solid #ca5952;
+	border-bottom: 2px solid #ca5952;
 }
 .navbar-setting{
     width: 24px !important;
@@ -6209,8 +6280,9 @@ div.dataTables_processing {
   box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.25);
   border-color: rgba(255, 255, 255, 0.35);
 }
+/*样式修改background-color: #f2f2f2;*/
 .no-skin .sidebar {
-  background-color: #f2f2f2;
+  background-color: #fff;
   border-style: solid;
   border-color: #cccccc;
   border-width: 0 1px 0 0;
@@ -6308,8 +6380,9 @@ div.dataTables_processing {
 .no-skin .nav-list > li.active > .submenu > li:before {
   border-color: #8eb3d0;
 }
+/*样式修改background-color: #f3f3f3;*/
 .no-skin .sidebar-toggle {
-  background-color: #f3f3f3;
+  background-color: #f8f8f8;
   border-color: #e0e0e0;
 }
 .no-skin .sidebar-toggle > .ace-icon {

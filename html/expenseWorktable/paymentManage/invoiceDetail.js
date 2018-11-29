@@ -4,7 +4,7 @@ var serverPath = config.serverPath;
 //获取传递的参数
 var parm = App.getPresentParm();
 $(function(){
-	if(!parm.invPayId){
+	if(!parm.contractNumber){
 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
 	};
@@ -23,7 +23,7 @@ function initInvoiceDetailTable(){
 	        "contentType":"application/json;charset=utf-8",
 			"url": serverPath + 'paymentManageInfo/listPaymentManageInfo',
 			"data": function(d) {
-	        	d.invPayId = parm.invPayId;
+	        	d.contractNumber = parm.contractNumber;
 				return JSON.stringify(d);;
 			}
 		},

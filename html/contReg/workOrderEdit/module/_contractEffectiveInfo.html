@@ -1,13 +1,15 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-		<span><i class="iconfont icon-layers"></i> 合同生效信息</span>
+		<div class="fieldset-title">
+			<p>合同生效信息</p><span></span>
+		</div>
 		<div class="form-fieldset-tools">
 			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row defaultFieldsetForm" id="validityForm">
-			<div class="portlet" id="undertakerCommitmentContent">
+			<div class="portlet" id="undertakerCommitmentContent" style="margin: 10px;">
                 <div class="portlet-body form">
                     <p class="margin-top-10">承办人确认信息：</p>
 					<div>
@@ -20,7 +22,7 @@
 					</div>
             	</div>
        	    </div>
-       	    <div class="portlet hidden" id="adminCommitmentContent">
+       	    <div class="portlet hidden" id="adminCommitmentContent" style="margin:10px;">
                 <div class="portlet-body form">
                     <p class="margin-top-10">合同管理员确认信息：</p>
 					<div>
@@ -33,7 +35,7 @@
 					</div>
             	</div>
        	    </div>
-       	    <div class="portlet" id="payerAccountInfo">
+       	    <div class="portlet" id="payerAccountInfo" style="margin: 10px;">
                 <div class="portlet-title ">
                     <div class="caption font-dark contract">
                         <span class="caption-subject bold uppercase">我方签订盖章日期信息</span>
@@ -56,7 +58,7 @@
 					</table>
             	</div>
        	   	</div>
-       	    <div class="portlet" id="payerAccountInfo">
+       	    <div class="portlet" id="payerAccountInfo" style="margin: 10px;">
                 <div class="portlet-title ">
                     <div class="caption font-dark contract">
                         <span class="caption-subject bold uppercase">对方签订盖章日期信息</span>
@@ -157,6 +159,29 @@
 	</div>
 </div>
 <script type="text/javascript">
+	/*
+	 * 2阶段，更新终止日期
+	 */
+	function changeExpiryDate(){
+		layer.confirm("请确认是否更新？",{icon:7,title:"系统提示"},function(index){
+			layer.close(index);
+			if(checkWcardIschange() == false){
+				var postData = App.getFlowParam(serverPath,wcardId,1,0,"Contract_end_update",contractAttr.provinceCode,contractAttr.city,"","","");
+				postData.validity = {};
+				postData.validity.validityId = $("#validityId").val();
+				postData.wcardId = wcardId;
+				postData.validity.expiryDate = $("#expiryDate").val();
+				var url = serverPath + "contractOrderEditorController/updateExpiryDate";
+				App.formAjaxJson(url, "POST", JSON.stringify(postData), successCallback);
+				function successCallback(result) {
+					layer.alert("更新成功！",{icon:1},function(){
+						backPage();
+					});
+				}
+			}
+			
+		});
+	}
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
@@ -296,6 +321,10 @@
 					App.initFormSelect2("#validityForm",true);
 				}
 			};
+			if(editIdentify.isCanUpdateExpiryDate){
+				$("#expiryDate").removeAttr("disabled");
+				$("#expiryDate").css({"cursor":"pointer","background-color":"#fff"})
+			}
 			if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 				$("#adminCommitmentContent").removeClass("hidden");
 				if(specialDomEdit == true){

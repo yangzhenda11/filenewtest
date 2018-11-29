@@ -112,7 +112,7 @@ function test(){
 (function (_, $) {
     $("#fileName").fileinput({
         language: 'zh', 
-        uploadUrl: serverPath + 'fileload/uploadFileS3', // 用于文件上传的服务器端请求地址
+        uploadUrl: serverPath + 'fileload/uploadFileS3TwoStage\n', // 用于文件上传的服务器端请求地址
         uploadAsync: false,
 //         allowedFileExtensions: ['ini'],
         maxFileSize: 51200,
@@ -131,13 +131,13 @@ function test(){
     });
     // 异步上传成功结果处理
     $("#fileName").on("fileuploaded", function (event, data) {
-    	alert(data.response.message);
+    	alert(data.response.message+'key值：'+data.response.data);
     	var table = $('#uploadTable').DataTable();
     	table.ajax.reload();
     });
     // 同步上传成功结果处理
     $("#fileName").on("filebatchuploadsuccess", function (event, data) {
-    	alert(data.response.message);
+    	alert(data.response.message+'key值：'+data.response.data);
     	$("#fileName").fileinput('reset')
     	var table = $('#uploadTable').DataTable();
     	table.ajax.reload();

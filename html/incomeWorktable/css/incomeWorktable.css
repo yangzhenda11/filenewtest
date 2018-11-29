@@ -73,6 +73,7 @@ td.milestoneLegend{
 	height: 450px;
 	display: inline-block;
 	margin-top: 26px;
+	margin-bottom: 16px;
 }
 .incomeAnalysisTitle p{
 	display: inline-block;
@@ -84,6 +85,14 @@ td.milestoneLegend{
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
+	margin-top: 8px;
+}
+.minWidth60{
+	min-width: 60px;
+	display: inline-block;
+}
+.remark-list{
+	width: 95%;
 }
 /*客户服务*/
 #businessEmptyDom{
@@ -121,6 +130,15 @@ td.milestoneLegend{
 }
 #warningOverviewCharts{
 	width: 60%;
+	min-width: 800px;
 	height: 340px;
 	display: inline-block;
+}
+
+.parmTitle{
+	margin-bottom: 6px;
+	font-weight: bold;
+}
+#assessedTbody .form-group{
+	margin: 0;
 }

@@ -3,7 +3,8 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 var parm = App.getPresentParm();
 $(function(){
-	if(!parm.managerStaffOrgId && !parm.customerCode){
+	//alert(JSON.stringify(parm));
+	if(!parm.managerStaffOrgId && !parm.customerCode && !parm.customerName && !parm.partnerCode){
 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
 	}
@@ -20,7 +21,7 @@ function searchPerformContract(){
  * 我的客户查询表格初始化
  */
 function initPerformContractTable(){
-	if(parm.customerCode){
+	if(parm.customerCode || parm.customerName || parm.partnerCode){
 		var url = serverPath + 'performanceContract/listContractByCustomerCode';
 	}else if(parm.managerStaffOrgId){
 		var url = serverPath + 'performanceContract/listContractByManagerStaffOrgId';
@@ -34,13 +35,16 @@ function initPerformContractTable(){
 	        "contentType":"application/json;charset=utf-8",
 			"url": url,
 			"data": function(d) {
-				if(parm.customerCode){
+				if(parm.customerCode || parm.customerName || parm.partnerCode) {
 					d.customerCode = parm.customerCode;
-				}else{
+					d.customerName = parm.customerName;	
+					d.partnerCode = parm.partnerCode;	
+				}
+				else if(parm.managerStaffOrgId) {
 					d.managerStaffOrgId = parm.managerStaffOrgId;
 				};
 	        	d.contractInfoSearch = $("#contractInfoInput").val().trim();
-				return JSON.stringify(d);;
+				return JSON.stringify(d);
 			}
 		},
 		"columns": [
@@ -72,9 +76,10 @@ function initPerformContractTable(){
  * 跳转线路信息
  */
 function jumpLineManage(data){
-	var url = "/html/incomeWorktable/incomeManage/lineView.html?id="+data+"&relationType=1&returnbtn=true";
+	var url = "/html/incomeWorktable/lineManage/lineView.html?contractId="+data+"&relationType=1&returnbtn=true";
 	App.changePresentUrl(url);
 }
+
 /*
  * 页面内表格初始化完成之后查询事件
  */

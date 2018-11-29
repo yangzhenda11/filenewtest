@@ -660,6 +660,7 @@ var App = function() {
 					}
 				},
 				error: function(result) {
+					loadEnd();
 					if(errorCallback){
 						errorCallback(result);
 					}else if(result.status == 0){
@@ -675,12 +676,12 @@ var App = function() {
 							top.window.location.href = "/overtime.html";
 						}else{
 							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-			        			top.window.location.href = "/login";
+			        			top.window.location.href = "/login.html";
 			        		});
 						}
-		    		}else{
-		    			layer.alert("接口错误", {icon: 2,title:"错误"});
-		    		};
+	        		}else{
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        		};
 				}
 			});
 		},
@@ -699,7 +700,7 @@ var App = function() {
 					top.window.location.href = "/overtime.html";
 				}else{
 					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-	        			top.window.location.href = "/login";
+	        			top.window.location.href = "/login.html";
 	        		});
 				}
     		}else{
@@ -1016,7 +1017,7 @@ var App = function() {
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
 		  	}).on('xhr.dt', function ( e, settings, json, xhr ) {
-		  		App.stopLoading(btn);
+	        	App.stopLoading(btn);
 	        	loadEnd();
 	        	if(xhr.responseText.indexOf("会话已经超时") != -1 && xhr.responseJSON == null){
 					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
@@ -1035,7 +1036,7 @@ var App = function() {
 						top.window.location.href = "/overtime.html";
 					}else{
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-		        			top.window.location.href = "/login";
+		        			top.window.location.href = "/login.html";
 		        		});
 					}
 		        }else if(xhr.status == 0){
@@ -1070,6 +1071,16 @@ var App = function() {
 			var getTimestamp=new Date().getTime();
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
+		},
+		/**
+		 * 检查是否为null，为null时返回""
+		 */
+		checkEmptyData: function(data){
+			if(data == null){
+				return "";
+			}else{
+				return data;
+			}
 		},
 		/*
 		 * 时间戳转时间
@@ -1167,59 +1178,76 @@ var App = function() {
          * }
          */
         setCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-        	var cacheList = [];
-        	$("#"+el).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
-				var formName = $(formItem).attr('name');
-				if(formName != undefined){
-					var formType = formItem.type;
-					if(formType == "text" || formType == "hidden" || formType == "select-one") {
-						var val = $(formItem).val();
-						if(val){
-							var cacheItem = {
-								name: formName,
-								val: val
-							};
-							cacheList.push(cacheItem);
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		var cacheList = [];
+	        	$("#"+elArr[i]).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+					var formName = $(formItem).attr('name');
+					if(formName != undefined){
+						var formType = formItem.type;
+						if(formType == "text" || formType == "hidden" || formType == "select-one") {
+							var val = $(formItem).val();
+							if(val){
+								var cacheItem = {
+									name: formName,
+									val: val
+								};
+								cacheList.push(cacheItem);
+							}
 						}
 					}
+				});
+				if(cacheList.length > 0){
+					if(top._paramCache[pageId] == undefined){
+						top._paramCache[pageId] = {};
+					};
+					top._paramCache[pageId][elArr[i]] = cacheList;
 				}
-			});
-			if(cacheList.length > 0){
-				if(top._paramCache[pageId] == undefined){
-					top._paramCache[pageId] = {};
-				};
-				top._paramCache[pageId][el] = cacheList;
-			}
+        	}
         },
         /*
          * 页面参数读取赋值
          */
         readCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-			if(top._paramCache[pageId] == undefined){
+        	if(top._paramCache[pageId] == undefined){
 				return;
-			}else if(top._paramCache[pageId][el] == undefined){
-				return;
-			}else{
-				var cacheList = top._paramCache[pageId][el];
-				$.each(cacheList, function(k,v) {
-	                var sel = ":input[name='" + v.name + "']";
-	                var obj = $("#"+el).find(sel);
-	                if(obj.length > 0){
-	                    var objType = obj[0].type;
-	                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
-	                        obj.val(v.val);
-	                        if(objType == "select-one"){
-	                        	try{
-	                        		obj.trigger('change');
-	                        	}catch(e){}
-	                        }
-	                    }
-	                }
-				});
-				delete top._paramCache[pageId][el];
-			}
+			};
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		if(top._paramCache[pageId][elArr[i]] == undefined){
+					return;
+				}else{
+					var cacheList = top._paramCache[pageId][elArr[i]];
+					$.each(cacheList, function(k,v) {
+		                var sel = ":input[name='" + v.name + "']";
+		                var obj = $("#"+elArr[i]).find(sel);
+		                if(obj.length > 0){
+		                    var objType = obj[0].type;
+		                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
+		                        obj.val(v.val);
+		                        if(objType == "select-one"){
+		                        	try{
+		                        		obj.trigger('change');
+		                        	}catch(e){}
+		                        }
+		                    }
+		                }
+					});
+					delete top._paramCache[pageId][elArr[i]];
+				}
+        	}
         },
         /*
          * 页面参数是否存在
@@ -1411,17 +1439,21 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
-				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
+				    for(var i = 0; i < strs.length; i ++) {
+				    	var strsItem = decodeURI(strs[i].split("=")[1]);
+				    	if(strsItem == "null"){
+				    		strsItem = null;
+				    	}
+				        theRequest[strs[i].split("=")[0]] = strsItem;   
 				    }
-				}   
-				return theRequest;   
+				}
+				return theRequest;
         	}
         },
         getQueryString : function(name){
         	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
 		    var r = window.location.search.substr(1).match(reg); 
-		    if (r != null) return decodeURI(r[2]); 
+		    if (r != null) return decodeURI(r[2]);
 		    return null; 
         },
         /*
@@ -1435,7 +1467,7 @@ var App = function() {
          * dom.操作按钮父级ID值
          * dixScrollTop.滚动固定的高度
          */
-        fixToolBars : function(dom,dixScrollTop){
+        fixToolBars: function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
 				if(topScroll > dixScrollTop){
@@ -1443,6 +1475,25 @@ var App = function() {
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
+			})
+        },
+         /*
+         * 回到顶部固定操作按钮
+         * dom.操作按钮ID值
+         */
+        fixScrollTopTool: function(dom){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				if(topScroll > 0){
+					$(dom).css("display","block");
+				}else{
+					$(dom).css("display","none");
+				}
+			});
+			$(dom).on("click",function(){
+				$(".page-content").animate({
+					scrollTop:0
+				},300)
 			})
         },
         /*
@@ -1942,7 +1993,7 @@ function onAsyncError(event, treeId, treeNode, xhr, textStatus, errorThrown) {
 			top.window.location.href = "/overtime.html";
 		}else{
 			layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-    			top.window.location.href = "/login";
+    			top.window.location.href = "/login.html";
     		});
 		}
 	}else{
@@ -2058,7 +2109,7 @@ if (!Array.prototype.lastIndexOf) {
       }
     }
     return -1;
-  };
+  	};
 }
 /*
  * datatable跳转至第**页

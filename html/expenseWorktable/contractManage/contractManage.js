@@ -111,15 +111,15 @@ function showContractPerformerModal(contractId) {
 		if(data.length > 0){
 			for (var i = 0; i < data.length; i++) {
 				var item = data[i];
-				var performerType = item.performerType == 1 ? "是" : "否";
+				// var performerType = item.performerType == 1 ? "是" : "否"; delete 20181019
 				html += "<tr>"+
 							"<td class='align-center'>"+(i+1)+"</td>"+
 							"<td>"+item.performerStaffName+"</td>"+
 							"<td>"+item.performerOrgName+"</td>"+
-							"<td>"+performerType+"</td>"+
-							"<td></td>"+"<td></td>"+
-							"<td>"+item.addStaff+"</td>"+
-							"<td>"+item.addStaffOrg+"</td>"+
+//							"<td>"+performerType+"</td>"+      delete 20181019
+//							"<td></td>"+"<td></td>"+
+//							"<td>"+item.addStaff+"</td>"+
+//							"<td>"+item.addStaffOrg+"</td>"+
 						"</tr>";
 			}
 		}else{
@@ -136,14 +136,14 @@ function showContractPerformerModal(contractId) {
  */
 function focusContract(contractId){
 	var url = serverPath + "performanceContractPay/saveFocusContractPay";
-	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定重点关注该合同？", {icon: 0}, function() {
     	var postData = {
         	contractId: contractId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			if(result.data == 1) {
-				layer.msg("已添加重点关注");
+				layer.msg("重点关注成功！");
 				var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 				if(isInitFocusContractTable){
 					if($("#focusContractList .form-fieldset-body").is(':hidden')){
@@ -153,7 +153,7 @@ function focusContract(contractId){
 					};
 				}
 			} else {
-				layer.msg("已关注，无需重新关注");				
+				layer.msg("已重点关注，无需重新关注！");				
 			}
 		}
    	});
@@ -219,7 +219,7 @@ function initFocusContractTable(){
  * 我重点关注的合同删除重点关注
  */
 function deleteFocusContract(contractId, focusId){
-	layer.confirm('确定取消该合同的重点关注?', {icon: 0}, function() {
+	layer.confirm('确定不再重点关注该合同？', {icon: 0}, function() {
     	var url = serverPath + "performanceContractPay/delFocusContractByIdPay";
 		var postData = {
 			contractId: contractId,
@@ -227,7 +227,7 @@ function deleteFocusContract(contractId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已删除重点关注");
+			layer.msg("取消重点关注成功！");
 			reloadPageDataTable("#focusContractTable",true);
 		}
    	});

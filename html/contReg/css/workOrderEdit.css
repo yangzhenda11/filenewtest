@@ -21,7 +21,7 @@
 #effectiveDate,
 #expiryDate {
   cursor: pointer;
-  background: #fbfbfb url(/static/img/calendar.png?t=1542966065965) no-repeat right;
+  background: #FBFBFB url(/static/img/calendar.png?t=1543454749878) no-repeat right;
 }
 #contractAttachment {
   margin-top: 20px;
@@ -42,7 +42,7 @@
  * 工单编辑
  */
 #toolbarBtn {
-  height: 120px;
+  height: 130px;
 }
 #toolbarBtn .wcardTypeTitle,
 #toolbarBtn .wcardTypeContent {
@@ -62,6 +62,19 @@
 #toolbarBtn button {
   padding-top: 4px;
   padding-bottom: 4px;
+}
+#toolbarBtn button i {
+  display: inline-block;
+}
+.blue {
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+}
+.blue:hover {
+  background: #eee;
+}
+.blue:active {
+  background: #eee;
 }
 #wcardTypeMenuContent button {
   margin: 0 4px 0 3px;

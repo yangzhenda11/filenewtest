@@ -19,7 +19,11 @@ var contractAttr = {
 	provinceCode: null,				//合同所属省份
 	city: null,						//合同所属城市
 	executeDeptCode: null			//承办人所在部门编码
-}
+};
+var editIdentify = {						//2阶段新增标志位
+	isCanUpdateExpiryDate: false,			//*特殊* 是否可以更新终止日期
+	isCanUpdateCustomerManager: false		//*特殊* 是否可以更新客户经理
+};	
 var contractStatusObj = {
 	1: "已审批",
 	2: "作废",
@@ -29,6 +33,7 @@ var contractStatusObj = {
 	7: "办结",
 	8: "履行中"
 }
+
 var curStaffOrgId = config.curStaffId;	//工作流需要用户ID
 var orderLayerIndex = null;				//layer提示index
 //预定义dom元素
@@ -37,20 +42,35 @@ var $workOrderContentForm = $("#workOrderContentForm"),$pageContent = $("#page-c
  * 页面标志位修改
  * 页面是待办且为工单处理时才可以编辑
  */
-if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-	isEdit = true;
-};
-
+if(parm.taskFlag == "db"){
+	if(parm.taskDefinitionKey == "GDCL"){
+		isEdit = true;
+	}else if(parm.taskDefinitionKey == "GXZZ"){
+		editIdentify.isCanUpdateExpiryDate = true;
+	}else if(parm.taskDefinitionKey == "TJKH"){
+		editIdentify.isCanUpdateCustomerManager = true;
+	}
+}
 $(function() {
 	wcardId = parm.wcardId;
 	if(parm.pageType == 1) {		//工作流页面进入
 		layer.alert("入参错误",{icon:2});
 	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
 		$("#flowNote").remove();
-		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
-		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".registerBtn,.cancelApprovedBtn,.returnBtn").remove();
+		if(parm.taskFlag == "db"){
+			if(parm.taskDefinitionKey == "GDCL"){
+				$(".sendBackBtn,.activateBtn,.returnBtn,.changeExpiryDateBtn").remove();
+			}else if(parm.taskDefinitionKey == "GDQR"){
+				$(".registerBtn,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
+			}else if(parm.taskDefinitionKey == "GXZZ"){
+				$("#toolbarButton button").not(".closeBtn,.changeExpiryDateBtn,.flowhistoryBtn,.flowchartBtn").remove();
+			}else if(parm.taskDefinitionKey == "KHQR"){
+				$("#toolbarButton button").not(".closeBtn").remove();
+			}else if(parm.taskDefinitionKey == "TJKH"){
+				$("#toolbarButton button").not(".closeBtn").remove();
+			};
+		}else{
+			showLayerErrorMsg("入参错误");
 		};
 		fixToolBars();
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
@@ -279,6 +299,13 @@ function activateContract(e,chooseLinkcode){
 		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
+}
+/*
+ * 客户经理确认待办变已办
+ */
+function customerManagerFinish(){
+	var postData = App.getFlowParam(serverPath,wcardId,1,0,"Customer_add_Process",contractAttr.provinceCode,contractAttr.city,"","","");
+	App.formAjaxJson(serverPath + "contractOrderEditorController/saveCustomerManagerProcess", "post", JSON.stringify(postData));
 }
 /*
  * 工单确认第一种类型（保存业务信息，推动流程）
@@ -700,7 +727,7 @@ function saveContent(){
     	};
 		saveContentPost(submitData,"GDQR");
 	}else{
-		//删除多于表格内的数据
+		//删除多余表格内的数据
 		removeMoreThanTablecontent();
 		//检查是否长度超长
 		if(checkDomOverlength()){
@@ -835,6 +862,10 @@ function getContractCityCode(executeDeptId,domObj){
 			$pageContent.removeClass("hidden");
 			//设置各dom元素
 			setDomContent(domObj);
+			//客户经理待办确认，不进行任何操作，待办变已办。
+			if(parm.taskDefinitionKey == "KHQR"){
+				customerManagerFinish();
+			};
 			//如果为工单待办激活请求已阅接口
 			setHaveRead();
 		}else{
@@ -930,7 +961,11 @@ function checkWcardProcessId(){
 			if(wcardProcess == 1){
 				isPass = true;
 			}
-		}
+		}else if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
+			if(wcardStatus == "904030"){
+				isPass = true;
+			}
+		};
 	}else{
 		isPass = true;
 	};
@@ -941,13 +976,23 @@ function checkWcardProcessId(){
  */
 function returnContractStatus(){
 	if(parm.taskFlag == "db"){
-		if(contractStatus == 1){
-			return false;
-		}else if(contractStatusObj[contractStatus] == undefined){
-			return "当前合同状态未知，请稍后操作。";
+		if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
+			if(contractStatus == 8){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
+				return "当前合同状态未知，请稍后操作。";
+			}else{
+				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+			}
 		}else{
-			return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
-		}
+			if(contractStatus == 1){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
+				return "当前合同状态未知，请稍后操作。";
+			}else{
+				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+			}
+		};
 	}else{
 		return false;
 	};
@@ -980,6 +1025,11 @@ function loadComplete() {
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
+	if(editIdentify.isCanUpdateExpiryDate){
+		srolloOffect("#payerAccountInfo",3);
+	}else if(editIdentify.isCanUpdateCustomerManager){
+		srolloOffect("#customerManagerList",2);
+	};
 }
 
 /*
@@ -1368,10 +1418,49 @@ function setHaveRead(){
 //})
 //返回上一页
 function backPage(){
+	var isSave = false;
+	var customerManagerCompList = [];
+	var getCustomerManagerInfoCompList = [];
 	if(parm.isucloud == "true"){
 		layer.confirm("是否关闭此页面?",{icon:7,title:"提示"},function(index){
 			top.closeWindow();
 		});
+	}else if(editIdentify.isCanUpdateCustomerManager == true){
+		var customerManagerList = getValue_customerManagerList(true);
+		if(customerManagerList.length != getCustomerManagerInfoList.length){
+			layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+				saveCustomerManager();
+			}, function(){
+				var pageId = self.frameElement.getAttribute('data-id');
+				top.closeIfreamSelf(pageId);
+			});
+		}else{
+			for (var i = 0; i < customerManagerList.length; i++) {
+				customerManagerCompList.push(customerManagerList[i].managerId);
+			}
+			for (var j = 0; j < getCustomerManagerInfoList.length; j++) {
+				getCustomerManagerInfoCompList.push(getCustomerManagerInfoList[j].managerId);
+			}
+			customerManagerCompList.sort();
+			getCustomerManagerInfoCompList.sort();
+			for (var q = 0; q < customerManagerCompList.length; q++) {
+				if(customerManagerCompList[q] != getCustomerManagerInfoCompList[q]){
+					isSave = true;
+				}
+			}
+			if(isSave == true){
+				layer.confirm("请确认是否需要保存。",{icon:7,title:"提示"},function(index){
+					saveCustomerManager();
+				}, function(){
+					var pageId = self.frameElement.getAttribute('data-id');
+					top.closeIfreamSelf(pageId);
+				});
+			}else{
+				var pageId = self.frameElement.getAttribute('data-id');
+				top.closeIfreamSelf(pageId);
+			}
+		}
+		
 	}else{
 		window.history.go(-1);
 	}
@@ -1400,8 +1489,8 @@ function getBusiProcessInfoID(){
 					busiProcess += "<p>【"+ o +"】  合同管理员-"+createdName+"  审核意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
 				}
 			};
-			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><span><i class="iconfont icon-layers"></i> 工单处理意见</span><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
-				'<div class="row">'+busiProcess+'</div></div></div>';
+			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><div class="fieldset-title"><p>工单处理意见</p><span></span></div><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
+				busiProcess+'</div></div>';
 			if(isCancelApproved && parm.taskFlag == "db"){
 				$("#workOrderContent").prepend(html);
 			}else{
@@ -1414,8 +1503,8 @@ function getBusiProcessInfoID(){
  * 滚动固定
  */
 function fixToolBars(){
-	$(".page-content").scroll(function(){
-		var topScroll = $(".page-content").scrollTop();
+	$pageContent.scroll(function(){
+		var topScroll = $pageContent.scrollTop();
 		if(topScroll > 0){
 			$("#scrollTopTool").css("display","block");
 			$("#toolbarBtnContent").css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"#fff","padding-top":"6px"});

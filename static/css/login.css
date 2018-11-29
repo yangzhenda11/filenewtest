@@ -9,11 +9,11 @@ body{background: #fff;}
 input,button{outline: none !important;}
 .alert-danger{margin-bottom: 8px;padding: 6px 15px 6px;}
 .login-content{ position: absolute; top: 40%; left: 0; right: 0;}
-.login-bg{background: url(/static/img/login-top-bg.png?t=1540371903181) no-repeat center center; position: absolute; left: 0; top: 0; height: 40%; background-size:cover; overflow: hidden;width: 100%;text-align: center;}
+.login-bg{background: url(/static/img/login-top-bg.png?t=1543457103266) no-repeat center center; position: absolute; left: 0; top: 0; height: 40%; background-size:cover; overflow: hidden;width: 100%;text-align: center;}
 .login-bg img{width:35%;height: 100%;}
 .content-redbg{ background: #de262b; padding-top: 30px; padding-bottom: 10px;}
 .content-graybg{ background: #444444; height: 45px;}
-.logo-bg{ background: url(/static/img/logo-bg.png?t=1540371903181) no-repeat; width: 174px; position: absolute; z-index: 99; top: -120px; left:100px; padding: 130px 5px 230px 5px;}
+.logo-bg{ background: url(/static/img/logo-bg.png?t=1543457103266) no-repeat; width: 174px; position: absolute; z-index: 99; top: -120px; left:100px; padding: 130px 5px 230px 5px;}
 .logo-bg img{ width: 100%; height: 100%;}
 .login-title{ color: #fff;}
 .login-title h2{ margin-top: 5px;}

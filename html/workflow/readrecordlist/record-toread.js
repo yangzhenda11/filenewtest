@@ -44,16 +44,16 @@ function getTableToread(){
 			},
 	        {
 	            "data": "readTitle",
-	            title: "主题",
+	            "title": "主题",
 	            "className": "whiteSpaceNormal",
-	            render: function(data, type, row, meta) {
+	            "render": function(data, type, row, meta) {
 	            	var assignee = row.receivedStaffOrgId
 		        	var fn = "";
 		        	var style = "";
 		        	var buttontitle = null;
 		        	var readIds=row.readId;
 		        	if(curStaffOrgId == assignee){
-	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"',"+row.bussId+")";
+	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"','"+row.bussId+"')";
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";
@@ -84,7 +84,7 @@ function getTableToread(){
 //跳转待阅页面
 function  findDetail(readId,url,bussId) {
 	App.setCache("searchForm");
-	App.changePresentUrl(url+"&bussid="+bussId+"&readid="+readId);
+	App.changePresentUrl(url+"&bussid="+bussId);
 	changeReadStatus(readId);
 }
 /*

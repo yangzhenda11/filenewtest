@@ -163,10 +163,10 @@
 	 * 2阶段，更新终止日期
 	 */
 	function changeExpiryDate(){
-		layer.confirm("请确认是否更新",{icon:7,title:"系统提示"},function(index){
+		layer.confirm("请确认是否更新？",{icon:7,title:"系统提示"},function(index){
 			layer.close(index);
 			if(checkWcardIschange() == false){
-				var postData = App.getFlowParam(serverPath,parm.wcardId,1,0,"Contract_end_update");
+				var postData = App.getFlowParam(serverPath,wcardId,1,0,"Contract_end_update",contractAttr.provinceCode,contractAttr.city,"","","");
 				postData.validity = {};
 				postData.validity.validityId = $("#validityId").val();
 				postData.wcardId = wcardId;
@@ -327,7 +327,7 @@
 			}
 			if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 				$("#adminCommitmentContent").removeClass("hidden");
-				if(fileUploadEdit == true){
+				if(specialDomEdit == true){
 					$("#adminCommitmentContent input[name='adminCommitment']").attr("disabled",false);
 				}
 			}

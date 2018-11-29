@@ -65,11 +65,11 @@
 	/*
 	 * 当为查询进入、已办进入、合同退回或者退回申请中时 为不可编辑
 	 */
-	if(parm.pageType == 0 || parm.pageType == 4 || parm.taskFlag == "yb" || fileUploadEdit == false){
+	if(parm.pageType == 2 && parm.taskFlag == "db" && (parm.taskDefinitionKey == "GDCL"|| parm.taskDefinitionKey == "GDQR") && specialDomEdit == true){
+		var scanCpyUploadFormIsEdit = true;
+	}else{
 		$("#contractTextUploadBtn").attr("disabled","disabled");
 		var scanCpyUploadFormIsEdit = false;
-	}else{
-		var scanCpyUploadFormIsEdit = true;
 	};
 	/*
 	 * 判断工单类型，添加不同的提示

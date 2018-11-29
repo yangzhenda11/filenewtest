@@ -4,28 +4,27 @@
 <!--[if !IE]><!-->
 <html lang="en">
 	<!--<![endif]-->
-	<!-- BEGIN HEAD -->
+	
 	<head>
 		<meta charset="UTF-8">
 		<title>工单编辑</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="Expires" content="0">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
-		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1540371903181"/>
-		<link rel="stylesheet" type="text/css" href="/static/plugins/select2/css/select2.min.css?t=1540371903181"/>
-		<link rel="stylesheet" type="text/css" href="/static/plugins/select2/css/select2-bootstrap.css?t=1540371903181"/>
-		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css?t=1540371903181">
-		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrapValidator/css/bootstrapValidator.min.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap-fileinput/fileinput.min.css?t=1540371903181"/>
-		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1540371903181"/>
-		<link rel="stylesheet" type="text/css" href="/html/contReg/css/workOrderEdit.css?t=1540371903181"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1543457103266"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/select2/css/select2.min.css?t=1543457103266"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/select2/css/select2-bootstrap.css?t=1543457103266"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css?t=1543457103266">
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrapValidator/css/bootstrapValidator.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1543457103266"/>
+		<link rel="stylesheet" type="text/css" href="/html/contReg/css/workOrderEdit.css?t=1543457103266"/>
 	</head>
 
 	<body>
@@ -48,10 +47,10 @@
 								</div>
 								<div id="toolbarButton">
 									<button class="btn blue saveBtn" id="saveBtn" type="button" onclick="saveBtnClick()"><i class="iconfont icon-baocun"></i>保存</button>
-									<button class="btn blue register" type="button" onclick="submitContent()"><i class="iconfont icon-tijiao1"></i>注册完成</button>
-									<button class="btn blue sendBackBtn" type="button" onclick="sendBack()"><i class="iconfont icon-chehui"></i>退回合同承办人</button>
-									<button class="btn blue activateBtn" type="button" onclick="activateContract()"><i class="iconfont icon-tijiao1"></i>激活合同</button>
-									<button class="btn blue cancelApprovedBtn hidden" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i>取消审批</button>
+									<button class="btn blue registerBtn" id="registerBtn" type="button" onclick="submitContent()"><i class="iconfont icon-tijiao1"></i><span>注册完成</span></button>
+									<button class="btn blue cancelApprovedBtn" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i><span>取消审批</span></button>
+									<button class="btn blue sendBackBtn" id="sendBackBtn" type="button"><i class="iconfont icon-chehui"></i><span>退回合同承办人</span></button>
+									<button class="btn blue activateBtn" id="activateBtn" type="button"><i class="iconfont icon-tijiao1"></i><span>激活合同</span></button>
 									<button class="btn blue changeExpiryDateBtn" type="button" onclick="changeExpiryDate()"><i class="iconfont icon-tijiao1"></i>更新终止日期</button>
 									<button class="btn blue returnBtn" type="button" onclick="returnProcess()"><i class="iconfont icon-chehui"></i>撤回</button>
 									<button class="btn blue flowhistoryBtn" type="button" onclick="getFlowhistory()"><i class="iconfont icon-history"></i>流程历史</button>
@@ -69,6 +68,9 @@
 						</div>
 						<div id="workOrderContent"></div>
 				        <ul id="workOrderMenu"></ul>
+				        <div id="scrollTopTool">
+			        		TOP<div class="scrollTopRemark">返回顶部</div>
+			        	</div>
 					</form>
 				</div>
 			</div>
@@ -167,7 +169,7 @@
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	                    <h4 class="modal-title">流程图</h4>
 	                </div>
-	                <div class="modal-body" id="flowchartImage" style="height: 200px;"></div>
+	                <div class="modal-body" id="flowchartImage" style="min-height: 200px;"></div>
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>关闭</button>
 	                </div>
@@ -211,33 +213,33 @@
     	<div class="modal fade" id="commomModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     	
 		<!--[if lt IE 9]>
-		  	<script src="/static/plugins/html5shiv.min.js?t=1540371903181"></script>
-		  	<script src="/static/plugins/respond.min.js?t=1540371903181"></script>
-		  	<script src="/static/plugins/ie8.fix.min.js?t=1540371903181"></script>
+		  	<script src="/static/plugins/html5shiv.min.js?t=1543457103266"></script>
+		  	<script src="/static/plugins/respond.min.js?t=1543457103266"></script>
+		  	<script src="/static/plugins/ie8.fix.min.js?t=1543457103266"></script>
 		<![endif]-->
 		<!--[if lte IE 8]>
-			<script src="/static/plugins/selectivizr-min.js?t=1540371903181"></script>
+			<script src="/static/plugins/selectivizr-min.js?t=1543457103266"></script>
 		<![endif]-->
 		<!--基础依赖-->
-		<script src="/static/plugins/jquery-1.12.4.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/layer/layer.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/layer/layer.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
-		<script src="/static/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js?t=1540371903181"></script>
-		<script src="/static/plugins/select2/js/select2.full.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/datatables/datatables.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/datatables/ellipsis.js?t=1540371903181"></script>
-		<script src="/static/plugins/handlebars-v3.0.1.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/My97DatePicker/WdatePicker.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/zTree/js/jquery.ztree.all.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/bootstrap-fileinput/fileinput.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/ChinaNumToEnglishNum.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/jquery.form.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/app.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/html/contReg/workOrderEdit/_jumpIconList.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/html/contReg/workOrderEdit/workOrderEdit.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js?t=1543457103266"></script>
+		<script src="/static/plugins/select2/js/select2.full.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/datatables.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/ellipsis.js?t=1543457103266"></script>
+		<script src="/static/plugins/handlebars-v3.0.1.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/My97DatePicker/WdatePicker.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/zTree/js/jquery.ztree.all.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/ChinaNumToEnglishNum.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery.form.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/ajaxfileupload/ajaxfileupload.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/app.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/contReg/workOrderEdit/_jumpIconList.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/contReg/workOrderEdit/workOrderEdit.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

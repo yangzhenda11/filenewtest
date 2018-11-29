@@ -4,23 +4,23 @@
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
-<!-- BEGIN HEAD -->
+
 	<head>
 		<meta charset="UTF-8">
 		<title>收入管理</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="Expires" content="0">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
-		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1540371903181"/>
-		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1540371903181" />
-		<link rel="stylesheet" type="text/css" href="/html/incomeWorktable/css/incomeWorktable.css?t=1540371903181"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1543457103266"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/html/incomeWorktable/css/incomeWorktable.css?t=1543457103266"/>
 	</head>
 	<body>
 		<div class="page-content">
@@ -36,21 +36,25 @@
 						<button href="#incomeForecast" data-id="incomeForecast" data-toggle="tab" class="btn primary btn-inline">收入预测</button>
 					</div>
 					<div class="tab-content">
+					    <!-- 收入分析 start -->
 					    <div class="tab-pane fade in active" id="incomeAnalysis">
 					    	<div id="incomeAnalysisCharts"></div>
-					    	<div class="form-fieldset">
+					    	<div class="form-fieldset" id="contractIncomeAnalysisValue">
 								<div class="form-fieldset-title">
 									<div class="fieldset-title">
 										<p>合同收入明细</p><span></span>
 									</div>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
 								</div>
-								<div class="form-fieldset-body" style="display: none;" id="incomeAnalysisValue">
-									<div class="paddingLR10">
+								<div class="form-fieldset-body" id="incomeAnalysisValue">
+									<div class="paddingLR10 paddingT10">
 										<div class="incomeAnalysisTitle">
-											<p>账期：<span id="">201805</span></p>
-											<p>应收（元）：<span id="">750,000</span></p>
-											<p>欠费（元）：<span id="">200,000</span></p>
-											<p>实收（元）：<span id="">550,000</span></p>
+											<p>账期：<span class="accuontPeriod minWidth60"></span></p>
+											<p>应收（元）：<span id="incomeReceivable" class="minWidth60"></span></p>
+											<p>欠费（元）：<span id="incomeArrears" class="minWidth60"></span></p>
+											<p>实收（元）：<span id="incomeCollected" class="minWidth60"></span></p>
 										</div>
 										<div class="ui-radio-list ui-radio-inline" id="incomeAnalysisRadio">
 											<label class="ui-radio">
@@ -64,24 +68,109 @@
 												按合同查看
 											</label>
 										</div>
-										<table id="incomeTable" class="table table-striped table-bordered table-hover table-header-fixed table-align"></table>
+										<table id="incomeTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+											<thead>
+												<tr id="incomeThead">
+													<th>序号</th>
+													<th>客户名称</th>
+													<th>集客客户编号</th>
+													<th>累计应收(元)</th>
+													<th>累计欠费(元)</th>
+													<th>累计实收(元)</th>
+													<th>履行中合同</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="10">请点击图表加载数据</td>
+												</tr>
+											</tbody>
+										</table>
 					               	</div>
-					            </div>
-					       	</div>
-							<div class="form-fieldset" id="performanceContractList">
+					           	</div>
+					        </div>
+					        <div class="form-fieldset" style="display: none;" id="riskIncomeAnalysisValue">
 								<div class="form-fieldset-title">
 									<div class="fieldset-title">
-										<p>跨省分摊收入</p><span></span>
+										<p>风险收入明细</p><span></span>
 									</div>
-								</div>
+									<div class="form-fieldset-tools">
+										<a class="form-collapse"><i class="fa fa-angle-down"></i></a>
+									</div>
+								</div>	
 								<div class="form-fieldset-body">
-									<p class="apportionTitle">2018年度分摊收入情况分析</p>
+									<div class="paddingLR10 paddingT10">
+										<div class="incomeAnalysisTitle">
+											<p>账期：<span class="accuontPeriod minWidth60"></span></p>
+											<p>应收（元）：<span id="riskIncomeReceivable" class="minWidth60"></span></p>
+											<p>欠费（元）：<span id="riskIncomeArrears" class="minWidth60"></span></p>
+											<p>实收（元）：<span id="riskIncomeCollected" class="minWidth60"></span></p>
+										</div>
+										<div class="ui-radio-list ui-radio-inline" id="riskIncomeAnalysisRadio">
+											<label class="ui-radio">
+												<input type="radio" value="1" checked="checked" name="riskIncomeType">
+												<span></span>
+												按客户查看
+											</label>
+											<label class="ui-radio">
+												<input type="radio" value="2" name="riskIncomeType">
+												<span></span>
+												按线路查看
+											</label>
+										</div>
+										<table id="riskIncomeTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+											<thead>
+												<tr id="riskIncomeThead">
+													<th>序号</th>
+													<th>客户名称</th>
+													<th>集客客户编号</th>
+													<th>累计应收(元)</th>
+													<th>累计欠费(元)</th>
+													<th>累计实收(元)</th>
+													<th>线路明细</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="10">请点击图表加载数据</td>
+												</tr>
+											</tbody>
+										</table>
+					               	</div>
+					            </div>
+					        </div>
+					        <div id="incomeShareDiv" style="display: none;">
+								<div class="form-fieldset" id="performanceContractList">
+									<div class="form-fieldset-title">
+										<div class="fieldset-title">
+											<p>跨省分摊收入</p><span></span>
+										</div>
+									</div>
+									<div class="form-fieldset-body">
+										<p class="apportionTitle">2018年度分摊收入情况分析</p>
+										<table id="incomeShareTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+											<thead>
+												<tr id="incomeShareThead">
+													<th>序号</th>
+													<th>组织机构名称</th>
+													<th>账期</th>
+													<th>分摊收入</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td colspan="4">查无数据</td>
+												</tr>
+											</tbody>
+										</table>
+										<button type="button" id="incomeShareButton" style="display: none;" class="btn blue" onclick="toIncomeSharePage();">导入分摊收入</button>
+									</div>
 								</div>
 							</div>
 					    </div>
 					    <div class="tab-pane fade" id="incomeForecast">
 					    	<div id="incomeForecastCharts"></div>
-					    	<div class="remark-list">
+					    	<div class="remark-list" style="margin-bottom: 16px;">
 								预测逻辑说明<br />
 								合同收入部分：<br />
 								固定金额且有固定起止日期的合同（结构化工单中“是否固定金额”为“是”，且“合同有效期确认方式”为“固定起止日期”），按照合同的不含增值税合同金额，将金额均摊到合同起止日期间的各账期内；<br />
@@ -95,11 +184,11 @@
 							<div class="form-fieldset" id="contractIncomeForecastValue">
 								<div class="form-fieldset-title">
 									<div class="fieldset-title">
-										<p>合同收入明细</p><span></span>
+										<p>合同收入预测明细</p><span></span>
 									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="paddingLR10">
+									<div class="paddingLR10 paddingT10">
 										<div class="incomeAnalysisTitle">
 											<p>预测期间：<span class="minWidth60" id="contractIncomeForecastAccountPeriod"></span></p>
 											<p>收入预测：<span class="minWidth60" id="contractIncomeForecastReceivable"></span></p>
@@ -138,11 +227,11 @@
 					   		<div class="form-fieldset" style="display: none;" id="lineIncomeForecastValue">
 								<div class="form-fieldset-title">
 									<div class="fieldset-title">
-										<p>风险收入明细</p><span></span>
+										<p>风险收入预测明细</p><span></span>
 									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="paddingLR10">
+									<div class="paddingLR10 paddingT10">
 										<div class="incomeAnalysisTitle">
 											<p>预测期间：<span class="minWidth60" id="lineIncomeForecastAccountPeriod"></span></p>
 											<p>收入预测：<span class="minWidth60" id="lineIncomeForecastReceivable"></span></p>
@@ -184,24 +273,25 @@
 			</div>
 		</div>
 		<!--[if lt IE 9]>
-			<script src="/static/plugins/html5shiv.min.js?t=1540371903181"></script>
-			<script src="/static/plugins/respond.min.js?t=1540371903181"></script>
-			<script src="/static/plugins/ie8.fix.min.js?t=1540371903181"></script>
+			<script src="/static/plugins/html5shiv.min.js?t=1543457103266"></script>
+			<script src="/static/plugins/respond.min.js?t=1543457103266"></script>
+			<script src="/static/plugins/ie8.fix.min.js?t=1543457103266"></script>
 		<![endif]-->
 		<!--[if lte IE 8]>
-			<script src="/static/plugins/selectivizr-min.js?t=1540371903181"></script>
+			<script src="/static/plugins/selectivizr-min.js?t=1543457103266"></script>
 		<![endif]-->
 		<!--基础依赖-->
-		<script src="/static/plugins/jquery-1.12.4.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/layer/layer.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/layer/layer.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
-		<script src="/static/plugins/handlebars-v3.0.1.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/datatables/datatables.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/plugins/datatables/ellipsis.js?t=1540371903181"></script>
-		<script src="/static/plugins/imageview/echarts.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/app.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
-		<script src="/html/incomeWorktable/incomeManage/incomeManage.js?t=1540371903181" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/handlebars-v3.0.1.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/datatables.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/ellipsis.js?t=1543457103266"></script>
+		<script src="/static/plugins/imageview/echarts.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/app.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jQueryliestxz/js/list-script.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/incomeWorktable/incomeManage/incomeManage.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

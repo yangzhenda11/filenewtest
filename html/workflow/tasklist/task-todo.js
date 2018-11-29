@@ -77,7 +77,8 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	if(taskDefinitionKey == "GDCL" || taskDefinitionKey == "GDQR" || taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
+	if(specialList.indexOf(taskDefinitionKey) != -1){
 		redirectUrl(id,taskDefinitionKey,processInstanceId);
 	}else{
 		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
@@ -112,7 +113,6 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, pr
  * 表格初始化
  */
 function getTableTodo(){
-	top.setMessageTipNumber();
 	App.initDataTables('#searchTableTodo', "#submitBtn", {
 		ajax: {
 			"type": "GET",
@@ -233,24 +233,31 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
 	function successCallback(result) {
-		var wcardProcess = result.data.wcardProcess;
-		var wcardStatus = result.data.wcardStatus;
+		var data = result.data;
+		var wcardProcess = data.wcardProcess;
+		var wcardStatus = data.wcardStatus;
+		var contractStatus = data.contractStatus;
 		var isPass = false;
+		var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+		var editTaskDefinitionKey = "";
 		if(taskDefinitionKey == "GDCL"){
 			if(wcardProcess == 0 || wcardProcess == 2){
 				isPass = true;
+				editTaskDefinitionKey = "GDCL";
 			}
-		}else if(taskDefinitionKey == "GDQR"){
+		}else if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
 			if(wcardProcess == 1){
 				isPass = true;
+				editTaskDefinitionKey = "GDQR";
 			}
 		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
-			if(wcardStatus == 904030){
+			if(wcardStatus == 904030 && contractStatus == 8){
 				isPass = true;
+				editTaskDefinitionKey = taskDefinitionKey;
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
 			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{

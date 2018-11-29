@@ -8,7 +8,7 @@ var dataTableConfig = {};
 var chooseType;
 var _documentHeight = 0;
 var _checkedPerArr = [];
-function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
+function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,orgCodes){
 	$("#wfflowKey").val(flowKey);
 	$("#wflinkCode").val(linkcode);
 	$("#wfprov").val(prov);
@@ -19,6 +19,7 @@ function setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contrac
 	$("#wfattrA").val(attrA);
 	$("#wfattrB").val(attrB);
 	$("#wfattrC").val(attrC);
+	$("#wforgCode").val(orgCodes);
 	
 	//chooseType=$("#wfstaffSelectType").val();
 	chooseType = staffSelectType;
@@ -53,11 +54,15 @@ function setDataTableConfig(){
 	if(App.isIE9() || App.isIE8()){
 		_documentHeight = "";
 	}
+	var url=serverPath + 'assignee/searchMap4Page';//请求地址
+	if($("#wfprov").val()=='sh'){
+		url=serverPath + 'assignee/searchMap4PageSH';	//请求地址
+	}
 	dataTableConfig={
 		scrollY:_documentHeight,
 		ajax: {
 			"type": "GET",					//请求方式
-			"url": serverPath + 'assignee/searchMap4Page',	//请求地址
+			"url":url ,
 			"data": function(d) {							//自定义传入参数
 				d.flowKey	=$("#wfflowKey").val();
 				d.linkCode	=$("#wflinkCode").val(); 
@@ -67,6 +72,8 @@ function setDataTableConfig(){
 				d.attrA=$("#wfattrA").val();
 				d.attrB=$("#wfattrB").val();
 				d.attrC=$("#wfattrC").val();
+				
+				d.orgCods=$("#wforgCode").val();
 				
 				d.orgFullName=$("#searchEfOName").val();
 				d.staffName  =$("#searchEfstaffName").val();

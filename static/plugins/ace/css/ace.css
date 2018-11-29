@@ -50,8 +50,8 @@ th, td { /*white-space: nowrap;*/ }
   border-right: 1px solid #ddd;
 }
 .table-bordered>tbody>tr>td{
-  border:none;
-  border-right: 1px solid #ddd;
+  /*border:none;*/
+  /*border-right: 1px solid #ddd;*/
 }
 .min-padding-left {
   padding-left:3px;
@@ -141,6 +141,7 @@ th, td { /*white-space: nowrap;*/ }
   box-shadow: none;
   background: #fff;
   position: relative;
+  border-bottom: 1px solid #eee;
 }
 .navbar .navbar-text,
 .navbar .navbar-link {
@@ -148,15 +149,14 @@ th, td { /*white-space: nowrap;*/ }
 }
 .navbar-container{
 	overflow: hidden;
-	border-bottom: 1px solid #eee;
+	height: 99px;
 }
 /*合同修改*/
 .navbar .navbar-brand {
   color: #000;
   font-size: 22px;
   text-shadow: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 20px;
   height: auto;
 }
 .navbar .navbar-brand>span{
@@ -169,16 +169,16 @@ th, td { /*white-space: nowrap;*/ }
 }
 .navbar-container .navbar-buttons{
 		position: relative;
-    top: 14px;
-    width: 750px;
-    height: 76px;
-		background: url(/static/img/top_right.gif);
+    top: 30px;
+    width: 530px;
+    height: 70px;
+		background: url(/static/img/top_bg.gif);
 }
 @media (max-width: 1140px) {
   .navbar-container .navbar-buttons{
 		width: 400px;
 		height: 89px;
-			background: url(/static/img/top_right.gif);
+			background: url(/static/img/top_bg.gif);
 	}
 }
 /**
@@ -234,7 +234,7 @@ th, td { /*white-space: nowrap;*/ }
 }*/
 .ace-nav {
  	position: absolute;
- 	top: 14px;
+ 	top: 20px;
  	right: 10px;
 }
 .ace-nav > li {
@@ -269,8 +269,8 @@ th, td { /*white-space: nowrap;*/ }
   padding-left: 5px;
 }
 #loginInfoCon .userloginInfo{
-	width: 126px;
-	padding: 0;
+	width: auto;
+	padding: 0 6px;
 }
 .ace-nav > li > a:hover,
 .ace-nav > li > a:focus,
@@ -639,7 +639,7 @@ th, td { /*white-space: nowrap;*/ }
   font-size: 120%;
 }
 .user-info {
-  max-width: 100px;
+  /*max-width: 100px;*/
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1815,6 +1815,8 @@ body.mob-safari .sidebar.sidebar-fixed {
   display: none !important;
   height: auto !important;
   visibility: visible !important;
+  max-height: 260px;
+  overflow: auto;
 }
 .sidebar.menu-min .nav-list > li > .submenu:before {
   display: none;
@@ -3500,7 +3502,7 @@ body.mob-safari .sidebar.sidebar-fixed {
  * 样式修改top:50px
  */
 #navbar .logo {
-	height: 60px;
+	height: 54px;
 	display: inline-block !important;
 	margin-right: 10px;
 	vertical-align: middle;
@@ -3508,7 +3510,7 @@ body.mob-safari .sidebar.sidebar-fixed {
 /*
  * 样式修改top:50px
  */
-.main-container{position: absolute;left: 0;right: 0;top:81px;bottom: 0;transition: all .5s;}
+.main-container{position: absolute;left: 0;right: 0;top:100px;bottom: 0;transition: all .5s;}
 .hideNavbar #navbar{transition: all .5s;}
 .hideNavbar .main-container{top: 0;}
 .sidebar{max-height: 100%;}
@@ -3518,20 +3520,24 @@ body.mob-safari .sidebar.sidebar-fixed {
  * 样式修改background: #fafafa
  */
 .content-tabs {
-	position: relative;
-	height: 41px;
+	position: absolute;
+	height: 38px;
+	top: -1px;
+	width: 100%;
 	background: #f8f8f8;
-	line-height: 40px
+	line-height: 37px
 }
 .content-tabs {
-	border-bottom: solid 1px #ccc
+	border-bottom: solid 1px #ddd;
+	border-top: solid 1px #ddd;
+	
 }
 
 .content-tabs .roll-nav,
 .page-tabs-list {
 	position: absolute;
-	width: 40px;
-	height: 40px;
+	width: 38px;
+	height: 36px;
 	text-align: center;
 	color: #999;
 	z-index: 2;
@@ -3551,8 +3557,8 @@ body.mob-safari .sidebar.sidebar-fixed {
 .content-tabs button {
 	background: #fff;
 	border: 0;
-	height: 40px;
-	width: 40px;
+	height: 32px;
+	width: 32px;
 	outline: 0
 }
 
@@ -3561,9 +3567,9 @@ body.mob-safari .sidebar.sidebar-fixed {
 }
 
 div.page-tabs {
-	margin-left: 40px;
+	margin-left: 38px;
 	width: 100000px;
-	height: 40px;
+	height: 38px;
 	overflow: hidden
 }
 
@@ -3591,24 +3597,24 @@ div.page-tabs .page-tabs-content {
 }
 
 .roll-right.J_tabRight {
-	right: 80px
+	right: 64px
 }
 
 .roll-right.btn-group {
-	right: 40px;
-	width: 40px;
+	right: 32px;
+	width: 32px;
 	padding: 0
 }
 
 .roll-right.btn-group button {
-	width: 40px;
+	width: 34px;
 	white-space: nowrap;
 }
 
 .roll-right.J_tabRefresh {
 	background: #fff;
-	height: 40px;
-	width: 40px;
+	height: 32px;
+	width: 32px;
 	outline: 0
 }
 
@@ -3620,8 +3626,8 @@ div.page-tabs .page-tabs-content {
 	position: absolute;
 	left: 10px;
 	right: 10px;
-	top: 41px;
 	bottom: 0;
+	top: 38px;
 	overflow: hidden;
 }
 .page-tabs a {

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+	<head>
+		<meta charset="UTF-8">
+		<title>线路差异明细</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1543457103266"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1543457103266" />
+		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1543457103266" />
+	</head>
+	<body>
+		<div class="page-content">
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>线路差异明细</p><span></span>
+					</div>
+				</div>
+				<div class="form-fieldset-body">
+					<div class="row page-search">
+						<div class="col-sm-3">
+							<input type="text" id="searchInput" class="form-control" maxlength="50" placeholder="查询客户名称/集客客户编码">
+						</div>
+						<div class="input-group">
+							<button type="button" id="lineInforLoading" class="btn red" data-loading-text="加载中.." onclick="searchLineInfor();"><i class="iconfont icon-search"></i>查询</button>
+						</div>
+					</div>
+					
+					<table id="lineInforTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+                    	<thead>
+							<tr>
+								<th>序号</th>
+								<th>客户名称</th>
+								<th>集客客户编码</th>
+								<th>服务号码</th>
+								<th>业务信息ID</th>
+								<th>电路代号</th>
+								<th>产品名称</th>
+								<th>发起分公司</th>
+								<th>租用范围</th>
+								<th>月租费</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="9">请点击查询按钮加载数据</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--模态框-->
+		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
+		<!--[if lt IE 9]>
+			<script src="/static/plugins/html5shiv.min.js?t=1543457103266"></script>
+			<script src="/static/plugins/respond.min.js?t=1543457103266"></script>
+			<script src="/static/plugins/ie8.fix.min.js?t=1543457103266"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="/static/plugins/selectivizr-min.js?t=1543457103266"></script>
+		<![endif]-->
+		<!--基础依赖-->
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/layer/layer.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="/static/plugins/handlebars-v3.0.1.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/datatables.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/ellipsis.js?t=1543457103266"></script>
+		<script src="/static/plugins/jQueryliestxz/js/list-script.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/app.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/incomeWorktable/riskWarning/customDiffDetail.js?t=1543457103266" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

@@ -665,7 +665,7 @@ var App = function() {
 						errorCallback(result);
 					}else if(result.status == 0){
 						layer.alert("请求终止", {icon: 2,title:"错误"});
-	        		}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
+		    		}else if(result.responseText.indexOf("会话已经超时") != -1 && result.responseJSON == null){
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 		        			top.window.location.href = "/login";
 		        		});
@@ -967,7 +967,7 @@ var App = function() {
 				"processing": true,
 				"paging": true,
 				"lengthMenu": pagelengthMenu,
-				"pageLength": pagelengthMenu[0],
+				"pageLength": Number(pagelengthMenu[0]),
 				"language": {
 					"emptyTable": "没有关联的需求信息!",
 					"thousands": ","
@@ -1072,6 +1072,16 @@ var App = function() {
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
 		},
+		/**
+		 * 检查是否为null，为null时返回""
+		 */
+		checkEmptyData: function(data){
+			if(data == null){
+				return "";
+			}else{
+				return data;
+			}
+		},
 		/*
 		 * 时间戳转时间
 		 * type 不传默认返回 yyyy-MM-dd HH:mm:ss
@@ -1168,59 +1178,76 @@ var App = function() {
          * }
          */
         setCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-        	var cacheList = [];
-        	$("#"+el).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
-				var formName = $(formItem).attr('name');
-				if(formName != undefined){
-					var formType = formItem.type;
-					if(formType == "text" || formType == "hidden" || formType == "select-one") {
-						var val = $(formItem).val();
-						if(val){
-							var cacheItem = {
-								name: formName,
-								val: val
-							};
-							cacheList.push(cacheItem);
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		var cacheList = [];
+	        	$("#"+elArr[i]).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+					var formName = $(formItem).attr('name');
+					if(formName != undefined){
+						var formType = formItem.type;
+						if(formType == "text" || formType == "hidden" || formType == "select-one") {
+							var val = $(formItem).val();
+							if(val){
+								var cacheItem = {
+									name: formName,
+									val: val
+								};
+								cacheList.push(cacheItem);
+							}
 						}
 					}
+				});
+				if(cacheList.length > 0){
+					if(top._paramCache[pageId] == undefined){
+						top._paramCache[pageId] = {};
+					};
+					top._paramCache[pageId][elArr[i]] = cacheList;
 				}
-			});
-			if(cacheList.length > 0){
-				if(top._paramCache[pageId] == undefined){
-					top._paramCache[pageId] = {};
-				};
-				top._paramCache[pageId][el] = cacheList;
-			}
+        	}
         },
         /*
          * 页面参数读取赋值
          */
         readCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-			if(top._paramCache[pageId] == undefined){
+        	if(top._paramCache[pageId] == undefined){
 				return;
-			}else if(top._paramCache[pageId][el] == undefined){
-				return;
-			}else{
-				var cacheList = top._paramCache[pageId][el];
-				$.each(cacheList, function(k,v) {
-	                var sel = ":input[name='" + v.name + "']";
-	                var obj = $("#"+el).find(sel);
-	                if(obj.length > 0){
-	                    var objType = obj[0].type;
-	                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
-	                        obj.val(v.val);
-	                        if(objType == "select-one"){
-	                        	try{
-	                        		obj.trigger('change');
-	                        	}catch(e){}
-	                        }
-	                    }
-	                }
-				});
-				delete top._paramCache[pageId][el];
-			}
+			};
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		if(top._paramCache[pageId][elArr[i]] == undefined){
+					return;
+				}else{
+					var cacheList = top._paramCache[pageId][elArr[i]];
+					$.each(cacheList, function(k,v) {
+		                var sel = ":input[name='" + v.name + "']";
+		                var obj = $("#"+elArr[i]).find(sel);
+		                if(obj.length > 0){
+		                    var objType = obj[0].type;
+		                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
+		                        obj.val(v.val);
+		                        if(objType == "select-one"){
+		                        	try{
+		                        		obj.trigger('change');
+		                        	}catch(e){}
+		                        }
+		                    }
+		                }
+					});
+					delete top._paramCache[pageId][elArr[i]];
+				}
+        	}
         },
         /*
          * 页面参数是否存在
@@ -1412,17 +1439,21 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
-				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);   
+				    for(var i = 0; i < strs.length; i ++) {
+				    	var strsItem = decodeURI(strs[i].split("=")[1]);
+				    	if(strsItem == "null"){
+				    		strsItem = null;
+				    	}
+				        theRequest[strs[i].split("=")[0]] = strsItem;   
 				    }
-				}   
-				return theRequest;   
+				}
+				return theRequest;
         	}
         },
         getQueryString : function(name){
         	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
 		    var r = window.location.search.substr(1).match(reg); 
-		    if (r != null) return unescape(r[2]); 
+		    if (r != null) return decodeURI(r[2]);
 		    return null; 
         },
         /*
@@ -1436,15 +1467,33 @@ var App = function() {
          * dom.操作按钮父级ID值
          * dixScrollTop.滚动固定的高度
          */
-        fixToolBars : function(dom,dixScrollTop){
+        fixToolBars: function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
-				var toolbarBtn  = document.getElementById(dom);
 				if(topScroll > dixScrollTop){
-					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"rgba(255,255,255,1)","padding-top":"6px"});
+					$("#"+dom).css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"#fff","padding-top":"6px"});
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
+			})
+        },
+         /*
+         * 回到顶部固定操作按钮
+         * dom.操作按钮ID值
+         */
+        fixScrollTopTool: function(dom){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				if(topScroll > 0){
+					$(dom).css("display","block");
+				}else{
+					$(dom).css("display","none");
+				}
+			});
+			$(dom).on("click",function(){
+				$(".page-content").animate({
+					scrollTop:0
+				},300)
 			})
         },
         /*
@@ -1838,14 +1887,14 @@ var App = function() {
         },
 
 		//工作流相关，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
-        getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType){
+        getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType,provCode,cityCode,attrA,attrB,attrC){
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");
         	}else{
         		$.ajax({
         			type: 'get',
-        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect+'&businessType='+businessType,
+        			url: serverPath+'workflowrest/getFlowParam?businessId='+businessId+'&handleType='+handleType+'&pathSelect='+pathSelect+'&businessType='+businessType+'&provCode='+provCode+'&cityCode='+cityCode+'&attrA='+attrA+'&attrB='+attrB+'&attrC='+attrC,
         			//data: null,
         			dataType: 'json',
         			async: false,
@@ -1877,7 +1926,7 @@ var App = function() {
         	}
     		$.ajax({
     			type: 'get',
-    			url: serverPath+'workflowrest/checkFlow?businessType='+businessType+'&businessId='+businessId,
+    			url: serverPath+'workflowrest/checkFlow?businessType='+businessType+'&businessId='+businessId+'&provCode='+provCode+'&cityCode='+cityCode+'&attrA='+attrA+'&attrB='+attrB+'&attrC='+attrC,
     			//data: null,
     			dataType: 'json',
     			async: false,
@@ -1930,12 +1979,16 @@ function isInArray(arr,val) {
 /*
  * ztree异步加载失败事件
  */
-function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-	if(XMLHttpRequest.responseText.indexOf("会话已经超时") != -1 && XMLHttpRequest.responseJSON == null){
+function onAsyncError(event, treeId, treeNode, xhr, textStatus, errorThrown) {
+	if(xhr.status == 0){
+		layer.alert("请求终止", {icon: 2,title:"错误"});
+	}else if(xhr.responseText.indexOf("会话已经超时") != -1 && xhr.responseJSON == null){
 		layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
 			top.window.location.href = "/login";
 		});
-	}else if(XMLHttpRequest.status == 401){
+	}else if(xhr.status == 504){
+		layer.alert("请求超时", {icon: 2,title:"错误"});
+	}else if(xhr.status == 401){
 		if(top.globalConfig.loginSwitchSuccess == 0){
 			top.window.location.href = "/overtime.html";
 		}else{
@@ -1943,11 +1996,7 @@ function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, error
     			top.window.location.href = "/login.html";
     		});
 		}
-	}else if(XMLHttpRequest.status == 0){
-   		layer.alert("请求终止", {icon: 2,title:"错误"});
-    }else if(XMLHttpRequest.status == 504){
-   		layer.alert("请求超时", {icon: 2,title:"错误"});
-    }else{
+	}else{
 		layer.alert("接口错误", {icon: 2,title:"错误"});
 	};
 }
@@ -2008,6 +2057,59 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
  */
 String.prototype.trim = function() {
     return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+/*
+ * indexOf兼容IE8
+ */
+if (!Array.prototype.indexOf){
+	Array.prototype.indexOf = function(elt /*, from*/){
+    var len = this.length >>> 0;
+    var from = Number(arguments[1]) || 0;
+    from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+    if (from < 0)
+      from += len;
+    for (; from < len; from++)
+    {
+      if (from in this &&
+          this[from] === elt)
+        return from;
+    }
+    return -1;
+  	};
+}
+if (!Array.prototype.lastIndexOf) {
+  	Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
+    'use strict';
+    if (this === void 0 || this === null) {
+      throw new TypeError();
+    }
+    var n, k,
+        t = Object(this),
+        len = t.length >>> 0;
+    if (len === 0) {
+      return -1;
+    }
+    n = len - 1;
+    if (arguments.length > 1) {
+      n = Number(arguments[1]);
+      if (n != n) {
+        n = 0;
+      }
+      else if (n != 0 && n != (1 / 0) && n != -(1 / 0)) {
+        n = (n > 0 || -1) * Math.floor(Math.abs(n));
+      }
+    }
+    for (k = n >= 0
+          ? Math.min(n, len - 1)
+          : len - Math.abs(n); k >= 0; k--) {
+      if (k in t && t[k] === searchElement) {
+        return k;
+      }
+    }
+    return -1;
+  	};
 }
 /*
  * datatable跳转至第**页

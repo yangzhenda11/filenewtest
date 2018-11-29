@@ -1,6 +1,7 @@
 (function($){
 	$.fn.initSelectList = function(opts){
 		opts = $.extend({}, opts);
+
 		var selectTitle = $(this);
 
 		/**
@@ -18,45 +19,8 @@
 		 * 左边列表项移至右边
 		 */
 		var leftMoveRight = function(){
-			if (opts.editStaffRole) {
-				var ischeckedIncomeRole = false;
-				var ischeckedExpenseRole = false;
-				var checkId = $(this).attr('data-id');
-				var rightBox = $("#selectLRContent").find('.right-box');
-				rightBox.find('.item').each(function(){
-					var isCheckedId = $(this).attr("data-id");
-					if(isInArray([91216,91217,91218,91219],isCheckedId)){
-						ischeckedIncomeRole = true;
-					}else if(isInArray([91220,91221,91222],isCheckedId)){
-						ischeckedExpenseRole = true;
-					}
-				});
-				var canCheckIncomeRole = true;
-				var canCheckExpenseRole = true;
-				if(ischeckedIncomeRole){
-					if(isInArray([91216,91217,91218,91219],checkId)){
-						canCheckIncomeRole = false;
-					}
-				};
-				if(ischeckedExpenseRole){
-					if(isInArray([91220,91221,91222],checkId)){
-						canCheckExpenseRole = false;
-					}
-				};
-				if(canCheckIncomeRole && canCheckExpenseRole){
-					selectTitle.find('.list-body .right-box').append($(this).removeClass('selected-item'));
-					initItemEvent();
-				}else{
-					if(canCheckIncomeRole == false){
-						layer.msg("只能选择一个收入类租线业务合同履行工作台角色");
-					}else if(canCheckExpenseRole == false){
-						layer.msg("只能选择一个支出类采购业务合同履行工作台角色");
-					}
-				};
-			}else{
-				selectTitle.find('.list-body .right-box').append($(this).removeClass('selected-item'));
-				initItemEvent();
-			}
+			selectTitle.find('.list-body .right-box').append($(this).removeClass('selected-item'));
+			initItemEvent();
 		}
 
 		/**
@@ -135,61 +99,7 @@
 
 			// 添加一项
 			btnBox.find('.add-one').on('click', function(){
-				if (opts.editStaffRole) {
-					var ischeckedIncomeRole = false;
-					var ischeckedExpenseRole = false;
-					rightBox.find('.item').each(function(){
-						var isCheckedId = $(this).attr("data-id");
-						if(isInArray([91216,91217,91218,91219],isCheckedId)){
-							ischeckedIncomeRole = true;
-						}else if(isInArray([91220,91221,91222],isCheckedId)){
-							ischeckedExpenseRole = true;
-						}
-					});
-					var checkedDom = leftBox.find('.selected-item');
-					var canCheckIncomeRole = true;
-					var canCheckIncomeRoleNum = 0;
-					var canCheckExpenseRole = true;
-					var canCheckExpenseRoleRoleNum = 0;
-					$.each(checkedDom,function(k,v){
-						var checkId = $(v).attr('data-id');
-						if(ischeckedIncomeRole){
-							if(isInArray([91216,91217,91218,91219],checkId)){
-								canCheckIncomeRole = false;
-							}
-						};
-						if(ischeckedExpenseRole){
-							if(isInArray([91220,91221,91222],checkId)){
-								canCheckExpenseRole = false;
-							}
-						};
-						if(isInArray([91216,91217,91218,91219],checkId)){
-							canCheckIncomeRoleNum++;
-						};
-						if(isInArray([91220,91221,91222],checkId)){
-							canCheckExpenseRoleRoleNum++;
-						}
-					});
-					console.log(canCheckExpenseRoleRoleNum);
-					console.log(canCheckIncomeRoleNum)
-					if(canCheckIncomeRoleNum > 1){
-						canCheckIncomeRole = false;
-					};
-					if(canCheckExpenseRoleRoleNum > 1){
-						canCheckExpenseRole = false;
-					};
-					if(canCheckIncomeRole && canCheckExpenseRole){
-						rightBox.append(leftBox.find('.selected-item').removeClass('selected-item'));
-					}else{
-						if(canCheckIncomeRole == false){
-							layer.msg("只能选择一个收入类租线业务合同履行工作台角色");
-						}else if(canCheckExpenseRole == false){
-							layer.msg("只能选择一个支出类采购业务合同履行工作台角色");
-						}
-					};
-				}else{
-					rightBox.append(leftBox.find('.selected-item').removeClass('selected-item'));
-				}
+				rightBox.append(leftBox.find('.selected-item').removeClass('selected-item'));
 			});
 			// 添加所有项
 			btnBox.find('.add-all').on('click', function(){
@@ -240,8 +150,7 @@
 			leftTitle: "可选择列",
 			rightTitle: "已选择列",
 			modalId: "#commomModal",
-			fluctuation: true,
-			editStaffRole: false
+			fluctuation: true
 		}, e);
 		$(e.modalId).load("/static/data/_selectLR.html",function(){
 			if(e.fluctuation){
@@ -256,7 +165,7 @@
 					$("#_selectLCon").append('<li class="item" data-id="'+v.id+'">'+v.data+'</li>');
 				}
 			});
-			$('#selectLRContent').initSelectList(e);
+			$('#selectLRContent').initSelectList();
 			$(e.modalId).modal("show");
 		});
 	}

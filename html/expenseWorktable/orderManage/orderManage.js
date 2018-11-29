@@ -2,27 +2,14 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId = config.curStaffOrgId;
-var companyCode = config.curStaffOrgId;
-//$(function(){
-//	getTableToreadHisList();
-//})
-/*
- * 点击查询事件
- * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
- */
-function searchCustomer(){
-	var isgetTableToreadHisList = $.fn.dataTable.isDataTable("#orderManagerListTable");
-	if(isgetTableToreadHisList){
-		reloadPageDataTable("#orderManagerListTable");
-	}else{
-		getTableToreadHisList();
-	}
-}
+$(function(){
+	getTableToreadHisList();
+})
 /*
  * 初始化订单信息表格
  */
 function getTableToreadHisList(){
-	App.initDataTables('#orderManagerListTable', "#customerLoading", {
+	App.initDataTables('#orderManagerListTable', "#searchBtn", {
 		ajax: {
 	        "type": "POST",
 	        "contentType":"application/json;charset=utf-8",
@@ -64,24 +51,13 @@ function getTableToreadHisList(){
 	});
 }
 /*
- * 页面内表格初始化完成之后查询事件
+ * 搜索点击事件
  */
-function reloadPageDataTable(tableId,retainPaging) {
-	var table = $(tableId).DataTable();
+function searchCustomer(retainPaging) {
+	var table = $('#orderManagerListTable').DataTable();
 	if(retainPaging) {
 		table.ajax.reload(null, false);
 	} else {
 		table.ajax.reload();
 	}
 }
-/*
- * 搜索点击事件
- */
-//function searchCustomer(retainPaging) {
-//	var table = $('#orderManagerListTable').DataTable();
-//	if(retainPaging) {
-//		table.ajax.reload(null, false);
-//	} else {
-//		table.ajax.reload();
-//	}
-//}

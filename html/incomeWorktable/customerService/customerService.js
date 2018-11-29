@@ -34,10 +34,10 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 function searchCustomer(){
 	var customerCode = $("#customerNumber").val().trim();
 	if(customerCode == ""){
-		layer.alert("请输入集客客户编号。",{icon:2});
+		layer.alert("请输入要查询的集客客户编号。",{icon:2});
 		return;
 	};
-	var url = serverPath + "customerInfo/getCustomerInfoByCustomerCode";
+	var url = serverPath + "contractIncomeMangerController/getContractIncomeZxById";
 	var postData = {
 		customerCode: customerCode
 	};
@@ -74,7 +74,7 @@ function initLineTable(){
 	App.initDataTables('#lineTable', "#loading", {
 		ajax: {
 			"type": "POST",
-			"url": serverPath + 'customerServiceMangerController/listContractIncomeZx',
+			"url": serverPath + 'contractIncomeMangerController/listContractIncomeZx',
 	        "contentType":"application/json;charset=utf-8", 
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
@@ -132,7 +132,7 @@ function initContractTable(){
 		ajax: {
 			"type": "POST",
 	        "contentType":"application/json;charset=utf-8",
-	        "url": serverPath + 'performanceContract/listContractByCustomerCodeForCustomerService',
+	        "url": serverPath + 'contractIncomeMangerController/listContractIncomeZx',
 	        "data": function(d) {
 	        	d.customerCode = pageConfig.customerCode;
 	           	return JSON.stringify(d);
@@ -173,7 +173,7 @@ function initContractTable(){
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
 	top.showSubpageTab(url,"线路基本信息");
 }
 /*

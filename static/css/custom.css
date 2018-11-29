@@ -2,9 +2,7 @@
 body{overflow: hidden;}
 ul,ol{list-style: none;margin: 0;padding: 0;}
 button:focus{outline: none !important;}
-.page-content{padding: 6px 10px}
-/*样式修改#f5f5f5*/
-.table thead{background: #E9F0FA;}
+.table thead{background: #f5f5f5;}
 /* 解决iconfont 在谷歌浏览器下锯齿加粗-开始 */
 .iconfont {
     -webkit-font-smoothing: antialiased;
@@ -185,7 +183,6 @@ button:focus{outline: none !important;}
     position: relative;
     display: table;
     width: 100%;
-    /*background:url(../img/book_bg.gif) repeat-x;*/
 }
 
 .page-search .page-search-form, .page-search .page-search-action {
@@ -356,13 +353,6 @@ button:focus{outline: none !important;}
   padding-left: 0;
   padding-right: 0;
 }
-.paddingLR10 {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-.paddingT10{
-	padding-top: 10px;
-}
 .fullWidth{
 	width: 100%;
 }
@@ -412,7 +402,7 @@ table i{
 	font-weight: normal;
 }
 .tableSelect{
-	background: #e9f0fa !important;
+	background: #f3f4f6 !important;
 }
 /*
  * datatable表格内文本不折行时添加此元素
@@ -434,10 +424,10 @@ th.thAlignCenter{
 }
 
 table th{
-	border: 1px solid #ddd;
+	border: 1px solid #ccc;
 }
 table td{
-	border: 1px solid #ddd;
+	border: 1px solid #ccc;
 }
 /*
  * ztree最大高度
@@ -480,7 +470,7 @@ table td{
  * 列表页样式重置
  */
 .form-fieldset > .form-fieldset-body{
-	padding-top: 5px;
+	padding-top: 15px;
 }
 .form-fieldset-body .control-label{
 	text-align: right;
@@ -513,8 +503,8 @@ table td{
 }
 .buttonNavTabs button{
     margin: 0 4px 0 3px;
-    padding: 2px 15px;
-    font-size: 12px;
+    padding: 4px 15px;
+    font-size: 13px;
     border: 2px solid #dc2a32;
     border-bottom: none;
     border-radius: 4px;
@@ -650,13 +640,12 @@ table td{
 /*
  * 仿input框
  */
-/*样式修改*/
 .divInput{
     cursor: not-allowed;
     background: #f5f5f5;
     border: 1px solid #ececec;
     padding: 4px 12px;
-    /*border-radius: 3px;*/
+    border-radius: 3px;
     color: #767676;
     min-height: 30px;
     white-space: pre;
@@ -667,6 +656,7 @@ table td{
 	right: 10px;
 	top: 13px;
 }
+
 #scrollTopTool{
 	width: 32px;
 	height: 32px;
@@ -679,7 +669,6 @@ table td{
 	color: #fff;
 	line-height: 40px;
 	display: none;
-	z-index: 999;
 }
 #scrollTopTool:after{
     position: absolute;
@@ -719,7 +708,6 @@ table td{
 #scrollTopTool:hover .scrollTopRemark{
 	display: block;
 }
-
 /*
  * i标签设置
  */
@@ -728,9 +716,76 @@ i.icon-search,i.icon-reset,i.icon-baocun,i.icon-close,i.icon-add,i.icon-export,i
     position: relative;
     top: 2px;
 }
+/*二阶段form-fieldset页样式*/
+.work-list{overflow: hidden;}
+.work-list .form-fieldset{
+	margin-bottom: 8px;
+}
+.work-list .form-fieldset-title{
+	border-bottom: 2px solid #d11718;
+	padding: 0;
+	height: 32px;
+	line-height: 32px;
+	color: #fff;
+	background: #eee;
+	cursor: pointer;
+}
+.work-list .form-fieldset > .form-fieldset-title > span{
+	width: 240px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	padding-left: 10px;
+	background: #D11718;
+	background: linear-gradient(-135deg, transparent 15px, #D11718 0);
+}
+.work-list .form-fieldset > .form-fieldset-title > .form-fieldset-tools{
+	width: 100%;
+	height: 32px;
+	top: 0;
+	right: 0;
+}
+.work-list .form-fieldset > .form-fieldset-title > .form-fieldset-tools a{
+	float: right;
+	padding-top: 0;
+	padding-bottom: 0;
+	line-height: 40px;
+	margin-right: 10px;
+}
+.work-list .form-fieldset > .form-fieldset-title > .form-fieldset-tools a i{
+	color: #d11718 !important;
+	font-size: 30px !important;
+}
+.work-list .form-fieldset > .form-fieldset-title > .fieldsetChangeTitle{
+	position: absolute;
+	top: 0;
+	z-index: 999;
+	background: #ccc;
+	padding: 0 10px;
+	height: 30px;
+	color: #333;
+}
+.work-list .form-fieldset > .form-fieldset-title > .fieldsetChangeTitle.checked{
+	background: #d11718;
+	color: #fff;
+}
 
-table{
-	margin-top: 5px
+.work-list .form-fieldset-body{
+	padding: 10px 0;
+}
+.work-list .form-fieldset-body .row.page-search{
+	padding: 8px 0 0 0;
+	border: none;
+}
+.work-list .form-fieldset-body .page-search-form .form-control{
+	margin-top: 5px;
+}
+.work-list .form-fieldset-body .input-group>.form-control{
+	margin-top: 0px;
+}
+.work-list table{
+	margin-top: 6px
 }
 .tableImgCon{
 	padding: 0 4px !important;
@@ -747,69 +802,7 @@ table{
 .note{
 	margin: 0;
 }
-.table-bordered{
-	border-bottom: none;
-}
-.toolbars{
-	padding-top: 5px;
-	border-top: 1px solid #EEF1F5;
-}
-/*样式修改按钮*/
-.btn{
-	background: linear-gradient(to bottom,#fff,#c3daf5);
-	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#C3DAF5);
-  	margin-bottom: 0;
-  	font-weight: normal;
-  	text-align: center;
-  	vertical-align: middle;
-  	touch-action: manipulation;
-  	cursor: pointer;
-  	border: 1px solid #2C59AA;
-  	white-space: nowrap;
-  	padding: 3px 10px;
-  	font-size: 12px;
-  	color: #000000;
-  	-webkit-user-select: none;
-  	-moz-user-select: none;
-  	-ms-user-select: none;
-  	user-select: none;
-}
-/*.btn:hover{
-	color: #000000;
-	border-color: #adadad;
-}*/
-.btn:active{
-	color: #000000;
-	background: linear-gradient(to bottom,#fff,#96c3f7);
-	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#96c3f7);
-}
-.btn > i{
-	display: none;
-}
-.modal-header,.modal-footer{
-	padding: 10px 15px;
-}
-.form-fieldset > .form-fieldset-title > .fieldsetChangeTitle{
-	position: absolute;
-	top: 0;
-	z-index: 999;
-	background: #ccc;
-	padding: 0 10px;
-	height: 25px;
-	color: #000;
-	font-family: "新宋体";
-	font-size: 13px;
-	font-weight: bold;
-}
-.form-fieldset > .form-fieldset-title > .fieldsetChangeTitle.checked{
-	background: #d11718;
-	color: #fff;
-}
-.row.page-search{
-	padding: 5px 0 0;
-}
-.btn.red{
-	color: #333;
-	background: linear-gradient(to bottom,#fff,#c3daf5);
-	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#C3DAF5);
-}
+
+
+
+

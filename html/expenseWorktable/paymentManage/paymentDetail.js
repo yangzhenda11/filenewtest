@@ -4,7 +4,7 @@ var serverPath = config.serverPath;
 //获取传递的参数
 var parm = App.getPresentParm();
 $(function(){
-	if(!parm.contractNumber){
+	if(!parm.invPayId){
 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
 	};
@@ -23,7 +23,7 @@ function initPaymentDetailTable(){
 	        "contentType":"application/json;charset=utf-8",
 			"url": serverPath + 'paymentManageInfo/listPaymentManageInfo',
 			"data": function(d) {
-	        	d.contractNumber = parm.contractNumber;
+	        	d.invPayId = parm.invPayId;
 				return JSON.stringify(d);;
 			}
 		},
@@ -68,10 +68,10 @@ function initPaymentDetailTable(){
 					return App.formatDateTime(data, "yyyy-mm-dd");
 				}
 			},
-			{"data": "invoiceStatus","className": "whiteSpaceNormal"
-//				"render" : function(data, type, full, meta){
-//					return data == 1 ? "发票正常" : "发票异常"
-//				}
+			{"data": "invoiceStatus","className": "whiteSpaceNormal",
+				"render" : function(data, type, full, meta){
+					return data == 1 ? "发票正常" : "发票异常"
+				}
 			}
 		]
 	});

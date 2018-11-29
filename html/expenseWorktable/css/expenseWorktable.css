@@ -121,7 +121,6 @@ td.milestoneLegend{
 .invoiceIncomeTitle p{
 	font-weight: bold;
 	float: left;
-	margin:5px 0;
 }
 .invoiceIncomeTitle span{
 	display: inline-block;

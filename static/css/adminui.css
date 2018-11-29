@@ -588,9 +588,8 @@ Demo Utils
 /***
 Users
 ***/
-/*样式修改margin-top: 3px;*/
-	/*.user-info {
-  	margin-top: 3px; }*/
+	.user-info {
+  	margin-top: 3px; }
   .user-info img {
     float: left;
     margin-right: 5px; }
@@ -923,7 +922,7 @@ Custom Bootstrap Badges
   text-align: center;
   height: 18px;
   color: #fff;
-  padding: 4px 6px 3px 6px;
+  padding: 3px 6px 3px 6px;
   -webkit-border-radius: 12px !important;
   -moz-border-radius: 12px !important;
   border-radius: 12px !important;
@@ -988,9 +987,9 @@ Dropdown Menu Badges
 Custom buttons based on bootstrap SASS
 ***/
 /***
-Custom color buttons  样式修改按钮注释
+Custom color buttons 
 ***/
-/*.btn.primary {
+.btn.primary {
   color: #FFF;
   background-color: #dc2a32;
   border-color: #dc2a32; }
@@ -1560,10 +1559,7 @@ Custom color buttons  样式修改按钮注释
   border-left: 4px solid #BF55EC !important; }
 
 .btn.purple.btn-no-border:not(.active) {
-  border-color: transparent; }*/
-/***
-Custom color buttons
-***/
+  border-color: transparent; }
 
 /* Circle Buttons */
 /*.btn-circle {
@@ -1714,7 +1710,7 @@ Customized Bootstrap Close Icon
   background-repeat: no-repeat !important;
   text-indent: -10000px;
   outline: none;
-  background-image: url("/static/img/remove-icon-small.png?t=1543454749878") !important; }
+  background-image: url("/static/img/remove-icon-small.png?t=1543454835015") !important; }
 
 /***
 Customized Bootstrap Dropdowns
@@ -3192,7 +3188,7 @@ Metro icons
   margin-top: 3px;
   line-height: 14px;
   vertical-align: top;
-  background-image: url(/static/img/syncfusion-icons.png?t=1543454749878);
+  background-image: url(/static/img/syncfusion-icons.png?t=1543454835015);
   background-position: 0 0;
   background-repeat: no-repeat; }
 
@@ -3202,7 +3198,7 @@ Metro icons
   height: 30px;
   margin: 6px;
   vertical-align: middle;
-  background-image: url(/static/img/syncfusion-icons.png?t=1543454749878);
+  background-image: url(/static/img/syncfusion-icons.png?t=1543454835015);
   background-position: 0 0px;
   background-repeat: no-repeat; }
 
@@ -3231,7 +3227,7 @@ Metro icons
 
 /* white icon */
 .m-icon-white {
-  background-image: url(/static/img/syncfusion-icons-white.png?t=1543454749878); }
+  background-image: url(/static/img/syncfusion-icons-white.png?t=1543454835015); }
 
 /*  Misc */
 .m-icon-swapright {
@@ -3424,7 +3420,7 @@ Customized Bootstrap Panels
       display: block;
       padding: 10px 15px; }
     .accordion .panel .panel-title .accordion-toggle.accordion-toggle-styled {
-      background: url("/static/img/accordion-plusminus.png?t=1543454749878") no-repeat;
+      background: url("/static/img/accordion-plusminus.png?t=1543454835015") no-repeat;
       background-position: right -19px;
       margin-right: 15px; }
     .accordion .panel .panel-title .accordion-toggle.accordion-toggle-styled.collapsed {
@@ -3593,22 +3589,22 @@ Portlets
         opacity: 1 ;
         filter: alpha(opacity=100) ; }
       .portlet > .portlet-title > .tools > a.remove {
-        background-image: url(/static/img/portlet-remove-icon.png?t=1543454749878);
+        background-image: url(/static/img/portlet-remove-icon.png?t=1543454835015);
         background-repeat: no-repeat;
         width: 11px; }
       .portlet > .portlet-title > .tools > a.config {
-        background-image: url(/static/img/portlet-config-icon.png?t=1543454749878);
+        background-image: url(/static/img/portlet-config-icon.png?t=1543454835015);
         background-repeat: no-repeat;
         width: 12px; }
       .portlet > .portlet-title > .tools > a.reload {
-        background-image: url(/static/img/portlet-reload-icon.png?t=1543454749878);
+        background-image: url(/static/img/portlet-reload-icon.png?t=1543454835015);
         width: 13px; }
       .portlet > .portlet-title > .tools > a.expand {
-        background-image: url(/static/img/portlet-expand-icon.png?t=1543454749878);
+        background-image: url(/static/img/portlet-expand-icon.png?t=1543454835015);
         width: 14px;
         visibility: visible; }
       .portlet > .portlet-title > .tools > a.collapse {
-        background-image: url(/static/img/portlet-collapse-icon.png?t=1543454749878);
+        background-image: url(/static/img/portlet-collapse-icon.png?t=1543454835015);
         width: 14px;
         visibility: visible; }
       .portlet > .portlet-title > .tools > a.fullscreen {
@@ -4827,12 +4823,12 @@ Light Table
       border-radius: 100%; }
   .table.table-light.table-hover > tbody > tr > td:hover,
   .table.table-light.table-hover > tbody > tr > th:hover, .table.table-light.table-hover > tbody > tr:hover > td {
-    background: #f9fafb; }
-/*样式修改#f3f4f6*/
+    background: #f9fafb !important; }
+
 .table-hover > tbody > tr:hover,
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > td.td-split > .table td {
-  background: #E9F5FC; }
+  background: #f3f4f6 !important; }
 
 .table-striped > tbody > tr:nth-of-type(odd) > td.td-split > .table td {
   background-color: #fbfcfd; }
@@ -7058,21 +7054,22 @@ html, body, .page-content {
 
 .page-content.scroller {
   padding: 10px 12px 10px 10px !important; }
-/*样式修改*/
+
 .page-search {
   position: relative;
-  /*margin-bottom: 5px;*/
-  padding-bottom: 4px;
-  /*border-bottom: 1px solid #EEF1F5;*/
-  min-height: 40px;}
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #EEF1F5;
+  min-height: 40px;
+  margin-top: -5px; }
 
 .page-search .page-search-form {
   padding-right: 110px;
   overflow: hidden; }
-/*样式修改*/
+
 .page-search .page-search-form .input-group {
-  margin-bottom: 4px;
-  margin-top: 4px; }
+  margin-bottom: 5px;
+  margin-top: 5px; }
 
 .page-search .page-search-action {
   position: absolute;
@@ -7107,8 +7104,10 @@ html, body, .page-content {
 .page-search-moreBody {
   display: none; }
 /*合同修改*/
-/*样式修改*/
-  /*.form-fieldset > .form-fieldset-title {
+/*.form-fieldset {
+  margin-bottom: 10px; }
+  padding: 10px 0*/
+  .form-fieldset > .form-fieldset-title {
     position: relative;
     padding: 16px 0 10px;
     border-bottom: 2px solid #f2f2f2;
@@ -7122,57 +7121,9 @@ html, body, .page-content {
         display: inline-block;
         padding: 4px 6px; }
         .form-fieldset > .form-fieldset-title > .form-fieldset-tools > a > .fa {
-          font-size: 20px; }*/
-.form-fieldset{
-	margin-bottom: 4px;
-}
-.form-fieldset-title{
-	position: relative;
-	padding: 0;
-	height: 25px;
-	line-height: 25px;
-	color: #fff;
-	background: #DDE0E2;
-	cursor: pointer;
-}
-.form-fieldset > .form-fieldset-title > .fieldset-title{
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 999;
-}
-.form-fieldset > .form-fieldset-title > .fieldset-title > p{
-	background: url(/static/img/block_title_left.gif) repeat-x;
-	float: left;
-	margin: 0;
-	padding: 0 10px 0 15px;
-	font-size: 13px;
-	font-family: "新宋体";
-	font-weight: bold;
-}
-.form-fieldset > .form-fieldset-title > .fieldset-title > span{
-	background: url(/static/img/block_title_right.gif) no-repeat left;
-	float: left;
-	width: 40px;
-	height: 25px;
-}
-.form-fieldset > .form-fieldset-title > .form-fieldset-tools{
-	width: 100%;
-	height: 25px;
-}
-.form-fieldset > .form-fieldset-title > .form-fieldset-tools a{
-	float: right;
-	height: 25px;
-}
-.form-fieldset > .form-fieldset-title > .form-fieldset-tools a i{
-	color: #d11718 !important;
-	font-size: 26px !important;
-	padding-top: 6px;
-	padding-right: 10px;
-}
-/*样式修改padding: 10px 15px 0*/
+          font-size: 20px; }
   .form-fieldset > .form-fieldset-body {
-    padding: 0; }
+    padding: 10px 15px 0; }
 
 .text-ellipsis {
   overflow: hidden;
@@ -7291,7 +7242,7 @@ html, body, .page-content {
   overflow: hidden;
   width: 0;
   height: 100%;
-  background: #d14 url(/static/img/webuploader/progress.png?t=1543454749878) repeat-x;
+  background: #d14 url(/static/img/webuploader/progress.png?t=1543454835015) repeat-x;
   -webit-transition: width 200ms linear;
   -moz-transition: width 200ms linear;
   -o-transition: width 200ms linear;
@@ -7349,7 +7300,7 @@ a.travis {
   min-height: 350px;
   padding-top: 178px;
   text-align: center;
-  background: url(/static/img/webuploader/image.png?t=1543454749878) center 93px no-repeat;
+  background: url(/static/img/webuploader/image.png?t=1543454835015) center 93px no-repeat;
   color: #cccccc;
   font-size: 18px;
   position: relative; }
@@ -7401,7 +7352,7 @@ a.travis {
 .webuploader-container-drag .filelist li {
   width: 110px;
   height: 110px;
-  background: url(/static/img/webuploader/bg.png?t=1543454749878) no-repeat;
+  background: url(/static/img/webuploader/bg.png?t=1543454835015) no-repeat;
   text-align: center;
   margin: 0 8px 20px 0;
   position: relative;
@@ -7444,7 +7395,7 @@ a.travis {
   overflow: hidden;
   width: 0;
   height: 100%;
-  background: #1483d8 url(/static/img/webuploader/progress.png?t=1543454749878) repeat-x;
+  background: #1483d8 url(/static/img/webuploader/progress.png?t=1543454835015) repeat-x;
   -webit-transition: width 200ms linear;
   -moz-transition: width 200ms linear;
   -o-transition: width 200ms linear;
@@ -7533,7 +7484,7 @@ a.travis {
   float: right;
   text-indent: -9999px;
   overflow: hidden;
-  background: url(/static/img/webuploader/icons.png?t=1543454749878) no-repeat;
+  background: url(/static/img/webuploader/icons.png?t=1543454835015) no-repeat;
   margin: 5px 1px 1px;
   cursor: pointer; }
 
@@ -8119,10 +8070,10 @@ Datatables general customization
 ***/
 .dataTables_wrapper .table tr td, .dataTables_wrapper .table tr th {
   white-space: nowrap; }
-/*样式修改#707070*/
+
 .dataTables_wrapper .table > thead > tr {
-  color: #333;
-  /*background: repeat-x #F5F5F5;*/ }
+  color: #707070;
+  background: repeat-x #F5F5F5; }
 
 .dt-footer-wrapper {
   padding-top: 4px; }
@@ -8215,14 +8166,13 @@ Extended pagination
 /***
 Scroller Extension
 ***/
-/*样式修改表格e7ecf1*/
 .dataTables_scrollHead {
-  border-bottom: 1px solid #ddd !important; }
+  border-bottom: 1px solid #e7ecf1 !important; }
   .dataTables_scrollHead thead th {
     border-bottom: 0 !important; }
-/*样式修改表格e7ecf1*/
+
 .dataTables_scrollBody {
-  border-bottom: 1px solid #ddd !important; }
+  border-bottom: 1px solid #e7ecf1 !important; }
 
 .table-both-scroll .dataTables_scrollBody {
   border-bottom: 0 !important; }
@@ -8371,7 +8321,7 @@ Dashboard Charts(new in v1.2.1)
 jQuery File Upload
 ***/
 .blueimp-gallery .close {
-  background-image: url("/static/img/portlet-remove-icon-white.png?t=1543454749878") !important;
+  background-image: url("/static/img/portlet-remove-icon-white.png?t=1543454835015") !important;
   margin-top: -2px; }
 
 .blueimp-gallery .prev,

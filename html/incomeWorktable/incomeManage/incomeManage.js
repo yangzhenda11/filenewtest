@@ -210,13 +210,15 @@ function initIncomeAnalysisCharts(incomeChartData){
 			    name:'实收金额',
 			    type:'bar',
 			    stack: '风险收入',
+			    barGap: 0.05,
+	            barMaxWidth: 50,
 			    data: riskIncomeCollectedAmountList
 			},
 			{
 			    name:'欠费金额',
 			    type:'bar',
 			    stack: '风险收入',
-			    barGap: 0,
+			    barGap: 0.05,
 			    barMaxWidth: 50,
 			    data: riskIncomeArrearsAmountList
 			},
@@ -224,13 +226,15 @@ function initIncomeAnalysisCharts(incomeChartData){
 	            name:'实收金额',
 	            type:'bar',
 	            stack: '合同收入',
+	            barGap: 0.05,
+	            barMaxWidth: 50,
 	            data: incomeCollectedAmountList
 	        },
 	        {
 	            name:'欠费金额',
 	            type:'bar',
 	            stack: '合同收入',
-	            barGap: 0,
+	            barGap: 0.05,
 	            barMaxWidth: 50,
 	            data: incomeArrearsAmountList
 	        }
@@ -253,10 +257,17 @@ function initIncomeAnalysisCharts(incomeChartData){
     		// 给合同收入-应收赋值
     		var incomeReceivable = (params.data.value)+(params.data.other);
     		$("#incomeReceivable").text(App.unctionToThousands(incomeReceivable));
-    		// 给合同收入-欠费赋值
-    		$("#incomeArrears").text(App.unctionToThousands(params.data.value));
-    		// 给合同收入-实收赋值
-    		$("#incomeCollected").text(App.unctionToThousands(params.data.other));
+    		if(params.seriesName == "欠费金额"){
+    			// 给合同收入-欠费赋值
+        		$("#incomeArrears").text(App.unctionToThousands(params.data.value));
+        		// 给合同收入-实收赋值
+        		$("#incomeCollected").text(App.unctionToThousands(params.data.other));
+    		}else if(params.seriesName == "实收金额"){
+    			// 给合同收入-欠费赋值
+        		$("#incomeArrears").text(App.unctionToThousands(params.data.other));
+        		// 给合同收入-实收赋值
+        		$("#incomeCollected").text(App.unctionToThousands(params.data.value));
+    		}
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='incomeType']:checked").val();
     		checkIncomeRadio(radioVal);
@@ -271,10 +282,17 @@ function initIncomeAnalysisCharts(incomeChartData){
     		// 给风险收入-应收赋值
     		var riskIncomeReceivable = (params.data.value)+(params.data.other);
     		$("#riskIncomeReceivable").text(App.unctionToThousands(riskIncomeReceivable));
-    		// 给风险收入-欠费赋值
-    		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.other));
-    		// 给风险收入-实收赋值
-    		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.value));
+    		if(params.seriesName == "欠费金额"){
+    			// 给风险收入-欠费赋值
+        		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.value));
+        		// 给风险收入-实收赋值
+        		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.other));
+    		}else if(params.seriesName == "实收金额"){
+    			// 给风险收入-欠费赋值
+        		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.other));
+        		// 给风险收入-实收赋值
+        		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.value));
+    		}
     		// 获取radio选中val，然后根据选中值查询
     		var radioVal = $("input[name='riskIncomeType']:checked").val();
     		checkRiskIncomeRadio(radioVal);

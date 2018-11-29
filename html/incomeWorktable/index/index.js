@@ -343,7 +343,7 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 //	            center: ['50%', '53%'],
 				radius: ['30%', '53%'],
 	            clockwise: false,
-	            startAngle: 0,
+//	            startAngle: 0,
 //	            hoverAnimation: false,
 				label: {
  					color: "#333",
@@ -417,7 +417,7 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			name: '',
 			type: 'pie',
 			clockwise: false,
-			startAngle: 0,
+//			startAngle: 0,
 //			radius: '55%',
 //			center: ['50%', '53%'],
 			radius: ['30%', '53%'],

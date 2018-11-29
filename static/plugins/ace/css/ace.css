@@ -639,7 +639,7 @@ th, td { /*white-space: nowrap;*/ }
   font-size: 120%;
 }
 .user-info {
-  /*max-width: 100px;*/
+  max-width: 62px;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3557,8 +3557,8 @@ body.mob-safari .sidebar.sidebar-fixed {
 .content-tabs button {
 	background: #fff;
 	border: 0;
-	height: 32px;
-	width: 32px;
+	height: 36px;
+	width: 36px;
 	outline: 0
 }
 
@@ -3601,8 +3601,8 @@ div.page-tabs .page-tabs-content {
 }
 
 .roll-right.btn-group {
-	right: 32px;
-	width: 32px;
+	right: 34px;
+	width: 34px;
 	padding: 0
 }
 
@@ -3613,8 +3613,15 @@ div.page-tabs .page-tabs-content {
 
 .roll-right.J_tabRefresh {
 	background: #fff;
-	height: 32px;
-	width: 32px;
+	height: 36px;
+	width: 34px;
+	outline: 0
+}
+
+.roll-right.J_tabOther {
+	background: #fff;
+	height: 36px;
+	width: 34px;
 	outline: 0
 }
 

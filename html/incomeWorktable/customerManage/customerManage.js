@@ -20,12 +20,12 @@ $(function(){
 	var dataPermission = config.dataPermission;
 	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
 		if(dataPermission == 3) {
-			$("#notRelationCustomer").show();
-		} else {
-			$("#notRelationCustomer").remove();			
+			$("#hasNotrelationCusTit").show();
+		}else{
+			$("#relationCusTit").show();
 		}
 	}else{
-		$("#notRelationCustomer").show();
+		$("#hasNotrelationCusTit").show();
 	};
 	if(parm.expandFocusCustomer){
 		$("#emphasisCustomer .form-fieldset-tools").click();

@@ -789,7 +789,7 @@ table{
 .modal-header,.modal-footer{
 	padding: 10px 15px;
 }
-.form-fieldset > .form-fieldset-title > .fieldsetChangeTitle{
+.form-fieldset > .form-fieldset-title  .fieldsetChangeTitle{
 	position: absolute;
 	top: 0;
 	z-index: 999;
@@ -801,7 +801,7 @@ table{
 	font-size: 13px;
 	font-weight: bold;
 }
-.form-fieldset > .form-fieldset-title > .fieldsetChangeTitle.checked{
+.form-fieldset > .form-fieldset-title  .fieldsetChangeTitle.checked{
 	background: #d11718;
 	color: #fff;
 }

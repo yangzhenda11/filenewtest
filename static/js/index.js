@@ -554,8 +554,16 @@ $hidemenu.click(function() {
 })
 
 function hideNavbar() {
-    $('body').addClass('hideNavbar');
-    $hidemenu.show();
+	if($('body').hasClass('hideNavbar')){
+		$("#hideNavBatFa").attr("title","隐藏");
+		$("#hideNavBatFa i").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+		$('body').removeClass('hideNavbar');
+	}else{
+		$("#hideNavBatFa").attr("title","展开");
+		$("#hideNavBatFa i").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+		$('body').addClass('hideNavbar');
+	};
+//  $hidemenu.show();
 }
 //用户信息划过显示
 $("#loginInfoCon").hover(function(){
@@ -676,9 +684,11 @@ function setWorktableRoleName(){
 					$(this).addClass("choose").siblings().removeClass("choose");
 					if($(this).data("type") == "income"){
 						$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(incomeRoleType,true));
+	    				closeAlltabs();
 	    				setIncomeHomePage();
 					}else if($(this).data("type") == "expense"){
 						$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(expenseRoleType,true));
+						closeAlltabs();
 						setExpenseHomePage();
 					}
 				}

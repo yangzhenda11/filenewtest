@@ -639,11 +639,12 @@ th, td { /*white-space: nowrap;*/ }
   font-size: 120%;
 }
 .user-info {
+	white-space:nowrap;
   max-width: 62px;
   display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	overflow:hidden;
   text-align: left;
   vertical-align: top;
   line-height: 15px;

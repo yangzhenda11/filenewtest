@@ -46,18 +46,17 @@ function initLineIncomeforTable(){
 	if(!isInit){
 		$("#lineIncomeforTable").html("");
 	}
-debugger;
+ 
 	if (null != parm.customerCode) {
 		App.initDataTables('#lineIncomeforTable', "#lineIncomeforLoading", {
 			ajax: {
 				"type": "POST",
-				"url" :serverPath + 'incomeForecast/listLineIncomeForecast' ,
+				"url" :serverPath + 'incomeForecast/listLineIncomeForecastCustomerCode' ,
 				"contentType" : "application/json;charset=utf-8", 
-				"data": function(d){  
+				"data": function(d){
 					d.customerCode = parm.customerCode; 
 					d.customerName = parm.customerName; 
-					d.forecastAccountPeriod = parm.forecastAccountPeriod;
-					d.customerName = parm.customerName;
+					d.forecastAccountPeriod = parm.forecastAccountPeriod; 
 	 				return  JSON.stringify(d);
 				}
 			},
@@ -169,8 +168,8 @@ var  incomeTheadList = [
 	
 	
 	{data:"合同编号",id:"contractNumber" },
-	{data:"客户名称",id:"customerManagerName" },
-	{data:"集客系统客户编号",id:"customerManagerCode" },
+	{data:"客户名称",id:"customerName" },
+	{data:"集客系统客户编号",id:"customerCode" },
 	{data:"接入速率/带宽",id:"accessRate" },
  
 	{

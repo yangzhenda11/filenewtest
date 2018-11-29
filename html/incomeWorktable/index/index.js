@@ -16,7 +16,9 @@ $(function() {
 	checkRoleType();
 	if(roleType == 91218) {
 		setAuditScope();
-	};
+	}else{
+		$("#chooseScope").remove();
+	}
 	//重点关注DOM区域生成
 	getFocusEmphasis();
 	//获取收入总览图表数据

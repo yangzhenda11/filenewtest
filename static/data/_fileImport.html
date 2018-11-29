@@ -217,18 +217,21 @@
 					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileImportModalForm").show();
+					if((result.indexOf(">")!= -1) && (result.lastIndexOf("<")!= -1)){
+						result = result.substring(result.indexOf(">")+1,result.lastIndexOf("<"));
+					};
 					try{
 						var result = JSON.parse(result);
 						fileImportCallback(result);
 					}catch(e){
-						layer.msg("导入失败");
+						layer.alert("导入失败",{icon:2,title:"错误"});
 					}
 				},
 				'error': function(result){
 					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileImportModalForm").show();
-					layer.msg("导入失败");
+					layer.alert("导入失败",{icon:2,title:"错误"});
 				}
 			});
 		}else{

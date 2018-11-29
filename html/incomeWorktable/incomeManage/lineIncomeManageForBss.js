@@ -142,9 +142,7 @@ var  incomeTheadList = [
 	{data:"租用范围",id:"rentingScope",checked:true}, 
 	{data:"月租费",id:"monthRentCost",checked:true}, 
 	 
-	{data:"合同编号",id:"contractNumber" },
-	{data:"客户名称",id:"customerManagerName" },
-	{data:"集客系统客户编号",id:"customerManagerCode" },
+	{data:"合同编号",id:"contractNumber" }, 
 	{data:"接入速率/带宽",id:"accessRate" },
  
 	{

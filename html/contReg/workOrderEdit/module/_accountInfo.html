@@ -122,7 +122,7 @@
 				accountDataList.push(accountDataItem);
 				if(isValid){
 					if(accountNumber != ""){
-						if(!retInteger(accountNumber)){
+						if(!retIntegerAccount(accountNumber)){
 							isReg = false;
 							$(v).find(".accountNumber").parents(".form-group").addClass("has-error").data("errordata","请输入正确的银行账号(只允许录入阿拉伯数字)");
 						}
@@ -181,11 +181,9 @@
 	/*
 	 * 验证大于0的整数
 	 */
-	function retInteger(val){
-		console.log(val);
+	function retIntegerAccount(val){
 		var ret = /^[0-9]*$/;
       	var result = ret.test(val);
-      	console.log(result);
       	return result;
 	}
 	//整数验证

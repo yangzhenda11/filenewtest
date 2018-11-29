@@ -1121,7 +1121,7 @@ function getContentValue(isSubmit) {
 			showLayerErrorMsg(errordata);
 		}else{
 			showLayerErrorMsg("当前工单表单校验未通过，请检查");
-		}
+		};
     	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	return false;
 	}else if(isPass == true){

@@ -117,13 +117,15 @@
 				accountDataItem.accountId = $(v).data("id");
 				accountDataItem.accountName = $(v).find(".accountName").val();
 				accountDataItem.openBank = $(v).find(".openBank").val();
-				var accountNumber = $(v).find(".accountNumber").val();;
+				var accountNumber = $(v).find(".accountNumber").val();
 				accountDataItem.accountNumber = accountNumber;
 				accountDataList.push(accountDataItem);
 				if(isValid){
-					if(accountNumber != "" && !retInteger(accountNumber)){
-						isReg = false;
-						$(v).find(".accountNumber").parents(".form-group").addClass("has-error").data("errordata","请输入正确的银行账号(只允许录入阿拉伯数字)");
+					if(accountNumber != ""){
+						if(!retInteger(accountNumber)){
+							isReg = false;
+							$(v).find(".accountNumber").parents(".form-group").addClass("has-error").data("errordata","请输入正确的银行账号(只允许录入阿拉伯数字)");
+						}
 					}
 				};
 			}

@@ -214,18 +214,18 @@
 		if(setting.accept) {
 			$("#uploadFileInput").attr("accept", setting.accept);
 		};
-//		if(setting.extraData) {
-//			_fileUploadObj.extraData = setting.extraData;
-//			var displayName = setting.extraData.displayName;
-//			if(displayName){
-//				if(displayName.indexOf("&^&") != -1){
-////					_fileUploadObj.changeName = true;
-////					_fileUploadObj.extraData.displayName = displayName.substring(0,displayName.length-3);
-//				}
-//			}
-//		}else{
-//			_fileUploadObj.extraData = {displayName: ""};
-//		}
+		if(setting.extraData) {
+			_fileUploadObj.extraData = setting.extraData;
+			var displayName = setting.extraData.displayName;
+			if(displayName){
+				if(displayName.indexOf("&^&") != -1){
+					_fileUploadObj.changeName = true;
+					_fileUploadObj.extraData.displayName = displayName.substring(0,displayName.length-3);
+				}
+			}
+		}else{
+			_fileUploadObj.extraData = {displayName: ""};
+		}
 	}
 	/*
 	 * 文件上传

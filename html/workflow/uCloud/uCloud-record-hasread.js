@@ -1,5 +1,5 @@
-//var config = top.globalConfig;
-//var serverPath = config.serverPath;
+var config = top.globalConfig;
+var serverPath = config.serverPath;
 //当前页面参数获取，针对不同的参数处理代办跳转还是数据列表跳转的页面差异项
 var parm = App.getPresentParm();
 var staffOrgId=parm.staffOrgId;//岗位ID接收人
@@ -12,7 +12,7 @@ $(function(){
 
 function getInitInfo(){
 	var ajaxObj = {
-		    "url" :  "/recordToread/selectByReadTypeCode",
+		    "url" :  serverPath+"recordToread/selectByReadTypeCode",
 		    "type" : "post",
 		    "data": {"readTypeCode":readTypeCode}
 		};

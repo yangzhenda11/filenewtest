@@ -156,8 +156,8 @@ var  incomeTheadList = [
 	{data:"实收（元）",id:"collectedAmount",checked:true} ,
 	
 	{data:"合同编号",id:"contractNumber" },
-	{data:"客户名称",id:"customerManagerName" },
-	{data:"集客系统客户编号",id:"customerManagerCode" },
+	{data:"客户名称",id:"customerName" },
+	{data:"集客系统客户编号",id:"customerCode" },
 	{data:"接入速率/带宽",id:"accessRate" },
  
 	{

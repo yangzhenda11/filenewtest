@@ -15,6 +15,7 @@ $(function() {
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
 	if(roleType == 91218) {
+		$("#chooseScope").show();
 		setAuditScope();
 	}else{
 		$("#chooseScope").remove();

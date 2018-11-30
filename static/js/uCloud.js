@@ -5,9 +5,9 @@ var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
     /**静态服务文件上传地址 */
-    fileUploadPath: "/zuul/contract_services/",
+    fileUploadPath: "/",
     /**后台服务地址 */
-    serverPath: "/contract_services/",
+    serverPath: "/",
     /** 当前用户的岗位id （sys_staff_org表主键） */
     curStaffOrgId: null, 
     /** 当前用户组织深度*/

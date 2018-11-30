@@ -103,7 +103,7 @@ function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 		url = serverPath + "partnersManage/delPartnersFocusManage";
 		massage = "不再";
 	};
-	layer.confirm("确定"+massage+"重点关注该合同？", {icon: 0}, function() {
+	layer.confirm("确定"+massage+"重点关注该合作方？", {icon: 0}, function() {
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			if(editFlag == "delete"){

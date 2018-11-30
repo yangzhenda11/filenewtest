@@ -135,7 +135,6 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,orgC
 
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
-    	$("#PandJstaffiframetask").modal('show');
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,null,null,null,null,null,orgCodes);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
@@ -144,7 +143,8 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,orgC
 			    $("#searchStaffTable .checkchild").prop("checked", check);
 			    checkAllChildStaffCheckbox();
 			});
-		})
+		});
+		$("#PandJstaffiframetask").modal('show');
     });
 }
 function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){

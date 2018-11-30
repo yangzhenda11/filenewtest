@@ -25,7 +25,15 @@
 		<div class="page-content">
 			<div class="work-list">
 				<div class="form-fieldset" id="lineInfor">
+					<div class="form-fieldset-title">
+						<span>客户经理权限取消</span>
+					</div>
 					<form class="form-horizontal" id="orgShow">
+						<div id="toolbarBtnContent">
+							<div id="toolbarButton">
+								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+							</div>
+						</div>
 						<div class="form-group">
 							<div class="input-group">
 								<span class="input-group-addon" for="title" style="padding-left: 38px">主题：</span>
@@ -107,5 +115,13 @@ $(function(){
 		}
  	}
 })
+
+	
+/*
+ *关闭按钮
+ */
+ function backPage(){
+	 window.history.go(-1);
+}
 </script>
 </html>

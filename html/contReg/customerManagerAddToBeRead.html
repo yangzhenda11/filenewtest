@@ -25,7 +25,15 @@
 		<div class="page-content">
 			<div class="work-list">
 				<div class="form-fieldset" id="lineInfor">
+					<div class="form-fieldset-title">
+						<span>客户经理权限增加</span>
+					</div>
 					<form class="form-horizontal" id="orgShow">
+						<div id="toolbarBtnContent">
+							<div id="toolbarButton">
+								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+							</div>
+						</div>
 						<div class="form-group">
 							<div class="input-group">
 								<span class="input-group-addon" for="title" style="padding-left: 38px">主题：</span>
@@ -120,14 +128,20 @@ $(function(){
  *跳转工单查看页面
  */
  function jumpView(){
-		App.setCache("searchForm");
-		debugger;
-		if(wcardId == null){
-			layer.msg("数据异常！");
-		}else{
-			var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
-			App.changePresentUrl(href);
-		}
+	App.setCache("searchForm");
+	if(wcardId == null){
+		layer.msg("数据异常！");
+	}else{
+		var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+		App.changePresentUrl(href);
 	}
+}
+	
+/*
+ *关闭按钮
+ */
+ function backPage(){
+	 window.history.go(-1);
+}
 </script>
 </html>

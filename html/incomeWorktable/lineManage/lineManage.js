@@ -470,15 +470,7 @@ var relationContractTheadList = [
 	{
 		data : "客户经理账号",
 		id : "customerManagerCode"
-	},
-	{
-		data : "添加人姓名",
-		id : "createdBy"
-	},
-	{
-		data : "添加人账号",
-		id : "createdBy"
-	},
+	}, 
 	{
 		data : "导入时间",
 		id : "createdDate"

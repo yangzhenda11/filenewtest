@@ -2002,6 +2002,24 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 //	}
 });
 /*
+ * datatable跳转至第**页
+ */
+function setDatatableCurPage(dom){
+	var val = $(dom).val();
+	var tableId = $(dom).parents(".dataTables_wrapper")[0].id;
+	tableId = tableId.split("_")[0];
+	var pageObj = App.getDatatablePaging("#"+tableId);
+	var pages = Math.ceil(pageObj.total/pageObj.pageLength);
+	if(/^\+?\d+$/.test(val) && val > 0 && val <= pages){
+		val = Number(val) - 1;
+		$("#"+tableId).DataTable().page(val).draw(false);
+	}else{
+		layer.msg("输入页码有误请重新输入");
+	}
+	$(dom).val("");
+}
+/************************************************IE兼容性*********************************/
+/*
  * .trim()兼容IE8
  */
 String.prototype.trim = function() {
@@ -2058,24 +2076,7 @@ if (!Array.prototype.lastIndexOf) {
       }
     }
     return -1;
-  };
-}
-/*
- * datatable跳转至第**页
- */
-function setDatatableCurPage(dom){
-	var val = $(dom).val();
-	var tableId = $(dom).parents(".dataTables_wrapper")[0].id;
-	tableId = tableId.split("_")[0];
-	var pageObj = App.getDatatablePaging("#"+tableId);
-	var pages = Math.ceil(pageObj.total/pageObj.pageLength);
-	if(/^\+?\d+$/.test(val) && val > 0 && val <= pages){
-		val = Number(val) - 1;
-		$("#"+tableId).DataTable().page(val).draw(false);
-	}else{
-		layer.msg("输入页码有误请重新输入");
-	}
-	$(dom).val("");
+  	};
 }
 $(function() {
     // 如果不支持placeholder，用jQuery来完成
@@ -2143,3 +2144,25 @@ function setInputSupportPlaceholder(obj, val) {
         }
     });
 }
+(function() {
+    var consoleMethod;
+    var consoleNoop = function () {};
+    var consoleMethods = [
+        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+        'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
+    ];
+    var length = consoleMethods.length;
+    var console = (window.console = window.console || {});
+
+    while (length--) {
+        consoleMethod = consoleMethods[length];
+
+        // Only stub undefined consoleMethods.
+        if (!console[consoleMethod]) {
+            console[consoleMethod] = consoleNoop;
+        }
+    }
+}());
+/************************************************IE兼容性*********************************/

@@ -239,7 +239,7 @@ function initInvoiceFiexdCharts(){
 				{
 					value: noInvoiceNnovateSum,
 					name: "剩余未开票金额："+App.unctionToThousands(noInvoiceNnovateSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			invoiceChartsFixedOption = initCharts("固定金额合同累计开票金额情况",invoiceChartsFixedData);
@@ -285,7 +285,7 @@ function initInvoiceNotFiexdCharts(){
 				{
 					value: noInvoiceNnovateSum,
 					name: "剩余未开票金额："+App.unctionToThousands(noInvoiceNnovateSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			invoiceChartsNotFixedOption = initCharts("框架协议累计开票金额情况",invoiceChartsNotFixedData);
@@ -331,7 +331,7 @@ function initPaymentFiexdCharts(){
 				{
 					value: noPayVateAmountSum,
 					name: "剩余含税未付款金额："+App.unctionToThousands(noPayVateAmountSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			paymentChartsFixedOption = initCharts("固定金额合同累计含税付款金额情况",paymentChartsFixedData);
@@ -377,7 +377,7 @@ function initPaymentNotFiexdCharts(){
 				{
 					value: noPayVateAmountSum,
 					name: "剩余含税未付款金额："+App.unctionToThousands(noPayVateAmountSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			paymentChartsNotFixedOption = initCharts("框架协议累计含税付款金额情况",paymentChartsNotFixedData);
@@ -405,19 +405,17 @@ function initPaymentNotFiexdCharts(){
  */
 function initCharts(title,data,isEmpty){
 	var minAngleValue = 6;
+	$.each(data, function(k,v) {
+		if(v.value == 0){
+			minAngleValue = 0;
+		}
+	});
 	var formatter = "{a} <br/>{b} ({d}%)";
 	if(isEmpty){
-		minAngleValue = 0;
 		formatter = title;
 		for(var i = 0; i < data.length; i++){
 			formatter += "<br />" + data[i].name;
 		}
-	}else{
-		$.each(data, function(k,v) {
-			if(v.value == 0){
-				minAngleValue = 0;
-			}
-		});
 	};
 	var option = {
 		title: {

@@ -10,6 +10,9 @@ console.log("parm",parm);
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
+$("#returnBtn").on("click",function(){
+	 window.history.go(-1);
+})
 $(function(){
  	if(!parm.customerCode && !parm.bussid){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});

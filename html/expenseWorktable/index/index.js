@@ -253,10 +253,14 @@ function setInvoiceChartsNote(data){
  * 生成环形图配置项
  */
 function initCharts(title,subtext,data,isEmpty){
-	var borderWidth = 2;
+	var minAngleValue = 6;
+	$.each(data, function(k,v) {
+		if(v.value == 0){
+			minAngleValue = 0;
+		}
+	});
 	var formatter = "{a} <br/>{b} ({d}%)";
 	if(isEmpty){
-		borderWidth = 0;
 		formatter = title;
 		for(var i = 0; i < data.length; i++){
 			formatter += "<br />" + data[i].name;
@@ -300,6 +304,7 @@ function initCharts(title,subtext,data,isEmpty){
 			name: title,
 			type: 'pie',
 			radius: ['35%', '60%'],
+			minAngle: minAngleValue,
 			label: {
 				normal: {
 					show: false,
@@ -311,7 +316,7 @@ function initCharts(title,subtext,data,isEmpty){
 				}
 			},
 			itemStyle: {
-                borderWidth: borderWidth,
+                borderWidth: 2,
                 borderColor: '#ffffff'
 	        },
 			data: data

@@ -305,6 +305,12 @@ function getIncomeAnalysisData(){
 }
 
 function returnChartsOption(title, subTitle, data, seriesName) {
+	var minAngleValue = 6;
+	$.each(data, function(k,v) {
+		if(v.value == 0){
+			minAngleValue = 0;
+		}
+	});
 	var overviewReceivableOption = {
 		title : {
 	        text: title,
@@ -342,6 +348,7 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 //	            radius : '55%',
 //	            center: ['50%', '53%'],
 				radius: ['30%', '53%'],
+				minAngle: minAngleValue,
 	            clockwise: false,
 //	            startAngle: 0,
 //	            hoverAnimation: false,

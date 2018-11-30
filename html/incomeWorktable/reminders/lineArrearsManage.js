@@ -18,6 +18,9 @@ $(function(){
  		initLineInforTable();
  	}
 })
+$("#returnBtn").on("click",function(){
+	 window.history.go(-1);
+})
 /*
  * 未关联合同客户表格初始化
  * 表头为动态表头，第一次加载时需要去掉其中的内容
@@ -41,7 +44,7 @@ function initLineInforTable(){
 		"columns": [
 					{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
 						"render" : function(data, type, full, meta){
-							var start = App.getDatatablePaging("#contractInforTable").pageStart;
+							var start = App.getDatatablePaging("#lineInforTable").pageStart;
 							return start + meta.row + 1;
 						}
 					},

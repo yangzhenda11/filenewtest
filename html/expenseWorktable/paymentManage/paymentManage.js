@@ -404,15 +404,21 @@ function initPaymentNotFiexdCharts(){
  * 生成圆环配置项
  */
 function initCharts(title,data,isEmpty){
-	var borderWidth = 2;
+	var minAngleValue = 6;
 	var formatter = "{a} <br/>{b} ({d}%)";
 	if(isEmpty){
-		borderWidth = 0;
+		minAngleValue = 0;
 		formatter = title;
 		for(var i = 0; i < data.length; i++){
 			formatter += "<br />" + data[i].name;
 		}
-	}
+	}else{
+		$.each(data, function(k,v) {
+			if(v.value == 0){
+				minAngleValue = 0;
+			}
+		});
+	};
 	var option = {
 		title: {
 			text: title,
@@ -451,6 +457,7 @@ function initCharts(title,data,isEmpty){
 			name: title,
 			type: 'pie',
 			radius: ['35%', '60%'],
+			minAngle: minAngleValue,
 			label: {
 				normal: {
 					show: false,
@@ -462,7 +469,7 @@ function initCharts(title,data,isEmpty){
 				}
 			},
 			itemStyle: {
-                borderWidth: borderWidth,
+                borderWidth: 2,
                 borderColor: '#ffffff'
 	        },
 			data: data

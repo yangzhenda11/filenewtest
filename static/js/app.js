@@ -2052,6 +2052,7 @@ $(document).ajaxSend(function(event, jqxhr, settings) {
 //		}
 //	}
 });
+/************************************************IE兼容性*********************************/
 /*
  * .trim()兼容IE8
  */
@@ -2194,3 +2195,25 @@ function setInputSupportPlaceholder(obj, val) {
         }
     });
 }
+(function() {
+    var consoleMethod;
+    var consoleNoop = function () {};
+    var consoleMethods = [
+        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+        'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
+    ];
+    var length = consoleMethods.length;
+    var console = (window.console = window.console || {});
+
+    while (length--) {
+        consoleMethod = consoleMethods[length];
+
+        // Only stub undefined consoleMethods.
+        if (!console[consoleMethod]) {
+            console[consoleMethod] = consoleNoop;
+        }
+    }
+}());
+/************************************************IE兼容性*********************************/

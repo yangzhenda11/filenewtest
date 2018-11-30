@@ -4,12 +4,12 @@
 <!--[if !IE]><!-->
 <html lang="en">
 	<!--<![endif]-->
-	
+	<!-- BEGIN HEAD -->
 
 	<head>
 		<meta charset="UTF-8">
-		<title>云门户待办</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
+		<title>云门户已阅</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="Expires" content="0">
@@ -30,47 +30,7 @@
 	</head>
 
 	<body>
-		<div class="page-content" id="searchContentForToDo">
-			<div class="loadEffect">
-				<i></i>
-				<i></i>
-				<i></i>
-				<i></i>
-				<i></i>
-				<i></i>
-				<i></i>
-				<i></i>
-			</div>
-			<div class="textValue">正在努力为您跳转中，请稍候......</div>
-			<div style="display:none;">
-				<input type="hidden" id="currentId" name="currentId" />
-				<form id="taskToDoDetail">
-					<!-- 是否为会签节点 -->
-					<input type="hidden" id="isCounterSign" name="isCounterSign" />
-					<!-- 任务相关属性 -->
-					<!-- 当前任务taskid -->
-					<input type="text" id="taskId" name="taskId" />
-					<!-- 当前任务办理环节code -->
-					<input type="text" id="taskDefinitionKey" name="taskDefinitionKey" />
-					<!-- 当前任务的环节名称 -->
-					<input type="text" id="name" name="name" />
-					<!-- 当前待办流程实例 -->
-					<input type="text" id="processInstanceId" name="processInstanceId" />
-					<!-- 当前待办流程定义id的版本 -->
-					<input type="text" id="processDefinitionId" name="processDefinitionId" />
-					<!-- 待办标题 -->
-					<input type="text" id="title" name="title" />
-					<!-- 当前流程定义id -->
-					<input type="text" id="processDefinitionKey" name="processDefinitionKey" />
-					<!-- 当前任务执行id -->
-					<input type="text" id="executionId" name="executionId" />
-					<!-- 任务所属登录人岗位ID -->
-					<input type="text" id="assigneeId" name="assigneeId" />
-				</form>
-			</div>
-		</div>
-		<div id="goTaskToDoDetailForToDo"></div>
-		<iframe id="businessiframe" name="businessiframe" style="display: none;" width="100%" height="100%" frameborder="0"></iframe>
+		<div class="textValue">正在努力为您跳转中，请稍候......</div>
 		<!--[if lt IE 9]>
 		<script src="/static/plugins/html5shiv.min.js?t=1543570107805"></script>
 		<script src="/static/plugins/respond.min.js?t=1543570107805"></script>
@@ -90,9 +50,9 @@
 		<script src="/static/plugins/datatables/ellipsis.js?t=1543570107805"></script>
 		<script src="/static/plugins/handlebars-v3.0.1.js?t=1543570107805" type="text/javascript" charset="utf-8"></script>
 		<script src="/static/js/app.js?t=1543570107805" type="text/javascript" charset="utf-8"></script>
-		<script src="/static/js/uCloud.js?t=1543570107805" type="text/javascript" charset="utf-8"></script>
+		 <script src="/static/js/uCloud.js?t=1543570107805" type="text/javascript" charset="utf-8"></script> 
 		<script src="/static/plugins/date-format.js?t=1543570107805" type="text/javascript" charset="utf-8"></script>
-		<script src="/html/workflow/uCloud/uCloud-task.js?t=1543570107805" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/workflow/uCloud/uCloud-record-toread.js?t=1543570107805" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

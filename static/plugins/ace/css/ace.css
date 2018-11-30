@@ -1817,7 +1817,8 @@ body.mob-safari .sidebar.sidebar-fixed {
   height: auto !important;
   visibility: visible !important;
   max-height: 260px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .sidebar.menu-min .nav-list > li > .submenu:before {
   display: none;

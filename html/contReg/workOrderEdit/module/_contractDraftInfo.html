@@ -1,0 +1,49 @@
+<div class="form-fieldset">
+	<div class="form-fieldset-title">
+		<span><i class="iconfont icon-layers"></i> 合同定稿正文</span>
+		<div class="form-fieldset-tools">
+			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+	<div class="form-fieldset-body">
+		<div class="row">
+			<div class="col-sm-12 form-group">
+				<label for="contractText" class="col-sm-1 control-label">合同定稿正文：</label>
+				<div class="contractDocSty paddingR0" id="contractDraftInfoDiv"></div>
+				<div class="col-sm-1">
+					<button type="button" class="btn red" id="contractDraftInfoBtn" onclick="contractDraftInfoDownload()">下载</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//获取定稿正文
+	getContractDraftInfo();
+	/*
+	 * 获取定稿正文
+	 */
+	function getContractDraftInfo(){
+		var url = serverPath + "contractOrderEditorController/getContractDraftInfo";
+		App.formAjaxJson(url, "post", {contractNumber:contractNumber}, successCallback,null,null,null,null,"formData");
+		function successCallback(result) {
+			var data = result.data;
+			if (data) {
+				$("#contractDraftInfoBtn").data("key",data.stored_id);
+				html =  '<a href="'+serverPath+'fileload/downloadS3?key='+data.stored_id+'">'+data.doc_name+'</a>';
+				$("#contractDraftInfoDiv").html(html);
+			} else{
+				$("#contractDraftInfoBtn").remove();
+				$("#contractDraftInfoDiv").html("<a>暂无合同定稿正文</a>");
+			};
+		}
+	}
+	/*
+	 * 下载定稿正文
+	 */
+	function contractDraftInfoDownload(){
+		var downloadKey = $("#contractDraftInfoBtn").data("key");
+		var url = serverPath + 'fileload/downloadS3?key='+downloadKey;
+		location.href = encodeURI(url);	
+	}
+</script>

@@ -1714,7 +1714,7 @@ Customized Bootstrap Close Icon
   background-repeat: no-repeat !important;
   text-indent: -10000px;
   outline: none;
-  background-image: url("/static/img/remove-icon-small.png?t=1543485406916") !important; }
+  background-image: url("/static/img/remove-icon-small.png?t=1543570107805") !important; }
 
 /***
 Customized Bootstrap Dropdowns
@@ -3192,7 +3192,7 @@ Metro icons
   margin-top: 3px;
   line-height: 14px;
   vertical-align: top;
-  background-image: url(/static/img/syncfusion-icons.png?t=1543485406916);
+  background-image: url(/static/img/syncfusion-icons.png?t=1543570107805);
   background-position: 0 0;
   background-repeat: no-repeat; }
 
@@ -3202,7 +3202,7 @@ Metro icons
   height: 30px;
   margin: 6px;
   vertical-align: middle;
-  background-image: url(/static/img/syncfusion-icons.png?t=1543485406916);
+  background-image: url(/static/img/syncfusion-icons.png?t=1543570107805);
   background-position: 0 0px;
   background-repeat: no-repeat; }
 
@@ -3231,7 +3231,7 @@ Metro icons
 
 /* white icon */
 .m-icon-white {
-  background-image: url(/static/img/syncfusion-icons-white.png?t=1543485406916); }
+  background-image: url(/static/img/syncfusion-icons-white.png?t=1543570107805); }
 
 /*  Misc */
 .m-icon-swapright {
@@ -3424,7 +3424,7 @@ Customized Bootstrap Panels
       display: block;
       padding: 10px 15px; }
     .accordion .panel .panel-title .accordion-toggle.accordion-toggle-styled {
-      background: url("/static/img/accordion-plusminus.png?t=1543485406916") no-repeat;
+      background: url("/static/img/accordion-plusminus.png?t=1543570107805") no-repeat;
       background-position: right -19px;
       margin-right: 15px; }
     .accordion .panel .panel-title .accordion-toggle.accordion-toggle-styled.collapsed {
@@ -3593,22 +3593,22 @@ Portlets
         opacity: 1 ;
         filter: alpha(opacity=100) ; }
       .portlet > .portlet-title > .tools > a.remove {
-        background-image: url(/static/img/portlet-remove-icon.png?t=1543485406916);
+        background-image: url(/static/img/portlet-remove-icon.png?t=1543570107805);
         background-repeat: no-repeat;
         width: 11px; }
       .portlet > .portlet-title > .tools > a.config {
-        background-image: url(/static/img/portlet-config-icon.png?t=1543485406916);
+        background-image: url(/static/img/portlet-config-icon.png?t=1543570107805);
         background-repeat: no-repeat;
         width: 12px; }
       .portlet > .portlet-title > .tools > a.reload {
-        background-image: url(/static/img/portlet-reload-icon.png?t=1543485406916);
+        background-image: url(/static/img/portlet-reload-icon.png?t=1543570107805);
         width: 13px; }
       .portlet > .portlet-title > .tools > a.expand {
-        background-image: url(/static/img/portlet-expand-icon.png?t=1543485406916);
+        background-image: url(/static/img/portlet-expand-icon.png?t=1543570107805);
         width: 14px;
         visibility: visible; }
       .portlet > .portlet-title > .tools > a.collapse {
-        background-image: url(/static/img/portlet-collapse-icon.png?t=1543485406916);
+        background-image: url(/static/img/portlet-collapse-icon.png?t=1543570107805);
         width: 14px;
         visibility: visible; }
       .portlet > .portlet-title > .tools > a.fullscreen {
@@ -7291,7 +7291,7 @@ html, body, .page-content {
   overflow: hidden;
   width: 0;
   height: 100%;
-  background: #d14 url(/static/img/webuploader/progress.png?t=1543485406916) repeat-x;
+  background: #d14 url(/static/img/webuploader/progress.png?t=1543570107805) repeat-x;
   -webit-transition: width 200ms linear;
   -moz-transition: width 200ms linear;
   -o-transition: width 200ms linear;
@@ -7349,7 +7349,7 @@ a.travis {
   min-height: 350px;
   padding-top: 178px;
   text-align: center;
-  background: url(/static/img/webuploader/image.png?t=1543485406916) center 93px no-repeat;
+  background: url(/static/img/webuploader/image.png?t=1543570107805) center 93px no-repeat;
   color: #cccccc;
   font-size: 18px;
   position: relative; }
@@ -7401,7 +7401,7 @@ a.travis {
 .webuploader-container-drag .filelist li {
   width: 110px;
   height: 110px;
-  background: url(/static/img/webuploader/bg.png?t=1543485406916) no-repeat;
+  background: url(/static/img/webuploader/bg.png?t=1543570107805) no-repeat;
   text-align: center;
   margin: 0 8px 20px 0;
   position: relative;
@@ -7444,7 +7444,7 @@ a.travis {
   overflow: hidden;
   width: 0;
   height: 100%;
-  background: #1483d8 url(/static/img/webuploader/progress.png?t=1543485406916) repeat-x;
+  background: #1483d8 url(/static/img/webuploader/progress.png?t=1543570107805) repeat-x;
   -webit-transition: width 200ms linear;
   -moz-transition: width 200ms linear;
   -o-transition: width 200ms linear;
@@ -7533,7 +7533,7 @@ a.travis {
   float: right;
   text-indent: -9999px;
   overflow: hidden;
-  background: url(/static/img/webuploader/icons.png?t=1543485406916) no-repeat;
+  background: url(/static/img/webuploader/icons.png?t=1543570107805) no-repeat;
   margin: 5px 1px 1px;
   cursor: pointer; }
 
@@ -8371,7 +8371,7 @@ Dashboard Charts(new in v1.2.1)
 jQuery File Upload
 ***/
 .blueimp-gallery .close {
-  background-image: url("/static/img/portlet-remove-icon-white.png?t=1543485406916") !important;
+  background-image: url("/static/img/portlet-remove-icon-white.png?t=1543570107805") !important;
   margin-top: -2px; }
 
 .blueimp-gallery .prev,

@@ -25,7 +25,15 @@
 		<div class="page-content">
 			<div class="work-list">
 				<div class="form-fieldset" id="lineInfor">
+					<div class="form-fieldset-title">
+						<span>客户经理权限取消</span>
+					</div>
 					<form class="form-horizontal" id="orgShow">
+						<div id="toolbarBtnContent">
+							<div id="toolbarButton">
+								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+							</div>
+						</div>
 						<div class="form-group">
 							<div class="input-group">
 								<span class="input-group-addon" for="title" style="padding-left: 38px">主题：</span>
@@ -99,13 +107,30 @@ $(function(){
 		App.formAjaxJson(serverPath + 'contractOrderEditorController/getCustomerManagerToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
-		
- 		$("#title").text(data.readTitle);
- 		var receive = App.formatDateTime(data.sendDate,"yyyy-MM-dd HH:ss:mm");
- 		$("#sendName").text(data.sendStaffOrgId);
- 		$("#receiveTime").text(receive);
-		}
+			var title = data.readTitle;
+			var sendName = data.sendStaffOrgId;
+			$("#sendName").text(sendName);
+			for(var i=0;i<title.length;i++){ 
+				if(title[i]=='合'){ 
+					var contractCode = title.substring(0,i);
+					var contentStr = "客户经理"+sendName+"取消了您对合同"+contractCode+"的客户经理权限，请知晓";
+					$("#content").text(contentStr);
+				} 
+			} 
+	 		$("#title").text(title);
+	 		var receive = App.formatDateTime(data.sendDate,"yyyy-MM-dd HH:ss:mm");
+	 		
+	 		$("#receiveTime").text(receive);
+			}
  	}
 })
+
+	
+/*
+ *关闭按钮
+ */
+ function backPage(){
+	 window.history.go(-1);
+}
 </script>
 </html>

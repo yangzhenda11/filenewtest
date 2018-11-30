@@ -125,7 +125,8 @@ td.milestoneLegend{
 }
 .invoiceIncomeTitle span{
 	display: inline-block;
-	min-width: 100px;
+	min-width: 80px;
+	margin-right: 20px;
 }
 .paymentManageDetailTit{
 	font-weight: bold;

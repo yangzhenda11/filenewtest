@@ -249,7 +249,11 @@
 	addNotEmptyValidatorField("expiryCondition","请输入不超过2000个字符的满足终止条件");
 	//设置默认展示方式
 	if(wcardTypeCode == 2){
-		$("#isPostponableDom").css("visibility","hidden");
+		if(App.IEVersionVA(10)){
+			$("#isPostponableDom").hide();
+		}else{
+			$("#isPostponableDom").css("visibility","hidden");
+		}
 	}
 	changePostponableValidatorStatus(905010,0);
 	//获取合同生效信息

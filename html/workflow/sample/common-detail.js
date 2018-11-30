@@ -449,10 +449,8 @@ function selectstaffSH(){
     jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes);
 }
 function jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes){
-
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetaskSH").load(frameSrc,function() {
-    	$("#PandJstaffiframetaskSH").modal('show');
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,null,null,null,null,null,orgCodes);
     	$("#PandJstaffiframetaskSH").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
@@ -461,6 +459,7 @@ function jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,or
 			    $("#searchStaffTable .checkchild").prop("checked", check);
 			    checkAllChildStaffCheckbox();
 			});
-		})
+		});
+    	$("#PandJstaffiframetaskSH").modal('show');
     });
 }

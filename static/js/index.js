@@ -338,10 +338,7 @@ function logout() {
         function successMethod(result) {
             App.formAjaxJson("/logout", "POST", null, successCallback);
             function successCallback(result) {
-            	console.log(result);
-            	if (result.status == 1){
-                    closeWindow();
-				}
+                closeWindow();
             }
         }
     })

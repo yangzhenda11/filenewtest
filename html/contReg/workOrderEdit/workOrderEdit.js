@@ -259,18 +259,19 @@ function chooseAssigneeConfirm(){
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,orgCodes){
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
-    	$("#PandJstaffiframetask").modal('show');
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC,orgCodes);
     	$("#PandJstaffiframetask").off('shown.bs.modal').on('shown.bs.modal', function (e) {
 			App.initDataTables('#searchStaffTable', "#searchEforgHome", dataTableConfig);
 			$(".checkall").click(function () {
-			      	var check = $(this).prop("checked");
-			      	$(".checkchild").prop("checked", check);
-			      	checkAllChildStaffCheckbox();
+		      	var check = $(this).prop("checked");
+		      	$(".checkchild").prop("checked", check);
+		      	checkAllChildStaffCheckbox();
 			});
 		})
+    	$("#PandJstaffiframetask").modal('show');
     });
 }
+
 /*
  * 注册按钮点击@功能页面
  */

@@ -297,7 +297,7 @@ button:focus{outline: none !important;}
  * 浮动布局
  */
 #user-menu{
-	margin-top: 4px;
+	margin-top: 3px;
 }
 .toolbars-position{
 	position: relative;

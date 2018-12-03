@@ -25,5 +25,7 @@ function getInitInfo(){
 function  findDetail  (url,bussId) {
 	var src = url+"&bussid="+bussId;
 	$('#businessiframe').attr("src",src);
+	$('#businessiframe').show();
+	$('#textValue').hide();
 //	App.changePresentUrl(url+"&bussid="+bussId);
 }

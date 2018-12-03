@@ -118,7 +118,7 @@ function getFocusAccountTable(){
  */
 $("#showAccountMore").on("click",function(){
 	var url = "/html/incomeWorktable/accountManage/accountManage.html?expandFocusCustomer=true";
-	top.showSubpageTab(url,"履行中合同");
+	top.showSubpageTab(url,"客户经理管理");
 })
 /*
  * 跳转合同信息（根据客户经理ID）

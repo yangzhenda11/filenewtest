@@ -24,8 +24,8 @@ function getInitInfo(){
 		}
 }
 function  findDetail  (url,bussId) {
-	App.changePresentUrl(url+"&bussid="+bussId);
 	changeReadStatus(readId,bussId);
+	App.changePresentUrl(url+"&bussid="+bussId);
 }
 /*
  * 待阅变已阅Fn

@@ -164,6 +164,7 @@ function conTabC() {
 		};
 		if(!($("#user-role li.choose").data("type") == "income")){
 			layer.alert("当前系统角色为收入类角色，若查看其它角色信息请点击右上角个人信息进行角色切换。",{icon:2});
+			return false;
 		};
 	};
 	if(o == "html/expenseWorktable/index/index.html"){
@@ -175,6 +176,7 @@ function conTabC() {
 		};
 		if(!($("#user-role li.choose").data("type") == "expense")){
 			layer.alert("当前系统角色为支出类角色，若查看其它角色信息请点击右上角个人信息进行角色切换。",{icon:2});
+			return false;
 		};
 	};
 	$(".J_menuTab").each(function() {

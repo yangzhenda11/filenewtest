@@ -912,6 +912,12 @@ function initWarningOverviewCharts(){
 			parseInt($("#customDiffInyzsdr").text())+
 			parseInt($("#relatedNotzxBase").text())+
 			parseInt($("#relatedNotzxPeriod").text());
+		}else{
+			businessException=
+				parseInt($("#customDiffTobss").text())+
+				parseInt($("#customDiffToyzs").text())+
+				parseInt($("#customDiffInbss").text())+
+				parseInt($("#customDiffInyzsdr").text());
 		}
 	}else{
 		businessException=
@@ -950,7 +956,7 @@ function initWarningOverviewCharts(){
 	        type: 'value'
 	    },
 	    series: [{
-	        data: [lineArrearage, lineException, contractException, businessException ],
+	        data: [lineArrearage, lineException, contractException, businessException],
 	        type: 'bar',
 	        barWidth:'40%',
 	        itemStyle: {   

@@ -753,9 +753,7 @@ function initRelatedNotzxBaseTable() {
 			"type" : "POST",
 			"url" : serverPath + 'lineMangerController/listLineInfoForRiskWaring',
 			"contentType" : "application/json;charset=utf-8",
-			"data" : function(d) { 
-				//d.riskType = $("#searchInput").val().trim();
-			
+			"data" : function(d) { 		
 				d.contractName = $("#relatedNotzxBaseInput").val().trim();
 				return JSON.stringify(d);
 			}

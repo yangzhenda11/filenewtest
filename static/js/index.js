@@ -680,28 +680,28 @@ function setWorktableRoleName(){
 				if(!$(this).hasClass("choose")){
 					$(this).addClass("choose").siblings().removeClass("choose");
 					if($(this).data("type") == "income"){
-						$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(incomeRoleType,true));
+						$(".user-info").html("<small>"+globalConfig.curStaffName+"</small>" + getWorktableRoleName(incomeRoleType,true));
 	    				closeAlltabs();
 	    				setIncomeHomePage();
 					}else if($(this).data("type") == "expense"){
-						$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(expenseRoleType,true));
+						$(".user-info").html("<small>"+globalConfig.curStaffName+"</small>" + getWorktableRoleName(expenseRoleType,true));
 						closeAlltabs();
 						setExpenseHomePage();
 					}
 				}
 			}
 		});
-		$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(incomeRoleType,true));
+		$(".user-info").html("<small>"+globalConfig.curStaffName+"</small>" + getWorktableRoleName(incomeRoleType,true));
 		var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='income'><a>"+getWorktableRoleName(incomeRoleType)+"</a></li>"+
 					"<li class='roleItem' data-type='expense'><a>"+getWorktableRoleName(expenseRoleType)+"</a></li>";
 	}else{
 		if(checkPageRoleType("income")){
 			var roleType = getWorktableRoleType("income");
-			$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(roleType,true));
+			$(".user-info").html("<small>"+globalConfig.curStaffName+"</small>" + getWorktableRoleName(roleType,true));
 			var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='income'><a>"+getWorktableRoleName(roleType)+"</a></li>";
 		}else{
 			var roleType = getWorktableRoleType("expense");
-			$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(roleType,true));
+			$(".user-info").html("<small>"+globalConfig.curStaffName+"</small>" + getWorktableRoleName(roleType,true));
 			var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='expense'><a>"+getWorktableRoleName(roleType)+"</a></li>";
 		}
 	};

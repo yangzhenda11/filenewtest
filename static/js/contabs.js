@@ -280,7 +280,15 @@ function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
 		animateTab($(".J_menuTab.active"))
-	}
+	};
+	if($("#workItemDom")[0]){
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+		$.each($("#workItemDom .workItem"), function(n,m) {
+			if($(m).data("url") == dataId){
+				$(m).addClass("workItemChecked");
+			}
+		});
+	};
 	return false
 }
 function conTabH() {

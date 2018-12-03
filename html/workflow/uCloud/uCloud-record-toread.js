@@ -27,6 +27,9 @@ function  findDetail  (url,bussId) {
 	changeReadStatus(readId,bussId);
 	var src = url+"&bussid="+bussId;
 	$('#businessiframe').attr("src",src);
+	$('#businessiframe').show();
+	$('#textValue').hide();
+	
 //	App.changePresentUrl(url+"&bussid="+bussId);
 }
 /*

@@ -753,9 +753,7 @@ function initRelatedNotzxBaseTable() {
 			"type" : "POST",
 			"url" : serverPath + 'lineMangerController/listLineInfoForRiskWaring',
 			"contentType" : "application/json;charset=utf-8",
-			"data" : function(d) { 
-				//d.riskType = $("#searchInput").val().trim();
-			
+			"data" : function(d) { 			
 				d.contractName = $("#relatedNotzxBaseInput").val().trim();
 				return JSON.stringify(d);
 			}
@@ -926,6 +924,8 @@ function initWarningOverviewCharts(){
 		parseInt($("#customDiffInbss").text())+
 		parseInt($("#customDiffInyzsdr").text());
 	};
+	
+	
 	var option = {
 		title : {
 	        text: '风险预警总览',
@@ -1001,7 +1001,6 @@ function jumpCustomDiffToDetail(contractParm,riskType,diffContent){
 
 function jumpCustomDiffInDetail(contractParm,riskType,diffContent,customerNameBss1,customerNameBss2,customerCodeBss1){
 	var url = "/html/incomeWorktable/riskWarning/customDiffDetail.html?returnBtn=true&contractNumber="+contractParm+"&customerNameBss1="+encodeURI(customerNameBss1)+"&riskType="+riskType+"&customerNameBss2="+encodeURI(customerNameBss2)+"&customerCodeBss1="+customerCodeBss1+"&diffContent="+encodeURI(diffContent);
-
 	top.showSubpageTab(url,"线路差异明细");
 }
  

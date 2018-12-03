@@ -25,7 +25,9 @@ function getInitInfo(){
 }
 function  findDetail  (url,bussId) {
 	changeReadStatus(readId,bussId);
-	App.changePresentUrl(url+"&bussid="+bussId);
+	var src = url+"&bussid="+bussId;
+	$('#businessiframe').attr("src",src);
+//	App.changePresentUrl(url+"&bussid="+bussId);
 }
 /*
  * 待阅变已阅Fn

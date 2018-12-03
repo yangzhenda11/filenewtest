@@ -5,9 +5,9 @@ var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
     /**静态服务文件上传地址 */
-    fileUploadPath: "/",
+    fileUploadPath: "/zuul/contract_services/",
     /**后台服务地址 */
-    serverPath: "/",
+    serverPath: "/contract_services/",
     /** 当前用户组织深度*/
     orgPath: null,
     /** 当前用户所在组织的id（sys_org表主键） */
@@ -92,7 +92,7 @@ $(document).ready(function() {
         if (data.staffOrgs.length > 0) {
             for (var i = 0; i < data.staffOrgs.length; i++) {
                 if (data.staffOrgId == data.staffOrgs[i].staffOrgId) {
-                    $("#user-staff").append("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:red;\">" + data.staffOrgs[i].orgName + "</a> </li>");
+                    $("#user-staff").append("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" style=\"color:red;\">" + data.staffOrgs[i].orgName + "</a> </li>");
                 } else {
                     $("#user-staff").append("<li> <a id=\"staffOrg" + data.staffOrgs[i].staffOrgId + " \" href=\"javascript:changeStaffOrg(" + data.staffOrgs[i].staffOrgId + ");\" style=\"color:black;\">" + data.staffOrgs[i].orgName + "</a> </li>");
                 }
@@ -702,7 +702,7 @@ function setWorktableRoleName(){
 		}else{
 			var roleType = getWorktableRoleType("expense");
 			$(".user-info").html("<small>"+globalConfig.curStaffName+",</small>" + getWorktableRoleName(roleType,true));
-			var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='income'><a>"+getWorktableRoleName(roleType)+"</a></li>";
+			var worktableRoleMenuHtml = "<li class='choose roleItem' data-type='expense'><a>"+getWorktableRoleName(roleType)+"</a></li>";
 		}
 	};
 	$("#user-role").append(worktableRoleMenuHtml);

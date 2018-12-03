@@ -161,7 +161,10 @@ function conTabC() {
 				layer.alert("当前稽核管理角色权限范围不足，请联系系统管理员处理。",{icon:2});
 				return false;
 			}
-		}
+		};
+		if(!($("#user-role li.choose").data("type") == "income")){
+			layer.alert("当前系统角色为收入类角色，若查看其它角色信息请点击右上角个人信息进行角色切换。",{icon:2});
+		};
 	};
 	if(o == "html/expenseWorktable/index/index.html"){
 		var roleArr = globalConfig.curRole;
@@ -169,6 +172,9 @@ function conTabC() {
 		if(roleExistLen != 1){
 			layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个支出类采购业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
 			return false;
+		};
+		if(!($("#user-role li.choose").data("type") == "expense")){
+			layer.alert("当前系统角色为支出类角色，若查看其它角色信息请点击右上角个人信息进行角色切换。",{icon:2});
 		};
 	};
 	$(".J_menuTab").each(function() {

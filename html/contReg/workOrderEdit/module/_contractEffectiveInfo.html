@@ -118,7 +118,7 @@
 						</div>
 					</div>
 					<div class="col-sm-6 form-group hidden" id="expiryDateDiv">
-						<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i>终止日期：</label>
+						<label for="expiryDate" class="control-label"><i class="iconfont icon-mi required"></i><span id="highLight">终止日期：</span></label>
 						<div class="valiParent">
 							<input type="text" name="expiryDate" id="expiryDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})" class="form-control" readonly="readonly" />
 						</div>
@@ -327,6 +327,7 @@
 			};
 			if(editIdentify.isCanUpdateExpiryDate){
 				$("#expiryDate").removeAttr("disabled");
+				$("#highLight").css({"font-weight":"bold","color":"red"});
 				$("#expiryDate").css({"cursor":"pointer","background-color":"#fff"})
 			}
 			if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){

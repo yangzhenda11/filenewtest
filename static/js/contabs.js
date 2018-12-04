@@ -293,16 +293,25 @@ function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 		animateTab($(".J_menuTab.active"))
 	};
 	if($("#workItemDom")[0]){
+		var itemFlag = true;
 		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 		var parentDataId = $(".J_menuTab.active").data("parurl");
 		if(parentDataId == undefined || parentDataId == ""){
 			parentDataId = "null";
 		};
 		$.each($("#workItemDom .workItem"), function(n,m) {
-			if($(m).data("url") == dataId || $(m).data("url") == parentDataId){
+			if($(m).data("url") == dataId){
 				$(m).addClass("workItemChecked");
+				itemFlag = false;
 			}
 		});
+		if(itemFlag){
+			$.each($("#workItemDom .workItem"), function(n,m) {
+				if($(m).data("url") == parentDataId){
+					$(m).addClass("workItemChecked");
+				}
+			});
+		};
 	};
 	return false
 }
@@ -364,6 +373,7 @@ function conTabH() {
 		animateTab($(".J_menuTab.active"))
 	};
 	if($("#workItemDom")[0]){
+		var itemFlag = true;
 		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 		var activeId = $(".J_menuTab.active").data("id");
 		var parentDataId = $(".J_menuTab.active").data("parurl");
@@ -371,10 +381,18 @@ function conTabH() {
 			parentDataId = "null";
 		};
 		$.each($("#workItemDom .workItem"), function(key,val) {
-			if($(val).data("url") == activeId || $(val).data("url") == parentDataId){
+			if($(val).data("url") == activeId){
 				$(val).addClass("workItemChecked");
+				itemFlag = false;
 			}
 		});
+		if(itemFlag){
+			$.each($("#workItemDom .workItem"), function(key,val) {
+				if($(val).data("url") == parentDataId){
+					$(val).addClass("workItemChecked");
+				}
+			});
+		}
 	};
 	return false
 }
@@ -474,16 +492,25 @@ function conTabE() {
 		});
 		$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
 		if($("#workItemDom")[0]){
+			var itemFlag = true;
 			$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 			var parentDataId = $(".J_menuTab.active").data("parurl");
 			if(parentDataId == undefined || parentDataId == ""){
 				parentDataId = "null";
 			};
 			$.each($("#workItemDom .workItem"), function(n,m) {
-				if($(m).data("url") == k || $(m).data("url") == parentDataId){
+				if($(m).data("url") == k){
 					$(m).addClass("workItemChecked");
+					itemFlag = false;
 				}
 			});
+			if(itemFlag){
+				$.each($("#workItemDom .workItem"), function(n,m) {
+					if($(m).data("url") == parentDataId){
+						$(m).addClass("workItemChecked");
+					}
+				});
+			}
 		};
 		animateTab(this);
 	}

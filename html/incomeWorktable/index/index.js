@@ -687,7 +687,7 @@ function setScope() {
 			$("#scope,#scopeTitle").text(checkedText);
 			config.auditScope = companyCode;
 			layer.alert("更改成功",{icon:1},function(){
-				top.showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,true,true);
+				top.showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
 			});
 		}
 	}

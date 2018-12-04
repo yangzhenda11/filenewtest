@@ -526,14 +526,14 @@ function viewNotify(notifyId) {
  */
 function openTasktodo(){
 	$("#workItemDom").find(".workItem").removeClass("workItemChecked");
-	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
+	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,true,true);
 }
 /*
  * 待阅按钮跳转待办
  */
 function openReadcord(){
 	$("#workItemDom").find(".workItem").removeClass("workItemChecked");
-	showSubpageTab("html/workflow/readrecordlist/record-toread.html","待阅事项",false,false,true);
+	showSubpageTab("html/workflow/readrecordlist/record-toread.html","待阅事项",false,true,true);
 }
 /*
  * 支撑modal打开
@@ -654,7 +654,7 @@ function getHomePage(){
 	var userLoginName = globalConfig.loginName;
     if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
     	$("#workItemDom").remove();
-		showSubpageTab("html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html","合同扫描件上传",false,false,true);
+		showSubpageTab("html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html","合同扫描件上传",false,true,true);
     }else{
     	if(checkPageRoleType("income") || checkPageRoleType("expense")){
       		setWorktableRoleName();
@@ -665,7 +665,7 @@ function getHomePage(){
 	    	}
     	}else{
     		$("#workItemDom").remove();
-	    	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,false,true);
+	    	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,true,true);
     	};
     };
 }
@@ -854,7 +854,7 @@ $("#workItemDom").on("click", ".workItem", function() {
 	if(moduleUrl) {
 		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 		$(this).addClass("workItemChecked");
-		top.showSubpageTab(moduleUrl, $(this).find("p").text());
+		top.showSubpageTab(moduleUrl, $(this).find("p").text(),false,true);
 	} else {
 		layer.alert("该模块暂未使用。", {icon: 2});
 	}

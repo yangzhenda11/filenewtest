@@ -220,10 +220,10 @@ function conTabC() {
  * link：页面地址，可在？后加参数
  * title：tab页标题
  * isParam：是否包含参数匹配，默认为false。true时将配置全部路径包括？后的参数
- * isRefresh：若页面存在是否要刷新页面，默认为false
+ * notRefresh：若页面存在是否刷新页面，默认为false
  * isFixed：若页面存在打开页面时在tab页之后显示（默认在tab页最后显示）还是定位到原来的位置，默认为false
  */
-function showSubpageTab(link,title,isParam,isRefresh,isFixed){
+function showSubpageTab(link,title,isParam,notRefresh,isFixed){
 	globalConfig.ifreamLen++;
 	var o = link?link:'',
 		l = title?title:'',
@@ -252,14 +252,14 @@ function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
-						if(isRefresh){
+						if(!notRefresh){
 							$(this)[0].src = o;
 						};
 						return false
 					}
 				})
 			}else{
-				if(isRefresh){
+				if(!notRefresh){
 					$(".J_mainContent .J_iframe").each(function() {
 						if($(this).data("id") == dataId) {
 							$(this)[0].src = o;

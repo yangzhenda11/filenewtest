@@ -128,7 +128,7 @@ function getSearchParm(){
 		readTitle : $("#readTitle").val().trim(),
 		sendDateBegin : $("#send_date_begin").val(),
 		sendDateEnd : $("#send_date_end").val(),
-		bussId : $("#bussId").val().trim()
+		contractNumber : $("#contractNumber").val().trim()
 	};
 	return searchData;
 }

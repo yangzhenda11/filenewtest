@@ -137,7 +137,7 @@ function checkArrLen(roleArr,permArr){
 	return len;
 }
 /*
- * 点击触发的事件
+ * 左侧菜单点击触发的事件
  */
 function conTabC() {
 	if($("#workItemDom")[0]){
@@ -274,6 +274,17 @@ function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 	});
 	if(k) {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
+		if($("#workItemDom")[0]){
+			var menuTabActiveId = $(".J_menuTab.active").data("id");
+			var openId = o.split('?')[0];
+			if(menuTabActiveId){
+				if((menuTabActiveId.indexOf("/incomeWorktable/")!=-1) || (menuTabActiveId.indexOf("/expenseWorktable/")!=-1)){
+					if((openId.indexOf("/incomeWorktable/")!=-1) || (openId.indexOf("/expenseWorktable/")!=-1)){
+						var p = '<a href="javascript:;" class="active J_menuTab" data-parurl="' + menuTabActiveId + '" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
+					}
+				}
+			}
+		};
 		$(".J_menuTab").removeClass("active");
 		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + dataId + '" seamless></iframe>';
 		$(".J_mainContent").find("iframe.J_iframe").hide();
@@ -283,8 +294,12 @@ function showSubpageTab(link,title,isParam,isRefresh,isFixed){
 	};
 	if($("#workItemDom")[0]){
 		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+		var parentDataId = $(".J_menuTab.active").data("parurl");
+		if(parentDataId == undefined || parentDataId == ""){
+			parentDataId = "null";
+		};
 		$.each($("#workItemDom .workItem"), function(n,m) {
-			if($(m).data("url") == dataId){
+			if($(m).data("url") == dataId || $(m).data("url") == parentDataId){
 				$(m).addClass("workItemChecked");
 			}
 		});
@@ -351,12 +366,16 @@ function conTabH() {
 	if($("#workItemDom")[0]){
 		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
 		var activeId = $(".J_menuTab.active").data("id");
+		var parentDataId = $(".J_menuTab.active").data("parurl");
+		if(parentDataId == undefined || parentDataId == ""){
+			parentDataId = "null";
+		};
 		$.each($("#workItemDom .workItem"), function(key,val) {
-			if($(val).data("url") == activeId){
+			if($(val).data("url") == activeId || $(val).data("url") == parentDataId){
 				$(val).addClass("workItemChecked");
 			}
 		});
-	}
+	};
 	return false
 }
 function conTabI() {
@@ -456,8 +475,12 @@ function conTabE() {
 		$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
 		if($("#workItemDom")[0]){
 			$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+			var parentDataId = $(".J_menuTab.active").data("parurl");
+			if(parentDataId == undefined || parentDataId == ""){
+				parentDataId = "null";
+			};
 			$.each($("#workItemDom .workItem"), function(n,m) {
-				if($(m).data("url") == k){
+				if($(m).data("url") == k || $(m).data("url") == parentDataId){
 					$(m).addClass("workItemChecked");
 				}
 			});

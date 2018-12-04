@@ -20,11 +20,11 @@ function getInitInfo(){
 		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 		function successCallback(result) {
 			urls=result.data[0].value;
+			changeReadStatus(readId,bussId);
 			findDetail (urls,bussId) ;
 		}
 }
 function  findDetail  (url,bussId) {
-	changeReadStatus(readId,bussId);
 	var src = url+"&bussid="+bussId;
 	$('#businessiframe').attr("src",src);
 	$('#businessiframe').show();

@@ -1321,7 +1321,7 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo,qw){
+		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
     		if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            var options = {

@@ -267,12 +267,10 @@
 		var expiryDate = $("#expiryDate").val();
 		var effevtNowDate = new Date();
 		effevtNowDate = App.formatDateTime(effevtNowDate,"yyyy-MM-dd");
-//console.log(App.formatDateTime(myDate,"yyyy-MM-dd"))
 		if(!App.checkDate(effectiveDate,expiryDate)){
 			$(dom).val("");
 			layer.msg("终止日期不能早于生效日期");
-		}
-		if(!App.checkDate(expiryDate,effevtNowDate)){
+		}else if(App.checkDate(expiryDate,effevtNowDate)){
 			$(dom).val("");
 			layer.msg("终止日期不能晚于当前日期");
 		}

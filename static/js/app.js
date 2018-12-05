@@ -1203,12 +1203,10 @@ var App = function() {
 						}
 					}
 				});
-				if(cacheList.length > 0){
-					if(top._paramCache[pageId] == undefined){
-						top._paramCache[pageId] = {};
-					};
-					top._paramCache[pageId][elArr[i]] = cacheList;
-				}
+				if(top._paramCache[pageId] == undefined){
+					top._paramCache[pageId] = {};
+				};
+				top._paramCache[pageId][elArr[i]] = cacheList;
         	}
         },
         /*

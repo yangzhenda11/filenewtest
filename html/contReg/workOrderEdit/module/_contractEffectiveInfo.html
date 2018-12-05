@@ -272,7 +272,7 @@
 			$(dom).val("");
 			layer.msg("终止日期不能早于生效日期");
 		}
-		if(App.checkDate(expiryDate,effevtNowDate)){
+		if(!App.checkDate(expiryDate,effevtNowDate)){
 			$(dom).val("");
 			layer.msg("终止日期不能晚于当前日期");
 		}

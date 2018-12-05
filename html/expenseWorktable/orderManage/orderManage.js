@@ -74,14 +74,3 @@ function reloadPageDataTable(tableId,retainPaging) {
 		table.ajax.reload();
 	}
 }
-/*
- * 搜索点击事件
- */
-//function searchCustomer(retainPaging) {
-//	var table = $('#orderManagerListTable').DataTable();
-//	if(retainPaging) {
-//		table.ajax.reload(null, false);
-//	} else {
-//		table.ajax.reload();
-//	}
-//}

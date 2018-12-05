@@ -676,7 +676,7 @@ var App = function() {
 							top.window.location.href = "/overtime.html";
 						}else{
 							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-			        			top.window.location.href = "/login.html";
+			        			top.window.location.href = "login";
 			        		});
 						}
 	        		}else{
@@ -700,7 +700,7 @@ var App = function() {
 					top.window.location.href = "/overtime.html";
 				}else{
 					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-	        			top.window.location.href = "/login.html";
+	        			top.window.location.href = "login";
 	        		});
 				}
     		}else{
@@ -1036,7 +1036,7 @@ var App = function() {
 						top.window.location.href = "/overtime.html";
 					}else{
 						layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-		        			top.window.location.href = "/login.html";
+		        			top.window.location.href = "login";
 		        		});
 					}
 		        }else if(xhr.status == 0){
@@ -1321,7 +1321,7 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo,qw){
+		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
     		if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            var options = {
@@ -1993,7 +1993,7 @@ function onAsyncError(event, treeId, treeNode, xhr, textStatus, errorThrown) {
 			top.window.location.href = "/overtime.html";
 		}else{
 			layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-    			top.window.location.href = "/login.html";
+    			top.window.location.href = "login";
     		});
 		}
 	}else{

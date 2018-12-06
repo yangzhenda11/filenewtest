@@ -64,49 +64,51 @@ function dataChangeEvent(dom){
 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	//if(!checkifdone(id)){	
-	$('#taskId').val(id);
-	$('#taskDefinitionKey').val(taskDefinitionKey);
-	// 环节名称
-	$('#name').val(name);
-	$('#processInstanceId').val(processInstanceId);
-	// 流程实例名称
-	$('#title').val(title);
-	$('#processDefinitionId').val(processDefinitionId);
-	$('#processDefinitionKey').val(processDefinitionKey);
-	$('#executionId').val(executionId);
-	$('#assigneeId').val(assignee);
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
-	if(specialList.indexOf(taskDefinitionKey) != -1){
-		redirectUrl(id,taskDefinitionKey,processInstanceId);
-	}else{
-		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
-		$("#goTaskToDoDetailForToDo").show();
-		$("#searchContentForToDo").hide();
-	}
-	//}
-}
-function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {
-	var flowParam = {
-		"taskDefinitionKey" : taskDefinitionKey,
-		"assignee" : assignee,
-		"processInstanceId" : processInstanceId,
-		"taskId" : id
-	}
+		processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
 	
-	$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
-		if (data.success == 1) {
-			//打开通用待办公共界面。
-			//layer.msg(data.sign);
-			serarchForToDo(true);
-			// 打开抢到的待办方法调用
-			assignee=assignee.substring(10);
-			handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
-		} else {
-			layer.msg(data.sign);
-		};
-	});
+		//if(!checkifdone(id)){	
+		$('#taskId').val(id);
+		$('#taskDefinitionKey').val(taskDefinitionKey);
+		// 环节名称
+		$('#name').val(name);
+		$('#processInstanceId').val(processInstanceId);
+		// 流程实例名称
+		$('#title').val(title);
+		$('#processDefinitionId').val(processDefinitionId);
+		$('#processDefinitionKey').val(processDefinitionKey);
+		$('#executionId').val(executionId);
+		$('#assigneeId').val(assignee);
+		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
+		if(specialList.indexOf(taskDefinitionKey) != -1){
+			redirectUrl(id,taskDefinitionKey,processInstanceId);
+		}else{
+			$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
+			$("#goTaskToDoDetailForToDo").show();
+			$("#searchContentForToDo").hide();
+		}
+		//}
+}
+function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
+		
+		var flowParam = {
+			"taskDefinitionKey" : taskDefinitionKey,
+			"assignee" : assignee,
+			"processInstanceId" : processInstanceId,
+			"taskId" : id
+		}
+		
+		$.post(serverPath + "workflowrest/applyCandidateTask", flowParam,function(data) {
+			if (data.success == 1) {
+				//打开通用待办公共界面。
+				//layer.msg(data.sign);
+				serarchForToDo(true);
+				// 打开抢到的待办方法调用
+				assignee=assignee.substring(10);
+				handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee)
+			} else {
+				layer.msg(data.sign);
+			};
+		});
 }
 
 /*
@@ -141,38 +143,32 @@ function getTableTodo(){
 		        	var buttontitle = "";
 		        	var fn = "";
 		        	var style = "";
-		        	if(assignee.indexOf("candidate-") != -1){
-		        		//是抢单模式，点击待办标题先申请任务。
-		        		assignee=assignee.substring(10);
-		        		if(!checkAssignee(assignee)){
-			        		if(curStaffOrgId == assignee){
-			        			buttontitle="当前任务为抢单模式的任务，请及时处理！";
-			        			fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-			        		}else{
-			        			style = "cursor:not-allowed";
-			        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-			        			fn = "layer.msg(\'"+buttontitle+"\')";
-			        		}
-		        		}else{
+		        	if(c.staffOrgStatus=='0'){
 		        			style = "cursor:not-allowed";
 		        			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
 		        			fn = "layer.msg(\'"+buttontitle+"\')";
-		        		}
 		        	}else{
-		        		if(!checkAssignee(assignee)){
-			        		//非抢单模式的正常待办
-			        		if(curStaffOrgId == assignee){
-		        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
-			        		}else{
-			        			style = "cursor:not-allowed";
-			        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-			        			fn = "layer.msg(\'"+buttontitle+"\')";
-			        		}
-		        		}else{
-			        			style = "cursor:not-allowed";
-			        			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
-			        			fn = "layer.msg(\'"+buttontitle+"\')";
-			        		}
+			        	if(assignee.indexOf("candidate-") != -1){
+			        		//是抢单模式，点击待办标题先申请任务。
+			        		assignee=assignee.substring(10);
+				        		if(curStaffOrgId == assignee){
+				        			buttontitle="当前任务为抢单模式的任务，请及时处理！";
+				        			fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+				        		}else{
+				        			style = "cursor:not-allowed";
+				        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+				        			fn = "layer.msg(\'"+buttontitle+"\')";
+				        		}
+			        	}else{
+				        		//非抢单模式的正常待办
+				        		if(curStaffOrgId == assignee){
+			        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+				        		}else{
+				        			style = "cursor:not-allowed";
+				        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+				        			fn = "layer.msg(\'"+buttontitle+"\')";
+				        		}
+			        	}
 		        	}
 		        	var context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
 		            return App.getDataTableLink(context);
@@ -216,6 +212,7 @@ function checkifdone(taskId){
 	return result;
 }
 //校验待办岗位是否已经失效，如果已经失效了则给出提示，不允许打开待办。true标识已经失效了，false标识岗位正常
+//--已弃用，前台判断影响效率，改为后台判断返回标识
 function checkAssignee(assignee){
 	var result=false;
 	$.ajax({

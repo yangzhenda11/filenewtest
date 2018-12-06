@@ -36,7 +36,7 @@ td.milestoneLegend{
 	padding: 0 !important;
 	border-left: none !important;
 	border-right: none !important;
-	/*min-height: 38px !important;*/
+	min-height: 38px !important;
 }
 .wired{
 	width: 100%;

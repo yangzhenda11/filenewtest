@@ -142,23 +142,35 @@ function getTableTodo(){
 		        	if(assignee.indexOf("candidate-") != -1){
 		        		//是抢单模式，点击待办标题先申请任务。
 		        		assignee=assignee.substring(10);
-		        		if(curStaffOrgId == assignee){
-		        			buttontitle="当前任务为抢单模式的任务，请及时处理！";
-		        			fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		if(!checkAssignee(assignee)){
+			        		if(curStaffOrgId == assignee){
+			        			buttontitle="当前任务为抢单模式的任务，请及时处理！";
+			        			fn = "applyTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+			        		}else{
+			        			style = "cursor:not-allowed";
+			        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+			        			fn = "layer.msg(\'"+buttontitle+"\')";
+			        		}
 		        		}else{
 		        			style = "cursor:not-allowed";
-		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+		        			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
 		        			fn = "layer.msg(\'"+buttontitle+"\')";
 		        		}
 		        	}else{
-		        		//非抢单模式的正常待办
-		        		if(curStaffOrgId == assignee){
-	        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        		if(!checkAssignee(assignee)){
+			        		//非抢单模式的正常待办
+			        		if(curStaffOrgId == assignee){
+		        				fn = "handleTaskToDo(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+			        		}else{
+			        			style = "cursor:not-allowed";
+			        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
+			        			fn = "layer.msg(\'"+buttontitle+"\')";
+			        		}
 		        		}else{
-		        			style = "cursor:not-allowed";
-		        			buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
-		        			fn = "layer.msg(\'"+buttontitle+"\')";
-		        		}
+			        			style = "cursor:not-allowed";
+			        			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
+			        			fn = "layer.msg(\'"+buttontitle+"\')";
+			        		}
 		        	}
 		        	var context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
 		            return App.getDataTableLink(context);
@@ -193,6 +205,32 @@ function checkifdone(taskId){
 			}else{
 				result=true;
 				layer.msg(data.info);
+			}
+		},
+		error: function(result) {
+			App.ajaxErrorCallback(result);
+		}
+	});
+	return result;
+}
+//校验待办岗位是否已经失效，如果已经失效了则给出提示，不允许打开待办。true标识已经失效了，false标识岗位正常
+function checkAssignee(assignee){
+	var result=false;
+	$.ajax({
+		'cache': true,
+		'type': "POST",
+		'url':serverPath+"workflowrest/checkAssignee?assignee="+assignee,
+		'async': false,
+		'error': function(request) {
+			layer.msg("校验待办异常，请联系管理员!",{time:1000});
+		},
+		'success': function(data) {
+			var success=data.success;
+			if(success=='1'){
+				result=false;
+			}else{
+				result=true;
+				//layer.msg(data.info);
 			}
 		},
 		error: function(result) {

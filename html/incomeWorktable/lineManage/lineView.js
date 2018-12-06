@@ -159,9 +159,7 @@ var relationContractTheadList = [
 	{data:"币种",id:"currencyType"},
 	{data:"止租时间",id:"stopRentingTime"},
 	{data:"一次性费用",id:"onceCost"},
-	{data:"客户经理账号",id:"customerManagerCode"},
-	{data:"添加人姓名",id:"createdBy"},
-	{data:"添加人账号",id:"createdBy"},
+	{data:"客户经理账号",id:"customerManagerCode"}, 
 	{data:"导入时间",id:"createdDate"}
 ];
 //未关联合同表格头
@@ -190,8 +188,6 @@ var notRelationContractTheadList = [
 	{data:"币种",id:"currencyType"},
 	{data:"止租时间",id:"stopRentingTime"},
 	{data:"一次性费用",id:"onceCost"},
-	{data:"客户经理账号",id:"customerManagerCode"},
-	{data:"添加人姓名",id:"createdBy"},
-	{data:"添加人账号",id:"createdBy"},
+	{data:"客户经理账号",id:"customerManagerCode"}, 
 	{data:"导入时间",id:"createdDate"}
 ];

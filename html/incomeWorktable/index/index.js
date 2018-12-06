@@ -176,7 +176,7 @@ $("#showCustomerMore").on("click",function(){
  */
 function jumpContractManage(customerCode, customerName, partnerCode){
 	var url = "/html/incomeWorktable/contractManage/performContract.html?" 
-		+ "customerCode="+customerCode+"&customerName="+customerName+"&partnerCode="+partnerCode;
+		+ "customerCode="+customerCode+"&customerName="+encodeURI(customerName)+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
 /*

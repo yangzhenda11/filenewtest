@@ -10,7 +10,7 @@ $(function(){
 	if(isInArray(roleArr,91216)){
 		$("#myContractManagerList").show();
 	}else{
-		$("#myContractManagerList").show();
+		$("#myContractManagerList").remove();
 	};
 	//我的合同管理合同类型选择
 	$("#contractTypeModal").click(function(){

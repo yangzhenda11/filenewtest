@@ -7,10 +7,10 @@ var serverPath = config.serverPath;
  */
 var parm = App.getPresentParm();
 console.log("parm",parm);
-if(parm.returnbtn == "true"){
-	$("#returnBtn").show();
-};
 $("#returnBtn").on("click",function(){
+	if(parm.flag == 1){
+        closeWindow();
+	}
 	 window.history.go(-1);
 })
 $(function(){
@@ -97,4 +97,15 @@ function initContractInforTable(){
 function jumpLineManage(dataSummaryDate,contractId){
 	var url = "/html/incomeWorktable/reminders/lineArrearsManage.html?dataSummaryDate="+dataSummaryDate+"&contractId="+contractId;
 	App.changePresentUrl(url);
+}
+
+function closeWindow(){
+    if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1) {
+        window.location.href="about:blank";
+        window.close();
+    } else {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+    }
 }

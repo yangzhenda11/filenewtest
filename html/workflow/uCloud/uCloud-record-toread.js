@@ -25,7 +25,7 @@ function getInitInfo(){
 		}
 }
 function  findDetail  (url,bussId) {
-	var src = url+"&bussid="+bussId;
+	var src = url+"&bussid="+bussId+"&flag=1";
 	$('#businessiframe').attr("src",src);
 	$('#businessiframe').show();
 	$('#textValue').hide();

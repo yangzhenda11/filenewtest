@@ -237,10 +237,13 @@ function jumpLineManageByContract(contractId){
 /*
  * 获取收入总览图表数据
  */
+var incomeOverviewReceivable = null;
+var incomeOverviewReceived = null;
+var incomeOverviewInterval = null;
 function getIncomeOverviewData(){
 	var url = serverPath + "incomeManage/listIncomePosition";
-	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
-	var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
+	incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
+	incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
@@ -275,6 +278,7 @@ function getIncomeOverviewData(){
 			};
 			incomeOverviewReceivable.setOption(overviewReceivableOption);
 			incomeOverviewReceived.setOption(overviewReceivedOption);
+			incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
 		};
 	}
 	function improperCallback(result){
@@ -283,8 +287,17 @@ function getIncomeOverviewData(){
 		var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 		incomeOverviewReceivable.setOption(overviewReceivableOption);
 		incomeOverviewReceived.setOption(overviewReceivedOption);
+		incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
 		$("#chartsNote").html("*该图表暂未汇总到数据");
 	}
+}
+function incomeOverviewIntervalFn(){
+	if($("#incomeOverviewReceived canvas").width() < 100){
+		incomeOverviewReceivable.resize();
+		incomeOverviewReceived.resize();
+	}else{
+		clearInterval(incomeOverviewInterval);
+	};
 }
 /*
  * 获取收入预测图表数据
@@ -443,13 +456,15 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 /*
  * 收入预测图表生成
  */
+var incomeAnalysis = null;
+var incomeAnalysisInterval = null;
 function initIncomeAnalysis(incomedata) {
 	var accountPeriodX = [];
 	$.each(incomedata.accountPeriodX,function(k,v){
 		var acountPeriodXItem = parseInt(v.substring(4,6)) + '月';
 		accountPeriodX.push(acountPeriodXItem);
 	});
-	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
+	incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
 	var incomeAnalysisOption = {
 		title : {
 	        text: '2018年收入预测分析',
@@ -540,8 +555,15 @@ function initIncomeAnalysis(incomedata) {
 	    color:['#73D2FD','#FD6D64','#DBDBDB']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
+	incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
 }
-
+function incomeAnalysisIntervalFn(){
+	if($("#incomeAnalysis canvas").width() < 200){
+		incomeAnalysis.resize();
+	}else{
+		clearInterval(incomeAnalysisInterval);
+	};
+}
 /***************选择稽核范围开始***********************/
 /*
  * 设置初始稽核范围

@@ -726,6 +726,7 @@ function initForecastCharts(forecastChartsData){
 	                normal: {
 	                    show: true,
 	                    position: 'top',
+	                    color:'#333',
 	                    formatter:function(params){
 		                	return App.unctionToThousands(params.data);
 		                }

@@ -26,8 +26,8 @@ function getAssessedTbody(){
 						"<td><div class='form-group'><input type='text' class='form-control accountNumber' placeholder='请输入分摊收入' maxlength='40' value="+data[i].shareValue+" /></div></td>"+
 					"</tr>";
 			};
-			$("#assessedTbody").html(html);
 		};
+		$("#assessedTbody").html(html);
 		addAssessedTbodySort();
 		App.checkAllFn("#assessedCheckAll","assessedCheckbox");
 		addAssessedTbodyEmptyTr();

@@ -246,7 +246,6 @@
 		if(validityData.periodType == "905010") {
 			var effectiveDate = validityData.effectiveDate;
 			var expiryDate = validityData.expiryDate;
-			var myDate = new Date();
 			if(effectiveDate && expiryDate) {
 				if(!App.checkDate(effectiveDate, expiryDate)) {
 					showLayerErrorMsg("合同生效信息中，生效日期不能早于终止日期");
@@ -254,13 +253,6 @@
 					return false;
 				}
 			}
-			/*if(expiryDate){
-				if(!App.checkDate(expiryDate,myDate)){
-					showLayerErrorMsg("合同生效信息中，当前时间不能早于终止日期");
-					srolloOffect("#undertakerCommitmentContent",3);
-					return false;
-				}
-			}*/
 		};
 		if(wcardTypeCode == 2) {
 			validityData.isPostponable = "";
@@ -279,16 +271,17 @@
 	function dataChangeEvent(dom) {
 		var effectiveDate = $("#effectiveDate").val();
 		var expiryDate = $("#expiryDate").val();
-		if(!App.checkDate(effectiveDate, expiryDate)) {
-			$(dom).val("");
-			layer.msg("终止日期不能早于生效日期");
-		}
 		if(editIdentify.isCanUpdateExpiryDate) {
 			var effevtNowDate = new Date();
 			effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 			if(App.checkDate(expiryDate, effevtNowDate)) {
 				$(dom).val("");
 				layer.msg("终止日期不能晚于当前日期");
+			}
+		}else{
+			if(!App.checkDate(effectiveDate, expiryDate)) {
+				$(dom).val("");
+				layer.msg("终止日期不能早于生效日期");
 			}
 		}
 	}

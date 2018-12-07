@@ -150,9 +150,11 @@ function getChartsNotFixedData(){
 	}
 }
 //合同付款（固定金额合同）（图表）
+var paymentChartsFixedDom = null;
+var paymentChartsFixedInterval = null;
 function initPaymentFiexdCharts(data){
 	var paymentChartsFixedOption;
-	var paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
+	paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
 	var paymentChartsFixedData = [
 		{value: 0,name: '累计含税付款金额：0元'},
 		{value: 1,name: '剩余含税未付款金额：0元'}
@@ -183,11 +185,21 @@ function initPaymentFiexdCharts(data){
 		$("#paymentChartsFixedValue").text("0%")
 	};
 	paymentChartsFixedDom.setOption(paymentChartsFixedOption);
+	paymentChartsFixedInterval = setInterval(paymentChartsFixedIntervalFn, 1000);
+}
+function paymentChartsFixedIntervalFn(){
+	if($("#paymentChartsFixed canvas").width() < 200){
+		paymentChartsFixedDom.resize();
+	}else{
+		clearInterval(paymentChartsFixedInterval);
+	};
 }
 //合同付款（框架协议）（图表）
+var paymentChartsNotFixedDom = null;
+var paymentChartsNotFixedInterval = null;
 function initPaymentNotFiexdCharts(data){
 	var paymentChartsNotFixedOption;
-	var paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
+	paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
 	var paymentChartsNotFixedData = [
 		{value: 0,name: '累计含税付款金额：0元'},
 		{value: 1,name: '剩余含税未付款金额：0元'}
@@ -218,6 +230,14 @@ function initPaymentNotFiexdCharts(data){
 		$("#paymentChartsNotFixedValue").text("0%")
 	};
 	paymentChartsNotFixedDom.setOption(paymentChartsNotFixedOption);
+	paymentChartsNotFixedInterval = setInterval(paymentChartsNotFixedIntervalFn, 1000);
+}
+function paymentChartsNotFixedIntervalFn(){
+	if($("#paymentChartsNotFixed canvas").width() < 200){
+		paymentChartsNotFixedDom.resize();
+	}else{
+		clearInterval(paymentChartsNotFixedInterval);
+	};
 }
 /*
  * 设置截止日期

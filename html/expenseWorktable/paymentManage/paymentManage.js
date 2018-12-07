@@ -217,10 +217,12 @@ function jumpPaymentDetail(contractNumber,payVateAmountSum){
 	top.showSubpageTab(url,"付款明细");
 }
 //发票管理-固定金额合同累计开票金额情况（图表）
+var invoiceChartsFixedDom = null;
+var invoiceChartsFixedInterval = null;
 function initInvoiceFiexdCharts(){
 	var data = pageData.fixedData;
 	var invoiceChartsFixedOption;
-	var invoiceChartsFixedDom = echarts.init(document.getElementById('invoiceChartsFixed'));
+	invoiceChartsFixedDom = echarts.init(document.getElementById('invoiceChartsFixed'));
 	var invoiceChartsFixedData = [
 		{value: 0,name: '累计开票金额：0元',canSelect: false},
 		{value: 1,name: '剩余未开票金额：0元',canSelect: false}
@@ -256,17 +258,27 @@ function initInvoiceFiexdCharts(){
 		$("#invoiceChartsFixedRemark").text("*该图表暂未汇总到数据");
 	};
 	invoiceChartsFixedDom.setOption(invoiceChartsFixedOption);
+	invoiceChartsFixedInterval = setInterval(invoiceChartsFixedIntervalFn, 1000);
 	invoiceChartsFixedDom.on('click', function (params) {
 		if(params.data.canSelect){
 			initInvoiceTable("fixed");
 		}
 	})
 }
+function invoiceChartsFixedIntervalFn(){
+	if($("#invoiceChartsFixed canvas").width() < 200){
+		invoiceChartsFixedDom.resize();
+	}else{
+		clearInterval(invoiceChartsFixedInterval);
+	};
+}
 //发票管理-框架协议累计开票金额情况（图表）
+var invoiceChartsNotFixedDom = null;
+var invoiceChartsNotFixedInterval = null;
 function initInvoiceNotFiexdCharts(){
 	var data = pageData.notFixedData;
 	var invoiceChartsNotFixedOption;
-	var invoiceChartsNotFixedDom = echarts.init(document.getElementById('invoiceChartsNotFixed'));
+	invoiceChartsNotFixedDom = echarts.init(document.getElementById('invoiceChartsNotFixed'));
 	var invoiceChartsNotFixedData = [
 		{value: 0,name: '累计开票金额：0元',canSelect: false},
 		{value: 1,name: '剩余未开票金额：0元',canSelect: false}
@@ -302,11 +314,19 @@ function initInvoiceNotFiexdCharts(){
 		$("#invoiceChartsNotFixedRemark").text("*该图表暂未汇总到数据");
 	};
 	invoiceChartsNotFixedDom.setOption(invoiceChartsNotFixedOption);
+	invoiceChartsNotFixedInterval = setInterval(invoiceChartsNotFixedIntervalFn, 1000);
 	invoiceChartsNotFixedDom.on('click', function (params) {
 	    if(params.data.canSelect){
 			initInvoiceTable("notFixed");
 		}
 	})
+}
+function invoiceChartsNotFixedIntervalFn(){
+	if($("#invoiceChartsNotFixed canvas").width() < 200){
+		invoiceChartsNotFixedDom.resize();
+	}else{
+		clearInterval(invoiceChartsNotFixedInterval);
+	};
 }
 //付款管理-固定金额合同累计含税付款金额情况（图表）
 function initPaymentFiexdCharts(){

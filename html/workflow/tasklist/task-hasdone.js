@@ -65,11 +65,16 @@ function getTableForDone(){
 		        	var buttontitle = "";
 		        	var fn = "";
 		        	var style = "";
-		        if(!checkAssignee(assignee)){	
+		        if(c.staffOrgStatus=='0'){	
+        			style = "cursor:not-allowed";
+        			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
+        			fn = "layer.msg(\'"+buttontitle+"\')";
+		        }else{
+		        	
 		        	if(curStaffOrgId == assignee){
 		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
 		        		if(specialList.indexOf(c.taskDefinitionKey) != -1){
-		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
+		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee +"\')";
 		        		}else{
 		        			fn = "handleTaskForDone(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee + "\')";
 		        		}
@@ -78,11 +83,7 @@ function getTableForDone(){
 		        		buttontitle = "当前任务属于您的另一个岗位【" + c.staffOrgName + "】,请点击右上角个人信息切换岗位后处理";
 		        		fn = "layer.msg(\'"+buttontitle+"\')";
 		        	}
-				}else{
-        			style = "cursor:not-allowed";
-        			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
-        			fn = "layer.msg(\'"+buttontitle+"\')";
-				}
+		        }
 		        	var context = [{"name": c.title,"placement":"right","title": buttontitle,"style": style,"fn": fn}];
 		            return App.getDataTableLink(context);
 				}
@@ -127,51 +128,52 @@ function dataChangeEvent(dom){
 }
 //“查看”按钮触发事件
 function handleTaskForDone(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
+		processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
+
 	$('#taskIdForDone').val(id);
-	$('#taskDefinitionKeyForDone').val(taskDefinitionKey);
-	// 环节名称
-	$('#nameForDone').val(name);
-	$('#processInstanceIdForDone').val(processInstanceId);
-	// 流程实例名称
-	$('#titleForDone').val(title);
-	$('#processDefinitionIdForDone').val(processDefinitionId);
-	$('#processDefinitionKeyForDone').val(processDefinitionKey);
-	$('#executionIdForDone').val(executionId);
-	$('#assigneeIdForDone').val(assignee);
-	$("#goTaskToDoDetailForDone").load("/html/workflow/taskdetail/task-hasdone.html");
-	
-	$("#goTaskToDoDetailForDone").show();
-	$("#searchContentForDone").hide();
+		$('#taskDefinitionKeyForDone').val(taskDefinitionKey);
+		// 环节名称
+		$('#nameForDone').val(name);
+		$('#processInstanceIdForDone').val(processInstanceId);
+		// 流程实例名称
+		$('#titleForDone').val(title);
+		$('#processDefinitionIdForDone').val(processDefinitionId);
+		$('#processDefinitionKeyForDone').val(processDefinitionKey);
+		$('#executionIdForDone').val(executionId);
+		$('#assigneeIdForDone').val(assignee);
+		$("#goTaskToDoDetailForDone").load("/html/workflow/taskdetail/task-hasdone.html");
+		
+		$("#goTaskToDoDetailForDone").show();
+		$("#searchContentForDone").hide();
 }
 
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
  */
-function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee){
-	var canWithDrawForDoneData = {
-		taskId: taskId,
-		taskDefinitionKey: taskDefinitionKey,
-		name: name,
-		processInstanceId: processInstanceId,
-		title: title,
-		processDefinitionId: processDefinitionId,
-		processDefinitionKey: processDefinitionKey,
-		executionId: executionId,
-		assigneeId: assignee
-	}
-	$.ajax({
-		url:serverPath + 'workflowrest/taskHasDoneDetail', 
-		type: "POST",
-		data: canWithDrawForDoneData,
-		success:function(data){
-			var canWithDraw = data.canWithDraw;
-			getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw);
-		},
-		error:function(e){
-			App.ajaxErrorCallback(e);
+function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName){
+		var canWithDrawForDoneData = {
+			taskId: taskId,
+			taskDefinitionKey: taskDefinitionKey,
+			name: name,
+			processInstanceId: processInstanceId,
+			title: title,
+			processDefinitionId: processDefinitionId,
+			processDefinitionKey: processDefinitionKey,
+			executionId: executionId,
+			assigneeId: assignee
 		}
-	});
+		$.ajax({
+			url:serverPath + 'workflowrest/taskHasDoneDetail', 
+			type: "POST",
+			data: canWithDrawForDoneData,
+			success:function(data){
+				var canWithDraw = data.canWithDraw;
+				getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw);
+			},
+			error:function(e){
+				App.ajaxErrorCallback(e);
+			}
+		});
 }
 //获取工单主键
 function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
@@ -205,6 +207,7 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 	});
 }
 //校验待办岗位是否已经失效，如果已经失效了则给出提示，不允许打开待办。true标识已经失效了，false标识岗位正常
+//--已弃用，前台判断影响效率，改为后台判断返回标识
 function checkAssignee(assignee){
 	var result=false;
 	$.ajax({

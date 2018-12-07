@@ -167,7 +167,7 @@
 		var effevtNowDate = new Date();
 		effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 		if(App.checkDate(expiryDate, effevtNowDate)) {
-			layer.msg("终止日期不能晚于当前日期");
+			layer.msg("终止日期不能早于当前日期");
 		} else {
 			layer.confirm("请确认是否更新？", {
 				icon: 7,
@@ -276,7 +276,7 @@
 			effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 			if(App.checkDate(expiryDate, effevtNowDate)) {
 				$(dom).val("");
-				layer.msg("终止日期不能晚于当前日期");
+				layer.msg("终止日期不能早于当前日期");
 			}
 		}else{
 			if(!App.checkDate(effectiveDate, expiryDate)) {

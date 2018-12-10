@@ -245,7 +245,9 @@ function initIncomeAnalysisCharts(incomeChartData){
 	    color:['#73D2FD','#FD6D64','#73D2FD','#FD6D64']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
-	pageConfig.incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		pageConfig.incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	};
 	incomeAnalysis.on('click', function (params) {
 		// 将账期放入到全局变量中
 		pageConfig.incomePeriod = params.data.account;
@@ -738,7 +740,9 @@ function initForecastCharts(forecastChartsData){
 	    color:['#73D2FD', '#FD6D64','#DBDBDB']
 	};
 	incomeForecast.setOption(incomeForecastOption);
-	pageConfig.incomeForecastInterval = setInterval(incomeForecastIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		pageConfig.incomeForecastInterval = setInterval(incomeForecastIntervalFn, 1000);
+	};
 	pageConfig.isInitForecastCharts = true;
 	incomeForecast.on('click', function (params) {
     	// 将账期放入到全局变量中

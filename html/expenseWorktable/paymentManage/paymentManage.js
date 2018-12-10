@@ -258,7 +258,9 @@ function initInvoiceFiexdCharts(){
 		$("#invoiceChartsFixedRemark").text("*该图表暂未汇总到数据");
 	};
 	invoiceChartsFixedDom.setOption(invoiceChartsFixedOption);
-	invoiceChartsFixedInterval = setInterval(invoiceChartsFixedIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		invoiceChartsFixedInterval = setInterval(invoiceChartsFixedIntervalFn, 1000);
+	};
 	invoiceChartsFixedDom.on('click', function (params) {
 		if(params.data.canSelect){
 			initInvoiceTable("fixed");
@@ -314,7 +316,9 @@ function initInvoiceNotFiexdCharts(){
 		$("#invoiceChartsNotFixedRemark").text("*该图表暂未汇总到数据");
 	};
 	invoiceChartsNotFixedDom.setOption(invoiceChartsNotFixedOption);
-	invoiceChartsNotFixedInterval = setInterval(invoiceChartsNotFixedIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		invoiceChartsNotFixedInterval = setInterval(invoiceChartsNotFixedIntervalFn, 1000);
+	};
 	invoiceChartsNotFixedDom.on('click', function (params) {
 	    if(params.data.canSelect){
 			initInvoiceTable("notFixed");

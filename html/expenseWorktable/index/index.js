@@ -185,7 +185,9 @@ function initPaymentFiexdCharts(data){
 		$("#paymentChartsFixedValue").text("0%")
 	};
 	paymentChartsFixedDom.setOption(paymentChartsFixedOption);
-	paymentChartsFixedInterval = setInterval(paymentChartsFixedIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		paymentChartsFixedInterval = setInterval(paymentChartsFixedIntervalFn, 1000);
+	};
 }
 function paymentChartsFixedIntervalFn(){
 	if($("#paymentChartsFixed canvas").width() < 200){
@@ -230,7 +232,9 @@ function initPaymentNotFiexdCharts(data){
 		$("#paymentChartsNotFixedValue").text("0%")
 	};
 	paymentChartsNotFixedDom.setOption(paymentChartsNotFixedOption);
-	paymentChartsNotFixedInterval = setInterval(paymentChartsNotFixedIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		paymentChartsNotFixedInterval = setInterval(paymentChartsNotFixedIntervalFn, 1000);
+	};
 }
 function paymentChartsNotFixedIntervalFn(){
 	if($("#paymentChartsNotFixed canvas").width() < 200){

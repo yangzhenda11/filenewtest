@@ -971,7 +971,9 @@ function initWarningOverviewCharts(){
 	    }]
 	};
 	warningCharts.setOption(option);
-	warningOverviewChartsInterval = setInterval(warningChartsIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		warningOverviewChartsInterval = setInterval(warningChartsIntervalFn, 1000);
+	};
 }
 function warningChartsIntervalFn(){
 	if($("#warningOverviewCharts canvas").width() < 300){

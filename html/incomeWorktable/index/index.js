@@ -80,12 +80,16 @@ function getFocusEmphasis(){
  */
 function getFocusAccountTable(){
 	var url = serverPath + 'customerManager/listFocusCustomerManager';
+	var focusAccountInputVal = $("#focusAccountInput").val().trim();
+	if(focusAccountInputVal == "查询客户经理名称"){
+		focusAccountInputVal = "";
+	}
 	var postData = {
 		draw: 1,
 		start: 0,
 		length: 5,
 		order: [],
-		managerStaffName: $("#focusAccountInput").val().trim()
+		managerStaffName: focusAccountInputVal
 	};
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
@@ -278,7 +282,9 @@ function getIncomeOverviewData(){
 			};
 			incomeOverviewReceivable.setOption(overviewReceivableOption);
 			incomeOverviewReceived.setOption(overviewReceivedOption);
-			incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
+			if(!App.IEVersionVA(9)) {
+				incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
+			};
 		};
 	}
 	function improperCallback(result){
@@ -287,7 +293,9 @@ function getIncomeOverviewData(){
 		var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 		incomeOverviewReceivable.setOption(overviewReceivableOption);
 		incomeOverviewReceived.setOption(overviewReceivedOption);
-		incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
+		if(!App.IEVersionVA(9)) {
+			incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
+		};
 		$("#chartsNote").html("*该图表暂未汇总到数据");
 	}
 }
@@ -556,7 +564,9 @@ function initIncomeAnalysis(incomedata) {
 	    color:['#73D2FD','#FD6D64','#DBDBDB']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
-	incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	if(!App.IEVersionVA(9)) {
+		incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	};
 }
 function incomeAnalysisIntervalFn(){
 	if($("#incomeAnalysis canvas").width() < 200){

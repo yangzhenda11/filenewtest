@@ -46,25 +46,22 @@ $(function() {
 	if(parm.pageType == 1) {		//工作流页面进入
 		layer.alert("入参错误",{icon:2});
 	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
-		$("#flowNote").remove();
 		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
+			$("#toolbarButton button").not(".saveBtn,.registerBtn,.cancelApprovedBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".registerBtn,.cancelApprovedBtn,.returnBtn").remove();
+			$("#toolbarButton button").not(".saveBtn,.sendBackBtn,.activateBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 		};
 		fixToolBars();
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
-		$("#toolbarButton,#flowNote").remove();
+		$("#toolbarButton").remove();
 		$("#toolbarBtn").css("height","90px");
 		$pageContent.removeClass("hidden");
 		fixToolBars();
 	} else if(parm.pageType == 4) {		//工单查询页面进入
-		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
 		fixToolBars();
 	} else if(parm.pageType == 3) {		//已办页面进入
-		$("#flowNote").remove();
 		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 		if(parm.canWithDraw != "true"){
 			$(".returnBtn").remove();

@@ -5,9 +5,9 @@ var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
     /**静态服务文件上传地址 */
-    fileUploadPath: "/zuul/contract_services/",
+    fileUploadPath: "/",
     /**后台服务地址 */
-    serverPath: "/contract_services/",
+    serverPath: "/",
     /** 当前用户组织深度*/
     orgPath: null,
     /** 当前用户所在组织的id（sys_org表主键） */
@@ -616,18 +616,22 @@ function exitFullscreen() {
     }
 }
 //全屏相关事件监听事件
-document.addEventListener("fullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("mozfullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("webkitfullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("MSFullscreenChange", function(e) {
-    checkFullscreen();
-});
+if (window.addEventListener){  
+    document.addEventListener("fullscreenchange", function(e) {
+	    checkFullscreen();
+	});
+	document.addEventListener("mozfullscreenchange", function(e) {
+	    checkFullscreen();
+	});
+	document.addEventListener("webkitfullscreenchange", function(e) {
+	    checkFullscreen();
+	});
+	document.addEventListener("MSFullscreenChange", function(e) {
+	    checkFullscreen();
+	});
+} 
+
+
 
 function checkFullscreen() {
     var fullscreenElement =

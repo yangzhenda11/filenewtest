@@ -23,6 +23,44 @@
 		return h(G, E, E.document)
 	} : h(jQuery, window, document)
 })(function(h, E, G, k) {
+	var _spList = ["键入人员名称或登录账号查询",
+					"查询合同名称/合同编号/合作方名称",
+					"查询合同名称/合同编号",
+					"查询合同编号/订单编号",
+					"查询合作方编号/合作方名称",
+					"查询客户经理名称",
+					"查询合同名称/合同编号/客户名称",
+					"查询合同名称/合同编号/客户名称/集团客户编码",
+					"查询客户名称/集客客户编号/合作方编号",
+					"查询客户名称/集客客户编号",
+					"查询集客客户编号",
+					"查询账期",
+					"查询业务信息ID/电路代号",
+					"查询合同编号/合同名称",
+					"查询合同编号/合同名称/客户名称",
+					"查询客户名称/集客客户编码",
+					"查询业务信息ID/电路代号/服务号码",
+					"查询电路代号/业务信息ID/本地系统线路标识ID",
+					"查询电路代号/业务信息ID/服务号码"
+	];
+	if (!Array.prototype.indexOf){
+		Array.prototype.indexOf = function(elt /*, from*/){
+	    var len = this.length >>> 0;
+	    var from = Number(arguments[1]) || 0;
+	    from = (from < 0)
+	         ? Math.ceil(from)
+	         : Math.floor(from);
+	    if (from < 0)
+	      from += len;
+	    for (; from < len; from++)
+	    {
+	      if (from in this &&
+	          this[from] === elt)
+	        return from;
+	    }
+	    return -1;
+	  	};
+	}
 	function X(a) {
 		var b, c, d = {};
 		h.each(a, function(e) {
@@ -745,6 +783,7 @@
 				if(c[b][f].unique && (!d[f] || !a.bSortCellsTop)) d[f] = c[b][f].cell;
 		return d
 	}
+	//zander
 	function sa(a, b, c) {
 		r(a, "aoServerParams", "serverParams", [b]);
 		if(b && h.isArray(b)) {
@@ -778,7 +817,11 @@
 			}
 			delete b["search"]
 			delete b["columns"]
-			
+			Object.keys(b).forEach(function(ke){
+			    if(_spList.indexOf(b[ke]) != -1){
+			    	b[ke] = "";
+			    }
+			});
 			b = JSON.stringify(b);
 		}else{
 			var orderList = b.order;
@@ -788,6 +831,11 @@
 			}
 			delete b["search"]
 			delete b["columns"]
+			Object.keys(b).forEach(function(ke){
+			    if(_spList.indexOf(b[ke]) != -1){
+			    	b[ke] = "";
+			    }
+			});
 		};
 		n = {
 			data: b,

@@ -358,9 +358,6 @@ function submitContentPost(chooseObj){
 	postData.contractName = $("#contractName").val();
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
-	if($("#wcardTagContent")[0]){
-		postData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
-	};
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	postData.comment = chooseObj.commentVal;
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
@@ -777,9 +774,6 @@ function saveContent(){
 		};
 		var submitData = getContentValue();
 		if(submitData){
-			if($("#wcardTagContent")[0]){
-				submitData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
-			};
 			saveContentPost(submitData,"GDCL");
 		}
 	}
@@ -1153,7 +1147,7 @@ function getContentValue(isSubmit) {
 			isPass = "noValidator";
 		}else if(itemValue){
 			submitData[targetObj] = itemValue;
-		}else{
+		}else if(itemValue == false){
 			isPass = false;
 			return false;
 		}
@@ -1168,6 +1162,9 @@ function getContentValue(isSubmit) {
     	srolloOffect($workOrderContentForm.find(".has-error:first")[0],1);
     	return false;
 	}else if(isPass == true){
+		if($("#wcardTagContent")[0]){
+			submitData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
+		};
 		submitData.wcardId = wcardId;
 		return submitData;
 	}else{

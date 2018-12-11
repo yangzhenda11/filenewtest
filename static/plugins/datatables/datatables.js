@@ -23,6 +23,25 @@
 		return h(G, E, E.document)
 	} : h(jQuery, window, document)
 })(function(h, E, G, k) {
+	var _spList = ["键入人员名称或登录账号查询"];
+	if (!Array.prototype.indexOf){
+		Array.prototype.indexOf = function(elt /*, from*/){
+	    var len = this.length >>> 0;
+	    var from = Number(arguments[1]) || 0;
+	    from = (from < 0)
+	         ? Math.ceil(from)
+	         : Math.floor(from);
+	    if (from < 0)
+	      from += len;
+	    for (; from < len; from++)
+	    {
+	      if (from in this &&
+	          this[from] === elt)
+	        return from;
+	    }
+	    return -1;
+	  	};
+	}
 	function X(a) {
 		var b, c, d = {};
 		h.each(a, function(e) {
@@ -778,7 +797,11 @@
 			}
 			delete b["search"]
 			delete b["columns"]
-			
+			Object.keys(b).forEach(function(ke){
+			    if(_spList.indexOf(b[ke]) != -1){
+			    	b[ke] = "";
+			    }
+			});
 			b = JSON.stringify(b);
 		}else{
 			var orderList = b.order;
@@ -788,6 +811,11 @@
 			}
 			delete b["search"]
 			delete b["columns"]
+			Object.keys(b).forEach(function(ke){
+			    if(_spList.indexOf(b[ke]) != -1){
+			    	b[ke] = "";
+			    }
+			});
 		};
 		n = {
 			data: b,

@@ -83,7 +83,7 @@ function getFocusAccountTable(){
 	var focusAccountInputVal = $("#focusAccountInput").val().trim();
 	if(focusAccountInputVal == "查询客户经理名称"){
 		focusAccountInputVal = "";
-	}
+	};
 	var postData = {
 		draw: 1,
 		start: 0,

@@ -631,8 +631,6 @@ if (window.addEventListener){
 	});
 } 
 
-
-
 function checkFullscreen() {
     var fullscreenElement =
         document.fullscreenElement ||

@@ -103,4 +103,9 @@ function getSearchParm(){
 	};
 	return searchData;
 }
-
+//导出合同扫描件Excel
+function exportResultExcel(){
+	var searchParmData = getSearchParm();
+	var url = serverPath + 'workOrderHandle/workOrderHandleExportList' + App.urlEncode(searchParmData);
+    location.href = encodeURI(url);
+}

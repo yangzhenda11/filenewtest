@@ -102,13 +102,47 @@
 	            </div>
 	        </div>
 		</div>
-		<!--选择客户经理人modal-->
+		<!--选择客户经理modal-->
 		<div class="modal fade" id="customerManagerModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document" style="width: 80%;">
 	            <div class="modal-content">
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	                    <h4 class="modal-title">选择客户经理</h4>
+	                </div>
+	                <div class="modal-body">
+	                	<div id="customerLeftContent">
+	                		<div class="input-group" id="customerManagerInputGroup">
+								<input class="form-control" id="customerManagerInput" placeholder="键入人员名称或登录账号查询" />
+								<span class="input-group-addon custorPoint" id="searchContractType" ><i class="iconfont icon-search1"></i></span>
+							</div>
+		                	<div id="customerManagerCotent">
+	                			<ul id="customerManagerTree" class="ztree customerManagerTree"></ul>
+		                	</div>
+	                	</div>
+	                	<div id="customerManagerCheckTool">
+	                		<button type="button" class="btn red" onclick="setCustomerManagerValue()">></button>
+	                		<button type="button" class="btn red" onclick="delCustomerManagerValue()"><</button>
+	                	</div>
+	                	<div>
+	                		<p>已选人员：</p>
+	                		<div id="customerManagerChecked"></div>
+	                	</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" onclick="setCustomerManagerTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<!--选择协助履行人modal-->
+		<div class="modal fade" id="assistFeasorModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document" style="width: 80%;">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">选择协助履行人</h4>
 	                </div>
 	                <div class="modal-body">
 	                	<div id="customerLeftContent">

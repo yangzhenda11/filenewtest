@@ -222,8 +222,8 @@ function initInvoiceFiexdCharts(){
 	var invoiceChartsFixedOption;
 	var invoiceChartsFixedDom = echarts.init(document.getElementById('invoiceChartsFixed'));
 	var invoiceChartsFixedData = [
-		{value: 0,name: '累计开票金额：0元',canSelect: false},
-		{value: 1,name: '剩余未开票金额：0元',canSelect: false}
+		{value: 0,name: '累计开票金额：0元',canSelect: true},
+		{value: 1,name: '剩余未开票金额：0元',canSelect: true}
 	];
 	if(data){
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum ? data.invoiceNnovateSumSum : 0;
@@ -268,8 +268,8 @@ function initInvoiceNotFiexdCharts(){
 	var invoiceChartsNotFixedOption;
 	var invoiceChartsNotFixedDom = echarts.init(document.getElementById('invoiceChartsNotFixed'));
 	var invoiceChartsNotFixedData = [
-		{value: 0,name: '累计开票金额：0元',canSelect: false},
-		{value: 1,name: '剩余未开票金额：0元',canSelect: false}
+		{value: 0,name: '累计开票金额：0元',canSelect: true},
+		{value: 1,name: '剩余未开票金额：0元',canSelect: true}
 	];
 	if(data){
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum ? data.invoiceNnovateSumSum : 0;
@@ -314,8 +314,8 @@ function initPaymentFiexdCharts(){
 	var paymentChartsFixedOption;
 	var paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
 	var paymentChartsFixedData = [
-		{value: 0,name: '累计含税付款金额：0元',canSelect: false},
-		{value: 1,name: '剩余含税未付款金额：0元',canSelect: false}
+		{value: 0,name: '累计含税付款金额：0元',canSelect: true},
+		{value: 1,name: '剩余含税未付款金额：0元',canSelect: true}
 	];
 	if(data){
 		var payVateAmountSumSum = data.payVateAmountSumSum ? data.payVateAmountSumSum : 0;
@@ -360,8 +360,8 @@ function initPaymentNotFiexdCharts(){
 	var paymentChartsNotFixedOption;
 	var paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
 	var paymentChartsNotFixedData = [
-		{value: 0,name: '累计含税付款金额：0元',canSelect: false},
-		{value: 1,name: '剩余含税未付款金额：0元',canSelect: false}
+		{value: 0,name: '累计含税付款金额：0元',canSelect: true},
+		{value: 1,name: '剩余含税未付款金额：0元',canSelect: true}
 	];
 	if(data){
 		var payVateAmountSumSum = data.payVateAmountSumSum ? data.payVateAmountSumSum : 0;

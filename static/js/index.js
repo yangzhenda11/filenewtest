@@ -583,18 +583,21 @@ function exitFullscreen() {
     }
 }
 //全屏相关事件监听事件
-document.addEventListener("fullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("mozfullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("webkitfullscreenchange", function(e) {
-    checkFullscreen();
-});
-document.addEventListener("MSFullscreenChange", function(e) {
-    checkFullscreen();
-});
+if (window.addEventListener){  
+    document.addEventListener("fullscreenchange", function(e) {
+	    checkFullscreen();
+	});
+	document.addEventListener("mozfullscreenchange", function(e) {
+	    checkFullscreen();
+	});
+	document.addEventListener("webkitfullscreenchange", function(e) {
+	    checkFullscreen();
+	});
+	document.addEventListener("MSFullscreenChange", function(e) {
+	    checkFullscreen();
+	});
+} 
+
 
 function checkFullscreen() {
     var fullscreenElement =

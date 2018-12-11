@@ -5,9 +5,9 @@ var globalConfig = {
     /**静态服务地址 */
     staticPath: "/",
     /**静态服务文件上传地址 */
-    fileUploadPath: "/",
+    fileUploadPath: "/zuul/contract_services/",
     /**后台服务地址 */
-    serverPath: "/",
+    serverPath: "/contract_services/",
     /** 当前用户组织深度*/
     orgPath: null,
     /** 当前用户所在组织的id（sys_org表主键） */
@@ -630,8 +630,6 @@ if (window.addEventListener){
 	    checkFullscreen();
 	});
 } 
-
-
 
 function checkFullscreen() {
     var fullscreenElement =

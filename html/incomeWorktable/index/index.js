@@ -80,12 +80,16 @@ function getFocusEmphasis(){
  */
 function getFocusAccountTable(){
 	var url = serverPath + 'customerManager/listFocusCustomerManager';
+	var focusAccountInputVal = $("#focusAccountInput").val().trim();
+	if(focusAccountInputVal == "查询客户经理名称"){
+		focusAccountInputVal = "";
+	};
 	var postData = {
 		draw: 1,
 		start: 0,
 		length: 5,
 		order: [],
-		managerStaffName: $("#focusAccountInput").val().trim()
+		managerStaffName: focusAccountInputVal
 	};
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {

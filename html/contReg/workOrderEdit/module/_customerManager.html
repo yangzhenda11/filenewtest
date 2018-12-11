@@ -157,11 +157,13 @@
 	 * 显示选人modal，生成选人树
 	 */
 	function addCustomerManager(){
-		$("#customerManagerChecked").html("");
-		$("#customerManagerInput").val("");
-		var documentHeight = $pageContent.height() - 225;
-    	$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
-		initCustomerManagerTree();
+        if (customerManagerTree) {
+            $("#customerManagerModal").modal("show");
+        }else{
+			var documentHeight = $pageContent.height() - 225;
+			$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
+			initCustomerManagerTree();
+        }
 	}
 	//生成树
     function initCustomerManagerTree() {

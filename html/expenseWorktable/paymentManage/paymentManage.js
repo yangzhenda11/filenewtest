@@ -77,9 +77,15 @@ function initInvoiceTable(type){
 		var totalData = pageData.notFixedData;
 		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
-	var contractValueNovatSum = totalData.contractValueNovatSum ? App.unctionToThousands(totalData.contractValueNovatSum) : 0;
-	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
-	var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	if(totalData){
+		var contractValueNovatSum = totalData.contractValueNovatSum ? App.unctionToThousands(totalData.contractValueNovatSum) : 0;
+		var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
+		var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	}else{
+		var contractValueNovatSum = 0;
+		var poAmountSumSum = 0;
+		var invoiceNnovateSumSum = 0;
+	};
 	$("#contractValueNovatSum").text(contractValueNovatSum+"元");
 	$("#poAmountSumSum").text(poAmountSumSum+"元");
 	$("#invoiceNnovateSumSum").text(invoiceNnovateSumSum+"元");
@@ -147,9 +153,15 @@ function initPaymentTable(type){
 		var totalData = pageData.notFixedData;
 		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
-	var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
-	var contractValueSum = totalData.contractValueSum ? App.unctionToThousands(totalData.contractValueSum) : 0;
-	var invoiceSumSum = totalData.invoiceSumSum ? App.unctionToThousands(totalData.invoiceSumSum) : 0;
+	if(totalData){
+		var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
+		var contractValueSum = totalData.contractValueSum ? App.unctionToThousands(totalData.contractValueSum) : 0;
+		var invoiceSumSum = totalData.invoiceSumSum ? App.unctionToThousands(totalData.invoiceSumSum) : 0;
+	}else{
+		var payVateAmountSumSum = 0;
+		var contractValueSum = 0;
+		var invoiceSumSum = 0;
+	};
 	$("#payVateAmountSumSum").text(payVateAmountSumSum+"元");
 	$("#contractValueSum").text(contractValueSum+"元");
 	$("#invoiceSumSum").text(invoiceSumSum+"元");

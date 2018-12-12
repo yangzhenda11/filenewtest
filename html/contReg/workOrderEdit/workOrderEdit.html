@@ -77,22 +77,22 @@
 	                    <h4 class="modal-title">选择履行人</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="feasorTreeLeftCotent">
-	                		<div class="input-group" id="feasorTreeInputGroup">
+	                	<div class="modalLeftContent">
+	                		<div class="input-group modalInputGroup">
 								<input class="form-control" id="feasorTreeInput" placeholder="键入人员名称或登录账号查询" />
-								<span class="input-group-addon custorPoint" id="searchContractType" ><i class="iconfont icon-search1"></i></span>
+								<span class="input-group-addon custorPoint"><i class="iconfont icon-search1"></i></span>
 							</div>
-		                	<div id="feasorTreeCotent">
+		                	<div id="feasorTreeCotent" class="modalLeftTreeCotent">
 	                			<ul id="feasorTree" class="ztree feasorTree"></ul>
 		                	</div>
 	                	</div>
-	                	<div id="feasorCheckTool">
+	                	<div class="modalCheckTool">
 	                		<button type="button" class="btn red" onclick="setFeasorValue()">></button>
 	                		<button type="button" class="btn red" onclick="delFeasorValue()"><</button>
 	                	</div>
 	                	<div>
 	                		<p>已选人员：</p>
-	                		<div id="feasorChecked"></div>
+	                		<div id="feasorChecked" class="modalRightCotent"></div>
 	                	</div>
 	                </div>
 	                <div class="modal-footer">
@@ -102,7 +102,7 @@
 	            </div>
 	        </div>
 		</div>
-		<!--选择客户经理人modal-->
+		<!--选择客户经理modal-->
 		<div class="modal fade" id="customerManagerModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document" style="width: 80%;">
 	            <div class="modal-content">
@@ -111,22 +111,22 @@
 	                    <h4 class="modal-title">选择客户经理</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="customerLeftContent">
-	                		<div class="input-group" id="customerManagerInputGroup">
+	                	<div class="modalLeftContent">
+	                		<div class="input-group modalInputGroup">
 								<input class="form-control" id="customerManagerInput" placeholder="键入人员名称或登录账号查询" />
-								<span class="input-group-addon custorPoint" id="searchContractType" ><i class="iconfont icon-search1"></i></span>
+								<span class="input-group-addon custorPoint"><i class="iconfont icon-search1"></i></span>
 							</div>
-		                	<div id="customerManagerCotent">
+		                	<div id="customerManagerCotent" class="modalLeftTreeCotent">
 	                			<ul id="customerManagerTree" class="ztree customerManagerTree"></ul>
 		                	</div>
 	                	</div>
-	                	<div id="customerManagerCheckTool">
+	                	<div class="modalCheckTool">
 	                		<button type="button" class="btn red" onclick="setCustomerManagerValue()">></button>
 	                		<button type="button" class="btn red" onclick="delCustomerManagerValue()"><</button>
 	                	</div>
 	                	<div>
 	                		<p>已选人员：</p>
-	                		<div id="customerManagerChecked"></div>
+	                		<div id="customerManagerChecked" class="modalRightCotent"></div>
 	                	</div>
 	                </div>
 	                <div class="modal-footer">

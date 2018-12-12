@@ -21,7 +21,7 @@
 #effectiveDate,
 #expiryDate {
   cursor: pointer;
-  background: #fbfbfb url(../../../static/img/calendar.png) no-repeat right;
+  background: #FBFBFB url(../../../static/img/calendar.png) no-repeat right;
 }
 #contractAttachment {
   margin-top: 20px;
@@ -125,77 +125,54 @@
 .appointTypeOtherContent {
   height: 30px;
 }
-#feasorChecked,
-#customerManagerChecked {
-  border: 1px solid #EFEFEF;
-  overflow: auto;
-  width: 45%;
-  float: left;
-}
-#feasorTreeLeftCotent,
-#customerLeftContent {
+.modalLeftContent {
   width: 45%;
   float: left;
   border: 1px solid #EFEFEF;
 }
-#feasorTreeCotent,
-#customerManagerCotent {
+.modalLeftTreeCotent {
   width: 100%;
   overflow: auto;
 }
-#feasorTreeInputGroup,
-#customerManagerInputGroup {
+.modalInputGroup {
   margin: 10px 0 10px 10px;
   width: 95%;
 }
-#feasorCheckTool,
-#customerManagerCheckTool {
+.modalCheckTool {
   width: 10%;
   float: left;
 }
-#feasorCheckTool button,
-#customerManagerCheckTool button {
+.modalCheckTool button {
   width: 65%;
   font-size: 22px;
   line-height: 22px;
   margin-left: 16%;
 }
-#feasorCheckTool button:nth-child(1),
-#customerManagerCheckTool button:nth-child(1) {
+.modalCheckTool button:nth-child(1) {
   margin-top: 100px;
 }
-#feasorCheckTool button:nth-child(2),
-#customerManagerCheckTool button:nth-child(2) {
+.modalCheckTool button:nth-child(2) {
   margin-top: 30px;
 }
-#feasorChecked,
-#customerManagerChecked {
+.modalRightCotent {
+  border: 1px solid #EFEFEF;
+  overflow: auto;
+  width: 45%;
+  float: left;
+}
+.modalRightCotent {
   padding: 20px;
 }
-#feasorChecked .feasorItem,
-#customerManagerChecked .feasorItem,
-#feasorChecked .customerManagerItem,
-#customerManagerChecked .customerManagerItem {
+.modalRightCotent .checkedStaffItem {
   height: 24px;
   line-height: 24px;
 }
-#feasorChecked .feasorItem span,
-#customerManagerChecked .feasorItem span,
-#feasorChecked .customerManagerItem span,
-#customerManagerChecked .customerManagerItem span {
+.modalRightCotent .checkedStaffItem span {
   cursor: pointer;
   padding: 0 5px;
 }
-#feasorChecked .feasorItem span.feasorCheck,
-#customerManagerChecked .feasorItem span.feasorCheck,
-#feasorChecked .customerManagerItem span.feasorCheck,
-#customerManagerChecked .customerManagerItem span.feasorCheck,
-#feasorChecked .feasorItem span.customerManagerCheck,
-#customerManagerChecked .feasorItem span.customerManagerCheck,
-#feasorChecked .customerManagerItem span.customerManagerCheck,
-#customerManagerChecked .customerManagerItem span.customerManagerCheck {
-  color: #fff;
-  background: #af1822;
+.modalRightCotent .checkedStaffItem span.staffItemChecked {
+  font-weight: bold;
 }
 #workOrderMenu {
   list-style: none;

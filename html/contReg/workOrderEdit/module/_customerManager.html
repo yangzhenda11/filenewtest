@@ -158,6 +158,8 @@
 	 */
 	function addCustomerManager(){
         if (customerManagerTree) {
+           	$("#customerManagerChecked").html("");
+			$("#customerManagerInput").val("");
             $("#customerManagerModal").modal("show");
         }else{
 			var documentHeight = $pageContent.height() - 240;

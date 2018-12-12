@@ -77,22 +77,22 @@
 	                    <h4 class="modal-title">选择履行人</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="feasorTreeLeftCotent">
-	                		<div class="input-group" id="feasorTreeInputGroup">
+	                	<div class="modalLeftContent">
+	                		<div class="input-group modalInputGroup">
 								<input class="form-control" id="feasorTreeInput" placeholder="键入人员名称或登录账号查询" />
-								<span class="input-group-addon custorPoint" id="searchContractType" ><i class="iconfont icon-search1"></i></span>
+								<span class="input-group-addon custorPoint"><i class="iconfont icon-search1"></i></span>
 							</div>
-		                	<div id="feasorTreeCotent">
+		                	<div id="feasorTreeCotent" class="modalLeftTreeCotent">
 	                			<ul id="feasorTree" class="ztree feasorTree"></ul>
 		                	</div>
 	                	</div>
-	                	<div id="feasorCheckTool">
+	                	<div class="modalCheckTool">
 	                		<button type="button" class="btn red" onclick="setFeasorValue()">></button>
 	                		<button type="button" class="btn red" onclick="delFeasorValue()"><</button>
 	                	</div>
 	                	<div>
 	                		<p>已选人员：</p>
-	                		<div id="feasorChecked"></div>
+	                		<div id="feasorChecked" class="modalRightCotent"></div>
 	                	</div>
 	                </div>
 	                <div class="modal-footer">
@@ -111,22 +111,22 @@
 	                    <h4 class="modal-title">选择客户经理</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="customerLeftContent">
-	                		<div class="input-group" id="customerManagerInputGroup">
+	                	<div class="modalLeftContent">
+	                		<div class="input-group modalInputGroup">
 								<input class="form-control" id="customerManagerInput" placeholder="键入人员名称或登录账号查询" />
-								<span class="input-group-addon custorPoint" id="searchContractType" ><i class="iconfont icon-search1"></i></span>
+								<span class="input-group-addon custorPoint"><i class="iconfont icon-search1"></i></span>
 							</div>
-		                	<div id="customerManagerCotent">
+		                	<div id="customerManagerCotent" class="modalLeftTreeCotent">
 	                			<ul id="customerManagerTree" class="ztree customerManagerTree"></ul>
 		                	</div>
 	                	</div>
-	                	<div id="customerManagerCheckTool">
+	                	<div class="modalCheckTool">
 	                		<button type="button" class="btn red" onclick="setCustomerManagerValue()">></button>
 	                		<button type="button" class="btn red" onclick="delCustomerManagerValue()"><</button>
 	                	</div>
 	                	<div>
 	                		<p>已选人员：</p>
-	                		<div id="customerManagerChecked"></div>
+	                		<div id="customerManagerChecked" class="modalRightCotent"></div>
 	                	</div>
 	                </div>
 	                <div class="modal-footer">
@@ -145,26 +145,26 @@
 	                    <h4 class="modal-title">选择协助履行人</h4>
 	                </div>
 	                <div class="modal-body">
-	                	<div id="customerLeftContent">
-	                		<div class="input-group" id="customerManagerInputGroup">
-								<input class="form-control" id="customerManagerInput" placeholder="键入人员名称或登录账号查询" />
-								<span class="input-group-addon custorPoint" id="searchContractType" ><i class="iconfont icon-search1"></i></span>
+	                	<div class="modalLeftContent">
+	                		<div class="input-group modalInputGroup">
+								<input class="form-control" id="assistFeasorInput" placeholder="键入人员名称或登录账号查询" />
+								<span class="input-group-addon custorPoint"><i class="iconfont icon-search1"></i></span>
 							</div>
-		                	<div id="customerManagerCotent">
-	                			<ul id="customerManagerTree" class="ztree customerManagerTree"></ul>
+		                	<div id="assistFeasorCotent" class="modalLeftTreeCotent">
+	                			<ul id="assistFeasorTree" class="ztree"></ul>
 		                	</div>
 	                	</div>
-	                	<div id="customerManagerCheckTool">
-	                		<button type="button" class="btn red" onclick="setCustomerManagerValue()">></button>
-	                		<button type="button" class="btn red" onclick="delCustomerManagerValue()"><</button>
+	                	<div class="modalCheckTool">
+	                		<button type="button" class="btn red" onclick="setAssistFeasorValue()">></button>
+	                		<button type="button" class="btn red" onclick="delAssistFeasorValue()"><</button>
 	                	</div>
 	                	<div>
 	                		<p>已选人员：</p>
-	                		<div id="customerManagerChecked"></div>
+	                		<div class="modalRightCotent"></div>
 	                	</div>
 	                </div>
 	                <div class="modal-footer">
-	                    <button type="button" onclick="setCustomerManagerTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
+	                    <button type="button" onclick="setAssistFeasorTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
 	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
 	                </div>
 	            </div>

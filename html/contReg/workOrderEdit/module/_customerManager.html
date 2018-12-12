@@ -230,9 +230,11 @@
 	 */
 	function addCustomerManager(){
 		if (customerManagerTree) {
+			$("#customerManagerChecked").html("");
+			$("#customerManagerInput").val("");
             $("#customerManagerModal").modal("show");
         }else{
-			var documentHeight = $pageContent.height() - 225;
+			var documentHeight = $pageContent.height() - 240;
 			$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
 			initCustomerManagerTree();
         }
@@ -343,10 +345,10 @@
 	 * 删除右侧内容
 	 */
 	function delCustomerManagerValue(){
-		if($("#customerManagerModal .customerManagerCheck").length == 0){
+		if($("#customerManagerChecked .staffItemChecked").length == 0){
 			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
 		}else{
-			$.each($("#customerManagerModal .customerManagerCheck"), function(k,v) {
+			$.each($("#customerManagerChecked .staffItemChecked"), function(k,v) {
 				$(v).parent().remove();
 			});
 		}
@@ -359,7 +361,7 @@
 			var name = treeNode.name;
         	var staffOrgId = treeNode.staffOrgId;
         	var isExist = false;
-        	$.each($("#customerManagerModal .customerManagerItem"),function(k,v){
+        	$.each($("#customerManagerChecked .checkedStaffItem"),function(k,v){
         		if($(v).data("stafforgid") == staffOrgId){
         			isExist = true;
         		}
@@ -377,7 +379,7 @@
 						var parentId = treeNode.parentId;
 						var fullName =  treeNode.fullName;
 					};
-    				var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
+    				var html = '<div class="checkedStaffItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
         				'<span>'+name+'</span>'+
         				'</div>';
     				$("#customerManagerChecked").append(html);
@@ -390,11 +392,11 @@
 	 */
 	function setCustomerManagerTable(){
 		$("#customerManagerModal").modal("hide");
-		if($("#customerManagerModal .customerManagerItem").length > 0){
+		if($("#customerManagerChecked .checkedStaffItem").length > 0){
 			if($("#customerManagerTbody .emptyTr")[0] != undefined){
 				$("#customerManagerTbody .emptyTr").remove();
 			};
-			$.each($("#customerManagerModal .customerManagerItem"), function(k,v) {
+			$.each($("#customerManagerChecked .checkedStaffItem"), function(k,v) {
 				var stafforgid = $(v).data("stafforgid");
 				var name = $(v).text();
 				var isExist = false;
@@ -493,10 +495,10 @@
 	 * 人员选择点击	事件委托
 	 */
 	$("#customerManagerChecked").on("click","span",function(){
-		if($(this).hasClass("customerManagerCheck")){
-			$(this).removeClass("customerManagerCheck");
+		if($(this).hasClass("staffItemChecked")){
+			$(this).removeClass("staffItemChecked");
 		}else{
-			$(this).addClass("customerManagerCheck");
+			$(this).addClass("staffItemChecked");
 		}
 	})
 </script>

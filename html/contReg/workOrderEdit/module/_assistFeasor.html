@@ -19,7 +19,7 @@
 			<table class='table table-hover table-bordered table-striped table-align' style="width: 90%;">
 				<thead>
 					<tr>
-						<th class="cusManagerCheckbox" style="width: 5%;"><label class='ui-checkbox'><input type='checkbox' name='assistFeasorCheckAll' id="assistFeasorCheckAll"><span></span></label></th>
+						<th class="assistFeasorCheckbox" style="width: 5%;"><label class='ui-checkbox'><input type='checkbox' name='assistFeasorCheckAll' id="assistFeasorCheckAll"><span></span></label></th>
 						<th style="width: 5%;">序号</th>
 						<th style="width: 8%;" class="mangerRequired" id="mangerRequired">协助履行人</th>
 						<th style="width: 20%;" class="mangerRequired">协助履行人所属组织</th>
@@ -85,8 +85,6 @@
 				_assistFeasor.assistFeasorAddList.push(assistFeasorAddItem);
 			}
 		});
-		console.log(_assistFeasor);
-//		return false;
 		return _assistFeasor;
 	}
 	/*
@@ -130,6 +128,9 @@
 	}
 	//获取协助履行人信息
 	getAssistFeasorInfo();
+	if(getContractOrderBaseInfoData.performerFlag == 1){
+		$("#performerFlag1").attr("checked",true);
+	};
 	/*
 	 * 获取协助履行人信息
 	 */
@@ -137,7 +138,6 @@
 		var url = serverPath + "contractOrderEditorController/listContractAssistantPerformerInfo";
 		var postData = JSON.stringify({wcardId:wcardId});
 		App.formAjaxJson(url, "post", postData, successCallback);
-
 		function successCallback(result) {
 			var data = result.data;
 			assistFeasorDataObj.assistFeasorList = [];
@@ -172,6 +172,7 @@
 			 * isEdit 判断页面是否只能查看
 			 */
 			if(!isEdit){
+				$("#assistFeasorContent").find("input").attr("disabled","disabled");
 				$("#assistFeasorToolbar,.assistFeasorCheckbox").remove();
 			}else{
 				$("#assistFeasorToolbar").removeClass("hidden");
@@ -348,38 +349,36 @@
     		if($("#assistFeasorTbody .emptyTr")[0] != undefined){
 				$("#assistFeasorTbody .emptyTr").remove();
 			};
-//			var url = serverPath + "contractOrderEditorController/getServerDate";
-//			App.formAjaxJson(url, "post", null, successCallback);
-//			function successCallback(result){
-//				console.log(result);
-//			}
-			var nowDate = new Date();
-			nowDate = App.formatDateTime(nowDate,"yyyy-mm-dd");
-			$.each($("#assistFeasorChecked .checkedStaffItem"), function(k,v) {
-				var stafforgid = $(v).data("stafforgid");
-				var name = $(v).text();
-				var isExist = false;
-				$.each($("#assistFeasorTbody tr"),function(m,n){
-					if(stafforgid == $(n).data("stafforgid")){
-						if($(n).children().eq(5).text() == ""){
-							isExist = true;
+			var url = serverPath + "contractOrderEditorController/getServerDate";
+			App.formAjaxJson(url, "post", null, successCallback);
+			function successCallback(result){
+				var nowDate = App.formatDateTime(result.data,"yyyy-mm-dd");
+				$.each($("#assistFeasorChecked .checkedStaffItem"), function(k,v) {
+					var stafforgid = $(v).data("stafforgid");
+					var name = $(v).text();
+					var isExist = false;
+					$.each($("#assistFeasorTbody tr"),function(m,n){
+						if(stafforgid == $(n).data("stafforgid")){
+							if($(n).children().eq(5).text() == ""){
+								isExist = true;
+							}
 						}
+					});
+					if(!isExist){
+						var html = '<tr data-isvalid="1" data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
+		    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
+		    						'<td class="orderNumber"></td>'+
+		    						'<td>'+name+'</td>'+
+		    						'<td>'+$(v).data("fullname")+'</td>'+
+		    						'<td>'+nowDate+'</td><td></td>'+
+		    						'<td>'+config.curStaffName+'</td>'+
+		    						'<td>'+config.curOrgName+'</td></tr>';
+		    			$("#assistFeasorTbody").append(html);
 					}
-				})
-				if(!isExist){
-					var html = '<tr data-isvalid="1" data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
-	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
-	    						'<td class="orderNumber"></td>'+
-	    						'<td>'+name+'</td>'+
-	    						'<td>'+$(v).data("fullname")+'</td>'+
-	    						'<td>'+nowDate+'</td><td></td>'+
-	    						'<td>'+config.curStaffName+'</td>'+
-	    						'<td>'+config.curOrgName+'</td></tr>';
-	    			$("#assistFeasorTbody").append(html);
-				}
-			});
-			addAssistFeasorTbodySort();
-			App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+				});
+				addAssistFeasorTbodySort();
+				App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+			}
     	}
     }
     
@@ -393,26 +392,29 @@
 		}else{
 			layer.confirm("是否删除？",{icon:7,title:"删除"},function(index){
 				layer.close(index);
-				var nowDate = new Date();
-				nowDate = App.formatDateTime(nowDate,"yyyy-mm-dd");
-				$("#assistFeasorTbody input[name='assistFeasorCheck']:checked").each(function(k,v){
-					var $parentDom = $(v).parents("tr");
-					var isValid = $parentDom.data("isvalid");
-					if(isValid == 1){
-						var staffOrgId = Number($parentDom.data("stafforgid"));
-						var indexOfAssistFeasor = assistFeasorDataObj.assistFeasorIdList.indexOf(staffOrgId);
-						if(indexOfAssistFeasor == -1){
-							$parentDom.remove();
-						}else{
-							assistFeasorDataObj.assistFeasorIdList.splice(indexOfAssistFeasor,1);
-							$parentDom.children().eq(5).text(nowDate);
-						}
-					};
-				});
-				$("#assistFeasorTbody input[name='assistFeasorCheck']").attr("checked",false);
-				addAssistFeasorTbodyEmptyTr();
-				addAssistFeasorTbodySort();
-				App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+				var url = serverPath + "contractOrderEditorController/getServerDate";
+				App.formAjaxJson(url, "post", null, successCallback);
+				function successCallback(result){
+					var nowDate = App.formatDateTime(result.data,"yyyy-mm-dd");
+					$("#assistFeasorTbody input[name='assistFeasorCheck']:checked").each(function(k,v){
+						var $parentDom = $(v).parents("tr");
+						var isValid = $parentDom.data("isvalid");
+						if(isValid == 1){
+							var staffOrgId = Number($parentDom.data("stafforgid"));
+							var indexOfAssistFeasor = assistFeasorDataObj.assistFeasorIdList.indexOf(staffOrgId);
+							if(indexOfAssistFeasor == -1){
+								$parentDom.remove();
+							}else{
+								assistFeasorDataObj.assistFeasorIdList.splice(indexOfAssistFeasor,1);
+								$parentDom.children().eq(5).text(nowDate);
+							}
+						};
+					});
+					$("#assistFeasorTbody input[name='assistFeasorCheck']").attr("checked",false);
+					addAssistFeasorTbodyEmptyTr();
+					addAssistFeasorTbodySort();
+					App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+				}
 			})
 		}
 	};

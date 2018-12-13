@@ -513,7 +513,7 @@ function getIncomeOverviewData(){
 				var overviewReceivableOption = returnEmptyChartsOption('应收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '应收金额：0元');
 			};
 			if(incomeCollectedTotal || riskIncomeCollectedTotal){			//实收总金额图表生成
-				var overviewReceivedOption = returnChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', [{
+				var overviewReceivedOption = returnChartsOption('实收金额', '合同收入/风险收入\n累计实收金额占比情况', [{
 					value: riskIncomeCollectedTotal,
 					name: '风险收入：'+App.unctionToThousands(riskIncomeCollectedTotal)+'元'
 				}, {
@@ -521,7 +521,7 @@ function getIncomeOverviewData(){
 					name: '合同收入：'+App.unctionToThousands(incomeCollectedTotal)+'元'
 				}], '实收金额');
 			}else{
-				var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
+				var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计实收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 			};
 			incomeOverviewReceivable.setOption(overviewReceivableOption);
 			incomeOverviewReceived.setOption(overviewReceivedOption);
@@ -530,7 +530,7 @@ function getIncomeOverviewData(){
 	function improperCallback(result){
 		layer.msg(result.message);
 		var overviewReceivableOption = returnEmptyChartsOption('应收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '应收金额：0元');
-		var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计应收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
+		var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计实收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 		incomeOverviewReceivable.setOption(overviewReceivableOption);
 		incomeOverviewReceived.setOption(overviewReceivedOption);
 		$("#chartsNote").html("*该图表暂未汇总到数据");

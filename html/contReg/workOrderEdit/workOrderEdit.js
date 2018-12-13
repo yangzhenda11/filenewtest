@@ -776,6 +776,11 @@ function saveContentPost(data,type){
 			setPageIdCallback(data);
 			layer.msg("保存成功");
 			$("#saveBtn").attr("disabled",false);
+			if(type == "GDCL"){
+				try{
+					getAssistFeasorInfo();
+				}catch(e){}
+			}
 		}
 	}
 	function improperCallback(result){

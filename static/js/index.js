@@ -14,6 +14,8 @@ var globalConfig = {
     orgPath: null,
     /** 当前用户所在组织的id（sys_org表主键） */
     curOrgId: null,
+    /** 当前用户的岗位名称 */
+    curOrgName: null,
     /** 当前用户所在组织的上级公司id（sys_org表主键） */
     curCompanyId: null,
     /** 当前用户的用户名 */
@@ -72,6 +74,7 @@ $(document).ready(function() {
         globalConfig.orgPath = data.orgPath;
         globalConfig.loginName = data.loginName;
         globalConfig.companyCode = data.companyCode;
+        globalConfig.curOrgName = data.orgName;
        	globalConfig.curRole = data.rolestrs.split(",");
         if(data.loginName.indexOf("qc_zj") != -1 || data.loginName.indexOf("qc_gd") != -1){
         	ace_menus = [{

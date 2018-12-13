@@ -7,6 +7,11 @@
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row" id="assistFeasorContent">
+			<label class="ui-checkbox" style="margin-bottom: 14px;" id="performerFlag1Dom">
+				<input type="checkbox" value="1" name="performerFlag1" id="performerFlag1">
+				<span></span>
+				由主要履行人添加协助履行人
+			</label>
 			<div class="tableToobarContent hidden" id="assistFeasorToolbar">
 				<button type="button" class="btn red" onclick="addAssistFeasor()">添加协助履行人</button>
 				<button type="button" class="btn red" onclick="delAssistFeasor()">删除协助履行人</button>
@@ -14,13 +19,13 @@
 			<table class='table table-hover table-bordered table-striped table-align' style="width: 90%;">
 				<thead>
 					<tr>
-						<th class="cusManagerCheckbox" style="width: 5%;"><label class='ui-checkbox'><input type='checkbox' name='customerManagerCheckAll' id="customerManagerCheckAll"><span></span></label></th>
+						<th class="cusManagerCheckbox" style="width: 5%;"><label class='ui-checkbox'><input type='checkbox' name='assistFeasorCheckAll' id="assistFeasorCheckAll"><span></span></label></th>
 						<th style="width: 5%;">序号</th>
-						<th style="width: 10%;" class="mangerRequired" id="mangerRequired">协助履行人</th>
+						<th style="width: 8%;" class="mangerRequired" id="mangerRequired">协助履行人</th>
 						<th style="width: 20%;" class="mangerRequired">协助履行人所属组织</th>
 						<th style="width: 10%;" class="mangerRequired">生效日期</th>
 						<th style="width: 10%;" class="mangerRequired">失效日期</th>
-						<th style="width: 10%;" class="mangerRequired">添加人</th>
+						<th style="width: 8%;" class="mangerRequired">添加人</th>
 						<th style="width: 20%;" class="mangerRequired">添加人所属组织</th>
 					</tr>
 				</thead>
@@ -35,44 +40,60 @@
 </div>
 <script type="text/javascript">
 	var assistFeasorTree = null;
+	var assistFeasorDataObj = {
+		assistFeasorList: [],
+		assistFeasorIdList: []
+	};
 	/*
 	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
 	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
 	 */
 	function getValue_assistFeasor(isSubmit){
-		return false;
-//		var customerManagerList = [];
-//		$.each($("#customerManagerTbody tr"),function(k,v){
-//			if(!$(v).hasClass("emptyTr")){
-//				var customerManagerItem = {};
-//				customerManagerItem.wcardId = wcardId;
-//				customerManagerItem.contractNumber = contractNumber;
-//				customerManagerItem.managerId = $(v).data("id");
-//				customerManagerItem.managerStaffOrgId = $(v).data("stafforgid");
-//				customerManagerItem.managerOrgId = $(v).data("parentid");
-//				customerManagerItem.managerStaffName = $(v).children().eq(2).text();
-//				customerManagerItem.managerOrgName = $(v).children().eq(3).text();
-//				customerManagerList.push(customerManagerItem);
-//			}
-//		});
-//		//当合同提交时，加校验"至少添加一条客户经理信息";
-//		if(isSubmit && $("#mangerRequired i")[0]){
-//			if(customerManagerList.length > 0){
-//				return customerManagerList;
-//			}else{
-//				layer.msg("请至少添加一条客户经理信息");
-//				srolloOffect("#customerManagerList");
-//				return false;
-//			}
-//		}else{
-//			return customerManagerList;
-//		}
+		var assistFeasorAddDataList = [];
+		var assistFeasorAddStaffIdList = [];
+		var _assistFeasor = {
+			assistFeasorAddList: [],
+			assistFeasorDelList: []
+		};
+		//获取表格内所有的有效数据
+		$.each($("#assistFeasorTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var isValid = $(v).data("isvalid");
+				if(isValid == 1){
+					var assistFeasorDataItem = {};
+					assistFeasorDataItem.performerType = 2;
+					assistFeasorDataItem.wcardId = wcardId;
+					assistFeasorDataItem.contractNumber = contractNumber;
+					assistFeasorDataItem.performerId = $(v).data("id");
+					assistFeasorDataItem.performerOrgId = $(v).data("parentid");
+					assistFeasorDataItem.performerStaffId = $(v).data("stafforgid");
+					assistFeasorDataItem.performerStaffName = $(v).children().eq(2).text();
+					assistFeasorDataItem.performerOrgName = $(v).children().eq(3).text();
+					if($(v).children().eq(5).text() == ""){
+						assistFeasorAddDataList.push(assistFeasorDataItem);
+						assistFeasorAddStaffIdList.push(Number($(v).data("stafforgid")));
+					}else{
+						_assistFeasor.assistFeasorDelList.push(assistFeasorDataItem);
+					}
+				}
+			}
+		});
+		//获取新增的数据
+		$.each(assistFeasorAddStaffIdList,function(k,v){
+			if(assistFeasorDataObj.assistFeasorIdList.indexOf(v) == -1){
+				var assistFeasorAddItem = assistFeasorAddDataList[k];
+				_assistFeasor.assistFeasorAddList.push(assistFeasorAddItem);
+			}
+		});
+		console.log(_assistFeasor);
+//		return false;
+		return _assistFeasor;
 	}
 	/*
 	 * 模糊查询接口，设置模糊查询
 	 */
-	$("#customerManagerInput").typeahead({
-		afterSelect: setCustomerManager,
+	$("#assistFeasorInput").typeahead({
+		afterSelect: setAssistFeasorInput,
 		delay: 300,
 		addItem: {"name":"查询不到数据","id":""},
 		clearElement: true,
@@ -101,62 +122,78 @@
             });
         }
 	});
-	function setCustomerManager(item) {
+	function setAssistFeasorInput(item) {
 		if(item.id != ""){
 			item.name = item.defalutName;
-	    	addCustomerManagerValue(item);
+	    	addAssistFeasorValue(item);
 		}
 	}
-	//获取客户经理信息
-//	getCustomerManagerInfo();
+	//获取协助履行人信息
+	getAssistFeasorInfo();
 	/*
-	 * 获取客户经理信息
+	 * 获取协助履行人信息
 	 */
-	function getCustomerManagerInfo() {
-		var url = serverPath + "contractOrderEditorController/listContractCustomerManager";
+	function getAssistFeasorInfo() {
+		var url = serverPath + "contractOrderEditorController/listContractAssistantPerformerInfo";
 		var postData = JSON.stringify({wcardId:wcardId});
 		App.formAjaxJson(url, "post", postData, successCallback);
 
 		function successCallback(result) {
 			var data = result.data;
+			assistFeasorDataObj.assistFeasorList = [];
+			assistFeasorDataObj.assistFeasorIdList = [];
 			if(data.length > 0){
 				var html = "";
 				for(var i = 0; i < data.length; i++){
-					html += '<tr data-id="'+data[i].managerId+'" data-stafforgid="'+data[i].managerStaffOrgId+'" data-parentid="'+data[i].managerOrgId+'">'+
-	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+					var performerStaffId = data[i].performerStaffId;
+					var isValid = data[i].isValid;
+					var expiryData = "";
+					if(isValid == 1){
+						assistFeasorDataObj.assistFeasorList.push(data[i]);
+    					assistFeasorDataObj.assistFeasorIdList.push(Number(performerStaffId));
+					}else{
+						expiryData = App.formatDateTime(data[i].updatedDate,"yyyy-mm-dd");
+					};
+					html += '<tr data-isvalid="'+isValid+'" data-id="'+data[i].performerId+'" data-stafforgid="'+performerStaffId+'" data-parentid="'+data[i].performerOrgId+'">'+
+	    						'<td class="assistFeasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+
-	    						'<td>'+data[i].managerStaffName+'</td>'+
-	    						'<td>'+data[i].managerOrgName+'</td></tr>';
+	    						'<td>'+data[i].performerStaffName+'</td>'+
+	    						'<td>'+data[i].performerOrgName+'</td>'+
+	    						'<td>'+App.formatDateTime(data[i].ctreatedDate,"yyyy-mm-dd")+'</td>'+
+	    						'<td>'+expiryData+'</td>'+
+	    						'<td>'+data[i].staffName+'</td>'+
+	    						'<td>'+data[i].staffOrgName+'</td></tr>';
 				};
-    			$("#customerManagerTbody").html(html);
-    			addCustomerManagerTbodySort();
-    			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
-			};
+    			$("#assistFeasorTbody").html(html);
+    			addAssistFeasorTbodySort();
+    			App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+			}
 			/*
 			 * isEdit 判断页面是否只能查看
 			 */
 			if(!isEdit){
-				$("#customerManagerTable").find("input").attr("disabled","disabled");
-				$("#customerManagerToolbar,.cusManagerCheckbox").remove();
+				$("#assistFeasorToolbar,.assistFeasorCheckbox").remove();
 			}else{
-				$("#customerManagerToolbar").removeClass("hidden");
+				$("#assistFeasorToolbar").removeClass("hidden");
 			};
 		}
 	}
 	/*
 	 * 显示选人modal，生成选人树
 	 */
-	function addCustomerManager(){
-        if (customerManagerTree) {
-            $("#customerManagerModal").modal("show");
+	function addAssistFeasor(){
+        if (assistFeasorTree) {
+        	$("#assistFeasorChecked").html("");
+        	$("#assistFeasorInput").val("");
+            $("#assistFeasorModal").modal("show");
         }else{
-			var documentHeight = $pageContent.height() - 225;
-			$("#customerManagerCotent,#customerManagerChecked").css("height", documentHeight);
-			initCustomerManagerTree();
+			var documentHeight = $pageContent.height() - 240;
+			$("#assistFeasorCotent,#assistFeasorChecked").css("height", documentHeight);
+			initassistFeasorTree();
         }
 	}
 	//生成树
-    function initCustomerManagerTree() {
+    function initassistFeasorTree() {
     	var performerType = 0;
         //选择履行人ztree树配置
         var treeSetting = {
@@ -213,7 +250,7 @@
 	        data : {'orgId':'','executorType':performerType},
 	        success : function(result) {
 				if (result.status == 1) {
-					$("#customerManagerModal").modal("show");
+					$("#assistFeasorModal").modal("show");
 					var data = result.data;
 		        	if (data != "") {
 		        		for(var i = 0; i < data.length; i++){
@@ -222,13 +259,13 @@
 		        			};
 		        			data[i].executorType = performerType;
 			        	};
-		                if (customerManagerTree) {
-		                    customerManagerTree.destroy();
+		                if (assistFeasorTree) {
+		                    assistFeasorTree.destroy();
 		                }
-		                customerManagerTree = $.fn.zTree.init($("#customerManagerTree"), treeSetting, data);
+		                assistFeasorTree = $.fn.zTree.init($("#assistFeasorTree"), treeSetting, data);
                  		//默认展开第一层
-			            var nodes = customerManagerTree.getNodes();
-			            customerManagerTree.expandNode(nodes[0]);
+			            var nodes = assistFeasorTree.getNodes();
+			            assistFeasorTree.expandNode(nodes[0]);
 		            } else {
 		                layer.msg("暂无数据，请稍后重试");
 		            }
@@ -242,18 +279,18 @@
 			}
 	   	});
         function setInputInfo(event, treeId, treeNode) {
-            addCustomerManagerValue(treeNode);
+            addAssistFeasorValue(treeNode);
         }
     }
     /*
      * 判断是否选的是人员
      */
-    function addCustomerManagerValue(treeNode) {
+    function addAssistFeasorValue(treeNode) {
         if (treeNode.orgType == "" || treeNode.orgType == undefined) {
 			var name = treeNode.name;
         	var staffOrgId = treeNode.staffOrgId;
         	var isExist = false;
-        	$.each($("#customerManagerModal .customerManagerItem"),function(k,v){
+        	$.each($("#assistFeasorChecked .checkedStaffItem"),function(k,v){
         		if($(v).data("stafforgid") == staffOrgId){
         			isExist = true;
         		}
@@ -271,10 +308,10 @@
 						var parentId = treeNode.parentId;
 						var fullName =  treeNode.fullName;
 					};
-    				var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
+    				var html = '<div class="checkedStaffItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
         				'<span>'+name+'</span>'+
         				'</div>';
-    				$("#customerManagerChecked").append(html);
+    				$("#assistFeasorChecked").append(html);
     			};
 			}
         }
@@ -282,22 +319,22 @@
     /*
      * 增加右侧内容
      */
-    function setCustomerManagerValue(){
-    	var treeNode = customerManagerTree.getSelectedNodes()[0];
+    function setAssistFeasorValue(){
+    	var treeNode = assistFeasorTree.getSelectedNodes()[0];
         if (treeNode == undefined) {
             layer.msg("请选择人员", {icon: 2})
         } else {
-            addCustomerManagerValue(treeNode);
+            addAssistFeasorValue(treeNode);
         }
     }
     /*
      * 删除右侧内容
      */
-    function delCustomerManagerValue(){
-		if($("#customerManagerModal .customerManagerCheck").length == 0){
+    function delAssistFeasorValue(){
+		if($("#assistFeasorChecked .staffItemChecked").length == 0){
 			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
 		}else{
-			$.each($("#customerManagerModal .customerManagerCheck"), function(k,v) {
+			$.each($("#assistFeasorChecked .staffItemChecked"), function(k,v) {
 				$(v).parent().remove();
 			});
 		}
@@ -305,79 +342,105 @@
     /*
      * modal确定按钮点击
      */
-    function setCustomerManagerTable(){
-    	$("#customerManagerModal").modal("hide");
-    	if($("#customerManagerModal .customerManagerItem").length > 0){
-    		if($("#customerManagerTbody .emptyTr")[0] != undefined){
-				$("#customerManagerTbody .emptyTr").remove();
+    function setAssistFeasorTable(){
+    	$("#assistFeasorModal").modal("hide");
+    	if($("#assistFeasorChecked .checkedStaffItem").length > 0){
+    		if($("#assistFeasorTbody .emptyTr")[0] != undefined){
+				$("#assistFeasorTbody .emptyTr").remove();
 			};
-			$.each($("#customerManagerModal .customerManagerItem"), function(k,v) {
+//			var url = serverPath + "contractOrderEditorController/getServerDate";
+//			App.formAjaxJson(url, "post", null, successCallback);
+//			function successCallback(result){
+//				console.log(result);
+//			}
+			var nowDate = new Date();
+			nowDate = App.formatDateTime(nowDate,"yyyy-mm-dd");
+			$.each($("#assistFeasorChecked .checkedStaffItem"), function(k,v) {
 				var stafforgid = $(v).data("stafforgid");
 				var name = $(v).text();
 				var isExist = false;
-				$.each($("#customerManagerTbody tr"),function(m,n){
+				$.each($("#assistFeasorTbody tr"),function(m,n){
 					if(stafforgid == $(n).data("stafforgid")){
-						isExist = true;
+						if($(n).children().eq(5).text() == ""){
+							isExist = true;
+						}
 					}
 				})
 				if(!isExist){
-					var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
-	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+					var html = '<tr data-isvalid="1" data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
+	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+name+'</td>'+
-	    						'<td>'+$(v).data("fullname")+'</td></tr>';
-	    			$("#customerManagerTbody").append(html);
+	    						'<td>'+$(v).data("fullname")+'</td>'+
+	    						'<td>'+nowDate+'</td><td></td>'+
+	    						'<td>'+config.curStaffName+'</td>'+
+	    						'<td>'+config.curOrgName+'</td></tr>';
+	    			$("#assistFeasorTbody").append(html);
 				}
 			});
-			addCustomerManagerTbodySort();
-			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
+			addAssistFeasorTbodySort();
+			App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
     	}
     }
     
 	/*
-	 * 删除客户经理
+	 * 删除协助履行人
 	 */
-	function delectCustomerManager(){
-		var checkLength = $("#customerManagerTbody input[name='customerManagerCheck']:checked").length;
+	function delAssistFeasor(){
+		var checkLength = $("#assistFeasorTbody input[name='assistFeasorCheck']:checked").length;
 		if(checkLength == 0){
-			layer.msg("请勾选客户经理复选框进行删除")
+			layer.msg("请勾选协助履行人复选框进行删除")
 		}else{
 			layer.confirm("是否删除？",{icon:7,title:"删除"},function(index){
 				layer.close(index);
-				$("#customerManagerTbody input[name='customerManagerCheck']:checked").each(function(k,v){
-					$(v).parents("tr").remove();
+				var nowDate = new Date();
+				nowDate = App.formatDateTime(nowDate,"yyyy-mm-dd");
+				$("#assistFeasorTbody input[name='assistFeasorCheck']:checked").each(function(k,v){
+					var $parentDom = $(v).parents("tr");
+					var isValid = $parentDom.data("isvalid");
+					if(isValid == 1){
+						var staffOrgId = Number($parentDom.data("stafforgid"));
+						var indexOfAssistFeasor = assistFeasorDataObj.assistFeasorIdList.indexOf(staffOrgId);
+						if(indexOfAssistFeasor == -1){
+							$parentDom.remove();
+						}else{
+							assistFeasorDataObj.assistFeasorIdList.splice(indexOfAssistFeasor,1);
+							$parentDom.children().eq(5).text(nowDate);
+						}
+					};
 				});
-				addCustomerManagerTbodyEmptyTr();
-				addCustomerManagerTbodySort();
-				App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
+				$("#assistFeasorTbody input[name='assistFeasorCheck']").attr("checked",false);
+				addAssistFeasorTbodyEmptyTr();
+				addAssistFeasorTbodySort();
+				App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
 			})
 		}
 	};
 	/*
 	 * 若为空增加empty值
 	 */
-	function addCustomerManagerTbodyEmptyTr(){
-		if($("#customerManagerTbody tr").length == 0){
-			var html = '<tr class="emptyTr"><td colspan="4">暂无客户经理信息</td></tr>';
-			$("#customerManagerTbody").html(html);
+	function addAssistFeasorTbodyEmptyTr(){
+		if($("#assistFeasorTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="8">暂无协助履行人信息</td></tr>';
+			$("#assistFeasorTbody").html(html);
 		}
 	}
 	/*
 	 * 表格数据增加序号
 	 */
-	function addCustomerManagerTbodySort(){
-		$.each($("#customerManagerTbody .orderNumber"), function(k,v) {
+	function addAssistFeasorTbodySort(){
+		$.each($("#assistFeasorTbody .orderNumber"), function(k,v) {
 			$(v).text(k+1);
 		});
 	}
 	/*
 	 * 人员选择点击	事件委托
 	 */
-	$("#customerManagerChecked").on("click","span",function(){
-		if($(this).hasClass("customerManagerCheck")){
-			$(this).removeClass("customerManagerCheck");
+	$("#assistFeasorChecked").on("click","span",function(){
+		if($(this).hasClass("staffItemChecked")){
+			$(this).removeClass("staffItemChecked");
 		}else{
-			$(this).addClass("customerManagerCheck");
+			$(this).addClass("staffItemChecked");
 		}
 	})
 </script>

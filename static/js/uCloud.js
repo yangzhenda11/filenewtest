@@ -33,6 +33,8 @@ var globalConfig = {
     /** 当前用户的系统设置 */
     curConfigs: {}
 };
+//字典项缓存
+var sysDictsCache = [];
 //获取用户基本信息
 App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
 
@@ -87,4 +89,24 @@ function loginSwitchSuccess(result) {
 	} else {
 		globalConfig.loginSwitchSuccess = 1;
 	}
+}
+
+//获取字典缓存
+App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, null, null, null, false);
+
+function dictSuccess(result) {
+    var dictsData = result.dicts;
+    for(var l = 0; l < dictsData.length; l++){
+    	var dictsItem = dictsData[l];
+    	if(dictsItem.dictStatus == "1"){
+    		var dictsObj = {
+        		dictId: dictsItem.dictId,
+        		dictParentId: dictsItem.dictParentId,
+        		dictLabel: dictsItem.dictLabel,
+        		dictValue: dictsItem.dictValue,
+//		        		provinceCode: dictsItem.provinceCode
+        	};
+        	sysDictsCache.push(dictsObj);
+    	}
+    }
 }

@@ -43,6 +43,8 @@ var globalConfig = {
     /**ifream */
     ifreamLen: 0
 };
+//字典项缓存
+var sysDictsCache = [];
 /*
  * 缓存文件
  */
@@ -53,6 +55,7 @@ var ace_menus = null;
 var jmpParameters = new Object();
 $(document).ready(function() {
 	//获取用户基本信息
+	console.time("用户信息加载时间")
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, null, null, false);
 
     function successCallback(result) {
@@ -130,6 +133,26 @@ $(document).ready(function() {
 	        globalConfig.curConfigs = defaultCurConfigs;
 	    }
 	    
+	    //获取字典缓存
+	    App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, null, null, null, false);
+	
+	    function dictSuccess(result) {
+	        var dictsData = result.dicts;
+	        for(var l = 0; l < dictsData.length; l++){
+	        	var dictsItem = dictsData[l];
+	        	if(dictsItem.dictStatus == "1"){
+	        		var dictsObj = {
+		        		dictId: dictsItem.dictId,
+		        		dictParentId: dictsItem.dictParentId,
+		        		dictLabel: dictsItem.dictLabel,
+		        		dictValue: dictsItem.dictValue,
+//		        		provinceCode: dictsItem.provinceCode
+		        	};
+		        	sysDictsCache.push(dictsObj);
+	        	}
+	        }
+	    }
+	    
 	    //获取用户登录方式
 	    App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get",null, loginSwitchSuccess, null, null, null, false);
 	
@@ -140,6 +163,7 @@ $(document).ready(function() {
 	            globalConfig.loginSwitchSuccess = 1;
 	        }
 	    }
+	    
 	    //消息定时器
     	setMessageTipNumber();
     	var messageSpace = globalConfig.curConfigs.message_space;
@@ -176,6 +200,7 @@ $(document).ready(function() {
             })
     	}
     }
+    console.timeEnd("用户信息加载时间")
 })
 // 页面权限过滤
 function data_permFilter(obj) {

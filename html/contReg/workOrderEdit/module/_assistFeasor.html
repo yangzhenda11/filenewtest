@@ -7,7 +7,7 @@
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row" id="assistFeasorContent">
-			<label class="ui-checkbox" style="margin-bottom: 14px;" id="performerFlag1Dom">
+			<label class="ui-checkbox hidden" style="margin-bottom: 14px;" id="performerFlag1Dom">
 				<input type="checkbox" value="1" name="performerFlag1" id="performerFlag1">
 				<span></span>
 				由主要履行人添加协助履行人
@@ -169,13 +169,16 @@
     			App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
 			}
 			/*
+			 * assisFeasorEdit协助履行人增加为true时isEdit不生效
 			 * isEdit 判断页面是否只能查看
 			 */
-			if(!isEdit){
+			if(assisFeasorEdit){
+				$("#assistFeasorToolbar").removeClass("hidden");
+			}else if(!isEdit){
 				$("#assistFeasorContent").find("input").attr("disabled","disabled");
 				$("#assistFeasorToolbar,.assistFeasorCheckbox").remove();
 			}else{
-				$("#assistFeasorToolbar").removeClass("hidden");
+				$("#assistFeasorToolbar,#performerFlag1Dom").removeClass("hidden");
 			};
 		}
 	}

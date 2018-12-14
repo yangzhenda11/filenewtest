@@ -14,6 +14,7 @@ var contractStatus = null;			//合同状态
 var contracType = null;				//合同类型
 var isEdit = false;					//是否可以编辑标识位
 var specialDomEdit = true;			//*特殊* 特殊DOM（不受isEdit管控）编辑标识位（文件上传，合同管理员确认）（contractStatus!=1为false）
+var assisFeasorEdit = false;		//*特殊* 特殊DOM（其为true时isEdit不生效）编辑标识位（协助履行人编辑）
 var isCancelApproved = false;		//*特殊* 是否为退回状态标识位
 var contractAttr = {
 	provinceCode: null,				//合同所属省份
@@ -1026,6 +1027,9 @@ function loadComplete() {
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
+	if(assisFeasorEdit){
+		srolloOffect("#assistFeasorContent",1);
+	}
 }
 
 /*
@@ -1039,7 +1043,7 @@ function srolloOffect(el,srolloParm){
 			$("#partyMore").click();
 		}
 	};
-	var scrollTopParm = 170;
+	var scrollTopParm = 200;
 	if(srolloParm == 1){
 		if($(el).parents("#incomeLinerentTbody")[0]){
 			var scrollLeftValue = $("#incomeLinerentTableContent").scrollLeft() + $(el).offset().left - $pageContent.width() + 630;

@@ -100,7 +100,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 	});
 }
 function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,null,null,false);
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback, improperCallback,null,false);
 	function successCallback(result) {
 		var data = result.data;
 		var wcardProcess = data.wcardProcess;
@@ -131,6 +131,9 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 		}else{
 			errorInfoSolve("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。");
 		}
+	}
+	function improperCallback(result){
+		errorInfoSolve(result.message);
 	}
 }
 

@@ -9,7 +9,7 @@ App.initDataTables('#feasorListTable', "#submitBtn", {
 	ajax: {
         "type": "POST",
         "contentType":"application/json;charset=utf-8",
-        "url": serverPath+'workOrderHandle/workOrderHandleList',
+        "url": serverPath+'AssistFeasorManageController/listAssistFeasor',
         "data": function(d) {//自定义传入参数
 			var searchParmData = getSearchParm();
         	d = $.extend(d,searchParmData);

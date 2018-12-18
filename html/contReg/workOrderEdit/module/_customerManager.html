@@ -404,21 +404,27 @@
 					}
 				})
 				if(!isExist){
-					var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'" data-createdBy="'+config.curStaffOrgId+'">'+
-	    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
-	    						'<td class="orderNumber"></td>'+
-	    						'<td>'+name+'</td>'+
-	    						'<td>'+$(v).data("fullname")+'</td>'+
-	    						'<td>'+App.formatDateTime(new Date(),"yyyy-MM-dd")+'</td>'+
-	    						'<td>'+config.curStaffName+'</td>'+
-	    						'<td>'+config.curOrgName+'</td>'+
-	    						'</td></tr>';
-	    						
-	    			$("#customerManagerTbody").append(html);
+					var url = serverPath + "contractOrderEditorController/getServerDate";
+	        		App.formAjaxJson(url, "post", {}, successCallback);
+					function successCallback(result) {
+						var data = result.data;
+						var date = new Date(data);
+						var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'" data-createdBy="'+config.curStaffOrgId+'">'+
+						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
+						'<td class="orderNumber"></td>'+
+						'<td>'+name+'</td>'+
+						'<td>'+$(v).data("fullname")+'</td>'+
+						'<td>'+App.formatDateTime(date,"yyyy-MM-dd")+'</td>'+
+						'<td>'+config.curStaffName+'</td>'+
+						'<td>'+config.curOrgName+'</td>'+
+						'</td></tr>';
+						
+						$("#customerManagerTbody").append(html);
+						addCustomerManagerTbodySort();
+						App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
+	    			};
 				}
 			});
-			addCustomerManagerTbodySort();
-			App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
 		}
 	}
 	/*

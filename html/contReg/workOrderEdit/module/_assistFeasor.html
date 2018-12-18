@@ -55,6 +55,7 @@
 			assistFeasorAddList: [],
 			assistFeasorDelList: []
 		};
+		var performerFlag = $("#performerFlag1:checked").val() == 1 ? 1 : 0;
 		//获取表格内所有的有效数据
 		$.each($("#assistFeasorTbody tr"),function(k,v){
 			if(!$(v).hasClass("emptyTr")){
@@ -85,7 +86,17 @@
 				_assistFeasor.assistFeasorAddList.push(assistFeasorAddItem);
 			}
 		});
-		return _assistFeasor;
+		if(isSubmit){
+			if(performerFlag == 1 || assistFeasorAddStaffIdList.length > 0){
+				return _assistFeasor;
+			}else{
+				layer.msg("请至少添加一条协助履行人或勾选由主要履行人添加协助履行人");
+				srolloOffect("#assistFeasorContent");
+				return false;
+			}
+		}else{
+			return _assistFeasor;
+		}
 	}
 	/*
 	 * 模糊查询接口，设置模糊查询
@@ -101,7 +112,7 @@
                 url: serverPath+'contractType/listPerformerStaff',
                 type: 'post',
                 global: false,
-                data: {staffName: query,executorType:0},
+                data: {staffName: query,executorType:2},
                 success: function (result) {
                 	var data = result.data;
                 	if(data.length > 0){
@@ -198,7 +209,7 @@
 	}
 	//生成树
     function initassistFeasorTree() {
-    	var performerType = 0;
+    	var performerType = 2;
         //选择履行人ztree树配置
         var treeSetting = {
 			async: {

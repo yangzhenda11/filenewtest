@@ -186,6 +186,7 @@ function conTabC() {
 				animateTab(this);
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == o) {
+						saveSysOperLog(o,l,"");
 						$(this).show().siblings(".J_iframe").hide();
 						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
 						if(dataTablesDom){
@@ -211,7 +212,8 @@ function conTabC() {
 		$(".J_mainContent").find("iframe.J_iframe").hide();
 		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
-		animateTab($(".J_menuTab.active"))
+		animateTab($(".J_menuTab.active"));
+		saveSysOperLog(o,l,"");
 	}
 	return false;
 }
@@ -229,6 +231,7 @@ function showSubpageTab(link,title,isParam,notRefresh,isFixed){
 		l = title?title:'',
 		m = "Y" + globalConfig.ifreamLen,
 		k = true;
+	var parmeter = o.split('?')[1];
 	if(o == undefined || $.trim(o).length == 0) {
 		return false
 	};
@@ -253,6 +256,7 @@ function showSubpageTab(link,title,isParam,notRefresh,isFixed){
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
 						if(!notRefresh){
+							saveSysOperLog(o,l,parmeter);
 							$(this)[0].src = o;
 						};
 						return false
@@ -262,6 +266,7 @@ function showSubpageTab(link,title,isParam,notRefresh,isFixed){
 				if(!notRefresh){
 					$(".J_mainContent .J_iframe").each(function() {
 						if($(this).data("id") == dataId) {
+							saveSysOperLog(o,l,parmeter);
 							$(this)[0].src = o;
 							return false
 						}
@@ -290,7 +295,8 @@ function showSubpageTab(link,title,isParam,notRefresh,isFixed){
 		$(".J_mainContent").find("iframe.J_iframe").hide();
 		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
-		animateTab($(".J_menuTab.active"))
+		animateTab($(".J_menuTab.active"));
+		saveSysOperLog(o,l,parmeter);
 	};
 	if($("#workItemDom")[0]){
 		var itemFlag = true;
@@ -528,4 +534,14 @@ function closeAlltabs(){
 		$(v).remove()
 	});
 	$("#mainPageTabsContent").css("margin-left", "0");
+}
+
+function saveSysOperLog(operUrl,operPermissionName,operParameter){
+	var operParameter = operParameter == undefined ? "" : operParameter;
+	var postData = {
+		operUrl: operUrl,
+		operPermissionName: operPermissionName,
+		operParameter: operParameter
+	};
+	App.formAjaxJson(globalConfig.serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
 }

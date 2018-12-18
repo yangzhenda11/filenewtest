@@ -43,13 +43,15 @@ var globalConfig = {
     /**ifream */
     ifreamLen: 0
 };
+//字典项缓存
+var sysDictsCache = [];
 //缓存文件
 var _paramCache = {}
 //菜单
 var ace_menus = null;
-//跳转参数
-var jmpParameters = new Object();
+
 $(document).ready(function() {
+	console.time("用户信息加载时间");
 	//获取用户基本信息
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, null, null, false);
     function successCallback(result) {
@@ -120,6 +122,25 @@ $(document).ready(function() {
 	        globalConfig.curConfigs = defaultCurConfigs;
 	    }
 	    
+	    //获取字典缓存
+	    App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, null, null, null, false);
+	
+	    function dictSuccess(result) {
+	        var dictsData = result.dicts;
+	        for(var l = 0; l < dictsData.length; l++){
+	        	var dictsItem = dictsData[l];
+	        	if(dictsItem.dictStatus == "1"){
+	        		var dictsObj = {
+		        		dictId: dictsItem.dictId,
+		        		dictParentId: dictsItem.dictParentId,
+		        		dictLabel: dictsItem.dictLabel,
+		        		dictValue: dictsItem.dictValue
+		        	};
+		        	sysDictsCache.push(dictsObj);
+	        	}
+	        }
+	    }
+
 	    //获取用户登录方式
 	    App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get",null, loginSwitchSuccess, null, null, null, false);
 	
@@ -155,6 +176,7 @@ $(document).ready(function() {
             })
     	}
     }
+    console.timeEnd("用户信息加载时间");
 })
 
 
@@ -799,32 +821,12 @@ function getWorktableRoleName(roleType,hasNote){
 //设置收入类履行工作台主页
 function setIncomeHomePage(){
 	var roleType = getWorktableRoleType("income");
-//	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
-//		if(roleType == 91216) {
-//			$("#worktableCaption").text("我的商务助理");
-//		} else {
-//			$("#worktableCaption").text("我的管理助手");
-//		};
-//		$("#auditCol").addClass("hidden");
-//	} else if(roleType == 91218) {
-//		$("#worktableCaption").text("我的管理助手");
-//		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
-//		$("#auditCol").removeClass("hidden");
-////		setAuditScope();
-//	};
 	getAssistantList(roleType,"sr");
 	showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
 }
 //设置支出类履行工作台主页
 function setExpenseHomePage(){
 	var roleType = getWorktableRoleType("expense");
-//	$("#auditCol").addClass("hidden");
-//	$("#workItemCol").removeClass("col-sm-7").addClass("col-sm-10");
-//	if(roleType == 91220){
-//		$("#worktableCaption").text("我的商务助理");
-//	}else{
-//		$("#worktableCaption").text("我的管理助手");
-//	};
 	getAssistantList(roleType,"zc");
 	showSubpageTab("html/expenseWorktable/index/index.html","支出类采购业务",false,false,true);
 }

@@ -60,15 +60,24 @@
 	if(!isEdit){
 		$("#appointReceiptForm").find("input,select").attr("disabled","disabled");
 	};
-	//获取字典值
-	var ajaxObj = {
-    	"url" :  serverPath + "dicts/listChildrenByDicttId",
-    	"type" : "post",
-    	"data" : {"dictId": 9035},
-    	"async" : false
-    }
-    App.initAjaxSelect2("#appointPayType",ajaxObj,"dictValue","dictLabel",setPTip('请选择支付方式'));
-    $("#appointPayType").val("903520").trigger("change");
+	appointPayTypeDictHtml();
+	function appointPayTypeDictHtml(){
+		var appointPayTypeDict = App.getDictInfo(9035,true);
+		var selectHtml = "<option value=''>请选择</option>";
+		$.each(appointPayTypeDict, function(k,v) {
+			selectHtml += "<option value='"+ v.dictValue +"'>"+ v.dictLabel +"</option>";
+		});
+		var options = {
+            placeholder:"请选择支付方式",
+            language:'zh-CN',
+            width:'100%',
+            allowClear: true,
+            minimumResultsForSearch: -1
+       	};
+       	$("#appointPayType").html(selectHtml);
+        $("#appointPayType").select2(options);
+        $("#appointPayType").val("903520").trigger("change");
+	}
 	//获取约定收款信息
 	getAppointReceiptInfo();
 	/*

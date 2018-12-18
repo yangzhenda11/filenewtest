@@ -34,7 +34,8 @@ var globalConfig = {
 		message_space: "6"
 	}
 };
-
+//字典项缓存
+var sysDictsCache = [];
 
 //进业务页面之前统一错误处理方法
 function errorInfoSolve(ms){
@@ -91,4 +92,23 @@ function loginSwitchSuccess(result) {
 function loginSwitchError(result){
 	var ms = result.message;
 	errorInfoSolve(ms);
+}
+
+//获取字典缓存
+App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, null, null, null, false);
+
+function dictSuccess(result) {
+    var dictsData = result.dicts;
+    for(var l = 0; l < dictsData.length; l++){
+    	var dictsItem = dictsData[l];
+    	if(dictsItem.dictStatus == "1"){
+    		var dictsObj = {
+        		dictId: dictsItem.dictId,
+        		dictParentId: dictsItem.dictParentId,
+        		dictLabel: dictsItem.dictLabel,
+        		dictValue: dictsItem.dictValue
+        	};
+        	sysDictsCache.push(dictsObj);
+    	}
+    }
 }

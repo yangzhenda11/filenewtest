@@ -132,9 +132,6 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 			errorInfoSolve("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。");
 		}
 	}
-	function improperCallback(result){
-		errorInfoSolve(result.message);
-	}
 }
 
 function applyTaskToDo(taskInfo) {

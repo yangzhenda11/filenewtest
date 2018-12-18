@@ -41,14 +41,14 @@ var globalConfig = {
     /**ifream */
     ifreamLen: 0
 };
+//字典项缓存
+var sysDictsCache = [];
 /*
  * 缓存文件
  */
 var _paramCache = {}
 //菜单
 var ace_menus = null;
-//跳转参数
-var jmpParameters = new Object();
 $(document).ready(function() {
 	//获取用户基本信息
     App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, improperCallback, null, null, false);
@@ -127,6 +127,25 @@ $(document).ready(function() {
 	        globalConfig.curConfigs = defaultCurConfigs;
 	    }
 	    
+	    //获取字典缓存
+	    App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, null, null, null, false);
+	
+	    function dictSuccess(result) {
+	        var dictsData = result.dicts;
+	        for(var l = 0; l < dictsData.length; l++){
+	        	var dictsItem = dictsData[l];
+	        	if(dictsItem.dictStatus == "1"){
+	        		var dictsObj = {
+		        		dictId: dictsItem.dictId,
+		        		dictParentId: dictsItem.dictParentId,
+		        		dictLabel: dictsItem.dictLabel,
+		        		dictValue: dictsItem.dictValue
+		        	};
+		        	sysDictsCache.push(dictsObj);
+	        	}
+	        }
+	    }
+
 	    //获取用户登录方式
 	    App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get",null, loginSwitchSuccess, null, null, null, false);
 	

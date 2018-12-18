@@ -34,6 +34,8 @@ var globalConfig = {
 		message_space: "6"
 	}
 };
+//字典项缓存
+var sysDictsCache = [];
 
 
 //进业务页面之前统一错误处理方法
@@ -56,7 +58,7 @@ function closeWindow(){
 }
 
 //获取用户基本信息
-App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, userInfoSuccess, userInfoError, null, null, false);
+App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, userInfoSuccess, improperCallback, null, null, false);
 
 function userInfoSuccess(result) {
 	var data = result.data;
@@ -70,14 +72,9 @@ function userInfoSuccess(result) {
 	globalConfig.permissions = data.permissions;
 	globalConfig.orgPath = data.orgPath;
 }
-function userInfoError(result){
-	var ms = result.message;
-	errorInfoSolve(ms);
-}
-
 
 //获取用户登录方式
-App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get", null, loginSwitchSuccess, loginSwitchError, null, null, false);
+App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get", null, loginSwitchSuccess, improperCallback, null, null, false);
 
 function loginSwitchSuccess(result) {
 	if(result.data != "") {
@@ -86,7 +83,27 @@ function loginSwitchSuccess(result) {
 		globalConfig.loginSwitchSuccess = 1;
 	}
 }
-function loginSwitchError(result){
+
+//获取字典缓存
+App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, improperCallback, null, null, false);
+
+function dictSuccess(result) {
+    var dictsData = result.dicts;
+    for(var l = 0; l < dictsData.length; l++){
+    	var dictsItem = dictsData[l];
+    	if(dictsItem.dictStatus == "1"){
+    		var dictsObj = {
+        		dictId: dictsItem.dictId,
+        		dictParentId: dictsItem.dictParentId,
+        		dictLabel: dictsItem.dictLabel,
+        		dictValue: dictsItem.dictValue
+        	};
+        	sysDictsCache.push(dictsObj);
+    	}
+    }
+}
+
+function improperCallback(result){
 	var ms = result.message;
 	errorInfoSolve(ms);
 }

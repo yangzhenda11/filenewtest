@@ -100,7 +100,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 	});
 }
 function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,null,null,false);
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback, improperCallback,null,false);
 	function successCallback(result) {
 		var data = result.data;
 		var wcardProcess = data.wcardProcess;

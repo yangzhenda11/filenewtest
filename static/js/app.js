@@ -1382,7 +1382,7 @@ var App = function() {
 					}
 				};
 				return resturnData;
-			};
+			}
 //			var postData = {"dictId": code};
 //			var resturnData = {};
 //			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);

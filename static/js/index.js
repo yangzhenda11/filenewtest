@@ -51,8 +51,6 @@ var sysDictsCache = [];
 var _paramCache = {}
 //菜单
 var ace_menus = null;
-//跳转参数
-var jmpParameters = new Object();
 $(document).ready(function() {
 	//获取用户基本信息
 	console.time("用户信息加载时间")
@@ -151,7 +149,7 @@ $(document).ready(function() {
 	        	}
 	        }
 	    }
-	    
+
 	    //获取用户登录方式
 	    App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get",null, loginSwitchSuccess, null, null, null, false);
 	

@@ -57,7 +57,7 @@ function closeWindow(){
 }
 
 //获取用户基本信息
-App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, userInfoSuccess, userInfoError, null, null, false);
+App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, userInfoSuccess, improperCallback, null, null, false);
 
 function userInfoSuccess(result) {
 	var data = result.data;
@@ -72,14 +72,8 @@ function userInfoSuccess(result) {
 	globalConfig.orgPath = data.orgPath;
 }
 
-function userInfoError(result){
-	var ms = result.message;
-	errorInfoSolve(ms);
-}
-
-
 //获取用户登录方式
-App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get", null, loginSwitchSuccess, loginSwitchError, null, null, false);
+App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get", null, loginSwitchSuccess, improperCallback, null, null, false);
 
 function loginSwitchSuccess(result) {
 	if(result.data != "") {
@@ -89,13 +83,8 @@ function loginSwitchSuccess(result) {
 	}
 }
 
-function loginSwitchError(result){
-	var ms = result.message;
-	errorInfoSolve(ms);
-}
-
 //获取字典缓存
-App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, null, null, null, false);
+App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, improperCallback, null, null, false);
 
 function dictSuccess(result) {
     var dictsData = result.dicts;
@@ -111,4 +100,7 @@ function dictSuccess(result) {
         	sysDictsCache.push(dictsObj);
     	}
     }
+}
+function improperCallback(result){
+	errorInfoSolve(result.message);
 }

@@ -115,7 +115,6 @@ function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, pr
  * 表格初始化
  */
 function getTableTodo(){
-	top.setMessageTipNumber();
 	App.initDataTables('#searchTableTodo', "#submitBtn", {
 		ajax: {
 			"type": "GET",

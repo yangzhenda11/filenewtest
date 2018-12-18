@@ -103,8 +103,7 @@ function dictSuccess(result) {
         		dictId: dictsItem.dictId,
         		dictParentId: dictsItem.dictParentId,
         		dictLabel: dictsItem.dictLabel,
-        		dictValue: dictsItem.dictValue,
-//		        		provinceCode: dictsItem.provinceCode
+        		dictValue: dictsItem.dictValue
         	};
         	sysDictsCache.push(dictsObj);
     	}

@@ -26,7 +26,11 @@ App.initDataTables('#feasorListTable', "#submitBtn", {
 		{"data": "contractName","title": "合同名称","className":"whiteSpaceNormal","width":"36%"},
         {"data": "contractNumber","title": "合同编号","className":"whiteSpaceNormal","width":"17%"},
         {"data": "wcardNumber","title": "工单编号","className":"whiteSpaceNormal","width":"17%"},
-        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width":"10%"},
+        {"data": "wcardStatusStr","title": "工单状态","className":"whiteSpaceNormal","width":"10%",
+        	"render": function(data, type, full, meta) {
+	            return "履行中";
+	        }
+        },
         {"data": "ctreatedDate","title": "创建日期","className":"whiteSpaceNormal","width":"10%",
 	        "render": function(data, type, full, meta) {
 	            return App.formatDateTime(data,"yyyy-MM-dd");
@@ -86,7 +90,7 @@ function dataChangeEvent(dom){
 
 //跳转到工单编辑页面
 function jumpSanCpyQueryDetail(id){
-	var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
+	var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GGLXR&wcardId="+id;
 	App.setCache("searchForm");
 	App.changePresentUrl(src);
 }

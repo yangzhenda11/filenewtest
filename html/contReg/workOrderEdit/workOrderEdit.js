@@ -51,6 +51,9 @@ $(function() {
 			$("#toolbarButton button").not(".saveBtn,.registerBtn,.cancelApprovedBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
 			$("#toolbarButton button").not(".saveBtn,.sendBackBtn,.activateBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
+		}else if(parm.taskDefinitionKey == "GGLXR" && parm.taskFlag == "db"){
+			$("#toolbarButton button").not(".queryFeasorBtn,.closeBtn").remove();
+			assisFeasorEdit = true;
 		};
 		fixToolBars();
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
@@ -89,6 +92,15 @@ function saveBtnClick(){
 		showLayerErrorMsg("页面加载失败");
 		return false;
 	}
+}
+/*
+ * 增加协助履行人确认
+ */
+function queryFeasorCli(){
+	var data = getValue_assistFeasor("changeAssist");
+	console.log(data);
+	var assistFeasorNameList = getValue_assistFeasorNameList(true);
+	console.log(assistFeasorNameList);
 }
 /*
  * 推动工作流打开填写意见选择环人员页面
@@ -346,7 +358,23 @@ function submitContentPost(chooseObj){
 		if(data.success == "000"){
 			showLayerErrorMsg(data.message);
 		}else{
-			layer.alert("注册成功！",{icon:1,closeBtn:0},function(){
+			var successMs = "注册成功！";
+			var assistFeasorNameList = getValue_assistFeasorNameList();
+			if(postData.contractOverv.performerFlag == 1){
+				var performerListData = postData.performerList;
+				var performerNameList = [];
+				for(var i = 0; i < performerListData.length; i++){
+					performerNameList.push(performerListData[i].performerStaffName);
+				};
+				performerNameList.join("，");
+			};
+			if(performerNameList){
+				successMs += "</br>系统将在合同激活后给 <span style='color:red;'>"+performerNameList+"</span> 发送合同主要履行待办！";
+			};
+			if(assistFeasorNameList){
+				successMs += "</br>系统将在合同激活后给 <span style='color:red;'>"+assistFeasorNameList+"</span> 发送合同协助履行待阅！";
+			};
+			layer.alert(successMs,{icon:1,closeBtn:0,area: '410px'},function(){
 				backPage();
 			});
 		}
@@ -744,7 +772,7 @@ function saveContent(){
 			submitData.contractScanCopyUpload = getValue_contractScanCopyUpload();
     	};
 		saveContentPost(submitData,"GDQR");
-	}else{
+	}else if(parm.taskDefinitionKey == "GDCL"){
 		//删除多于表格内的数据
 		removeMoreThanTablecontent();
 		//检查是否长度超长
@@ -977,6 +1005,8 @@ function checkWcardProcessId(){
 			if(wcardProcess == 1){
 				isPass = true;
 			}
+		}else{
+			isPass = true;
 		}
 	}else{
 		isPass = true;
@@ -988,13 +1018,23 @@ function checkWcardProcessId(){
  */
 function returnContractStatus(){
 	if(parm.taskFlag == "db"){
-		if(contractStatus == 1){
-			return false;
-		}else if(contractStatusObj[contractStatus] == undefined){
-			return "当前合同状态未知，请稍后操作。";
+		if(parm.taskDefinitionKey == "GGLXR"){
+			if(contractStatus == 8){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
+				return "当前合同状态未知，请稍后操作。";
+			}else{
+				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+			}
 		}else{
-			return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
-		}
+			if(contractStatus == 1){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
+				return "当前合同状态未知，请稍后操作。";
+			}else{
+				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+			}
+		};
 	}else{
 		return false;
 	};

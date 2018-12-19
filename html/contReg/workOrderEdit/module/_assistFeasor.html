@@ -12,6 +12,11 @@
 				<span></span>
 				由主要履行人添加协助履行人
 			</label>
+			<label class="ui-checkbox hidden" style="margin-bottom: 14px;" id="performerFlag2Dom">
+				<input type="checkbox" value="1" name="performerFlag2" id="performerFlag2">
+				<span></span>
+				无需添加协助履行人
+			</label>
 			<div class="tableToobarContent hidden" id="assistFeasorToolbar">
 				<button type="button" class="btn red" onclick="addAssistFeasor()">添加协助履行人</button>
 				<button type="button" class="btn red" onclick="delAssistFeasor()">删除协助履行人</button>
@@ -86,7 +91,26 @@
 				_assistFeasor.assistFeasorAddList.push(assistFeasorAddItem);
 			}
 		});
-		if(isSubmit){
+		if(isSubmit == "changeAssist"){
+			if(parm.taskDefinitionKey == "GGLXR"){
+				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0){
+					layer.msg("请增加或删除协助履行人")
+					return false;
+				}else{
+					_assistFeasor.performerFlag2 = null;
+					return _assistFeasor;
+				}
+			}else if(parm.taskDefinitionKey == ""){
+				var performerFlag2 = $("#performerFlag2:checked").val() == 1 ? 1 : 0;
+				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0 && performerFlag2 == 0){
+					layer.msg("请增加或删除协助履行人或勾选无需添加协助履行人")
+					return false;
+				}else{
+					_assistFeasor.performerFlag2 = performerFlag2;
+					return _assistFeasor;
+				}
+			}
+		}else if(isSubmit){
 			if(performerFlag == 1 || assistFeasorAddStaffIdList.length > 0){
 				return _assistFeasor;
 			}else{
@@ -97,6 +121,31 @@
 		}else{
 			return _assistFeasor;
 		}
+	}
+	/*
+	 * 返回新增协助履行人名称
+	 */
+	function getValue_assistFeasorNameList(isExite){
+		var assistFeasorNameDataList = [];
+		//获取表格内所有的有效数据
+		$.each($("#assistFeasorTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var isValid = $(v).data("isvalid");
+				var addIsValid = $(v).children().eq(5).text();
+				if(isValid == 1 && addIsValid == ""){
+					var performerStaffName = $(v).children().eq(2).text();
+					if(isExite){
+						var stafforgid = Number($(v).data("stafforgid"));
+						if(assistFeasorDataObj.assistFeasorIdList.indexOf(stafforgid) == -1){
+							assistFeasorNameDataList.push(performerStaffName);
+						}
+					}else{
+						assistFeasorNameDataList.push(performerStaffName);
+					}
+				}
+			}
+		});
+		return assistFeasorNameDataList.join("，");
 	}
 	/*
 	 * 模糊查询接口，设置模糊查询
@@ -184,7 +233,11 @@
 			 * isEdit 判断页面是否只能查看
 			 */
 			if(assisFeasorEdit){
-				$("#assistFeasorToolbar").removeClass("hidden");
+				if(parm.taskDefinitionKey == ""){
+					$("#assistFeasorToolbar,#performerFlag2Dom").removeClass("hidden");
+				}else if(parm.taskDefinitionKey == "GGLXR"){
+					$("#assistFeasorToolbar").removeClass("hidden");
+				}
 			}else if(!isEdit){
 				$("#assistFeasorContent").find("input").attr("disabled","disabled");
 				$("#assistFeasorToolbar,.assistFeasorCheckbox").remove();

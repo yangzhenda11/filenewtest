@@ -1,345 +1,232 @@
-function initIncomeFlowCharts(){
+function initIncomeFlowCharts() {
 	var areaData = [{
-		"x":0,
-		"y":0,
-		"w":0.19,
-		"h":1,
-		"bgColor":"#FFFFCC",
-		"title":"资源核查",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.085,
-			"cy":0.20,
-			"text":"资源核查",
-			"textPos":"top",
-			"style":"dot1",
-			'id': "ziyuan"
-		},{
-			"cx":0.085,
-			"cy":0.35,
-			"text":"客户信息",
-			"textPos":"left",
-			"style":"dot1",
-			'id': "kehu"
+		"bgColor": "#FFFFCC",
+		"title": "前置资源管理",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.45,
+			"text": "客户",
+			"textPos": "top",
+			"style": "dot1"
+		}, {
+			"cy": 0.65,
+			"text": "合同签订",
+			"textPos": "bottom",
+			"style": "dot1"
 		}]
-		},{
-		"x":0.19,
-		"y":0,
-		"w":0.19,
-		"h":1,
-		"bgColor":"#92D050",
-		"title":"合同签订",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.275,
-			"cy":0.20,
-			"text":"合同起草",
-			"textPos":"top",
-			"style":"dot2"
-		},{
-			"cx":0.275,
-			"cy":0.35,
-			"text":"合同审批",
-			"textPos":"left",
-			"style":"dot1"
-		},{
-			"cx":0.275,
-			"cy":0.5,
-			"text":"合同扫描",
-			"textPos":"left",
-			"style":"dot1"
-		},{
-			"cx":0.275,
-			"cy":0.65,
-			"text":"合同验证",
-			"textPos":"left",
-			"style":"dot1"
-		},{
-			"cx":0.275,
-			"cy":0.8,
-			"text":"合同注册",
-			"textPos":"left",
-			"style":"dot1"
+	}, {
+		"bgColor": "#92D050",
+		"title": "合同注册",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.45,
+			"text": "合同激活",
+			"textPos": "top",
+			"style": "dot1"
 		}]
-		},{
-		"x":0.38,
-		"y":0.72,
-		"w":0.124,
-		"h":0.28,
-		"bgColor":"#92D056",
-		"title":"",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.325,
-			"cy":0.8,
-			"text":"合同激活",
-			"textPos":"bottom",
-			"style":"dot1"
+	}, {
+		"bgColor": "#FFFF66",
+		"title": "业务管理",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.45,
+			"text": "线路起租",
+			"textPos": "top",
+			"style": "dot1"
+		}, {
+			"cy": 0.65,
+			"text": "线路退租",
+			"textPos": "bottom",
+			"style": "dot1"
 		}]
-		},{
-		"x":0.38,
-		"y":0,
-		"w":0.124,
-		"h":0.72,
-		"bgColor":"#FFFF66",
-		"title":"线路开通",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.442,
-			"cy":0.55,
-			"text":"开通报竣",
-			"textPos":"top",
-			"style":"dot1"
-		}]},{
-		"x":0.504,
-		"y":0,
-		"w":0.124,
-		"h":1,
-		"bgColor":"#CCFF99",
-		"title":"线路起租",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.566,
-			"cy":0.8,
-			"text":"线路起租",
-			"textPos":"bottom",
-			"style":"dot1"
-		}]},{
-		"x":0.628,
-		"y":0,
-		"w":0.124,
-		"h":1,
-		"bgColor":"#F0F3F8",
-		"title":"线路退租",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.69,
-			"cy":0.55,
-			"text":"线路退组",
-			"textPos":"top",
-			"style":"dot1"
-		}]},{
-		"x":0.752,
-		"y":0,
-		"w":0.124,
-		"h":1,
-		"bgColor":"#FFCC66",
-		"title":"租费结算",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.814,
-			"cy":0.8,
-			"text":"租费结算",
-			"textPos":"bottom",
-			"style":"dot1"
-		}]},{
-		"x":0.876,
-		"y":0,
-		"w":0.124,
-		"h":1,
-		"bgColor":"#D9D9D9",
-		"title":"合同关闭",
-		"titlePos":"topCenter",
-		"dotData":[{
-			"cx":0.938,
-			"cy":0.8,
-			"text":"合同关闭",
-			"textPos":"bottom",
-			"style":"dot1"
+	}, {
+		"bgColor": "#CCFF99",
+		"title": "开票与回款管理",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.45,
+			"text": "开票回款",
+			"textPos": "topLeft",
+			"style": "dot2"
+		}]
+	}, {
+		"bgColor": "#F0F3F8",
+		"title": "风险预警",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.45,
+			"text": "未按合同收款预警",
+			"textPos": "bottom",
+			"style": "dot2"
+		}]
+	}, {
+		"bgColor": "#FFCC66",
+		"title": "合同关闭",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.45,
+			"text": "合同办结",
+			"textPos": "top",
+			"style": "dot2"
 		}]
 	}]
-	
+
 	var lineData = [{
-		"x1":areaData[0].dotData[0].cx,
-		"y1":areaData[0].dotData[0].cy,
-		"x2":areaData[0].dotData[1].cx,
-		"y2":areaData[0].dotData[1].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"资源核查-客户信息"
-	},{
-		"x1":areaData[0].dotData[0].cx,
-		"y1":areaData[0].dotData[0].cy,
-		"x2":areaData[1].dotData[0].cx,
-		"y2":areaData[1].dotData[0].cy,
-		"color":"#7F7F7F",
-		"width":"4",
-		"style":"dotted",
-		"text":"资源核查-合同起草"
-	},{
-		"x1":areaData[1].dotData[0].cx,
-		"y1":areaData[1].dotData[0].cy,
-		"x2":areaData[1].dotData[4].cx,
-		"y2":areaData[1].dotData[4].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"合同起草-合同注册"
-	},{
-		"x1":areaData[1].dotData[4].cx,
-		"y1":areaData[1].dotData[4].cy,
-		"x2":areaData[7].dotData[0].cx,
-		"y2":areaData[7].dotData[0].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"合同注册-合同关闭"
-	},
-	/*{
-		"x1":areaData[3].dotData[0].cx,
-		"y1":areaData[3].dotData[0].cy,
-		"x2":areaData[4].dotData[0].cx-0.003,
-		"y2":areaData[3].dotData[0].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"开通报竣-线路起租"
-	},{
-		"x1":areaData[4].dotData[0].cx-0.003,
-		"y1":areaData[3].dotData[0].cy,
-		"x2":areaData[4].dotData[0].cx-0.003,
-		"y2":areaData[4].dotData[0].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"开通报竣-线路起租"
-	},{
-		"x1":areaData[4].dotData[0].cx+0.003,
-		"y1":areaData[3].dotData[0].cy,
-		"x2":areaData[6].dotData[0].cx,
-		"y2":areaData[3].dotData[0].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"合同签订"
-	},{
-		"x1":areaData[4].dotData[0].cx+0.003,
-		"y1":areaData[3].dotData[0].cy,
-		"x2":areaData[4].dotData[0].cx+0.003,
-		"y2":areaData[4].dotData[0].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"合同签订"
-	},{
-		"x1":areaData[6].dotData[0].cx,
-		"y1":areaData[3].dotData[0].cy,
-		"x2":areaData[6].dotData[0].cx,
-		"y2":areaData[6].dotData[0].cy,
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"合同签订"
-	}*/
-	]
-	
+		"dot1": [0, 0],
+		"dot2": [0, 1],
+		"color": "#C10000",
+		"width": "4",
+		"style": "solid",
+		"text": "客户-合同签订"
+	}, {
+		"dot1": [1, 0],
+		"dot2": [3, 0],
+		"color": "#C10000",
+		"width": "4",
+		"style": "solid",
+		"text": "合同激活-开票回款"
+	}, {
+		"dot1": [2, 0],
+		"dot2": [2, 1],
+		"color": "#C10000",
+		"width": "4",
+		"style": "solid",
+		"text": "线路起租-线路退租"
+	}, {
+		"dot1": [3, 0],
+		"dot2": [4, 0],
+		"color": "#7F7F7F",
+		"width": "4",
+		"style": "solid",
+		"text": "开票回款-未按合同收款预警"
+	}, ]
 	var polyline = [{
-		"points":[{
-			x:areaData[3].dotData[0].cx,
-			y:areaData[3].dotData[0].cy
-		},{
-			x:(areaData[4].dotData[0].cx-0.003),
-			y:areaData[3].dotData[0].cy
-		},{
-			x:(areaData[4].dotData[0].cx-0.003),
-			y:areaData[4].dotData[0].cy
+		"points": [{
+			dot: [0, 1],
+			px: 0,
+			py: 0
+		}, {
+			dot: [0, 1],
+			px: 0.5,
+			py: 0
+		}, {
+			dot: [0, 0],
+			px: 0.5,
+			py: 0
+		}, {
+			dot: [1, 0],
+			px: 0,
+			py: 0
 		}],
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"考通报竣-线路起租"
-	},{
-		"points":[{
-			x:(areaData[4].dotData[0].cx+0.003),
-			y:areaData[4].dotData[0].cy
-		},{
-			x:(areaData[4].dotData[0].cx+0.003),
-			y:areaData[3].dotData[0].cy
-		},{
-			x:areaData[6].dotData[0].cx,
-			y:areaData[5].dotData[0].cy
-		},{
-			x:areaData[6].dotData[0].cx,
-			y:areaData[6].dotData[0].cy
+		"color": "#C10000",
+		"width": "4",
+		"style": "solid",
+		"text": "合同签订-合同激活"
+	}, {
+		"points": [{
+			dot: [2, 1],
+			px: 0,
+			py: 0
+		}, {
+			dot: [2, 1],
+			px: 0.95,
+			py: 0
+		}, {
+			dot: [2, 0],
+			px: 0.95,
+			py: 0
 		}],
-		"color":"#66CCFF",
-		"width":"4",
-		"style":"solid",
-		"text":"线路起租-租费结算"
+		"color": "#C10000",
+		"width": "4",
+		"style": "solid",
+		"text": "线路退租"
+	}, {
+		"points": [{
+			dot: [3, 0],
+			px: 0,
+			py: 0
+		}, {
+			dot: [3, 0],
+			px: 0,
+			py: -0.2
+		}, {
+			dot: [4, 0],
+			px: 0,
+			py: -0.2
+		}, {
+			dot: [4, 0],
+			px: 0,
+			py: 0
+		}],
+		"color": "#7F7F7F",
+		"width": "4",
+		"style": "solid",
+		"text": "开票-未按"
+	}, {
+		"points": [{
+			dot: [3, 0],
+			px: 0,
+			py: 0
+		}, {
+			dot: [3, 0],
+			px: 0,
+			py: 0.2
+		}, {
+			dot: [5, 0],
+			px: 0,
+			py: 0.2
+		}, {
+			dot: [5, 0],
+			px: 0,
+			py: 0
+		}],
+		"color": "#7F7F7F",
+		"width": "4",
+		"style": "solid",
+		"text": "开票-办结"
 	}];
-	
+
 	var triangle = [{
-		point:[0,0],
-		pos:"bottom",
-		dir:"up",
-		type:"normal"
-	},{
-		point:[1,0],
-		pos:"left",
-		dir:"right",
-		type:"small"
-	},{
-		point:[1,1],
-		pos:"up",
-		dir:"bottom",
-		type:"normal"
-	},{
-		point:[1,2],
-		pos:"up",
-		dir:"bottom",
-		type:"normal"
-	},{
-		point:[1,3],
-		pos:"up",
-		dir:"bottom",
-		type:"normal"
-	},{
-		point:[1,4],
-		pos:"up",
-		dir:"bottom",
-		type:"normal"
-	},{
-		point:[2,0],
-		pos:"left",
-		dir:"right",
-		type:"normal"
-	},{
-		point:[4,0],
-		pos:"left",
-		dir:"right",
-		type:"normal"
-	},
-	{
-		point:[4,0],
-		pos:"up",
-		dir:"bottom",
-		type:"normal",
-		offsetX:-0.0035
-	},
-	{
-		point:[5,0],
-		pos:"left",
-		dir:"right",
-		type:"normal"
-	},{
-		point:[6,0],
-		pos:"left",
-		dir:"right",
-		type:"normal"
-	},
-	{
-		point:[6,0],
-		pos:"up",
-		dir:"bottom",
-		type:"normal"
-	},
-	{
-		point:[7,0],
-		pos:"left",
-		dir:"right",
-		type:"normal"
-	}];
+		point: [0, 1],
+		pos: "up",
+		dir: "bottom",
+		type: "normal"
+	}, {
+		point: [1, 0],
+		pos: "left",
+		dir: "right",
+		type: "normal"
+	}, {
+		point: [2, 0],
+		pos: "left",
+		dir: "right",
+		type: "normal"
+	}, {
+		point: [2, 1],
+		pos: "up",
+		dir: "bottom",
+		type: "normal"
+	}, {
+		point: [3, 0],
+		pos: "left",
+		dir: "right",
+		type: "normal"
+	}, {
+		point: [3, 0],
+		pos: "up",
+		dir: "bottom",
+		type: "small"
+	}, {
+		point: [4, 0],
+		pos: "left",
+		dir: "right",
+		type: "small"
+	}, {
+		point: [5, 0],
+		pos: "bottom",
+		dir: "up",
+		type: "small"
+	}]
 	var flowData = {
 		areaData: areaData,
 		lineData: lineData,

@@ -1,12 +1,42 @@
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
 /**************************************获取合同基本信息********************************************/
 function getContractBaseData(){
+	debugger;
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
+		var url = serverPath + "tPContractSubwayPay/listByContractNumber";
+		var postData = {
+				contractNumber: contractNumber
+		};
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			var data = result.data;
+ 			if(data.contractNumber){ 
+ 				$("#contractNameSel").val(data.contractName);
+				$("#contractNumberSel").val(data.contractNumber); 
+				$("#partnerName").val(data.partnerName); 
+				$("#partnerCode").val(data.partnerCode); 
+				$("#isFixed").val(data.isFixed); 
+				//下面在这个radio按钮不会赋值，振达兄改的时候，帮忙看一下，thank you~~~
+				if("1"==data.isFixed){
+					$("#contractValue").val(data.contractValue); 
+				}
+				if("2"==data.isFixed){
+					$("#contractValue").hide();
+				}
+			}else{
+				layer.alert("暂无数据",{icon:2});
+			}
+		}
+	
 		
 	}else{
 		layer.alert("请输入合同编号。",{icon:2});
 	}
 }
+
 /**************************************获取合同基本信息********************************************/
 
 

@@ -1,114 +1,217 @@
-function initExpenseFlowCharts() {
+function initD3Charts(dataObj) {
+   	var resourceProject = dataObj.resourceProject;
+   	var resourceAign = dataObj.resourceAign;
+   	var resourcePurchase = dataObj.resourcePurchase;
+   	var registerActivate = dataObj.registerActivate;
+   	var businessOrderRelease = dataObj.businessOrderRelease;
+   	var businessOrderArrival = dataObj.businessOrderArrival;
+   	var businessOrderReceive = dataObj.businessOrderReceive;
+   	var supplierOrderConfirm = dataObj.supplierOrderConfirm;
+   	var supplierOrderDeliver = dataObj.supplierOrderDeliver;
+   	var supplierTicket = dataObj.supplierTicket;
+   	var invicePaymentVerification = dataObj.invicePaymentVerification;
+   	var invicePaymentPayment = dataObj.invicePaymentPayment;
+   	var riskWarning = dataObj.riskWarning;
+   	var contractCloseConclude = dataObj.contractCloseConclude;
+   	
 	var areaData = [{
 		"bgColor": "#FFFFCC",
 		"title": "前置资源管理",
 		"titlePos": "topCenter",
 		"dotData": [{
-			"cy": 0.3,
+			"cy": 0.35,
 			"text": "项目",
-			"textPos": "top",
-			"style": "dot1"
+			"textPos": "left",
+			"id": "resourceProject",
+			"status": resourceProject,
+			"style": "dot" + resourceProject
 		}, {
-			"cy": 0.5,
+			"cy": 0.55,
 			"text": "采购结果",
 			"textPos": "left",
-			"style": "dot1"
+			"id": "resourcePurchase",
+			"status": resourcePurchase,
+			"style": "dot" + resourcePurchase
 		}, {
-			"cy": 0.7,
+			"cy": 0.75,
 			"text": "合同签订",
-			"textPos": "bottom",
-			"style": "dot1"
-		}]
+			"textPos": "left",
+			"id": "resourceAign",
+			"status": resourceAign,
+			"style": "dot" + resourceAign
+		},]
 	}, {
 		"bgColor": "#92D050",
 		"title": "合同注册",
 		"titlePos": "topCenter",
 		"dotData": [{
-			"cy": 0.30,
+			"cy": 0.35,
 			"text": "合同激活",
 			"textPos": "top",
-			"style": "dot1"
+			"id": "registerActivate",
+			"status": registerActivate,
+			"style": "dot" + registerActivate
 		}]
 	}, {
 		"bgColor": "#FFFF66",
 		"title": "业务管理",
 		"titlePos": "topCenter",
 		"dotData": [{
-			"cy": 0.3,
+			"cy": 0.35,
 			"text": "订单下达",
 			"textPos": "top",
-			"style": "dot1"
+			"id": "businessOrderRelease",
+			"status": businessOrderRelease,
+			"style": "dot" + businessOrderRelease
 		}, {
-			"cy": 0.5,
-			"text": "订单接收",
+			"cy": 0.55,
+			"text": "订单到货",
+			"textPos": "left",
+			"id": "businessOrderArrival",
+			"status": businessOrderArrival,
+			"style": "dot" + businessOrderArrival
+		}, {
+			"cy": 0.75,
+			"text": "订单接收入库",
 			"textPos": "bottom",
-			"style": "dot1"
+			"id": "businessOrderReceive",
+			"status": businessOrderReceive,
+			"style": "dot" + businessOrderReceive
 		}]
 	}, {
 		"bgColor": "#CCFF99",
-		"title": "收票与付款管理",
+		"title": "供应商备货",
 		"titlePos": "topCenter",
 		"dotData": [{
-			"cy": 0.3,
-			"text": "发票",
+			"cy": 0.35,
+			"text": "订单确认",
 			"textPos": "top",
-			"style": "dot2"
+			"id": "supplierOrderConfirm",
+			"status": supplierOrderConfirm,
+			"style": "dot" + supplierOrderConfirm
 		}, {
-			"cy": 0.5,
-			"text": "付款",
-			"textPos": "left",
-			"style": "dot2"
+			"cy": 0.55,
+			"text": "订单发货",
+			"textPos": "bottom",
+			"id": "supplierOrderDeliver",
+			"status": supplierOrderDeliver,
+			"style": "dot" + supplierOrderDeliver
+		}, {
+			"cy": 0.75,
+			"text": "开票",
+			"textPos": "bottom",
+			"id": "supplierTicket",
+			"status": supplierTicket,
+			"style": "dot" + supplierTicket
 		}]
 	}, {
 		"bgColor": "#F0F3F8",
+		"title": "收票与付款管理",
+		"titlePos": "topCenter",
+		"dotData": [{
+			"cy": 0.35,
+			"text": "发票验证",
+			"textPos": "top",
+			"id": "invicePaymentVerification",
+			"status": invicePaymentVerification,
+			"style": "dot" + invicePaymentVerification
+		}, {
+			"cy": 0.55,
+			"text": "付款",
+			"textPos": "left",
+			"id": "invicePaymentPayment",
+			"status": invicePaymentPayment,
+			"style": "dot" + invicePaymentPayment
+		}]
+	}, {
+		"bgColor": "#FFCC66",
 		"title": "风险预警",
 		"titlePos": "topCenter",
 		"dotData": [{
-			"cy": 0.3,
+			"cy": 0.35,
 			"text": "未按约定履行预警",
 			"textPos": "top",
-			"style": "dot2"
+			"id": "riskWarning",
+			"status": riskWarning,
+			"style": "dot" + riskWarning
 		}]
 	}, {
 		"bgColor": "#FFCC66",
 		"title": "合同关闭",
 		"titlePos": "topCenter",
 		"dotData": [{
-			"cy": 0.3,
+			"cy": 0.35,
 			"text": "合同办结",
 			"textPos": "top",
-			"style": "dot2"
+			"id": "contractCloseConclude",
+			"status": contractCloseConclude,
+			"style": "dot" + contractCloseConclude
 		}]
 	}]
 
 	var lineData = [{
 		"dot1": [0, 0],
-		"dot2": [0, 2],
-		"color": "#C10000",
+		"dot2": [0, 1],
+		"color": returnBaseType(resourcePurchase,1),
 		"width": "4",
 		"style": "solid",
-		"text": "项目-合同签订"
-	}, {
+		"text": "项目-采购结果"
+	},{
+		"dot1": [0, 1],
+		"dot2": [0, 2],
+		"color": returnBaseType(resourceAign,1),
+		"width": "4",
+		"style": "solid",
+		"text": "采购结果-合同签订"
+	},{
 		"dot1": [1, 0],
 		"dot2": [2, 0],
-		"color": "#C10000",
+		"color": returnBaseType(businessOrderRelease,1),
 		"width": "4",
 		"style": "solid",
 		"text": "合同激活-订单下达"
-	}, {
+	},{
 		"dot1": [2, 0],
-		"dot2": [2, 1],
-		"color": "#C10000",
+		"dot2": [3, 0],
+		"color": returnBaseType(supplierOrderConfirm,1),
 		"width": "4",
 		"style": "solid",
-		"text": "订单下达-订单接收"
-	}, {
+		"text": "订单下达-订单确认"
+	},{
 		"dot1": [3, 0],
 		"dot2": [3, 1],
-		"color": "#7F7F7F",
+		"color": returnBaseType(supplierOrderDeliver,1),
 		"width": "4",
 		"style": "solid",
-		"text": "发票-付款"
+		"text": "订单确认-订单发货"
+	},{
+		"dot1": [3, 1],
+		"dot2": [2, 1],
+		"color": returnBaseType(businessOrderArrival,1),
+		"width": "4",
+		"style": "solid",
+		"text": "订单发货-订单到货"
+	},{
+		"dot1": [2, 1],
+		"dot2": [2, 2],
+		"color": returnBaseType(businessOrderReceive,1),
+		"width": "4",
+		"style": "solid",
+		"text": "订单到货-订单接收入库"
+	},{
+		"dot1": [2, 2],
+		"dot2": [3, 2],
+		"color": returnBaseType(supplierTicket,1),
+		"width": "4",
+		"style": "solid",
+		"text": "订单接收入库-开票"
+	},{
+		"dot1": [4, 0],
+		"dot2": [4, 1],
+		"color": returnBaseType(invicePaymentPayment,1),
+		"width": "4",
+		"style": "solid",
+		"text": "发票验证-付款"
 	}]
 	var polyline = [{
 		"points": [{
@@ -116,150 +219,170 @@ function initExpenseFlowCharts() {
 			px: 0,
 			py: 0
 		}, {
-			dot: [1, 0],
-			px: 0,
-			py: 0.4
+			dot: [0, 2],
+			px: 1,
+			py: 0
 		}, {
 			dot: [1, 0],
 			px: 0,
 			py: 0
 		}],
-		"color": "#C10000",
+		"color": returnBaseType(registerActivate,1),
 		"width": "4",
 		"style": "solid",
 		"text": "合同签订-合同激活"
-	}, {
+	},{
 		"points": [{
-			dot: [2, 1],
+			dot: [3, 2],
 			px: 0,
 			py: 0
 		}, {
-			dot: [2, 1],
-			px: 0.5,
-			py: 0
-		}, {
-			dot: [2, 0],
+			dot: [3, 2],
 			px: 0.5,
 			py: 0
 		}, {
 			dot: [3, 0],
-			px: 0,
-			py: 0
-		}],
-		"color": "#C10000",
-		"width": "4",
-		"style": "solid",
-		"text": "订单接收-发票"
-	}, {
-		"points": [{
-			dot: [3, 1],
-			px: 0,
-			py: 0
-		}, {
-			dot: [3, 1],
-			px: 0,
-			py: 0.2
-		}, {
-			dot: [5, 0],
-			px: 0,
-			py: 0.4
-		}, {
-			dot: [5, 0],
-			px: 0,
-			py: 0
-		}],
-		"color": "#7F7F7F",
-		"width": "4",
-		"style": "solid",
-		"text": "付款-办结"
-	}, {
-		"points": [{
-			dot: [3, 1],
-			px: 0,
-			py: 0
-		}, {
-			dot: [4, 0],
-			px: 0,
-			py: 0.2
-		}, {
-			dot: [4, 0],
-			px: 0,
-			py: 0
-		}],
-		"color": "#7F7F7F",
-		"width": "4",
-		"style": "solid",
-		"text": "付款-未按约定"
-	}, {
-		"points": [{
-			dot: [3, 1],
 			px: 0.5,
 			py: 0
 		}, {
 			dot: [4, 0],
-			px: -0.5,
-			py: 0
-		}, {
-			dot: [4, 0],
 			px: 0,
 			py: 0
 		}],
-		"color": "#7F7F7F",
+		"color": returnBaseType(invicePaymentVerification,1),
 		"width": "4",
 		"style": "solid",
-		"text": "付款-未按约定"
+		"text": "开票-发票验证"
+	},{
+		"points": [{
+			dot: [4, 1],
+			px: 0,
+			py: 0
+		}, {
+			dot: [4, 1],
+			px: 1,
+			py: 0
+		}, {
+			dot: [5, 0],
+			px: 0,
+			py: 0
+		}],
+		"color": returnBaseType(riskWarning,1),
+		"width": "4",
+		"style": "solid",
+		"text": "付款-未按约定履行预警"
+	},{
+		"points": [{
+			dot: [4, 1],
+			px: 0.5,
+			py: 0
+		}, {
+			dot: [4, 0],
+			px: 0.5,
+			py: 0
+		}, {
+			dot: [5, 0],
+			px: 0,
+			py: 0
+		}],
+		"color": returnBaseType(riskWarning,1),
+		"width": "4",
+		"style": "solid",
+		"text": "付款-未按约定履行预警"
+	},{
+		"points": [{
+			dot: [4, 1],
+			px: 0,
+			py: 0
+		}, {
+			dot: [4, 1],
+			px: 0,
+			py: 0.2
+		}, {
+			dot: [6, 0],
+			px: 0,
+			py: 0.4
+		}, {
+			dot: [6, 0],
+			px: 0,
+			py: 0
+		}],
+		"color": returnBaseType(contractCloseConclude,1),
+		"width": "4",
+		"style": "solid",
+		"text": "付款-合同办结"
 	}];
 
 	var triangle = [{
 		point: [0, 1],
 		pos: "up",
 		dir: "bottom",
-		type: "normal"
-	}, {
+		type: returnBaseType(resourcePurchase,2)
+	},{
 		point: [0, 2],
 		pos: "up",
 		dir: "bottom",
-		type: "normal"
-	}, {
+		type: returnBaseType(resourceAign,2)
+	},{
 		point: [1, 0],
 		pos: "bottom",
 		dir: "up",
-		type: "normal"
-	}, {
+		type: returnBaseType(registerActivate,2)
+	},{
 		point: [2, 0],
 		pos: "left",
 		dir: "right",
-		type: "normal"
-	}, {
-		point: [2, 1],
-		pos: "up",
-		dir: "bottom",
-		type: "normal"
-	}, {
+		type: returnBaseType(businessOrderRelease,2)
+	},{
 		point: [3, 0],
 		pos: "left",
 		dir: "right",
-		type: "normal"
-	}, {
+		type: returnBaseType(supplierOrderConfirm,2)
+	},{
 		point: [3, 1],
 		pos: "up",
 		dir: "bottom",
-		type: "small"
-	}, {
-		point: [3, 1],
+		type: returnBaseType(supplierOrderDeliver,2)
+	},{
+		point: [2, 1],
 		pos: "right",
 		dir: "left",
-		type: "small"
-	}, {
+		type: returnBaseType(businessOrderArrival,2)
+	},{
+		point: [2, 2],
+		pos: "up",
+		dir: "bottom",
+		type: returnBaseType(businessOrderReceive,2)
+	},{
+		point: [3, 2],
+		pos: "left",
+		dir: "right",
+		type: returnBaseType(supplierTicket,2)
+	},{
 		point: [4, 0],
 		pos: "left",
 		dir: "right",
-		type: "small"
-	}, {
+		type: returnBaseType(invicePaymentVerification,2)
+	},{
+		point: [4, 1],
+		pos: "up",
+		dir: "bottom",
+		type: returnBaseType(invicePaymentPayment,2)
+	},{
+		point: [4, 1],
+		pos: "right",
+		dir: "left",
+		type: returnBaseType(riskWarning,2)
+	},{
 		point: [5, 0],
+		pos: "left",
+		dir: "right",
+		type: returnBaseType(riskWarning,2)
+	},{
+		point: [6, 0],
 		pos: "bottom",
 		dir: "up",
-		type: "small"
+		type: returnBaseType(contractCloseConclude,2)
 	}]
 	var flowData = {
 		areaData: areaData,

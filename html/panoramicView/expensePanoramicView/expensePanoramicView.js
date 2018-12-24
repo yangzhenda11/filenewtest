@@ -1,14 +1,52 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+$(function(){
+	var defaultData =  {
+        "resourceProject": "3",
+        "resourceAign": "3",
+        "resourcePurchase": "3",
+        "registerActivate": "3",
+        "businessOrderRelease": "3",
+        "businessOrderArrival": "3",
+        "businessOrderReceive": "3",
+        "supplierOrderConfirm": "3",
+        "supplierOrderDeliver": "3",
+        "supplierTicket": "3",
+        "invicePaymentVerification": "3",
+        "invicePaymentPayment": "3",
+        "riskWarning": "3",
+        "contractCloseConclude": "3"
+   	};
+   	initExpenseFlowCharts(defaultData);
+})
+
 /**************************************获取合同基本信息********************************************/
 function getContractBaseData(){
-	debugger;
+	var defaultData =  {
+        "resourceProject": "1",
+        "resourceAign": "1",
+        "resourcePurchase": "1",
+        "registerActivate": "1",
+        "businessOrderRelease": "2",
+        "businessOrderArrival": "1",
+        "businessOrderReceive": "2",
+        "supplierOrderConfirm": "1",
+        "supplierOrderDeliver": "1",
+        "supplierTicket": "1",
+        "invicePaymentVerification": "2",
+        "invicePaymentPayment": "2",
+        "riskWarning": "2",
+        "contractCloseConclude": "3"
+   	};
+	initExpenseFlowCharts(defaultData);
+	
+	
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
 		var url = serverPath + "tPContractSubwayPay/listByContractNumber";
 		var postData = {
-				contractNumber: contractNumber
+			contractNumber: contractNumber
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
@@ -227,30 +265,19 @@ function circleChartsOption(title,subtext,data,isEmpty){
 /************************************************图表生成配置项*******************************************************/
 
 
-$(function(){
-	/**************************************地铁图配置********************************************/
+
+/**************************************地铁图配置********************************************/
+function initExpenseFlowCharts(data){
+	$('#expenseFlowChart').html('');
 	var tw = $('#expenseFlowChart').width();
 	var th = $('#expenseFlowChart').height();
-	var flowData = initExpenseFlowCharts();
+	var baseData = initD3Charts(data);
 	$('#expenseFlowChart').D3Charts({
 		width:tw,
 		height:th,
-		areaData: flowData.areaData,
-		lineData: flowData.lineData,
-		polyline: flowData.polyline,
-		triangle: flowData.triangle
+		baseData: baseData
 	})
-	$("circle").hover(function(){
-		if($(this).data("id") == "kehu"){
-			var html = "<input type='checkbox' disabled='disabled' ><span style='color:#000'>测试</span>"
-			layer.tips(html, $(this), {
-			  tips: [3, '#fff'],
-			  time: 0
-			});
-		}
-	},function(){
-		layer.closeAll('tips');
-	})
+	
 	$(window).resize(function(){
 		$('#expenseFlowChart').html('');
 		var tw = $('#expenseFlowChart').width();
@@ -258,11 +285,21 @@ $(function(){
 		$('#expenseFlowChart').D3Charts({
 			width:tw,
 			height:th,
-			areaData: flowData.areaData,
-			lineData: flowData.lineData,
-			polyline: flowData.polyline,
-			triangle: flowData.triangle
+			baseData: baseData
 		})
 	})
-	/**************************************地铁图配置********************************************/
-})
+}
+$("#expenseFlowChart").on('mouseenter',"circle",function(e){
+    if($(this).data("status") == 2){
+    	var html = "<input type='checkbox' disabled='disabled' ><span style='color:#000'>测试</span>"
+		layer.tips(html, $(this), {
+		  tips: [1, '#fff'],
+		  time: 0
+		});
+    }
+ });
+$("#expenseFlowChart").on('mouseout',"circle",function(e){
+    layer.closeAll('tips');
+});
+
+/**************************************地铁图配置********************************************/

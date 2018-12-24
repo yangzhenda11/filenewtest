@@ -1,8 +1,36 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+$(function(){
+	var defaultData =  {
+        "resourceCustomer": "3",
+        "resourceSign": "3",
+        "registerActivate": "3",
+        "businessLineRenting": "3",
+        "businessStopRenting": "3",
+        "ticketReceivables": "3",
+        "riskWarning": "3",
+        "contractCloseConclude": "3"
+   	};
+   	initIncomeFlowCharts(defaultData);
+})
+
+
 /**************************************获取合同基本信息********************************************/
 function getContractBaseData(){ 
+	var defaultData =  {
+        "resourceCustomer": "1",
+        "resourceSign": "1",
+        "registerActivate": "1",
+        "businessLineRenting": "2",
+        "businessStopRenting": "2",
+        "ticketReceivables": "2",
+        "riskWarning": "2",
+        "contractCloseConclude": "3"
+   	};
+	initIncomeFlowCharts(defaultData);
+	
+	
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
 		var url = serverPath + "contractSubwayZxManger/getContractSubwayZxByContractNumber";
@@ -340,22 +368,12 @@ function circleChartsOption(title,data,isEmpty){
 };
 /************************************************图表生成配置项*******************************************************/
 
-$(function(){
-	/**************************************地铁图配置********************************************/
+/**************************************地铁图配置********************************************/
+function initIncomeFlowCharts(data){
+	$('#incomeFlowChart').html('');
 	var tw = $('#incomeFlowChart').width();
 	var th = $('#incomeFlowChart').height();
-	var contractSubwayZx =  {
-        "resourceCustomer": "1",
-        "resourceSign": "1",
-        "registerActivate": "1",
-        "businessLineRenting": "2",
-        "businessStopRenting": "2",
-        "ticketReceivables": "2",
-        "riskWarning": "2",
-        "contractCloseConclude": "3"
-   };
-	var baseData = initIncomeFlowCharts(contractSubwayZx);
-	console.log(baseData);
+	var baseData = initD3Charts(data);
 	$('#incomeFlowChart').D3Charts({
 		width:tw,
 		height:th,
@@ -372,17 +390,18 @@ $(function(){
 			baseData: baseData
 		})
 	})
-	/**************************************地铁图配置********************************************/
-})
+}
+$("#incomeFlowChart").on('mouseenter',"circle",function(e){
+    if($(this).data("status") == 2){
+    	var html = "<input type='checkbox' disabled='disabled' ><span style='color:#000'>测试</span>"
+		layer.tips(html, $(this), {
+		  tips: [1, '#fff'],
+		  time: 0
+		});
+    }
+ });
+$("#incomeFlowChart").on('mouseout',"circle",function(e){
+    layer.closeAll('tips');
+});
 
-//$("circle").hover(function(){
-//	if($(this).data("id") == "kehu"){
-//		var html = "<input type='checkbox' disabled='disabled' ><span style='color:#000'>测试</span>"
-//		layer.tips(html, $(this), {
-//		  tips: [3, '#fff'],
-//		  time: 0
-//		});
-//	}
-//},function(){
-//	layer.closeAll('tips');
-//})
+/**************************************地铁图配置********************************************/

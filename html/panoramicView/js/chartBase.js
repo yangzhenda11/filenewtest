@@ -1,3 +1,18 @@
+function returnBaseType(data,type){
+	if(type == 1){
+		if(data == 1 || data == 2){
+			return "#d11718";
+		}else if(data == 3){
+			return "#7F7F7F";
+		};
+	}else if(type == 2){
+		if(data == 1 || data == 2){
+			return "arrive";
+		}else if(data == 3){
+			return "notArrive";
+		};
+	}
+}
 $.fn.D3Charts = function(options) {
 	var defaultData = {
 		areaPadding:0,
@@ -18,30 +33,35 @@ $.fn.D3Charts = function(options) {
 		data: [],
 		//点的类型
 		dot1: {
-			borderColor: '#000',
+			borderColor: '#333',
 			borderWidth: 4,
 			dotR: 6,
 			dotColor: '#ccc'
 		},
 		dot2: {
+			borderColor: '#333',
+			borderWidth: 4,
+			dotR: 6,
+			dotColor: '#FD6D64'
+		},
+		dot3: {
 			borderColor: '#7F7F7F',
 			borderWidth: 4,
 			dotR: 6,
 			dotColor: '#ccc'
 		},
 		triangleType: {
-			'normal': {
+			'arrive': {
 				sizeR1: 6,
 				sizeR2: 10,
 				color: '#d11718'
 			},
-			'small': {
+			'notArrive': {
 				sizeR1: 6,
 				sizeR2: 10,
 				color: '#7F7F7F'
 			}
 		}
-
 	}
 
 	options = jQuery.extend(defaultData, options);
@@ -73,7 +93,7 @@ $.fn.D3Charts = function(options) {
 	//承载文本
 	var textArray = [];
 	var titleArray = [];
-	var rectWidth = parseInt(1/6*1000)/1000;
+	var rectWidth = parseInt(1/areaData.length*1000)/1000;
 	//生成矩形面
 	$.each(areaData, function(index, item) {
 		var rectx = index*rectWidth;
@@ -161,9 +181,9 @@ $.fn.D3Charts = function(options) {
 			.style("stroke", item.color)
 			.style("stroke-width", item.width)
 			.attr('fill', 'rgba(0,0,0,0)')
-			.on('click', function() {
-				alert('我是【' + p.text + '】线条');
-			})
+//			.on('click', function() {
+//				alert('我是【' + p.text + '】线条');
+//			})
 		if(item.style != 'solid') {
 			lineObj.style("stroke-dasharray", "5,5")
 		}
@@ -179,6 +199,8 @@ $.fn.D3Charts = function(options) {
 				.attr("cx", areaXLinear(cx))
 				.attr("cy", areaYLinear(item.cy))
 				.attr("r", dotStyle.dotR)
+				.attr("id", item.id)
+				.attr("data-status", item.status)
 				.style("stroke", dotStyle.borderColor)
 				.style("stroke-width", dotStyle.borderWidth)
 				.attr('fill', dotStyle.dotColor)
@@ -200,11 +222,11 @@ $.fn.D3Charts = function(options) {
 						.attr('fill', dotStyle.dotColor)
 						.attr("stroke-opacity", '1')
 				})
-				.on('click', function(e) {
-					d3.select(this)
-						.interrupt()
-					alert('您点击了【' + item.text + '】,此时您可以进行跳转或其他业务操作')
-				})
+//				.on('click', function(e) {
+//					d3.select(this)
+//						.interrupt()
+//					alert('您点击了【' + item.text + '】,此时您可以进行跳转或其他业务操作')
+//				})
 
 			//默认不断行，直接拼接
 			if(typeof item.isWrap == 'undefined') {

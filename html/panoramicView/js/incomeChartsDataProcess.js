@@ -74,21 +74,21 @@ function initIncomeFlowCharts() {
 	var lineData = [{
 		"dot1": [0, 0],
 		"dot2": [0, 1],
-		"color": "#C10000",
+		"color": "#d11718",
 		"width": "4",
 		"style": "solid",
 		"text": "客户-合同签订"
 	}, {
 		"dot1": [1, 0],
 		"dot2": [3, 0],
-		"color": "#C10000",
+		"color": "#d11718",
 		"width": "4",
 		"style": "solid",
 		"text": "合同激活-开票回款"
 	}, {
 		"dot1": [2, 0],
 		"dot2": [2, 1],
-		"color": "#C10000",
+		"color": "#d11718",
 		"width": "4",
 		"style": "solid",
 		"text": "线路起租-线路退租"
@@ -118,7 +118,7 @@ function initIncomeFlowCharts() {
 			px: 0,
 			py: 0
 		}],
-		"color": "#C10000",
+		"color": "#d11718",
 		"width": "4",
 		"style": "solid",
 		"text": "合同签订-合同激活"
@@ -136,7 +136,7 @@ function initIncomeFlowCharts() {
 			px: 0.95,
 			py: 0
 		}],
-		"color": "#C10000",
+		"color": "#d11718",
 		"width": "4",
 		"style": "solid",
 		"text": "线路退租"

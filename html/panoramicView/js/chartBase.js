@@ -7,34 +7,33 @@ $.fn.D3Charts = function(options) {
 		rectR:40,//矩形圆角的弧度
 		width: 600,
 		height: 400,
-		titleSize: 22,
+		titleSize: 18,
 		titleLineHeight: 24,
 		titleColor: '#858585',
-		textSize: 16,
+		textSize: 14,
 		textLineHeight: 18,
 		textFontWeight: 'bold',
 		textColor: '#858585',
 		textHoverColor: '#333',
 		data: [],
-		lineData: [],
 		//点的类型
 		dot1: {
-			borderColor: '#002060',
-			borderWidth: 5,
+			borderColor: '#000',
+			borderWidth: 4,
 			dotR: 6,
-			dotColor: '#FFF'
+			dotColor: '#ccc'
 		},
 		dot2: {
 			borderColor: '#7F7F7F',
-			borderWidth: 5,
+			borderWidth: 4,
 			dotR: 6,
-			dotColor: '#A6A6A6'
+			dotColor: '#ccc'
 		},
 		triangleType: {
 			'normal': {
-				sizeR1: 8,
-				sizeR2: 14,
-				color: '#C10000'
+				sizeR1: 6,
+				sizeR2: 10,
+				color: '#d11718'
 			},
 			'small': {
 				sizeR1: 6,
@@ -46,10 +45,11 @@ $.fn.D3Charts = function(options) {
 	}
 
 	options = jQuery.extend(defaultData, options);
-	var areaData = options.areaData;
-	var lineData = options.lineData;
-	var polyline = options.polyline;
-	var triangle = options.triangle;
+	
+	var areaData = options.baseData.areaData;
+	var lineData = options.baseData.lineData;
+	var polyline = options.baseData.polyline;
+	var triangle = options.baseData.triangle;
 	var $wrapper = $(this);
 	var wrapperId = $wrapper.attr('id');
 	if(wrapperId == undefined) {

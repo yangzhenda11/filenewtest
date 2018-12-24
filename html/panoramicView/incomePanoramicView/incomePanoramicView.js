@@ -1,9 +1,31 @@
-
+//系统的全局变量获取
+var config = top.globalConfig;
+var serverPath = config.serverPath;
 /**************************************获取合同基本信息********************************************/
-function getContractBaseData(){
+function getContractBaseData(){ 
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
-		
+		var url = serverPath + "contractSubwayZxManger/getContractSubwayZxByContractNumber";
+		var postData = {
+				contractNumber: contractNumber
+		};
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		function successCallback(result) {
+			var data = result.data;
+ 			if(data.contractNumber){ 
+ 				$("#contractName").val(data.contractName);
+				$("#contractNumber").val(data.contractNumber); 
+				$("#customerName").val(data.customerName); 
+				if(data.customerCode){
+					$("#customerCode").val(data.customerCode); 
+				}else if(data.partnerCode){
+					$("#customerCode").val(data.partnerCode); 
+				}
+				
+			}else{
+				layer.alert("暂无数据",{icon:2});
+			}
+		}
 	}else{
 		layer.alert("请输入合同编号。",{icon:2});
 	}

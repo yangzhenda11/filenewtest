@@ -67,13 +67,14 @@ function getContractBaseData(){
 createLineNumberChart();
 //生成本地线路与跨域线路数量占比情况图表
 function createLineNumberChart(){
-//	var url = serverPath + "";
+	var contractNumber = $("#searchContractNumber").val();
+	var url = serverPath + "analysisZx/localAndOffSite?contractNumber="+contractNumber;
 	var lineNumberChart = echarts.init(document.getElementById('lineNumberChart'));
-//	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
-//	function successCallback(result) {
-//		var data = result.data;
-		var localLineNum = 121;			//本地线路数量
-		var offsiteLineNum  = 123;		//跨域线路数量
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var localLineNum = data.localLineNum; //本地线路数量
+		var offsiteLineNum = data.offsiteLineNum; //跨域线路数量
 		if(localLineNum || offsiteLineNum){
 			var lineNumberChartOption = returnChartsOption('本地线路与跨域线路数量占比情况', [{
 				value: localLineNum,
@@ -86,7 +87,7 @@ function createLineNumberChart(){
 			var lineNumberChartOption = returnEmptyChartsOption('本地线路与跨域线路数量占比情况', ['本地线路：0条', '跨域线路：0条']);
 		};
 		lineNumberChart.setOption(lineNumberChartOption);
-//	}
+	}
 	function improperCallback(result){
 		layer.msg(result.message);
 		var lineNumberChartOption = returnEmptyChartsOption('本地线路与跨域线路数量占比情况', ['本地线路：0条', '跨域线路：0条']);
@@ -94,15 +95,16 @@ function createLineNumberChart(){
 	}
 }
 createLineHireChart();
-//生成本地线路与跨域线路数量占比情况图表
+//生成租用中线路与已止租线路数量占比情况图表
 function createLineHireChart(){
-//	var url = serverPath + "";
+	var contractNumber = $("#searchContractNumber").val();
+	var url = serverPath + "analysisZx/isLineAndNotLine?contractNumber="+contractNumber;
 	var lineHireChart = echarts.init(document.getElementById('lineHireChart'));
-//	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
-//	function successCallback(result) {
-//		var data = result.data;
-		var isLineHireNum = 0;			//租用中线路数量
-		var notLineHireNum  = 0;			//已止租线路数量
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var isLineHireNum = data.isLineHireNum; //租用中线路数量
+		var notLineHireNum = data.notLineHireNum; //已止租线路数量
 		if(isLineHireNum || notLineHireNum){
 			var lineHireChartOption = returnChartsOption('租用中线路与已止租线路数量占比情况', [{
 				value: isLineHireNum,
@@ -115,7 +117,7 @@ function createLineHireChart(){
 			var lineHireChartOption = returnEmptyChartsOption('租用中线路与已止租线路数量占比情况', ['租用中线路：0条', '已止租线路：0条']);
 		};
 		lineHireChart.setOption(lineHireChartOption);
-//	}
+	}
 	function improperCallback(result){
 		layer.msg(result.message);
 		var lineHireChartOption = returnEmptyChartsOption('租用中线路与已止租线路数量占比情况', ['租用中线路：0条', '已止租线路：0条']);
@@ -125,14 +127,15 @@ function createLineHireChart(){
 createIncomeChartCharts();
 //生成本年度已出账收入情况图表
 function createIncomeChartCharts(){
+	var contractNumber = $("#searchContractNumber").val();
+	var url = serverPath + "analysisZx/collectedAndArrears?contractNumber="+contractNumber;
 	var incomeChart = echarts.init(document.getElementById('incomeChart'));
-	//	var url = serverPath + "";
-//	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
-//	function successCallback(result) {
-//		var data = result.data;
-		var invoiceNnovateSumSum = 120;
-		var noInvoiceNnovateSum = 230;
-		var noInvoiceNnovatePercent = 0.3429;
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var invoiceNnovateSumSum = data.invoiceNnovateSumSum;
+		var noInvoiceNnovateSum = data.noInvoiceNnovateSum;
+		var noInvoiceNnovatePercent = data.noInvoiceNnovatePercent;
 		if(invoiceNnovateSumSum || noInvoiceNnovateSum){
 			var invoiceChartsFixedData = [
 				{
@@ -153,7 +156,7 @@ function createIncomeChartCharts(){
 			$("#incomeChartValue").text("0%")
 		}
 		incomeChart.setOption(incomeChartOption);
-//	}
+	}
 	function improperCallback(result){
 		layer.msg(result.message);
 		incomeChartOption = circleChartsOption("本年度已出账收入情况",[{value: 0,name: '实收金额：0元'},{value: 1,name: '欠费金额：0元'}],true);

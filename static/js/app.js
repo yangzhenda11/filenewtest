@@ -676,7 +676,7 @@ var App = function() {
 							top.window.location.href = "/overtime.html";
 						}else{
 							layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
-			        			top.window.location.href = "login";
+			        			top.window.location.href = "/login.html";
 			        		});
 						}
 	        		}else{
@@ -1386,24 +1386,47 @@ var App = function() {
 		 * 获取字典信息
 		 */
 		getDictInfo:function(code,notPackage){
-			var postData = {"dictId": code};
-			var resturnData = {};
-			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
-
-			function successCallback(result) {
-				var data = result.data;
-				if(notPackage){
-					resturnData = data;
-				}else{
-					for(var i = 0; i < data.length; i++){
-						resturnData[data[i].dictValue] = data[i].dictLabel
-					};
-				}
-			};
-			function improperCallback(result){
-				layer.msg("字典项"+code+"异常");
+			var sysDictsCache = top.sysDictsCache;
+			if(sysDictsCache.length == 0){
+				layer.msg("字典项缓存异常,请联系系统管理员");
+				return {};
+			}else if(notPackage){
+				var resturnData = [];
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData.push(dictItem)
+					}
+				};
+				return resturnData;
+			}else{
+				var resturnData = {};
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData[dictItem.dictValue] = dictItem.dictLabel
+					}
+				};
+				return resturnData;
 			}
-			return resturnData;
+//			var postData = {"dictId": code};
+//			var resturnData = {};
+//			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
+//
+//			function successCallback(result) {
+//				var data = result.data;
+//				if(notPackage){
+//					resturnData = data;
+//				}else{
+//					for(var i = 0; i < data.length; i++){
+//						resturnData[data[i].dictValue] = data[i].dictLabel
+//					};
+//				}
+//			};
+//			function improperCallback(result){
+//				layer.msg("字典项"+code+"异常");
+//			}
+//			return resturnData;
 		},
 		pagehandleFormFieldset : function() {
 			if($('.form-fieldset .form-collapse').length) {

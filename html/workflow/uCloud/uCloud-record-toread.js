@@ -13,18 +13,21 @@ $(function(){
 
 function getInitInfo(){
 	var ajaxObj = {
-		    "url" : serverPath+ "recordToread/selectByReadTypeCode",
-		    "type" : "post",
-		    "data": {"readTypeCode":readTypeCode}
-		};
-		App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
-		function successCallback(result) {
-			urls=result.data[0].value;
-			changeReadStatus(readId,bussId);
-			findDetail (urls,bussId) ;
-		}
+	    "url" : serverPath+ "recordToread/selectByReadTypeCode",
+	    "type" : "post",
+	    "data": {"readTypeCode":readTypeCode}
+	};
+	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback, improperCallback);
+	function successCallback(result) {
+		urls = result.data[0].value;
+		changeReadStatus(readId,bussId);
+		findDetail(urls,bussId) ;
+	}
+	function improperCallback(result){
+		errorInfoSolve(result.message);
+	}
 }
-function  findDetail  (url,bussId) {
+function findDetail(url,bussId) {
 	var src = url+"&bussid="+bussId+"&flag=1";
 	$('#businessiframe').attr("src",src);
 	$('#businessiframe').show();
@@ -38,11 +41,9 @@ function  findDetail  (url,bussId) {
  */
 function changeReadStatus(readId,bussId){
 	var ajaxObj = {
-	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
-	    "type" : "post",
-	    "data":{"readId":readId,
-	    				"bussId":bussId
-	    }
+	    "url":  serverPath + "recordToread/editRecordToreadToHis",
+	    "type": "post",
+	    "data": {"readId":readId,"bussId":bussId}
 	};
 	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 	function successCallback(result) {

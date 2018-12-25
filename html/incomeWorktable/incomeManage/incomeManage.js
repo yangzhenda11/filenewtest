@@ -454,7 +454,7 @@ function incomeAnalysisIntervalFn(){
 				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
 			}else{			
 									// 按线路查看
-				var theadHtml = "<th>序号</th><th>业务信息ID</th><th>电路代号</th><th>产品名称</th><th>发起分公司</th><th>租用范围</th><th>月租费</th><th>应收(元)</th><th>欠费(元)</th><th>实收(元)</th>";
+				var theadHtml = "<th>序号</th><th>服务号码</th><th>业务信息ID</th><th>电路代号</th><th>产品名称</th><th>发起分公司</th><th>租用范围</th><th>月租费</th><th>应收(元)</th><th>欠费(元)</th><th>实收(元)</th>";
 			}
 			$("#riskIncomeThead").html(theadHtml);
 		}else{
@@ -538,11 +538,12 @@ function incomeAnalysisIntervalFn(){
 					return start + meta.row + 1;
 				}
 			},
+			{"data": "serviceNumber","title":"服务号码","className": "whiteSpaceNormal","width": "11%"},
 			{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "11%",},
-			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "11%",},
-			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "11%",},
-			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "11%",},
-			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "7%",},
+			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "12%",},
+			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "7%",},
+			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "7%",},
 			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -919,8 +920,8 @@ function checkLineIncomeForecastRadio(valRadio){
 	if(pageConfig.accountPeriod == null){
 		if(valRadio == 1){ 		// 按客户查看
 			var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>风险收入预测</th><th>线路明细</th>";
-		}else{					// 按合同查看
-			var theadHtml = "<th>序号</th><th>业务信息ID</th><th>电路代号</th><th>产品名称</th><th>发起分公司</th><th>租用范围</th><th>月租费</th><th>风险收入预测</th>";
+		}else{					// 按线路查看
+			var theadHtml = "<th>序号</th><th>服务号码</th><th>业务信息ID</th><th>电路代号</th><th>产品名称</th><th>发起分公司</th><th>租用范围</th><th>月租费</th><th>风险收入预测</th>";
 		}
 		$("#lineIncomeForecastThead").html(theadHtml);
 	}else{
@@ -996,11 +997,12 @@ function initLineIncomeForecastTableByLine(){
 					return start + meta.row + 1;
 				}
 			},
+			{"data": "serviceNumber","title":"服务号码","className": "whiteSpaceNormal","width": "15%"},
 			{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "15%"},
-			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);

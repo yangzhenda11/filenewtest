@@ -1078,7 +1078,12 @@ var App = function() {
 		 */
 		formatDateTime: function(inputTime,type) {
 			if(inputTime){
-				var date = new Date(inputTime);
+				inputTime = String(inputTime);
+				if(inputTime.indexOf("-") == -1){
+					var date = new Date(Number(inputTime));
+				}else{
+					var date = new Date(inputTime.replace(/-/g,"/"));
+				};
 			}else{
 				return "";
 			}

@@ -37,7 +37,7 @@ function getContractBaseData(){
 		var postData = {
 				contractNumber: contractNumber
 		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
  			if(data.contractNumber){ 
@@ -48,11 +48,17 @@ function getContractBaseData(){
 					$("#customerCode").val(data.customerCode); 
 				}else if(data.partnerCode){
 					$("#customerCode").val(data.partnerCode); 
-				}
-				
+				};
+				createLineNumberChart(contractNumber);
+				createLineHireChart(contractNumber);
+				createIncomeChartCharts(contractNumber);
 			}else{
 				layer.alert("暂无数据",{icon:2});
 			}
+		}
+		function improperCallback(result){
+			var ms = result.message;
+			layer.alert(ms,{icon:2});
 		}
 	}else{
 		layer.alert("请输入合同编号。",{icon:2});
@@ -64,10 +70,8 @@ function getContractBaseData(){
 
 
 /**************************************获取图表数据生成图表********************************************/
-createLineNumberChart();
 //生成本地线路与跨域线路数量占比情况图表
-function createLineNumberChart(){
-	var contractNumber = $("#searchContractNumber").val();
+function createLineNumberChart(contractNumber){
 	var url = serverPath + "analysisZx/localAndOffSite?contractNumber="+contractNumber;
 	var lineNumberChart = echarts.init(document.getElementById('lineNumberChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
@@ -94,10 +98,8 @@ function createLineNumberChart(){
 		lineNumberChart.setOption(lineNumberChartOption);
 	}
 }
-createLineHireChart();
 //生成租用中线路与已止租线路数量占比情况图表
-function createLineHireChart(){
-	var contractNumber = $("#searchContractNumber").val();
+function createLineHireChart(contractNumber){
 	var url = serverPath + "analysisZx/isLineAndNotLine?contractNumber="+contractNumber;
 	var lineHireChart = echarts.init(document.getElementById('lineHireChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
@@ -124,10 +126,8 @@ function createLineHireChart(){
 		lineHireChart.setOption(lineHireChartOption);
 	}
 }
-createIncomeChartCharts();
 //生成本年度已出账收入情况图表
-function createIncomeChartCharts(){
-	var contractNumber = $("#searchContractNumber").val();
+function createIncomeChartCharts(contractNumber){
 	var url = serverPath + "analysisZx/collectedAndArrears?contractNumber="+contractNumber;
 	var incomeChart = echarts.init(document.getElementById('incomeChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);

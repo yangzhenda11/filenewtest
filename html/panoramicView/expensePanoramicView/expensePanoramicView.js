@@ -48,7 +48,7 @@ function getContractBaseData(){
 		var postData = {
 			contractNumber: contractNumber
 		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
  			if(data.contractNumber){ 
@@ -68,7 +68,10 @@ function getContractBaseData(){
 				layer.alert("暂无数据",{icon:2});
 			}
 		}
-	
+		function improperCallback(result){
+			var ms = result.message;
+			layer.alert(ms,{icon:2});
+		}
 		
 	}else{
 		layer.alert("请输入合同编号。",{icon:2});

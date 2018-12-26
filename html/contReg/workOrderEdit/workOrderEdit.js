@@ -103,21 +103,21 @@ function queryFeasorCli(){
 		App.formAjaxJson(serverPath + "contractPerformerManageController/saveAssistPerformerInfo", "post", JSON.stringify(data), successCallback,improperCallback);
 		function successCallback(result) {
 			var assistFeasorAddName = [];
-			var assistFeasorAddList = data.assistFeasorAddList;
-			$.each(assistFeasorAddList, function(k,v) {
+			var assistFeasorDelName = [];
+			var successMs = "保存成功";
+			$.each(data.assistFeasorAddList, function(k,v) {
 				assistFeasorAddName.push(v.performerStaffName);
 			});
-			var assistFeasorAddName = [];
-			var assistFeasorAddList = data.assistFeasorAddList;
-			$.each(assistFeasorAddList, function(k,v) {
-				assistFeasorAddName.push(v.performerStaffName);
+			$.each(data.assistFeasorDelList, function(k,v) {
+				assistFeasorDelName.push(v.performerStaffName);
 			});
-			
-			if(performerNameList){
-				successMs += "</br>系统将在合同激活后给 <span style='color:red;'>"+performerNameList+"</span> 发送合同主要履行待办！";
+			assistFeasorAddName = assistFeasorAddName.join("，");
+			assistFeasorDelName = assistFeasorDelName.join("，");
+			if(assistFeasorAddName){
+				successMs += "</br>您已给  <span style='color:red;'>"+assistFeasorAddName+"</span> 发送了合同协助履行待阅！";
 			};
-			if(assistFeasorNameList){
-				successMs += "您已给王芳发送了合同协助履行待阅！ <span style='color:red;'>"+assistFeasorNameList+"</span> 发送合同协助履行待阅！";
+			if(assistFeasorDelName){
+				successMs += "</br>您已给  <span style='color:red;'>"+assistFeasorDelName+"</span> 发送了合同失效协助履行待阅！";
 			};
 			layer.alert(successMs,{icon:1,closeBtn:0,area: '410px'},function(){
 				backPage();

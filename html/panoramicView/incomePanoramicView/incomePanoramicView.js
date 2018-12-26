@@ -13,6 +13,9 @@ function getContractBaseData(){
 		function successCallback(result) {
 			var data = result.data;
  			if(data.contractNumber){ 
+ 				createLineNumberChart();
+ 				createLineHireChart();
+ 				createIncomeChartCharts();
  				$("#contractName").val(data.contractName);
 				$("#contractNumber").val(data.contractNumber); 
 				$("#customerName").val(data.customerName); 
@@ -31,10 +34,23 @@ function getContractBaseData(){
 	}
 }
 /**************************************获取合同基本信息********************************************/
-
-
-
-
+/*
+ * 返回年月日
+ */
+function returnForamtDate(data){
+	var data = data.split("-");
+	var resultData = "";
+	$.each(data, function(k,v) {
+		if(k == 0){
+			resultData += v + "年";
+		}else if(k == 1){
+			resultData += v + "月";
+		}else if(k == 2){
+			resultData += v + "日";
+		}
+	});
+	return resultDate;
+}
 /**************************************获取图表数据生成图表********************************************/
 createLineNumberChart();
 //生成本地线路与跨域线路数量占比情况图表
@@ -44,6 +60,7 @@ function createLineNumberChart(){
 	var lineNumberChart = echarts.init(document.getElementById('lineNumberChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
+		console.log("result1",result)
 		var data = result.data;
 		var localLineNum = data.localLineNum; //本地线路数量
 		var offsiteLineNum = data.offsiteLineNum; //跨域线路数量
@@ -74,6 +91,7 @@ function createLineHireChart(){
 	var lineHireChart = echarts.init(document.getElementById('lineHireChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
+		console.log("result2",result)
 		var data = result.data;
 		var isLineHireNum = data.isLineHireNum; //租用中线路数量
 		var notLineHireNum = data.notLineHireNum; //已止租线路数量
@@ -104,6 +122,7 @@ function createIncomeChartCharts(){
 	var incomeChart = echarts.init(document.getElementById('incomeChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
+		console.log("result3",result)
 		var data = result.data;
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum;
 		var noInvoiceNnovateSum = data.noInvoiceNnovateSum;
@@ -122,7 +141,8 @@ function createIncomeChartCharts(){
 				}
 			];
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",invoiceChartsFixedData);
-			$("#incomeChartValue").text(parseFloat(noInvoiceNnovatePercent*100) + "%")
+			$("#incomeChartValue").text(parseFloat(noInvoiceNnovatePercent*100) + "%");
+			$("#incomeOverviewNote").text("*以上统计数据截至"+data.currentDate);
 		}else{
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",[{value: 0,name: '实收金额：0元'},{value: 1,name: '欠费金额：0元'}],true);
 			$("#incomeChartValue").text("0%")

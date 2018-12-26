@@ -98,9 +98,35 @@ function saveBtnClick(){
  */
 function queryFeasorCli(){
 	var data = getValue_assistFeasor("changeAssist");
-	console.log(data);
-	var assistFeasorNameList = getValue_assistFeasorNameList(true);
-	console.log(assistFeasorNameList);
+	if(data){
+		data.wcardId = wcardId;
+		App.formAjaxJson(serverPath + "contractPerformerManageController/saveAssistPerformerInfo", "post", JSON.stringify(data), successCallback,improperCallback);
+		function successCallback(result) {
+			var assistFeasorAddName = [];
+			var assistFeasorAddList = data.assistFeasorAddList;
+			$.each(assistFeasorAddList, function(k,v) {
+				assistFeasorAddName.push(v.performerStaffName);
+			});
+			var assistFeasorAddName = [];
+			var assistFeasorAddList = data.assistFeasorAddList;
+			$.each(assistFeasorAddList, function(k,v) {
+				assistFeasorAddName.push(v.performerStaffName);
+			});
+			
+			if(performerNameList){
+				successMs += "</br>系统将在合同激活后给 <span style='color:red;'>"+performerNameList+"</span> 发送合同主要履行待办！";
+			};
+			if(assistFeasorNameList){
+				successMs += "您已给王芳发送了合同协助履行待阅！ <span style='color:red;'>"+assistFeasorNameList+"</span> 发送合同协助履行待阅！";
+			};
+			layer.alert(successMs,{icon:1,closeBtn:0,area: '410px'},function(){
+				backPage();
+			});
+		}
+		function improperCallback(result){
+			layer.alert(result.message,{icon:2});
+		}
+	}
 }
 /*
  * 推动工作流打开填写意见选择环人员页面

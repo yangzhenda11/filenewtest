@@ -13,7 +13,7 @@
 				由主要履行人添加协助履行人
 			</label>
 			<label class="ui-checkbox hidden" style="margin-bottom: 14px;" id="performerFlag2Dom">
-				<input type="checkbox" value="1" name="performerFlag2" id="performerFlag2">
+				<input type="checkbox" value="1" name="addHelpPerformer" id="addHelpPerformer">
 				<span></span>
 				无需添加协助履行人
 			</label>
@@ -94,19 +94,19 @@
 		if(isSubmit == "changeAssist"){
 			if(parm.taskDefinitionKey == "GGLXR"){
 				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0){
-					layer.msg("请增加或删除协助履行人")
+					layer.msg("请增加或删除协助履行人");
 					return false;
 				}else{
-					_assistFeasor.performerFlag2 = null;
+					_assistFeasor.addHelpPerformer = null;
 					return _assistFeasor;
 				}
 			}else if(parm.taskDefinitionKey == ""){
-				var performerFlag2 = $("#performerFlag2:checked").val() == 1 ? 1 : 0;
-				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0 && performerFlag2 == 0){
-					layer.msg("请增加或删除协助履行人或勾选无需添加协助履行人")
+				var addHelpPerformer = $("#addHelpPerformer:checked").val() == 1 ? 1 : 0;
+				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0 && addHelpPerformer == 0){
+					layer.msg("请增加或删除协助履行人或勾选无需添加协助履行人");
 					return false;
 				}else{
-					_assistFeasor.performerFlag2 = performerFlag2;
+					_assistFeasor.addHelpPerformer = addHelpPerformer;
 					return _assistFeasor;
 				}
 			}
@@ -125,7 +125,7 @@
 	/*
 	 * 返回新增协助履行人名称
 	 */
-	function getValue_assistFeasorNameList(isExite){
+	function getValue_assistFeasorNameList(){
 		var assistFeasorNameDataList = [];
 		//获取表格内所有的有效数据
 		$.each($("#assistFeasorTbody tr"),function(k,v){
@@ -134,14 +134,7 @@
 				var addIsValid = $(v).children().eq(5).text();
 				if(isValid == 1 && addIsValid == ""){
 					var performerStaffName = $(v).children().eq(2).text();
-					if(isExite){
-						var stafforgid = Number($(v).data("stafforgid"));
-						if(assistFeasorDataObj.assistFeasorIdList.indexOf(stafforgid) == -1){
-							assistFeasorNameDataList.push(performerStaffName);
-						}
-					}else{
-						assistFeasorNameDataList.push(performerStaffName);
-					}
+					assistFeasorNameDataList.push(performerStaffName);
 				}
 			}
 		});

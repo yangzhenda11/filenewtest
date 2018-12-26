@@ -53,7 +53,7 @@ function getTableToread(){
 		        	var buttontitle = null;
 		        	var readIds=row.readId;
 		        	if(curStaffOrgId == assignee){
-	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"',"+row.bussId+")";
+	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"','"+row.bussId+"')";
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";
@@ -84,7 +84,7 @@ function getTableToread(){
 //跳转待阅页面
 function  findDetail(readId,url,bussId) {
 	App.setCache("searchForm");
-	App.changePresentUrl(url+"&bussid="+bussId+"&readid="+readId);
+	App.changePresentUrl(url+"&bussid="+bussId);
 	changeReadStatus(readId);
 }
 /*
@@ -146,7 +146,7 @@ function getSearchParm(){
 		readTitle : $("#readTitle").val().trim(),
 		sendDateBegin : $("#send_date_begin").val(),
 		sendDateEnd : $("#send_date_end").val(),
-		bussId : $("#bussId").val().trim()
+		contractNumber : $("#contractNumber").val().trim()
 	};
 	return searchData;
 }

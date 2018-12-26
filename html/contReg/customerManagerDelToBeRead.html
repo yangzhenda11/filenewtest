@@ -20,6 +20,19 @@
 		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+		<style type="text/css">
+			#readTable{
+				width: 50%;
+			}
+			#readTable td{
+				padding: 6px 10px;
+			}
+			#readTable td:first-child{
+				width: 120px;
+				background: #eee;
+				text-align: right;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="page-content">
@@ -28,43 +41,32 @@
 					<div class="form-fieldset-title">
 						<span>客户经理权限取消</span>
 					</div>
-					<form class="form-horizontal" id="orgShow">
-						<div id="toolbarBtnContent">
-							<div id="toolbarButton">
-								<button class="btn blue closeBtn" type="button" onclick="backPage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
-							</div>
+					<div id="toolbarBtnContent">
+						<div id="toolbarButton">
+							<button class="btn blue closeBtn" type="button" onclick="returnHomePage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
 						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<span class="input-group-addon" for="title" style="padding-left: 38px">主题：</span>
-								<div class="form-control-static form-control" id="title" name="title">
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<span class="input-group-addon" for="sendName" style="padding-left: 27px">发送人：</span>
-								<div class="form-control-static form-control" id="sendName" name="sendName"></div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<label for="orgCode" class="input-group-addon" style="padding-left: 16px">接收时间：</label>
-								<div class="form-control form-control-static" id="receiveTime" name="receiveTime"></div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<label for="orgType" class="input-group-addon" style="padding-left: 16px">消息内容：</label>
-								<div class="form-control form-control-static" id="content" name="content"></div>
-							</div>
-						</div>
-					</form>
+					</div>
+					<table class="readTable">
+						<tr>
+							<td>主题：</td>
+							<td id="title"></td>
+						</tr>
+						<tr>
+							<td>发送人：</td>
+							<td id="sendName"></td>
+						</tr>
+						<tr>
+							<td>接收时间：</td>
+							<td id="receiveTime"></td>
+						</tr>
+						<tr>
+							<td>消息内容：</td>
+							<td id="content"></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
-		<!--模态框-->
-		<div class="modal fade" id="commomModal" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--[if lt IE 9]>
 			<script src="../../../static/plugins/html5shiv.min.js"></script>
 			<script src="../../../static/plugins/respond.min.js"></script>
@@ -80,9 +82,6 @@
 		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
 		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<script src="../../../static/plugins/jQueryliestxz/js/list-script.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 <script type="text/javascript">
@@ -102,7 +101,7 @@ $(function(){
  	}else{
  	    // 异步获取待阅信息
  		var postData = {
- 				businessId: parm.bussid
+			businessId: parm.bussid
  		};
 		App.formAjaxJson(serverPath + 'contractOrderEditorController/getCustomerManagerToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
@@ -119,27 +118,15 @@ $(function(){
  	}
 })
 
-	
 /*
  *关闭按钮
  */
-function backPage(){
+function returnHomePage(){
 	if(parm.flag==1){
-		closeWindow();
+		top.closeWindow();
 	}else{
 		window.history.go(-1);
 	}
-}
-
-function closeWindow(){
-   if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1) {
-       window.location.href="about:blank";
-       window.close();
-   } else {
-       window.opener = null;
-       window.open("", "_self");
-       window.close();
-   }
 }
 </script>
 </html>

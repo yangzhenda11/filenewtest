@@ -539,7 +539,7 @@ function closeAlltabs(){
 function saveSysOperLog(operUrl,operPermissionName,operParameter){
 	var operParameter = operParameter == undefined ? "" : operParameter;
 	var postData = {
-		operUrl: operUrl,
+		operUrl: operUrl.split('?')[0],
 		operPermissionName: operPermissionName,
 		operParameter: operParameter
 	};

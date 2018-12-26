@@ -1,4 +1,17 @@
-function initIncomeFlowCharts() {
+function initD3Charts(dataObj) {
+   	var resourceCustomer = dataObj.resourceCustomer;
+   	var resourceSign = dataObj.resourceSign;
+   	var registerActivate = dataObj.registerActivate;
+   	var businessLineRenting = dataObj.businessLineRenting;
+   	var businessStopRenting = dataObj.businessStopRenting;
+   	var ticketReceivables = dataObj.ticketReceivables;
+   	var riskWarning = dataObj.riskWarning;
+   	var contractCloseConclude = dataObj.contractCloseConclude;
+   	var bussStopRent_ticket = 2;
+   	if(businessStopRenting == 3 || ticketReceivables == 3){
+   		bussStopRent_ticket = 3;
+   	};
+   	
 	var areaData = [{
 		"bgColor": "#FFFFCC",
 		"title": "前置资源管理",
@@ -7,12 +20,16 @@ function initIncomeFlowCharts() {
 			"cy": 0.45,
 			"text": "客户",
 			"textPos": "top",
-			"style": "dot1"
+			"id": "resourceCustomer",
+			"status": resourceCustomer,
+			"style": "dot" + resourceCustomer
 		}, {
 			"cy": 0.65,
 			"text": "合同签订",
 			"textPos": "bottom",
-			"style": "dot1"
+			"id": "resourceSign",
+			"status": resourceSign,
+			"style": "dot" + resourceSign
 		}]
 	}, {
 		"bgColor": "#92D050",
@@ -22,7 +39,9 @@ function initIncomeFlowCharts() {
 			"cy": 0.45,
 			"text": "合同激活",
 			"textPos": "top",
-			"style": "dot1"
+			"id": "registerActivate",
+			"status": registerActivate,
+			"style": "dot" + registerActivate
 		}]
 	}, {
 		"bgColor": "#FFFF66",
@@ -32,12 +51,16 @@ function initIncomeFlowCharts() {
 			"cy": 0.45,
 			"text": "线路起租",
 			"textPos": "top",
-			"style": "dot1"
+			"id": "businessLineRenting",
+			"status": businessLineRenting,
+			"style": "dot" + businessLineRenting
 		}, {
 			"cy": 0.65,
 			"text": "线路退租",
 			"textPos": "bottom",
-			"style": "dot1"
+			"id": "businessStopRenting",
+			"status": businessStopRenting,
+			"style": "dot" + businessStopRenting
 		}]
 	}, {
 		"bgColor": "#CCFF99",
@@ -47,7 +70,9 @@ function initIncomeFlowCharts() {
 			"cy": 0.45,
 			"text": "开票回款",
 			"textPos": "topLeft",
-			"style": "dot2"
+			"id": "ticketReceivables",
+			"status": ticketReceivables,
+			"style": "dot" + ticketReceivables
 		}]
 	}, {
 		"bgColor": "#F0F3F8",
@@ -57,7 +82,9 @@ function initIncomeFlowCharts() {
 			"cy": 0.45,
 			"text": "未按合同收款预警",
 			"textPos": "bottom",
-			"style": "dot2"
+			"id": "riskWarning",
+			"status": riskWarning,
+			"style": "dot" + riskWarning
 		}]
 	}, {
 		"bgColor": "#FFCC66",
@@ -67,35 +94,44 @@ function initIncomeFlowCharts() {
 			"cy": 0.45,
 			"text": "合同办结",
 			"textPos": "top",
-			"style": "dot2"
+			"id": "contractCloseConclude",
+			"status": contractCloseConclude,
+			"style": "dot" + contractCloseConclude
 		}]
 	}]
 
 	var lineData = [{
 		"dot1": [0, 0],
 		"dot2": [0, 1],
-		"color": "#C10000",
+		"color": returnBaseType(resourceSign,1),
 		"width": "4",
 		"style": "solid",
 		"text": "客户-合同签订"
-	}, {
+	},{
 		"dot1": [1, 0],
-		"dot2": [3, 0],
-		"color": "#C10000",
+		"dot2": [2, 0],
+		"color": returnBaseType(businessLineRenting,1),
 		"width": "4",
 		"style": "solid",
-		"text": "合同激活-开票回款"
-	}, {
+		"text": "合同激活-线路起租"
+	},{
 		"dot1": [2, 0],
 		"dot2": [2, 1],
-		"color": "#C10000",
+		"color": returnBaseType(businessStopRenting,1),
 		"width": "4",
 		"style": "solid",
 		"text": "线路起租-线路退租"
-	}, {
+	},{
+		"dot1": [2, 0],
+		"dot2": [3, 0],
+		"color": returnBaseType(ticketReceivables,1),
+		"width": "4",
+		"style": "solid",
+		"text": "线路起租-开票回款"
+	},{
 		"dot1": [3, 0],
 		"dot2": [4, 0],
-		"color": "#7F7F7F",
+		"color": returnBaseType(riskWarning,1),
 		"width": "4",
 		"style": "solid",
 		"text": "开票回款-未按合同收款预警"
@@ -118,7 +154,7 @@ function initIncomeFlowCharts() {
 			px: 0,
 			py: 0
 		}],
-		"color": "#C10000",
+		"color": returnBaseType(registerActivate,1),
 		"width": "4",
 		"style": "solid",
 		"text": "合同签订-合同激活"
@@ -129,17 +165,17 @@ function initIncomeFlowCharts() {
 			py: 0
 		}, {
 			dot: [2, 1],
-			px: 0.95,
+			px: 0.5,
 			py: 0
 		}, {
 			dot: [2, 0],
-			px: 0.95,
+			px: 0.5,
 			py: 0
 		}],
-		"color": "#C10000",
+		"color": returnBaseType(bussStopRent_ticket,1),
 		"width": "4",
 		"style": "solid",
-		"text": "线路退租"
+		"text": "线路退租-开票回款"
 	}, {
 		"points": [{
 			dot: [3, 0],
@@ -158,10 +194,10 @@ function initIncomeFlowCharts() {
 			px: 0,
 			py: 0
 		}],
-		"color": "#7F7F7F",
+		"color": returnBaseType(riskWarning,1),
 		"width": "4",
 		"style": "solid",
-		"text": "开票-未按"
+		"text": "开票回款-未按合同收款预警"
 	}, {
 		"points": [{
 			dot: [3, 0],
@@ -180,52 +216,52 @@ function initIncomeFlowCharts() {
 			px: 0,
 			py: 0
 		}],
-		"color": "#7F7F7F",
+		"color": returnBaseType(contractCloseConclude,1),
 		"width": "4",
 		"style": "solid",
-		"text": "开票-办结"
+		"text": "开票回款-合同办结"
 	}];
 
 	var triangle = [{
 		point: [0, 1],
 		pos: "up",
 		dir: "bottom",
-		type: "normal"
+		type: returnBaseType(resourceSign,2)
 	}, {
 		point: [1, 0],
 		pos: "left",
 		dir: "right",
-		type: "normal"
+		type: returnBaseType(registerActivate,2)
 	}, {
 		point: [2, 0],
 		pos: "left",
 		dir: "right",
-		type: "normal"
+		type: returnBaseType(businessLineRenting,2)
 	}, {
 		point: [2, 1],
 		pos: "up",
 		dir: "bottom",
-		type: "normal"
+		type: returnBaseType(businessStopRenting,2)
 	}, {
 		point: [3, 0],
 		pos: "left",
 		dir: "right",
-		type: "normal"
+		type: returnBaseType(ticketReceivables,2)
 	}, {
 		point: [3, 0],
 		pos: "up",
 		dir: "bottom",
-		type: "small"
+		type: returnBaseType(riskWarning,2)
 	}, {
 		point: [4, 0],
 		pos: "left",
 		dir: "right",
-		type: "small"
+		type: returnBaseType(riskWarning,2)
 	}, {
 		point: [5, 0],
 		pos: "bottom",
 		dir: "up",
-		type: "small"
+		type: returnBaseType(contractCloseConclude,2)
 	}]
 	var flowData = {
 		areaData: areaData,

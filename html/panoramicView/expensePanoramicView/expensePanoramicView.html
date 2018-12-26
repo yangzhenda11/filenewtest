@@ -22,7 +22,7 @@
 	</head>
 
 	<body>
-		<div class="page-content page-content-worktable">
+		<div class="page-content page-content-worktable" id="page-content">
 			<div class="form-fieldset">
 				<div class="form-fieldset-title">
 					<div class="fieldset-title">
@@ -38,7 +38,7 @@
 							<button type="button" class="btn red" onclick="getContractBaseData();"><i class="iconfont icon-search"></i>确定</button>
 						</div>
 					</div>
-					<div class="row" id="contractBaseData">
+					<div class="row" id="contractBaseData" style="display: none;">
 						<div class="col-sm-6">
 							<div class="input-group">
 								<span class="input-group-addon searchLableText">合同名称</span>
@@ -70,19 +70,19 @@
 									<div class="ui-radio-list ui-radio-inline">
 										<label class="ui-radio">
 											是
-											<input type="radio" value="1" name="isFixed">
+											<input type="radio" value="1" name="isFixed" disabled="disabled">
 											<span></span>
 										</label>
 										<label class="ui-radio">
 											否
-											<input type="radio" value="0" checked="checked" name="isFixed" >
+											<input type="radio" value="2" name="isFixed" disabled="disabled">
 											<span></span>
 										</label>
 				                	</div>
 								</span>
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-6" id="contractValueDom" style="display: none;">
 							<div class="input-group">
 								<span class="input-group-addon searchLableText">含增值税合同金额</span>
 								<input type="text" id="contractValue" name="contractValue" class="form-control" readonly="readonly">
@@ -90,7 +90,7 @@
 						</div>
 					</div>
 					<div id="expenseFlowChart"></div>
-					<div class="echartsDom" id="expenseCharts">
+					<div class="echartsDom" id="expenseCharts" style="display: none;">
 						<div class="echartsItem">
 							<div class="chartsContent" id="orderChart"></div>
 							<div class="chartsValue" id="orderChartValue"></div>

@@ -1,6 +1,6 @@
 function initD3Charts(dataObj) {
    	var resourceProject = dataObj.resourceProject;
-   	var resourceAign = dataObj.resourceAign;
+   	var resourceSign = dataObj.resourceSign;
    	var resourcePurchase = dataObj.resourcePurchase;
    	var registerActivate = dataObj.registerActivate;
    	var businessOrderRelease = dataObj.businessOrderRelease;
@@ -36,9 +36,9 @@ function initD3Charts(dataObj) {
 			"cy": 0.75,
 			"text": "合同签订",
 			"textPos": "left",
-			"id": "resourceAign",
-			"status": resourceAign,
-			"style": "dot" + resourceAign
+			"id": "resourceSign",
+			"status": resourceSign,
+			"style": "dot" + resourceSign
 		},]
 	}, {
 		"bgColor": "#92D050",
@@ -159,7 +159,7 @@ function initD3Charts(dataObj) {
 	},{
 		"dot1": [0, 1],
 		"dot2": [0, 2],
-		"color": returnBaseType(resourceAign,1),
+		"color": returnBaseType(resourceSign,1),
 		"width": "4",
 		"style": "solid",
 		"text": "采购结果-合同签订"
@@ -322,7 +322,7 @@ function initD3Charts(dataObj) {
 		point: [0, 2],
 		pos: "up",
 		dir: "bottom",
-		type: returnBaseType(resourceAign,2)
+		type: returnBaseType(resourceSign,2)
 	},{
 		point: [1, 0],
 		pos: "bottom",

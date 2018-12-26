@@ -409,8 +409,7 @@
 					var url = serverPath + "contractOrderEditorController/getServerDate";
 	        		App.formAjaxJson(url, "post", {}, successCallback);
 					function successCallback(result) {
-						var data = result.data;
-						var date = new Date(data);
+						var date = result.data;
 						var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'" data-createdBy="'+config.curStaffOrgId+'">'+
 						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 						'<td class="orderNumber"></td>'+

@@ -1,6 +1,21 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+$(function(){
+	var defaultData =  {
+        "resourceCustomer": "3",
+        "resourceSign": "3",
+        "registerActivate": "3",
+        "businessLineRenting": "3",
+        "businessStopRenting": "3",
+        "ticketReceivables": "3",
+        "riskWarning": "3",
+        "contractCloseConclude": "3"
+   	};
+   	initIncomeFlowCharts(defaultData);
+})
+
+
 /**************************************获取合同基本信息********************************************/
 function getContractBaseData(){ 
 	var contractNumber = $("#searchContractNumber").val().trim();
@@ -9,14 +24,12 @@ function getContractBaseData(){
 		var postData = {
 				contractNumber: contractNumber
 		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			console.log(result);
 			var data = result.data;
- 			if(data.contractNumber){ 
- 				createLineNumberChart();
- 				createLineHireChart();
- 				createIncomeChartCharts();
+ 			if(data.contractNumber){
+ 				$("#contractBaseData,#incomeCharts").show();
  				$("#contractName").val(data.contractName);
 				$("#contractNumber").val(data.contractNumber); 
 				$("#customerName").val(data.customerName); 
@@ -24,11 +37,18 @@ function getContractBaseData(){
 					$("#customerCode").val(data.customerCode); 
 				}else if(data.partnerCode){
 					$("#customerCode").val(data.partnerCode); 
-				}
-				
+				};
+				createLineNumberChart(contractNumber);
+				createLineHireChart(contractNumber);
+				createIncomeChartCharts(contractNumber);
+				getIncomeFlowChartsData(contractNumber);
 			}else{
-				layer.alert("暂无数据",{icon:2});
+				layer.alert("您输入的合同编号有误，请重新输入。",{icon:2});
 			}
+		}
+		function improperCallback(result){
+			var ms = result.message;
+			layer.alert(ms,{icon:2});
 		}
 	}else{
 		layer.alert("请输入合同编号。",{icon:2});
@@ -53,15 +73,12 @@ function returnForamtDate(data){
 	return resultDate;
 }
 /**************************************获取图表数据生成图表********************************************/
-createLineNumberChart();
 //生成本地线路与跨域线路数量占比情况图表
-function createLineNumberChart(){
-	var contractNumber = $("#searchContractNumber").val();
+function createLineNumberChart(contractNumber){
 	var url = serverPath + "analysisZx/localAndOffSite?contractNumber="+contractNumber;
 	var lineNumberChart = echarts.init(document.getElementById('lineNumberChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
-		console.log("result1",result)
 		var data = result.data;
 		var localLineNum = data.localLineNum; //本地线路数量
 		var offsiteLineNum = data.offsiteLineNum; //跨域线路数量
@@ -84,15 +101,12 @@ function createLineNumberChart(){
 		lineNumberChart.setOption(lineNumberChartOption);
 	}
 }
-createLineHireChart();
 //生成租用中线路与已止租线路数量占比情况图表
-function createLineHireChart(){
-	var contractNumber = $("#searchContractNumber").val();
+function createLineHireChart(contractNumber){
 	var url = serverPath + "analysisZx/isLineAndNotLine?contractNumber="+contractNumber;
 	var lineHireChart = echarts.init(document.getElementById('lineHireChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
-		console.log("result2",result)
 		var data = result.data;
 		var isLineHireNum = data.isLineHireNum; //租用中线路数量
 		var notLineHireNum = data.notLineHireNum; //已止租线路数量
@@ -115,15 +129,12 @@ function createLineHireChart(){
 		lineHireChart.setOption(lineHireChartOption);
 	}
 }
-createIncomeChartCharts();
 //生成本年度已出账收入情况图表
-function createIncomeChartCharts(){
-	var contractNumber = $("#searchContractNumber").val();
+function createIncomeChartCharts(contractNumber){
 	var url = serverPath + "analysisZx/collectedAndArrears?contractNumber="+contractNumber;
 	var incomeChart = echarts.init(document.getElementById('incomeChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
-		console.log("result3",result)
 		var data = result.data;
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum;
 		var noInvoiceNnovateSum = data.noInvoiceNnovateSum;
@@ -364,31 +375,30 @@ function circleChartsOption(title,data,isEmpty){
 };
 /************************************************图表生成配置项*******************************************************/
 
-$(function(){
-	/**************************************地铁图配置********************************************/
+/**************************************地铁图配置********************************************/
+function getIncomeFlowChartsData(contractNumber){
+	var url = serverPath + "contractSubwayZxManger/listContractSubwayZxDetailByContractNumber";
+	var postData = {
+		contractNumber: contractNumber
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		initIncomeFlowCharts(data.contractSubwayZx);
+		initIncomeFlowChartsTips(data);
+	}
+}
+function initIncomeFlowCharts(data){
+	$('#incomeFlowChart').html('');
 	var tw = $('#incomeFlowChart').width();
 	var th = $('#incomeFlowChart').height();
-	var flowData = initIncomeFlowCharts();
-	console.log(flowData);
+	var baseData = initD3Charts(data);
 	$('#incomeFlowChart').D3Charts({
 		width:tw,
 		height:th,
-		areaData: flowData.areaData,
-		lineData: flowData.lineData,
-		polyline: flowData.polyline,
-		triangle: flowData.triangle
+		baseData: baseData
 	})
-	$("circle").hover(function(){
-		if($(this).data("id") == "kehu"){
-			var html = "<input type='checkbox' disabled='disabled' ><span style='color:#000'>测试</span>"
-			layer.tips(html, $(this), {
-			  tips: [3, '#fff'],
-			  time: 0
-			});
-		}
-	},function(){
-		layer.closeAll('tips');
-	})
+	
 	$(window).resize(function(){
 		$('#incomeFlowChart').html('');
 		var tw = $('#incomeFlowChart').width();
@@ -396,11 +406,92 @@ $(function(){
 		$('#incomeFlowChart').D3Charts({
 			width:tw,
 			height:th,
-			areaData: flowData.areaData,
-			lineData: flowData.lineData,
-			polyline: flowData.polyline,
-			triangle: flowData.triangle
+			baseData: baseData
 		})
 	})
-	/**************************************地铁图配置********************************************/
-})
+}
+var rentingDataTips = '',stopRentingDataTips = '',invoiceRefundDataTips = '',riskWarningDataTips = '';
+function initIncomeFlowChartsTips(data){
+	var rentingData = data.rentingData;
+	var stopRentingData = data.stopRentingData;
+	var invoiceRefundData = data.invoiceRefundData;
+	var riskWarningData = data.riskWarningData;
+	if(rentingData){
+		rentingDataTips = "<table><tr><td>租用中线路数量</td>"+
+							"<td>"+rentingData.rentingNum+" 条</td></tr>"+
+							"<tr><td>跨域电路数量</td>"+
+							"<td>"+rentingData.rentingCrossNum+" 条</td></tr>"+
+							"<tr><td>本地电路数量</td>"+
+							"<td>"+rentingData.rentingLocalNum+" 条</td></tr></table>";
+	}else{
+		rentingDataTips = "暂无数据";
+	};
+	if(stopRentingData){
+		stopRentingDataTips = "<table><tr><td>已止租线路数量</td>"+
+							"<td>"+stopRentingData.stopRentingNum+" 条</td></tr>"+
+							"<tr><td>跨域电路数量</td>"+
+							"<td>"+stopRentingData.stopRentingLocaNnum+" 条</td></tr>"+
+							"<tr><td>本地电路数量</td>"+
+							"<td>"+stopRentingData.stopRentingCrossNum+" 条</td></tr></table>";
+	}else{
+		stopRentingDataTips = "暂无数据";
+	};
+	if(invoiceRefundData){
+		invoiceRefundDataTips = "<table><tr><td>上月应收金额</td>"+
+							"<td>"+App.unctionToThousands(invoiceRefundData.lastmonthReceivableAmount)+" 元</td></tr>"+
+							"<tr><td>上月实收金额</td>"+
+							"<td>"+App.unctionToThousands(invoiceRefundData.lastmonthCollectedAmount)+" 元</td></tr>"+
+							"<tr><td>上月欠费金额</td>"+
+							"<td>"+App.unctionToThousands(invoiceRefundData.lastmonthArrearsAmount)+" 元</td></tr></table>"+
+							"<div class = 'tipsBottomCon'>* 月初时数据可能出现延迟</div>";
+	}else{
+		invoiceRefundDataTips = "暂无数据";
+	};
+	if(riskWarningData){
+		riskWarningDataTips = "<div class='tipsTopCon'>本合同存在以下类型风险：</div>"+
+							"<div class='tipsContent'><input type='checkbox' "+returnChecked(riskWarningData.rentingArrears)+" />线路租用中欠费</div>"+
+							"<div class='tipsContent'><input type='checkbox' "+returnChecked(riskWarningData.rentingNobill)+" />线路租用中，无账单</div>"+
+							"<div class='tipsContent'><input type='checkBox' "+returnChecked(riskWarningData.rentingNewbill)+" />线路已止租，有新账单</div>"+
+							"<div class='tipsContent'><input type='checkBox' "+returnChecked(riskWarningData.expireUnstopRenting)+" />合同已到期，存在未止租线路</div>"+
+							"<div class='tipsContent'><input type='checkBox' "+returnChecked(riskWarningData.expireNewRenting)+" />合同已到期，存在新起租线路</div>"+
+							"<div class='tipsContent'><input type='checkBox' "+returnChecked(riskWarningData.customerInfoDiff)+" />客户信息不一致</div>";
+	}else{
+		riskWarningDataTips = "暂无数据";
+	};
+	function returnChecked(data){
+		if(data == 1){
+			return "checked='checked'";
+		}else{
+			return '';
+		}
+	}
+};
+var hoverIdList = ["businessLineRenting","businessStopRenting","ticketReceivables","riskWarning"];
+$("#incomeFlowChart").on('mouseenter',"circle",function(e){
+    if($(this).data("status") == 2){
+    	var id = $(this).attr("id");
+    	if(hoverIdList.indexOf(id) != -1){
+    		var topValue = $(this).offset().top + 24;
+			var leftValue = $(this).offset().left - 36;
+			var tipsHtml = "暂无数据";
+    		if(id == "businessLineRenting"){
+    			tipsHtml = rentingDataTips;
+    		}else if(id == "businessStopRenting"){
+    			tipsHtml = stopRentingDataTips;
+    		}else if(id == "ticketReceivables"){
+    			tipsHtml = invoiceRefundDataTips;
+    		}else if(id == "riskWarning"){
+    			tipsHtml = riskWarningDataTips;
+    		};
+	    	var html = '<div id="vtip"><img id="vtipArrow" src="/static/img/vtip_arrow.png" />' + tipsHtml + '</div>';
+	        $('body').append(html);
+	        $('div#vtip').css("top", topValue+"px").css("left", leftValue+"px").fadeIn("slow");
+		}
+    }
+});
+$("#incomeFlowChart").on('mouseout',"circle",function(e){
+	if($("div#vtip")[0]){
+		$("div#vtip").fadeOut("slow").remove();
+	};
+});
+/**************************************地铁图配置********************************************/

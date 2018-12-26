@@ -164,7 +164,7 @@
 	 */
 	function changeExpiryDate() {
 		var expiryDate = $("#expiryDate").val();
-		var effevtNowDate = new Date();
+		var effevtNowDate = new Date().getTime();
 		effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 		if(App.checkDate(expiryDate, effevtNowDate)) {
 			layer.msg("终止日期不能早于当前日期");
@@ -272,7 +272,7 @@
 		var effectiveDate = $("#effectiveDate").val();
 		var expiryDate = $("#expiryDate").val();
 		if(editIdentify.isCanUpdateExpiryDate) {
-			var effevtNowDate = new Date();
+			var effevtNowDate = new Date().getTime();
 			effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 			if(App.checkDate(expiryDate, effevtNowDate)) {
 				$(dom).val("");

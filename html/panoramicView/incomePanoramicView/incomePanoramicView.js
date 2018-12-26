@@ -11,6 +11,7 @@ function getContractBaseData(){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
+			console.log(result);
 			var data = result.data;
  			if(data.contractNumber){ 
  				createLineNumberChart();
@@ -98,10 +99,10 @@ function createLineHireChart(){
 		if(isLineHireNum || notLineHireNum){
 			var lineHireChartOption = returnChartsOption('租用中线路与已止租线路数量占比情况', [{
 				value: isLineHireNum,
-				name: '本地线路：'+isLineHireNum+'条'
+				name: '租用中线路：'+isLineHireNum+'条'
 			}, {
 				value: notLineHireNum,
-				name: '跨域线路：'+notLineHireNum+'条'
+				name: '已止租线路：'+notLineHireNum+'条'
 			}]);
 		}else{
 			var lineHireChartOption = returnEmptyChartsOption('租用中线路与已止租线路数量占比情况', ['租用中线路：0条', '已止租线路：0条']);

@@ -54,10 +54,23 @@ function getContractBaseData(){
 	}
 }
 /**************************************获取合同基本信息********************************************/
-
-
-
-
+/*
+ * 返回年月日
+ */
+function returnForamtDate(data){
+	var data = data.split("-");
+	var resultData = "";
+	$.each(data, function(k,v) {
+		if(k == 0){
+			resultData += v + "年";
+		}else if(k == 1){
+			resultData += v + "月";
+		}else if(k == 2){
+			resultData += v + "日";
+		}
+	});
+	return resultDate;
+}
 /**************************************获取图表数据生成图表********************************************/
 //生成本地线路与跨域线路数量占比情况图表
 function createLineNumberChart(contractNumber){
@@ -139,7 +152,8 @@ function createIncomeChartCharts(contractNumber){
 				}
 			];
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",invoiceChartsFixedData);
-			$("#incomeChartValue").text(parseFloat(noInvoiceNnovatePercent*100) + "%")
+			$("#incomeChartValue").text(parseFloat(noInvoiceNnovatePercent*100) + "%");
+			$("#incomeOverviewNote").text("*以上统计数据截至"+data.currentDate);
 		}else{
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",[{value: 0,name: '实收金额：0元'},{value: 1,name: '欠费金额：0元'}],true);
 			$("#incomeChartValue").text("0%")

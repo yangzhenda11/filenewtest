@@ -394,21 +394,20 @@
 			if($("#customerManagerTbody .emptyTr")[0] != undefined){
 				$("#customerManagerTbody .emptyTr").remove();
 			};
-			$.each($("#customerManagerChecked .checkedStaffItem"), function(k,v) {
-				var stafforgid = $(v).data("stafforgid");
-				var name = $(v).text();
-				var isExist = false;
-				$.each($("#customerManagerTbody tr"),function(m,n){
-					if(stafforgid == $(n).data("stafforgid")){
-						isExist = true;
-					}
-				})
-				if(!isExist){
-					var url = serverPath + "contractOrderEditorController/getServerDate";
-	        		App.formAjaxJson(url, "post", {}, successCallback);
-					function successCallback(result) {
-						var data = result.data;
-						var date = new Date(data);
+			var url = serverPath + "contractOrderEditorController/getServerDate";
+    		App.formAjaxJson(url, "post", {}, successCallback);
+			function successCallback(result) {
+				var date = result.data;
+				$.each($("#customerManagerChecked .checkedStaffItem"), function(k,v) {
+					var stafforgid = $(v).data("stafforgid");
+					var name = $(v).text();
+					var isExist = false;
+					$.each($("#customerManagerTbody tr"),function(m,n){
+						if(stafforgid == $(n).data("stafforgid")){
+							isExist = true;
+						}
+					})
+					if(!isExist){	
 						var html = '<tr data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'" data-createdBy="'+config.curStaffOrgId+'">'+
 						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="customerManagerCheck"><span></span></label></td>'+
 						'<td class="orderNumber"></td>'+
@@ -418,13 +417,12 @@
 						'<td>'+config.curStaffName+'</td>'+
 						'<td>'+config.curOrgName+'</td>'+
 						'</td></tr>';
-						
 						$("#customerManagerTbody").append(html);
 						addCustomerManagerTbodySort();
 						App.checkAllFn("#customerManagerCheckAll","customerManagerCheck");
-	    			};
-				}
-			});
+					}
+				})
+			};
 		}
 	}
 	/*

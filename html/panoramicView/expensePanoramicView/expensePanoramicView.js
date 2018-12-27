@@ -107,9 +107,9 @@ function createInvoiceChart(){
 	var contractNumber = $("#searchContractNumber").val();
 	var isFixed = $('input[isFixed="sex"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/invoiceChartFixedAmountOption?contractNumber="+contractNumber;
+		var url = serverPath + "analysisPayController/FixedAmountOption?contractNumber="+contractNumber;
 	}else if(isFixed==2){
-		var url = serverPath +"analysisPayController/orderChartFrameworkOption?contractNumber="+contractNumber;
+		var url = serverPath +"analysisPayController/FrameworkOption?contractNumber="+contractNumber;
 	}
 	
 
@@ -147,9 +147,9 @@ function createPaymentChart(){
 	var contractNumber = $("#searchContractNumber").val();
 	var isFixed = $('input[isFixed="sex"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/paymentChartFixedAmountOption?contractNumber="+contractNumber;
+		var url = serverPath + "analysisPayController/FixedAmountOption?contractNumber="+contractNumber;
 	}else if(isFixed==2){
-		var url = serverPath +"analysisPayController/paymentChartFrameworkOption?contractNumber="+contractNumber;
+		var url = serverPath +"analysisPayController/FrameworkOption?contractNumber="+contractNumber;
 	}
 	var paymentChart = echarts.init(document.getElementById('paymentChart'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);

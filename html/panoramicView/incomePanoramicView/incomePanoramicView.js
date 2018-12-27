@@ -75,9 +75,12 @@ function returnForamtDate(data){
 /**************************************获取图表数据生成图表********************************************/
 //生成本地线路与跨域线路数量占比情况图表
 function createLineNumberChart(contractNumber){
-	var url = serverPath + "analysisZx/localAndOffSite?contractNumber="+contractNumber;
+	var url = serverPath + "analysisZx/localAndOffSite";
 	var lineNumberChart = echarts.init(document.getElementById('lineNumberChart'));
-	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	var postData = {
+		contractNumber:contractNumber
+	}
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		var localLineNum = data.localLineNum; //本地线路数量
@@ -105,7 +108,10 @@ function createLineNumberChart(contractNumber){
 function createLineHireChart(contractNumber){
 	var url = serverPath + "analysisZx/isLineAndNotLine?contractNumber="+contractNumber;
 	var lineHireChart = echarts.init(document.getElementById('lineHireChart'));
-	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	var postData = {
+		contractNumber:contractNumber
+	}
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		var isLineHireNum = data.isLineHireNum; //租用中线路数量
@@ -133,7 +139,10 @@ function createLineHireChart(contractNumber){
 function createIncomeChartCharts(contractNumber){
 	var url = serverPath + "analysisZx/collectedAndArrears?contractNumber="+contractNumber;
 	var incomeChart = echarts.init(document.getElementById('incomeChart'));
-	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	var postData = {
+		contractNumber:contractNumber
+	}
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum;

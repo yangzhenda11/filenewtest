@@ -42,7 +42,7 @@
  * 工单编辑
  */
 #toolbarBtn {
-  height: 130px;
+  height: 135px;
 }
 #toolbarBtn .wcardTypeTitle,
 #toolbarBtn .wcardTypeContent {
@@ -66,15 +66,8 @@
 #toolbarBtn button i {
   display: inline-block;
 }
-.blue {
-  background: #f3f3f3;
-  border: 1px solid #ddd;
-}
-.blue:hover {
-  background: #eee;
-}
-.blue:active {
-  background: #eee;
+#toolbarButton {
+  margin-top: 3px;
 }
 #wcardTypeMenuContent button {
   margin: 0 4px 0 3px;

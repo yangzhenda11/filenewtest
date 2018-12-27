@@ -14,7 +14,7 @@ function flowStart(){
 		return;
 	}
 	var ajaxObj = {
-		    "url":  "/payInfoSrv/saveAllInfo",
+		    "url":  "/payInfoSrv/saveTIOrderHeadInfo",
 		    "type": "post",
 		    "data":{"provinceCode":provincecode,
 					    	"contractnumber":contractnumber,

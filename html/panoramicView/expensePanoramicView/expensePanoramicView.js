@@ -1,16 +1,35 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+$(function(){
+	var defaultData =  {
+        "resourceProject": "3",
+        "resourceSign": "3",
+        "resourcePurchase": "3",
+        "registerActivate": "3",
+        "businessOrderRelease": "3",
+        "businessOrderArrival": "3",
+        "businessOrderReceive": "3",
+        "supplierOrderConfirm": "3",
+        "supplierOrderDeliver": "3",
+        "supplierTicket": "3",
+        "invicePaymentVerification": "3",
+        "invicePaymentPayment": "3",
+        "riskWarning": "3",
+        "contractCloseConclude": "3"
+   	};
+   	initExpenseFlowCharts(defaultData);
+})
+
 /**************************************获取合同基本信息********************************************/
 function getContractBaseData(){
-	debugger;
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
 		var url = serverPath + "tPContractSubwayPay/listByContractNumber";
 		var postData = {
-				contractNumber: contractNumber
+			contractNumber: contractNumber
 		};
-		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			var data = result.data;
  			if(data.contractNumber){ 
@@ -18,19 +37,27 @@ function getContractBaseData(){
 				$("#contractNumberSel").val(data.contractNumber); 
 				$("#partnerName").val(data.partnerName); 
 				$("#partnerCode").val(data.partnerCode); 
-				$("#isFixed").val(data.isFixed); 
-				//下面在这个radio按钮不会赋值，振达兄改的时候，帮忙看一下，thank you~~~
-				if("1"==data.isFixed){
-					$("#contractValue").val(data.contractValue); 
-				}
-				if("2"==data.isFixed){
-					$("#contractValue").hide();
-				}
+				if(data.isFixed == '1'){
+					$("#contractValueDom").show();
+					$("#contractValue").val(App.unctionToThousands(data.contractValue));
+					$("input[name='isFixed'][value='1']").attr("checked","checked");
+				}else if("2"==data.isFixed){
+					$("#contractValueDom").hide();
+					$("input[name='isFixed'][value='2']").attr("checked","checked");
+				};
+				$("#contractBaseData,#expenseCharts").show();
+				createOrderChart();
+				createInvoiceChart();
+				createPaymentChart();
+				getIncomeFlowChartsData(contractNumber);
 			}else{
-				layer.alert("暂无数据",{icon:2});
+				layer.alert("您输入的合同编号有误，请重新输入。",{icon:2});
 			}
 		}
-	
+		function improperCallback(result){
+			var ms = result.message;
+			layer.alert(ms,{icon:2});
+		}
 		
 	}else{
 		layer.alert("请输入合同编号。",{icon:2});
@@ -42,7 +69,6 @@ function getContractBaseData(){
 
 
 /**************************************获取图表数据生成图表********************************************/
-createOrderChart();
 //生成订单接收图表
 function createOrderChart(){
 	var contractNumber = $("#searchContractNumber").val();
@@ -76,7 +102,6 @@ function createOrderChart(){
 		orderChart.setOption(orderChartOption);
 	}
 }
-createInvoiceChart();
 //生成合同发票图表
 function createInvoiceChart(){
 	var contractNumber = $("#searchContractNumber").val();
@@ -117,7 +142,6 @@ function createInvoiceChart(){
 		invoiceChart.setOption(invoiceChartOption);
 	}
 }
-createPaymentChart();
 //生成合同付款图表
 function createPaymentChart(){
 	var contractNumber = $("#searchContractNumber").val();
@@ -242,30 +266,31 @@ function circleChartsOption(title,subtext,data,isEmpty){
 /************************************************图表生成配置项*******************************************************/
 
 
-$(function(){
-	/**************************************地铁图配置********************************************/
+
+/**************************************地铁图配置********************************************/
+function getIncomeFlowChartsData(contractNumber){
+	var url = serverPath + "tPContractSubwayPay/listSubwayInfo";
+	var postData = {
+		contractNumber: contractNumber
+	};
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		initExpenseFlowCharts(data.contractSubwayPay);
+		initExpenseFlowChartsTips(data);
+	}
+}
+function initExpenseFlowCharts(data){
+	$('#expenseFlowChart').html('');
 	var tw = $('#expenseFlowChart').width();
 	var th = $('#expenseFlowChart').height();
-	var flowData = initExpenseFlowCharts();
+	var baseData = initD3Charts(data);
 	$('#expenseFlowChart').D3Charts({
 		width:tw,
 		height:th,
-		areaData: flowData.areaData,
-		lineData: flowData.lineData,
-		polyline: flowData.polyline,
-		triangle: flowData.triangle
+		baseData: baseData
 	})
-	$("circle").hover(function(){
-		if($(this).data("id") == "kehu"){
-			var html = "<input type='checkbox' disabled='disabled' ><span style='color:#000'>测试</span>"
-			layer.tips(html, $(this), {
-			  tips: [3, '#fff'],
-			  time: 0
-			});
-		}
-	},function(){
-		layer.closeAll('tips');
-	})
+	
 	$(window).resize(function(){
 		$('#expenseFlowChart').html('');
 		var tw = $('#expenseFlowChart').width();
@@ -273,11 +298,98 @@ $(function(){
 		$('#expenseFlowChart').D3Charts({
 			width:tw,
 			height:th,
-			areaData: flowData.areaData,
-			lineData: flowData.lineData,
-			polyline: flowData.polyline,
-			triangle: flowData.triangle
+			baseData: baseData
 		})
 	})
-	/**************************************地铁图配置********************************************/
-})
+};
+var orderIssuedDataTips = '',orderReceivingWarehousingDataTips = '',InvoiceVerificationDataTips = '',paymentDataTips = '',riskWarningDataTips = '';
+function initExpenseFlowChartsTips(data){
+	var orderIssuedData = data.orderIssuedData;
+	var orderReceivingWarehousingData = data.orderReceivingWarehousingData;
+	var InvoiceVerificationData = data.InvoiceVerificationData;
+	var paymentData = data.paymentData;
+	var riskWarningData = data.riskWarningData;
+	if(orderIssuedData){
+		orderIssuedDataTips = "<table><tr><td>累计下单数量</td>"+
+							"<td>"+orderIssuedData.totalOrderNum+" 条</td></tr>"+
+							"<tr><td>累计下单金额</td>"+
+							"<td>"+App.unctionToThousands(orderIssuedData.totalOrderAmount)+" 元</td></tr></table>";
+	}else{
+		orderIssuedDataTips = "暂无数据";
+	};
+	if(orderReceivingWarehousingData){
+		orderReceivingWarehousingDataTips = "<table><tr><td>累计接收金额</td>"+
+							"<td>"+App.unctionToThousands(orderReceivingWarehousingData.totalReceiveAmount)+" 元</td></tr>"+
+							"<tr><td>累计接收百分比</td>"+
+							"<td>"+orderReceivingWarehousingData.totalReceiveProportion+"%</td></tr></table>";
+	}else{
+		orderReceivingWarehousingDataTips = "暂无数据";
+	};
+	if(InvoiceVerificationData){
+		InvoiceVerificationDataTips = "<table><tr><td>累计发票数量</td>"+
+							"<td>"+InvoiceVerificationData.totalInvoiceNum+" 张</td></tr>"+
+							"<tr><td>累计开票金额</td>"+
+							"<td>"+App.unctionToThousands(InvoiceVerificationData.totalTicketAmount)+" 元</td></tr>"+
+							"<tr><td>累计开票百分比</td>"+
+							"<td>"+InvoiceVerificationData.totalTicketProportion+"%</td></tr></table>";
+	}else{
+		InvoiceVerificationDataTips = "暂无数据";
+	};
+	if(paymentData){
+		paymentDataTips = "<table><tr><td>累计含税付款金额</td>"+
+							"<td>"+App.unctionToThousands(paymentData.totalIntaxPayment)+" 元</td></tr>"+
+							"<tr><td>累计付款百分比</td>"+
+							"<td>"+paymentData.totalPaymentProportion+"%</td></tr></table>";
+	}else{
+		paymentDataTips = "暂无数据";
+	};
+	if(riskWarningData){
+		riskWarningDataTips = "";
+		var riskWarningDataFlag = 1;
+		if(riskWarningData.expireUnconclude == 1){
+			riskWarningDataTips += "<div class='tipsContent'>" + riskWarningDataFlag + ".该合同已到期未办结。" + "</div>";
+			riskWarningDataFlag ++;
+		};
+		if(riskWarningData.aboutExpireZeroThirty == 1){
+			riskWarningDataTips += "<div class='tipsContent'>" + riskWarningDataFlag + ".该合同即将到期0-30天。" + "</div>";
+			riskWarningDataFlag ++;
+		};
+		if(riskWarningData.aboutExpireThirtySixty == 1){
+			riskWarningDataTips += "<div class='tipsContent'>" + riskWarningDataFlag + ".该合同即将到期30-60。" + "</div>";
+			riskWarningDataFlag ++;
+		};
+	}else{
+		riskWarningDataTips = "暂无数据";
+	};
+};
+var hoverIdList = ["businessOrderRelease","businessOrderReceive","invicePaymentVerification","invicePaymentPayment","riskWarning"];
+$("#expenseFlowChart").on('mouseenter',"circle",function(e){
+    if($(this).data("status") == 2){
+    	var id = $(this).attr("id");
+    	if(hoverIdList.indexOf(id) != -1){
+    		var topValue = $(this).offset().top + 24;
+			var leftValue = $(this).offset().left - 36;
+			var tipsHtml = "暂无数据";
+    		if(id == "businessOrderRelease"){
+    			tipsHtml = orderIssuedDataTips;
+    		}else if(id == "businessOrderReceive"){
+    			tipsHtml = orderReceivingWarehousingDataTips;
+    		}else if(id == "invicePaymentVerification"){
+    			tipsHtml = InvoiceVerificationDataTips;
+    		}else if(id == "invicePaymentPayment"){
+    			tipsHtml = paymentDataTips;
+    		}else if(id == "riskWarning"){
+    			tipsHtml = riskWarningDataTips;
+    		};
+	    	var html = '<div id="vtip"><img id="vtipArrow" src="/static/img/vtip_arrow.png" />' + tipsHtml + '</div>';
+	        $('body').append(html);
+	        $('div#vtip').css("top", topValue+"px").css("left", leftValue+"px").fadeIn("slow");
+		}
+    }
+});
+$("#expenseFlowChart").on('mouseout',"circle",function(e){
+	if($("div#vtip")[0]){
+		$("div#vtip").fadeOut("slow").remove();
+	};
+});
+/**************************************地铁图配置********************************************/

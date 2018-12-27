@@ -117,9 +117,9 @@ function createInvoiceChart(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		var getPaymentNum = data.getPaymentNum;			//累计开票金额
-		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未开票金额
-		var getPaymentPercent = data.getPaymentPercent;		//累计开票金额百分比
+		var getPaymentNum = data.notTaxPaymentNum;			//累计开票金额
+		var remainsPaymentNum  = data.notTaxPaymentNum;		//剩余未开票金额
+		var getPaymentPercent = data.noInvoiceNnovatePercent;		//累计开票金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var invoiceChartOption = circleChartsOption('合同发票',"累计开票金额情况", [{
 				value: getPaymentNum,
@@ -155,9 +155,9 @@ function createPaymentChart(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		var getPaymentNum = data.getPaymentNum;			//累计含税付款金额
+		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余含税未付款金额
-		var getPaymentPercent = data.getPaymentPercent;		//累计含税付款金额百分比
+		var getPaymentPercent = data.noPayVateAmountPercent;		//累计含税付款金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,

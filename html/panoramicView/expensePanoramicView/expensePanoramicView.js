@@ -45,14 +45,15 @@ function getContractBaseData(){
 createOrderChart();
 //生成订单接收图表
 function createOrderChart(){
-//	var url = serverPath + "";
+	var contractNumber = $("#searchContractNumber").val();
+	var url = serverPath + "analysisPayController/orderChartOption?contractNumber="+contractNumber;
 	var orderChart = echarts.init(document.getElementById('orderChart'));
-//	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
-//	function successCallback(result) {
-//		var data = result.data;
-		var getPaymentNum = 121;			//累计接收金额
-		var remainsPaymentNum  = 223;		//剩余未接收金额
-		var getPaymentPercent = 0.3517;		//累计接收金额百分比
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var getPaymentNum = data.getPaymentNum;			//累计接收金额
+		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未接收金额
+		var getPaymentPercent = data.getPaymentPercent;		//累计接收金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var orderChartOption = circleChartsOption('订单接收',"订单累计接收金额情况", [{
 				value: getPaymentNum,
@@ -78,14 +79,22 @@ function createOrderChart(){
 createInvoiceChart();
 //生成合同发票图表
 function createInvoiceChart(){
-//	var url = serverPath + "";
+	var contractNumber = $("#searchContractNumber").val();
+	var isFixed = $('input[isFixed="sex"]:checked').val(); 
+	if(isFixed==1){
+		var url = serverPath + "analysisPayController/invoiceChartFixedAmountOption?contractNumber="+contractNumber;
+	}else if(isFixed==2){
+		var url = serverPath +"analysisPayController/orderChartFrameworkOption?contractNumber="+contractNumber;
+	}
+	
+
 	var invoiceChart = echarts.init(document.getElementById('invoiceChart'));
-//	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
-//	function successCallback(result) {
-//		var data = result.data;
-		var getPaymentNum = 0;			//累计开票金额
-		var remainsPaymentNum  = 0;		//剩余未开票金额
-		var getPaymentPercent = 0;		//累计开票金额百分比
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var getPaymentNum = data.getPaymentNum;			//累计开票金额
+		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未开票金额
+		var getPaymentPercent = data.getPaymentPercent;		//累计开票金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var invoiceChartOption = circleChartsOption('合同发票',"累计开票金额情况", [{
 				value: getPaymentNum,
@@ -111,14 +120,20 @@ function createInvoiceChart(){
 createPaymentChart();
 //生成合同付款图表
 function createPaymentChart(){
-//	var url = serverPath + "";
+	var contractNumber = $("#searchContractNumber").val();
+	var isFixed = $('input[isFixed="sex"]:checked').val(); 
+	if(isFixed==1){
+		var url = serverPath + "analysisPayController/paymentChartFixedAmountOption?contractNumber="+contractNumber;
+	}else if(isFixed==2){
+		var url = serverPath +"analysisPayController/paymentChartFrameworkOption?contractNumber="+contractNumber;
+	}
 	var paymentChart = echarts.init(document.getElementById('paymentChart'));
-//	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
-//	function successCallback(result) {
-//		var data = result.data;
-		var getPaymentNum = 3220;			//累计含税付款金额
-		var remainsPaymentNum  = 1220;		//剩余含税未付款金额
-		var getPaymentPercent = 0.7252;		//累计含税付款金额百分比
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var getPaymentNum = data.getPaymentNum;			//累计含税付款金额
+		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余含税未付款金额
+		var getPaymentPercent = data.getPaymentPercent;		//累计含税付款金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,

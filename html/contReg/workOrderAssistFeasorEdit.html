@@ -32,39 +32,46 @@
 				background: #eee;
 				text-align: right;
 			}
+			#toolbarBtnContent{
+				margin-top: 10px;
+				margin-left: 20%;
+			}
 		</style>
 	</head>
 	<body>
 		<div class="page-content">
-			<div class="form-fieldset">
-				<div class="form-fieldset-title">
-					<div class="fieldset-title">
-						<p>合同协助履行</p><span></span>
+			<div class="portlet">
+				<div class="portlet-title">
+					<div class="caption font-dark">
+						<span class="caption-subject bold uppercase">合同协助履行</span>
 					</div>
 				</div>
-				<div id="toolbarBtnContent">
-					<div id="toolbarButton">
-						<button class="btn blue closeBtn" type="button" onclick="returnHomePage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+				<div class="portlet-body">
+					<table id="readTable">
+						<tr>
+							<td>主题：</td>
+							<td id="title"></td>
+						</tr>
+						<tr>
+							<td>发送人：</td>
+							<td id="sendName"></td>
+						</tr>
+						<tr>
+							<td>接收时间：</td>
+							<td id="receiveTime"></td>
+						</tr>
+						<tr>
+							<td>消息内容：</td>
+							<td id="content"></td>
+						</tr>
+					</table>
+					<div id="toolbarBtnContent">
+						<div id="toolbarButton">
+							<button class="btn blue" type="button" onclick="jumpView()"><i class="iconfont icon-search"></i>确定</button>
+							<button class="btn blue closeBtn" type="button" onclick="returnHomePage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+						</div>
 					</div>
 				</div>
-				<table id="readTable">
-					<tr>
-						<td>主题：</td>
-						<td><a id='title' onclick="jumpView()"></a></td>
-					</tr>
-					<tr>
-						<td>发送人：</td>
-						<td id="sendName"></td>
-					</tr>
-					<tr>
-						<td>接收时间：</td>
-						<td id="receiveTime"></td>
-					</tr>
-					<tr>
-						<td>消息内容：</td>
-						<td id="content"></td>
-					</tr>
-				</table>
 			</div>
 		</div>
 		<!--[if lt IE 9]>
@@ -102,16 +109,16 @@ $(function(){
  	}else{
  	    // 异步获取待阅信息
  		var postData = {
- 				businessId: parm.bussid
+			businessId: parm.bussid
  		};
 		App.formAjaxJson(serverPath + 'contractOrderEditorController/getCustomerManagerToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			wcardId = data.wcardId;
 			$("#sendName").text(data.sendBy);			
-			$("#title-a").text(data.readTitle);			
+			$("#title").text(data.readTitle);			
 			$("#content").text(data.readText);
-	 		var receive = App.formatDateTime(data.receiveTime,"yyyy-MM-dd HH:ss:mm");
+	 		var receive = App.formatDateTime(data.receiveTime);
 	 		$("#receiveTime").text(receive);
 		}
  	}

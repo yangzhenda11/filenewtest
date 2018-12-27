@@ -204,6 +204,7 @@ function exportResultExcel(){
 //跳转工单查看页面
 function jumpView(wcardId){
 	App.setCache("searchForm");
-	var href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+//	var href="../workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+var href="../workOrderAssistFeasorEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
 	App.changePresentUrl(href);
 }

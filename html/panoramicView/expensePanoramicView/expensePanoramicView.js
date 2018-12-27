@@ -94,7 +94,7 @@ function createOrderChart(){
 			var orderChartOption = circleChartsOption("订单接收","订单累计接收金额情况",[{value: 0,name: '累计接收金额：0元'},{value: 1,name: '剩余未接收金额：0元'}],true);
 		};
 		orderChart.setOption(orderChartOption);
-//	}
+	}
 	function improperCallback(result){
 		layer.msg(result.message);
 		$("#orderChartValue").text("0%");
@@ -134,7 +134,7 @@ function createInvoiceChart(){
 			var invoiceChartOption = circleChartsOption("合同发票","累计开票金额情况",[{value: 0,name: '累计开票金额：0元'},{value: 1,name: '剩余未开票金额：0元'}],true);
 		};
 		invoiceChart.setOption(invoiceChartOption);
-//	}
+	}
 	function improperCallback(result){
 		layer.msg(result.message);
 		$("#invoiceChartValue").text("0%");
@@ -172,7 +172,7 @@ function createPaymentChart(){
 			var paymentChartOption = circleChartsOption("合同付款","累计含税付款金额情况",[{value: 0,name: '累计含税付款金额：0元'},{value: 1,name: '剩余含税未付款金额：0元'}],true);
 		};
 		paymentChart.setOption(paymentChartOption);
-//	}
+	}
 	function improperCallback(result){
 		layer.msg(result.message);
 		$("#paymentChartValue").text("0%");

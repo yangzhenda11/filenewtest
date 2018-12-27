@@ -1078,10 +1078,15 @@ var App = function() {
 		 */
 		formatDateTime: function(inputTime,type) {
 			if(inputTime){
-				var date = new Date(inputTime);
+				var inputTime = String(inputTime);
+				if(inputTime.indexOf("-") == -1){
+					var date = new Date(Number(inputTime));
+				}else{
+					var date = new Date(inputTime.replace(/-/g,"/"));
+				};
 			}else{
 				return "";
-			}
+			};
 		    var y = date.getFullYear();
 		    var m = date.getMonth() + 1;
 		    m = m < 10 ? ('0' + m) : m;
@@ -1360,24 +1365,47 @@ var App = function() {
 		 * 获取字典信息
 		 */
 		getDictInfo:function(code,notPackage){
-			var postData = {"dictId": code};
-			var resturnData = {};
-			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
-
-			function successCallback(result) {
-				var data = result.data;
-				if(notPackage){
-					resturnData = data;
-				}else{
-					for(var i = 0; i < data.length; i++){
-						resturnData[data[i].dictValue] = data[i].dictLabel
-					};
-				}
-			};
-			function improperCallback(result){
-				layer.msg("字典项"+code+"异常");
+			var sysDictsCache = top.sysDictsCache;
+			if(sysDictsCache.length == 0){
+				layer.msg("字典项缓存异常,请联系系统管理员");
+				return {};
+			}else if(notPackage){
+				var resturnData = [];
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData.push(dictItem)
+					}
+				};
+				return resturnData;
+			}else{
+				var resturnData = {};
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData[dictItem.dictValue] = dictItem.dictLabel
+					}
+				};
+				return resturnData;
 			}
-			return resturnData;
+//			var postData = {"dictId": code};
+//			var resturnData = {};
+//			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
+//
+//			function successCallback(result) {
+//				var data = result.data;
+//				if(notPackage){
+//					resturnData = data;
+//				}else{
+//					for(var i = 0; i < data.length; i++){
+//						resturnData[data[i].dictValue] = data[i].dictLabel
+//					};
+//				}
+//			};
+//			function improperCallback(result){
+//				layer.msg("字典项"+code+"异常");
+//			}
+//			return resturnData;
 		},
 		pagehandleFormFieldset : function() {
 			if($('.form-fieldset .form-collapse').length) {
@@ -2095,31 +2123,31 @@ $(function() {
          * 1.创建一个text框 
          * 2.获取焦点和失去焦点的时候切换
          */
-        $('input[type="password"]').each(
-            function() {
-                var pwdField    = $(this);
-                var pwdVal      = pwdField.attr('placeholder');
-                var pwdId       = pwdField.attr('id');
-                // 重命名该input的id为原id后跟1
-                pwdField.after('<input id="' + pwdId +'1" type="text" value='+pwdVal+' autocomplete="off" />');
-                var pwdPlaceholder = $('#' + pwdId + '1');
-                pwdPlaceholder.show();
-                pwdField.hide();
-
-                pwdPlaceholder.focus(function(){
-                    pwdPlaceholder.hide();
-                    pwdField.show();
-                    pwdField.focus();
-                });
-
-                pwdField.blur(function(){
-                    if(pwdField.val() == '') {
-                        pwdPlaceholder.show();
-                        pwdField.hide();
-                    }
-                });
-            }
-        );
+//      $('input[type="password"]').each(
+//          function() {
+//              var pwdField    = $(this);
+//              var pwdVal      = pwdField.attr('placeholder');
+//              var pwdId       = pwdField.attr('id');
+//              // 重命名该input的id为原id后跟1
+//              pwdField.after('<input id="' + pwdId +'1" type="text" value='+pwdVal+' autocomplete="off" />');
+//              var pwdPlaceholder = $('#' + pwdId + '1');
+//              pwdPlaceholder.show();
+//              pwdField.hide();
+//
+//              pwdPlaceholder.focus(function(){
+//                  pwdPlaceholder.hide();
+//                  pwdField.show();
+//                  pwdField.focus();
+//              });
+//
+//              pwdField.blur(function(){
+//                  if(pwdField.val() == '') {
+//                      pwdPlaceholder.show();
+//                      pwdField.hide();
+//                  }
+//              });
+//          }
+//      );
     }
 });
 

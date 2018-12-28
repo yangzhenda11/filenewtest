@@ -283,7 +283,7 @@
 				};
 				App.setFormValues("#validityConForm",tRContractValidityVo);
 				if($("#adminCommitmentContent input[name='adminCommitment']:checked").val()){
-					if(parm.taskFlag == "yb"){
+					if(parm.taskFlag == "yb" || parm.taskDefinitionKey == "GGLXR"){
 						$("#adminCommitmentContent").removeClass("hidden");
 					}
 				}

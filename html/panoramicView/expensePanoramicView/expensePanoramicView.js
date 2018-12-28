@@ -109,7 +109,7 @@ function createOrderChart(){
 //生成合同发票图表
 function createInvoiceChart(){
 	var contractNumber = $("#searchContractNumber").val();
-	var isFixed = $('input[isFixed="sex"]:checked').val(); 
+	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
 		var url = serverPath + "analysisPayController/FixedAmountOption";
 	}else if(isFixed==2){
@@ -152,7 +152,7 @@ function createInvoiceChart(){
 //生成合同付款图表
 function createPaymentChart(){
 	var contractNumber = $("#searchContractNumber").val();
-	var isFixed = $('input[isFixed="sex"]:checked').val(); 
+	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
 		var url = serverPath + "analysisPayController/FixedAmountOption";
 	}else if(isFixed==2){

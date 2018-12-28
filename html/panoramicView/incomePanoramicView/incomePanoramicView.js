@@ -170,7 +170,7 @@ function createIncomeChartCharts(contractNumber){
 			];
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",invoiceChartsFixedData);
 			$("#incomeChartValue").text(parseFloat(noInvoiceNnovatePercent*100) + "%");
-			$("#incomeOverviewNote").text("*以上统计数据截至"+data.currentDate);
+			$("#incomeOverviewNote").text(data.currentDate);
 		}else{
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",[{value: 0,name: '实收金额：0元'},{value: 1,name: '欠费金额：0元'}],true);
 			$("#incomeChartValue").text("0%")

@@ -72,10 +72,14 @@ function getContractBaseData(){
 //生成订单接收图表
 function createOrderChart(){
 	var contractNumber = $("#searchContractNumber").val();
-	var url = serverPath + "analysisPayController/orderChartOption?contractNumber="+contractNumber;
+	var url = serverPath + "analysisPayController/orderChartOption";
+	var postData = {
+			contractNumber:contractNumber
+		}
 	var orderChart = echarts.init(document.getElementById('orderChart'));
-	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
+		console.log(result);
 		var data = result.data;
 		var getPaymentNum = data.getPaymentNum;			//累计接收金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未接收金额
@@ -107,15 +111,18 @@ function createInvoiceChart(){
 	var contractNumber = $("#searchContractNumber").val();
 	var isFixed = $('input[isFixed="sex"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/FixedAmountOption?contractNumber="+contractNumber;
+		var url = serverPath + "analysisPayController/FixedAmountOption";
 	}else if(isFixed==2){
-		var url = serverPath +"analysisPayController/FrameworkOption?contractNumber="+contractNumber;
+		var url = serverPath +"analysisPayController/FrameworkOption";
 	}
-	
+	var postData = {
+			contractNumber:contractNumber
+		}
 
 	var invoiceChart = echarts.init(document.getElementById('invoiceChart'));
-	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
+		console.log(result);
 		var data = result.data;
 		var getPaymentNum = data.notTaxPaymentNum;			//累计开票金额
 		var remainsPaymentNum  = data.notTaxPaymentNum;		//剩余未开票金额
@@ -147,13 +154,17 @@ function createPaymentChart(){
 	var contractNumber = $("#searchContractNumber").val();
 	var isFixed = $('input[isFixed="sex"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/FixedAmountOption?contractNumber="+contractNumber;
+		var url = serverPath + "analysisPayController/FixedAmountOption";
 	}else if(isFixed==2){
-		var url = serverPath +"analysisPayController/FrameworkOption?contractNumber="+contractNumber;
+		var url = serverPath + "analysisPayController/FrameworkOption";
 	}
+	var postData = {
+			contractNumber:contractNumber
+		}
 	var paymentChart = echarts.init(document.getElementById('paymentChart'));
-	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
+		console.log(result);
 		var data = result.data;
 		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余含税未付款金额

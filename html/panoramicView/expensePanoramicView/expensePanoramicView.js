@@ -86,6 +86,7 @@ function createOrderChart(contractNumber){
 	function successCallback(result) {
 		console.log(result);
 		var data = result.data;
+	
 		var getPaymentNum = data.getPaymentNum;			//累计接收金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未接收金额
 		var getPaymentPercent = data.getPaymentPercent;		//累计接收金额百分比
@@ -128,7 +129,7 @@ function createInvoiceChart(contractNumber){
 	function successCallback(result) {
 		var data = result.data;
 		var getPaymentNum = data.notTaxPaymentNum;			//累计开票金额
-		var remainsPaymentNum  = data.notTaxPaymentNum;		//剩余未开票金额
+		var remainsPaymentNum  = data.notRemainsPaymentNum;		//剩余未开票金额
 		var getPaymentPercent = data.noInvoiceNnovatePercent;		//累计开票金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var invoiceChartOption = circleChartsOption('合同发票',"累计开票金额情况", [{

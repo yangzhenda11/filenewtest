@@ -355,8 +355,6 @@ function initExpenseFlowChartsTips(data){
 	}else{
 		paymentDataTips = "暂无数据";
 	};
-	
-	
 	if(riskWarningData){
 		riskWarningDataTips = "<div class='tipsTopCon'>本合同存在以下类型风险：</div>"+
 							"<div class='tipsContent'><input type='checkbox' "+returnChecked(riskWarningData.expireUnconclude)+" />该合同已到期未办结</div>"+

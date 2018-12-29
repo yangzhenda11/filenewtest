@@ -30,7 +30,50 @@
 					</div>
 				</div>
 				<div class="form-fieldset-body">
+					<div class="row page-search">
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="searchContractNumber" maxlength="50" placeholder="请输入合同编号">
+						</div>
+						<div class="input-group">
+							<button type="button" class="btn red" onclick="getContractBaseData();"><i class="iconfont icon-search"></i>确定</button>
+						</div>
+					</div>
+					<div class="row defaultFieldsetForm" id="contractBaseData" style="display: none;">
+						<div class="col-sm-6 form-group">
+							<label for="contractName" class="control-label">合同名称：</label>
+							<div class="valiParent">
+								<input type="text" id="contractName" name="contractName" class="form-control" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label for="contractNumber" class="control-label">合同编号：</label>
+							<div class="valiParent">
+								<input type="text" id="contractNumber" name="contractNumber" class="form-control" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label for="customerName" class="control-label">客户名称：</label>
+							<div class="valiParent">
+								<input type="text" id="customerName" name="customerName" class="form-control" disabled="disabled" />
+							</div>
+						</div>
+						<div class="col-sm-6 form-group">
+							<label for="customerCode" class="control-label">集客系统客户编码：</label>
+							<div class="valiParent">
+								<input type="text" id="customerCode" name="customerCode" class="form-control" disabled="disabled" />
+							</div>
+						</div>
+					</div>
 					<div id="incomeFlowChart"></div>
+					<div class="echartsDom" id="incomeCharts" style="display: none;">
+						<div id="lineNumberChart" class="echartsItem"></div>
+						<div id="lineHireChart" class="echartsItem"></div>
+						<div class="echartsItem">
+							<div class="chartsContent" id="incomeChart"></div>
+							<div class="chartsValue" id="incomeChartValue"></div>
+				    	</div>
+						<div class="chartsNote">*以上统计数据截至<span id="incomeOverviewNote"></span></div>
+					</div>
 				</div>
 			</div>
 		</div>

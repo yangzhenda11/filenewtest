@@ -111,7 +111,7 @@ $(function(){
  		var postData = {
 			businessId: parm.bussid
  		};
-		App.formAjaxJson(serverPath + 'contractOrderEditorController/getCustomerManagerToReadInfo', "post",JSON.stringify(postData) , successCallback);
+		App.formAjaxJson(serverPath + 'AssistFeasorManageController/getAssistFeasorToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			wcardId = data.wcardId;

@@ -81,17 +81,11 @@ function getTableToread(){
 	});
 }
 
-//跳转待阅页面
-function  findDetail(readId,url,bussId) {
-	App.setCache("searchForm");
-	App.changePresentUrl(url+"&bussid="+bussId);
-	changeReadStatus(readId);
-}
 /*
  * 待阅变已阅Fn
- * 参数：readId
+ * 跳转待阅页面
  */
-function changeReadStatus(readId){
+function  findDetail(readId,url,bussId) {
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
 	    "type" : "post",
@@ -99,9 +93,11 @@ function changeReadStatus(readId){
 	};
 	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 	function successCallback(result) {
-		console.log(result);
+		App.setCache("searchForm");
+		App.changePresentUrl(url+"&bussid="+bussId);
 	}
 }
+
 //查询岗位名称
 function  findOrgName  (receivedStaffOrgId) {
 	var ajaxObj = {

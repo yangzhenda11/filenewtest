@@ -4,9 +4,13 @@ var serverPath = config.serverPath;
 //页面变量
 var pageConfig = {
 	isInitForecastCharts: false,		//页面是否已经生产收入预测表格
-	accountPeriod: null,					//收入预测点击选择的账期
-	incomePeriod: null					// 收入分析点击选择的账期
+	accountPeriod: null,				//收入预测点击选择的账期
+	incomePeriod: null,					// 收入分析点击选择的账期
+	incomeAnalysisInterval: null,		// 收入类图表定时器
+	incomeForecastInterval: null		// 支出类图表定时器
 }
+var incomeAnalysis;
+var incomeForecast;
 $(function(){
 	initIncomeCharts();
 	
@@ -64,7 +68,6 @@ function initIncomeCharts(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		console.log("data",data);
 		if(data){
 			initIncomeAnalysisCharts(data);
 		};
@@ -127,7 +130,7 @@ function initIncomeAnalysisCharts(incomeChartData){
 		};
 		incomeArrearsAmountList.push(incomeArrearsAmountItem);
 	})
-	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysisCharts'));
+	incomeAnalysis = echarts.init(document.getElementById('incomeAnalysisCharts'));
 	var incomeAnalysisOption = {
 		title : {
 	        text: incomeChartData.currentYear+'年收入情况分析',
@@ -238,14 +241,15 @@ function initIncomeAnalysisCharts(incomeChartData){
 	            barMaxWidth: 50,
 	            data: incomeArrearsAmountList
 	        }
-	        
 	    ],
-	    color:['#4472c4', '#ff0000','#4472c4','#ff0000']
+	    color:['#73D2FD','#FD6D64','#73D2FD','#FD6D64']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
+	if(!App.IEVersionVA(9)) {
+		pageConfig.incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	};
 	incomeAnalysis.on('click', function (params) {
 		// 将账期放入到全局变量中
-		console.log("params",params)
 		pageConfig.incomePeriod = params.data.account;
     	if(params.stack == "合同收入"){
     		// 风险收入明细div隐藏
@@ -298,6 +302,13 @@ function initIncomeAnalysisCharts(incomeChartData){
     		checkRiskIncomeRadio(radioVal);
     	}
 	});
+}
+function incomeAnalysisIntervalFn(){
+	if($("#incomeAnalysisCharts canvas").width() < 300){
+		incomeAnalysis.resize();
+	}else{
+		clearInterval(pageConfig.incomeAnalysisInterval);
+	};
 }
  /*
   * 收入分析-合同收入明细查看类型切换
@@ -626,7 +637,7 @@ function initForecastCharts(forecastChartsData){
 		};
 		lineIncomeForecastArray.push(lineIncomeForecastItem);
 	})
-	var incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
+	incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
 	var incomeForecastOption = {
 		title : {
 	        text: forecastChartsData.currentYear+'年收入预测情况',
@@ -708,7 +719,7 @@ function initForecastCharts(forecastChartsData){
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        barMaxWidth: 55,
+		        barMaxWidth: 50,
 		        data: lineIncomeForecastArray
 		    },
 		    {
@@ -718,6 +729,7 @@ function initForecastCharts(forecastChartsData){
 	                normal: {
 	                    show: true,
 	                    position: 'top',
+	                    color:'#333',
 	                    formatter:function(params){
 		                	return App.unctionToThousands(params.data);
 		                }
@@ -726,9 +738,12 @@ function initForecastCharts(forecastChartsData){
 		        data: forecastChartsData.totalArray
 		    }
 	    ],
-	    color:['#0070c0', '#ed8b00','#a0a0a0']
+	    color:['#73D2FD', '#FD6D64','#DBDBDB']
 	};
 	incomeForecast.setOption(incomeForecastOption);
+	if(!App.IEVersionVA(9)) {
+		pageConfig.incomeForecastInterval = setInterval(incomeForecastIntervalFn, 1000);
+	};
 	pageConfig.isInitForecastCharts = true;
 	incomeForecast.on('click', function (params) {
     	// 将账期放入到全局变量中
@@ -759,6 +774,13 @@ function initForecastCharts(forecastChartsData){
     		checkLineIncomeForecastRadio(radioVal);
     	}
 	});
+}
+function incomeForecastIntervalFn(){
+	if($("#incomeForecastCharts canvas").width() < 300){
+		incomeForecast.resize();
+	}else{
+		clearInterval(pageConfig.incomeForecastInterval);
+	};
 }
 /*
  * 收入预测-合同收入明细查看类型切换

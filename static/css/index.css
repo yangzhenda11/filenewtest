@@ -1,48 +1,195 @@
 html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
-#hidemenu{
-	display: none;
-	position: fixed;
-    right: 10px;
-    top: 50px;
-    background: #d11718;
-    color: #FFF;
-    padding: 10px;
-    border-radius: 0;
-    z-index: 9999;
-    border-radius: 20px;
+.dropdown-header,
+#user-staff a,
+#user-role a {
+  padding: 6px 12px;
+  color: #6e6e6e;
+  text-decoration: none;
+  display: block;
+  clear: both;
+  font-weight: 300;
+  line-height: 18px;
+  white-space: nowrap;
+  font-size: 13px;
+  margin-top: 1px;
 }
-#hidemenu a{color: #FFF;}
-.notiveViewTitle{
-	color: red;
+#user-staff a,
+#user-role a {
+  padding-left: 40px;
 }
-.red{
-	color: red;
+#user-staff a:hover {
+  background: #fee188;
 }
-.notiveDetailTitleCon{
-	border-bottom: 1px dashed #efefef;
+#user-role a:hover {
+  background: #fee188;
 }
-.notifyContent{
-	margin-bottom: 10px;
+#user-role .choose a {
+  color: red;
 }
-.notiveDetailTitle{
-	float: left;
-	font-size: 18px;
+.user-menu i {
+  font-size: 120%;
+  color: #888;
+  margin-right: 8px;
 }
-.notiveDetailAttribute{
-	float: right;
-	font-size: 14px;
-	position: relative;
-	top: 12px;
+.navbar-header {
+  width: 260px;
 }
-.notiveDetailFileCon{
-	padding-top: 10px;
+#sidebar {
+  overflow: inherit;
 }
-#notiveFileList{
-	font-size: 12px;
+#hidemenu {
+  display: none;
+  position: fixed;
+  right: 10px;
+  top: 50px;
+  background: #d11718;
+  color: #FFF;
+  padding: 10px;
+  border-radius: 0;
+  z-index: 9999;
+  border-radius: 20px;
 }
-#notiveFileList i{font-size: 20px;margin-right: 6px;}
-#notiveFileList p{margin-bottom: 15px;padding-left: 20px;}
+#hidemenu a {
+  color: #FFF;
+}
+.notiveViewTitle {
+  color: red;
+}
+.red {
+  color: red;
+}
+.notiveDetailTitleCon {
+  border-bottom: 1px dashed #efefef;
+}
+.notifyContent {
+  margin-bottom: 10px;
+}
+.notiveDetailTitle {
+  float: left;
+  font-size: 18px;
+}
+.notiveDetailAttribute {
+  float: right;
+  font-size: 14px;
+  position: relative;
+  top: 12px;
+}
+.notiveDetailFileCon {
+  padding-top: 10px;
+}
+#notiveFileList {
+  font-size: 12px;
+}
+#notiveFileList i {
+  font-size: 20px;
+  margin-right: 6px;
+}
+#notiveFileList p {
+  margin-bottom: 15px;
+  padding-left: 20px;
+}
+/*
+ * 合同履行工作台
+ */
+#worktableCol {
+  position: absolute;
+  left: 290px;
+  background: #fff;
+}
+/*.workItemDom {
+  display: table;
+  width: 100%;
+  height: 54px;
+}
+.workItemDom .workItem {
+  display: table-cell;
+  text-align: center;
+}*/
+.workItemChecked {
+  top: -2px;
+  font-weight: bold;
+  border-bottom: 2px solid #d11718 !important;
+}
+.workItemDom .workItem {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  display: inline-block;
+  text-align: center;
+  margin: 8px 4px 0;
+  width: 80px;
+  height: 74px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+}
+.workItemDom .workItem:hover {
+  border: none !important;
+  box-shadow: 0 5px 12px rgba(144, 0, 0, 0.87);
+}
+.workItemDom .workItem .workItemImg {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  position: relative;
+  margin: 7px auto 0;
+}
+.workItemDom .workItem p {
+  margin: 0;
+}
+.workItemDom img {
+  width: 100%;
+  height: 100%;
+}
+.badge-Worktable {
+  position: absolute;
+  right: -12px;
+  top: 0;
+  background: #d11718;
+}
+#workItemDom {
+  white-space: nowrap;
+}
+@media screen and (max-width: 1360px) {
+  #navbar {
+    padding-left: 0;
+  }
+  .navbar .navbar-brand {
+    font-size: 20px;
+    margin-right: 0px;
+  }
+  #navbar .logo {
+    height: 48px;
+  }
+  .ace-nav {
+    right: 4px;
+  }
+  .ace-nav > li {
+    margin-right: 6px;
+  }
+  #worktableCol {
+    left: 240px;
+  }
+}
+@media screen and (max-width: 1270px) {
+  #worktableCol {
+    left: 240px;
+    right: 340px;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+  }
+  #workItemDom {
+    margin: 0;
+  }
+  #workItemDom .workItem {
+    height: 70px;
+  }
+  #workItemDom .workItem .workItemImg {
+    margin-top: 4px;
+  }
+}

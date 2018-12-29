@@ -13,33 +13,12 @@ var roleType = "";
 $(function(){
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
-	$("#loginUserName").text(config.curStaffName);
-	if(roleType == 91220){
-		$("#roleName").text("采购经理/项目经理");
-		$("#captionTitle").text("我的商务助理");
-	}else if(roleType == 91221){
-		$("#roleName").text("业务管理");
-	}else if(roleType == 91222){
-		$("#roleName").text("商务经理");
-	};
-	//获取商务助理配置内容
-	getAssistantList();
-	//待办待阅数量查询
-	setMessageNumber();
 	//获取合同付款（固定金额合同）图表数据
 	getChartsFixedData();
 	//获取合同付款（框架协议）图表数据
 	getChartsNotFixedData();
 	//获取重点关注履行中合同跟踪
 	getFocusContractTable()
-})
-$("#workItemDom").on("click",".workItem",function(){
-	var moduleUrl = $(this).find("img").data("url");
-	if(moduleUrl){
-		top.showSubpageTab(moduleUrl,$(this).find("p").text());
-	}else{
-		layer.alert("该模块暂未使用。",{icon:2})	
-	}
 })
 /*
  * 取得角色list中的当前页面所使用的角色
@@ -53,73 +32,6 @@ function checkRoleType(){
 			return false;
 		}
 	});
-}
-/*
- * 获取商务助理配置内容
- */
-function getAssistantList(){
-	var url = serverPath + "assistant/assistantList";
-	var postData = {
-		roleId: roleType,
-		provinceCode: config.provCode,
-		funType: "zc"
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-	function successCallback(result) {
-		var data = result.data;
-		var html = "";
-		$.each(data, function(k, v) {
-			var funCode = v.funCode;
-			html += '<div class="workItem"><div class="workItemImg">';
-			if(funCode == "HZFGL" || funCode == "LXZHT_ZC" || funCode == "FXYJ_ZC"){
-				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
-			};
-			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
-		});
-		$("#workItemDom").html(html);
-	}
-}
-/*
- * 待办待阅数量查询
- */
-function setMessageNumber(){
-	var todoData = {
-		staffId : config.curStaffId,
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	var toreadData = {
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	App.formAjaxJson(serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
-	App.formAjaxJson(serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
-    function todoSuccessCallback(result) {
-    	$("#todoNum").text(result.recordsTotal);
-    };
-    function todoErrorCallback(result){
-    	$("#todoNum").text("?");
-    };
-    function toreadSuccessCallback(result) {
-    	$("#toreadNum").text(result.recordsTotal);
-    };
-    function toreadErrorCallback(result){
-    	$("#toreadNum").text("?");
-    };
-}
-/*
- * 待办待阅跳转
- */
-function jumpWorkflow(type){
-	if(type == "todo"){
-		var url = "html/workflow/tasklist/task-todo.html";
-		top.showSubpageTab(url,"待办事项",null,true);
-	}else if(type == "toread"){
-		var url = "html/workflow/readrecordlist/record-toread.html";
-		top.showSubpageTab(url,"待阅事项",null,true);
-	};
 }
 /*
  * 获取重点关注履行中合同跟踪
@@ -238,9 +150,11 @@ function getChartsNotFixedData(){
 	}
 }
 //合同付款（固定金额合同）（图表）
+var paymentChartsFixedDom = null;
+var paymentChartsFixedInterval = null;
 function initPaymentFiexdCharts(data){
 	var paymentChartsFixedOption;
-	var paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
+	paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
 	var paymentChartsFixedData = [
 		{value: 0,name: '累计含税付款金额：0元'},
 		{value: 1,name: '剩余含税未付款金额：0元'}
@@ -271,11 +185,23 @@ function initPaymentFiexdCharts(data){
 		$("#paymentChartsFixedValue").text("0%")
 	};
 	paymentChartsFixedDom.setOption(paymentChartsFixedOption);
+	if(!App.IEVersionVA(9)) {
+		paymentChartsFixedInterval = setInterval(paymentChartsFixedIntervalFn, 1000);
+	};
+}
+function paymentChartsFixedIntervalFn(){
+	if($("#paymentChartsFixed canvas").width() < 200){
+		paymentChartsFixedDom.resize();
+	}else{
+		clearInterval(paymentChartsFixedInterval);
+	};
 }
 //合同付款（框架协议）（图表）
+var paymentChartsNotFixedDom = null;
+var paymentChartsNotFixedInterval = null;
 function initPaymentNotFiexdCharts(data){
 	var paymentChartsNotFixedOption;
-	var paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
+	paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
 	var paymentChartsNotFixedData = [
 		{value: 0,name: '累计含税付款金额：0元'},
 		{value: 1,name: '剩余含税未付款金额：0元'}
@@ -306,6 +232,16 @@ function initPaymentNotFiexdCharts(data){
 		$("#paymentChartsNotFixedValue").text("0%")
 	};
 	paymentChartsNotFixedDom.setOption(paymentChartsNotFixedOption);
+	if(!App.IEVersionVA(9)) {
+		paymentChartsNotFixedInterval = setInterval(paymentChartsNotFixedIntervalFn, 1000);
+	};
+}
+function paymentChartsNotFixedIntervalFn(){
+	if($("#paymentChartsNotFixed canvas").width() < 200){
+		paymentChartsNotFixedDom.resize();
+	}else{
+		clearInterval(paymentChartsNotFixedInterval);
+	};
 }
 /*
  * 设置截止日期
@@ -385,7 +321,7 @@ function initCharts(title,subtext,data,isEmpty){
 	        itemGap: 5,
 			selectedMode: false
 		},
-		color: ['#d11718', '#bfbfbf'],
+		color: ['#FD6D64', '#DBDBDB'],
 		series: [{
 			clockwise: false,
 //			hoverAnimation: false,

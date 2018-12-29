@@ -4,12 +4,12 @@
 <!--[if !IE]><!-->
 <html lang="en">
 	<!--<![endif]-->
-	<!-- BEGIN HEAD -->
+	
 
 	<head>
 		<meta charset="UTF-8">
 		<title>公用业务发起页面</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="Expires" content="0">
@@ -27,29 +27,28 @@
 
 	<body>
 		<div class="page-content">
-			<div class="portlet">
-				<div class="portlet-title">
-					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase">支出接口流程发起页面--业务编辑页面 </span>
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>支出接口流程发起页面--业务编辑页面 </p><span></span>
 					</div>
 				</div>
-				<div class="portlet-body">
-					<!--引入流程启动公共界面  -->
-					<div id="startProcess"></div>
-
-					<div class="toolbarBtn">
-						<div id="toolbarBtnContent">
-							<button id="showPanel1" type="button" class="btn blue" onclick="flowStart();">发起查询采购订单头信息服务</button>
-						</div>
-					</div>
+				<div class="form-fieldset-body">
 					<div class="form-fieldset">
 						<div class="form-fieldset-title">
-							<span><i class="iconfont icon-layers"></i> 业务信息</span>
+							<div class="fieldset-title">
+								<p>业务信息</p><span></span>
+							</div>
 							<div class="form-fieldset-tools">
 								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 							</div>
 						</div>
 						<div class="form-fieldset-body">
+							<div class="toolbarBtn">
+								<div id="toolbarBtnContent">
+									<button id="showPanel1" type="button" class="btn blue" onclick="flowStart();">发起查询采购订单头信息服务</button>
+								</div>
+							</div>
 							<div class="row defaultFieldsetForm">
 								<div class="col-sm-6 form-group">
 									<label for="provincecodeHeadInfo" class="control-label">省份代码：<i class="iconfont icon-mi required"></i></label>
@@ -87,26 +86,25 @@
 										<input type="text" id="endlastupdatedateHeadInfo" name="endlastupdatedateHeadInfo" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){}})" class="form-control" readonly="readonly" /> 
 									</div>
 								</div>
-								</div>
 							</div>
 						</div>
 					</div>
-					<div class="portlet-body">
-					<!--引入流程启动公共界面  -->
-					<div id="startProcess"></div>
-					<div class="toolbarBtn">
-						<div id="toolbarBtnContent">
-							<button id="showPanel1" type="button" class="btn blue" onclick="flowStart2();">发起查询采购订单行信息服务</button>
-						</div>
-					</div>
+
 					<div class="form-fieldset">
 						<div class="form-fieldset-title">
-							<span><i class="iconfont icon-layers"></i> 业务信息</span>
+							<div class="fieldset-title">
+								<p>业务信息</p><span></span>
+							</div>
 							<div class="form-fieldset-tools">
 								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 							</div>
 						</div>
 						<div class="form-fieldset-body">
+							<div class="toolbarBtn">
+								<div id="toolbarBtnContent">
+									<button id="showPanel1" type="button" class="btn blue" onclick="flowStart2();">发起查询采购订单行信息服务</button>
+								</div>
+							</div>
 							<div class="row defaultFieldsetForm">
 								<div class="col-sm-6 form-group">
 									<label for="provincecodeHeadLine" class="control-label">省份代码：<i class="iconfont icon-mi required"></i></label>
@@ -144,27 +142,26 @@
 										<input type="text" id="endlastupdatedateHeadLine" name="endlastupdatedateHeadLine" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){}})" class="form-control" readonly="readonly" /> 
 									</div>
 								</div>
-								</div>
 							</div>
 						</div>
 					</div>
+
 					
-					<div class="portlet-body">
-					<!--引入流程启动公共界面  -->
-					<div id="startProcess"></div>
-					<div class="toolbarBtn">
-						<div id="toolbarBtnContent">
-							<button id="showPanel1" type="button" class="btn blue" onclick="flowStart3();">发起查询采购订单接收信息服务</button>
-						</div>
-					</div>
 					<div class="form-fieldset">
 						<div class="form-fieldset-title">
-							<span><i class="iconfont icon-layers"></i> 业务信息</span>
+							<div class="fieldset-title">
+								<p>业务信息</p><span></span>
+							</div>
 							<div class="form-fieldset-tools">
 								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 							</div>
 						</div>
 						<div class="form-fieldset-body">
+							<div class="toolbarBtn">
+								<div id="toolbarBtnContent">
+									<button id="showPanel1" type="button" class="btn blue" onclick="flowStart3();">发起查询采购订单接收信息服务</button>
+								</div>
+							</div>
 							<div class="row defaultFieldsetForm">
 								<div class="col-sm-6 form-group">
 									<label for="provincecodeHeadReceived" class="control-label">省份代码：<i class="iconfont icon-mi required"></i></label>
@@ -220,27 +217,25 @@
 										<input type="text" id="endlastupdatedateHeadReceived" name="endlastupdatedateHeadReceived" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){}})" class="form-control" readonly="readonly" /> 
 									</div>
 								</div>
-								</div>
 							</div>
 						</div>
 					</div>
 					
-					<div class="portlet-body">
-					<!--引入流程启动公共界面  -->
-					<div id="startProcess"></div>
-					<div class="toolbarBtn">
-						<div id="toolbarBtnContent">
-							<button id="showPanel1" type="button" class="btn blue" onclick="flowStart4();">发起查询应付实付信息服务</button>
-						</div>
-					</div>
 					<div class="form-fieldset">
 						<div class="form-fieldset-title">
-							<span><i class="iconfont icon-layers"></i> 业务信息</span>
+							<div class="fieldset-title">
+								<p>业务信息</p><span></span>
+							</div>
 							<div class="form-fieldset-tools">
 								<a href="#" class="form-collapse"><i class="fa fa-angle-up"></i></a>
 							</div>
 						</div>
 						<div class="form-fieldset-body">
+							<div class="toolbarBtn">
+								<div id="toolbarBtnContent">
+									<button id="showPanel1" type="button" class="btn blue" onclick="flowStart4();">发起查询应付实付信息服务</button>
+								</div>
+							</div>
 							<div class="row defaultFieldsetForm">
 								<div class="col-sm-6 form-group">
 									<label for="provincecodePayment" class="control-label">省份代码：<i class="iconfont icon-mi required"></i></label>
@@ -271,7 +266,6 @@
 									<div class="valiParent">
 										<input type="text" id="endlastupdatedatePayment" name="endlastupdatedatePayment" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicked:function(){}})" class="form-control" readonly="readonly" /> 
 									</div>
-								</div>
 								</div>
 							</div>
 						</div>
@@ -318,7 +312,7 @@
 					</div>
 				</div>
 			</div>
-		
+		</div>
         <!--modal-->
         <div class="modal fade" id="PandJstaffiframetaskSH" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
 		<!--基础依赖-->

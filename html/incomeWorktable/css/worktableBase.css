@@ -1,35 +1,15 @@
 /*
  * 合同履行工作台 首页
  */
-.page-content-worktable {
-  background: #eee;
-}
 .underline {
   text-decoration: underline;
 }
-.worktableTitle {
-  padding: 8px 0 8px 12px;
-  font-size: 12px;
-  background: #fff;
-  margin-bottom: 6px;
-  border-radius: 4px;
-}
-.worktableTitle .roleNameStyle {
-  font-size: 14px;
-}
-.worktableTitle .roleNameStyle i {
-  font-size: 18px;
-  margin-right: 4px;
-}
-.loginUserName {
-  float: right;
-  margin-right: 10px;
-}
 .portlet-worktable {
   overflow: hidden;
-  border-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   font-size: 14px;
-  border-top-width: 1px !important;
+  border-top: 2px solid #DBDBDB !important;
   margin-bottom: 6px;
 }
 .portlet-worktable i {
@@ -37,117 +17,13 @@
   font-size: 20px;
   position: relative;
   top: 1px;
+  color: #D11718;
 }
 .portlet-worktable .portlet-title .caption {
   padding: 6px 0;
 }
-.processDom,
-.workItemDom,
-.auditDom {
-  height: 80px;
-}
-.workItemDom {
-  display: table;
-  width: 100%;
-}
-.auditDom .auditItem {
-  padding-left: 25px;
-}
-.auditDom .auditItem .ui-radio {
-  padding-left: 25px;
-  top: 5px;
-}
-.processDom .processItem {
-  padding: 12px 0 0 20px;
-}
-.processDom .processItem i {
-  font-size: 20px;
-  margin-right: 10px;
-  position: relative;
-  top: 2px;
-}
-.processDom .processItem a {
-  margin-left: 5px;
-  position: relative;
-  top: 1px;
-}
-.workItemDom .workItem {
-  display: table-cell;
-  text-align: center;
-}
-.workItemDom .workItem .workItemImg {
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  position: relative;
-  margin: 0 auto;
-}
-.workItemDom .workItem p {
-  margin: 0;
-}
-.workItemImg img {
-  width: 100%;
-  height: 100%;
-}
-.badge-Worktable {
-  position: absolute;
-  right: -12px;
-  top: 0;
-  background: #d11718;
-}
-#scope {
-  margin: 0;
-  display: inline-block;
-  width: 106px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: relative;
-  top: 4px;
-}
-#changeScope {
-  float: right;
-  padding: 4px 8px;
-  margin-right: 16px;
-}
-.scope-left,
-.scope-rigth,
-.scope-center {
-  float: left;
-}
-.scope-left,
-.scope-rigth {
-  width: 46%;
-  padding: 0 10px;
-}
-.scope-center {
-  width: 8%;
-  padding-top: 100px;
-}
-.scope-center button {
-  margin-bottom: 20px;
-}
-.scope-selectCon {
-  height: 280px;
-  overflow: auto;
-  border: 1px solid #ceadad;
-  border-radius: 3px;
-  background: #fff;
-  padding: 10px 0;
-}
-.scope-selectCon .scopeItem {
-  display: block;
-  text-align: left;
-  padding-left: 16px;
-  font-size: 12px;
-  line-height: 26px;
-}
-.scope-selectCon .scopeItem:hover {
-  background: #c1c7f5;
-  cursor: pointer;
-}
-.scope-selectCon .scopeItem.selected {
-  background: rgba(0, 0, 255, 0.25);
+.portlet-worktable .portlet-title {
+  border: none;
 }
 .incomeOverviewDom,
 .incomeAnalysisDom {
@@ -224,4 +100,111 @@
 .table-title {
   text-align: center;
   font-weight: bold;
+}
+#chooseScope {
+  background: #d11718;
+  height: 34px;
+  padding-right: 10px;
+  position: fixed;
+  right: 0;
+  top: 20px;
+  z-index: 99;
+  padding-left: 8px;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+  border-top-left-radius: 17px;
+  border-bottom-left-radius: 17px;
+}
+#chooseScope .scopeTitle {
+  display: inline-block;
+  line-height: 34px;
+  position: relative;
+  top: -4px;
+}
+#chooseScope i {
+  line-height: 34px;
+  font-size: 24px;
+}
+#chooseScope:hover #scopMenu {
+  display: block;
+}
+#scopMenu {
+  display: none;
+  position: absolute;
+  top: 34px;
+  right: 4px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background: #fff;
+  padding: 4px 0;
+}
+#scopMenu .scopMenu-header {
+  padding-left: 6px;
+}
+#scopMenu .scopMenu-header i {
+  margin-right: 2px;
+  line-height: 10px;
+  font-size: 16px;
+}
+#scopMenu .scopMenu-header:hover {
+  background: #fff;
+}
+#scopMenu li {
+  white-space: nowrap;
+  text-align: left;
+  padding: 4px 14px 4px 24px;
+  color: #6e6e6e;
+}
+#scopMenu li:hover {
+  background: #fee188;
+}
+#scopMenu .choosed {
+  color: red;
+}
+#scopMenu .isDisabled:hover {
+  cursor: not-allowed;
+}
+.scopeLi {
+  display: inline-block;
+}
+.scope-left,
+.scope-rigth,
+.scope-center {
+  float: left;
+}
+.scope-left,
+.scope-rigth {
+  width: 46%;
+  padding: 0 10px;
+}
+.scope-center {
+  width: 8%;
+  padding-top: 100px;
+}
+.scope-center button {
+  margin-bottom: 20px;
+}
+.scope-selectCon {
+  height: 280px;
+  overflow: auto;
+  border: 1px solid #ceadad;
+  border-radius: 3px;
+  background: #fff;
+  padding: 10px 0;
+}
+.scope-selectCon .scopeItem {
+  display: block;
+  text-align: left;
+  padding-left: 16px;
+  font-size: 12px;
+  line-height: 26px;
+}
+.scope-selectCon .scopeItem:hover {
+  background: #c1c7f5;
+  cursor: pointer;
+}
+.scope-selectCon .scopeItem.selected {
+  background: rgba(0, 0, 255, 0.25);
 }

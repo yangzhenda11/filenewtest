@@ -35,7 +35,6 @@ function initFrame(){
 }
 // 查询
 function serarchForToDo(resetPaging){
-	top.setMessageTipNumber();
 	var startDate = $('#startDate').val();
 	var endDate = $('#endDate').val();
 	if(!App.checkDate(startDate,endDate)){

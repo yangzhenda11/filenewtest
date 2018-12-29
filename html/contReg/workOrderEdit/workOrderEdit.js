@@ -55,11 +55,11 @@ $(function() {
 	if(parm.pageType == 1) {		//工作流页面进入
 		layer.alert("入参错误",{icon:2});
 	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
-		$("#flowNote").remove();
 		if(parm.taskFlag == "db"){
 			if(parm.taskDefinitionKey == "GDCL"){
-				$(".sendBackBtn,.activateBtn,.returnBtn,.changeExpiryDateBtn").remove();
+				$("#toolbarButton button").not(".saveBtn,.registerBtn,.cancelApprovedBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 			}else if(parm.taskDefinitionKey == "GDQR"){
+				$("#toolbarButton button").not(".saveBtn,.sendBackBtn,.activateBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 				$(".registerBtn,.cancelApprovedBtn,.returnBtn,.changeExpiryDateBtn").remove();
 			}else if(parm.taskDefinitionKey == "GXZZ"){
 				$("#toolbarButton button").not(".closeBtn,.changeExpiryDateBtn,.flowhistoryBtn,.flowchartBtn").remove();
@@ -73,17 +73,15 @@ $(function() {
 		};
 		fixToolBars();
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
-		$("#toolbarButton,#flowNote").remove();
+		$("#toolbarButton").remove();
 		$("#toolbarBtn").css("height","90px");
 		$pageContent.removeClass("hidden");
 		fixToolBars();
 	} else if(parm.pageType == 4) {		//工单查询页面进入
-		$("#flowNote").remove();
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
 		fixToolBars();
 	} else if(parm.pageType == 3) {		//已办页面进入
-		$("#flowNote").remove();
 		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 		if(parm.canWithDraw != "true"){
 			$(".returnBtn").remove();
@@ -1461,7 +1459,9 @@ function backPage(){
 	var customerManagerCompList = [];
 	var getCustomerManagerInfoCompList = [];
 	if(parm.isucloud == "true"){
-		top.closeWindow();
+		layer.confirm("是否关闭此页面?",{icon:7,title:"提示"},function(index){
+			top.closeWindow();
+		});
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
 		var customerManagerList = getValue_customerManagerList(true);
 		if(customerManagerList.length != getCustomerManagerInfoList.length){
@@ -1523,8 +1523,8 @@ function getBusiProcessInfoID(){
 					busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  取消审批："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
 				}
 			};
-			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><span><i class="iconfont icon-layers"></i> 工单处理意见</span><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
-				'<div class="row">'+busiProcess+'</div></div></div>';
+			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><div class="fieldset-title"><p>工单处理意见</p><span></span></div><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
+				busiProcess+'</div></div>';
 			if(isCancelApproved && parm.taskFlag == "db"){
 				$("#workOrderContent").prepend(html);
 			}else{
@@ -1541,7 +1541,7 @@ function fixToolBars(){
 		var topScroll = $pageContent.scrollTop();
 		if(topScroll > 0){
 			$("#scrollTopTool").css("display","block");
-			$("#toolbarBtnContent").css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"#fff","padding-top":"6px"});
+			$("#toolbarBtnContent").css({"position":"fixed","top":"0","width":"96.5%","z-index":"1000","background":"#fff","padding-top":"6px"});
 		}else{
 			$("#scrollTopTool").css("display","none");
 			$("#toolbarBtnContent").css({"position":"static","width":"100%","padding-top":"0"});

@@ -14,42 +14,18 @@ var roleType = "";
 $(function() {
 	//取得角色list中的当前页面所使用的角色
 	checkRoleType();
-	$("#loginUserName").text(config.curStaffName);
-	if(roleType == 91216 || roleType == 91217 || roleType == 91219) {
-		if(roleType == 91216) {
-			$("#roleName").text("客户经理");
-			$("#captionTitle").text("我的商务助理");
-		} else if(roleType == 91217) {
-			$("#roleName").text("业务管理");
-		} else {
-			$("#roleName").text("商务经理");
-		};
-		$("#auditCol").remove();
-	} else if(roleType == 91218) {
-		$("#roleName").text("稽核管理");
-		$("#workItemCol").removeClass("col-sm-10").addClass("col-sm-7");
-		$("#auditCol").removeClass("hidden");
+	if(roleType == 91218) {
+		$("#chooseScope").show();
 		setAuditScope();
-	};
-	$(".page-content-worktable").show();
-	//获取商务助理配置内容
-	getAssistantList();
-	//设置待办待阅数量
-	setMessageNumber();
+	}else{
+		$("#chooseScope").remove();
+	}
 	//重点关注DOM区域生成
 	getFocusEmphasis();
 	//获取收入总览图表数据
 	getIncomeOverviewData();
 	//获取收入预测图表数据
 	getIncomeAnalysisData();
-})
-$("#workItemDom").on("click", ".workItem", function() {
-	var moduleUrl = $(this).find("img").data("url");
-	if(moduleUrl) {
-		top.showSubpageTab(moduleUrl, $(this).find("p").text());
-	} else {
-		layer.alert("该模块暂未使用。", {icon: 2})
-	}
 })
 /*
  * 取得角色list中的当前页面所使用的角色
@@ -63,74 +39,6 @@ function checkRoleType() {
 			return false;
 		}
 	});
-}
-/*
- * 获取商务助理配置内容
- */
-function getAssistantList() {
-	var url = serverPath + "assistant/assistantList";
-	var postData = {
-		roleId: roleType,
-		provinceCode: config.provCode,
-		funType: "sr"
-	};
-	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
-
-	function successCallback(result) {
-		var data = result.data;
-		var html = "";
-		$.each(data, function(k, v) {
-			var funCode = v.funCode;
-			html += '<div class="workItem"><div class="workItemImg">';
-			if(funCode == "KHGL" || funCode == "LXZHT_SR" || funCode == "FXYJ_SR"){
-				html += '<span class="badge badge-Worktable">'+v.superscript+'</span>';
-			};
-			html += '<img src="/static/img/worktable/' + v.funIconUrl + '" data-url="' + v.funUrl + '"/></div><p>' + v.funName + '</p></div>';
-		});
-		$("#workItemDom").html(html);
-	}
-}
-/*
- * 待办待阅数量查询
- */
-function setMessageNumber(){
-	var todoData = {
-		staffId : config.curStaffId,
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	var toreadData = {
-		draw : 999,
-		start : 0,
-		length : 0
-	};
-	App.formAjaxJson(serverPath + "workflowrest/taskToDo", "get", todoData, todoSuccessCallback,null,todoErrorCallback);
-	App.formAjaxJson(serverPath + "recordToread/getRecordToreadList", "POST", JSON.stringify(toreadData), toreadSuccessCallback,null,toreadErrorCallback,false);
-    function todoSuccessCallback(result) {
-    	$("#todoNum").text(result.recordsTotal);
-    };
-    function todoErrorCallback(result){
-    	$("#todoNum").text("?");
-    };
-    function toreadSuccessCallback(result) {
-    	$("#toreadNum").text(result.recordsTotal);
-    };
-    function toreadErrorCallback(result){
-    	$("#toreadNum").text("?");
-    };
-}
-/*
- * 待办待阅跳转
- */
-function jumpWorkflow(type){
-	if(type == "todo"){
-		var url = "html/workflow/tasklist/task-todo.html";
-		top.showSubpageTab(url,"待办事项",null,true);
-	}else if(type == "toread"){
-		var url = "html/workflow/readrecordlist/record-toread.html";
-		top.showSubpageTab(url,"待阅事项",null,true);
-	};
 }
 /*
  * 重点关注合同和客户切换
@@ -214,7 +122,7 @@ function getFocusAccountTable(){
  */
 $("#showAccountMore").on("click",function(){
 	var url = "/html/incomeWorktable/accountManage/accountManage.html?expandFocusCustomer=true";
-	top.showSubpageTab(url,"履行中合同");
+	top.showSubpageTab(url,"客户经理管理");
 })
 /*
  * 跳转合同信息（根据客户经理ID）
@@ -272,7 +180,7 @@ $("#showCustomerMore").on("click",function(){
  */
 function jumpContractManage(customerCode, customerName, partnerCode){
 	var url = "/html/incomeWorktable/contractManage/performContract.html?" 
-		+ "customerCode="+customerCode+"&customerName="+customerName+"&partnerCode="+partnerCode;
+		+ "customerCode="+customerCode+"&customerName="+encodeURI(customerName)+"&partnerCode="+partnerCode;
 	top.showSubpageTab(url,"查看履行中合同");
 }
 /*
@@ -329,168 +237,17 @@ function jumpLineManageByContract(contractId){
 	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"线路信息");
 }
-/***************选择稽核范围开始***********************/
-/*
- * 设置初始稽核范围
- */
-function setAuditScope() {
-	var obj = {
-		companyCode: config.companyCode
-	};
-	var url = serverPath + "auditManager/getAuditRangeByStaffOrgId";
-	App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
-	var dataPermission = config.dataPermission;
-	function successCallback(result) {
-		var data = result.data;
-		var dataPermission = config.dataPermission;
-		var orgName = data.orgName;
-		$("#scope").text(orgName);
-		$("#scope").attr("title", orgName);
-		if(dataPermission == 3) {
-			$("#changeScope").show();
-		} else {
-			$("#changeScope").remove();
-		};
-		var html = '<div class="scopeItem" data-id=' + data.auditRange + '>' + orgName + '</div>';
-		$("#scopeChecked").html(html);
-		top.globalConfig.auditScope = data.auditRange;
-	}
-}
-/*
- * 选择稽核范围
- */
-function changeScope() {
-	$("#scopeModal").modal("show");
-	if(!scopeTree) {
-		initSopeChooseTree();
-	}
-}
-var scopeTree;
-/*
- * 生成稽核部门树————ztree
- */
-function initSopeChooseTree() {
-	var treeSetting = {
-		async: {
-			enable: true,
-			url: serverPath + "contractType/listCompany",
-			type: "post",
-			dataType: 'json',
-			dataFilter: orgsfilter,
-			autoParam: ["orgCode=orgCode"]
-		},
-		data: {
-			simpleData: {
-				enable: true,
-				idKey: "orgCode",
-				pIdKey: "parentCode"
-			},
-			key: {
-				name: "orgName"
-			}
-		},
-		view: {
-			selectedMulti: false,
-			//			dblClickExpand: false
-		},
-		callback: {
-			onAsyncError: onAsyncError,
-			onDblClick: setInputInfo
-		}
-	};
 
-	function orgsfilter(treeId, parentNode, responseData) {
-		if(responseData.status == 1) {
-			var data = responseData.data;
-			if(data) {
-				return data;
-			} else {
-				return null;
-			}
-		} else {
-			layer.msg(responseData.message);
-			return null;
-		}
-	};
-	App.formAjaxJson(serverPath + 'contractType/listCompany', "post", {
-		'orgId': ''
-	}, successCallback, null, null, null, null, "formData")
-
-	function successCallback(result) {
-		var data = result.data;
-		if(data != "") {
-			if(scopeTree) {
-				scopeTree.destroy();
-			};
-			scopeTree = $.fn.zTree.init($("#scopeTree"), treeSetting, data);
-			var nodes = scopeTree.getNodes();
-			scopeTree.expandNode(nodes[0]);
-		} else {
-			layer.msg("暂无数据，请稍后重试");
-		}
-	}
-	//双击事件 
-	function setInputInfo(event, treeId, treeNode) {
-		setScopeChecked(treeNode);
-	}
-}
-//按钮选择
-function chooseScopeTree() {
-	var treeNode = scopeTree.getSelectedNodes()[0];
-	setScopeChecked(treeNode);
-}
-//按钮删除
-function deleteCheckedScope() {
-	if($("#scopeChecked .scopeItem.selected").length == 0) {
-		layer.msg("请选择已选内容进行移除");
-	} else {
-		$("#scopeChecked").html("");
-	}
-}
-//右侧赋值
-function setScopeChecked(treeNode) {
-	var name = treeNode.orgName;
-	var orgCode = treeNode.orgCode;
-	var html = '<div class="scopeItem" data-id=' + orgCode + '>' + name + '</div>';
-	$("#scopeChecked").html(html);
-}
-$("#scopeChecked").on("click", ".scopeItem", function() {
-	if($(this).hasClass("selected")) {
-		$(this).removeClass("selected");
-	} else {
-		$(this).addClass("selected");
-	}
-})
-/*
- * 选择稽核范围确定按钮点击
- */
-function setScope() {
-	$("#scopeModal").modal("hide");
-	if($("#scopeChecked .scopeItem").length > 0) {
-		var checkedText = $("#scopeChecked .scopeItem").text();
-		var companyCode = $("#scopeChecked .scopeItem").data("id");
-		var obj = {
-			"companyCode": companyCode,
-		};
-		var url = serverPath + "auditManager/updateAuditRange";
-		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
-		function successCallback(result) {
-			layer.msg("更改成功!");
-		}
-		$("#scope").text(checkedText);
-		$("#scope").attr("title", checkedText);
-		top.globalConfig.auditScope = companyCode;
-	}
-}
-
-/***************选择稽核范围结束***********************/
 /*
  * 获取收入总览图表数据
  */
+var incomeOverviewReceivable = null;
+var incomeOverviewReceived = null;
+var incomeOverviewInterval = null;
 function getIncomeOverviewData(){
 	var url = serverPath + "incomeManage/listIncomePosition";
-	var incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
-	var incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
+	incomeOverviewReceivable = echarts.init(document.getElementById('incomeOverviewReceivable'));
+	incomeOverviewReceived = echarts.init(document.getElementById('incomeOverviewReceived'));
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
@@ -525,6 +282,9 @@ function getIncomeOverviewData(){
 			};
 			incomeOverviewReceivable.setOption(overviewReceivableOption);
 			incomeOverviewReceived.setOption(overviewReceivedOption);
+			if(!App.IEVersionVA(9)) {
+				incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
+			};
 		};
 	}
 	function improperCallback(result){
@@ -533,8 +293,19 @@ function getIncomeOverviewData(){
 		var overviewReceivedOption = returnEmptyChartsOption('实收金额', '合同收入/风险收入\n累计实收金额占比情况', ['风险收入：0元', '合同收入：0元'], '实收金额：0元');
 		incomeOverviewReceivable.setOption(overviewReceivableOption);
 		incomeOverviewReceived.setOption(overviewReceivedOption);
+		if(!App.IEVersionVA(9)) {
+			incomeOverviewInterval = setInterval(incomeOverviewIntervalFn, 1000);
+		};
 		$("#chartsNote").html("*该图表暂未汇总到数据");
 	}
+}
+function incomeOverviewIntervalFn(){
+	if($("#incomeOverviewReceived canvas").width() < 100){
+		incomeOverviewReceivable.resize();
+		incomeOverviewReceived.resize();
+	}else{
+		clearInterval(incomeOverviewInterval);
+	};
 }
 /*
  * 获取收入预测图表数据
@@ -553,7 +324,6 @@ function getIncomeAnalysisData(){
 		$("#incomeAnalysis").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
 	}
 }
-
 
 function returnChartsOption(title, subTitle, data, seriesName) {
 	var minAngleValue = 6;
@@ -596,11 +366,12 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 	        {
 	            name: seriesName,
 	            type: 'pie',
-	            radius : '55%',
-	            center: ['50%', '53%'],
-	            minAngle: minAngleValue,
+//	            radius : '55%',
+//	            center: ['50%', '53%'],
+				radius: ['30%', '53%'],
+				minAngle: minAngleValue,
 	            clockwise: false,
-	            startAngle: 0,
+//	            startAngle: 0,
 //	            hoverAnimation: false,
 				label: {
  					color: "#333",
@@ -626,7 +397,7 @@ function returnChartsOption(title, subTitle, data, seriesName) {
 	            data:data
 	        }
 	    ],
-	    color:['#ed8b00', '#0070c0']
+	    color:['#FD6D64', '#73D2FD']
 	};
 	return overviewReceivableOption;
 };
@@ -674,9 +445,10 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			name: '',
 			type: 'pie',
 			clockwise: false,
-			startAngle: 0,
-			radius: '55%',
-			center: ['50%', '53%'],
+//			startAngle: 0,
+//			radius: '55%',
+//			center: ['50%', '53%'],
+			radius: ['30%', '53%'],
 			label: {
 				show: false
 			},
@@ -685,20 +457,22 @@ function returnEmptyChartsOption(title, subTitle, data, toolTip) {
 			},
 			data: seriesData
 		}],
-		color: ['#bfbfbf', '#bfbfbf']
+		color: ['#DBDBDB', '#DBDBDB']
 	};
 	return option;
 };
 /*
  * 收入预测图表生成
  */
+var incomeAnalysis = null;
+var incomeAnalysisInterval = null;
 function initIncomeAnalysis(incomedata) {
 	var accountPeriodX = [];
 	$.each(incomedata.accountPeriodX,function(k,v){
 		var acountPeriodXItem = parseInt(v.substring(4,6)) + '月';
 		accountPeriodX.push(acountPeriodXItem);
 	});
-	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
+	incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
 	var incomeAnalysisOption = {
 		title : {
 	        text: '2018年收入预测分析',
@@ -778,6 +552,7 @@ function initIncomeAnalysis(incomedata) {
 	                normal: {
 	                    show: true,
 	                    position: 'top',
+	                    color:'#333',
 	                    formatter:function(params){
 		                	return App.unctionToThousands(params.data);
 		                }
@@ -786,7 +561,169 @@ function initIncomeAnalysis(incomedata) {
 		        data: incomedata.totalArray
 		    }
 	    ],
-	    color:['#0070c0', '#ed8b00','#a0a0a0']
+	    color:['#73D2FD','#FD6D64','#DBDBDB']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
+	if(!App.IEVersionVA(9)) {
+		incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	};
 }
+function incomeAnalysisIntervalFn(){
+	if($("#incomeAnalysis canvas").width() < 200){
+		incomeAnalysis.resize();
+	}else{
+		clearInterval(incomeAnalysisInterval);
+	};
+}
+/***************选择稽核范围开始***********************/
+/*
+ * 设置初始稽核范围
+ */
+function setAuditScope() {
+	var obj = {
+		companyCode: config.companyCode
+	};
+	var url = config.serverPath + "auditManager/getAuditRangeByStaffOrgId";
+	App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+	function successCallback(result) {
+		var data = result.data;
+		var orgName = data.orgName;
+		$("#scope,#scopeTitle").text(orgName);
+		var html = '<div class="scopeItem" data-id=' + data.auditRange + '>' + orgName + '</div>';
+		$("#scopeChecked").html(html);
+		config.auditScope = data.auditRange;
+	}
+}
+/*
+ * 选择稽核范围
+ */
+function changeScope() {
+	if(config.dataPermission == 3) {
+		$("#scopeModal").modal("show");
+		if(!scopeTree) {
+			initSopeChooseTree();
+		}
+	} else {
+		layer.alert("您的权限不足，不能修改稽核范围。",{icon:2});
+	}
+}
+var scopeTree;
+/*
+ * 生成稽核部门树————ztree
+ */
+function initSopeChooseTree() {
+	var treeSetting = {
+		async: {
+			enable: true,
+			url: config.serverPath + "contractType/listCompany",
+			type: "post",
+			dataType: 'json',
+			dataFilter: orgsfilter,
+			autoParam: ["orgCode=orgCode"]
+		},
+		data: {
+			simpleData: {
+				enable: true,
+				idKey: "orgCode",
+				pIdKey: "parentCode"
+			},
+			key: {
+				name: "orgName"
+			}
+		},
+		view: {
+			selectedMulti: false,
+			//			dblClickExpand: false
+		},
+		callback: {
+			onAsyncError: onAsyncError,
+			onDblClick: setInputInfo
+		}
+	};
+
+	function orgsfilter(treeId, parentNode, responseData) {
+		if(responseData.status == 1) {
+			var data = responseData.data;
+			if(data) {
+				return data;
+			} else {
+				return null;
+			}
+		} else {
+			layer.msg(responseData.message);
+			return null;
+		}
+	};
+	App.formAjaxJson(config.serverPath + 'contractType/listCompany', "post", {
+		'orgId': ''
+	}, successCallback, null, null, null, null, "formData")
+
+	function successCallback(result) {
+		var data = result.data;
+		if(data != "") {
+			if(scopeTree) {
+				scopeTree.destroy();
+			};
+			scopeTree = $.fn.zTree.init($("#scopeTree"), treeSetting, data);
+			var nodes = scopeTree.getNodes();
+			scopeTree.expandNode(nodes[0]);
+		} else {
+			layer.msg("暂无数据，请稍后重试");
+		}
+	}
+	//双击事件 
+	function setInputInfo(event, treeId, treeNode) {
+		setScopeChecked(treeNode);
+	}
+}
+//按钮选择
+function chooseScopeTree() {
+	var treeNode = scopeTree.getSelectedNodes()[0];
+	setScopeChecked(treeNode);
+}
+//按钮删除
+function deleteCheckedScope() {
+	if($("#scopeChecked .scopeItem.selected").length == 0) {
+		layer.msg("请选择已选内容进行移除");
+	} else {
+		$("#scopeChecked").html("");
+	}
+}
+//右侧赋值
+function setScopeChecked(treeNode) {
+	var name = treeNode.orgName;
+	var orgCode = treeNode.orgCode;
+	var html = '<div class="scopeItem" data-id=' + orgCode + '>' + name + '</div>';
+	$("#scopeChecked").html(html);
+}
+$("#scopeChecked").on("click", ".scopeItem", function() {
+	if($(this).hasClass("selected")) {
+		$(this).removeClass("selected");
+	} else {
+		$(this).addClass("selected");
+	}
+})
+/*
+ * 选择稽核范围确定按钮点击
+ */
+function setScope() {
+	$("#scopeModal").modal("hide");
+	if($("#scopeChecked .scopeItem").length > 0) {
+		var checkedText = $("#scopeChecked .scopeItem").text();
+		var companyCode = $("#scopeChecked .scopeItem").data("id");
+		var obj = {
+			"companyCode": companyCode,
+		};
+		var url = serverPath + "auditManager/updateAuditRange";
+		App.formAjaxJson(url, "POST", JSON.stringify(obj), successCallback);
+		function successCallback(result) {
+			$("#scope,#scopeTitle").text(checkedText);
+			config.auditScope = companyCode;
+			layer.alert("更改成功",{icon:1},function(){
+				top.showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
+			});
+		}
+	}
+}
+
+/***************选择稽核范围结束***********************/

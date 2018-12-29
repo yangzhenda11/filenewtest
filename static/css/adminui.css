@@ -588,8 +588,9 @@ Demo Utils
 /***
 Users
 ***/
-	.user-info {
-  	margin-top: 3px; }
+/*样式修改margin-top: 3px;*/
+	/*.user-info {
+  	margin-top: 3px; }*/
   .user-info img {
     float: left;
     margin-right: 5px; }
@@ -987,9 +988,9 @@ Dropdown Menu Badges
 Custom buttons based on bootstrap SASS
 ***/
 /***
-Custom color buttons 
+Custom color buttons  样式修改按钮注释
 ***/
-.btn.primary {
+/*.btn.primary {
   color: #FFF;
   background-color: #dc2a32;
   border-color: #dc2a32; }
@@ -1559,7 +1560,10 @@ Custom color buttons
   border-left: 4px solid #BF55EC !important; }
 
 .btn.purple.btn-no-border:not(.active) {
-  border-color: transparent; }
+  border-color: transparent; }*/
+/***
+Custom color buttons
+***/
 
 /* Circle Buttons */
 /*.btn-circle {
@@ -4823,12 +4827,12 @@ Light Table
       border-radius: 100%; }
   .table.table-light.table-hover > tbody > tr > td:hover,
   .table.table-light.table-hover > tbody > tr > th:hover, .table.table-light.table-hover > tbody > tr:hover > td {
-    background: #f9fafb !important; }
-
+    background: #f9fafb; }
+/*样式修改#f3f4f6*/
 .table-hover > tbody > tr:hover,
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > td.td-split > .table td {
-  background: #f3f4f6 !important; }
+  background: #E9F5FC; }
 
 .table-striped > tbody > tr:nth-of-type(odd) > td.td-split > .table td {
   background-color: #fbfcfd; }
@@ -7054,22 +7058,21 @@ html, body, .page-content {
 
 .page-content.scroller {
   padding: 10px 12px 10px 10px !important; }
-
+/*样式修改*/
 .page-search {
   position: relative;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #EEF1F5;
-  min-height: 40px;
-  margin-top: -5px; }
+  /*margin-bottom: 5px;*/
+  padding-bottom: 4px;
+  /*border-bottom: 1px solid #EEF1F5;*/
+  min-height: 40px;}
 
 .page-search .page-search-form {
   padding-right: 110px;
   overflow: hidden; }
-
+/*样式修改*/
 .page-search .page-search-form .input-group {
-  margin-bottom: 5px;
-  margin-top: 5px; }
+  margin-bottom: 4px;
+  margin-top: 4px; }
 
 .page-search .page-search-action {
   position: absolute;
@@ -7104,10 +7107,8 @@ html, body, .page-content {
 .page-search-moreBody {
   display: none; }
 /*合同修改*/
-/*.form-fieldset {
-  margin-bottom: 10px; }
-  padding: 10px 0*/
-  .form-fieldset > .form-fieldset-title {
+/*样式修改*/
+  /*.form-fieldset > .form-fieldset-title {
     position: relative;
     padding: 16px 0 10px;
     border-bottom: 2px solid #f2f2f2;
@@ -7121,9 +7122,57 @@ html, body, .page-content {
         display: inline-block;
         padding: 4px 6px; }
         .form-fieldset > .form-fieldset-title > .form-fieldset-tools > a > .fa {
-          font-size: 20px; }
+          font-size: 20px; }*/
+.form-fieldset{
+	margin-bottom: 4px;
+}
+.form-fieldset-title{
+	position: relative;
+	padding: 0;
+	height: 25px;
+	line-height: 25px;
+	color: #fff;
+	background: #DDE0E2;
+	cursor: pointer;
+}
+.form-fieldset > .form-fieldset-title > .fieldset-title{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+.form-fieldset > .form-fieldset-title > .fieldset-title > p{
+	background: url(../img/block_title_left.gif) repeat-x;
+	float: left;
+	margin: 0;
+	padding: 0 10px 0 15px;
+	font-size: 13px;
+	font-family: "新宋体";
+	font-weight: bold;
+}
+.form-fieldset > .form-fieldset-title > .fieldset-title > span{
+	background: url(../img/block_title_right.gif) no-repeat left;
+	float: left;
+	width: 40px;
+	height: 25px;
+}
+.form-fieldset > .form-fieldset-title > .form-fieldset-tools{
+	width: 100%;
+	height: 25px;
+}
+.form-fieldset > .form-fieldset-title > .form-fieldset-tools a{
+	float: right;
+	height: 25px;
+}
+.form-fieldset > .form-fieldset-title > .form-fieldset-tools a i{
+	color: #d11718 !important;
+	font-size: 26px !important;
+	padding-top: 6px;
+	padding-right: 10px;
+}
+/*样式修改padding: 10px 15px 0*/
   .form-fieldset > .form-fieldset-body {
-    padding: 10px 15px 0; }
+    padding: 0; }
 
 .text-ellipsis {
   overflow: hidden;
@@ -8070,10 +8119,10 @@ Datatables general customization
 ***/
 .dataTables_wrapper .table tr td, .dataTables_wrapper .table tr th {
   white-space: nowrap; }
-
+/*样式修改#707070*/
 .dataTables_wrapper .table > thead > tr {
-  color: #707070;
-  background: repeat-x #F5F5F5; }
+  color: #333;
+  /*background: repeat-x #F5F5F5;*/ }
 
 .dt-footer-wrapper {
   padding-top: 4px; }
@@ -8166,13 +8215,14 @@ Extended pagination
 /***
 Scroller Extension
 ***/
+/*样式修改表格e7ecf1*/
 .dataTables_scrollHead {
-  border-bottom: 1px solid #e7ecf1 !important; }
+  border-bottom: 1px solid #ddd !important; }
   .dataTables_scrollHead thead th {
     border-bottom: 0 !important; }
-
+/*样式修改表格e7ecf1*/
 .dataTables_scrollBody {
-  border-bottom: 1px solid #e7ecf1 !important; }
+  border-bottom: 1px solid #ddd !important; }
 
 .table-both-scroll .dataTables_scrollBody {
   border-bottom: 0 !important; }

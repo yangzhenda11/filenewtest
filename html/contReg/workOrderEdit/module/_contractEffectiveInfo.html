@@ -1,15 +1,17 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-		<span><i class="iconfont icon-layers"></i> 合同生效信息</span>
+		<div class="fieldset-title">
+			<p>合同生效信息</p><span></span>
+		</div>
 		<div class="form-fieldset-tools">
 			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body">
 		<div class="row defaultFieldsetForm" id="validityForm">
-			<div class="portlet" id="undertakerCommitmentContent">
-				<div class="portlet-body form">
-					<p class="margin-top-10">承办人确认信息：</p>
+			<div class="portlet" id="undertakerCommitmentContent" style="margin: 10px;">
+                <div class="portlet-body form">
+                    <p class="margin-top-10">承办人确认信息：</p>
 					<div>
 						<label class="ui-checkbox">
 							<input type="checkbox" value="1" name="undertakerCommitment">
@@ -18,11 +20,11 @@
 							各方均已签字盖章，签字盖章的合同文本与系统内最终审批的合同文本一致。
 						</label>
 					</div>
-				</div>
-			</div>
-			<div class="portlet hidden" id="adminCommitmentContent">
-				<div class="portlet-body form">
-					<p class="margin-top-10">合同管理员确认信息：</p>
+            	</div>
+       	    </div>
+       	    <div class="portlet hidden" id="adminCommitmentContent" style="margin:10px;">
+                <div class="portlet-body form">
+                    <p class="margin-top-10">合同管理员确认信息：</p>
 					<div>
 						<label class="ui-checkbox">
 							<input type="checkbox" value="1" name="adminCommitment">
@@ -31,17 +33,17 @@
 							本人确认已收到经各方签字盖章完毕的纸质合同文本，并确认系统内的签订盖章日期与合同文本内的签订盖章日期一致。
 						</label>
 					</div>
-				</div>
-			</div>
-			<div class="portlet" id="payerAccountInfo">
-				<div class="portlet-title ">
-					<div class="caption font-dark contract">
-						<span class="caption-subject bold uppercase">我方签订盖章日期信息</span>
-					</div>
-				</div>
-				<div class="portlet-body">
-					<table class="table table-hover table-bordered table-striped table-align">
-						<thead>
+            	</div>
+       	    </div>
+       	    <div class="portlet" id="payerAccountInfo" style="margin: 10px;">
+                <div class="portlet-title ">
+                    <div class="caption font-dark contract">
+                        <span class="caption-subject bold uppercase">我方签订盖章日期信息</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-hover table-bordered table-striped table-align">
+		            	<thead>
 							<tr>
 								<th style="width: 10%;">序号</th>
 								<th style="width: 55%;">我方主体</th>
@@ -54,17 +56,17 @@
 							</tr>
 						</tbody>
 					</table>
-				</div>
-			</div>
-			<div class="portlet" id="payerAccountInfo">
-				<div class="portlet-title ">
-					<div class="caption font-dark contract">
-						<span class="caption-subject bold uppercase">对方签订盖章日期信息</span>
-					</div>
-				</div>
-				<div class="portlet-body">
-					<table class="table table-hover table-bordered table-striped table-align">
-						<thead>
+            	</div>
+       	   	</div>
+       	    <div class="portlet" id="payerAccountInfo" style="margin: 10px;">
+                <div class="portlet-title ">
+                    <div class="caption font-dark contract">
+                        <span class="caption-subject bold uppercase">对方签订盖章日期信息</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-hover table-bordered table-striped table-align">
+		            	<thead>
 							<tr>
 								<th style="width: 10%;">序号</th>
 								<th style="width: 55%;">对方主体</th>
@@ -165,7 +167,7 @@
 		var effevtNowDate = new Date().getTime();
 		effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 		if(App.checkDate(expiryDate, effevtNowDate)) {
-			layer.msg("终止日期不能晚于当前日期");
+			layer.msg("终止日期不能早于当前日期");
 		} else {
 			layer.confirm("请确认是否更新？", {
 				icon: 7,
@@ -269,16 +271,17 @@
 	function dataChangeEvent(dom) {
 		var effectiveDate = $("#effectiveDate").val();
 		var expiryDate = $("#expiryDate").val();
-		if(!App.checkDate(effectiveDate, expiryDate)) {
-			$(dom).val("");
-			layer.msg("终止日期不能早于生效日期");
-		}
 		if(editIdentify.isCanUpdateExpiryDate) {
 			var effevtNowDate = new Date().getTime();
 			effevtNowDate = App.formatDateTime(effevtNowDate, "yyyy-MM-dd");
 			if(App.checkDate(expiryDate, effevtNowDate)) {
 				$(dom).val("");
-				layer.msg("终止日期不能晚于当前日期");
+				layer.msg("终止日期不能早于当前日期");
+			}
+		}else{
+			if(!App.checkDate(effectiveDate, expiryDate)) {
+				$(dom).val("");
+				layer.msg("终止日期不能早于生效日期");
 			}
 		}
 	}

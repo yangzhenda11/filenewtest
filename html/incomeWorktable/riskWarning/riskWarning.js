@@ -1,6 +1,9 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+
+var warningCharts = null;
+var warningOverviewChartsInterval = null;
 $(function(){
 	/*
 	 * 风险预警功能，具备全省权限的稽核管理角色和商务经理角色才显示。
@@ -893,7 +896,7 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 生成预警总览图表
  */
 function initWarningOverviewCharts(){
-	var chartsDom = echarts.init(document.getElementById('warningOverviewCharts'));
+	warningCharts = echarts.init(document.getElementById('warningOverviewCharts'));
 	var lineArrearage =parseInt($("#lineIsArrearage").text());
 	var lineException =parseInt($("#lineRentNotBill").text())+parseInt($("#lineRentedHaveBill").text());	
 	var roleArr = config.curRole;
@@ -960,16 +963,25 @@ function initWarningOverviewCharts(){
 	        itemStyle: {   
                 normal:{  
                     color: function (params){
-                        var colorList = ['#00a3e2', '#ffc100','#bfbfbf','#85be23'];
+                        var colorList = ['#FD6D64', '#FECB35','#9469F4','#73D2FD'];
                         return colorList[params.dataIndex];
                     }
                 },
            	}
 	    }]
 	};
-	chartsDom.setOption(option);
+	warningCharts.setOption(option);
+	if(!App.IEVersionVA(9)) {
+		warningOverviewChartsInterval = setInterval(warningChartsIntervalFn, 1000);
+	};
 }
-
+function warningChartsIntervalFn(){
+	if($("#warningOverviewCharts canvas").width() < 300){
+		warningCharts.resize();
+	}else{
+		clearInterval(warningOverviewChartsInterval);
+	};
+}
 
 /*
  *线路已欠费，线路租用中欠费            跳转明细查看
@@ -978,8 +990,6 @@ function jumpRiskList(riskType,contractId){
 	var url = "/html/incomeWorktable/riskWarning/riskWarningList.html?returnBtn=true&contractId="+contractId+"&riskType="+riskType;
 	top.showSubpageTab(url,"查看线路明细");
 }
-
-
 
 /*
  *合同到期业务未停止      跳转明细查看

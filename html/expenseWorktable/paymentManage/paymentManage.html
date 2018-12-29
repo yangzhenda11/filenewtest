@@ -4,11 +4,11 @@
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
-<!-- BEGIN HEAD -->
+
 	<head>
 		<meta charset="UTF-8">
 		<title>收票与付款</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="Expires" content="0">
@@ -24,13 +24,13 @@
 	</head>
 	<body>
 		<div class="page-content">
-			<div class="portlet">
-				<div class="portlet-title">
-					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase">收票与付款</span>
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>收票与付款</p><span></span>
 					</div>
 				</div>
-				<div class="portlet-body">
+				<div class="form-fieldset-body">
 					<div class="buttonNavTabs" id="buttonNavTabs">
 						<button href="#invoice" data-id="invoice" data-toggle="tab" class="btn primary btn-inline check">发票管理</button>
 						<button href="#payment" data-id="payment" data-toggle="tab" class="btn primary btn-inline">付款管理</button>
@@ -53,10 +53,12 @@
 					    	</div>
 					    	<div class="form-fieldset" style="clear: both;">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 合同信息明细</span>
+									<div class="fieldset-title">
+										<p>合同信息明细</p><span></span>
+									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="row">
+									<div class="paddingLR10">
 										<div class="invoiceIncomeTitle">
 											<p>累计不含增值税合同金额：<span id="contractValueNovatSum"></span></p>
 											<p>累计订单不含税金额：<span id="poAmountSumSum"></span></p>
@@ -103,11 +105,13 @@
 	    						</div>
 					    	</div>
 					    	<div class="form-fieldset" style="clear: both;">
-								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 合同信息明细</span>
+					    		<div class="form-fieldset-title">
+									<div class="fieldset-title">
+										<p>合同信息明细</p><span></span>
+									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="row">
+									<div class="paddingLR10">
 										<div class="invoiceIncomeTitle">
 											<p>累计含增值税合同金额：<span id="contractValueSum"></span></p>
 											<p>累计含税开票金额：<span id="invoiceSumSum"></span></p>

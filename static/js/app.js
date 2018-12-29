@@ -660,6 +660,7 @@ var App = function() {
 					}
 				},
 				error: function(result) {
+					loadEnd();
 					if(errorCallback){
 						errorCallback(result);
 					}else if(result.status == 0){
@@ -1089,7 +1090,9 @@ var App = function() {
 		formatDateTime: function(inputTime,type) {
 			if(inputTime){
 				var inputTime = String(inputTime);
-				if(inputTime.indexOf("-") == -1){
+				if(inputTime.indexOf("GMT") != -1){
+					var date = new Date(inputTime);
+				}else if(inputTime.indexOf("-") == -1){
 					var date = new Date(Number(inputTime));
 				}else{
 					var date = new Date(inputTime.replace(/-/g,"/"));
@@ -1182,59 +1185,74 @@ var App = function() {
          * }
          */
         setCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-        	var cacheList = [];
-        	$("#"+el).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
-				var formName = $(formItem).attr('name');
-				if(formName != undefined){
-					var formType = formItem.type;
-					if(formType == "text" || formType == "hidden" || formType == "select-one") {
-						var val = $(formItem).val();
-						if(val){
-							var cacheItem = {
-								name: formName,
-								val: val
-							};
-							cacheList.push(cacheItem);
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		var cacheList = [];
+	        	$("#"+elArr[i]).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+					var formName = $(formItem).attr('name');
+					if(formName != undefined){
+						var formType = formItem.type;
+						if(formType == "text" || formType == "hidden" || formType == "select-one") {
+							var val = $(formItem).val();
+							if(val){
+								var cacheItem = {
+									name: formName,
+									val: val
+								};
+								cacheList.push(cacheItem);
+							}
 						}
 					}
-				}
-			});
-			if(cacheList.length > 0){
+				});
 				if(top._paramCache[pageId] == undefined){
 					top._paramCache[pageId] = {};
 				};
-				top._paramCache[pageId][el] = cacheList;
-			}
+				top._paramCache[pageId][elArr[i]] = cacheList;
+        	}
         },
         /*
          * 页面参数读取赋值
          */
         readCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-			if(top._paramCache[pageId] == undefined){
+        	if(top._paramCache[pageId] == undefined){
 				return;
-			}else if(top._paramCache[pageId][el] == undefined){
-				return;
-			}else{
-				var cacheList = top._paramCache[pageId][el];
-				$.each(cacheList, function(k,v) {
-	                var sel = ":input[name='" + v.name + "']";
-	                var obj = $("#"+el).find(sel);
-	                if(obj.length > 0){
-	                    var objType = obj[0].type;
-	                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
-	                        obj.val(v.val);
-	                        if(objType == "select-one"){
-	                        	try{
-	                        		obj.trigger('change');
-	                        	}catch(e){}
-	                        }
-	                    }
-	                }
-				});
-				delete top._paramCache[pageId][el];
-			}
+			};
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		if(top._paramCache[pageId][elArr[i]] == undefined){
+					return;
+				}else{
+					var cacheList = top._paramCache[pageId][elArr[i]];
+					$.each(cacheList, function(k,v) {
+		                var sel = ":input[name='" + v.name + "']";
+		                var obj = $("#"+elArr[i]).find(sel);
+		                if(obj.length > 0){
+		                    var objType = obj[0].type;
+		                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
+		                        obj.val(v.val);
+		                        if(objType == "select-one"){
+		                        	try{
+		                        		obj.trigger('change');
+		                        	}catch(e){}
+		                        }
+		                    }
+		                }
+					});
+					delete top._paramCache[pageId][elArr[i]];
+				}
+        	}
         },
         /*
          * 页面参数是否存在
@@ -1308,7 +1326,7 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo,qw){
+		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
     		if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            var options = {
@@ -1375,24 +1393,47 @@ var App = function() {
 		 * 获取字典信息
 		 */
 		getDictInfo:function(code,notPackage){
-			var postData = {"dictId": code};
-			var resturnData = {};
-			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
-
-			function successCallback(result) {
-				var data = result.data;
-				if(notPackage){
-					resturnData = data;
-				}else{
-					for(var i = 0; i < data.length; i++){
-						resturnData[data[i].dictValue] = data[i].dictLabel
-					};
-				}
-			};
-			function improperCallback(result){
-				layer.msg("字典项"+code+"异常");
+			var sysDictsCache = top.sysDictsCache;
+			if(sysDictsCache.length == 0){
+				layer.msg("字典项缓存异常,请联系系统管理员");
+				return {};
+			}else if(notPackage){
+				var resturnData = [];
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData.push(dictItem)
+					}
+				};
+				return resturnData;
+			}else{
+				var resturnData = {};
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData[dictItem.dictValue] = dictItem.dictLabel
+					}
+				};
+				return resturnData;
 			}
-			return resturnData;
+//			var postData = {"dictId": code};
+//			var resturnData = {};
+//			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
+//
+//			function successCallback(result) {
+//				var data = result.data;
+//				if(notPackage){
+//					resturnData = data;
+//				}else{
+//					for(var i = 0; i < data.length; i++){
+//						resturnData[data[i].dictValue] = data[i].dictLabel
+//					};
+//				}
+//			};
+//			function improperCallback(result){
+//				layer.msg("字典项"+code+"异常");
+//			}
+//			return resturnData;
 		},
 		pagehandleFormFieldset : function() {
 			if($('.form-fieldset .form-collapse').length) {
@@ -2114,7 +2155,7 @@ if (!Array.prototype.lastIndexOf) {
       }
     }
     return -1;
-  };
+  	};
 }
 $(function() {
     // 如果不支持placeholder，用jQuery来完成
@@ -2127,7 +2168,6 @@ $(function() {
                 setInputSupportPlaceholder(self, val);
             }
         );
-
         /**
          *  对password框的特殊处理
          * 1.创建一个text框 

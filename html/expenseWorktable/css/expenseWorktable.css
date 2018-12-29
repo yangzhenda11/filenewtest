@@ -10,12 +10,16 @@
 	top: 0;
 }
 #milestonePageSearch{
-	padding: 20px 0 20px;
+	padding: 5px 0;
 }
 #milestonePageSearch .right-toolbars{
 	position: absolute;
 	right: 15px;
-	top: 0;
+	top: -10px;
+}
+.legendGroup{
+	float: left;
+	margin: 8px 0 0 20px;
 }
 .legendItem .legendPic{
 	width: 16px;
@@ -42,7 +46,7 @@ td.milestoneLegend{
 	padding: 0 !important;
 	border-left: none !important;
 	border-right: none !important;
-	/*min-height: 38px !important;*/
+	min-height: 38px !important;
 }
 .cycLegend{
 	width: 20px;
@@ -121,6 +125,7 @@ td.milestoneLegend{
 .invoiceIncomeTitle p{
 	font-weight: bold;
 	float: left;
+	margin:5px 0;
 }
 .invoiceIncomeTitle span{
 	display: inline-block;

@@ -1,6 +1,8 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-		<span><i class="iconfont icon-layers"></i> 合同定稿正文</span>
+		<div class="fieldset-title">
+			<p>合同定稿正文</p><span></span>
+		</div>
 		<div class="form-fieldset-tools">
 			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
@@ -30,7 +32,8 @@
 			var data = result.data;
 			if (data) {
 				$("#contractDraftInfoBtn").data("key",data.stored_id);
-				html =  '<a href="'+serverPath+'fileload/downloadS3?key='+data.stored_id+'">'+data.doc_name+'</a>';
+				$("#contractDraftInfoBtn").data("docname",data.doc_name);
+				html =  '<a onclick="contractDraftInfoDownload();">'+data.doc_name+'</a>';
 				$("#contractDraftInfoDiv").html(html);
 			} else{
 				$("#contractDraftInfoBtn").remove();
@@ -43,7 +46,19 @@
 	 */
 	function contractDraftInfoDownload(){
 		var downloadKey = $("#contractDraftInfoBtn").data("key");
-		var url = serverPath + 'fileload/downloadS3?key='+downloadKey;
-		location.href = encodeURI(url);	
+		var docName = $("#contractDraftInfoBtn").data("docname");
+		var xhr = new XMLHttpRequest();
+	    var str = "";
+        xhr.open('get', serverPath + 'fileload/downloadS3?key='+downloadKey, true);
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+        	console.log(this);
+            if (this.status === 200) {
+                var blob = this.response;
+                saveAs(blob, docName);
+            }
+        };
+        xhr.send(str);
 	}
 </script>

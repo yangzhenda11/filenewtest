@@ -100,6 +100,7 @@ function queryFeasorCli(){
 	var data = getValue_assistFeasor("changeAssist");
 	if(data){
 		data.wcardId = wcardId;
+		data.contractNumber = contractNumber;
 		data.contractName = $("#contractName").val();
 		App.formAjaxJson(serverPath + "contractPerformerManageController/saveAssistPerformerInfo", "post", JSON.stringify(data), successCallback,improperCallback);
 		function successCallback(result) {

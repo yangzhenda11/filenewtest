@@ -8,6 +8,8 @@ var globalConfig = {
     fileUploadPath: "/",
     /**后台服务地址 */
     serverPath: "/",
+    /** 当前用户所在组织的名称 */
+    curOrgName: null,
     /** 当前用户的岗位id （sys_staff_org表主键） */
     curStaffOrgId: null, 
     /** 当前用户组织深度*/
@@ -69,6 +71,7 @@ function userInfoSuccess(result) {
 	globalConfig.mainOrgFlag = data.mainOrgFlag;
 	globalConfig.permissions = data.permissions;
 	globalConfig.orgPath = data.orgPath;
+	globalConfig.curOrgName = data.orgName;
 }
 
 function userInfoError(result){

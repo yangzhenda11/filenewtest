@@ -159,7 +159,11 @@ $(document).ready(function() {
 		setWorktableMessageNumber();
 		var messageInterval = setInterval(setWorktableMessageNumber, messageSpace*60000);
         //请求用户信息成功后加载公告列表
-        getIndexNotiveTableInfo(true);
+        if(!App.IEVersionVA(10)){
+    		getIndexNotiveTableInfo(true);
+    	}else{
+    		$("#ieSupport").modal("show");
+    	};
         //请求用户信息成功后加载首页列表
         getHomePage();
     }
@@ -680,18 +684,31 @@ function getHomePage(){
     	$("#workItemDom").remove();
 		showSubpageTab("html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html","合同扫描件上传",false,true,true);
     }else{
+    	var IEVersionVA10 = App.IEVersionVA(10);
     	if(checkPageRoleType("income") || checkPageRoleType("expense")){
       		setWorktableRoleName();
     		if(checkPageRoleType("income",true)){
-	    		setIncomeHomePage();
+    			if(IEVersionVA10){
+    				$("#ieSupportNote").text("查看合同履行工作台：合同履行工作台 --> 收入类租线业务。");
+		    	}else{
+		    		setIncomeHomePage();
+		    	};
 	    	}else if(checkPageRoleType("expense",true)){
-	    		setExpenseHomePage();
+	    		if(IEVersionVA10){
+	    			$("#ieSupportNote").text("查看合同履行工作台：合同履行工作台 --> 支出类采购业务。");
+		    	}else{
+		    		setExpenseHomePage();
+		    	};
 	    	}
     	}else{
     		$("#workItemDom").remove();
-	    	showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,true,true);
-    	};
-    };
+    		if(IEVersionVA10){
+    			$("#ieSupportNote").text("查看我的待办请点击：我的工作 --> 待办事项。");
+	    	}else{
+	    		showSubpageTab("html/workflow/tasklist/task-todo.html","待办事项",false,true,true);
+	    	}
+    	}
+    }
 }
 //设置角色切换
 function setWorktableRoleName(){

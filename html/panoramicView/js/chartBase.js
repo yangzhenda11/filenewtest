@@ -1,7 +1,7 @@
 function returnBaseType(data,type){
 	if(type == 1){
 		if(data == 1 || data == 2){
-			return "#d11718";
+			return "#c00000";
 		}else if(data == 3){
 			return "#7F7F7F";
 		};
@@ -33,32 +33,32 @@ $.fn.D3Charts = function(options) {
 		data: [],
 		//点的类型
 		dot1: {
-			borderColor: '#333',
-			borderWidth: 4,
+			borderColor: '#2b2b2b',
+			borderWidth: 2,
 			dotR: 6,
-			dotColor: '#ccc'
+			dotColor: '#7f7f7f'
 		},
 		dot2: {
-			borderColor: '#333',
-			borderWidth: 4,
+			borderColor: '#2b2b2b',
+			borderWidth: 2,
 			dotR: 6,
-			dotColor: '#FD6D64'
+			dotColor: '#c00000'
 		},
 		dot3: {
-			borderColor: '#7F7F7F',
-			borderWidth: 4,
+			borderColor: '#cccccc',
+			borderWidth: 2,
 			dotR: 6,
-			dotColor: '#ccc'
+			dotColor: '#7f7f7f'
 		},
 		triangleType: {
 			'arrive': {
-				sizeR1: 6,
-				sizeR2: 10,
-				color: '#d11718'
+				sizeR1: 5,
+				sizeR2: 11,
+				color: '#c00000'
 			},
 			'notArrive': {
-				sizeR1: 6,
-				sizeR2: 10,
+				sizeR1: 5,
+				sizeR2: 11,
 				color: '#7F7F7F'
 			}
 		}
@@ -187,8 +187,7 @@ $.fn.D3Charts = function(options) {
 		if(item.style != 'solid') {
 			lineObj.style("stroke-dasharray", "5,5")
 		}
-	});
-
+});
 	//生成点
 	$.each(areaData, function(i, areaItem) {
 		var cx = i*rectWidth+rectWidth/2;
@@ -198,10 +197,15 @@ $.fn.D3Charts = function(options) {
 			svg.append("circle")
 				.attr("cx", areaXLinear(cx))
 				.attr("cy", areaYLinear(item.cy))
+				.attr("r", dotStyle.dotR + dotStyle.borderWidth*2)
+				.attr('fill', dotStyle.borderColor);
+			svg.append("circle")
+				.attr("cx", areaXLinear(cx))
+				.attr("cy", areaYLinear(item.cy))
 				.attr("r", dotStyle.dotR)
 				.attr("id", item.id)
 				.attr("data-status", item.status)
-				.style("stroke", dotStyle.borderColor)
+				.style("stroke", "#fff")
 				.style("stroke-width", dotStyle.borderWidth)
 				.attr('fill', dotStyle.dotColor)
 				.on('mouseover', function(e) {
@@ -209,8 +213,8 @@ $.fn.D3Charts = function(options) {
 						.interrupt()
 						.transition()
 						.duration(1000)
-						.attr("r", dotStyle.dotR + 2)
-						.attr('fill', dotStyle.borderColor)
+						.attr("r", dotStyle.dotR)
+						.attr('fill', dotStyle.dotColor)
 						.attr("stroke-opacity", '0')
 				})
 				.on('mouseout', function(e) {

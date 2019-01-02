@@ -72,7 +72,20 @@ function getContractBaseData(){
 
 /**************************************获取合同基本信息********************************************/
 
-
+function returnForamtDate(data){
+	var data = data.split("-");
+	var resultData = "";
+	$.each(data, function(k,v) {
+		if(k == 0){
+			resultData += v + "年";
+		}else if(k == 1){
+			resultData += v + "月";
+		}else if(k == 2){
+			resultData += v + "日";
+		}
+	});
+	return resultData;
+}
 
 /**************************************获取图表数据生成图表********************************************/
 //生成订单接收图表
@@ -98,7 +111,8 @@ function createOrderChart(contractNumber){
 				value: remainsPaymentNum,
 				name: '剩余未接收金额：'+remainsPaymentNum+'元'
 			}]);
-			$("#orderChartValue").text(parseFloat(getPaymentPercent*100) + "%")
+			$("#orderChartValue").text(parseFloat(getPaymentPercent*100) + "%");
+			$("#expenseOverviewNote").text(data.resultData)
 		}else{
 			$("#orderChartValue").text("0%");
 			var orderChartOption = circleChartsOption("订单接收","订单累计接收金额情况",[{value: 0,name: '累计接收金额：0元'},{value: 1,name: '剩余未接收金额：0元'}],true);
@@ -139,7 +153,8 @@ function createInvoiceChart(contractNumber){
 				value: remainsPaymentNum,
 				name: '剩余未开票金额：'+remainsPaymentNum+'元'
 			}]);
-			$("#invoiceChartValue").text(parseFloat(getPaymentPercent*100) + "%")
+			$("#invoiceChartValue").text(parseFloat(getPaymentPercent*100) + "%");
+			$("#expenseOverviewNote").text(data.resultData)
 		}else{
 			$("#invoiceChartValue").text("0%");
 			var invoiceChartOption = circleChartsOption("合同发票","累计开票金额情况",[{value: 0,name: '累计开票金额：0元'},{value: 1,name: '剩余未开票金额：0元'}],true);
@@ -169,8 +184,9 @@ function createPaymentChart(contractNumber){
 	function successCallback(result) {
 		var data = result.data;
 		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
-		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余含税未付款金额
+		var remainsPaymentNum  = data.noPayVateAmountSum;		//剩余含税未付款金额
 		var getPaymentPercent = data.noPayVateAmountPercent;		//累计含税付款金额百分比
+		alert(data.resultData);
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,
@@ -179,7 +195,8 @@ function createPaymentChart(contractNumber){
 				value: remainsPaymentNum,
 				name: '剩余含税未付款金额：'+remainsPaymentNum+'元'
 			}]);
-			$("#paymentChartValue").text(parseFloat(getPaymentPercent*100) + "%")
+			$("#paymentChartValue").text(parseFloat(getPaymentPercent*100) + "%");
+			$("#expenseOverviewNote").text(data.resultData)
 		}else{
 			$("#paymentChartValue").text("0%");
 			var paymentChartOption = circleChartsOption("合同付款","累计含税付款金额情况",[{value: 0,name: '累计含税付款金额：0元'},{value: 1,name: '剩余含税未付款金额：0元'}],true);

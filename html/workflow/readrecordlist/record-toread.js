@@ -86,16 +86,16 @@ function getTableToread(){
  * 跳转待阅页面
  */
 function  findDetail(readId,url,bussId) {
-//	var ajaxObj = {
-//	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
-//	    "type" : "post",
-//	    "data":{"readId":readId}
-//	};
-//	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
-//	function successCallback(result) {
+	var ajaxObj = {
+	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
+	    "type" : "post",
+	    "data":{"readId":readId}
+	};
+	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
+	function successCallback(result) {
 		App.setCache("searchForm");
 		App.changePresentUrl(url+"&bussid="+bussId);
-//	}
+	}
 }
 
 //查询岗位名称

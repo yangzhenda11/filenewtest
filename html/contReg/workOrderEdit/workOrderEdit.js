@@ -119,7 +119,7 @@ function queryFeasorCli(){
 				successMs += "</br>您已给  <span style='color:red;'>"+assistFeasorAddName+"</span> 发送了合同协助履行待阅！";
 			};
 			if(assistFeasorDelName){
-				successMs += "</br>您已给  <span style='color:red;'>"+assistFeasorDelName+"</span> 发送了合同失效协助履行待阅！";
+				successMs += "</br>您已给  <span style='color:red;'>"+assistFeasorDelName+"</span> 发送了合同协助履行失效待阅！";
 			};
 			layer.alert(successMs,{icon:1,closeBtn:0,area: '410px'},function(){
 				backPage();

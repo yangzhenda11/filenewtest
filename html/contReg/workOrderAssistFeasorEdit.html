@@ -101,7 +101,7 @@ var serverPath = config.serverPath;
  * 接受的配置参数
  */
 var parm = App.getPresentParm();
-var wcardId = null;
+var wcardId = parm.bussid;
 $(function(){
  	if(!parm.bussid){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
@@ -134,7 +134,7 @@ $(function(){
 		if(parm.flag==1){
 			var href="workOrderEdit/workOrderEdit.html?isucloud=true&pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
 		}else{
-			var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+			var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&gohistory=-2&wcardId="+ wcardId;
 		};
 		App.changePresentUrl(href);
 	}

@@ -1494,7 +1494,11 @@ function backPage(){
 			top.closeWindow();
 		});
 	}else{
-		window.history.go(-1);
+		if(parm.gohistory){
+			window.history.go(parm.gohistory);
+		}else{
+			window.history.go(-1);
+		}
 	}
 }
 /*

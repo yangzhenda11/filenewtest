@@ -1,17 +1,19 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+//初始化数据
+var defaultData =  {
+    "resourceCustomer": "3",
+    "resourceSign": "3",
+    "registerActivate": "3",
+    "businessLineRenting": "3",
+    "businessStopRenting": "3",
+    "ticketReceivables": "3",
+    "riskWarning": "3",
+    "contractCloseConclude": "3"
+};
+
 $(function(){
-	var defaultData =  {
-        "resourceCustomer": "3",
-        "resourceSign": "3",
-        "registerActivate": "3",
-        "businessLineRenting": "3",
-        "businessStopRenting": "3",
-        "ticketReceivables": "3",
-        "riskWarning": "3",
-        "contractCloseConclude": "3"
-   	};
    	initIncomeFlowCharts(defaultData);
 })
 
@@ -26,7 +28,6 @@ function getContractBaseData(){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
-			console.log(result);
 			var data = result.data;
  			if(data.contractNumber){
  				$("#contractBaseData,#incomeCharts").show();
@@ -43,14 +44,20 @@ function getContractBaseData(){
 				createIncomeChartCharts(contractNumber);
 				getIncomeFlowChartsData(contractNumber);
 			}else{
+				$("#contractBaseData,#incomeCharts").hide();
+				initIncomeFlowCharts(defaultData);
 				layer.alert("您输入的合同编号有误，请重新输入。",{icon:2});
 			}
 		}
 		function improperCallback(result){
 			var ms = result.message;
+			$("#contractBaseData,#incomeCharts").hide();
+			initIncomeFlowCharts(defaultData);
 			layer.alert(ms,{icon:2});
 		}
 	}else{
+		$("#contractBaseData,#incomeCharts").hide();
+		initIncomeFlowCharts(defaultData);
 		layer.alert("请输入合同编号。",{icon:2});
 	}
 }
@@ -219,7 +226,8 @@ function returnChartsOption(title, data) {
 	        {
 	            name: "",
 	            type: 'pie',
-				radius: ['35%', '60%'],
+	            radius: '60%',
+//				radius: ['35%', '60%'],
 				minAngle: minAngleValue,
 	            clockwise: false,
 				label: {
@@ -227,8 +235,8 @@ function returnChartsOption(title, data) {
  					formatter:"{d}%"
  				},
    				labelLine: {
-   					length: 5,
-   					length2: 5,
+   					length: 10,
+   					length2: 10,
    					lineStyle: {
    						color: "#333"
    					}
@@ -291,7 +299,8 @@ function returnEmptyChartsOption(title, data) {
 			name: '',
 			type: 'pie',
 			clockwise: false,
-			radius: ['35%', '60%'],
+			radius: '60%',
+//			radius: ['35%', '60%'],
 			label: {
 				show: false
 			},

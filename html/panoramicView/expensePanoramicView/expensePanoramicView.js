@@ -1,23 +1,24 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+//初始化图表数据
+var defaultData =  {
+    "resourceProject": "3",
+    "resourceSign": "3",
+    "resourcePurchase": "3",
+    "registerActivate": "3",
+    "businessOrderRelease": "3",
+    "businessOrderArrival": "3",
+    "businessOrderReceive": "3",
+    "supplierOrderConfirm": "3",
+    "supplierOrderDeliver": "3",
+    "supplierTicket": "3",
+    "invicePaymentVerification": "3",
+    "invicePaymentPayment": "3",
+    "riskWarning": "3",
+    "contractCloseConclude": "3"
+};
 $(function(){
-	var defaultData =  {
-        "resourceProject": "3",
-        "resourceSign": "3",
-        "resourcePurchase": "3",
-        "registerActivate": "3",
-        "businessOrderRelease": "3",
-        "businessOrderArrival": "3",
-        "businessOrderReceive": "3",
-        "supplierOrderConfirm": "3",
-        "supplierOrderDeliver": "3",
-        "supplierTicket": "3",
-        "invicePaymentVerification": "3",
-        "invicePaymentPayment": "3",
-        "riskWarning": "3",
-        "contractCloseConclude": "3"
-   	};
    	initExpenseFlowCharts(defaultData);
 })
 
@@ -46,20 +47,25 @@ function getContractBaseData(){
 					$("input[name='isFixed'][value='2']").attr("checked","checked");
 				};
 				$("#contractBaseData,#expenseCharts").show();
-				createOrderChart();
-				createInvoiceChart();
-				createPaymentChart();
+				createOrderChart(contractNumber);
+				createInvoiceChart(contractNumber);
+				createPaymentChart(contractNumber);
 				getIncomeFlowChartsData(contractNumber);
 			}else{
+				$("#contractBaseData,#expenseCharts").hide();
+				initExpenseFlowCharts(defaultData);
 				layer.alert("您输入的合同编号有误，请重新输入。",{icon:2});
 			}
 		}
 		function improperCallback(result){
 			var ms = result.message;
+			$("#contractBaseData,#expenseCharts").hide();
+			initExpenseFlowCharts(defaultData);
 			layer.alert(ms,{icon:2});
 		}
-		
 	}else{
+		$("#contractBaseData,#expenseCharts").hide();
+		initExpenseFlowCharts(defaultData);
 		layer.alert("请输入合同编号。",{icon:2});
 	}
 }
@@ -70,8 +76,7 @@ function getContractBaseData(){
 
 /**************************************获取图表数据生成图表********************************************/
 //生成订单接收图表
-function createOrderChart(){
-	var contractNumber = $("#searchContractNumber").val();
+function createOrderChart(contractNumber){
 	var url = serverPath + "analysisPayController/orderChartOption";
 	var postData = {
 			contractNumber:contractNumber
@@ -81,6 +86,7 @@ function createOrderChart(){
 	function successCallback(result) {
 		console.log(result);
 		var data = result.data;
+	
 		var getPaymentNum = data.getPaymentNum;			//累计接收金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未接收金额
 		var getPaymentPercent = data.getPaymentPercent;		//累计接收金额百分比
@@ -107,9 +113,8 @@ function createOrderChart(){
 	}
 }
 //生成合同发票图表
-function createInvoiceChart(){
-	var contractNumber = $("#searchContractNumber").val();
-	var isFixed = $('input[isFixed="sex"]:checked').val(); 
+function createInvoiceChart(contractNumber){
+	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
 		var url = serverPath + "analysisPayController/FixedAmountOption";
 	}else if(isFixed==2){
@@ -122,10 +127,9 @@ function createInvoiceChart(){
 	var invoiceChart = echarts.init(document.getElementById('invoiceChart'));
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
-		console.log(result);
 		var data = result.data;
 		var getPaymentNum = data.notTaxPaymentNum;			//累计开票金额
-		var remainsPaymentNum  = data.notTaxPaymentNum;		//剩余未开票金额
+		var remainsPaymentNum  = data.notRemainsPaymentNum;		//剩余未开票金额
 		var getPaymentPercent = data.noInvoiceNnovatePercent;		//累计开票金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var invoiceChartOption = circleChartsOption('合同发票',"累计开票金额情况", [{
@@ -150,9 +154,8 @@ function createInvoiceChart(){
 	}
 }
 //生成合同付款图表
-function createPaymentChart(){
-	var contractNumber = $("#searchContractNumber").val();
-	var isFixed = $('input[isFixed="sex"]:checked').val(); 
+function createPaymentChart(contractNumber){
+	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
 		var url = serverPath + "analysisPayController/FixedAmountOption";
 	}else if(isFixed==2){
@@ -164,7 +167,6 @@ function createPaymentChart(){
 	var paymentChart = echarts.init(document.getElementById('paymentChart'));
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
-		console.log(result);
 		var data = result.data;
 		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余含税未付款金额
@@ -355,23 +357,20 @@ function initExpenseFlowChartsTips(data){
 		paymentDataTips = "暂无数据";
 	};
 	if(riskWarningData){
-		riskWarningDataTips = "";
-		var riskWarningDataFlag = 1;
-		if(riskWarningData.expireUnconclude == 1){
-			riskWarningDataTips += "<div class='tipsContent'>" + riskWarningDataFlag + ".该合同已到期未办结。" + "</div>";
-			riskWarningDataFlag ++;
-		};
-		if(riskWarningData.aboutExpireZeroThirty == 1){
-			riskWarningDataTips += "<div class='tipsContent'>" + riskWarningDataFlag + ".该合同即将到期0-30天。" + "</div>";
-			riskWarningDataFlag ++;
-		};
-		if(riskWarningData.aboutExpireThirtySixty == 1){
-			riskWarningDataTips += "<div class='tipsContent'>" + riskWarningDataFlag + ".该合同即将到期30-60。" + "</div>";
-			riskWarningDataFlag ++;
-		};
+		riskWarningDataTips = "<div class='tipsTopCon'>本合同存在以下类型风险：</div>"+
+							"<div class='tipsContent'><input type='checkbox' "+returnChecked(riskWarningData.expireUnconclude)+" />该合同已到期未办结</div>"+
+							"<div class='tipsContent'><input type='checkbox' "+returnChecked(riskWarningData.aboutExpireZeroThirty)+" />该合同即将到期0-30天</div>";
+//							"<div class='tipsContent'><input type='checkBox' "+returnChecked(riskWarningData.aboutExpireThirtySixty)+" />该合同即将到期30-60</div>";
 	}else{
 		riskWarningDataTips = "暂无数据";
 	};
+	function returnChecked(data){
+		if(data == 1){
+			return "checked='checked'";
+		}else{
+			return '';
+		}
+	}
 };
 var hoverIdList = ["businessOrderRelease","businessOrderReceive","invicePaymentVerification","invicePaymentPayment","riskWarning"];
 $("#expenseFlowChart").on('mouseenter',"circle",function(e){

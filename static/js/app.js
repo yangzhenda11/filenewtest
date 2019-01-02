@@ -1090,7 +1090,9 @@ var App = function() {
 		formatDateTime: function(inputTime,type) {
 			if(inputTime){
 				var inputTime = String(inputTime);
-				if(inputTime.indexOf("-") == -1){
+				if(inputTime.indexOf("GMT") != -1){
+					var date = new Date(inputTime);
+				}else if(inputTime.indexOf("-") == -1){
 					var date = new Date(Number(inputTime));
 				}else{
 					var date = new Date(inputTime.replace(/-/g,"/"));

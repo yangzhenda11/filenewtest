@@ -115,10 +115,10 @@ $(function(){
 		function successCallback(result) {
 			var data = result.data;
 			wcardId = data.wcardId;
-			$("#sendName").text(data.sendBy);			
+			$("#sendName").text(data.recipientBy);			
 			$("#title").text(data.readTitle);			
 			$("#content").text(data.readText);
-	 		var receive = App.formatDateTime(data.receiveTime);
+	 		var receive = App.formatDateTime(data.ctreatedDate);
 	 		$("#receiveTime").text(receive);
 		}
  	}

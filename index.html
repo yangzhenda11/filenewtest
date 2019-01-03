@@ -13,6 +13,19 @@
 		<meta http-equiv="Expires" content="0">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<script type="text/javascript">
+			var userAgent = navigator.userAgent;
+            //判断是否IE浏览器
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;
+            if (isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if (fIEVersion < 8) {
+                   alert("系统检测您当前浏览器使用IE"+fIEVersion+"内核渲染页面，为使您正常打开页面，请确认您的IE版本。\n1. 若为IE8，请您关闭IE8自动使用兼容性视图修复错误功能。操作步骤：1）IE—工具—Internet选项，“高级”选项卡中，去掉勾选上的“使用“兼容性视图”自动恢复页面布局错误”，单击应用；2）单击浏览器地址右侧，刷新按钮左侧的兼容性视图按钮，取消兼容性视图显示。；\n2. 若为IE8以下版本请您更换浏览器。")
+                }
+            }
+		</script>
 		<link rel="stylesheet" type="text/css" href="static/plugins/bootstrap/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="static/plugins/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="static/css/iconfont/iconfont.css" />
@@ -283,8 +296,8 @@
 	                        </li>
 	                        <li class="media">
 	                            <div class="media-body" style="text-align: left;padding-left: 20px;">
-	                                <p class="fontSize14">查看我的待办请点击：我的工作 --> 待办事项；</p>
-                                 	<p class="fontSize14">查看系统公告请点击：系统管理 --> 公告管理。</p>
+                                 	<p class="fontSize14">查看系统公告请点击：系统管理 --> 公告管理；</p>
+                                 	<p class="fontSize14" id="ieSupportNote"></p>
 	                            </div>
 	                        </li>
 	                    </ul>

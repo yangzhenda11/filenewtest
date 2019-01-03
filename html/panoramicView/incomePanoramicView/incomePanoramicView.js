@@ -395,7 +395,7 @@ function circleChartsOption(title,data,isEmpty){
 
 /**************************************地铁图配置********************************************/
 function getIncomeFlowChartsData(contractNumber){
-	var url = serverPath + "contractSubwayZxManger/listContractSubwayZxDetailByContractNumber";
+	var url = serverPath + "contractSubwayZxManger/getContractSubwayZxDetailByContractNumber";
 	var postData = {
 		contractNumber: contractNumber
 	};

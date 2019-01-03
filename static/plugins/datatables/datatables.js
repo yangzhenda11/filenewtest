@@ -42,6 +42,7 @@
 					"查询业务信息ID/电路代号/服务号码",
 					"查询电路代号/业务信息ID/本地系统线路标识ID",
 					"查询电路代号/业务信息ID/服务号码"
+					"查询电路代号/业务信息ID"
 	];
 	if (!Array.prototype.indexOf){
 		Array.prototype.indexOf = function(elt /*, from*/){

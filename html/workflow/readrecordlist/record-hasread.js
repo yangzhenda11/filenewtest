@@ -65,7 +65,7 @@ function getTableToreadHisList(){
 	        {"data": "readTypeName","title": "流程类型","className":"whiteSpaceNormal"},
 	       	{"data": "sendDate","title": "接收日期","className":"whiteSpaceNormal",
 		        "render": function(data, type, full, meta) {
-		            return App.formatDateTime(data,"yyyy-MM-dd");
+		            return App.formatDateTime(data);
 		        }
 		    },
 	        {"data": "staffName","title": "发送人","className":"whiteSpaceNormal"}

@@ -62,7 +62,12 @@ function initLineMilestoneTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "rentState","className": "whiteSpaceNormal"},
+			{"data": "rentState","className": "whiteSpaceNormal"}, 
+			{"data": "finishTime","className": "whiteSpaceNormal",
+				"render": function(data, type, full, meta){
+					return App.formatDateTime(data,"yyyy-MM-dd");
+				}
+			}, 
 			{"data": "rentingTime","className": "whiteSpaceNormal",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,"yyyy-MM-dd");

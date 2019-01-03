@@ -152,14 +152,14 @@ function createIncomeChartCharts(contractNumber){
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		var invoiceNnovateSumSum = data.invoiceNnovateSumSum;
+		var invoiceNnovateSum = data.invoiceNnovateSum;
 		var noInvoiceNnovateSum = data.noInvoiceNnovateSum;
 		var noInvoiceNnovatePercent = data.noInvoiceNnovatePercent;
-		if(invoiceNnovateSumSum || noInvoiceNnovateSum){
+		if(invoiceNnovateSum || invoiceNnovateSum){
 			var invoiceChartsFixedData = [
 				{
-					value: invoiceNnovateSumSum,
-					name: "实收金额："+App.unctionToThousands(invoiceNnovateSumSum)+"元",
+					value: invoiceNnovateSum,
+					name: "实收金额："+App.unctionToThousands(invoiceNnovateSum)+"元",
 					canSelect: true
 				},
 				{

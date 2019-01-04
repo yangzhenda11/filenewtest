@@ -152,10 +152,10 @@ function createIncomeChartCharts(contractNumber){
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		var invoiceNnovateSum = data.invoiceNnovateSum;
-		var noInvoiceNnovateSum = data.noInvoiceNnovateSum;
-		var noInvoiceNnovatePercent = data.noInvoiceNnovatePercent;
-		if(invoiceNnovateSum || invoiceNnovateSum){
+		var invoiceNnovateSum = data.collectedAmount;
+		var noInvoiceNnovateSum = data.arrearsAmount;
+		var invoiceNnovatePercent = data.collectedPercent;
+		if(invoiceNnovateSum || noInvoiceNnovateSum){
 			var invoiceChartsFixedData = [
 				{
 					value: invoiceNnovateSum,
@@ -169,11 +169,12 @@ function createIncomeChartCharts(contractNumber){
 				}
 			];
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",invoiceChartsFixedData);
-			$("#incomeChartValue").text(parseFloat(noInvoiceNnovatePercent*100) + "%");
+			$("#incomeChartValue").text(parseFloat(invoiceNnovatePercent*100) + "%");
 			$("#incomeOverviewNote").text(data.currentDate);
 		}else{
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",[{value: 0,name: '实收金额：0元'},{value: 1,name: '欠费金额：0元'}],true);
-			$("#incomeChartValue").text("0%")
+			$("#incomeChartValue").text("0%");
+            $("#incomeOverviewNote").text(data.currentDate);
 		}
 		incomeChart.setOption(incomeChartOption);
 	}

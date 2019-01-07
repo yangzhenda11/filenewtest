@@ -36,7 +36,7 @@ function handleTaskToDo(taskInfo) {
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","GXZZ","TLXR"];
 	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForToDo").remove();
 		$("#searchContentForToDo").hide();
@@ -120,10 +120,15 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 				isPass = true;
 				editTaskDefinitionKey = "GDQR";
 			}
-		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
+		}else if(taskDefinitionKey == "GXZZ"){
 			if(wcardStatus == 904030 && contractStatus == 8){
 				isPass = true;
 				editTaskDefinitionKey = taskDefinitionKey;
+			}
+		}else if(taskDefinitionKey == "TLXR"){
+			if(contractStatus == 8){
+				var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&isucloud=true";
+				$('#businessiframe').attr("src",src);
 			}
 		};
 		if(isPass == true){

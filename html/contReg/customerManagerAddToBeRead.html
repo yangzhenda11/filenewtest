@@ -29,7 +29,7 @@
 			}
 			#readTable td:first-child{
 				width: 120px;
-				background: #eee;
+				background: #f2f2f2;
 				text-align: right;
 			}
 		</style>
@@ -102,19 +102,16 @@ $(function(){
  	}else{
  	    // 异步获取待阅信息
  		var postData = {
- 				businessId: parm.bussid
+			businessId: parm.bussid
  		};
 		App.formAjaxJson(serverPath + 'contractOrderEditorController/getCustomerManagerToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
 			wcardId = data.wcardId;
 			$("#sendName").text(data.sendBy);
-			
 			$("#title").text(data.readTitle);
-			
 			$("#content").text(data.readText);
-	 		var receive = App.formatDateTime(data.receiveTime,"yyyy-MM-dd HH:ss:mm");
-	 		
+	 		var receive = App.formatDateTime(data.receiveTime);
 	 		$("#receiveTime").text(receive);
 		}
  	}
@@ -130,7 +127,7 @@ $(function(){
 		if(parm.flag==1){
 			var href="workOrderEdit/workOrderEdit.html?isucloud=true&pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
 		}else{
-			var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+			var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&gohistory=-2&wcardId="+ wcardId;
 		};
 		App.changePresentUrl(href);
 	}

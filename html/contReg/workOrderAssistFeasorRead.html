@@ -7,7 +7,7 @@
 <!-- BEGIN HEAD -->
 	<head>
 		<meta charset="UTF-8">
-		<title>客户经理权限取消</title>
+		<title>合同协助履行</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="renderer" content="webkit">
@@ -32,6 +32,10 @@
 				background: #f2f2f2;
 				text-align: right;
 			}
+			#toolbarBtnContent{
+				margin-top: 10px;
+				margin-left: 20%;
+			}
 		</style>
 	</head>
 	<body>
@@ -39,12 +43,7 @@
 			<div class="form-fieldset">
 				<div class="form-fieldset-title">
 					<div class="fieldset-title">
-						<p>客户经理权限取消</p><span></span>
-					</div>
-				</div>
-				<div id="toolbarBtnContent">
-					<div id="toolbarButton">
-						<button class="btn blue closeBtn" type="button" onclick="returnHomePage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+						<p>合同协助履行</p><span></span>
 					</div>
 				</div>
 				<table id="readTable">
@@ -65,6 +64,12 @@
 						<td id="content"></td>
 					</tr>
 				</table>
+				<div id="toolbarBtnContent">
+					<div id="toolbarButton">
+						<button class="btn blue" type="button" onclick="jumpView()"><i class="iconfont icon-search"></i>确定</button>
+						<button class="btn blue closeBtn" type="button" onclick="returnHomePage()"><i class="iconfont icon-arrow-left"></i>关闭</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--[if lt IE 9]>
@@ -94,39 +99,53 @@ var serverPath = config.serverPath;
  * 接受的配置参数
  */
 var parm = App.getPresentParm();
+var wcardId = parm.bussid;
 $(function(){
  	if(!parm.bussid){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
- 	    // 异步获取待阅信息
  		var postData = {
 			businessId: parm.bussid
  		};
-		App.formAjaxJson(serverPath + 'contractOrderEditorController/getCustomerManagerToReadInfo', "post",JSON.stringify(postData) , successCallback);
+		App.formAjaxJson(serverPath + 'AssistFeasorManageController/getAssistFeasorToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			$("#sendName").text(data.sendBy);
-			
-			$("#title").text(data.readTitle);
-			
+			wcardId = data.wcardId;
+			$("#sendName").text(data.createdBy);			
+			$("#title").text(data.readTitle);			
 			$("#content").text(data.readText);
-	 		var receive = App.formatDateTime(data.receiveTime);
-	 		
+	 		var receive = App.formatDateTime(data.ctreatedDate);
 	 		$("#receiveTime").text(receive);
 		}
  	}
 })
 
 /*
+ *跳转工单查看页面
+ */
+ function jumpView(){
+	if(wcardId == null){
+		layer.msg("数据异常！");
+	}else{
+		if(parm.flag == 1){
+			var href="workOrderEdit/workOrderEdit.html?isucloud=true&pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
+		}else{
+			var href="workOrderEdit/workOrderEdit.html?pageType=4&taskFlag=yb&taskDefinitionKey=GDQR&gohistory=-2&wcardId="+ wcardId;
+		};
+		App.changePresentUrl(href);
+	}
+}
+/*
  *关闭按钮
  */
 function returnHomePage(){
-	if(parm.flag==1){
+	if(parm.flag == 1){
 		top.closeWindow();
 	}else{
 		window.history.go(-1);
 	}
 }
+
 </script>
 </html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+	<head>
+		<meta charset="UTF-8">
+		<title>履行人管理</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="Expires" content="0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css" />
+	</head>
+	<body>
+		<div class="page-content">
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>履行人管理</p><span></span>
+					</div>
+				</div>
+				<div class="form-fieldset-body">
+					<div class="page-search">
+						<form class="form-horizontal" action="" id="searchForm">
+							<div class="row page-search-form">
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">合同编号</span>
+										<input type="text" id="contractNumberSel" name="contractNumberSel" class="form-control">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group">
+										<span class="input-group-addon searchLableText">合同名称</span>
+										<input type="text" id="contractNameSel" name="contractNameSel" class="form-control">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group data-input-group2">
+										<span class="input-group-addon searchLableText">创建日期</span>
+										<input type="text" id="create_date_begin" name="create_date_begin" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})"
+                                        class="form-control" readonly="readonly" />
+                                        <span class="input-group-addon searchLableText" >至</span>
+                                        <input type="text" id="create_date_end" name="create_date_end" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){dataChangeEvent(this)}})"
+                                        class="form-control" readonly="readonly" />
+									</div>
+								</div>
+							</div>
+							<div class="page-search-action">
+								<button type="button" id="submitBtn" class="btn red" data-loading-text="加载中.." onclick="searchFeasorTable();"><i class="iconfont icon-search"></i>查询</button>
+								<button type="button" onclick="App.resetForm('.form-horizontal')" class="btn yellow" ><i class="iconfont icon-reset"></i>清空</button>
+							</div>
+						</form>
+					</div>
+					<!--<div class="toolbars">
+						<button type="button" class="btn blue" onclick="exportResultExcel();"><i class="iconfont icon-export"></i>导出Excel</button>
+					</div>-->
+					<table id="feasorListTable" class="table table-striped table-bordered table-hover table-header-fixed"></table>
+				</div>
+			</div>
+		</div>
+		<!--[if lt IE 9]>
+			<script src="../../../static/plugins/html5shiv.min.js"></script>
+			<script src="../../../static/plugins/respond.min.js"></script>
+			<script src="../../../static/plugins/ie8.fix.min.js"></script>
+		<![endif]-->
+		<!--[if lte IE 8]>
+			<script src="../../../static/plugins/selectivizr-min.js"></script>
+		<![endif]-->
+		<!--基础依赖-->
+		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<!--业务依赖-->
+		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
+		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="feasorManage.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

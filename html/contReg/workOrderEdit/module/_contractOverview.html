@@ -243,10 +243,12 @@
 	function getValue_contractOverv(isSubmit){
 		var contractOverData = App.getFormValues($("#contractOverviewForm"));
 		var performerOrgType = $("#contractFeasorContent input[name='performerType']:checked").val();
+		var performerFlag = $("#performerFlag1:checked").val() == 1 ? 1 : 0;
 		contractOverData.performerOrgType = performerOrgType;
 		contractOverData.wcardId = wcardId;
 		contractOverData.contractId = contractId;
 		contractOverData.isFixed = $("#isOtherTypeOverview input[name='isFixed']:checked").val();
+		contractOverData.performerFlag = performerFlag;
 		return contractOverData;
 	}
 	/*

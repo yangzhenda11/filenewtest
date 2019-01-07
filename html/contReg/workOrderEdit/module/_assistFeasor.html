@@ -1,0 +1,527 @@
+<div class="form-fieldset">
+	<div class="form-fieldset-title">
+		<div class="fieldset-title">
+			<p>选择协助履行人</p><span></span>
+		</div>
+		<div class="form-fieldset-tools">
+			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
+		</div>
+	</div>
+	<div class="form-fieldset-body">
+		<div id="assistFeasorContent">
+			<label class="ui-checkbox hidden" style="margin-bottom: 14px;margin-top: 5px;" id="performerFlag1Dom">
+				<input type="checkbox" value="1" name="performerFlag1" id="performerFlag1">
+				<span></span>
+				由主要履行人添加协助履行人
+			</label>
+			<label class="ui-checkbox hidden" style="margin-bottom: 14px;margin-top: 5px;" id="performerFlag2Dom">
+				<input type="checkbox" value="1" name="addHelpPerformer" id="addHelpPerformer">
+				<span></span>
+				无需添加协助履行人
+			</label>
+			<div class="tableToobarContent hidden" id="assistFeasorToolbar">
+				<button type="button" class="btn red" onclick="addAssistFeasor()">添加协助履行人</button>
+				<button type="button" id="delAssistFeasorBtn" class="btn red" onclick="delAssistFeasor()"></button>
+			</div>
+			<table class='table table-hover table-bordered table-striped table-align' style="width: 90%;">
+				<thead>
+					<tr>
+						<th class="assistFeasorCheckbox" style="width: 5%;"><label class='ui-checkbox'><input type='checkbox' name='assistFeasorCheckAll' id="assistFeasorCheckAll"><span></span></label></th>
+						<th style="width: 5%;">序号</th>
+						<th style="width: 8%;" class="mangerRequired" id="mangerRequired">协助履行人</th>
+						<th style="width: 20%;" class="mangerRequired">协助履行人所属组织</th>
+						<th style="width: 10%;" class="mangerRequired">生效日期</th>
+						<th style="width: 10%;" class="mangerRequired">失效日期</th>
+						<th style="width: 8%;" class="mangerRequired">添加人</th>
+						<th style="width: 20%;" class="mangerRequired">添加人所属组织</th>
+					</tr>
+				</thead>
+				<tbody id="assistFeasorTbody">
+					<tr class="emptyTr">
+						<td colspan="8">暂无协助履行人信息</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var assistFeasorTree = null;
+	var assistFeasorDelData = [];
+	var assistFeasorIdList = [];
+	/*
+	 * 返回本页面数据，若无返回{}，若不提交本页面的值可删除此方法
+	 * isSubmit 提交时为true,判断页面是否要加逻辑上的验证(bootstrap-validator验证除外)
+	 */
+	function getValue_assistFeasor(isSubmit){
+		var _assistFeasor = {
+			assistFeasorAddList: [],
+			assistFeasorDelList: assistFeasorDelData
+		};
+		//获取表格内所有的有效数据
+		$.each($("#assistFeasorTbody tr"),function(k,v){
+			if(!$(v).hasClass("emptyTr")){
+				var isValid = $(v).data("isvalid");
+				if(isValid == 1){
+					var performerStaffId = Number($(v).data("stafforgid"));
+					if(assistFeasorIdList.indexOf(performerStaffId) == -1){
+						var assistFeasorDataItem = {};
+						assistFeasorDataItem.performerType = 2;
+						assistFeasorDataItem.wcardId = wcardId;
+						assistFeasorDataItem.contractNumber = contractNumber;
+						assistFeasorDataItem.performerId = $(v).data("id");
+						assistFeasorDataItem.performerOrgId = $(v).data("parentid");
+						assistFeasorDataItem.performerStaffId = $(v).data("stafforgid");
+						assistFeasorDataItem.performerStaffName = $(v).children().eq(2).text();
+						assistFeasorDataItem.performerOrgName = $(v).children().eq(3).text();
+						_assistFeasor.assistFeasorAddList.push(assistFeasorDataItem);
+					};
+				}
+			}
+		});
+		if(isSubmit == "changeAssist"){
+			if(parm.taskDefinitionKey == "GGLXR"){
+				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0){
+					layer.msg("请增加或删除协助履行人");
+					return false;
+				}else{
+					_assistFeasor.addHelpPer = null;
+					return _assistFeasor;
+				}
+			}else if(parm.taskDefinitionKey == "TLXR"){
+				var addHelpPerformer = $("#addHelpPerformer:checked").val() == 1 ? 1 : 0;
+				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0 && addHelpPerformer == 0){
+					layer.msg("请增加或失效协助履行人或勾选无需添加协助履行人");
+					return false;
+				}else{
+					_assistFeasor.addHelpPer = addHelpPerformer;
+					return _assistFeasor;
+				}
+			}
+		}else if(isSubmit){
+			var performerFlag = $("#performerFlag1:checked").val() == 1 ? 1 : 0; 
+			if(performerFlag == 1 || !$("#assistFeasorTbody .emptyTr")[0]){
+				return _assistFeasor;
+			}else{
+				layer.msg("请至少添加一条协助履行人或勾选由主要履行人添加协助履行人");
+				srolloOffect("#assistFeasorContent");
+				return false;
+			}
+		}else{
+			return _assistFeasor;
+		}
+	}
+	/*
+	 * 模糊查询接口，设置模糊查询
+	 */
+	$("#assistFeasorInput").typeahead({
+		afterSelect: setAssistFeasorInput,
+		delay: 300,
+		addItem: {"name":"查询不到数据","id":""},
+		clearElement: true,
+		scrollHeight: -10,
+        source: function (query, process) {
+            return $.ajax({
+                url: serverPath+'contractType/listPerformerStaff',
+                type: 'post',
+                global: false,
+                data: {staffName: query,executorType:2},
+                success: function (result) {
+                	var data = result.data;
+                	if(data.length > 0){
+                		for(var k = 0; k < data.length; k++){
+                			data[k].defalutName = data[k].name;
+                			var staffOrgType = data[k].staffOrgType == "J" ? "-兼岗)" : "-主岗)";
+                			var name = data[k].name + "(" + data[k].loginName +")" + "("+data[k].fullName + staffOrgType;
+                			data[k].name = name;
+                		}
+                	};
+                    return process(data);
+                },
+				error:function(e){
+					App.ajaxErrorCallback(e);
+				}
+            });
+        }
+	});
+	function setAssistFeasorInput(item) {
+		if(item.id != ""){
+			item.name = item.defalutName;
+	    	addAssistFeasorValue(item);
+		}
+	}
+	//获取协助履行人信息
+	getAssistFeasorInfo();
+	if(getContractOrderBaseInfoData.performerFlag == 1){
+		$("#performerFlag1").attr("checked",true);
+	};
+	/*
+	 * 获取协助履行人信息
+	 */
+	function getAssistFeasorInfo() {
+		var url = serverPath + "contractOrderEditorController/listContractAssistantPerformerInfo";
+		var postData = JSON.stringify({wcardId:wcardId});
+		App.formAjaxJson(url, "post", postData, successCallback);
+		function successCallback(result) {
+			var data = result.data;
+			assistFeasorDelData = [];
+			assistFeasorIdList = [];
+			if(data.length > 0){
+				var html = "";
+				for(var i = 0; i < data.length; i++){
+					var performerStaffId = data[i].performerStaffId;
+					var isValid = data[i].isValid;
+					var expiryData = "";
+					if(isValid == 1){
+						assistFeasorIdList.push(performerStaffId);
+					}else{
+						expiryData = App.formatDateTime(data[i].updatedDate,"yyyy-mm-dd");
+					};
+					html += '<tr data-isvalid="'+isValid+'" data-id="'+data[i].performerId+'" data-stafforgid="'+performerStaffId+'" data-parentid="'+data[i].performerOrgId+'">'+
+	    						'<td class="assistFeasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
+	    						'<td class="orderNumber"></td>'+
+	    						'<td>'+data[i].performerStaffName+'</td>'+
+	    						'<td>'+data[i].performerOrgName+'</td>'+
+	    						'<td>'+App.formatDateTime(data[i].ctreatedDate,"yyyy-mm-dd")+'</td>'+
+	    						'<td>'+expiryData+'</td>'+
+	    						'<td>'+data[i].staffName+'</td>'+
+	    						'<td>'+data[i].staffOrgName+'</td></tr>';
+				};
+    			$("#assistFeasorTbody").html(html);
+    			addAssistFeasorTbodySort();
+    			App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+			}
+			/*
+			 * assisFeasorEdit协助履行人增加为true时isEdit不生效
+			 * isEdit 判断页面是否只能查看
+			 */
+			if(assisFeasorEdit){
+				$("#delAssistFeasorBtn").text("失效协助履行人");
+				if(parm.taskDefinitionKey == "TLXR"){
+					$("#assistFeasorToolbar,#performerFlag2Dom").removeClass("hidden");
+				}else if(parm.taskDefinitionKey == "GGLXR"){
+					$("#assistFeasorToolbar").removeClass("hidden");
+				};
+			}else if(!isEdit){
+				$("#assistFeasorContent").find("input").attr("disabled","disabled");
+				$("#assistFeasorToolbar,.assistFeasorCheckbox").remove();
+			}else{
+				$("#delAssistFeasorBtn").text("删除协助履行人");
+				$("#assistFeasorToolbar,#performerFlag1Dom").removeClass("hidden");
+			};
+		}
+	}
+	/*
+	 * 显示选人modal，生成选人树
+	 */
+	function addAssistFeasor(){
+        if (assistFeasorTree) {
+        	$("#assistFeasorChecked").html("");
+        	$("#assistFeasorInput").val("");
+            $("#assistFeasorModal").modal("show");
+        }else{
+			var documentHeight = $pageContent.height() - 240;
+			$("#assistFeasorCotent,#assistFeasorChecked").css("height", documentHeight);
+			initassistFeasorTree();
+        }
+	}
+	//生成树
+    function initassistFeasorTree() {
+    	var performerType = 2;
+        //选择履行人ztree树配置
+        var treeSetting = {
+			async: {
+				enable: true,
+				url: serverPath + "contractType/listPerformer",
+				type: "post",
+				dataType: 'json',
+				dataFilter: orgsfilter,
+				autoParam: ["id=orgId","executorType"]
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "parentId"
+				},
+				key: {
+					name: "name"
+				}
+			},
+			view: {
+				selectedMulti: false,
+				//dblClickExpand: false
+			},
+			callback: {
+				onAsyncError: onAsyncError,
+				onDblClick: setInputInfo
+			}
+		};
+		function orgsfilter(treeId, parentNode, responseData) {
+			if(responseData.status == 1){
+				var data = responseData.data;
+				if(data){
+					for(var i = 0; i < data.length; i++){
+	        			if(data[i].orgType != ""){
+	        				data[i].isParent = "true";
+	        			};
+	        			data[i].executorType = performerType;
+		        	};
+		        	return data;
+				}else{
+					return null;
+				}
+			}else{
+				layer.msg(responseData.message);
+				return null;
+			}
+		}
+        // 获取第一层数据
+        $.ajax({
+	        url : serverPath + 'contractType/listPerformer',
+	        type : "post",
+	        data : {'orgId':'','executorType':performerType},
+	        success : function(result) {
+				if (result.status == 1) {
+					$("#assistFeasorModal").modal("show");
+					var data = result.data;
+		        	if (data != "") {
+		        		for(var i = 0; i < data.length; i++){
+		        			if(data[i].orgType != ""){
+		        				data[i].isParent = "true";
+		        			};
+		        			data[i].executorType = performerType;
+			        	};
+		                if (assistFeasorTree) {
+		                    assistFeasorTree.destroy();
+		                }
+		                assistFeasorTree = $.fn.zTree.init($("#assistFeasorTree"), treeSetting, data);
+                 		//默认展开第一层
+			            var nodes = assistFeasorTree.getNodes();
+			            assistFeasorTree.expandNode(nodes[0]);
+		            } else {
+		                layer.msg("暂无数据，请稍后重试");
+		            }
+				} else {
+					var ms = result.message;
+					layer.msg(ms);
+				};
+	        },
+	        error: function(result) {
+				App.ajaxErrorCallback(result);
+			}
+	   	});
+        function setInputInfo(event, treeId, treeNode) {
+            addAssistFeasorValue(treeNode);
+        }
+    }
+    /*
+     * 判断是否选的是人员
+     */
+    function addAssistFeasorValue(treeNode) {
+        if (treeNode.orgType == "" || treeNode.orgType == undefined) {
+			var name = treeNode.name;
+        	var staffOrgId = treeNode.staffOrgId;
+        	var isExist = false;
+        	$.each($("#assistFeasorChecked .checkedStaffItem"),function(k,v){
+        		if($(v).data("stafforgid") == staffOrgId){
+        			isExist = true;
+        		}
+        	});
+        	if(!isExist){
+        		var url = serverPath + "contractType/getPerformerBandOneOrg";
+				var postData = JSON.stringify({orgId:treeNode.parentId});
+        		App.formAjaxJson(url, "post", postData, successCallback);
+				function successCallback(result) {
+					var data = result.data;
+					if(data){
+						var parentId = data.orgId;
+						var fullName =  data.orgName;
+					}else{
+						var parentId = treeNode.parentId;
+						var fullName =  treeNode.fullName;
+					};
+    				var html = '<div class="checkedStaffItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
+        				'<span>'+name+'</span>'+
+        				'</div>';
+    				$("#assistFeasorChecked").append(html);
+    			};
+			}
+        }
+    }
+    /*
+     * 增加右侧内容
+     */
+    function setAssistFeasorValue(){
+    	var treeNode = assistFeasorTree.getSelectedNodes()[0];
+        if (treeNode == undefined) {
+            layer.msg("请选择人员", {icon: 2})
+        } else {
+            addAssistFeasorValue(treeNode);
+        }
+    }
+    /*
+     * 删除右侧内容
+     */
+    function delAssistFeasorValue(){
+		if($("#assistFeasorChecked .staffItemChecked").length == 0){
+			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
+		}else{
+			$.each($("#assistFeasorChecked .staffItemChecked"), function(k,v) {
+				$(v).parent().remove();
+			});
+		}
+    }
+    /*
+     * modal确定按钮点击
+     */
+    function setAssistFeasorTable(){
+    	$("#assistFeasorModal").modal("hide");
+    	if($("#assistFeasorChecked .checkedStaffItem").length > 0){
+    		if($("#assistFeasorTbody .emptyTr")[0] != undefined){
+				$("#assistFeasorTbody .emptyTr").remove();
+			};
+			var performerDataList = [];
+			var exitFlag = false;
+			$.each($("#feasorTbody tr"),function(k,v){
+				if(!$(v).hasClass("emptyTr")){
+					performerDataList.push($(v).data("stafforgid"))
+				}
+			});
+			$.each($("#assistFeasorChecked .checkedStaffItem"), function(k,v) {
+				var stafforgid = $(v).data("stafforgid");
+				if(performerDataList.indexOf(stafforgid) != -1){
+					exitFlag = true;
+					return true;
+				}
+			});
+			if(exitFlag){
+				layer.alert("协助履行人不能与主要履行人相同。",{icon:2});
+				return false;
+			};
+			var url = serverPath + "contractOrderEditorController/getServerDate";
+			App.formAjaxJson(url, "post", null, successCallback);
+			function successCallback(result){
+				var nowDate = App.formatDateTime(result.data,"yyyy-mm-dd");
+				$.each($("#assistFeasorChecked .checkedStaffItem"), function(k,v) {
+					var stafforgid = $(v).data("stafforgid");
+					var name = $(v).text();
+					var isExist = false;
+					$.each($("#assistFeasorTbody tr"),function(m,n){
+						if(stafforgid == $(n).data("stafforgid")){
+							if($(n).children().eq(5).text() == ""){
+								isExist = true;
+							}
+						}
+					});
+					if(!isExist){
+						var html = '<tr data-isvalid="1" data-id="100000" data-stafforgid="'+$(v).data("stafforgid")+'" data-parentid="'+$(v).data("parentid")+'">'+
+		    						'<td class="cusManagerCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
+		    						'<td class="orderNumber"></td>'+
+		    						'<td>'+name+'</td>'+
+		    						'<td>'+$(v).data("fullname")+'</td>'+
+		    						'<td>'+nowDate+'</td><td></td>'+
+		    						'<td>'+config.curStaffName+'</td>'+
+		    						'<td>'+config.curOrgName+'</td></tr>';
+		    			$("#assistFeasorTbody").append(html);
+					}
+				});
+				addAssistFeasorTbodySort();
+				App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+			}
+    	}
+    }
+    
+	/*
+	 * 删除协助履行人
+	 */
+	function delAssistFeasor(){
+		var msgFlag = "删除";
+		if(assisFeasorEdit){
+			var msgFlag = "失效";
+		};
+		var checkLength = $("#assistFeasorTbody input[name='assistFeasorCheck']:checked").length;
+		if(checkLength == 0){
+			layer.msg("请勾选协助履行人复选框进行"+msgFlag);
+		}else{
+			layer.confirm("是否"+msgFlag+"？",{icon:7,title:msgFlag},function(index){
+				layer.close(index);
+				var url = serverPath + "contractOrderEditorController/getServerDate";
+				App.formAjaxJson(url, "post", null, successCallback);
+				function successCallback(result){
+					var nowDate = App.formatDateTime(result.data,"yyyy-mm-dd");
+					$("#assistFeasorTbody input[name='assistFeasorCheck']:checked").each(function(k,v){
+						var $parentDom = $(v).parents("tr");
+						var isValid = $parentDom.data("isvalid");
+						var dataId = $parentDom.data("id");
+						if(isValid == 1){
+							if(dataId == "100000"){
+								$parentDom.remove();
+							}else{
+								var assistFeasorDataItem = {};
+								assistFeasorDataItem.performerType = 2;
+								assistFeasorDataItem.wcardId = wcardId;
+								assistFeasorDataItem.contractNumber = contractNumber;
+								assistFeasorDataItem.performerId = $parentDom.data("id");
+								assistFeasorDataItem.performerOrgId = $parentDom.data("parentid");
+								assistFeasorDataItem.performerStaffId = $parentDom.data("stafforgid");
+								assistFeasorDataItem.performerStaffName = $parentDom.children().eq(2).text();
+								assistFeasorDataItem.performerOrgName = $parentDom.children().eq(3).text();
+								assistFeasorDelData.push(assistFeasorDataItem);
+								if (assisFeasorEdit) {
+									$parentDom.data("isvalid",0);
+									$parentDom.children().eq(5).text(nowDate);
+								}else{
+									$parentDom.remove();
+								};
+							}
+						};
+					});
+					$("#assistFeasorTbody input[name='assistFeasorCheck']").attr("checked",false);
+					addAssistFeasorTbodyEmptyTr();
+					addAssistFeasorTbodySort();
+					App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
+				}
+			})
+		}
+	};
+	/*
+	 * 若为空增加empty值
+	 */
+	function addAssistFeasorTbodyEmptyTr(){
+		if($("#assistFeasorTbody tr").length == 0){
+			var html = '<tr class="emptyTr"><td colspan="8">暂无协助履行人信息</td></tr>';
+			$("#assistFeasorTbody").html(html);
+		}
+	}
+	/*
+	 * 表格数据增加序号
+	 */
+	function addAssistFeasorTbodySort(){
+		$.each($("#assistFeasorTbody .orderNumber"), function(k,v) {
+			$(v).text(k+1);
+		});
+	}
+	/*
+	 * 人员选择点击	事件委托
+	 */
+	$("#assistFeasorChecked").on("click","span",function(){
+		if($(this).hasClass("staffItemChecked")){
+			$(this).removeClass("staffItemChecked");
+		}else{
+			$(this).addClass("staffItemChecked");
+		}
+	})
+	$("#performerFlag1").on("change", function() {
+		var checkValue = $("#performerFlag1:checked").val() == 1 ? 1 : 0;
+		if(checkValue == 1){
+			layer.alert("系统将在合同激活后给主要履行人发送合同主要履行待办！",{icon:7});
+		}
+	});
+	$("#addHelpPerformer").on("change", function() {
+		var checkValue = $("#addHelpPerformer:checked").val() == 1 ? 1 : 0;
+		if(checkValue == 1){
+			layer.alert("勾选无需添加协助履行人后，系统将不会保存您在页面上添加或失效的协助履行人。",{icon:7});
+		}
+	});
+</script>

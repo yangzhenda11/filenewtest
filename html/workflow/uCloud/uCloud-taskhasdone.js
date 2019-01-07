@@ -32,7 +32,7 @@ function handleTaskForDone(taskInfo) {
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","GXZZ","ZZFQ","GDFQ","TLXR","FLXR"];
 	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForDone").remove();
 		$("#searchContentForDone").hide();
@@ -110,6 +110,9 @@ function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceI
 			var editTaskDefinitionKey = "";
 			if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
 				editTaskDefinitionKey = "GDQR";
+			}else if(taskDefinitionKey == "TLXR"){
+				var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&taskId="+taskId+"&isucloud=true";
+				$('#businessiframe').attr("src",src);
 			}else{
 				editTaskDefinitionKey = taskDefinitionKey;
 			};

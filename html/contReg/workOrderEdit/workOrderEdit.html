@@ -47,6 +47,7 @@
 								</div>
 								<div id="toolbarButton">
 									<button class="btn blue saveBtn" id="saveBtn" type="button" onclick="saveBtnClick()"><i class="iconfont icon-baocun"></i>保存</button>
+									<button class="btn blue queryFeasorBtn" id="queryFeasorBtn" type="button" onclick="queryFeasorCli()"><i class="iconfont icon-baocun"></i>确认</button>
 									<button class="btn blue registerBtn" id="registerBtn" type="button" onclick="submitContent()"><i class="iconfont icon-tijiao1"></i><span>注册完成</span></button>
 									<button class="btn blue cancelApprovedBtn" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i><span>取消审批</span></button>
 									<button class="btn blue sendBackBtn" id="sendBackBtn" type="button"><i class="iconfont icon-chehui"></i><span>退回合同承办人</span></button>
@@ -131,6 +132,40 @@
 	                </div>
 	                <div class="modal-footer">
 	                    <button type="button" onclick="setCustomerManagerTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
+	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<!--选择协助履行人modal-->
+		<div class="modal fade" id="assistFeasorModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document" style="width: 80%;">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	                    <h4 class="modal-title">选择协助履行人</h4>
+	                </div>
+	                <div class="modal-body">
+	                	<div class="modalLeftContent">
+	                		<div class="input-group modalInputGroup">
+								<input class="form-control" id="assistFeasorInput" placeholder="键入人员名称或登录账号查询" />
+								<span class="input-group-addon custorPoint"><i class="iconfont icon-search1"></i></span>
+							</div>
+		                	<div id="assistFeasorCotent" class="modalLeftTreeCotent">
+	                			<ul id="assistFeasorTree" class="ztree"></ul>
+		                	</div>
+	                	</div>
+	                	<div class="modalCheckTool">
+	                		<button type="button" class="btn red" onclick="setAssistFeasorValue()">></button>
+	                		<button type="button" class="btn red" onclick="delAssistFeasorValue()"><</button>
+	                	</div>
+	                	<div>
+	                		<p>已选人员：</p>
+	                		<div id="assistFeasorChecked" class="modalRightCotent"></div>
+	                	</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" onclick="setAssistFeasorTable()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
 	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
 	                </div>
 	            </div>

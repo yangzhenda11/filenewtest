@@ -334,7 +334,8 @@
 				};
 				App.setFormValues("#validityConForm", tRContractValidityVo);
 				if($("#adminCommitmentContent input[name='adminCommitment']:checked").val()) {
-					if(parm.taskFlag == "yb") {
+					var isPerformFlag = isPerformWork();
+					if(parm.taskFlag == "yb"|| isPerformFlag) {
 						$("#adminCommitmentContent").removeClass("hidden");
 					}
 				}

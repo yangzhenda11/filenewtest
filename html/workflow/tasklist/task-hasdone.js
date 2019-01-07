@@ -70,9 +70,8 @@ function getTableForDone(){
         			buttontitle = "当前待办对应的合同属于您已经失效的岗位【"+c.staffOrgName+"】，因此您无法处理该待办。您可以通过在合同系统将该合同转交给新的承办人或者自己的新岗位把当前待办移交给相应的人员来处理。";
         			fn = "layer.msg(\'"+buttontitle+"\')";
 		        }else{
-		        	
 		        	if(curStaffOrgId == assignee){
-		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","GXZZ","ZZFQ","GDFQ","TLXR","FLXR"];
 		        		if(specialList.indexOf(c.taskDefinitionKey) != -1){
 		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee +"\')";
 		        		}else{
@@ -192,6 +191,10 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 				var editTaskDefinitionKey = "";
 				if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
 					editTaskDefinitionKey = "GDQR";
+				}else if(taskDefinitionKey == "TLXR"){
+					var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&taskId="+taskId;
+					App.setCache("searchForm");
+					App.changePresentUrl(src);
 				}else{
 					editTaskDefinitionKey = taskDefinitionKey;
 				};

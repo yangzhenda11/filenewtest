@@ -422,6 +422,24 @@
     	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
     	$("#feasorModal").modal("hide");
     	if($("#feasorChecked .checkedStaffItem").length > 0){
+    		var performerDataList = [];
+			var exitFlag = false;
+			$.each($("#assistFeasorTbody tr"),function(k,v){
+				if(!$(v).hasClass("emptyTr")){
+					performerDataList.push($(v).data("stafforgid"))
+				}
+			});
+			$.each($("#feasorChecked .checkedStaffItem"), function(k,v) {
+				var stafforgid = $(v).data("stafforgid");
+				if(performerDataList.indexOf(stafforgid) != -1){
+					exitFlag = true;
+					return true;
+				}
+			});
+			if(exitFlag){
+				layer.alert("主要履行人不能与协助履行人相同。",{icon:2});
+				return false;
+			};
     		if(performerType == 1){
     			if($("#feasorTbody .emptyTr")[0] != undefined){
 					$("#feasorTbody .emptyTr").remove();

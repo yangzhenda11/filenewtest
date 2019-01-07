@@ -99,18 +99,19 @@ var serverPath = config.serverPath;
  * 接受的配置参数
  */
 var parm = App.getPresentParm();
-var wcardId = parm.wcardId;
+var wcardId = null;
 $(function(){
  	if(!parm.wcardId){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
  		var postData = {
-			businessId: wcardId
+			businessId: parm.wcardId
  		};
 		App.formAjaxJson(serverPath + 'AssistFeasorManageController/getAssistFeasorToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
+			wcardId = data.wcardId;
 			$("#sendName").text(data.createdBy);			
 			$("#title").text(data.readTitle);			
 			$("#content").text(data.readText);

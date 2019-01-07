@@ -205,12 +205,12 @@
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#fileUpliadExplain").append(setting.explain);
 		$("#commomModal").modal("show");
-		if(App.IEVersionVA(10)){
-			layer.alert("您的浏览器版本较低，请升级到最新IE浏览器(IE9+ 不包括IE9)或使用谷歌、360等浏览器来上传文件。",{icon:2,closeBtn:0},function(index){
-				layer.close(index);
-				$("#commomModal").modal("hide");
-			});
-		};
+//		if(App.IEVersionVA(10)){
+//			layer.alert("您的浏览器版本较低，请升级到最新IE浏览器(IE9+ 不包括IE9)或使用谷歌、360等浏览器来上传文件。",{icon:2,closeBtn:0},function(index){
+//				layer.close(index);
+//				$("#commomModal").modal("hide");
+//			});
+//		};
 		var emptyFn = function(){};
 		fileUploadSuccessCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		_fileUploadObj.url = setting.url;

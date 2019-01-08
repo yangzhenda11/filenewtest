@@ -101,41 +101,41 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 	});
 }
 function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,improperCallback,null,false);
-	function successCallback(result) {
-		var data = result.data;
-		var wcardProcess = data.wcardProcess;
-		var wcardStatus = data.wcardStatus;
-		var contractStatus = data.contractStatus;
-		var isPass = false;
-		var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
-		var editTaskDefinitionKey = "";
-		if(taskDefinitionKey == "GDCL"){
-			if(wcardProcess == 0 || wcardProcess == 2){
-				isPass = true;
-				editTaskDefinitionKey = "GDCL";
-			}
-		}else if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
-			if(wcardProcess == 1){
-				isPass = true;
-				editTaskDefinitionKey = "GDQR";
-			}
-		}else if(taskDefinitionKey == "GXZZ"){
-			if(wcardStatus == 904030 && contractStatus == 8){
-				isPass = true;
-				editTaskDefinitionKey = taskDefinitionKey;
-			}
-		}else if(taskDefinitionKey == "TLXR"){
-			if(contractStatus == 8){
-				var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&isucloud=true";
+	if(taskDefinitionKey == "TLXR"){
+		var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&isucloud=true";
+		$('#businessiframe').attr("src",src);
+	}else{
+		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,improperCallback,null,false);
+		function successCallback(result) {
+			var data = result.data;
+			var wcardProcess = data.wcardProcess;
+			var wcardStatus = data.wcardStatus;
+			var contractStatus = data.contractStatus;
+			var isPass = false;
+			var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+			var editTaskDefinitionKey = "";
+			if(taskDefinitionKey == "GDCL"){
+				if(wcardProcess == 0 || wcardProcess == 2){
+					isPass = true;
+					editTaskDefinitionKey = "GDCL";
+				}
+			}else if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
+				if(wcardProcess == 1){
+					isPass = true;
+					editTaskDefinitionKey = "GDQR";
+				}
+			}else if(taskDefinitionKey == "GXZZ"){
+				if(wcardStatus == 904030 && contractStatus == 8){
+					isPass = true;
+					editTaskDefinitionKey = taskDefinitionKey;
+				}
+			};
+			if(isPass == true){
+				var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
 				$('#businessiframe').attr("src",src);
+			}else{
+				errorInfoSolve("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。");
 			}
-		};
-		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
-			$('#businessiframe').attr("src",src);
-		}else{
-			errorInfoSolve("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。");
 		}
 	}
 }

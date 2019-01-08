@@ -828,7 +828,7 @@ function getWorktableRoleName(roleType,hasNote){
 	return roleName;
 }
 //设置收入类履行工作台主页
-function setIncomeHomePage(){
+function setIncomeHomePage(IEVersionVA10){
 	var roleType = getWorktableRoleType("income");
 	getAssistantList(roleType,"sr");
 	if(IEVersionVA10){

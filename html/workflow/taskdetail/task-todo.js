@@ -1,4 +1,3 @@
-//@ sourceURL=task-todo.js
 var parm = App.getPresentParm();
 var pageType=parm.pageType;
 $(function(){

@@ -152,14 +152,14 @@
 			var reg = fileNameList[fileNameList.length-1];
 			var flag = false;
 			//IE10以上判断文件大小
-			if(!App.IEVersionVA(10)){
-				var chooseFile = document.getElementById("uploadFileInput").files[0];
-				if(chooseFile.size/1048576 > 100){
-					layer.msg("文件超过100M的限制，请重新选择");
-					$("#uploadFileInput").val("");
-				    return false;
-				}
-			};
+//			if(!App.IEVersionVA(10)){
+//				var chooseFile = document.getElementById("uploadFileInput").files[0];
+//				if(chooseFile.size/1048576 > 100){
+//					layer.msg("文件超过100M的限制，请重新选择");
+//					$("#uploadFileInput").val("");
+//				    return false;
+//				}
+//			};
 //			判断是否含有特殊字符
 //			var regEn = /[`~!@#$%^&*+<>?:"{},.\/;'[\]]/im,
 //		    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
@@ -205,12 +205,6 @@
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#fileUpliadExplain").append(setting.explain);
 		$("#commomModal").modal("show");
-		if(App.IEVersionVA(10)){
-			layer.alert("您的浏览器版本较低，请升级到最新IE浏览器(IE9+ 不包括IE9)或使用谷歌、360等浏览器来上传文件。",{icon:2,closeBtn:0},function(index){
-				layer.close(index);
-				$("#commomModal").modal("hide");
-			});
-		};
 		var emptyFn = function(){};
 		fileUploadSuccessCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
 		_fileUploadObj.url = setting.url;
@@ -248,7 +242,6 @@
 				'dataType': 'JSON',
 	            'processData': true,
 				'success': function(result) {
-					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileUploadModalForm").show();
 					if((result.indexOf(">")!= -1) && (result.lastIndexOf("<")!= -1)){
@@ -281,7 +274,6 @@
 					}
 				},
 				'error': function(result){
-					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileUploadModalForm").show();
 					layer.alert("上传失败",{icon:2,title:"错误"});

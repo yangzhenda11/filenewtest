@@ -688,17 +688,9 @@ function getHomePage(){
     	if(checkPageRoleType("income") || checkPageRoleType("expense")){
       		setWorktableRoleName();
     		if(checkPageRoleType("income",true)){
-    			if(IEVersionVA10){
-    				$("#ieSupportNote").text("查看合同履行工作台：合同履行工作台 --> 收入类租线业务。");
-		    	}else{
-		    		setIncomeHomePage();
-		    	};
+	    		setIncomeHomePage(IEVersionVA10);
 	    	}else if(checkPageRoleType("expense",true)){
-	    		if(IEVersionVA10){
-	    			$("#ieSupportNote").text("查看合同履行工作台：合同履行工作台 --> 支出类采购业务。");
-		    	}else{
-		    		setExpenseHomePage();
-		    	};
+	    		setExpenseHomePage(IEVersionVA10);
 	    	}
     	}else{
     		$("#workItemDom").remove();
@@ -839,13 +831,21 @@ function getWorktableRoleName(roleType,hasNote){
 function setIncomeHomePage(){
 	var roleType = getWorktableRoleType("income");
 	getAssistantList(roleType,"sr");
-	showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
+	if(IEVersionVA10){
+		$("#ieSupportNote").text("查看合同履行工作台：合同履行工作台 --> 收入类租线业务。");
+	}else{
+		showSubpageTab("html/incomeWorktable/index/index.html","收入类租线业务",false,false,true);
+	}
 }
 //设置支出类履行工作台主页
-function setExpenseHomePage(){
+function setExpenseHomePage(IEVersionVA10){
 	var roleType = getWorktableRoleType("expense");
 	getAssistantList(roleType,"zc");
-	showSubpageTab("html/expenseWorktable/index/index.html","支出类采购业务",false,false,true);
+	if(IEVersionVA10){
+		$("#ieSupportNote").text("查看合同履行工作台：合同履行工作台 --> 支出类采购业务。");
+	}else{
+		showSubpageTab("html/expenseWorktable/index/index.html","支出类采购业务",false,false,true);
+	}
 }
 //获取商务助理配置内容
 function getAssistantList(roleType,funType) {

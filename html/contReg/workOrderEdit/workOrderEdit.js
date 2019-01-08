@@ -126,6 +126,9 @@ function queryFeasorCli(){
 			data.contractName = $("#contractName").val();
 			if(parm.taskDefinitionKey == "TLXR"){
 				var flowData = App.getFlowParam(serverPath,parm.bussida,1,0,"main_performance","","","","","");
+				if(flowData == null){
+					return false;
+				}
 				data = $.extend(true, data, flowData);
 				data.startFlowFlag = "TRUE";
 			}else{

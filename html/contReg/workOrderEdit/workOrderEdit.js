@@ -1118,6 +1118,8 @@ function loadComplete() {
 	getBusiProcessInfoID();
 	//加载快捷跳转
 	setSpeedyJump();
+	//记录日志
+	saveSysOperLog();
 	//增加事件委托，input失去焦点时检查是否maxLength超长
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
@@ -1130,7 +1132,15 @@ function loadComplete() {
 		srolloOffect("#assistFeasorContent",1);
 	}
 }
-
+function saveSysOperLog(){
+	var presentParm = App.getPresentParm(true).split('?');
+	var postData = {
+		operUrl: presentParm[0],
+		operPermissionName: "工单页面",
+		operParameter: presentParm[1]
+	};
+//	App.formAjaxJson(globalConfig.serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
+}
 /*
  * 滚动到相应位置高度
  */

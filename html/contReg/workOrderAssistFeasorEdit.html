@@ -111,12 +111,16 @@ $(function(){
 		App.formAjaxJson(serverPath + 'AssistFeasorManageController/getAssistFeasorToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			wcardId = data.wcardId;
-			$("#sendName").text(data.createdBy);			
-			$("#title").text(data.readTitle);			
-			$("#content").text(data.readText);
-	 		var receive = App.formatDateTime(data.ctreatedDate);
-	 		$("#receiveTime").text(receive);
+			if(data){
+				wcardId = data.wcardId;
+				$("#sendName").text(data.createdBy);			
+				$("#title").text(data.readTitle);			
+				$("#content").text(data.readText);
+		 		var receive = App.formatDateTime(data.ctreatedDate);
+		 		$("#receiveTime").text(receive);
+			}else{
+				layer.msg("获取数据失败");
+			}
 		}
  	}
 })

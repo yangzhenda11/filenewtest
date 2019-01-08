@@ -101,12 +101,12 @@ var serverPath = config.serverPath;
 var parm = App.getPresentParm();
 var wcardId = null;
 $(function(){
- 	if(!parm.wcardId){
+ 	if(!parm.bussida){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
  		var postData = {
-			businessId: parm.wcardId
+			businessId: parm.bussida
  		};
 		App.formAjaxJson(serverPath + 'AssistFeasorManageController/getAssistFeasorToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
@@ -130,7 +130,6 @@ $(function(){
 	}else{
 		parm.wcardId = wcardId;
 		var parmStr = App.urlEncode(parm);
-		console.log(parmStr);
 		var href="workOrderEdit/workOrderEdit.html" + parmStr;
 		if(parm.isucloud != "true"){
 			href= href + "&gohistory=-2";

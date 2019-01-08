@@ -266,7 +266,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
  */
 function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 	if(taskDefinitionKey == "TLXR"){
-		var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+		var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&bussida="+businessKey+"&processInstanceId="+processInstanceId;
 		App.setCache("searchForm");
 		App.changePresentUrl(src);
 	}else{

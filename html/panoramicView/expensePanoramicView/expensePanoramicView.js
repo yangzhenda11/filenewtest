@@ -186,7 +186,6 @@ function createPaymentChart(contractNumber){
 		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
 		var remainsPaymentNum  = data.noPayVateAmountSum;		//剩余含税未付款金额
 		var getPaymentPercent = data.noPayVateAmountPercent;		//累计含税付款金额百分比
-		alert(data.resultData);
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,

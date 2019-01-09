@@ -1132,15 +1132,6 @@ function loadComplete() {
 		srolloOffect("#assistFeasorContent",1);
 	}
 }
-function saveSysOperLog(){
-	var presentParm = App.getPresentParm(true).split('?');
-	var postData = {
-		operUrl: presentParm[0],
-		operPermissionName: "工单页面",
-		operParameter: presentParm[1]
-	};
-//	App.formAjaxJson(globalConfig.serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
-}
 /*
  * 滚动到相应位置高度
  */
@@ -1648,4 +1639,14 @@ function isPerformWork(){
 	}else{
 		return false;
 	}
+}
+//记录页面打开日志
+function saveSysOperLog(){
+	var presentParm = App.getPresentParm(true).split('?');
+	var postData = {
+		operUrl: "/html/contReg/workOrderEdit/workOrderEdit.html",
+		operPermissionName: "工单页面",
+		operParameter: presentParm[1]
+	};
+	App.formAjaxJson(serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
 }

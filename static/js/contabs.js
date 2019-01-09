@@ -543,5 +543,5 @@ function saveSysOperLog(operUrl,operPermissionName,operParameter){
 		operPermissionName: operPermissionName,
 		operParameter: operParameter
 	};
-//	App.formAjaxJson(globalConfig.serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
+	App.formAjaxJson(globalConfig.serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
 }

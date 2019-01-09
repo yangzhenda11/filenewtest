@@ -260,7 +260,7 @@ function initIncomeAnalysisCharts(incomeChartData){
     		$(".accuontPeriod").text(params.data.account);
     		// 给合同收入-应收赋值
     		var incomeReceivable = (params.data.value)+(params.data.other);
-    		$("#incomeReceivable").text(App.unctionToThousands(incomeReceivable));
+    		$("#incomeReceivable").text(App.unctionToThousands(parseFloat(incomeReceivable.toFixed(2))));
     		if(params.seriesName == "欠费金额"){
     			// 给合同收入-欠费赋值
         		$("#incomeArrears").text(App.unctionToThousands(params.data.value));
@@ -285,7 +285,7 @@ function initIncomeAnalysisCharts(incomeChartData){
     		$(".accuontPeriod").text(params.data.account);
     		// 给风险收入-应收赋值
     		var riskIncomeReceivable = (params.data.value)+(params.data.other);
-    		$("#riskIncomeReceivable").text(App.unctionToThousands(riskIncomeReceivable));
+    		$("#riskIncomeReceivable").text(App.unctionToThousands(parseFloat(riskIncomeReceivable.toFixed(2))));
     		if(params.seriesName == "欠费金额"){
     			// 给风险收入-欠费赋值
         		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.value));

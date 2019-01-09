@@ -82,7 +82,7 @@
 		if(isSubmit == "changeAssist"){
 			if(parm.taskDefinitionKey == "GGLXR"){
 				if(_assistFeasor.assistFeasorAddList.length == 0 && _assistFeasor.assistFeasorDelList.length == 0){
-					layer.msg("请增加或删除协助履行人");
+					layer.msg("请增加或失效协助履行人");
 					return false;
 				}else{
 					_assistFeasor.addHelpPer = null;
@@ -378,9 +378,6 @@
     function setAssistFeasorTable(){
     	$("#assistFeasorModal").modal("hide");
     	if($("#assistFeasorChecked .checkedStaffItem").length > 0){
-    		if($("#assistFeasorTbody .emptyTr")[0] != undefined){
-				$("#assistFeasorTbody .emptyTr").remove();
-			};
 			var performerDataList = [];
 			var exitFlag = false;
 			$.each($("#feasorTbody tr"),function(k,v){
@@ -402,6 +399,9 @@
 			var url = serverPath + "contractOrderEditorController/getServerDate";
 			App.formAjaxJson(url, "post", null, successCallback);
 			function successCallback(result){
+				if($("#assistFeasorTbody .emptyTr")[0] != undefined){
+					$("#assistFeasorTbody .emptyTr").remove();
+				};
 				var nowDate = App.formatDateTime(result.data,"yyyy-mm-dd");
 				$.each($("#assistFeasorChecked .checkedStaffItem"), function(k,v) {
 					var stafforgid = $(v).data("stafforgid");

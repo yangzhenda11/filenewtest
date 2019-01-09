@@ -125,7 +125,10 @@ function queryFeasorCli(){
 			data.contractNumber = contractNumber;
 			data.contractName = $("#contractName").val();
 			if(parm.taskDefinitionKey == "TLXR"){
-				var flowData = App.getFlowParam(serverPath,wcardId,1,0,"main_performance");
+				var flowData = App.getFlowParam(serverPath,parm.bussida,1,0,"main_performance","","","","","");
+				if(flowData == null){
+					return false;
+				}
 				data = $.extend(true, data, flowData);
 				data.startFlowFlag = "TRUE";
 			}else{
@@ -1115,6 +1118,8 @@ function loadComplete() {
 	getBusiProcessInfoID();
 	//加载快捷跳转
 	setSpeedyJump();
+	//记录日志
+	saveSysOperLog();
 	//增加事件委托，input失去焦点时检查是否maxLength超长
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
@@ -1127,7 +1132,6 @@ function loadComplete() {
 		srolloOffect("#assistFeasorContent",1);
 	}
 }
-
 /*
  * 滚动到相应位置高度
  */
@@ -1635,4 +1639,14 @@ function isPerformWork(){
 	}else{
 		return false;
 	}
+}
+//记录页面打开日志
+function saveSysOperLog(){
+	var presentParm = App.getPresentParm(true).split('?');
+	var postData = {
+		operUrl: "/html/contReg/workOrderEdit/workOrderEdit.html",
+		operPermissionName: "工单页面",
+		operParameter: presentParm[1]
+	};
+	App.formAjaxJson(serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
 }

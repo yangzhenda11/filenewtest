@@ -187,20 +187,22 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
-				var editTaskDefinitionKey = "";
-				if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
-					editTaskDefinitionKey = "GDQR";
-				}else if(taskDefinitionKey == "TLXR"){
-					var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&taskId="+taskId;
+		   		if(taskDefinitionKey == "TLXR"){
+					var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&bussida="+businessKey+"&processInstanceId="+processInstanceId+"&taskId="+taskId;
 					App.setCache("searchForm");
 					App.changePresentUrl(src);
 				}else{
-					editTaskDefinitionKey = taskDefinitionKey;
-				};
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
-		   		App.setCache("searchForm");
-		   		App.changePresentUrl(src);
+					var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
+					var editTaskDefinitionKey = "";
+					if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
+						editTaskDefinitionKey = "GDQR";
+					}else{
+						editTaskDefinitionKey = taskDefinitionKey;
+					};
+			   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
+			   		App.setCache("searchForm");
+			   		App.changePresentUrl(src);
+				}
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}

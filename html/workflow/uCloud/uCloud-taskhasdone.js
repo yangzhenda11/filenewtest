@@ -108,16 +108,18 @@ function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceI
 			var canWithDraw = data.canWithDraw;
 			var GDQRSpecialList = ["GDQR","BMQR","GSQR","GZGZ","HTGD"];
 			var editTaskDefinitionKey = "";
-			if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
-				editTaskDefinitionKey = "GDQR";
-			}else if(taskDefinitionKey == "TLXR"){
-				var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&taskId="+taskId+"&isucloud=true";
+			if(taskDefinitionKey == "TLXR"){
+				var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+taskDefinitionKey+"&bussida="+businessId+"&processInstanceId="+processInstanceId+"&taskId="+taskId+"&isucloud=true";
 				$('#businessiframe').attr("src",src);
 			}else{
-				editTaskDefinitionKey = taskDefinitionKey;
-			};
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
-	   		$('#businessiframe').attr("src",src);
+				if(GDQRSpecialList.indexOf(taskDefinitionKey) != -1){
+					editTaskDefinitionKey = "GDQR";
+				}else{
+					editTaskDefinitionKey = taskDefinitionKey;
+				};
+				var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
+		   		$('#businessiframe').attr("src",src);
+			}
 		},
 		error:function(e){
 			App.ajaxErrorCallback(e);

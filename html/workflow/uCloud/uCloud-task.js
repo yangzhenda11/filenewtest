@@ -102,7 +102,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 }
 function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 	if(taskDefinitionKey == "TLXR"){
-		var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&isucloud=true";
+		var src = "/html/contReg/workOrderAssistFeasorEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&bussida="+businessKey+"&processInstanceId="+processInstanceId+"&isucloud=true";
 		$('#businessiframe').attr("src",src);
 	}else{
 		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,improperCallback,null,false);

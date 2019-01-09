@@ -1119,8 +1119,8 @@ var App = function() {
 		},
 		//检查起始时间是否大于结束时间
         checkDate: function(startData,endData){
-        	var startData = new Date(startData);
-		    var endData = new Date(endData);
+        	var startData = new Date(startData.replace(/-/g,"/"));
+		    var endData = new Date(endData.replace(/-/g,"/"));
 		    if(startData > endData){     
 		        return false;
 		    }else{

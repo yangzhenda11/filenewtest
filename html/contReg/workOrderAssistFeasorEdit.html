@@ -101,22 +101,26 @@ var serverPath = config.serverPath;
 var parm = App.getPresentParm();
 var wcardId = null;
 $(function(){
- 	if(!parm.wcardId){
+ 	if(!parm.bussida){
  		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
 		return;
  	}else{
  		var postData = {
-			businessId: parm.wcardId
+			businessId: parm.bussida
  		};
 		App.formAjaxJson(serverPath + 'AssistFeasorManageController/getAssistFeasorToReadInfo', "post",JSON.stringify(postData) , successCallback);
 		function successCallback(result) {
 			var data = result.data;
-			wcardId = data.wcardId;
-			$("#sendName").text(data.createdBy);			
-			$("#title").text(data.readTitle);			
-			$("#content").text(data.readText);
-	 		var receive = App.formatDateTime(data.ctreatedDate);
-	 		$("#receiveTime").text(receive);
+			if(data){
+				wcardId = data.wcardId;
+				$("#sendName").text(data.createdBy);			
+				$("#title").text(data.readTitle);			
+				$("#content").text(data.readText);
+		 		var receive = App.formatDateTime(data.ctreatedDate);
+		 		$("#receiveTime").text(receive);
+			}else{
+				layer.msg("获取数据失败");
+			}
 		}
  	}
 })
@@ -128,9 +132,9 @@ $(function(){
 	if(wcardId == null){
 		layer.msg("数据异常！");
 	}else{
-		var persentUrl = App.getPresentParm(true);
-		var subStrLength = persentUrl.indexOf("?") + 1;
-		var href="workOrderEdit/workOrderEdit.html?" + persentUrl.substr(subStrLength);
+		parm.wcardId = wcardId;
+		var parmStr = App.urlEncode(parm);
+		var href="workOrderEdit/workOrderEdit.html" + parmStr;
 		if(parm.isucloud != "true"){
 			href= href + "&gohistory=-2";
 		};

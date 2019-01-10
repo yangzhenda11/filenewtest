@@ -100,16 +100,16 @@ function createOrderChart(contractNumber){
 		console.log(result);
 		var data = result.data;
 	
-		var getPaymentNum = data.getPaymentNum;			//累计接收金额
+		var getPaymentNum = data.paymentNum;			//累计接收金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未接收金额
-		var getPaymentPercent = data.getPaymentPercent;		//累计接收金额百分比
+		var getPaymentPercent = data.paymentPercent;		//累计接收金额百分比
 		if(getPaymentNum || remainsPaymentNum){
 			var orderChartOption = circleChartsOption('订单接收',"订单累计接收金额情况", [{
 				value: getPaymentNum,
-				name: '累计接收金额：'+getPaymentNum+'元'
+				name: '累计接收金额：'+App.unctionToThousands(getPaymentNum)+'元'
 			}, {
 				value: remainsPaymentNum,
-				name: '剩余未接收金额：'+remainsPaymentNum+'元'
+				name: '剩余未接收金额：'+App.unctionToThousands(remainsPaymentNum)+'元'
 			}]);
 			$("#orderChartValue").text(parseFloat(getPaymentPercent*100) + "%");
 			$("#expenseOverviewNote").text(data.resultData)
@@ -148,10 +148,10 @@ function createInvoiceChart(contractNumber){
 		if(getPaymentNum || remainsPaymentNum){
 			var invoiceChartOption = circleChartsOption('合同发票',"累计开票金额情况", [{
 				value: getPaymentNum,
-				name: '累计开票金额：'+getPaymentNum+'元'
+				name: '累计开票金额：'+App.unctionToThousands(getPaymentNum)+'元'
 			}, {
 				value: remainsPaymentNum,
-				name: '剩余未开票金额：'+remainsPaymentNum+'元'
+				name: '剩余未开票金额：'+App.unctionToThousands(remainsPaymentNum)+'元'
 			}]);
 			$("#invoiceChartValue").text(parseFloat(getPaymentPercent*100) + "%");
 			$("#expenseOverviewNote").text(data.resultData)
@@ -189,10 +189,10 @@ function createPaymentChart(contractNumber){
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,
-				name: '累计含税付款金额：'+getPaymentNum+'元'
+				name: '累计含税付款金额：'+App.unctionToThousands(getPaymentNum)+'元'
 			}, {
 				value: remainsPaymentNum,
-				name: '剩余含税未付款金额：'+remainsPaymentNum+'元'
+				name: '剩余含税未付款金额：'+App.unctionToThousands(remainsPaymentNum)+'元'
 			}]);
 			$("#paymentChartValue").text(parseFloat(getPaymentPercent*100) + "%");
 			$("#expenseOverviewNote").text(data.resultData)

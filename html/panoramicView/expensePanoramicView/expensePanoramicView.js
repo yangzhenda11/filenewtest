@@ -41,10 +41,10 @@ function getContractBaseData(){
 				if(data.isFixed == '1'){
 					$("#contractValueDom").show();
 					$("#contractValue").val(App.unctionToThousands(data.contractValue));
-					$("input[name='isFixed'][value='1']").attr("checked","checked");
+					$("input[name='isFixed'][value='1']").prop("checked","checked");
 				}else if("2"==data.isFixed){
 					$("#contractValueDom").hide();
-					$("input[name='isFixed'][value='2']").attr("checked","checked");
+					$("input[name='isFixed'][value='2']").prop("checked","checked");
 				};
 				$("#contractBaseData,#expenseCharts").show();
 				createOrderChart(contractNumber);

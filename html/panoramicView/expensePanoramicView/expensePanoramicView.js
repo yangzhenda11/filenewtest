@@ -41,10 +41,10 @@ function getContractBaseData(){
 				if(data.isFixed == '1'){
 					$("#contractValueDom").show();
 					$("#contractValue").val(App.unctionToThousands(data.contractValue));
-					$("input[name='isFixed'][value='1']").prop("checked","checked");
+					$("input[name='isFixed'][value='1']").attr("checked","checked");
 				}else if("2"==data.isFixed){
 					$("#contractValueDom").hide();
-					$("input[name='isFixed'][value='2']").prop("checked","checked");
+					$("input[name='isFixed'][value='2']").attr("checked","checked");
 				};
 				$("#contractBaseData,#expenseCharts").show();
 				createOrderChart(contractNumber);
@@ -186,6 +186,7 @@ function createPaymentChart(contractNumber){
 		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
 		var remainsPaymentNum  = data.noPayVateAmountSum;		//剩余含税未付款金额
 		var getPaymentPercent = data.noPayVateAmountPercent;		//累计含税付款金额百分比
+		alert(data.resultData);
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,
@@ -335,7 +336,7 @@ var orderIssuedDataTips = '',orderReceivingWarehousingDataTips = '',InvoiceVerif
 function initExpenseFlowChartsTips(data){
 	var orderIssuedData = data.orderIssuedData;
 	var orderReceivingWarehousingData = data.orderReceivingWarehousingData;
-	var InvoiceVerificationData = data.InvoiceVerificationData;
+	var InvoiceVerificationData = data.invoiceVerificationData;
 	var paymentData = data.paymentData;
 	var riskWarningData = data.riskWarningData;
 	if(orderIssuedData){

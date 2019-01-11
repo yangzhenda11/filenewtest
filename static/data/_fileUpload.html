@@ -132,9 +132,8 @@
 	/*
 	 * 检测选择文件按钮点击
 	 */
-	function addFileEventListener(){
+	function addFileUploadEventListener(){
 		$("#uploadFileInput").on("change",function(){
-			console.log(1232)
 		    var filePath = $(this).val();
 		    var fileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
 		    if(fileName){
@@ -143,34 +142,22 @@
 				var fileNameList = fileName.split(".");
 				var reg = fileNameList[fileNameList.length-1];
 				var flag = false;
-				//IE10以上判断文件大小
-				if(!App.IEVersionVA(10)){
-					var chooseFile = document.getElementById("uploadFileInput").files[0];
-					if(chooseFile.size/1048576 > 100){
+				try{
+				    //判断文件大小是否超出100M限制
+					var fileSize = $('#uploadFileInput')[0].files[0].size;
+					var MaxSize = (100 * 1024 * 1024).toString();
+					if(fileSize> MaxSize){
 						layer.msg("文件超过100M的限制，请重新选择");
-						$("#uploadFileInput").val("");
+						resetFileUpload();
 					    return false;
 					}
-				};
-				
-	//			try{
-	//			    //判断文件大小是否超出限制
-	//				var fSize = $('#uploadFileInput')[0].files[0].size;
-	//				if(chooseFile.size > 1048576){
-	//					layer.msg("文件超过100M的限制，请重新选择");
-	//					$("#uploadFileInput").val("");
-	//				    return false;
-	//				}
-	//				var MB = (50 * 1024 * 1024).toString();
-	//				sizeIsOk = fSize < MB;
-	//			}catch(e){}
-				
+				}catch(e){}
 	//			判断是否含有特殊字符
 	//			var regEn = /[`~!@#$%^&*+<>?:"{},.\/;'[\]]/im,
 	//		    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
 				if(fileName.indexOf(" ") != -1 || fileName.indexOf("%") != -1){
 					layer.msg("文件中不能包括“ ”和“%”，请重新选择");
-					$("#uploadFileInput").val("");
+					resetFileUpload();
 				    return false;
 				};
 				//循环遍历附件类型
@@ -190,7 +177,7 @@
 		    			typeText += "."+v +"，"; 
 		    		})
 		    		typeText = typeText.substring(0,typeText.length-1);
-		    		$("#uploadFileInput").val("");
+		    		resetFileUpload();
 		    		layer.alert("请选择"+typeText+"格式的文件",{title:"格式错误",icon:2});
 					return false;
 				}else{
@@ -212,7 +199,7 @@
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#fileUpliadExplain").append(setting.explain);
 		$("#fileUploadChooseDom").html('<input type="file" name="fileName" id="uploadFileInput" accept="" />');
-		addFileEventListener();
+		addFileUploadEventListener();
 		$("#commomModal").modal("show");
 		var emptyFn = function(){};
 		fileUploadSuccessCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
@@ -282,7 +269,6 @@
 					}
 				},
 				'error': function(result){
-					console.log(result);
 					$("#fileuploadLoading").hide();
 					$("#fileUploadModalForm").show();
 					layer.alert("上传失败",{icon:2,title:"错误"});
@@ -300,7 +286,7 @@
 		$("#fileUploadChoose").removeClass("hidden");
 		$("#fileUploadChooseDom").html('<input type="file" name="fileName" id="uploadFileInput" accept="" />');
 		$("#fileUploadName").html("");
-		addFileEventListener();
+		addFileUploadEventListener();
 	}
 	 /*
      * 获取上传结果

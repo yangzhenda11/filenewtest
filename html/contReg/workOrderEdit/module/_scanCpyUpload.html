@@ -135,6 +135,7 @@
 				$("#contractTextUploadBtn").text("删除");
 				$("#contractText").data("storeid",bodyDocData.bodyDocStoreId);
 				bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+bodyDocData.bodyDocStoreId+'">'+bodyDocData.displayName+'</a>';
+//				bodyDocHtml =  '<a onclick="openOnlineView(\''+bodyDocData.bodyDocStoreId+'\',\''+bodyDocData.displayName+'\')">'+bodyDocData.displayName+'</a>';
 			}else{
 				$("#contractTextUploadBtn").text("添加");
 				bodyDocHtml = '<input type="text" disabled="disabled" class="form-control" />';
@@ -188,6 +189,7 @@
 			function queryCallback(){
 				var fileInfo = getFileItemInfo()[0];
 				$("#commomModal").modal("hide");
+//				var bodyDocHtml =  '<a onclick="openOnlineView(\''+fileInfo.data+'\',\''+fileInfo.name+'\')">'+fileInfo.name+'</a>';
 				var bodyDocHtml =  '<a href="'+serverPath+'fileload/downloadS3?key='+fileInfo.data+'">'+fileInfo.name+'</a>';
 				$("#contractText").removeClass("col-sm-4").addClass("contractDocSty");
 				$("#contractText").html(bodyDocHtml);

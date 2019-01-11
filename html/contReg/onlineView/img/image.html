@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图片预览</title>
+		<script src="/static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<img id="imgview" alt="图片预览" />
+	</body>
+	<script type="text/javascript">
+		var persentUrl = window.location.href;
+		var fileKey = persentUrl.split("?")[1];
+		fileKey = fileKey.split("&");
+		var theRequest = {};
+	    for(var i = 0; i < fileKey.length; i ++) {
+	        theRequest[fileKey[i].split("=")[0]] = decodeURI(fileKey[i].split("=")[1]);   
+	    };
+	    var serverPath = theRequest.serverPath;
+	    var filename = theRequest.filename;
+	    var filekey = theRequest.filekey;
+	    $("#imgview").attr("alt",filename);
+//	    $("#imgview").attr("src",serverPath + 'fileload/downloadS3?key=' + filekey);
+//		$("#imgview").attr("src",serverPath + 'fileload/downloadCheck?key=2863686727559593986.png');
+	    $.ajax({
+			type: "post",
+			url: serverPath + "fileload/downloadS3Url",
+			data: {key: filekey},
+			dataType: "json",
+			contentType: "application/x-www-form-urlencoded",
+			success: function(data){
+				var result = data;
+				if (result.status == 1) {
+					$("#imgview").attr("src",result.data);
+				}else{
+					alert("图片路径获取失败");
+				}
+			},
+			error: function(result) {
+				alert("图片路径获取失败");
+			}
+		});
+	</script>
+</html>

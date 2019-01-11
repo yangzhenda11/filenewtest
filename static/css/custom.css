@@ -298,6 +298,8 @@ button:focus{outline: none !important;}
  */
 #user-menu{
 	margin-top: 3px;
+	max-height: 500px;
+	overflow: auto;
 }
 .toolbars-position{
 	position: relative;

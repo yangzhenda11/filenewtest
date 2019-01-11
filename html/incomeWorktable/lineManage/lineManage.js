@@ -275,7 +275,11 @@ function lineImport() {
 			searchImportline();
 		} else{
 			importErrorText = result.message;
-			layer.alert("必填项校验失败，请   <a onclick='downloadErrorText()'>查看</a>  并修改后重新上传！",{icon:2});
+			if(App.IEVersionVA(10)) {
+				layer.alert(importErrorText,{icon:2,area:'500px'});
+			}else{
+				layer.alert("必填项校验失败，请   <a onclick='downloadErrorText()'>查看</a>  并修改后重新上传！",{icon:2});
+			}
 		}
 	}
 	App.getFileImportModal(setting, callback);

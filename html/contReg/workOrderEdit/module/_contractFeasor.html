@@ -15,7 +15,7 @@
 					<span></span>
 					本级履行或上下级共同履行
 				</label>
-				<label class="ui-radio hidden" id="performerType2">
+				<label class="ui-radio" id="performerType2">
 					<input type="radio" value="2" name="performerType">
 					<span></span>
 					仅由下级组织履行
@@ -101,8 +101,8 @@
 	/*
 	 * 如果mainOrgFlag为0则不显示下级履行
 	 */
-	if(config.mainOrgFlag != 0){
-		$("#performerType2").removeClass("hidden");
+	if(config.mainOrgFlag == 0 && parm.taskDefinitionKey == "GDCL"){
+		$("#performerType2").addClass("hidden");
 	}
 	
 	/*

@@ -515,7 +515,13 @@
 	$("#performerFlag1").on("change", function() {
 		var checkValue = $("#performerFlag1:checked").val() == 1 ? 1 : 0;
 		if(checkValue == 1){
-			layer.alert("系统将在合同激活后给主要履行人发送合同主要履行待办！",{icon:7});
+			var feasorNameList = [];
+			$.each($("#feasorTbody tr"),function(k,v){
+				if(!$(v).hasClass("emptyTr")){
+					feasorNameList.push($(v).children().eq(2).text());
+				}
+			});
+			layer.alert("系统将在合同激活后向主要履行人("+feasorNameList.join("，")+")发送合同主要履行待办！",{icon:7});
 		}
 	});
 	$("#addHelpPerformer").on("change", function() {

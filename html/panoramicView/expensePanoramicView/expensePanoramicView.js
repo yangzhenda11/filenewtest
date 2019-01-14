@@ -26,7 +26,7 @@ $(function(){
 function getContractBaseData(){
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
-		var url = serverPath + "tPContractSubwayPay/listByContractNumber";
+		var url = serverPath + "tPContractSubwayPay/getByContractNumber";
 		var postData = {
 			contractNumber: contractNumber
 		};
@@ -299,7 +299,7 @@ function circleChartsOption(title,subtext,data,isEmpty){
 
 /**************************************地铁图配置********************************************/
 function getIncomeFlowChartsData(contractNumber){
-	var url = serverPath + "tPContractSubwayPay/listSubwayInfo";
+	var url = serverPath + "tPContractSubwayPay/getSubwayInfo";
 	var postData = {
 		contractNumber: contractNumber
 	};

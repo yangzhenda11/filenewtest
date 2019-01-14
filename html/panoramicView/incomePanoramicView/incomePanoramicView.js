@@ -82,7 +82,7 @@ function returnForamtDate(data){
 /**************************************获取图表数据生成图表********************************************/
 //生成本地线路与跨域线路数量占比情况图表
 function createLineNumberChart(contractNumber){
-	var url = serverPath + "analysisZx/localAndOffSite";
+	var url = serverPath + "analysisZx/getLocalLineAndOffSiteLine";
 	var lineNumberChart = echarts.init(document.getElementById('lineNumberChart'));
 	var postData = {
 		contractNumber:contractNumber
@@ -113,7 +113,7 @@ function createLineNumberChart(contractNumber){
 }
 //生成租用中线路与已止租线路数量占比情况图表
 function createLineHireChart(contractNumber){
-	var url = serverPath + "analysisZx/isLineAndNotLine?contractNumber="+contractNumber;
+	var url = serverPath + "analysisZx/getIsLineHireAndNotLineHire?";
 	var lineHireChart = echarts.init(document.getElementById('lineHireChart'));
 	var postData = {
 		contractNumber:contractNumber
@@ -144,7 +144,7 @@ function createLineHireChart(contractNumber){
 }
 //生成本年度已出账收入情况图表
 function createIncomeChartCharts(contractNumber){
-	var url = serverPath + "analysisZx/collectedAndArrears?contractNumber="+contractNumber;
+	var url = serverPath + "analysisZx/getCollectedSumAndArrearsSum?";
 	var incomeChart = echarts.init(document.getElementById('incomeChart'));
 	var postData = {
 		contractNumber:contractNumber
@@ -169,7 +169,7 @@ function createIncomeChartCharts(contractNumber){
 				}
 			];
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",invoiceChartsFixedData);
-			$("#incomeChartValue").text(parseFloat(invoiceNnovatePercent*100) + "%");
+			$("#incomeChartValue").text(parseFloat(invoiceNnovatePercent*100).toFixed(2) + "%");
 			$("#incomeOverviewNote").text(data.currentDate);
 		}else{
 			incomeChartOption = circleChartsOption("本年度已出账收入情况",[{value: 0,name: '实收金额：0元'},{value: 1,name: '欠费金额：0元'}],true);

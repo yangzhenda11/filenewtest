@@ -127,7 +127,8 @@
 		extraData: null,
 		changeName: false,
 		fileName: "",
-		resultObj: []
+		resultObj: [],
+		accept: null
 	}; 
 	/*
 	 * 检测选择文件按钮点击
@@ -208,6 +209,7 @@
 			_fileUploadObj.fileExtensions = setting.fileExtensions;
 		}
 		if(setting.accept) {
+			_fileUploadObj.accept = setting.accept;
 			$("#uploadFileInput").attr("accept", setting.accept);
 		};
 		if(setting.extraData) {
@@ -285,6 +287,9 @@
 		$("#fileUploadResult").addClass("hidden");
 		$("#fileUploadChoose").removeClass("hidden");
 		$("#fileUploadChooseDom").html('<input type="file" name="fileName" id="uploadFileInput" accept="" />');
+		if(_fileUploadObj.accept) {
+			$("#uploadFileInput").attr("accept", _fileUploadObj.accept);
+		};
 		$("#fileUploadName").html("");
 		addFileUploadEventListener();
 	}

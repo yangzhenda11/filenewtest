@@ -124,7 +124,8 @@
 	var _fileImportObj = {
 		fileImportUrl: "",
 		fileImportPostfix: [],
-		extraData: ""
+		extraData: "",
+		accept: null
 	}; 
 	/*
 	 * 检测选择文件按钮点击
@@ -199,6 +200,7 @@
 			_fileImportObj.fileImportPostfix = setting.postfix;
 		}
 		if(setting.accept) {
+			_fileImportObj.accept = setting.accept;
 			$("#importFileInput").attr("accept", setting.accept);
 		};
 		if(setting.extraData) {
@@ -249,6 +251,9 @@
 		$("#fileImportResult").addClass("hidden");
 		$("#fileImportChoose").removeClass("hidden");
 		$("#fileImportChooseDom").html('<input type="file" name="file" id="importFileInput" accept="" />');
+		if(_fileImportObj.accept) {
+			$("#importFileInput").attr("accept", _fileImportObj.accept);
+		};
 		$("#fileImportName").html("");
 		addFileImportEventListener();
 	}

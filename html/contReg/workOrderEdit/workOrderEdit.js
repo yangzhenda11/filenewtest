@@ -1656,18 +1656,18 @@ function saveSysOperLog(){
 function openOnlineView(filekey,filename){
 	layer.confirm(filename, {btn: ['打开','保存','取消'],icon:7},function(index){
 	  	var fileType = filename.split(".")[1];
-	  	var supImgType = ["BMP","JPEG","GIF","PSD","PNG","bmp","jpeg","gif","psd","png"];
+	  	var supImgType = ["BMP","JPEG","GIF","PNG","bmp","jpeg","gif","png"];
 	  	if(fileType == "pdf" || fileType == "PDF"){
 	  		if(App.IEVersionVA(9)) {
-				layer.alert("您的浏览器版本过低不支持 pdf 在线查看，请使用IE9以上版本或者谷歌、火狐、360极速模式等现代浏览器查看，或点击保存按钮下载文件到本地查看。",{icon:2,area:'450px'})
+				layer.alert("您的浏览器版本过低不支持 pdf 在线查看，请使用IE9以上版本或者谷歌、火狐、360极速模式等现代浏览器查看，或点击保存按钮下载文件到本地查看。",{icon:2,area:'450px'});
 			}else{
 				var viewerUrl = encodeURIComponent(serverPath + "fileload/downloadS3?key=" + filekey);
-				window.open('/html/contReg/onlineView/pdf/web/viewer.html?file='+viewerUrl, '', 'toolbar=no');
+				openFullWindow('/html/contReg/onlineView/pdf/web/viewer.html?file='+viewerUrl);
 				layer.close(index);
 			}
 	  	}else if(supImgType.indexOf(fileType) != -1){
 	  		var viewerUrl = encodeURI('filename='+filename+'&filekey='+filekey+'&serverPath='+serverPath);
-			window.open('/html/contReg/onlineView/img/image.html?'+viewerUrl, '', 'toolbar=no');
+	  		openFullWindow('/html/contReg/onlineView/img/image.html?'+viewerUrl);
 			layer.close(index);
 	  	}else{
 	  		layer.msg("系统暂不支持 ."+fileType+" 类型的文件在线查看,请点击保存按钮下载文件到本地查看。",{icon:2})
@@ -1676,4 +1676,9 @@ function openOnlineView(filekey,filename){
 		layer.close(index);
 		location.href = serverPath + 'fileload/downloadS3?key=' + filekey;
 	});
+}
+function openFullWindow(url){
+ 	var width = screen.availWidth;  
+   	var height = screen.availHeight; 
+	window.open(url,"在线预览","height="+height+",top=0,left=0,width="+width+",status=no,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes");
 }

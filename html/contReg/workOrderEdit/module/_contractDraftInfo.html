@@ -33,7 +33,7 @@
 			if (data) {
 				$("#contractDraftInfoBtn").data("key",data.stored_id);
 				$("#contractDraftInfoBtn").data("docname",data.doc_name);
-				html =  '<a onclick="contractDraftInfoDownload();">'+data.doc_name+'</a>';
+				var html = '<a onclick="contractDraftInfoDownload();">'+data.doc_name+'</a>';
 				$("#contractDraftInfoDiv").html(html);
 			} else{
 				$("#contractDraftInfoBtn").remove();

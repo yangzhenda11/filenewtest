@@ -26,7 +26,7 @@ $(function(){
 function getContractBaseData(){
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
-		var url = serverPath + "tPContractSubwayPay/listByContractNumber";
+		var url = serverPath + "tPContractSubwayPay/getByContractNumber";
 		var postData = {
 			contractNumber: contractNumber
 		};
@@ -41,10 +41,10 @@ function getContractBaseData(){
 				if(data.isFixed == '1'){
 					$("#contractValueDom").show();
 					$("#contractValue").val(App.unctionToThousands(data.contractValue));
-					$("input[name='isFixed'][value='1']").prop("checked","checked");
+					$("input[name='isFixed'][value='1']").attr("checked","checked");
 				}else if("2"==data.isFixed){
 					$("#contractValueDom").hide();
-					$("input[name='isFixed'][value='2']").prop("checked","checked");
+					$("input[name='isFixed'][value='2']").attr("checked","checked");
 				};
 				$("#contractBaseData,#expenseCharts").show();
 				createOrderChart(contractNumber);
@@ -298,7 +298,7 @@ function circleChartsOption(title,subtext,data,isEmpty){
 
 /**************************************地铁图配置********************************************/
 function getIncomeFlowChartsData(contractNumber){
-	var url = serverPath + "tPContractSubwayPay/listSubwayInfo";
+	var url = serverPath + "tPContractSubwayPay/getSubwayInfo";
 	var postData = {
 		contractNumber: contractNumber
 	};
@@ -335,7 +335,7 @@ var orderIssuedDataTips = '',orderReceivingWarehousingDataTips = '',InvoiceVerif
 function initExpenseFlowChartsTips(data){
 	var orderIssuedData = data.orderIssuedData;
 	var orderReceivingWarehousingData = data.orderReceivingWarehousingData;
-	var InvoiceVerificationData = data.InvoiceVerificationData;
+	var InvoiceVerificationData = data.invoiceVerificationData;
 	var paymentData = data.paymentData;
 	var riskWarningData = data.riskWarningData;
 	if(orderIssuedData){

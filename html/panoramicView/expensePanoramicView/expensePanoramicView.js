@@ -90,7 +90,7 @@ function returnForamtDate(data){
 /**************************************获取图表数据生成图表********************************************/
 //生成订单接收图表
 function createOrderChart(contractNumber){
-	var url = serverPath + "analysisPayController/orderChartOption";
+	var url = serverPath + "analysisPayController/getOrderReceiveChart";
 	var postData = {
 			contractNumber:contractNumber
 		}
@@ -132,9 +132,9 @@ function createOrderChart(contractNumber){
 function createInvoiceChart(contractNumber){
 	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/FixedAmountOption";
+		var url = serverPath + "analysisPayController/getFixedAmount";
 	}else if(isFixed==2){
-		var url = serverPath +"analysisPayController/FrameworkOption";
+		var url = serverPath +"analysisPayController/getFramework";
 	}
 	var postData = {
 			contractNumber:contractNumber
@@ -173,9 +173,9 @@ function createInvoiceChart(contractNumber){
 function createPaymentChart(contractNumber){
 	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/FixedAmountOption";
+		var url = serverPath + "analysisPayController/getFixedAmount";
 	}else if(isFixed==2){
-		var url = serverPath + "analysisPayController/FrameworkOption";
+		var url = serverPath + "analysisPayController/getFramework";
 	}
 	var postData = {
 			contractNumber:contractNumber

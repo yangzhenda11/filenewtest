@@ -157,7 +157,7 @@
 	//			var regEn = /[`~!@#$%^&*+<>?:"{},.\/;'[\]]/im,
 	//		    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
 				if(fileName.indexOf(" ") != -1 || fileName.indexOf("%") != -1){
-					layer.msg("文件中不能包括“ ”和“%”，请重新选择");
+					layer.msg("文件名中不能包括“ ”和“%”，请重新选择");
 					resetFileUpload();
 				    return false;
 				};

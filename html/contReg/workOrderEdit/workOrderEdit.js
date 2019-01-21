@@ -416,7 +416,7 @@ function submitContentPost(chooseObj){
 		if(data.success == "000"){
 			showLayerErrorMsg(data.message);
 		}else{
-			layer.alert("注册成功！",{icon:1,closeBtn:0,area: '410px'},function(){
+			layer.alert("注册成功！",{icon:1,closeBtn:0},function(){
 				backPage();
 			});
 		}

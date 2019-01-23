@@ -26,7 +26,7 @@
 			<table class='table table-hover table-bordered table-striped table-align' style="width: 90%;">
 				<thead>
 					<tr>
-						<th class="assistFeasorCheckbox" style="width: 5%;"><label class='ui-checkbox'><input type='checkbox' name='assistFeasorCheckAll' id="assistFeasorCheckAll"><span></span></label></th>
+						<th class="assistFeasorCheckbox" style="width: 5%;"></th>
 						<th style="width: 5%;">序号</th>
 						<th style="width: 8%;" class="mangerRequired" id="mangerRequired">协助履行人</th>
 						<th style="width: 20%;" class="mangerRequired">协助履行人所属组织</th>
@@ -172,13 +172,15 @@
 					var performerStaffId = data[i].performerStaffId;
 					var isValid = data[i].isValid;
 					var expiryData = "";
+					var disabledHtml = '';
 					if(isValid == 1){
 						assistFeasorIdList.push(performerStaffId);
 					}else{
+						disabledHtml = 'disabled="true"';
 						expiryData = App.formatDateTime(data[i].updatedDate,"yyyy-mm-dd");
 					};
 					html += '<tr data-isvalid="'+isValid+'" data-id="'+data[i].performerId+'" data-stafforgid="'+performerStaffId+'" data-parentid="'+data[i].performerOrgId+'">'+
-	    						'<td class="assistFeasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck"><span></span></label></td>'+
+	    						'<td class="assistFeasorCheckbox"><label class="ui-checkbox"><input type="checkbox" name="assistFeasorCheck" '+disabledHtml+'><span></span></label></td>'+
 	    						'<td class="orderNumber"></td>'+
 	    						'<td>'+data[i].performerStaffName+'</td>'+
 	    						'<td>'+data[i].performerOrgName+'</td>'+
@@ -189,7 +191,6 @@
 				};
     			$("#assistFeasorTbody").html(html);
     			addAssistFeasorTbodySort();
-    			App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
 			}
 			/*
 			 * assisFeasorEdit协助履行人增加为true时isEdit不生效
@@ -427,7 +428,6 @@
 					}
 				});
 				addAssistFeasorTbodySort();
-				App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
 			}
     	}
     }
@@ -469,6 +469,7 @@
 								assistFeasorDataItem.performerOrgName = $parentDom.children().eq(3).text();
 								assistFeasorDelData.push(assistFeasorDataItem);
 								if (assisFeasorEdit) {
+									$parentDom.find("input[type='checkbox']").attr("disabled",true);
 									$parentDom.data("isvalid",0);
 									$parentDom.children().eq(5).text(nowDate);
 								}else{
@@ -480,7 +481,6 @@
 					$("#assistFeasorTbody input[name='assistFeasorCheck']").attr("checked",false);
 					addAssistFeasorTbodyEmptyTr();
 					addAssistFeasorTbodySort();
-					App.checkAllFn("#assistFeasorCheckAll","assistFeasorCheck");
 				}
 			})
 		}

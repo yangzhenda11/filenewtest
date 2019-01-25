@@ -1,4 +1,3 @@
-//@ sourceURL=assigneeList.js
 /**
  * 人员列表单选页
  * @author ctt

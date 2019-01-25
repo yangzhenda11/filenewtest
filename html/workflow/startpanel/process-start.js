@@ -1,4 +1,3 @@
-//@ sourceURL=process-start.js
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId=config.curStaffOrgId;

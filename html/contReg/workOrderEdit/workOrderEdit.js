@@ -357,6 +357,7 @@ function submitContentPost(chooseObj){
 	postData = $.extend(postData, datas);
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	postData.comment = chooseObj.commentVal;
+	postData.taskDefinitionKey = chooseObj.linkcode;
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
@@ -540,6 +541,7 @@ function pushGDQRWorkflowOfCompanyPost(chooseObj){
 		postData.wcardId = wcardId;
 		postData.contractId = contractId;
 		postData.comment = chooseObj.commentVal;
+		postData.taskDefinitionKey = chooseObj.linkcode;
 		postData.performerList = getValue_performerList(true,true);
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessCompany", "post", JSON.stringify(postData), successCallback, improperCallback);
@@ -618,6 +620,7 @@ function cancelApprovedPost(chooseObj){
 		var flowParam = App.getFlowParam(serverPath,wcardId,8,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		flowParam.wcardId = wcardId;
 		flowParam.comment = chooseObj.commentVal;
+		flowParam.taskDefinitionKey = chooseObj.linkcode;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
 		function successCallback(result) {
 			layer.alert("取消成功。",{icon:1},function(index){
@@ -644,6 +647,7 @@ function sendBack(){
 function setPinfoContent(chooseObj){
 	var flowParam = App.getFlowParam(serverPath,wcardId,2,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 	flowParam.comment = chooseObj.commentVal;
+	flowParam.taskDefinitionKey = chooseObj.linkcode;
 	flowParam.busiId = wcardId;
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);
 	function successCallback(result) {
@@ -674,6 +678,7 @@ function sendBackLastStepPost(chooseObj){
 		var postData = App.getFlowParam(serverPath,wcardId,2,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		postData.wcardId = wcardId;
 		postData.comment = chooseObj.commentVal;
+		postData.taskDefinitionKey = chooseObj.linkcode;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveWorkflowBackLastStep", "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			layer.alert("退回成功",{icon:1},function(index){

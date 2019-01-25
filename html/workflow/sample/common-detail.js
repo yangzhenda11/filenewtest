@@ -1,4 +1,3 @@
-//@ sourceURL=common-detail.js
 $(function(){ 
 	$("#startProcess").load("/html/workflow/startpanel/process-start.html",function() {
 		// 根据业务标识选择流程模板。如果编制界面一打开就能确定业务类型和流程的话可以放在此处，否则放在“发起”按钮的方法里。

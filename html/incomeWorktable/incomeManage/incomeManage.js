@@ -2,6 +2,10 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //页面变量
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
+}
 var pageConfig = {
 	isInitForecastCharts: false,		//页面是否已经生产收入预测表格
 	accountPeriod: null,				//收入预测点击选择的账期
@@ -70,10 +74,14 @@ function initIncomeCharts(){
 		var data = result.data;
 		if(data){
 			initIncomeAnalysisCharts(data);
-		};
+		}else{
+			improperCallback();
+		}
 	}
 	function improperCallback(result){
-		layer.msg(result.message);
+		if(result){
+			layer.msg(result.message);
+		};
 		$("#incomeAnalysisCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
 	}
 }
@@ -318,23 +326,30 @@ function incomeAnalysisIntervalFn(){
  })
  //收入分析-合同收入明细-点击单选按钮，获取radio选中项，根据选中类型查询
  function checkIncomeRadio(radioVal){
-	 if(pageConfig.incomePeriod == null){
-			if(radioVal == 1){ 		// 按客户查看
+	if(pageConfig.incomePeriod == null){
+		if(radioVal == 1){ 		// 按客户查看
+			if(cusCodeProvFlag){
 				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>履行中合同</th>";
-			}else{	
-									// 按线路查看
-				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>集客客户编号</th><th>含增值税合同金额</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>客户名称</th>><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>履行中合同</th>";
 			}
-			$("#incomeThead").html(theadHtml);
-		}else{
-			if(radioVal == 1){ 		
-				// 按客户查看
-				initIncomeTableByCustomer();
-			}else{					
-				// 按合同查看
-				initIncomeTableByContract();
+		}else{				// 按线路查看
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>集客客户编号</th><th>含增值税合同金额</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>含增值税合同金额</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
 			}
 		}
+		$("#incomeThead").html(theadHtml);
+	}else{
+		if(radioVal == 1){ 		
+			// 按客户查看
+			initIncomeTableByCustomer();
+		}else{					
+			// 按合同查看
+			initIncomeTableByContract();
+		}
+	}
  }
  // 收入分析-合同收入明细-按客户查看
  function initIncomeTableByCustomer(){
@@ -360,7 +375,7 @@ function incomeAnalysisIntervalFn(){
 				}
 			},
 			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "15%",},
-			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "15%","bVisible":cusCodeProvFlag},
 			{"data": "receivableAmount","title":"累计应收(元)","className": "whiteSpaceNormal","width": "13%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -411,7 +426,7 @@ function incomeAnalysisIntervalFn(){
 			{"data": "contractName","title":"合同名称","className": "whiteSpaceNormal","width": "11%"},
 			{"data": "contractNumber","title":"合同编号","className": "whiteSpaceNormal","width": "11%"},
 			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "11%"},
-			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "11%","bVisible":cusCodeProvFlag},
 			{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -606,11 +621,22 @@ function initIncomeForecastCharts(){
 		var data = result.data;
 		if(data){
 			initForecastCharts(data);
-		};
+		}else{
+			improperCallback();
+		}
 	}
 	function improperCallback(result){
-		layer.msg(result.message);
-		$("#incomeForecastCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
+		if(result){
+			layer.msg(result.message);
+		};
+		var nowData = new Date();
+		var nowMonth = nowData.getMonth() + 1;
+		var nowDate = nowData.getDate();
+		if(nowMonth == 1 || (nowMonth == 2 && nowDate < 7)){
+			$("#incomeForecastCharts").html("<span style='margin:30px 0 0 20px'>*当前为本年度首月，本年度收入预测信息请于2月6日以后登录系统查看</span>")
+		}else{
+			$("#incomeForecastCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
+		};
 	}
 }
 /*
@@ -795,9 +821,17 @@ $("#contractIncomeForecastRadio input[name='contractIncomeForecastType']").on("c
 function checkContractIncomeForecastRadio(valRadio){
 	if(pageConfig.accountPeriod == null){
 		if(valRadio == 1){ 		// 按客户查看
-			var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>合同收入预测</th><th>履行中合同</th>";
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>合同收入预测</th><th>履行中合同</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>客户名称</th><th>合同收入预测</th><th>履行中合同</th>";
+			}
 		}else{					// 按合同查看
-			var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>集客客户编号</th><th>签订盖章日期</th><th>合同终止日期</th><th>含增值税合同金额</th><th>合同收入预测</th><th>线路明细</th>";
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>集客客户编号</th><th>签订盖章日期</th><th>合同终止日期</th><th>含增值税合同金额</th><th>合同收入预测</th><th>线路明细</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>签订盖章日期</th><th>合同终止日期</th><th>含增值税合同金额</th><th>合同收入预测</th><th>线路明细</th>";
+			}
 		}
 		$("#contractIncomeForecastThead").html(theadHtml);
 	}else{
@@ -835,7 +869,7 @@ function initContractIncomeForecastTableByCustom(){
 				}
 			},
 			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "30%",},
-			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "30%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "30%","bVisible":cusCodeProvFlag},
 			{"data": "forecastReceivable","title":"合同收入预测","className": "whiteSpaceNormal","width": "27%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
@@ -878,7 +912,7 @@ function initContractIncomeForecastTableByContract(){
 			{"data": "contractName","title":"合同名称","className": "whiteSpaceNormal","width": "11%"},
 			{"data": "contractNumber","title":"合同编号","className": "whiteSpaceNormal","width": "11%"},
 			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "11%"},
-			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "11%","bVisible":cusCodeProvFlag},
 			{"data": "signDate","title":"签订盖章日期","className": "whiteSpaceNormal","width": "11%",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,'yyyy-MM-dd');

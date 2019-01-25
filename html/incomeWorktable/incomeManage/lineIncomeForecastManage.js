@@ -90,6 +90,9 @@ function lineIncomeforTableColumns(){
 		}
 	];
 	$.each(theadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if (v.id == "forecastReceivable" || v.id == "monthRentCost"  ) {
 				var item = {

@@ -293,6 +293,9 @@ function myContractTableColumns(){
 		}
 	];
 	$.each(contractTheadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if(v.id == "contractValue"){
 				var item = {

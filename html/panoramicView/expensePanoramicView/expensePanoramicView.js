@@ -26,7 +26,7 @@ $(function(){
 function getContractBaseData(){
 	var contractNumber = $("#searchContractNumber").val().trim();
 	if(contractNumber){
-		var url = serverPath + "tPContractSubwayPay/listByContractNumber";
+		var url = serverPath + "tPContractSubwayPay/getByContractNumber";
 		var postData = {
 			contractNumber: contractNumber
 		};
@@ -41,10 +41,10 @@ function getContractBaseData(){
 				if(data.isFixed == '1'){
 					$("#contractValueDom").show();
 					$("#contractValue").val(App.unctionToThousands(data.contractValue));
-					$("input[name='isFixed'][value='1']").attr("checked","checked");
+					$("input[name='isFixed'][value='1']").prop("checked","checked");
 				}else if("2"==data.isFixed){
 					$("#contractValueDom").hide();
-					$("input[name='isFixed'][value='2']").attr("checked","checked");
+					$("input[name='isFixed'][value='2']").prop("checked","checked");
 				};
 				$("#contractBaseData,#expenseCharts").show();
 				createOrderChart(contractNumber);
@@ -90,32 +90,34 @@ function returnForamtDate(data){
 /**************************************获取图表数据生成图表********************************************/
 //生成订单接收图表
 function createOrderChart(contractNumber){
-	var url = serverPath + "analysisPayController/orderChartOption";
+	var url = serverPath + "analysisPayController/getOrderReceiveChart";
 	var postData = {
 			contractNumber:contractNumber
 		}
 	var orderChart = echarts.init(document.getElementById('orderChart'));
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
-		console.log(result);
+		
 		var data = result.data;
 	
-		var getPaymentNum = data.getPaymentNum;			//累计接收金额
+		var getPaymentNum = data.paymentNum;			//累计接收金额
 		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余未接收金额
-		var getPaymentPercent = data.getPaymentPercent;		//累计接收金额百分比
+		var getPaymentPercent = data.paymentPercent;		//累计接收金额百分比
+		
 		if(getPaymentNum || remainsPaymentNum){
 			var orderChartOption = circleChartsOption('订单接收',"订单累计接收金额情况", [{
 				value: getPaymentNum,
-				name: '累计接收金额：'+getPaymentNum+'元'
+				name: '累计接收金额：'+App.unctionToThousands(getPaymentNum)+'元'
 			}, {
 				value: remainsPaymentNum,
-				name: '剩余未接收金额：'+remainsPaymentNum+'元'
+				name: '剩余未接收金额：'+App.unctionToThousands(remainsPaymentNum)+'元'
 			}]);
-			$("#orderChartValue").text(parseFloat(getPaymentPercent*100) + "%");
-			$("#expenseOverviewNote").text(data.resultData)
+			$("#orderChartValue").text(parseFloat(getPaymentPercent*100).toFixed(2)+ "%");
+			$("#expenseOverviewNote").text(data.resultDate);
 		}else{
 			$("#orderChartValue").text("0%");
 			var orderChartOption = circleChartsOption("订单接收","订单累计接收金额情况",[{value: 0,name: '累计接收金额：0元'},{value: 1,name: '剩余未接收金额：0元'}],true);
+			$("#expenseOverviewNote").text(data.resultDate);
 		};
 		orderChart.setOption(orderChartOption);
 	}
@@ -130,9 +132,9 @@ function createOrderChart(contractNumber){
 function createInvoiceChart(contractNumber){
 	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/FixedAmountOption";
+		var url = serverPath + "analysisPayController/getFixedAmount";
 	}else if(isFixed==2){
-		var url = serverPath +"analysisPayController/FrameworkOption";
+		var url = serverPath +"analysisPayController/getFramework";
 	}
 	var postData = {
 			contractNumber:contractNumber
@@ -148,13 +150,12 @@ function createInvoiceChart(contractNumber){
 		if(getPaymentNum || remainsPaymentNum){
 			var invoiceChartOption = circleChartsOption('合同发票',"累计开票金额情况", [{
 				value: getPaymentNum,
-				name: '累计开票金额：'+getPaymentNum+'元'
+				name: '累计开票金额：'+App.unctionToThousands(getPaymentNum)+'元'
 			}, {
 				value: remainsPaymentNum,
-				name: '剩余未开票金额：'+remainsPaymentNum+'元'
+				name: '剩余未开票金额：'+App.unctionToThousands(remainsPaymentNum)+'元'
 			}]);
-			$("#invoiceChartValue").text(parseFloat(getPaymentPercent*100) + "%");
-			$("#expenseOverviewNote").text(data.resultData)
+			$("#invoiceChartValue").text(parseFloat(getPaymentPercent*100).toFixed(2) + "%");
 		}else{
 			$("#invoiceChartValue").text("0%");
 			var invoiceChartOption = circleChartsOption("合同发票","累计开票金额情况",[{value: 0,name: '累计开票金额：0元'},{value: 1,name: '剩余未开票金额：0元'}],true);
@@ -172,9 +173,9 @@ function createInvoiceChart(contractNumber){
 function createPaymentChart(contractNumber){
 	var isFixed = $('input[name="isFixed"]:checked').val(); 
 	if(isFixed==1){
-		var url = serverPath + "analysisPayController/FixedAmountOption";
+		var url = serverPath + "analysisPayController/getFixedAmount";
 	}else if(isFixed==2){
-		var url = serverPath + "analysisPayController/FrameworkOption";
+		var url = serverPath + "analysisPayController/getFramework";
 	}
 	var postData = {
 			contractNumber:contractNumber
@@ -184,19 +185,17 @@ function createPaymentChart(contractNumber){
 	function successCallback(result) {
 		var data = result.data;
 		var getPaymentNum = data.taxPaymentNum;			//累计含税付款金额
-		var remainsPaymentNum  = data.noPayVateAmountSum;		//剩余含税未付款金额
+		var remainsPaymentNum  = data.remainsPaymentNum;		//剩余含税未付款金额
 		var getPaymentPercent = data.noPayVateAmountPercent;		//累计含税付款金额百分比
-		alert(data.resultData);
 		if(getPaymentNum || remainsPaymentNum){
 			var paymentChartOption = circleChartsOption('合同付款',"累计含税付款金额情况", [{
 				value: getPaymentNum,
-				name: '累计含税付款金额：'+getPaymentNum+'元'
+				name: '累计含税付款金额：'+App.unctionToThousands(getPaymentNum)+'元'
 			}, {
 				value: remainsPaymentNum,
-				name: '剩余含税未付款金额：'+remainsPaymentNum+'元'
+				name: '剩余含税未付款金额：'+App.unctionToThousands(remainsPaymentNum)+'元'
 			}]);
-			$("#paymentChartValue").text(parseFloat(getPaymentPercent*100) + "%");
-			$("#expenseOverviewNote").text(data.resultData)
+			$("#paymentChartValue").text(parseFloat(getPaymentPercent*100).toFixed(2) + "%");
 		}else{
 			$("#paymentChartValue").text("0%");
 			var paymentChartOption = circleChartsOption("合同付款","累计含税付款金额情况",[{value: 0,name: '累计含税付款金额：0元'},{value: 1,name: '剩余含税未付款金额：0元'}],true);
@@ -299,7 +298,7 @@ function circleChartsOption(title,subtext,data,isEmpty){
 
 /**************************************地铁图配置********************************************/
 function getIncomeFlowChartsData(contractNumber){
-	var url = serverPath + "tPContractSubwayPay/listSubwayInfo";
+	var url = serverPath + "tPContractSubwayPay/getSubwayInfo";
 	var postData = {
 		contractNumber: contractNumber
 	};
@@ -336,7 +335,7 @@ var orderIssuedDataTips = '',orderReceivingWarehousingDataTips = '',InvoiceVerif
 function initExpenseFlowChartsTips(data){
 	var orderIssuedData = data.orderIssuedData;
 	var orderReceivingWarehousingData = data.orderReceivingWarehousingData;
-	var InvoiceVerificationData = data.InvoiceVerificationData;
+	var InvoiceVerificationData = data.invoiceVerificationData;
 	var paymentData = data.paymentData;
 	var riskWarningData = data.riskWarningData;
 	if(orderIssuedData){

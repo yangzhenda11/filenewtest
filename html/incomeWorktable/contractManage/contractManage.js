@@ -5,6 +5,10 @@ var serverPath = config.serverPath;
 var reloadFocusContractTable = false;
 //获取参数
 var parm = App.getPresentParm();
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
+}
 $(function(){
 	var roleArr = config.curRole;
 	if(isInArray(roleArr,91216)){
@@ -83,7 +87,7 @@ function initPerformanceContractTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width": "15%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "13%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "13%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
@@ -164,7 +168,7 @@ function initFocusContractTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width": "15%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "13%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "13%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
@@ -248,7 +252,7 @@ function initMyContractManagerTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "10%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
@@ -322,6 +326,9 @@ function myContractTableColumns(){
 		}
 	];
 	$.each(contractTheadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if(v.id == "contractValue"){
 				var item = {
@@ -475,7 +482,7 @@ var contractTheadList = [
 	{data:"合同名称",id:"contractName",checked:true},
 	{data:"合同编号",id:"contractNumber",checked:true},
 	{data:"客户名称",id:"customerName",checked:true},
-	{data:"集客客户编号",id:"customerCode",checked:true},
+	{data:"集客客户编号",id:"customerCode",checked:true,isShow:cusCodeProvFlag},
 	{data:"合作方编号",id:"partnerCode",checked:true},
 	{data:"含增值税合同金额",id:"contractValue",checked:true},
 	{data:"客户经理名称",id:"customerManagerName",checked:true},

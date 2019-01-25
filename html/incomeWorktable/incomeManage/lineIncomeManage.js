@@ -46,7 +46,6 @@ function initLineInforTable(){
 	if(!isInit){
 		$("#lineInforTable").html("");
 	}
-	debugger;
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
@@ -76,6 +75,9 @@ function lineInforTableColumns(){
 		}
 	];
 	$.each(theadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if (v.id == "onceCost" || v.id == "monthRentCost" || v.id == "receivableAmount" || v.id == "arrearsAmount" || v.id == "collectedAmount") {
 				var item = {

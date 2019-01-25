@@ -5,6 +5,10 @@ var serverPath = config.serverPath;
 var reloadEmphasisCustomerTable = false;
 //获取参数
 var parm = App.getPresentParm();
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
+}
 $(function(){ 
 	/*
 	 * 我的客户（未关联合同）功能，稽核管理和商务经理需具备全省权限的角色才可以使用。
@@ -88,7 +92,7 @@ function initRelationCustomerTable(){
 				}
 			},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "19%"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
 			{"data": null,"className": "whiteSpaceNormal","width": "8%",
@@ -250,7 +254,7 @@ function initEmphasisCustomerTable(){
 				}
 			},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "20%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "20%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "19%"},
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "20%"},
 			{"data": null,"className": "whiteSpaceNormal","width": "8%",
@@ -331,6 +335,9 @@ function myCustomerTableColumns(){
 		}
 	];
 	$.each(customerTheadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if(v.id == "jumpContract"){
 				var item = {
@@ -403,10 +410,10 @@ function returnSelectLRData(data) {
 	customerTheadList = data;
 	initCustomerListTable();
 }
-//我的客户查询表格头
+//我的客户查询表格头,
 var customerTheadList = [
 	{data:"客户名称",id:"customerName",checked:true},
-	{data:"集客客户编号",id:"customerCode",checked:true},
+	{data:"集客客户编号",id:"customerCode",checked:true,isShow:cusCodeProvFlag},
 	{data:"合作方编号",id:"partnerCode",checked:true},
 	{data:"客户经理名称",id:"customerManagerName",checked:true},
 	{data:"履行中合同",id:"jumpContract",checked:true},

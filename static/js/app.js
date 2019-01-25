@@ -1485,6 +1485,18 @@ var App = function() {
 		    return null; 
         },
         /*
+         * 判断当前用户是否属于list传入的省份
+         */
+        checkIsNotProvCode : function(list){
+        	var nowProvCode = top.globalConfig.provCode;
+			for(var i = 0; i < list.length; i++){
+				if(list[i] == nowProvCode){
+					return false;
+				}
+			};
+			return true;
+        },
+        /*
          * 改变当前ifream切换url
          */
         changePresentUrl : function(url){

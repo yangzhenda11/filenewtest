@@ -250,6 +250,9 @@
 				$("#selectLRContent").find(".selectLR-up,.selectLR-down").remove();
 			};
 			$.each(e.data, function(k,v) {
+				if(v.isShow == false){
+					return true;
+				};
 				if(v.checked == true){
 					$("#_selectRCon").append('<li class="item" data-id="'+v.id+'">'+v.data+'</li>');
 				}else{

@@ -1,6 +1,11 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
+}
 /*
  * roleType
  * 收入类租线业务页面角色说明
@@ -155,9 +160,11 @@ function getFocusCustomerTable(){
 			$.each(data, function(k,v) {
 				html += '<tr>'+
 					'<td>'+ (k+1) + '</td>'+
-					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
-					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
-					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>';
+				if(cusCodeProvFlag){
+					html += '<td>'+ App.checkEmptyData(v.customerCode) + '</td>';
+				};
+				html += '<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.checkEmptyData(v.customerManagerName) +'</td>'+
 					"<td><a onclick='jumpContractManage(\""+v.customerCode+"\",\""+v.customerName+"\",\""+v.partnerCode+"\")'>查看</a></td>";
 			});
@@ -209,9 +216,11 @@ function getFocusContractTable(){
 					'<td>'+ (k+1) + '</td>'+
 					'<td>'+ App.checkEmptyData(v.contractName) + '</td>'+
 					'<td>'+ App.checkEmptyData(v.contractNumber) + '</td>'+
-					'<td>'+ App.checkEmptyData(v.customerName) + '</td>'+
-					'<td>'+ App.checkEmptyData(v.customerCode) + '</td>'+
-					'<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
+					'<td>'+ App.checkEmptyData(v.customerName) + '</td>';
+				if(cusCodeProvFlag){
+					html += '<td>'+ App.checkEmptyData(v.customerCode) + '</td>';
+				};
+				html += '<td>'+ App.checkEmptyData(v.partnerCode) + '</td>'+
 					'<td>'+ App.unctionToThousands(v.contractValue) + '</td>'+
 					'<td>'+ App.checkEmptyData(v.customerManagerName) + '</td>'+
 					'<td><a onclick="jumpLineManageByContract(\''+v.contractId+'\')">查看</a></td>';
@@ -319,7 +328,7 @@ function getIncomeAnalysisData(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		if(!data){
+		if(data){
 			initIncomeAnalysis(data);
 		}else{
 			improperCallback();
@@ -330,10 +339,13 @@ function getIncomeAnalysisData(){
 			layer.msg(result.message);
 		};
 		var nowData = new Date();
-		alert(nowData.getMonth()+1);
-		alert(nowData.getDate()+1);
-		
-		$("#incomeAnalysis").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
+		var nowMonth = nowData.getMonth() + 1;
+		var nowDate = nowData.getDate();
+		if(nowMonth == 1 || (nowMonth == 2 && nowDate < 7)){
+			$("#incomeAnalysis").html("<span style='margin:30px 0 0 20px'>*当前为本年度首月，本年度收入预测信息请于2月6日以后登录系统查看</span>")
+		}else{
+			$("#incomeAnalysis").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
+		};
 	}
 }
 

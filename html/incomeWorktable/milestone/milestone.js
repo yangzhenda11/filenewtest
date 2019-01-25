@@ -1,6 +1,10 @@
 //系统的全局变量获取
 var config = top.globalConfig;
 var serverPath = config.serverPath;
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
+}
 $(function(){
 	//判断有无查询条件
 	if(App.hasCache("contractPageSearch")){
@@ -44,7 +48,7 @@ function initContractTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width":"20%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width":"12%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width":"12%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width":"12%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width":"12%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width":"10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width":"8%",
 				"render": function(data, type, full, meta){

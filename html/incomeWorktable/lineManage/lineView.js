@@ -88,6 +88,9 @@ function lineInforTableColumns(){
 		}
 	];
 	$.each(theadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if (v.id == "onceCost" || v.id == "monthRentCost") {
 				var item = {

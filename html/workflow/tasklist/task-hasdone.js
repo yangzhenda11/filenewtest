@@ -72,7 +72,7 @@ function getTableForDone(){
 		        }else{
 		        	
 		        	if(curStaffOrgId == assignee){
-		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ","SEALAPPLY","SEALED"];
 		        		if(specialList.indexOf(c.taskDefinitionKey) != -1){
 		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee +"\')";
 		        		}else{

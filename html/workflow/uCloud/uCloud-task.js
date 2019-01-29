@@ -36,7 +36,7 @@ function handleTaskToDo(taskInfo) {
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","SEALAPPLY","SEALED"];
 	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForToDo").remove();
 		$("#searchContentForToDo").hide();
@@ -122,6 +122,11 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 			}
 		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
 			if(wcardStatus == 904030 && contractStatus == 8){
+				isPass = true;
+				editTaskDefinitionKey = taskDefinitionKey;
+			}
+		}else if(taskDefinitionKey == "SEALAPPLY" || taskDefinitionKey == "SEALED"){
+			if(wcardProcess == 0){
 				isPass = true;
 				editTaskDefinitionKey = taskDefinitionKey;
 			}

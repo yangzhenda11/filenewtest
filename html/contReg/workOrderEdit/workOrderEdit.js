@@ -706,10 +706,13 @@ function returnProcess(){
 			layer.confirm("当前流程将撤回本环节，是否确认？",{icon:7,title:"提示"},function(index){
 				layer.close(index);
 				if(parm.taskDefinitionKey == "SEALAPPLY"){
-					var postData = App.getFlowParam(serverPath,wcardId,2,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
-					postData.wcardId = wcardId;
-					postData.contractName = $("#contractName").val();
-					var processUrl = "contractOrderEditorController/getOrderProcessingFlowInfo";
+	                var postData = {
+	                    "processInstanceId": parm.processInstanceId,
+	                    "taskId": parm.taskId,
+	                    "wcardId": wcardId,
+	      				"contractName": $("#contractName").val()
+	                };
+	   				var processUrl = "contractOrderEditorController/saveApplySealFlowWithdrawProcess";
 				}else if(parm.taskDefinitionKey == "GDCL"){
 					var postData = {
 						"processInstanceId": parm.processInstanceId,

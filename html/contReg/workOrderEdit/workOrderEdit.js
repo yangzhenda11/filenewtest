@@ -699,15 +699,18 @@ function sendBackLastStepPost(chooseObj){
 //撤回@功能页面
 function returnProcess(){
 	if(formSubmit){
-		if(parm.taskDefinitionKey == "SEALED" || parm.taskDefinitionKey == "GDQR"){
+		if(parm.taskDefinitionKey == "SEALAPPLY" || parm.taskDefinitionKey == "GDCL"){
 			if(checkWcardIschange()){
 				return false;
 			};
 			layer.confirm("当前流程将撤回本环节，是否确认？",{icon:7,title:"提示"},function(index){
 				layer.close(index);
-				if(parm.taskDefinitionKey == "SEALED"){
-					
-				}else if(parm.taskDefinitionKey == "GDQR"){
+				if(parm.taskDefinitionKey == "SEALAPPLY"){
+					var postData = App.getFlowParam(serverPath,wcardId,2,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+					postData.wcardId = wcardId;
+					postData.contractName = $("#contractName").val();
+					var processUrl = "contractOrderEditorController/getOrderProcessingFlowInfo";
+				}else if(parm.taskDefinitionKey == "GDCL"){
 					var postData = {
 						"processInstanceId": parm.processInstanceId,
 						"taskId": parm.taskId,

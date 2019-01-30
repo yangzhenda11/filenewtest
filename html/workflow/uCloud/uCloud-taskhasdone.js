@@ -113,7 +113,7 @@ function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceI
 			}else{
 				editTaskDefinitionKey = taskDefinitionKey;
 			};
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true&processDefinitionKey="+processDefinitionKey;
 	   		$('#businessiframe').attr("src",src);
 		},
 		error:function(e){

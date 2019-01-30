@@ -93,8 +93,9 @@ function jumpSanCpyQueryDetail(wcardId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getOrderProcessingFlowInfo", "post", JSON.stringify({wcardId:wcardId}), successCallback);
 	function successCallback(result) {
 		var taskDefinitionKey = result.data;
+		alert(taskDefinitionKey);
 		if(taskDefinitionKey){
-			checkWcardProcess(wcardId,taskDefinitionKey)
+			//checkWcardProcess(wcardId,taskDefinitionKey)
 		}else{
 			layer.alert("当前工单的流程状态失败，请联系管理员。",{icon:2,title:"流程状态错误"},function(index){
 				layer.close(index);

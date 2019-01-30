@@ -659,6 +659,9 @@ function setPinfoContent(chooseObj){
 	flowParam.comment = chooseObj.commentVal;
 	flowParam.taskDefinitionKey = chooseObj.linkcode;
 	flowParam.busiId = wcardId;
+	if(flowParam.processDefinitionKey == "ContractprojectHNProcess2"){
+		flowParam.contractName = $("#contractName").val();
+	};
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);
 	function successCallback(result) {
 		layer.alert("退回成功！",{icon:1,closeBtn:0},function(){
@@ -718,6 +721,9 @@ function returnProcess(){
 						"processInstanceId": parm.processInstanceId,
 						"taskId": parm.taskId,
 						"wcardId": wcardId
+					};
+					if(parm.processDefinitionKey == "ContractprojectHNProcess2"){
+						postData.contractName = $("#contractName").val();
 					};
 					var processUrl = "contractOrderEditorController/saveOrderWithdrawProcess";
 				};

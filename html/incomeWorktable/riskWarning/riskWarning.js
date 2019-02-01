@@ -31,10 +31,6 @@ $(function(){
 		$(".relatedNotzxBaseTit,.relatedNotzxPeriodTit").remove();
 	};
 	//生成预警总览图表
-<<<<<<< HEAD
-	initWarningOverviewCharts();
-})
-=======
 	getRiskWarningChartData(); 
 })
   
@@ -63,7 +59,6 @@ function getRiskWarningChartData() {
 	}
 }
 
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 /*
  * 标题切换
  */

@@ -679,9 +679,9 @@ var App = function() {
 			        			top.window.location.href = "/login.html";
 			        		});
 						}
-		    		}else{
-		    			layer.alert("接口错误", {icon: 2,title:"错误"});
-		    		};
+	        		}else{
+	        			layer.alert("接口错误", {icon: 2,title:"错误"});
+	        		};
 				}
 			});
 		},
@@ -1017,7 +1017,7 @@ var App = function() {
 			var oTable = $(el).dataTable(options).on('preXhr.dt', function ( e, settings, data ) {
 	        	App.startLoading(btn);
 		  	}).on('xhr.dt', function ( e, settings, json, xhr ) {
-		  		App.stopLoading(btn);
+	        	App.stopLoading(btn);
 	        	loadEnd();
 	        	if(xhr.responseText.indexOf("会话已经超时") != -1 && xhr.responseJSON == null){
 					layer.alert("由于您长时间未操作，为安全起见系统已经自动退出，请重新登录", {icon: 2,title:"登录超时",closeBtn: 0},function(){
@@ -1467,17 +1467,12 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
-<<<<<<< HEAD
-				    for(var i = 0; i < strs.length; i ++) {   
-				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
-=======
 				    for(var i = 0; i < strs.length; i ++) {
 				    	var strsItem = decodeURI(strs[i].split("=")[1]);
 				    	if(strsItem == "null"){
 				    		strsItem = null;
 				    	}
 				        theRequest[strs[i].split("=")[0]] = strsItem;   
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				    }
 				}
 				return theRequest;
@@ -1486,11 +1481,7 @@ var App = function() {
         getQueryString : function(name){
         	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
 		    var r = window.location.search.substr(1).match(reg); 
-<<<<<<< HEAD
-		    if (r != null) return decodeURI(r[2]); 
-=======
 		    if (r != null) return decodeURI(r[2]);
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		    return null; 
         },
         /*
@@ -1937,8 +1928,6 @@ var App = function() {
 
 		//工作流相关，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
         getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType,provCode,cityCode,attrA,attrB,attrC){
-<<<<<<< HEAD
-=======
         	if(businessType == "contract_project2"){
         		if(provCode == null || provCode == ""){
         			layer.msg("省份编码不能为空,请联系管理员");
@@ -1949,7 +1938,6 @@ var App = function() {
         			return;
         		};
         	}
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");
@@ -2202,42 +2190,11 @@ $(function() {
                 setInputSupportPlaceholder(self, val);
             }
         );
-<<<<<<< HEAD
-
-=======
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         /**
          *  对password框的特殊处理
          * 1.创建一个text框 
          * 2.获取焦点和失去焦点的时候切换
          */
-<<<<<<< HEAD
-        $('input[type="password"]').each(
-            function() {
-                var pwdField    = $(this);
-                var pwdVal      = pwdField.attr('placeholder');
-                var pwdId       = pwdField.attr('id');
-                // 重命名该input的id为原id后跟1
-                pwdField.after('<input id="' + pwdId +'1" type="text" value='+pwdVal+' autocomplete="off" />');
-                var pwdPlaceholder = $('#' + pwdId + '1');
-                pwdPlaceholder.show();
-                pwdField.hide();
-
-                pwdPlaceholder.focus(function(){
-                    pwdPlaceholder.hide();
-                    pwdField.show();
-                    pwdField.focus();
-                });
-
-                pwdField.blur(function(){
-                    if(pwdField.val() == '') {
-                        pwdPlaceholder.show();
-                        pwdField.hide();
-                    }
-                });
-            }
-        );
-=======
 //      $('input[type="password"]').each(
 //          function() {
 //              var pwdField    = $(this);
@@ -2263,7 +2220,6 @@ $(function() {
 //              });
 //          }
 //      );
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
     }
 });
 

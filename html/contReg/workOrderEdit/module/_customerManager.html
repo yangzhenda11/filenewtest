@@ -11,13 +11,9 @@
 		<div id="customerManagerContent">
 			<div class="tableToobarContent hidden" id="customerManagerToolbar">
 				<button type="button" class="btn red" onclick="addCustomerManager()">添加客户经理</button>
-<<<<<<< HEAD
-				<button type="button" class="btn red" onclick="delectCustomerManager()">删除客户经理</button>
-=======
 				<button type="button" class="btn red" id="delManaForGDCL" onclick="delectCustomerManagerForGDCL()">删除客户经理</button>
 				<button type="button" class="btn red" id="delManaForTJKH" onclick="delectCustomerManagerForTJKH()">删除客户经理</button>
 				<button type="button" class="btn red" id="saveCustomerManagers" onclick="saveCustomerManager()">保存</button>
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			</div>
 			<table class='table table-hover table-bordered table-striped table-align' id="customerManagerTable" style="width: 70%;">
 				<thead>
@@ -42,8 +38,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-<<<<<<< HEAD
-=======
 	/*
 	 * 2阶段保存客户经理
 	 */
@@ -100,9 +94,7 @@
 			}
 		}
 	};
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	var customerManagerTree = null;
-
 	/*
 	 * 设置页面的id值，由保存和提交后回调
 	 */
@@ -220,18 +212,15 @@
 			/*
 			 * isEdit 判断页面是否只能查看
 			 */
-			if(!isEdit){
+			if(!isEdit && !editIdentify.isCanUpdateCustomerManager){
 				$("#customerManagerTable").find("input").attr("disabled","disabled");
 				$("#customerManagerToolbar,.cusManagerCheckbox").remove();
 			}else{
-<<<<<<< HEAD
-=======
 				if(editIdentify.isCanUpdateCustomerManager){
 					$("#delManaForGDCL").remove();
 				}else{
 					$("#saveCustomerManagers,#delManaForTJKH").remove();
 				};
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				$("#customerManagerToolbar").removeClass("hidden");
 			};
 		}
@@ -390,30 +379,12 @@
 						var parentId = treeNode.parentId;
 						var fullName =  treeNode.fullName;
 					};
-<<<<<<< HEAD
-    				var html = '<div class="customerManagerItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
-=======
     				var html = '<div class="checkedStaffItem" data-stafforgid="'+staffOrgId+'" data-fullname="'+fullName+'" data-parentid="'+parentId+'">'+
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         				'<span>'+name+'</span>'+
         				'</div>';
     				$("#customerManagerChecked").append(html);
     			};
 			}
-<<<<<<< HEAD
-        }
-    }
-    /*
-     * 增加右侧内容
-     */
-    function setCustomerManagerValue(){
-    	var treeNode = customerManagerTree.getSelectedNodes()[0];
-        if (treeNode == undefined) {
-            layer.msg("请选择人员", {icon: 2})
-        } else {
-            addCustomerManagerValue(treeNode);
-=======
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         }
     }
 	/*

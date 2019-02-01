@@ -19,15 +19,11 @@ var contractAttr = {
 	provinceCode: null,				//合同所属省份
 	city: null,						//合同所属城市
 	executeDeptCode: null			//承办人所在部门编码
-<<<<<<< HEAD
-}
-=======
 };
 var editIdentify = {						//2阶段新增标志位
 	isCanUpdateExpiryDate: false,			//*特殊* 是否可以更新终止日期
 	isCanUpdateCustomerManager: false		//*特殊* 是否可以更新客户经理
 };	
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 var contractStatusObj = {
 	1: "已审批",
 	2: "作废",
@@ -45,12 +41,6 @@ var $workOrderContentForm = $("#workOrderContentForm"),$pageContent = $("#page-c
  * 页面标志位修改
  * 页面是待办且为工单处理时才可以编辑
  */
-<<<<<<< HEAD
-if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-	isEdit = true;
-};
-
-=======
 if(parm.taskFlag == "db"){
 	if(parm.taskDefinitionKey == "GDCL"){
 		isEdit = true;
@@ -67,23 +57,11 @@ if(parm.taskFlag == "db"){
 		$("#sealApplyBtn").click(saveOrderStampFlow);
 	}
 }
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 $(function() {
 	wcardId = parm.wcardId;
 	if(parm.pageType == 1) {		//工作流页面进入
 		layer.alert("入参错误",{icon:2});
 	} else if(parm.pageType == 2) {		//工单处理和工单激活页面进入
-<<<<<<< HEAD
-		$("#flowNote").remove();
-		if(parm.taskDefinitionKey == "GDCL" && parm.taskFlag == "db"){
-			$(".sendBackBtn,.activateBtn,.returnBtn").remove();
-		}else if(parm.taskDefinitionKey == "GDQR" && parm.taskFlag == "db"){
-			$(".registerBtn,.cancelApprovedBtn,.returnBtn").remove();
-		};
-		fixToolBars();
-	} else if(parm.pageType == 0) {		//关联合同页面点击进入
-		$("#toolbarButton,#flowNote").remove();
-=======
 		if(parm.taskFlag == "db"){
 			if(parm.taskDefinitionKey == "GDCL"){
 				$("#toolbarButton button").not(".saveBtn,.registerBtn,.cancelApprovedBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
@@ -106,23 +84,14 @@ $(function() {
 		fixToolBars();
 	} else if(parm.pageType == 0) {		//关联合同页面点击进入
 		$("#toolbarButton").remove();
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		$("#toolbarBtn").css("height","90px");
 		$pageContent.removeClass("hidden");
 		fixToolBars();
 	} else if(parm.pageType == 4) {		//工单查询页面进入
-<<<<<<< HEAD
-		$("#flowNote").remove();
-=======
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		$("#toolbarButton button").not(".closeBtn").remove();
 		$pageContent.removeClass("hidden");
 		fixToolBars();
 	} else if(parm.pageType == 3) {		//已办页面进入
-<<<<<<< HEAD
-		$("#flowNote").remove();
-=======
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		$("#toolbarButton button").not(".returnBtn,.flowhistoryBtn,.flowchartBtn,.closeBtn").remove();
 		if(parm.canWithDraw != "true"){
 			$(".returnBtn").remove();
@@ -397,17 +366,9 @@ function submitContentPost(chooseObj){
 	postData.contractName = $("#contractName").val();
 	var datas = getContentValue(true);
 	postData = $.extend(postData, datas);
-<<<<<<< HEAD
-	if($("#wcardTagContent")[0]){
-		postData.wcardTag = $("#wcardTagContent input[name='wcardTag']:checked").val();
-	};
-	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
-	postData.comment = chooseObj.commentVal;
-=======
 	$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 	postData.comment = chooseObj.commentVal;
 	postData.taskDefinitionKey = chooseObj.linkcode;
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderEditorProcess", "post", JSON.stringify(postData), successCallback,improperCallback);
 	function successCallback(result) {
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
@@ -421,11 +382,7 @@ function submitContentPost(chooseObj){
 		}
 	}
 	function improperCallback(result){
-<<<<<<< HEAD
-		layer.alert(result.message,{icon:2});
-=======
 		layer.alert(result.message,{icon:2,closeBtn:0});
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 	}
 }
@@ -482,21 +439,13 @@ function activateContractPost(chooseObj){
 		function successCallback(result) {
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 			var data = result.data;
-<<<<<<< HEAD
-			layer.alert("激活成功！",{icon:1},function(){
-=======
 			layer.alert("激活成功！",{icon:1,closeBtn:0},function(){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				backPage();
 			});
 		}
 		function improperCallback(result){
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
-<<<<<<< HEAD
-			layer.alert(result.message,{icon:2});
-=======
 			layer.alert(result.message,{icon:2,closeBtn:0});
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		}
 	});
 }
@@ -575,14 +524,8 @@ function pushGDQRDataOfDepart(chooseObj){
 		
 	}
 	function improperCallback(result){
-<<<<<<< HEAD
-		var ms = result.message;
-		showLayerErrorMsg(ms);
-		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
-=======
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 		layer.alert(result.message,{icon:2,closeBtn:0});
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}
 }
 /*
@@ -608,31 +551,20 @@ function pushGDQRWorkflowOfCompanyPost(chooseObj){
 		postData.wcardId = wcardId;
 		postData.contractId = contractId;
 		postData.comment = chooseObj.commentVal;
-<<<<<<< HEAD
-=======
 		postData.taskDefinitionKey = chooseObj.linkcode;
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		postData.performerList = getValue_performerList(true,true);
 		$("#toolbarButton button").not(".closeBtn").attr("disabled",true);
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderApprovalProcessCompany", "post", JSON.stringify(postData), successCallback, improperCallback);
 		function successCallback(result) {
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
 			var data = result.data;
-<<<<<<< HEAD
-			layer.alert("激活成功！",{icon:1},function(){
-=======
 			layer.alert("激活成功！",{icon:1,closeBtn:0},function(){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				backPage();
 			});
 		}
 		function improperCallback(result){
 			$("#toolbarButton button").not(".closeBtn").attr("disabled",false);
-<<<<<<< HEAD
-			layer.alert(result.message,{icon:2});
-=======
 			layer.alert(result.message,{icon:2,closeBtn:0});
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		}
 	});
 }
@@ -698,16 +630,10 @@ function cancelApprovedPost(chooseObj){
 		var flowParam = App.getFlowParam(serverPath,wcardId,8,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		flowParam.wcardId = wcardId;
 		flowParam.comment = chooseObj.commentVal;
-<<<<<<< HEAD
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
-		function successCallback(result) {
-			layer.alert("取消成功。",{icon:1},function(index){
-=======
 		flowParam.taskDefinitionKey = chooseObj.linkcode;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderCancelApprovalProcess", "post", JSON.stringify(flowParam), successCallback);
 		function successCallback(result) {
 			layer.alert("取消成功。",{icon:1,closeBtn:0},function(index){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				layer.close(index);
 				window.location.reload();
 			});
@@ -731,13 +657,6 @@ function sendBack(){
 function setPinfoContent(chooseObj){
 	var flowParam = App.getFlowParam(serverPath,wcardId,2,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 	flowParam.comment = chooseObj.commentVal;
-<<<<<<< HEAD
-	flowParam.busiId = wcardId;
-	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);
-	function successCallback(result) {
-		var data = result.data;
-		layer.alert("退回成功！",{icon:1},function(){
-=======
 	flowParam.taskDefinitionKey = chooseObj.linkcode;
 	flowParam.busiId = wcardId;
 	if(flowParam.processDefinitionKey == "ContractprojectHNProcess2"){
@@ -746,7 +665,6 @@ function setPinfoContent(chooseObj){
 	App.formAjaxJson(serverPath + "contractOrderEditorController/saveOrderFallbackProcess", "post", JSON.stringify(flowParam), successCallback);
 	function successCallback(result) {
 		layer.alert("退回成功！",{icon:1,closeBtn:0},function(){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			backPage();
 		});
 	}
@@ -772,16 +690,10 @@ function sendBackLastStepPost(chooseObj){
 		var postData = App.getFlowParam(serverPath,wcardId,2,1,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		postData.wcardId = wcardId;
 		postData.comment = chooseObj.commentVal;
-<<<<<<< HEAD
-		App.formAjaxJson(serverPath + "contractOrderEditorController/saveWorkflowBackLastStep", "post", JSON.stringify(postData), successCallback);
-		function successCallback(result) {
-			layer.alert("退回成功",{icon:1},function(index){
-=======
 		postData.taskDefinitionKey = chooseObj.linkcode;
 		App.formAjaxJson(serverPath + "contractOrderEditorController/saveWorkflowBackLastStep", "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			layer.alert("退回成功",{icon:1,closeBtn:0},function(index){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				backPage();
 			});
 		}
@@ -790,21 +702,9 @@ function sendBackLastStepPost(chooseObj){
 //撤回@功能页面
 function returnProcess(){
 	if(formSubmit){
-<<<<<<< HEAD
-		if(checkWcardIschange()){
-			return false;
-		};
-		layer.confirm("当前流程将撤回本环节，是否确认？",{icon:7,title:"提示"},function(index){
-			layer.close(index);
-			var postData = {
-				"processInstanceId": parm.processInstanceId,
-				"taskId": parm.taskId,
-				"wcardId": wcardId
-=======
 		if(parm.taskDefinitionKey == "SEALAPPLY" || parm.taskDefinitionKey == "GDCL"){
 			if(checkWcardIschange()){
 				return false;
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			};
 			layer.confirm("当前流程将撤回本环节，是否确认？",{icon:7,title:"提示"},function(index){
 				layer.close(index);
@@ -1056,35 +956,7 @@ function getWorkOrderInfo(){
 				}
 				domObj.push(item);
 			};
-<<<<<<< HEAD
-			var postData = JSON.stringify({wcardId:wcardId,wcardType:wcardTypeCode});
-			App.formAjaxJson(serverPath + "contractOrderEditorController/getContractOrderBaseInfoId", "post", postData, contractBaseInfoCallback, contractBaseInfoimproper);
-			function contractBaseInfoCallback(resultData) {
-				var baseData = resultData.data;
-				if(baseData){
-					getContractOrderBaseInfoData = baseData;
-					contractStatus = baseData.contractStatus;
-					contractAttr.provinceCode = baseData.provinceCode;
-					contractAttr.executeDeptCode = baseData.executeDeptCode;
-					contractType = baseData.contractType;
-					if(contractStatus != 1){
-						isEdit = false;
-						specialDomEdit = false;
-					};
-					//获取工单所属的地市编码
-					getContractCityCode(baseData.executeDeptId,domObj);
-				}else{
-					$pageContent.removeClass("hidden");
-					showLayerErrorMsg("当前工单暂无信息");
-				}
-			};
-			function contractBaseInfoimproper(result){
-				$pageContent.removeClass("hidden");
-				showLayerErrorMsg(result.message);
-			}
-=======
 			getContractOrderBaseInfor(domObj,wcardTypeCode);
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		}else{
 			$pageContent.removeClass("hidden");
 			showLayerErrorMsg("当前工单暂无信息");
@@ -1096,15 +968,6 @@ function getWorkOrderInfo(){
 		showLayerErrorMsg(result.message);
 	}
 }
-<<<<<<< HEAD
-//获取工单所属的地市编码
-function getContractCityCode(executeDeptId,domObj){
-	App.formAjaxJson(serverPath + "contractOrderEditorController/getContractCityCode", "get", {executeDeptId:executeDeptId}, successCallback, improperCallback);
-	function successCallback(result) {
-		var orgCode = result.data.orgCode;
-		if(orgCode){
-			contractAttr.city = orgCode;
-=======
 /*
  * 请求工单基本信息，加载各区域页面
  */
@@ -1124,7 +987,6 @@ function getContractOrderBaseInfor(domObj,wcardTypeCode){
 				isEdit = false;
 				specialDomEdit = false;
 			};
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			if(parm.taskFlag == "db"){
 				if(parm.taskDefinitionKey == "GDQR"){
 					if(contractAttr.executeDeptCode == "00450080365" || contractAttr.provinceCode == "hi" || contractAttr.provinceCode == "sc"){
@@ -1139,32 +1001,20 @@ function getContractOrderBaseInfor(domObj,wcardTypeCode){
 			$pageContent.removeClass("hidden");
 			//设置各dom元素
 			setDomContent(domObj);
-<<<<<<< HEAD
-=======
 			//客户经理待办确认，不进行任何操作，待办变已办。
 			if(parm.taskDefinitionKey == "KHQR"){
 				customerManagerFinish();
 			};
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			//如果为工单待办激活请求已阅接口
 			setHaveRead();
 		}else{
 			$pageContent.removeClass("hidden");
-<<<<<<< HEAD
-			layer.alert("获取地市编码失败，请联系管理员！",{icon:2});
-		}
-	};
-	function improperCallback(result){
-		$pageContent.removeClass("hidden");
-		layer.alert(result.message,{icon:2});
-=======
 			showLayerErrorMsg("当前工单暂无信息");
 		}
 	};
 	function contractBaseInfoimproper(result){
 		$pageContent.removeClass("hidden");
 		showLayerErrorMsg(result.message);
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}
 }
 /*
@@ -1210,12 +1060,9 @@ function setCustomRule(){
 			customRuleForDepart(2);
 		}else if(flowParam.nowtaskDefinitionKey == "HTGD"){	//合同管理员归档
 			customRuleForCompany("公章管理员");
-<<<<<<< HEAD
-=======
 		}else if(flowParam.nowtaskDefinitionKey == "GDQR"){
 			$("#activateBtn").click(activateContract);		//走原激活方法
 			$("#sendBackBtn").click(sendBack);				//走原退回承办人方法
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		}
 	}else if(contractAttr.provinceCode == "sc"){
 		if(flowParam.nowtaskDefinitionKey == "BMQR"){		//部门合同管理员审核
@@ -1256,9 +1103,6 @@ function checkWcardProcessId(){
 			if(wcardProcess == 1){
 				isPass = true;
 			}
-<<<<<<< HEAD
-		}
-=======
 		}else if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
 			if(wcardStatus == "904030"){
 				isPass = true;
@@ -1268,7 +1112,6 @@ function checkWcardProcessId(){
 				isPass = true;
 			}
 		};
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}else{
 		isPass = true;
 	};
@@ -1279,13 +1122,23 @@ function checkWcardProcessId(){
  */
 function returnContractStatus(){
 	if(parm.taskFlag == "db"){
-		if(contractStatus == 1){
-			return false;
-		}else if(contractStatusObj[contractStatus] == undefined){
-			return "当前合同状态未知，请稍后操作。";
+		if(parm.taskDefinitionKey == "GXZZ" || parm.taskDefinitionKey == "KHQR" || parm.taskDefinitionKey == "TJKH"){
+			if(contractStatus == 8){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
+				return "当前合同状态未知，请稍后操作。";
+			}else{
+				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+			}
 		}else{
-			return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
-		}
+			if(contractStatus == 1){
+				return false;
+			}else if(contractStatusObj[contractStatus] == undefined){
+				return "当前合同状态未知，请稍后操作。";
+			}else{
+				return '当前合同处于"'+contractStatusObj[contractStatus]+'"状态，不能进行下一步操作。';
+			}
+		};
 	}else{
 		return false;
 	};
@@ -1318,6 +1171,11 @@ function loadComplete() {
 	$workOrderContentForm.on("blur","input,textarea",function(){
 		checkMaxLength(this);
 	});
+	if(editIdentify.isCanUpdateExpiryDate){
+		srolloOffect("#payerAccountInfo",3);
+	}else if(editIdentify.isCanUpdateCustomerManager){
+		srolloOffect("#customerManagerList",2);
+	};
 }
 
 /*
@@ -1663,11 +1521,7 @@ function getFlowhistory(){
  * 若为工单激活设置已阅
  */
 function setHaveRead(){
-<<<<<<< HEAD
-	if(parm.taskFlag == "db" && parm.taskDefinitionKey == "GDQR" && parm.pageType == 2){
-=======
 	if(parm.taskFlag == "db" && (parm.taskDefinitionKey == "GDQR" || parm.taskDefinitionKey == "SEALED") && parm.pageType == 2){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		var flowParams = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 		$.ajax({
 			url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+flowParams.processInstanceId+'&taskId='+flowParams.taskId+'&businessId='+wcardId, 
@@ -1720,8 +1574,6 @@ function backPage(){
 		layer.confirm("是否关闭此页面?",{icon:7,title:"提示"},function(index){
 			top.closeWindow();
 		});
-<<<<<<< HEAD
-=======
 	}else if(editIdentify.isCanUpdateCustomerManager == true){
 		var customerManagerList = getValue_customerManagerList(true);
 		if(customerManagerList.length != getCustomerManagerInfoList.length){
@@ -1757,7 +1609,6 @@ function backPage(){
 				top.closeIfreamSelf(pageId);
 			}
 		}
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}else{
 		window.history.go(-1);
 	}
@@ -1775,20 +1626,9 @@ function getBusiProcessInfoID(){
 			var o = 0;
 			for(var i = data.length-1; i >= 0; i--){
 				o++;
-<<<<<<< HEAD
-				var createdName = data[i].createdName == null ? "" : data[i].createdName;
-				if(data[i].createdType == 1){
-					busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  申报意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
-				}else if(data[i].createdType == 2){
-					busiProcess += "<p>【"+ o +"】  合同管理员-"+createdName+"  审核意见："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
-				}else if(data[i].createdType == 3){
-					busiProcess += "<p>【"+ o +"】  合同承办人-"+createdName+"  取消审批："+data[i].pinfoContent+"  ("+data[i].ctreatedDate+")</p>";
-				}
-=======
 				var itemData = data[i];
 				var createdName = itemData.createdName == null ? "" : itemData.createdName;
 				busiProcess += "<p>【"+ o +"】  "+itemData.createdTypeName+"-"+createdName+"  "+itemData.flowTypeName+"："+itemData.pinfoContent+"  ("+itemData.ctreatedDate+")</p>";
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			};
 			var html = '<div class="form-fieldset"><div class="form-fieldset-title"><div class="fieldset-title"><p>工单处理意见</p><span></span></div><div class="form-fieldset-tools"></div></div><div class="form-fieldset-body">'+
 				busiProcess+'</div></div>';
@@ -1804,19 +1644,11 @@ function getBusiProcessInfoID(){
  * 滚动固定
  */
 function fixToolBars(){
-<<<<<<< HEAD
-	$(".page-content").scroll(function(){
-		var topScroll = $(".page-content").scrollTop();
-		if(topScroll > 0){
-			$("#scrollTopTool").css("display","block");
-			$("#toolbarBtnContent").css({"position":"fixed","top":"0","width":"96.3%","z-index":"1000","background":"#fff","padding-top":"6px"});
-=======
 	$pageContent.scroll(function(){
 		var topScroll = $pageContent.scrollTop();
 		if(topScroll > 0){
 			$("#scrollTopTool").css("display","block");
 			$("#toolbarBtnContent").css({"position":"fixed","top":"0","width":"96.5%","z-index":"1000","background":"#fff","padding-top":"6px"});
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		}else{
 			$("#scrollTopTool").css("display","none");
 			$("#toolbarBtnContent").css({"position":"static","width":"100%","padding-top":"0"});
@@ -1827,8 +1659,6 @@ function fixToolBars(){
 			scrollTop:0
 		},300)
 	})
-<<<<<<< HEAD
-=======
 }
 /*
  * 客户经理确认待办变已办
@@ -1868,5 +1698,4 @@ function openFullWindow(url){
  	var width = screen.availWidth;  
    	var height = screen.availHeight; 
 	window.open(url,"在线预览","height="+height+",top=0,left=0,width="+width+",status=no,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=yes");
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 }

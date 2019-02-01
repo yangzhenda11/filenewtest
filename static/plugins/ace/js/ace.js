@@ -103,11 +103,7 @@ jQuery(function($) {
 			}else{
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle J_menuItem' href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
-<<<<<<< HEAD
-				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
-=======
 				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'>"+menuinfo.name+"</span>");
 				$("#"+menuinfo.id).append("<b class='arrow'></b>");
 			};

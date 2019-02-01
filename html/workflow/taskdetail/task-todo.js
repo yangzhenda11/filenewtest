@@ -1137,6 +1137,7 @@ function selectstaff(){
     jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC){
+
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,city,contracType,attrA,attrB,attrC);
@@ -1150,8 +1151,9 @@ function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,city
 		});
 		$("#PandJstaffiframetask").modal('show');
     });
+    
+    
 }
-
 function getassignee(ORG_ID,org_code,full_name,STAFF_NAME,STAFF_ORG_ID){
     // console.log(orgId,orgName,staffId,staffOrgId);
     $("#assignee").val(STAFF_ORG_ID);

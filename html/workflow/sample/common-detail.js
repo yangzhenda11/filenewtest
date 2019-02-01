@@ -448,10 +448,7 @@ function selectstaffSH(){
     jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes);
 }
 function jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes){
-<<<<<<< HEAD
-=======
 
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetaskSH").load(frameSrc,function() {
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,null,null,null,null,null,orgCodes);
@@ -463,12 +460,6 @@ function jandyStaffSearchSH(flowKey,linkcode,prov,callbackFun,staffSelectType,or
 			    checkAllChildStaffCheckbox();
 			});
 		});
-<<<<<<< HEAD
-    	$("#PandJstaffiframetaskSH").modal('show');
-    });
-}
-=======
 		$("#PandJstaffiframetaskSH").modal('show');
     });
 }
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e

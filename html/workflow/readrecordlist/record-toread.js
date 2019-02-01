@@ -80,25 +80,11 @@ function getTableToread(){
 	 	}]
 	});
 }
-<<<<<<< HEAD
-
-//跳转待阅页面
-function  findDetail(readId,url,bussId) {
-	App.setCache("searchForm");
-	App.changePresentUrl(url+"&bussid="+bussId+"&readid="+readId);
-	changeReadStatus(readId);
-}
-=======
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 /*
  * 待阅变已阅Fn
  * 跳转待阅页面
  */
-<<<<<<< HEAD
-function changeReadStatus(readId){
-=======
 function  findDetail(readId,url,bussId) {
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
 	    "type" : "post",

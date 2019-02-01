@@ -413,7 +413,70 @@ function conTabI() {
 function conTabJ() {
 	animateTab($(".J_menuTab.active"))
 }
-
+function closeIfreamSelf(dataId){
+	var selfDom = null;
+	$("#mainPageTabsContent .J_menuTab").each(function(k,v){
+		if(dataId == $(v).data("id")){
+			selfDom = $(v);
+		}
+	});
+	var l = selfDom.width();
+	if(selfDom.hasClass("active")) {
+		if(selfDom.next(".J_menuTab").size()) {
+			var k = selfDom.next(".J_menuTab:eq(0)").data("id");
+			selfDom.next(".J_menuTab:eq(0)").addClass("active");
+			$(".J_mainContent .J_iframe").each(function() {
+				if($(this).data("id") == k) {
+					$(this).show().siblings(".J_iframe").hide();
+					return false
+				}
+			});
+			var n = parseInt($(".page-tabs-content").css("margin-left"));
+			if(n < 0) {
+				$(".page-tabs-content").animate({
+					marginLeft: (n + l) + "px"
+				}, "fast")
+			}
+			selfDom.remove();
+			$(".J_mainContent .J_iframe").each(function() {
+				if($(this).data("id") == dataId) {
+					App.deleteCache($(this).attr("id"));
+					$(this).remove();
+					return false
+				}
+			})
+		}
+		if(selfDom.prev(".J_menuTab").size()) {
+			var k = selfDom.prev(".J_menuTab:last").data("id");
+			selfDom.prev(".J_menuTab:last").addClass("active");
+			$(".J_mainContent .J_iframe").each(function() {
+				if($(this).data("id") == k) {
+					$(this).show().siblings(".J_iframe").hide();
+					return false
+				}
+			});
+			selfDom.remove();
+			$(".J_mainContent .J_iframe").each(function() {
+				if($(this).data("id") == dataId) {
+					App.deleteCache($(this).attr("id"));
+					$(this).remove();
+					return false
+				}
+			})
+		}
+	} else {
+		selfDom.remove();
+		$(".J_mainContent .J_iframe").each(function() {
+			if($(this).data("id") == dataId) {
+				App.deleteCache($(this).attr("id"));
+				$(this).remove();
+				return false
+			}
+		});
+		animateTab($(".J_menuTab.active"))
+	}
+	return false
+}
 
 function conTabE() {
 	if(!$(this).hasClass("active")) {

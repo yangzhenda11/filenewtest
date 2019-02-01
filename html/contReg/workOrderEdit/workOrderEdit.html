@@ -14,18 +14,17 @@
 		<meta http-equiv="Expires" content="0">
 		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-control" content="no-cache,must-revalidate">
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrap/css/bootstrap.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/font-awesome/css/font-awesome.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/iconfont/iconfont.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2.min.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/select2/css/select2-bootstrap.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/datatables/datatables.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/zTree/css/metroStyle/metroStyle.css">
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/webuploader/webuploader.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../static/plugins/bootstrapValidator/css/bootstrapValidator.min.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/adminui.css" />
-		<link rel="stylesheet" type="text/css" href="../../../static/css/custom.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/workOrderEdit.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrap/css/bootstrap.css?t=1549010078319" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/font-awesome/css/font-awesome.min.css?t=1549010078319" />
+		<link rel="stylesheet" type="text/css" href="/static/css/iconfont/iconfont.css?t=1549010078319"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/select2/css/select2.min.css?t=1549010078319"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/select2/css/select2-bootstrap.css?t=1549010078319"/>
+		<link rel="stylesheet" type="text/css" href="/static/plugins/datatables/datatables.min.css?t=1549010078319" />
+		<link rel="stylesheet" type="text/css" href="/static/plugins/zTree/css/metroStyle/metroStyle.css?t=1549010078319">
+		<link rel="stylesheet" type="text/css" href="/static/plugins/bootstrapValidator/css/bootstrapValidator.min.css?t=1549010078319" />
+		<link rel="stylesheet" type="text/css" href="/static/css/adminui.css?t=1549010078319" />
+		<link rel="stylesheet" type="text/css" href="/static/css/custom.css?t=1549010078319"/>
+		<link rel="stylesheet" type="text/css" href="/html/contReg/css/workOrderEdit.css?t=1549010078319"/>
 	</head>
 
 	<body>
@@ -54,10 +53,7 @@
 									<button class="btn blue cancelApprovedBtn" id="cancelApprovedBtn" type="button" onclick="cancelApproved()"><i class="iconfont icon-guanbi"></i><span>取消审批</span></button>
 									<button class="btn blue sendBackBtn" id="sendBackBtn" type="button"><i class="iconfont icon-chehui"></i><span>退回合同承办人</span></button>
 									<button class="btn blue activateBtn" id="activateBtn" type="button"><i class="iconfont icon-tijiao1"></i><span>激活合同</span></button>
-<<<<<<< HEAD
-=======
 									<button class="btn blue changeExpiryDateBtn" type="button" onclick="changeExpiryDate()"><i class="iconfont icon-tijiao1"></i>更新终止日期</button>
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 									<button class="btn blue returnBtn" type="button" onclick="returnProcess()"><i class="iconfont icon-chehui"></i>撤回</button>
 									<button class="btn blue flowhistoryBtn" type="button" onclick="getFlowhistory()"><i class="iconfont icon-history"></i>流程历史</button>
 									<button class="btn blue flowchartBtn" type="button" onclick="getFlowchart()"><i class="iconfont icon-liucheng"></i>流程图</button>
@@ -67,11 +63,7 @@
 						</div>
 						<div id="workOrderContent"></div>
 				        <ul id="workOrderMenu"></ul>
-<<<<<<< HEAD
-			        	<div id="scrollTopTool">
-=======
 				        <div id="scrollTopTool">
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			        		TOP<div class="scrollTopRemark">返回顶部</div>
 			        	</div>
 					</form>
@@ -192,43 +184,6 @@
 	            </div>
 	        </div>
 		</div>
-<<<<<<< HEAD
-		<!--选择下一步modal-->
-		<!--<div class="modal fade" id="workFlowChooseLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-			<div class="modal-dialog" role="document">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	                    <h4 class="modal-title">选择下一步环节</h4>
-	                </div>
-	                <div class="modal-body" style="min-height: 200px;">
-                		<div class="form-body">
-							<div class="form-group" style="margin: 14px 0;">
-								<input type="hidden" name="flowProcessDefinitionKey" id="flowProcessDefinitionKey" value="" />
-								<label for="linkForStart">下一步环节<i class="iconfont icon-mi required"></i></label>
-								<select class="form-control" id="linkForStart" name="linkForStart" onchange="chooseAssigneeChange()"></select>
-							</div>
-							<div class="form-group" id="assigneeNameForStartDom">
-								<label for="assigneeNameForStart">办理人员 <i class="iconfont icon-mi required"></i></label>
-								<div class="input-group">
-									<input type="text" name="assigneeNameForStart" class="form-control" id="assigneeNameForStart" readonly="readonly" style="padding-left: 10px" />
-									<input type="hidden" name="assigneeIdForStart" class="form-control" id="assigneeIdForStart" />
-									<span class="input-group-btn">
-                                    	<button onclick="chooseAssignee();" type="button" class="btn primary">选择人员</button>
-                                	</span>
-								</div>
-							</div>
-						</div>
-	                </div>
-	                <div class="modal-footer">
-	                    <button type="button" onclick="chooseAssigneeConfirm()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
-	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
-	                </div>
-	            </div>
-	        </div>
-		</div>-->
-=======
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		<!--下一步modal-->
 		<div class="modal fade" id="workFlowChooseLinkModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog" role="document">
@@ -276,39 +231,34 @@
     	<div class="modal fade" id="commomModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"></div>
     	
 		<!--[if lt IE 9]>
-		  	<script src="../../../static/plugins/html5shiv.min.js"></script>
-		  	<script src="../../../static/plugins/respond.min.js"></script>
-		  	<script src="../../../static/plugins/ie8.fix.min.js"></script>
+		  	<script src="/static/plugins/html5shiv.min.js?t=1549010078319"></script>
+		  	<script src="/static/plugins/respond.min.js?t=1549010078319"></script>
+		  	<script src="/static/plugins/ie8.fix.min.js?t=1549010078319"></script>
 		<![endif]-->
 		<!--[if lte IE 8]>
-			<script src="../../../static/plugins/selectivizr-min.js"></script>
+			<script src="/static/plugins/selectivizr-min.js?t=1549010078319"></script>
 		<![endif]-->
 		<!--基础依赖-->
-		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-1.12.4.min.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap/js/bootstrap.min.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.min.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/layer/layer.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
 		<!--业务依赖-->
-		<script src="../../../static/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
-		<script src="../../../static/plugins/select2/js/select2.full.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/datatables/datatables.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/datatables/ellipsis.js"></script>
-		<script src="../../../static/plugins/FileSaver.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/handlebars-v3.0.1.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/bootstrapValidator/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/zTree/js/jquery.ztree.all.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/ChinaNumToEnglishNum.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/jquery.form.js" type="text/javascript" charset="utf-8"></script>
-<<<<<<< HEAD
-		<script src="../../../static/plugins/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../../../static/plugins/webuploader/webuploader.withoutimage.min.js" type="text/javascript" charset="utf-8"></script>
-=======
-		<script src="../../../static/plugins/ajaxfileupload/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script>
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
-		<script src="../../../static/js/app.js" type="text/javascript" charset="utf-8"></script>
-		<script src="_jumpIconList.js" type="text/javascript" charset="utf-8"></script>
-		<script src="workOrderEdit.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrap3-typeahead/bootstrap3-typeahead.min.js?t=1549010078319"></script>
+		<script src="/static/plugins/select2/js/select2.full.min.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/datatables.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/datatables/ellipsis.js?t=1549010078319"></script>
+		<script src="/static/plugins/FileSaver.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/handlebars-v3.0.1.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/bootstrapValidator/js/bootstrapValidator.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/My97DatePicker/WdatePicker.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/zTree/js/jquery.ztree.all.min.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/ChinaNumToEnglishNum.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/jquery.form.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/plugins/ajaxfileupload/ajaxfileupload.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/app.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/contReg/workOrderEdit/_jumpIconList.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
+		<script src="/html/contReg/workOrderEdit/workOrderEdit.js?t=1549010078319" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

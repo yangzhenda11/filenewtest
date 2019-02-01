@@ -1,12 +1,8 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-<<<<<<< HEAD
-		<span><i class="iconfont icon-layers"></i> 合同定稿正文</span>
-=======
 		<div class="fieldset-title">
 			<p>合同定稿正文</p><span></span>
 		</div>
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		<div class="form-fieldset-tools">
 			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
@@ -36,12 +32,8 @@
 			var data = result.data;
 			if (data) {
 				$("#contractDraftInfoBtn").data("key",data.stored_id);
-<<<<<<< HEAD
-				html =  '<a href="'+serverPath+'fileload/downloadS3?key='+data.stored_id+'">'+data.doc_name+'</a>';
-=======
 				$("#contractDraftInfoBtn").data("docname",data.doc_name);
 				html =  '<a onclick="contractDraftInfoDownload();">'+data.doc_name+'</a>';
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				$("#contractDraftInfoDiv").html(html);
 			} else{
 				$("#contractDraftInfoBtn").remove();
@@ -54,10 +46,6 @@
 	 */
 	function contractDraftInfoDownload(){
 		var downloadKey = $("#contractDraftInfoBtn").data("key");
-<<<<<<< HEAD
-		var url = serverPath + 'fileload/downloadS3?key='+downloadKey;
-		location.href = encodeURI(url);	
-=======
 		var docName = $("#contractDraftInfoBtn").data("docname");
 		var xhr = new XMLHttpRequest();
 	    var str = "";
@@ -72,6 +60,5 @@
             }
         };
         xhr.send(str);
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}
 </script>

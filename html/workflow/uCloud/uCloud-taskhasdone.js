@@ -32,11 +32,7 @@ function handleTaskForDone(taskInfo) {
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
-<<<<<<< HEAD
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
-=======
 	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ","SEALAPPLY","SEALED"];
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForDone").remove();
 		$("#searchContentForDone").hide();
@@ -117,11 +113,7 @@ function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceI
 			}else{
 				editTaskDefinitionKey = taskDefinitionKey;
 			};
-<<<<<<< HEAD
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
-=======
 			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true&processDefinitionKey="+processDefinitionKey;
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	   		$('#businessiframe').attr("src",src);
 		},
 		error:function(e){

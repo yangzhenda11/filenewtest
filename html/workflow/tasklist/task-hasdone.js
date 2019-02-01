@@ -72,11 +72,7 @@ function getTableForDone(){
 		        }else{
 		        	
 		        	if(curStaffOrgId == assignee){
-<<<<<<< HEAD
-		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
-=======
 		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ","SEALAPPLY","SEALED"];
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		        		if(specialList.indexOf(c.taskDefinitionKey) != -1){
 		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee +"\')";
 		        		}else{
@@ -199,11 +195,7 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,processDefini
 				}else{
 					editTaskDefinitionKey = taskDefinitionKey;
 				};
-<<<<<<< HEAD
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
-=======
 		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&processDefinitionKey="+processDefinitionKey;
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		   		App.setCache("searchForm");
 		   		App.changePresentUrl(src);
 		   	}else{

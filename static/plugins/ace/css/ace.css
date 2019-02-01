@@ -172,13 +172,13 @@ th, td { /*white-space: nowrap;*/ }
     top: 30px;
     width: 530px;
     height: 70px;
-		background: url(../../../img/top_bg.gif);
+		background: url(/static/img/top_bg.gif);
 }
 @media (max-width: 1140px) {
   .navbar-container .navbar-buttons{
 		width: 400px;
 		height: 89px;
-			background: url(../../../img/top_bg.gif);
+			background: url(/static/img/top_bg.gif);
 	}
 }
 /**

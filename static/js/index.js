@@ -89,16 +89,7 @@ $(document).ready(function() {
         	}];
         }else{
         	ace_menus = data.menus;
-<<<<<<< HEAD
-        	if(!App.IEVersionVA(10)){
-        		$("#tabPageFiexd").text("待办事项");
-				$("#tabPageFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-	        	$("#iframeFiexd").attr("data-id","html/workflow/tasklist/task-todo.html");
-        	}
-        }
-=======
         };
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         $(".user-info").html("<small>欢迎,</small>" + data.staffName);
         if (data.staffOrgs.length > 0) {
             for (var i = 0; i < data.staffOrgs.length; i++) {
@@ -164,35 +155,17 @@ $(document).ready(function() {
     	var messageSpace = globalConfig.curConfigs.message_space;
     	if(messageSpace == null || messageSpace >= 30){
     		messageSpace = 30;
-<<<<<<< HEAD
-    	}
-      	var messageInterval = setInterval(setMessageTipNumber, messageSpace*60000);
-        //请求用户信息成功后加载首页列表
-        var userLoginName = globalConfig.loginName;
-        if(userLoginName.indexOf("qc_zj") != -1 || userLoginName.indexOf("qc_gd") != -1 ){
-			$("#iframeFiexd").attr("src","html/scanCpyMgt/scanCpyUpload/scanCpyUploadList.html");
-        }else{
-        	if(!App.IEVersionVA(10)){
-        		$("#iframeFiexd").attr("src","html/workflow/tasklist/task-todo.html");
-        	}
-        };
-=======
     	};
 		setWorktableMessageNumber();
 		var messageInterval = setInterval(setWorktableMessageNumber, messageSpace*60000);
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         //请求用户信息成功后加载公告列表
         if(!App.IEVersionVA(10)){
     		getIndexNotiveTableInfo(true);
     	}else{
     		$("#ieSupport").modal("show");
-<<<<<<< HEAD
-    	}
-=======
     	};
         //请求用户信息成功后加载首页列表
         getHomePage();
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
     }
     function improperCallback(result){
     	if(result.status == 9002){
@@ -410,11 +383,7 @@ function logout() {
         function successMethod(result) {
             App.formAjaxJson("/logout", "POST", null, successCallback);
             function successCallback(result) {
-<<<<<<< HEAD
-                closeWindow();
-=======
             	closeWindow();
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
             }
         }
     })

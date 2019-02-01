@@ -117,11 +117,7 @@
 				accountDataItem.accountId = $(v).data("id");
 				accountDataItem.accountName = $(v).find(".accountName").val();
 				accountDataItem.openBank = $(v).find(".openBank").val();
-<<<<<<< HEAD
-				var accountNumber = $(v).find(".accountNumber").val();
-=======
 				var accountNumber = $(v).find(".accountNumber").val().trim();
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				accountDataItem.accountNumber = accountNumber;
 				accountDataList.push(accountDataItem);
 				if(isValid){

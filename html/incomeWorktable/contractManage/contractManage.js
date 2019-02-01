@@ -435,10 +435,6 @@ function jumpGetWcardIdByContractId(contractId){
  * 增加或删除客户经理  >>>>> 跳转工单编辑页面
  */
 function jumpWorkOrderEdit(wcardId){
-<<<<<<< HEAD
-//	var url = "/workOrderEdit/workOrderEdit.html?pageType=5&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
-//	top.showSubpageTab(url,"工单处理");
-=======
 		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId","get",{wcardId:wcardId}, successCallback,null,null,false);
 		function successCallback(result) {
 			var contractStatus = result.data.contractStatus;
@@ -463,7 +459,6 @@ function jumpWorkOrderEdit(wcardId){
 			}
 		}
 	
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 }
 
 //我的合同查询选择查看更多

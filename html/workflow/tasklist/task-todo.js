@@ -63,40 +63,7 @@ function dataChangeEvent(dom){
 
 // “处理”按钮触发事件
 function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-<<<<<<< HEAD
-		processDefinitionId, processDefinitionKey, executionId, assignee) {
-	//if(!checkifdone(id)){	
-	$('#taskId').val(id);
-	$('#taskDefinitionKey').val(taskDefinitionKey);
-	// 环节名称
-	$('#name').val(name);
-	$('#processInstanceId').val(processInstanceId);
-	// 流程实例名称
-	$('#title').val(title);
-	$('#processDefinitionId').val(processDefinitionId);
-	$('#processDefinitionKey').val(processDefinitionKey);
-	$('#executionId').val(executionId);
-	$('#assigneeId').val(assignee);
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
-	if(specialList.indexOf(taskDefinitionKey) != -1){
-		redirectUrl(id,taskDefinitionKey,processInstanceId);
-	}else{
-		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
-		$("#goTaskToDoDetailForToDo").show();
-		$("#searchContentForToDo").hide();
-	}
-	//}
-}
-function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee) {
-	var flowParam = {
-		"taskDefinitionKey" : taskDefinitionKey,
-		"assignee" : assignee,
-		"processInstanceId" : processInstanceId,
-		"taskId" : id
-	}
-=======
 		processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	
 		//if(!checkifdone(id)){	
 		$('#taskId').val(id);
@@ -319,14 +286,11 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 			}
 		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
 			if(wcardStatus == 904030 && contractStatus == 8){
-<<<<<<< HEAD
-=======
 				isPass = true;
 				editTaskDefinitionKey = taskDefinitionKey;
 			}
 		}else if(taskDefinitionKey == "SEALAPPLY" || taskDefinitionKey == "SEALED"){
 			if(wcardProcess == 0){
->>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				isPass = true;
 				editTaskDefinitionKey = taskDefinitionKey;
 			}

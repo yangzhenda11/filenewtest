@@ -72,7 +72,7 @@ function getTableForDone(){
 		        }else{
 		        	
 		        	if(curStaffOrgId == assignee){
-		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+		        		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ","SEALAPPLY","SEALED"];
 		        		if(specialList.indexOf(c.taskDefinitionKey) != -1){
 		        			fn = "redirectUrl(\'" + c.id + "\',\'" + c.taskDefinitionKey + "\',\'" + c.name + "\',\'" + c.processInstanceId  + "\',\'" + c.title + "\',\'" + c.processDefinitionId + "\',\'" + c.processDefinitionKey + "\',\'" + c.executionId + "\',\'" + c.assignee +"\')";
 		        		}else{
@@ -168,7 +168,7 @@ function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, 
 			data: canWithDrawForDoneData,
 			success:function(data){
 				var canWithDraw = data.canWithDraw;
-				getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw);
+				getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,processDefinitionKey,canWithDraw);
 			},
 			error:function(e){
 				App.ajaxErrorCallback(e);
@@ -176,7 +176,7 @@ function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, 
 		});
 }
 //获取工单主键
-function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
+function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,processDefinitionKey,canWithDraw){
 	$.post(serverPath + "workflowrest/taskhasdonepath/" + processInstanceId + "/" + taskDefinitionKey + "/" + taskId, function(data) {
 		var success = data.retCode;
 		if (success == 1){
@@ -195,7 +195,7 @@ function getRedirectUrl(taskId,taskDefinitionKey,processInstanceId,canWithDraw){
 				}else{
 					editTaskDefinitionKey = taskDefinitionKey;
 				};
-		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId;
+		   		var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&processDefinitionKey="+processDefinitionKey;
 		   		App.setCache("searchForm");
 		   		App.changePresentUrl(src);
 		   	}else{

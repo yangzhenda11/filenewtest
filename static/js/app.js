@@ -1928,6 +1928,16 @@ var App = function() {
 
 		//工作流相关，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
         getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType,provCode,cityCode,attrA,attrB,attrC){
+        	if(businessType == "contract_project2"){
+        		if(provCode == null || provCode == ""){
+        			layer.msg("省份编码不能为空,请联系管理员");
+        			return;
+        		};
+        		if(cityCode == null || cityCode == ""){
+        			layer.msg("地市编码不能为空,请联系管理员");
+        			return;
+        		};
+        	}
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");

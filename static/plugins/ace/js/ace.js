@@ -93,7 +93,7 @@ jQuery(function($) {
 			if(menuinfo.childrens.length != 0){
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle'  href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
-				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'> "+menuinfo.name+" </span>");
 				$("#"+menuinfo.id+"a").append("<b class='arrow fa fa-angle-down'></b>");
 				$("#"+menuinfo.id).append("<b class='arrow'></b>");
@@ -103,7 +103,11 @@ jQuery(function($) {
 			}else{
 				ulmain.append("<li class='' id="+menuinfo.id+"></li>");
 				$("#"+menuinfo.id).append("<a class='dropdown-toggle J_menuItem' href='"+menuinfo.uri+"'"+"id='"+menuinfo.id+"a'></a>");
+<<<<<<< HEAD
 				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"menu-icon iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
+=======
+				$("#"+menuinfo.id+"a").append("<span class='menu-icon "+((menuinfo.icon==''||menuinfo.icon==null)?"iconfont icon-xuqiu":"iconfont "+menuinfo.icon)+"'></span>");
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				$("#"+menuinfo.id+"a").append("<span class='menu-text'>"+menuinfo.name+"</span>");
 				$("#"+menuinfo.id).append("<b class='arrow'></b>");
 			};
@@ -112,7 +116,7 @@ jQuery(function($) {
 	function enableSidebar() {
 		if(ace_menus){
 			menu(ace_menus,"actionUl");
-			if($("#actionUl li:first")[0]){
+			if(!$("#sidebar").hasClass("menu-min") && $("#actionUl li:first")[0]){
 				$("#actionUl li:first").addClass("open");
 			}
 		}

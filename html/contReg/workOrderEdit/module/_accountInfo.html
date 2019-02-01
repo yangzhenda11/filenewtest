@@ -1,71 +1,71 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-		<span><i class="iconfont icon-layers"></i> 账号信息</span>
+		<div class="fieldset-title">
+			<p>账号信息</p><span></span>
+		</div>
 		<div class="form-fieldset-tools">
 			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body" id="accountListContent">
-		<div class="row">
-			<div class="portlet" id="payeeAccountInfo">
-                <div class="portlet-title ">
-                    <div class="caption font-dark contract">
-                        <span class="caption-subject bold uppercase">收款方账号信息</span>
-                    </div>
+		<div class="portlet" id="payeeAccountInfo">
+            <div class="portlet-title ">
+                <div class="caption font-dark contract">
+                    <span class="caption-subject bold uppercase">收款方账号信息</span>
                 </div>
-                <div class="portlet-body">
-                	<div class="tableToobarContent hidden" id="payeeInforToolbar">
-                		<button class="btn red" type="button" onclick="addAccountTableTr(1)"><i class="iconfont icon-add"></i>新增</button>
-                		<button class="btn red" type="button" onclick="delectsPayeeTr()"><i class="iconfont icon-shanchu"></i>删除</button>
-                	</div>    	
-                    <table class="table table-hover table-bordered table-striped table-align">
-                    	<thead>
-							<tr>
-								<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
-								<th>收款方账户名称</th>
-								<th>收款方银行账号</th>
-								<th>收款方开户银行</th>
-								<th class="accountEdit">操作</th>
-							</tr>
-						</thead>
-						<tbody id="payeeInfoTbody">
-							<tr class="emptyTr">
-								<td colspan="5">暂无收款方账号信息</td>
-							</tr>
-						</tbody>
-					</table>
-            	</div>
-       	   </div>
-       	   <div class="portlet" id="payerAccountInfo">
-                <div class="portlet-title ">
-                    <div class="caption font-dark contract">
-                        <span class="caption-subject bold uppercase">付款方账号信息</span>
-                    </div>
+            </div>
+            <div class="portlet-body">
+            	<div class="tableToobarContent hidden" id="payeeInforToolbar">
+            		<button class="btn red" type="button" onclick="addAccountTableTr(1)"><i class="iconfont icon-add"></i>新增</button>
+            		<button class="btn red" type="button" onclick="delectsPayeeTr()"><i class="iconfont icon-shanchu"></i>删除</button>
+            	</div>    	
+                <table class="table table-hover table-bordered table-striped table-align">
+                	<thead>
+						<tr>
+							<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payeeCheckAll' id="payeeCheckAll"><span></span></label></th>
+							<th>收款方账户名称</th>
+							<th>收款方银行账号</th>
+							<th>收款方开户银行</th>
+							<th class="accountEdit">操作</th>
+						</tr>
+					</thead>
+					<tbody id="payeeInfoTbody">
+						<tr class="emptyTr">
+							<td colspan="5">暂无收款方账号信息</td>
+						</tr>
+					</tbody>
+				</table>
+        	</div>
+   	   </div>
+   	   <div class="portlet" id="payerAccountInfo">
+            <div class="portlet-title ">
+                <div class="caption font-dark contract">
+                    <span class="caption-subject bold uppercase">付款方账号信息</span>
                 </div>
-                <div class="portlet-body">
-                	<div class="tableToobarContent hidden" id="payerInforToolbar">
-                		<button class="btn red" type="button" onclick="addAccountTableTr(2)"><i class="iconfont icon-add"></i>新增</button>
-                		<button class="btn red" type="button" onclick="delectsPayerTr()"><i class="iconfont icon-shanchu"></i>删除</button>
-                	</div>    	
-                    <table class="table table-hover table-bordered table-striped table-align">
-                    	<thead>
-							<tr>
-								<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payerCheckAll' id="payerCheckAll"><span></span></label></th>
-								<th>付款方账户名称</th>
-								<th>付款方银行账号</th>
-								<th>付款方开户银行</th>
-								<th class="accountEdit">操作</th>
-							</tr>
-						</thead>
-						<tbody id="payerInfoTbody">
-							<tr class="emptyTr">
-								<td colspan="5">暂无付款方账号信息</td>
-							</tr>
-						</tbody>
-					</table>
-            	</div>
-       	   </div>
-		</div>
+            </div>
+            <div class="portlet-body">
+            	<div class="tableToobarContent hidden" id="payerInforToolbar">
+            		<button class="btn red" type="button" onclick="addAccountTableTr(2)"><i class="iconfont icon-add"></i>新增</button>
+            		<button class="btn red" type="button" onclick="delectsPayerTr()"><i class="iconfont icon-shanchu"></i>删除</button>
+            	</div>    	
+                <table class="table table-hover table-bordered table-striped table-align">
+                	<thead>
+						<tr>
+							<th class="accountEdit"><label class='ui-checkbox'><input type='checkbox' name='payerCheckAll' id="payerCheckAll"><span></span></label></th>
+							<th>付款方账户名称</th>
+							<th>付款方银行账号</th>
+							<th>付款方开户银行</th>
+							<th class="accountEdit">操作</th>
+						</tr>
+					</thead>
+					<tbody id="payerInfoTbody">
+						<tr class="emptyTr">
+							<td colspan="5">暂无付款方账号信息</td>
+						</tr>
+					</tbody>
+				</table>
+        	</div>
+   	   </div>
 	</div>
 </div>
 <script type="text/javascript">
@@ -117,7 +117,11 @@
 				accountDataItem.accountId = $(v).data("id");
 				accountDataItem.accountName = $(v).find(".accountName").val();
 				accountDataItem.openBank = $(v).find(".openBank").val();
+<<<<<<< HEAD
 				var accountNumber = $(v).find(".accountNumber").val();
+=======
+				var accountNumber = $(v).find(".accountNumber").val().trim();
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				accountDataItem.accountNumber = accountNumber;
 				accountDataList.push(accountDataItem);
 				if(isValid){

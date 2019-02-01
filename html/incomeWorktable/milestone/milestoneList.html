@@ -27,73 +27,73 @@
 
 	<body>
 		<div class="page-content">
-			<div class="work-list">
-				<div class="form-fieldset" id="performanceContractList">
-					<div class="form-fieldset-title">
-						<span>线路管理</span>
+			<div class="form-fieldset" id="performanceContractList">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>线路管理</p><span></span>
 					</div>
-					<div class="form-fieldset-body">
-						<div class="row page-search">
-							<div class="col-sm-3">
-								<input type="text" class="form-control" id="lineInfoInput" maxlength="50" placeholder="查询业务信息ID/线路代号">
-							</div>
-							<div class="input-group">
-								<button type="button" id="lineLoading" class="btn red" data-loading-text="加载中.." onclick="searchLineMilestone();"><i class="iconfont icon-search"></i>查询</button>
-							</div>
+				</div>
+				<div class="form-fieldset-body">
+					<div class="row page-search">
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="lineInfoInput" maxlength="50" placeholder="查询业务信息ID/电路代号">
 						</div>
-						<div class="toolbars">
-							<button type="button" id="returnBtn" class="btn blue hidden" onclick="returnMilestone()"><i class="iconfont icon-arrow-left"></i>返回</button>
-							<div class="right-toolbars">
-								<div class="legendGroup">
-									<div class="legendItem">
-										<span class="green legendPic"></span>已完成
-									</div>
-									<div class="legendItem">
-										<span class="yellow legendPic"></span>进行中
-									</div>
+						<div class="input-group">
+							<button type="button" id="lineLoading" class="btn red" data-loading-text="加载中.." onclick="searchLineMilestone();"><i class="iconfont icon-search"></i>查询</button>
+						</div>
+					</div>
+					<div class="toolbars" style="border: none;">
+						<button type="button" id="returnBtn" class="btn blue hidden" onclick="returnMilestone()"><i class="iconfont icon-arrow-left"></i>返回</button>
+						<div class="right-toolbars">
+							<div class="legendGroup">
+								<div class="legendItem">
+									<span class="green legendPic"></span>已完成
 								</div>
-								<div class="legendGroup">
-									<div class="legendItem">
-										<span class="gray legendPic"></span>未开始
-									</div>
-									<div class="legendItem">
-										<span class="red legendPic"></span>存在风险/异常
-									</div>
+								<div class="legendItem">
+									<span class="yellow legendPic"></span>进行中
 								</div>
-								
+							</div>
+							<div class="legendGroup">
+								<div class="legendItem">
+									<span class="gray legendPic"></span>未开始
+								</div>
+								<div class="legendItem">
+									<span class="red legendPic"></span>存在风险/异常
+								</div>
 							</div>
 						</div>
-						<table id="lineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
-							<thead>
-								<tr>
-									<th rowspan="2">序号</th>
-									<th colspan="8">基本信息</th>
-									<th colspan="4">里程碑进展</th>
-								</tr>
-								<tr>
-									<th>业务信息ID</th>
-									<th>电路代号</th>
-									<th>产品名称</th>
-									<th>月租费</th>
-									<th>状态</th>
-									<th>起租时间</th>
-									<th>休眠时间</th>
-									<th>止租时间</th>
-									<th>合同签订</th>
-									<th>线路起租</th>
-									<th>开票回款 *</th>
-									<th>线路止租</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td colspan="13">请点击查询按钮加载数据</td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="pageTips">
-							* 开票回款的状态提示以近6个月的执行情况作为状态判断依据，更早的开票回款情况请到线路详情中查看。
-						</div>
+					</div>
+					<table id="lineTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
+						<thead>
+							<tr>
+								<th rowspan="2">序号</th>
+								<th colspan="9">基本信息</th>
+								<th colspan="4">里程碑进展</th>
+							</tr>
+							<tr>
+								<th>业务信息ID</th>
+								<th>电路代号</th>
+								<th>产品名称</th>
+								<th>月租费</th>
+								<th>状态</th>
+								<th>全程竣工时间</th>
+								<th>起租时间</th>
+								<th>休眠时间</th>
+								<th>止租时间</th>
+								<th>合同签订</th>
+								<th>线路起租</th>
+								<th>开票回款 *</th>
+								<th>线路止租</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="13">请点击查询按钮加载数据</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="pageTips">
+						* 开票回款的状态提示以近6个月的执行情况作为状态判断依据，更早的开票回款情况请到线路详情中查看。
 					</div>
 				</div>
 			</div>
@@ -142,10 +142,10 @@
 		<script src="../../../static/plugins/html5shiv.min.js"></script>
 		<script src="../../../static/plugins/respond.min.js"></script>
 		<script src="../../../static/plugins/ie8.fix.min.js"></script>
-	<![endif]-->
-		<!--[if lte IE 8]>
-		<script src="../../../static/plugins/selectivizr-min.js"></script>
-	<![endif]-->
+		<![endif]-->
+			<!--[if lte IE 8]>
+			<script src="../../../static/plugins/selectivizr-min.js"></script>
+		<![endif]-->
 		<!--基础依赖-->
 		<script src="../../../static/plugins/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../../../static/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>

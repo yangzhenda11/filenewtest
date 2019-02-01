@@ -24,13 +24,13 @@
 	</head>
 	<body>
 		<div class="page-content">
-			<div class="portlet">
-				<div class="portlet-title">
-					<div class="caption font-dark">
-						<span class="caption-subject bold uppercase">收票与付款</span>
+			<div class="form-fieldset">
+				<div class="form-fieldset-title">
+					<div class="fieldset-title">
+						<p>收票与付款</p><span></span>
 					</div>
 				</div>
-				<div class="portlet-body">
+				<div class="form-fieldset-body">
 					<div class="buttonNavTabs" id="buttonNavTabs">
 						<button href="#invoice" data-id="invoice" data-toggle="tab" class="btn primary btn-inline check">发票管理</button>
 						<button href="#payment" data-id="payment" data-toggle="tab" class="btn primary btn-inline">付款管理</button>
@@ -53,10 +53,12 @@
 					    	</div>
 					    	<div class="form-fieldset" style="clear: both;">
 								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 合同信息明细</span>
+									<div class="fieldset-title">
+										<p>合同信息明细</p><span></span>
+									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="row">
+									<div class="paddingLR10">
 										<div class="invoiceIncomeTitle">
 											<p>累计不含增值税合同金额：<span id="contractValueNovatSum"></span></p>
 											<p>累计订单不含税金额：<span id="poAmountSumSum"></span></p>
@@ -79,7 +81,7 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td colspan="10">请点击图表红色区域加载数据</td>
+													<td colspan="10">请点击图表区域加载数据</td>
 												</tr>
 											</tbody>
 										</table>
@@ -103,14 +105,16 @@
 	    						</div>
 					    	</div>
 					    	<div class="form-fieldset" style="clear: both;">
-								<div class="form-fieldset-title">
-									<span><i class="iconfont icon-layers"></i> 合同信息明细</span>
+					    		<div class="form-fieldset-title">
+									<div class="fieldset-title">
+										<p>合同信息明细</p><span></span>
+									</div>
 								</div>
 								<div class="form-fieldset-body">
-									<div class="row">
+									<div class="paddingLR10">
 										<div class="invoiceIncomeTitle">
-											<p>累计含增值税合同金额：<span id=""></span></p>
-											<p>累计含税开票金额：<span id=""></span></p>
+											<p>累计含增值税合同金额：<span id="contractValueSum"></span></p>
+											<p>累计含税开票金额：<span id="invoiceSumSum"></span></p>
 											<p>累计含税付款金额：<span id="payVateAmountSumSum"></span></p>
 										</div>
 										<table id="paymentTable" class="table table-striped table-bordered table-hover table-header-fixed table-align">
@@ -130,7 +134,7 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td colspan="10">请点击图表红色区域加载数据</td>
+													<td colspan="10">请点击图表区域加载数据</td>
 												</tr>
 											</tbody>
 										</table>

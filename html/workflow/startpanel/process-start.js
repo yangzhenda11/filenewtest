@@ -1,4 +1,3 @@
-//@ sourceURL=process-start.js
 var config = parent.globalConfig;
 var serverPath = config.serverPath;
 var curStaffOrgId=config.curStaffOrgId;
@@ -132,6 +131,10 @@ function selectstaff(){
     jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes);
 }
 function jandyStaffSearch(flowKey,linkcode,prov,callbackFun,staffSelectType,orgCodes){
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	var frameSrc ="/html/workflow/assignee/assgigneeList.html"; 
     $("#PandJstaffiframetask").load(frameSrc,function() {
     	setParam(flowKey,linkcode,prov,callbackFun,staffSelectType,null,null,null,null,null,orgCodes);

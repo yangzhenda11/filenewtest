@@ -77,7 +77,7 @@ function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
 	App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 	function successCallback(result) {
 		if(result.data.length >= 1){
-			layer.msg("已关注，无需重新关注");
+			layer.msg("已重点关注，无需重新关注！");
 			return ;
 		}
 		handleManage(partyId,curStaffOrgId,focusId,editFlag);
@@ -89,7 +89,7 @@ function emphasisOfCustomer(partyId,curStaffOrgId,focusId,editFlag){
  */
 function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 	var url = serverPath + "partnersManage/savePartnersFocusManage";
-	var massage = "添加";
+	var massage = "";
 	var postData = {
 		partyId: partyId,
 		addStaffOrgId:curStaffOrgId
@@ -101,12 +101,16 @@ function handleManage(partyId,curStaffOrgId,focusId,editFlag){
 			focusId:focusId
 		};
 		url = serverPath + "partnersManage/delPartnersFocusManage";
-		massage = "取消";
+		massage = "不再";
 	};
-	layer.confirm("确定"+massage+"该合作方的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定"+massage+"重点关注该合作方？", {icon: 0}, function() {
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已"+massage+"重点关注");
+			if(editFlag == "delete"){
+				layer.msg("取消重点关注成功！");
+			}else{
+				layer.msg(massage+"重点关注成功！");
+			}
 			var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 			if(isInitEmphasisCustomerTable){
 				if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){

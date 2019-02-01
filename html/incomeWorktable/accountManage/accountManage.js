@@ -77,14 +77,14 @@ function initCustomerListTable(){
  */
 function emphasisOfCustomer(managerStaffOrgId){
 	var url = serverPath + "customerManager/saveFocusCustomerManager";
-	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定重点关注该客户经理？", {icon: 0}, function() {
     	var postData = {
 			managerStaffOrgId: managerStaffOrgId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			if(result.data == 1) {
-				layer.msg("已添加重点关注");
+				layer.msg("重点关注成功！");
 				var isInitEmphasisCustomerTable = $.fn.dataTable.isDataTable("#emphasisCustomerTable");
 				if(isInitEmphasisCustomerTable){
 					if($("#emphasisCustomer .form-fieldset-body").is(':hidden')){
@@ -94,7 +94,7 @@ function emphasisOfCustomer(managerStaffOrgId){
 					};
 				}
 			} else {
-				layer.msg("已关注，无需重新关注");				
+				layer.msg("已重点关注，无需重新关注！");				
 			}
 		}
    	});
@@ -150,14 +150,14 @@ function initEmphasisCustomerTable(){
  * 我重点关注的客户经理删除重点关注
  */
 function deleteEmphasisOfEmp(managerStaffOrgId){
-	layer.confirm('确定取消该客户经理的重点关注?', {icon: 0}, function() {
+	layer.confirm('确定不再重点关注该客户经理？', {icon: 0}, function() {
     	var url = serverPath + "customerManager/delFocusCustomerManager";
 		var postData = {
 			managerStaffOrgId: managerStaffOrgId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已删除重点关注");
+			layer.msg("取消重点关注成功！");
 			reloadPageDataTable("#emphasisCustomerTable",true);
 		}
    	});

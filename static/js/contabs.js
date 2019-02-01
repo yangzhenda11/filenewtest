@@ -5,7 +5,6 @@ $(function() {
 		}
 	});
 	$('#actionUl').on('click','.J_menuItem',conTabC);
-	$("#messageTip").on('click',conTabC);
 	$(".J_menuTabs").on("click", ".J_menuTab i", conTabH);
 	$(".J_menuTabs").on("click", ".J_menuTab", conTabE);
 	$(".J_menuTabs").bind("contextmenu", function(){
@@ -138,9 +137,12 @@ function checkArrLen(roleArr,permArr){
 	return len;
 }
 /*
- * 点击触发的事件
+ * 左侧菜单点击触发的事件
  */
 function conTabC() {
+	if($("#workItemDom")[0]){
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+	};
 	var o = $(this).attr("href"),
 		m = $(this).data("index"),
 		l = $.trim($(this).text()),
@@ -159,13 +161,21 @@ function conTabC() {
 				layer.alert("当前稽核管理角色权限范围不足，请联系系统管理员处理。",{icon:2});
 				return false;
 			}
-		}
+		};
+		if(!($("#user-role li.choose").data("type") == "income")){
+			layer.alert("当前系统角色为收入类角色，若查看其它角色信息请点击右上角个人信息进行角色切换。",{icon:2});
+			return false;
+		};
 	};
 	if(o == "html/expenseWorktable/index/index.html"){
 		var roleArr = globalConfig.curRole;
 		var roleExistLen = checkArrLen(roleArr,[91220,91221,91222]);
 		if(roleExistLen != 1){
 			layer.alert("当前岗位配置了 <span style='color:red'>"+roleExistLen+"</span> 个支出类采购业务合同履行工作台查看角色，请联系系统管理员处理。",{icon:2});
+			return false;
+		};
+		if(!($("#user-role li.choose").data("type") == "expense")){
+			layer.alert("当前系统角色为支出类角色，若查看其它角色信息请点击右上角个人信息进行角色切换。",{icon:2});
 			return false;
 		};
 	};
@@ -176,11 +186,8 @@ function conTabC() {
 				animateTab(this);
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == o) {
+						saveSysOperLog(o,l,"");
 						$(this).show().siblings(".J_iframe").hide();
-						var workListDom = $(this).contents().find(".work-list")[0];
-						if(workListDom){
-							return false;
-						};
 						var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
 						if(dataTablesDom){
 							var dataTablesDomParent = $(dataTablesDom).parent();
@@ -202,35 +209,43 @@ function conTabC() {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + o + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
 		$(".J_menuTab").removeClass("active");
 		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';
-		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
+		$(".J_mainContent").find("iframe.J_iframe").hide();
+		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
-		animateTab($(".J_menuTab.active"))
+		animateTab($(".J_menuTab.active"));
+		saveSysOperLog(o,l,"");
 	}
 	return false;
 }
-function showSubpageTab(link,title,openNew,fixed){
+/*
+ * 系统打开新tab页
+ * link：页面地址，可在？后加参数
+ * title：tab页标题
+ * isParam：是否包含参数匹配，默认为false。true时将配置全部路径包括？后的参数
+ * notRefresh：若页面存在是否刷新页面，默认为false
+ * isFixed：若页面存在打开页面时在tab页之后显示（默认在tab页最后显示）还是定位到原来的位置，默认为false
+ */
+function showSubpageTab(link,title,isParam,notRefresh,isFixed){
 	globalConfig.ifreamLen++;
 	var o = link?link:'',
 		l = title?title:'',
 		m = "Y" + globalConfig.ifreamLen,
 		k = true;
+	var parmeter = o.split('?')[1];
 	if(o == undefined || $.trim(o).length == 0) {
 		return false
 	};
-	if(openNew){
+	if(isParam){
 		var dataId = o;
-		var isChecked = false;
 	}else{
 		var dataId = o.split('?')[0];
-		var isChecked = true;
-	}
+	};
 	$(".J_menuTab").each(function() {
 		if($(this).data("id") == dataId) {
 			if(!$(this).hasClass("active")) {
 				$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-				if(fixed){
+				if(isFixed){
 					animateTab(this);
-					isChecked = false;
 				}else{
 					var newDom = $(this);
 					$(this).remove();
@@ -240,12 +255,23 @@ function showSubpageTab(link,title,openNew,fixed){
 				$(".J_mainContent .J_iframe").each(function() {
 					if($(this).data("id") == dataId) {
 						$(this).show().siblings(".J_iframe").hide();
-						if(isChecked){
+						if(!notRefresh){
+							saveSysOperLog(o,l,parmeter);
 							$(this)[0].src = o;
 						};
 						return false
 					}
 				})
+			}else{
+				if(!notRefresh){
+					$(".J_mainContent .J_iframe").each(function() {
+						if($(this).data("id") == dataId) {
+							saveSysOperLog(o,l,parmeter);
+							$(this)[0].src = o;
+							return false
+						}
+					})
+				}
 			}
 			k = false;
 			return false
@@ -253,12 +279,46 @@ function showSubpageTab(link,title,openNew,fixed){
 	});
 	if(k) {
 		var p = '<a href="javascript:;" class="active J_menuTab" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
+		if($("#workItemDom")[0]){
+			var menuTabActiveId = $(".J_menuTab.active").data("id");
+			var openId = o.split('?')[0];
+			if(menuTabActiveId){
+				if((menuTabActiveId.indexOf("/incomeWorktable/")!=-1) || (menuTabActiveId.indexOf("/expenseWorktable/")!=-1)){
+					if((openId.indexOf("/incomeWorktable/")!=-1) || (openId.indexOf("/expenseWorktable/")!=-1)){
+						var p = '<a href="javascript:;" class="active J_menuTab" data-parurl="' + menuTabActiveId + '" data-id="' + dataId + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
+					}
+				}
+			}
+		};
 		$(".J_menuTab").removeClass("active");
 		var n = '<iframe scrolling="no" class="J_iframe" id="iframe' + m + '" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + dataId + '" seamless></iframe>';
-		$(".J_mainContent").find("iframe.J_iframe").hide().parents(".J_mainContent").append(n);
+		$(".J_mainContent").find("iframe.J_iframe").hide();
+		$(".J_mainContent").append(n);
 		$(".J_menuTabs .page-tabs-content").append(p);
-		animateTab($(".J_menuTab.active"))
-	}
+		animateTab($(".J_menuTab.active"));
+		saveSysOperLog(o,l,parmeter);
+	};
+	if($("#workItemDom")[0]){
+		var itemFlag = true;
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+		var parentDataId = $(".J_menuTab.active").data("parurl");
+		if(parentDataId == undefined || parentDataId == ""){
+			parentDataId = "null";
+		};
+		$.each($("#workItemDom .workItem"), function(n,m) {
+			if($(m).data("url") == dataId){
+				$(m).addClass("workItemChecked");
+				itemFlag = false;
+			}
+		});
+		if(itemFlag){
+			$.each($("#workItemDom .workItem"), function(n,m) {
+				if($(m).data("url") == parentDataId){
+					$(m).addClass("workItemChecked");
+				}
+			});
+		};
+	};
 	return false
 }
 function conTabH() {
@@ -317,7 +377,29 @@ function conTabH() {
 			}
 		});
 		animateTab($(".J_menuTab.active"))
-	}
+	};
+	if($("#workItemDom")[0]){
+		var itemFlag = true;
+		$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+		var activeId = $(".J_menuTab.active").data("id");
+		var parentDataId = $(".J_menuTab.active").data("parurl");
+		if(parentDataId == undefined || parentDataId == ""){
+			parentDataId = "null";
+		};
+		$.each($("#workItemDom .workItem"), function(key,val) {
+			if($(val).data("url") == activeId){
+				$(val).addClass("workItemChecked");
+				itemFlag = false;
+			}
+		});
+		if(itemFlag){
+			$.each($("#workItemDom .workItem"), function(key,val) {
+				if($(val).data("url") == parentDataId){
+					$(val).addClass("workItemChecked");
+				}
+			});
+		}
+	};
 	return false
 }
 function conTabI() {
@@ -339,27 +421,64 @@ function conTabE() {
 		$(".J_mainContent .J_iframe").each(function() {
 			if($(this).data("id") == k) {
 				$(this).show().siblings(".J_iframe").hide();
-				var workListDom = $(this).contents().find(".work-list")[0];
-				if(workListDom){
-					return false;
-				};
 				var dataTablesDom = $(this).contents().find(".dataTables_scrollHeadInner")[0];
 				if(dataTablesDom){
 					var dataTablesDomParent = $(dataTablesDom).parent();
 					if($(dataTablesDom).css("width") != dataTablesDomParent.css("width")){
 						var parentName = $(this)[0].id;
 						var tableId = $(dataTablesDom).parents(".dataTables_wrapper")[0].id.split("_")[0];
-	$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
+						$("#"+parentName+"")[0].contentWindow.$('#'+tableId+'').DataTable().draw();
 					}
 				};
 				return false
 			}
 		});
 		$(this).addClass("active").siblings(".J_menuTab").removeClass("active");
-		animateTab(this)
+		if($("#workItemDom")[0]){
+			var itemFlag = true;
+			$("#workItemDom").find(".workItem").removeClass("workItemChecked");
+			var parentDataId = $(".J_menuTab.active").data("parurl");
+			if(parentDataId == undefined || parentDataId == ""){
+				parentDataId = "null";
+			};
+			$.each($("#workItemDom .workItem"), function(n,m) {
+				if($(m).data("url") == k){
+					$(m).addClass("workItemChecked");
+					itemFlag = false;
+				}
+			});
+			if(itemFlag){
+				$.each($("#workItemDom .workItem"), function(n,m) {
+					if($(m).data("url") == parentDataId){
+						$(m).addClass("workItemChecked");
+					}
+				});
+			}
+		};
+		animateTab(this);
 	}
 }
 //function conTabD() {
 //	var l = $('.J_iframe[data-id="' + $(this).data("id") + '"]');
 //	var k = l.attr("src")
 //}
+
+function closeAlltabs(){
+	$("#content-main").children(".J_iframe").each(function(k,v) {
+		$(v).remove()
+	});
+	$("#mainPageTabsContent").children(".J_menuTab").each(function(k,v) {
+		$(v).remove()
+	});
+	$("#mainPageTabsContent").css("margin-left", "0");
+}
+
+function saveSysOperLog(operUrl,operPermissionName,operParameter){
+	var operParameter = operParameter == undefined ? "" : operParameter;
+	var postData = {
+		operUrl: operUrl.split('?')[0],
+		operPermissionName: operPermissionName,
+		operParameter: operParameter
+	};
+	App.formAjaxJson(globalConfig.serverPath + "operateLog/saveOperLog", "post", JSON.stringify(postData));
+}

@@ -3,18 +3,28 @@ var config = top.globalConfig;
 var serverPath = config.serverPath;
 
 /*
- * 该dom中可接受的配置参数
- * contractId:合同id，根据合同id查询合同下的线路
- * relationType：是否确定是否关联合同 1：已关联  0：未关联
- * returnbtn：是否显示返回按钮，默认不传值为false
+ * 接受的配置参数
  */
 var parm = App.getPresentParm();
 console.log(parm);
- 
 if(parm.returnbtn == "true"){
 	$("#returnBtn").show();
 };
- 
+$(function(){ 
+ 	if(!parm.contractId && !parm.contractNumber && !parm.customerCode && !parm.customerName){
+ 		layer.alert("页面参数错误，请联系系统管理员。",{icon:2});
+ 		return;
+ 	}else{
+ 		if(null!=parm.contractId){
+ 			$("#parmContractNum").text('合同ID:'+parm.contractId);
+ 		}else if(null!=parm.contractNumber){
+ 			$("#parmContractNum").text('合同编号:'+parm.contractNumber);
+ 		}else if(null!=parm.customerCode){
+ 			$("#parmContractNum").text('客户编号:'+parm.customerCode);
+ 		}
+ 		initLineInforTable();
+ 	}
+})
 /*
  * 点击查询事件
  * 判断是否已加载表格，若已加载直接刷新操作，否则初始化表格
@@ -39,12 +49,16 @@ function initLineInforTable(){
 	App.initDataTables('#lineInforTable', "#lineInforLoading", {
 		ajax: {
 			"type": "POST",
-			"url" : serverPath + 'milestoneMangerController/listLineIncomeForCustomer',
+			"url" : serverPath + 'lineIncomeMangerController/listLineIncomeForCustomer',
 			"contentType" : "application/json;charset=utf-8",
 			"data": function(d) { 
-				d.contractId = parm.id;
-				d.businessId = $("#searchInput").val().trim();
-				return  JSON.stringify(d);
+				d.customerCode = parm.customerCode;
+				d.customerName = parm.customerName;
+				d.contractNumber = parm.contractNumber;
+				d.contractId = parm.contractId;
+				d.customerName = parm.customerName;
+				d.accountPeriodName = parm.accountPeriodName;
+ 				return  JSON.stringify(d);
 			}
 		},
 		"columns": lineInforTableColumns()
@@ -61,6 +75,9 @@ function lineInforTableColumns(){
 		}
 	];
 	$.each(theadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if (v.id == "onceCost" || v.id == "monthRentCost" || v.id == "receivableAmount" || v.id == "arrearsAmount" || v.id == "collectedAmount") {
 				var item = {
@@ -105,7 +122,30 @@ $("#returnBtn").on("click",function(){
 	 window.history.go(-1);
 })
   
+/*
+ * 生成显示更多内容选择区域
+ */
+function initselectLR() {
+	var theadList =  incomeTheadList;
+	var options = {
+		modalId : "#commomModal",
+		data : theadList
+	}
+	$.initSelectLRFn(options);
+}
+
+/*
+ * 显示更多点击确定回调页面方法
+ */
+function returnSelectLRData(data) {
+	$("#commomModal").modal("hide");
+	incomeTheadList = data; 
+	initLineInforTable();
+}
+
+
 var  incomeTheadList = [
+	{data:"服务号码",id:"serviceNumber",checked:true},
 	{data:"业务信息ID",id:"businessId",checked:true},
 	{data:"电路代号",id:"circuitCode",checked:true},
 	{data:"产品名称",id:"productName",checked:true}, 
@@ -115,5 +155,40 @@ var  incomeTheadList = [
 	{data:"月租费",id:"monthRentCost",checked:true}, 
 	{data:"应收（元）",id:"receivableAmount",checked:true},
 	{data:"欠费（元）",id:"arrearsAmount",checked:true},
-	{data:"实收（元）",id:"collectedAmount",checked:true} 
+	{data:"实收（元）",id:"collectedAmount",checked:true} ,
+	
+	{data:"合同编号",id:"contractNumber" },
+	{data:"客户名称",id:"customerName" },
+	{data:"集客系统客户编号",id:"customerCode" },
+	{data:"接入速率/带宽",id:"accessRate" },
+ 
+	{
+		data : "A端/CE端城市",
+		id : "acCity"
+	},
+	{
+		data : "A端/CE端装机地址",
+		id : "acInstallAddr"
+	},
+	{
+		data : "Z端/PE端城市",
+		id : "zpCity"
+	},
+	{
+		data : "Z端/PE端装机地址",
+		id : "zpInstallAddr"
+	},
+	{
+		data : "全程竣工时间",
+		id : "finishTime"
+	},
+	{
+		data : "起租时间",
+		id : "rentingTime"
+	},
+	{
+		data : "止租时间",
+		id : "stopRentingTime"
+	} 
+	
 ];

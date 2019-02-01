@@ -8,6 +8,8 @@ var globalConfig = {
     fileUploadPath: "/",
     /**后台服务地址 */
     serverPath: "/",
+    /** 当前用户所在组织的名称 */
+    curOrgName: null,
     /** 当前用户的岗位id （sys_staff_org表主键） */
     curStaffOrgId: null, 
     /** 当前用户组织深度*/
@@ -29,12 +31,37 @@ var globalConfig = {
    	/**是否属于本部：0不属于，1属于 */
    	mainOrgFlag : null,
     /** 当前用户的系统设置 */
-    curConfigs: {}
+    curConfigs: {
+		config_page_size: "10,20,50",
+		message_space: "6"
+	}
 };
-//获取用户基本信息
-App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, successCallback, null, null, null, false);
+//字典项缓存
+var sysDictsCache = [];
 
-function successCallback(result) {
+//进业务页面之前统一错误处理方法
+function errorInfoSolve(ms){
+	layer.alert(ms,{icon:2,title:"错误"},function(index){
+		layer.close(index);
+		closeWindow();
+	});
+}
+//关闭页面方法
+function closeWindow(){
+    if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1) {
+        window.location.href="about:blank";
+        window.close();
+    } else {
+        window.opener = null;
+        window.open("", "_self");
+        window.close();
+    }
+}
+
+//获取用户基本信息
+App.formAjaxJson(globalConfig.serverPath + "myinfo?" + App.timestamp(), "GET", null, userInfoSuccess, improperCallback, null, null, false);
+
+function userInfoSuccess(result) {
 	var data = result.data;
 	globalConfig.provCode = data.provCode;
 	globalConfig.curStaffId = data.staffId;
@@ -45,38 +72,11 @@ function successCallback(result) {
 	globalConfig.mainOrgFlag = data.mainOrgFlag;
 	globalConfig.permissions = data.permissions;
 	globalConfig.orgPath = data.orgPath;
+	globalConfig.curOrgName = data.orgName;
 }
 
-//获取用户配置信息
-//系统默认配置
-var defaultCurConfigs = {
-	config_page_size: "10,20,50",
-	message_space: "6"
-}
-//获取用户自定义配置信息
-App.formAjaxJson(globalConfig.serverPath + "personalConfig/list", "GET", { staffOrgId: globalConfig.curStaffOrgId,draw:1,start:0,length:100}, configSuccess, configImproper, configError, null, false);
-function configSuccess(result) {
-	var data = result.data;
-    if (data != "") {
-    	var personalConfigObj = {};
-		$.each(data, function(k,v) {
-			personalConfigObj[v.code] = v.val;
-		});
-        globalConfig.curConfigs = personalConfigObj;
-    } else {
-        globalConfig.curConfigs = defaultCurConfigs;
-    }
-}
-
-function configImproper(result) {
-	globalConfig.curConfigs = defaultCurConfigs;
-}
-
-function configError(result) {
-	globalConfig.curConfigs = defaultCurConfigs;
-}
 //获取用户登录方式
-App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get", null, loginSwitchSuccess, null, null, null, false);
+App.formAjaxJson(globalConfig.serverPath + "configs/getSysConfig/getCloudPortSwitch", "get", null, loginSwitchSuccess, improperCallback, null, null, false);
 
 function loginSwitchSuccess(result) {
 	if(result.data != "") {
@@ -84,4 +84,26 @@ function loginSwitchSuccess(result) {
 	} else {
 		globalConfig.loginSwitchSuccess = 1;
 	}
+}
+
+//获取字典缓存
+App.formAjaxJson(globalConfig.serverPath + "dicts/", "get",null, dictSuccess, improperCallback, null, null, false);
+
+function dictSuccess(result) {
+    var dictsData = result.dicts;
+    for(var l = 0; l < dictsData.length; l++){
+    	var dictsItem = dictsData[l];
+    	if(dictsItem.dictStatus == "1"){
+    		var dictsObj = {
+        		dictId: dictsItem.dictId,
+        		dictParentId: dictsItem.dictParentId,
+        		dictLabel: dictsItem.dictLabel,
+        		dictValue: dictsItem.dictValue
+        	};
+        	sysDictsCache.push(dictsObj);
+    	}
+    }
+}
+function improperCallback(result){
+	errorInfoSolve(result.message);
 }

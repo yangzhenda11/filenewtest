@@ -62,7 +62,12 @@ function initLineMilestoneTable(){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "rentState","className": "whiteSpaceNormal"},
+			{"data": "rentState","className": "whiteSpaceNormal"}, 
+			{"data": "finishTime","className": "whiteSpaceNormal",
+				"render": function(data, type, full, meta){
+					return App.formatDateTime(data,"yyyy-MM-dd");
+				}
+			}, 
 			{"data": "rentingTime","className": "whiteSpaceNormal",
 				"render": function(data, type, full, meta){
 					return App.formatDateTime(data,"yyyy-MM-dd");
@@ -200,18 +205,29 @@ function getInvoiceReturnInfo(businessId){
 			"collectedAmount":"<tr><td class='tableSelect'>实收金额</td>",
 			"arrearsAmount":"<tr><td class='tableSelect'>欠费金额</td>",
 		};
-		for(var i = data.length; i > 0; i--){
-			var item = data[i-1];
-			var accountPeriodName = item.accountPeriodName;
-			if(!item.isKp){
-				accountPeriodName = "&nbsp;&nbsp;&nbsp;&nbsp;"
+ 		if(data==null){
+			for(var i = 6; i > 0; i--){ 
+				contentObj.accountPeriodName = contentObj.accountPeriodName + "<td>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" +"</td>";
+				contentObj.isKp =              contentObj.isKp + "<td>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" +"</td>";
+				contentObj.receivableAmount =  contentObj.receivableAmount+ "<td>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" +"</td>";
+				contentObj.collectedAmount =   contentObj.collectedAmount + "<td>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" +"</td>";
+				contentObj.arrearsAmount =     contentObj.arrearsAmount + "<td>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" +"</td>";
 			};
-			contentObj.accountPeriodName = contentObj.accountPeriodName + "<td>"+ accountPeriodName +"</td>";
-			contentObj.isKp = contentObj.isKp + "<td>"+ item.isKp+"</td>";
-			contentObj.receivableAmount = contentObj.receivableAmount + "<td>"+ App.unctionToThousands(item.receivableAmount)+"</td>";
-			contentObj.collectedAmount = contentObj.collectedAmount + "<td>"+ App.unctionToThousands(item.collectedAmount)+"</td>";
-			contentObj.arrearsAmount = contentObj.arrearsAmount + "<td>"+ App.unctionToThousands(item.arrearsAmount)+"</td>";
-		};
+		}else{
+			for(var i = data.length; i > 0; i--){
+				var item = data[i-1];
+				var accountPeriodName = item.accountPeriodName;
+				if(!item.isKp){
+					accountPeriodName = "&nbsp;&nbsp;&nbsp;&nbsp;"
+				};
+				contentObj.accountPeriodName = contentObj.accountPeriodName + "<td>"+ accountPeriodName +"</td>";
+				contentObj.isKp = contentObj.isKp + "<td>"+ item.isKp+"</td>";
+				contentObj.receivableAmount = contentObj.receivableAmount + "<td>"+ App.unctionToThousands(item.receivableAmount)+"</td>";
+				contentObj.collectedAmount = contentObj.collectedAmount + "<td>"+ App.unctionToThousands(item.collectedAmount)+"</td>";
+				contentObj.arrearsAmount = contentObj.arrearsAmount + "<td>"+ App.unctionToThousands(item.arrearsAmount)+"</td>";
+			};
+		}
+		 
  		$.each(contentObj, function(k,v) {
  			content += v + "</tr>";
  		});

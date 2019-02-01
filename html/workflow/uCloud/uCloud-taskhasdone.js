@@ -32,7 +32,11 @@ function handleTaskForDone(taskInfo) {
 	$('#processDefinitionKeyForDone').val(processDefinitionKey);
 	$('#executionIdForDone').val(executionId);
 	$('#assigneeIdForDone').val(assignee);
+<<<<<<< HEAD
 	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ"];
+=======
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","TJKH","ZZFQ","GDFQ","SEALAPPLY","SEALED"];
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForDone").remove();
 		$("#searchContentForDone").hide();
@@ -46,7 +50,6 @@ function handleTaskForDone(taskInfo) {
 }
 
 function getTaskInfoHasdone(){
-	var taskHasdoneData=null;
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfoHasdone?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
@@ -57,15 +60,13 @@ function getTaskInfoHasdone(){
 				taskHasdoneData=result.taskInfo;
 				handleTaskForDone(taskHasdoneData)
 			} else {
-				layer.msg(result.info);
+				errorInfoSolve(result.info);
 			};
 		},
 		error:function(e){
-			alert("获取流程参数异常"+e);
 			App.ajaxErrorCallback(e);
 		}
 	});
-	return taskHasdoneData;
 }
 /*
  * 对taskDefinitionKey为GDCL或GDQR的工单获取businessKey重定向到功能页面
@@ -84,10 +85,10 @@ function redirectUrl(taskId, taskDefinitionKey, name, processInstanceId, title, 
 		   	if(businessKey){
 		   		jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee, businessKey);
 		   	}else{
-		   		layer.msg("获取不到工单主键");
+		   		errorInfoSolve("获取不到工单主键");
 		   	}
 		} else {
-			layer.msg(data.retValue);
+			errorInfoSolve(data.retValue);
 		}
 	});
 }
@@ -116,21 +117,15 @@ function jumpSanCpyQueryDetail(taskId, taskDefinitionKey, name, processInstanceI
 			}else{
 				editTaskDefinitionKey = taskDefinitionKey;
 			};
+<<<<<<< HEAD
 			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true";
+=======
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=3&taskFlag=yb&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&canWithDraw="+canWithDraw+"&taskId="+taskId+"&isucloud=true&processDefinitionKey="+processDefinitionKey;
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	   		$('#businessiframe').attr("src",src);
 		},
 		error:function(e){
 			App.ajaxErrorCallback(e);
 		}
 	});
-}
-function closeWindow(){
-    if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1) {
-        window.location.href="about:blank";
-        window.close();
-    } else {
-        window.opener = null;
-        window.open("", "_self");
-        window.close();
-    }
 }

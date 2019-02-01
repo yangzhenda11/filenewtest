@@ -660,6 +660,7 @@ var App = function() {
 					}
 				},
 				error: function(result) {
+					loadEnd();
 					if(errorCallback){
 						errorCallback(result);
 					}else if(result.status == 0){
@@ -1071,6 +1072,16 @@ var App = function() {
 			getTimestamp = "&t="+getTimestamp;
 		    return getTimestamp;
 		},
+		/**
+		 * 检查是否为null，为null时返回""
+		 */
+		checkEmptyData: function(data){
+			if(data == null){
+				return "";
+			}else{
+				return data;
+			}
+		},
 		/*
 		 * 时间戳转时间
 		 * type 不传默认返回 yyyy-MM-dd HH:mm:ss
@@ -1078,10 +1089,17 @@ var App = function() {
 		 */
 		formatDateTime: function(inputTime,type) {
 			if(inputTime){
-				var date = new Date(inputTime);
+				var inputTime = String(inputTime);
+				if(inputTime.indexOf("GMT") != -1){
+					var date = new Date(inputTime);
+				}else if(inputTime.indexOf("-") == -1){
+					var date = new Date(Number(inputTime));
+				}else{
+					var date = new Date(inputTime.replace(/-/g,"/"));
+				};
 			}else{
 				return "";
-			}
+			};
 		    var y = date.getFullYear();
 		    var m = date.getMonth() + 1;
 		    m = m < 10 ? ('0' + m) : m;
@@ -1167,59 +1185,74 @@ var App = function() {
          * }
          */
         setCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-        	var cacheList = [];
-        	$("#"+el).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
-				var formName = $(formItem).attr('name');
-				if(formName != undefined){
-					var formType = formItem.type;
-					if(formType == "text" || formType == "hidden" || formType == "select-one") {
-						var val = $(formItem).val();
-						if(val){
-							var cacheItem = {
-								name: formName,
-								val: val
-							};
-							cacheList.push(cacheItem);
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		var cacheList = [];
+	        	$("#"+elArr[i]).find(':input:not(.ignore):not(:disabled)').each(function(index, formItem) {
+					var formName = $(formItem).attr('name');
+					if(formName != undefined){
+						var formType = formItem.type;
+						if(formType == "text" || formType == "hidden" || formType == "select-one") {
+							var val = $(formItem).val();
+							if(val){
+								var cacheItem = {
+									name: formName,
+									val: val
+								};
+								cacheList.push(cacheItem);
+							}
 						}
 					}
-				}
-			});
-			if(cacheList.length > 0){
+				});
 				if(top._paramCache[pageId] == undefined){
 					top._paramCache[pageId] = {};
 				};
-				top._paramCache[pageId][el] = cacheList;
-			}
+				top._paramCache[pageId][elArr[i]] = cacheList;
+        	}
         },
         /*
          * 页面参数读取赋值
          */
         readCache: function(el){
+        	var elArr = [];
         	var pageId = self.frameElement.getAttribute('id');
-			if(top._paramCache[pageId] == undefined){
+        	if(top._paramCache[pageId] == undefined){
 				return;
-			}else if(top._paramCache[pageId][el] == undefined){
-				return;
-			}else{
-				var cacheList = top._paramCache[pageId][el];
-				$.each(cacheList, function(k,v) {
-	                var sel = ":input[name='" + v.name + "']";
-	                var obj = $("#"+el).find(sel);
-	                if(obj.length > 0){
-	                    var objType = obj[0].type;
-	                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
-	                        obj.val(v.val);
-	                        if(objType == "select-one"){
-	                        	try{
-	                        		obj.trigger('change');
-	                        	}catch(e){}
-	                        }
-	                    }
-	                }
-				});
-				delete top._paramCache[pageId][el];
-			}
+			};
+        	if($.isArray(el)){
+        		elArr = el;
+        	}else{
+        		elArr.push(el);
+        	};
+        	for(var i = 0; i < elArr.length; i++){
+        		if(top._paramCache[pageId][elArr[i]] == undefined){
+					return;
+				}else{
+					var cacheList = top._paramCache[pageId][elArr[i]];
+					$.each(cacheList, function(k,v) {
+		                var sel = ":input[name='" + v.name + "']";
+		                var obj = $("#"+elArr[i]).find(sel);
+		                if(obj.length > 0){
+		                    var objType = obj[0].type;
+		                    if(objType == "text" || objType == "select-one" || objType == "hidden"){
+		                        obj.val(v.val);
+		                        if(objType == "select-one"){
+		                        	try{
+		                        		obj.trigger('change');
+		                        	}catch(e){}
+		                        }
+		                    }
+		                }
+					});
+					delete top._paramCache[pageId][elArr[i]];
+				}
+        	}
         },
         /*
          * 页面参数是否存在
@@ -1293,7 +1326,7 @@ var App = function() {
 		 * select2填充的value值获取对象
 		 * select2填充的空值（默认值）获取对象
 		 */
-		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo,qw){
+		initAjaxSelect2 : function(dom,ajaxObj,key,value,promptInfo){
     		if($().select2){
 	            $.fn.select2.defaults.set("theme","bootstrap");
 	            var options = {
@@ -1360,24 +1393,47 @@ var App = function() {
 		 * 获取字典信息
 		 */
 		getDictInfo:function(code,notPackage){
-			var postData = {"dictId": code};
-			var resturnData = {};
-			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
-
-			function successCallback(result) {
-				var data = result.data;
-				if(notPackage){
-					resturnData = data;
-				}else{
-					for(var i = 0; i < data.length; i++){
-						resturnData[data[i].dictValue] = data[i].dictLabel
-					};
-				}
-			};
-			function improperCallback(result){
-				layer.msg("字典项"+code+"异常");
+			var sysDictsCache = top.sysDictsCache;
+			if(sysDictsCache.length == 0){
+				layer.msg("字典项缓存异常,请联系系统管理员");
+				return {};
+			}else if(notPackage){
+				var resturnData = [];
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData.push(dictItem)
+					}
+				};
+				return resturnData;
+			}else{
+				var resturnData = {};
+				for(var i = 0; i < sysDictsCache.length; i++){
+					var dictItem = sysDictsCache[i];
+					if(dictItem.dictParentId == code){
+						resturnData[dictItem.dictValue] = dictItem.dictLabel
+					}
+				};
+				return resturnData;
 			}
-			return resturnData;
+//			var postData = {"dictId": code};
+//			var resturnData = {};
+//			App.formAjaxJson(top.globalConfig.serverPath + "dicts/listChildrenByDicttId", "post", JSON.stringify(postData), successCallback, improperCallback, null, null, false);
+//
+//			function successCallback(result) {
+//				var data = result.data;
+//				if(notPackage){
+//					resturnData = data;
+//				}else{
+//					for(var i = 0; i < data.length; i++){
+//						resturnData[data[i].dictValue] = data[i].dictLabel
+//					};
+//				}
+//			};
+//			function improperCallback(result){
+//				layer.msg("字典项"+code+"异常");
+//			}
+//			return resturnData;
 		},
 		pagehandleFormFieldset : function() {
 			if($('.form-fieldset .form-collapse').length) {
@@ -1411,18 +1467,43 @@ var App = function() {
 					var subStrLength = persentUrl.indexOf("?") + 1;
 				    var str = persentUrl.substr(subStrLength);   
 				    strs = str.split("&");   
+<<<<<<< HEAD
 				    for(var i = 0; i < strs.length; i ++) {   
 				        theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);   
+=======
+				    for(var i = 0; i < strs.length; i ++) {
+				    	var strsItem = decodeURI(strs[i].split("=")[1]);
+				    	if(strsItem == "null"){
+				    		strsItem = null;
+				    	}
+				        theRequest[strs[i].split("=")[0]] = strsItem;   
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				    }
-				}   
-				return theRequest;   
+				}
+				return theRequest;
         	}
         },
         getQueryString : function(name){
         	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
 		    var r = window.location.search.substr(1).match(reg); 
+<<<<<<< HEAD
 		    if (r != null) return decodeURI(r[2]); 
+=======
+		    if (r != null) return decodeURI(r[2]);
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 		    return null; 
+        },
+        /*
+         * 判断当前用户是否属于list传入的省份
+         */
+        checkIsNotProvCode : function(list){
+        	var nowProvCode = top.globalConfig.provCode;
+			for(var i = 0; i < list.length; i++){
+				if(list[i] == nowProvCode){
+					return false;
+				}
+			};
+			return true;
         },
         /*
          * 改变当前ifream切换url
@@ -1435,7 +1516,7 @@ var App = function() {
          * dom.操作按钮父级ID值
          * dixScrollTop.滚动固定的高度
          */
-        fixToolBars : function(dom,dixScrollTop){
+        fixToolBars: function(dom,dixScrollTop){
         	$(".page-content").scroll(function(){
 				var topScroll = $(".page-content").scrollTop();
 				if(topScroll > dixScrollTop){
@@ -1443,6 +1524,25 @@ var App = function() {
 				}else{
 					$("#"+dom).css({"position":"static","width":"100%","padding-top":"0"});
 				}
+			})
+        },
+         /*
+         * 回到顶部固定操作按钮
+         * dom.操作按钮ID值
+         */
+        fixScrollTopTool: function(dom){
+        	$(".page-content").scroll(function(){
+				var topScroll = $(".page-content").scrollTop();
+				if(topScroll > 0){
+					$(dom).css("display","block");
+				}else{
+					$(dom).css("display","none");
+				}
+			});
+			$(dom).on("click",function(){
+				$(".page-content").animate({
+					scrollTop:0
+				},300)
 			})
         },
         /*
@@ -1837,6 +1937,19 @@ var App = function() {
 
 		//工作流相关，业务主键businessId、待办推进方式前进还是后退handleType、路由值pathSelect、业务类型businessType用于过滤流程模板
         getFlowParam:function(serverPath,businessId,handleType,pathSelect,businessType,provCode,cityCode,attrA,attrB,attrC){
+<<<<<<< HEAD
+=======
+        	if(businessType == "contract_project2"){
+        		if(provCode == null || provCode == ""){
+        			layer.msg("省份编码不能为空,请联系管理员");
+        			return;
+        		};
+        		if(cityCode == null || cityCode == ""){
+        			layer.msg("地市编码不能为空,请联系管理员");
+        			return;
+        		};
+        	}
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         	var flowparam=null;
         	if(businessId.length==0){
         		layer.msg("业务主键不可为空！");
@@ -2089,12 +2202,16 @@ $(function() {
                 setInputSupportPlaceholder(self, val);
             }
         );
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         /**
          *  对password框的特殊处理
          * 1.创建一个text框 
          * 2.获取焦点和失去焦点的时候切换
          */
+<<<<<<< HEAD
         $('input[type="password"]').each(
             function() {
                 var pwdField    = $(this);
@@ -2120,6 +2237,33 @@ $(function() {
                 });
             }
         );
+=======
+//      $('input[type="password"]').each(
+//          function() {
+//              var pwdField    = $(this);
+//              var pwdVal      = pwdField.attr('placeholder');
+//              var pwdId       = pwdField.attr('id');
+//              // 重命名该input的id为原id后跟1
+//              pwdField.after('<input id="' + pwdId +'1" type="text" value='+pwdVal+' autocomplete="off" />');
+//              var pwdPlaceholder = $('#' + pwdId + '1');
+//              pwdPlaceholder.show();
+//              pwdField.hide();
+//
+//              pwdPlaceholder.focus(function(){
+//                  pwdPlaceholder.hide();
+//                  pwdField.show();
+//                  pwdField.focus();
+//              });
+//
+//              pwdField.blur(function(){
+//                  if(pwdField.val() == '') {
+//                      pwdPlaceholder.show();
+//                      pwdField.hide();
+//                  }
+//              });
+//          }
+//      );
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
     }
 });
 

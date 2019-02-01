@@ -77,9 +77,15 @@ function initInvoiceTable(type){
 		var totalData = pageData.notFixedData;
 		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
-	var contractValueNovatSum = totalData.contractValueNovatSum ? App.unctionToThousands(totalData.contractValueNovatSum) : 0;
-	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
-	var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	if(totalData){
+		var contractValueNovatSum = totalData.contractValueNovatSum ? App.unctionToThousands(totalData.contractValueNovatSum) : 0;
+		var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
+		var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	}else{
+		var contractValueNovatSum = 0;
+		var poAmountSumSum = 0;
+		var invoiceNnovateSumSum = 0;
+	};
 	$("#contractValueNovatSum").text(contractValueNovatSum+"元");
 	$("#poAmountSumSum").text(poAmountSumSum+"元");
 	$("#invoiceNnovateSumSum").text(invoiceNnovateSumSum+"元");
@@ -126,7 +132,7 @@ function initInvoiceTable(type){
 			},
 			{"data": null,"title":"发票明细","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpInviceDetail(\""+data.invPayId+"\",\""+data.invoiceNnovateSum+"\")'>查看</a>";
+					return "<a onclick='jumpInviceDetail(\""+data.contractNumber+"\",\""+data.invoiceNnovateSum+"\")'>查看</a>";
 				}
 			}
 		]
@@ -147,12 +153,18 @@ function initPaymentTable(type){
 		var totalData = pageData.notFixedData;
 		var url = serverPath + "paymentManage/listPaymentManageNoFixed";
 	};
-	var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
-//	var poAmountSumSum = totalData.poAmountSumSum ? App.unctionToThousands(totalData.poAmountSumSum) : 0;
-//	var invoiceNnovateSumSum = totalData.invoiceNnovateSumSum ? App.unctionToThousands(totalData.invoiceNnovateSumSum) : 0;
+	if(totalData){
+		var payVateAmountSumSum = totalData.payVateAmountSumSum ? App.unctionToThousands(totalData.payVateAmountSumSum) : 0;
+		var contractValueSum = totalData.contractValueSum ? App.unctionToThousands(totalData.contractValueSum) : 0;
+		var invoiceSumSum = totalData.invoiceSumSum ? App.unctionToThousands(totalData.invoiceSumSum) : 0;
+	}else{
+		var payVateAmountSumSum = 0;
+		var contractValueSum = 0;
+		var invoiceSumSum = 0;
+	};
 	$("#payVateAmountSumSum").text(payVateAmountSumSum+"元");
-//	$("#poAmountSumSum").text(poAmountSumSum+"元");
-//	$("#invoiceNnovateSumSum").text(invoiceNnovateSumSum+"元");
+	$("#contractValueSum").text(contractValueSum+"元");
+	$("#invoiceSumSum").text(invoiceSumSum+"元");
 	App.initDataTables('#paymentTable', {
 		ajax: {
 			"type": "POST",
@@ -179,12 +191,12 @@ function initPaymentTable(type){
 					return data == 1 ? "是" : "否";
 				}
 			},
-			{"data": "","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
 			},
-			{"data": "","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
+			{"data": "invoiceSum","title":"累计含税开票金额","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
 					return App.unctionToThousands(data);
 				}
@@ -196,7 +208,7 @@ function initPaymentTable(type){
 			},
 			{"data": null,"title":"付款明细","className": "whiteSpaceNormal","width": "5%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpPaymentDetail(\""+data.invPayId+"\",\""+data.payVateAmountSum+"\")'>查看</a>";
+					return "<a onclick='jumpPaymentDetail(\""+data.contractNumber+"\",\""+data.payVateAmountSum+"\")'>查看</a>";
 				}
 			}
 		]
@@ -205,25 +217,27 @@ function initPaymentTable(type){
 /*
  * 跳转发票明细
  */
-function jumpInviceDetail(invPayId,invoiceNnovateSum){
-	var url = "/html/expenseWorktable/paymentManage/invoiceDetail.html?invPayId="+invPayId+"&invoiceNnovateSum="+invoiceNnovateSum;
+function jumpInviceDetail(contractNumber,invoiceNnovateSum){
+	var url = "/html/expenseWorktable/paymentManage/invoiceDetail.html?contractNumber="+contractNumber+"&invoiceNnovateSum="+invoiceNnovateSum;
 	top.showSubpageTab(url,"发票明细");
 }
 /*
  * 跳转付款明细
  */
-function jumpPaymentDetail(invPayId,payVateAmountSum){
-	var url = "/html/expenseWorktable/paymentManage/paymentDetail.html?invPayId="+invPayId+"&payVateAmountSum="+payVateAmountSum;
+function jumpPaymentDetail(contractNumber,payVateAmountSum){
+	var url = "/html/expenseWorktable/paymentManage/paymentDetail.html?contractNumber="+contractNumber+"&payVateAmountSum="+payVateAmountSum;
 	top.showSubpageTab(url,"付款明细");
 }
 //发票管理-固定金额合同累计开票金额情况（图表）
+var invoiceChartsFixedDom = null;
+var invoiceChartsFixedInterval = null;
 function initInvoiceFiexdCharts(){
 	var data = pageData.fixedData;
 	var invoiceChartsFixedOption;
-	var invoiceChartsFixedDom = echarts.init(document.getElementById('invoiceChartsFixed'));
+	invoiceChartsFixedDom = echarts.init(document.getElementById('invoiceChartsFixed'));
 	var invoiceChartsFixedData = [
-		{value: 0,name: '累计开票金额：0元',canSelect: false},
-		{value: 1,name: '剩余未开票金额：0元',canSelect: false}
+		{value: 0,name: '累计开票金额：0元',canSelect: true},
+		{value: 1,name: '剩余未开票金额：0元',canSelect: true}
 	];
 	if(data){
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum ? data.invoiceNnovateSumSum : 0;
@@ -239,7 +253,7 @@ function initInvoiceFiexdCharts(){
 				{
 					value: noInvoiceNnovateSum,
 					name: "剩余未开票金额："+App.unctionToThousands(noInvoiceNnovateSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			invoiceChartsFixedOption = initCharts("固定金额合同累计开票金额情况",invoiceChartsFixedData);
@@ -256,20 +270,32 @@ function initInvoiceFiexdCharts(){
 		$("#invoiceChartsFixedRemark").text("*该图表暂未汇总到数据");
 	};
 	invoiceChartsFixedDom.setOption(invoiceChartsFixedOption);
+	if(!App.IEVersionVA(9)) {
+		invoiceChartsFixedInterval = setInterval(invoiceChartsFixedIntervalFn, 1000);
+	};
 	invoiceChartsFixedDom.on('click', function (params) {
 		if(params.data.canSelect){
 			initInvoiceTable("fixed");
 		}
 	})
 }
+function invoiceChartsFixedIntervalFn(){
+	if($("#invoiceChartsFixed canvas").width() < 200){
+		invoiceChartsFixedDom.resize();
+	}else{
+		clearInterval(invoiceChartsFixedInterval);
+	};
+}
 //发票管理-框架协议累计开票金额情况（图表）
+var invoiceChartsNotFixedDom = null;
+var invoiceChartsNotFixedInterval = null;
 function initInvoiceNotFiexdCharts(){
 	var data = pageData.notFixedData;
 	var invoiceChartsNotFixedOption;
-	var invoiceChartsNotFixedDom = echarts.init(document.getElementById('invoiceChartsNotFixed'));
+	invoiceChartsNotFixedDom = echarts.init(document.getElementById('invoiceChartsNotFixed'));
 	var invoiceChartsNotFixedData = [
-		{value: 0,name: '累计开票金额：0元',canSelect: false},
-		{value: 1,name: '剩余未开票金额：0元',canSelect: false}
+		{value: 0,name: '累计开票金额：0元',canSelect: true},
+		{value: 1,name: '剩余未开票金额：0元',canSelect: true}
 	];
 	if(data){
 		var invoiceNnovateSumSum = data.invoiceNnovateSumSum ? data.invoiceNnovateSumSum : 0;
@@ -285,7 +311,7 @@ function initInvoiceNotFiexdCharts(){
 				{
 					value: noInvoiceNnovateSum,
 					name: "剩余未开票金额："+App.unctionToThousands(noInvoiceNnovateSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			invoiceChartsNotFixedOption = initCharts("框架协议累计开票金额情况",invoiceChartsNotFixedData);
@@ -302,11 +328,21 @@ function initInvoiceNotFiexdCharts(){
 		$("#invoiceChartsNotFixedRemark").text("*该图表暂未汇总到数据");
 	};
 	invoiceChartsNotFixedDom.setOption(invoiceChartsNotFixedOption);
+	if(!App.IEVersionVA(9)) {
+		invoiceChartsNotFixedInterval = setInterval(invoiceChartsNotFixedIntervalFn, 1000);
+	};
 	invoiceChartsNotFixedDom.on('click', function (params) {
 	    if(params.data.canSelect){
 			initInvoiceTable("notFixed");
 		}
 	})
+}
+function invoiceChartsNotFixedIntervalFn(){
+	if($("#invoiceChartsNotFixed canvas").width() < 200){
+		invoiceChartsNotFixedDom.resize();
+	}else{
+		clearInterval(invoiceChartsNotFixedInterval);
+	};
 }
 //付款管理-固定金额合同累计含税付款金额情况（图表）
 function initPaymentFiexdCharts(){
@@ -314,8 +350,8 @@ function initPaymentFiexdCharts(){
 	var paymentChartsFixedOption;
 	var paymentChartsFixedDom = echarts.init(document.getElementById('paymentChartsFixed'));
 	var paymentChartsFixedData = [
-		{value: 0,name: '累计含税付款金额：0元',canSelect: false},
-		{value: 1,name: '剩余含税未付款金额：0元',canSelect: false}
+		{value: 0,name: '累计含税付款金额：0元',canSelect: true},
+		{value: 1,name: '剩余含税未付款金额：0元',canSelect: true}
 	];
 	if(data){
 		var payVateAmountSumSum = data.payVateAmountSumSum ? data.payVateAmountSumSum : 0;
@@ -331,7 +367,7 @@ function initPaymentFiexdCharts(){
 				{
 					value: noPayVateAmountSum,
 					name: "剩余含税未付款金额："+App.unctionToThousands(noPayVateAmountSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			paymentChartsFixedOption = initCharts("固定金额合同累计含税付款金额情况",paymentChartsFixedData);
@@ -360,8 +396,8 @@ function initPaymentNotFiexdCharts(){
 	var paymentChartsNotFixedOption;
 	var paymentChartsNotFixedDom = echarts.init(document.getElementById('paymentChartsNotFixed'));
 	var paymentChartsNotFixedData = [
-		{value: 0,name: '累计含税付款金额：0元',canSelect: false},
-		{value: 1,name: '剩余含税未付款金额：0元',canSelect: false}
+		{value: 0,name: '累计含税付款金额：0元',canSelect: true},
+		{value: 1,name: '剩余含税未付款金额：0元',canSelect: true}
 	];
 	if(data){
 		var payVateAmountSumSum = data.payVateAmountSumSum ? data.payVateAmountSumSum : 0;
@@ -377,7 +413,7 @@ function initPaymentNotFiexdCharts(){
 				{
 					value: noPayVateAmountSum,
 					name: "剩余含税未付款金额："+App.unctionToThousands(noPayVateAmountSum)+"元",
-					canSelect: false
+					canSelect: true
 				}
 			];
 			paymentChartsNotFixedOption = initCharts("框架协议累计含税付款金额情况",paymentChartsNotFixedData);
@@ -404,15 +440,19 @@ function initPaymentNotFiexdCharts(){
  * 生成圆环配置项
  */
 function initCharts(title,data,isEmpty){
-	var borderWidth = 2;
+	var minAngleValue = 6;
+	$.each(data, function(k,v) {
+		if(v.value == 0){
+			minAngleValue = 0;
+		}
+	});
 	var formatter = "{a} <br/>{b} ({d}%)";
 	if(isEmpty){
-		borderWidth = 0;
 		formatter = title;
 		for(var i = 0; i < data.length; i++){
 			formatter += "<br />" + data[i].name;
 		}
-	}
+	};
 	var option = {
 		title: {
 			text: title,
@@ -444,13 +484,14 @@ function initCharts(title,data,isEmpty){
 	        bottom: 10,
 			selectedMode: false
 		},
-		color: ['#d11718', '#bfbfbf'],
+		color: ['#FD6D64', '#DBDBDB'],
 		series: [{
 			clockwise: false,
 //			hoverAnimation: false,
 			name: title,
 			type: 'pie',
 			radius: ['35%', '60%'],
+			minAngle: minAngleValue,
 			label: {
 				normal: {
 					show: false,
@@ -462,7 +503,7 @@ function initCharts(title,data,isEmpty){
 				}
 			},
 			itemStyle: {
-                borderWidth: borderWidth,
+                borderWidth: 2,
                 borderColor: '#ffffff'
 	        },
 			data: data

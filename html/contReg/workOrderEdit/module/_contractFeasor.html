@@ -1,12 +1,14 @@
 <div class="form-fieldset">
 	<div class="form-fieldset-title">
-		<span><i class="iconfont icon-layers"></i> 选择合同履行人</span>
+		<div class="fieldset-title">
+			<p>选择合同履行人</p><span></span>
+		</div>
 		<div class="form-fieldset-tools">
 			<a class="form-collapse"><i class="fa fa-angle-up"></i></a>
 		</div>
 	</div>
 	<div class="form-fieldset-body">
-		<div class="row" id="contractFeasorContent">
+		<div id="contractFeasorContent">
 			<div class="ui-radio-list ui-radio-inline">
 				<label class="ui-radio">
 					<input type="radio" value="1" checked="checked" name="performerType">
@@ -200,7 +202,7 @@
 		$("#feasorChecked").html("");
 		$("#feasorTreeInput").val("");
 		var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
-		var documentHeight = $pageContent.height() - 225;
+		var documentHeight = $pageContent.height() - 240;
     	$("#feasorTreeCotent,#feasorChecked").css("height", documentHeight);
 		initFeasorTree(performerType);
 	}
@@ -298,6 +300,7 @@
 	   	});
         function setInputInfo(event, treeId, treeNode) {
             getFirstDepartment(treeNode,1);
+<<<<<<< HEAD
         }
     }
     /*
@@ -328,13 +331,49 @@
     /*
      * 树添加到左侧
      */
+=======
+        }
+    }
+    /*
+     * 后台查询一级部门名称和id
+     */
+    function getFirstDepartment(treeNode,type){
+    	if (treeNode.orgType == "" || treeNode.orgType == undefined) {
+    		var url = serverPath + "contractType/getPerformerBandOneOrg";
+			var postData = JSON.stringify({orgId:treeNode.parentId});
+    		App.formAjaxJson(url, "post", postData, successCallback);
+			function successCallback(result) {
+				var data = result.data;
+				if(data){
+					var parentId = data.orgId;
+					var fullName =  data.orgName;
+				}else{
+					var parentId = treeNode.parentId;
+					var fullName =  treeNode.fullName;
+				};
+				if(type == 1){
+					addFeasorValue(treeNode,parentId,fullName);
+				}else if(type ==2){
+					addFeasorValueForInput(treeNode,parentId,fullName);
+				}
+    		};
+        }
+    }
+    /*
+     * 树添加到左侧
+     */
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
     function addFeasorValue(treeNode,parentId,fullName) {
     	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
     	var performerOrgId = parentId;
     	var performerOrgName = fullName;
     	var performerStaffId = treeNode.staffOrgId;
         if(performerType == 1){
+<<<<<<< HEAD
         	var html = '<div class="feasorItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+=======
+        	var html = '<div class="checkedStaffItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         				'<span>'+treeNode.name+'</span>'+
         				'</div>'
         	$("#feasorChecked").html(html);
@@ -343,7 +382,11 @@
         	var companyNode = getCompanyByOrgId(treeNode)[0];
         	var companyId = companyNode.id;
     		var companyName = companyNode.name;
+<<<<<<< HEAD
         	$.each($("#feasorModal .feasorItem"),function(k,v){
+=======
+        	$.each($("#feasorChecked .checkedStaffItem"),function(k,v){
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         		if($(v).data("companyid") == companyId){
         			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
         			isExist = true;
@@ -351,7 +394,11 @@
         		}
         	});
         	if(!isExist){
+<<<<<<< HEAD
         		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+=======
+        		var html = '<div class="checkedStaffItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
             				'<span>'+treeNode.name+'</span>'+
             				'</div>';
         		$("#feasorChecked").append(html);
@@ -367,7 +414,11 @@
     	var performerOrgName = fullName;
     	var performerStaffId = item.staffOrgId;
         if(performerType == 1){
+<<<<<<< HEAD
         	var html = '<div class="feasorItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+=======
+        	var html = '<div class="checkedStaffItem" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         				'<span>'+item.name+'</span>'+
         				'</div>'
         	$("#feasorChecked").html(html);
@@ -375,7 +426,11 @@
         	var isExist = false;
         	var companyId = item.companyId;
     		var companyName = item.companyName;
+<<<<<<< HEAD
         	$.each($("#feasorModal .feasorItem"),function(k,v){
+=======
+        	$.each($("#feasorChecked .checkedStaffItem"),function(k,v){
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
         		if($(v).data("companyid") == companyId){
         			showLayerErrorMsg(companyName+"下只能选择一个主要履行人，请删除'"+$(v).text()+"'后再进行添加");
         			isExist = true;
@@ -383,7 +438,11 @@
         		}
         	});
         	if(!isExist){
+<<<<<<< HEAD
         		var html = '<div class="feasorItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+=======
+        		var html = '<div class="checkedStaffItem" data-companyname="'+companyName+'" data-companyid="'+companyId+'" data-orgname="'+performerOrgName+'" data-orgid="'+performerOrgId+'" data-stafforgid="'+performerStaffId+'">'+
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
             				'<span>'+item.name+'</span>'+
             				'</div>';
         		$("#feasorChecked").append(html);
@@ -405,10 +464,10 @@
      * 删除右侧内容
      */
     function delFeasorValue(){
-		if($("#feasorModal .feasorCheck").length == 0){
+		if($("#feasorChecked .staffItemChecked").length == 0){
 			layer.msg("请点击选择人员名称后进行删除", {icon: 2})
 		}else{
-			$.each($("#feasorModal .feasorCheck"), function(k,v) {
+			$.each($("#feasorChecked .staffItemChecked"), function(k,v) {
 				$(v).parent().remove();
 			});
 		}
@@ -419,13 +478,13 @@
     function setFeasorTable(){
     	var performerType = $("#contractFeasorContent input[name='performerType']:checked").val();
     	$("#feasorModal").modal("hide");
-    	if($("#feasorModal .feasorItem").length > 0){
+    	if($("#feasorChecked .checkedStaffItem").length > 0){
     		if(performerType == 1){
     			if($("#feasorTbody .emptyTr")[0] != undefined){
 					$("#feasorTbody .emptyTr").remove();
 				};
 				var html = "";
-    			$.each($("#feasorModal .feasorItem"), function(k,v) {
+    			$.each($("#feasorChecked .checkedStaffItem"), function(k,v) {
     				var orgname = $(v).data("orgname");
     				var orgid = $(v).data("orgid");
     				var stafforgid = $(v).data("stafforgid");
@@ -450,7 +509,7 @@
 	    		if($("#feasorTbody .emptyTr")[0] != undefined){
 					$("#feasorTbody .emptyTr").remove();
 				};
-    			$.each($("#feasorModal .feasorItem"), function(k,v) {
+    			$.each($("#feasorChecked .checkedStaffItem"), function(k,v) {
     				var companyid = $(v).data("companyid");
     				var companyName = $(v).data("companyname");
     				var staffname = $(v).text();
@@ -555,10 +614,10 @@
 	 * 人员选择点击	事件委托
 	 */
 	$("#feasorChecked").on("click","span",function(){
-		if($(this).hasClass("feasorCheck")){
-			$(this).removeClass("feasorCheck");
+		if($(this).hasClass("staffItemChecked")){
+			$(this).removeClass("staffItemChecked");
 		}else{
-			$(this).addClass("feasorCheck");
+			$(this).addClass("staffItemChecked");
 		}
 	})
 </script>

@@ -36,7 +36,11 @@ function handleTaskToDo(taskInfo) {
 	$('#processDefinitionKey').val(processDefinitionKey);
 	$('#executionId').val(executionId);
 	$('#assigneeId').val(assignee);
+<<<<<<< HEAD
 	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ"];
+=======
+	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","SEALAPPLY","SEALED"];
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	if(specialList.indexOf(taskDefinitionKey) != -1){
 		$("#goTaskToDoDetailForToDo").remove();
 		$("#searchContentForToDo").hide();
@@ -50,7 +54,6 @@ function handleTaskToDo(taskInfo) {
 }
 
 function getTaskInfo(){
-	var taskData=null;
 	$.ajax({
 		url:serverPath + 'workflowrest/getTaskInfo?processInstanceId='+processInstanceId+'&taskId='+taskId+'&businessId='+businessId, 
 		type:"POST",
@@ -68,15 +71,13 @@ function getTaskInfo(){
 					handleTaskToDo(taskData);
 				}
 			} else {
-				layer.msg(result.info);
+				errorInfoSolve(result.info);
 			};
 		},
 		error:function(e){
-			alert("获取流程参数异常"+e);
 			App.ajaxErrorCallback(e);
 		}
 	});
-	return taskData;
 }
 
 /*
@@ -96,15 +97,15 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	if(businessKey){
 		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
 		   	}else{
-		   		layer.msg("获取不到工单主键");
+		   		errorInfoSolve("获取不到工单主键");
 		   	}
 		} else {
-			layer.msg(data.retValue);
+			errorInfoSolve(data.retValue);
 		}
 	});
 }
 function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,null,null,false);
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,improperCallback,null,false);
 	function successCallback(result) {
 		var data = result.data;
 		var wcardProcess = data.wcardProcess;
@@ -125,6 +126,14 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 			}
 		}else if(taskDefinitionKey == "KHQR" || taskDefinitionKey == "GXZZ"){
 			if(wcardStatus == 904030 && contractStatus == 8){
+<<<<<<< HEAD
+=======
+				isPass = true;
+				editTaskDefinitionKey = taskDefinitionKey;
+			}
+		}else if(taskDefinitionKey == "SEALAPPLY" || taskDefinitionKey == "SEALED"){
+			if(wcardProcess == 0){
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				isPass = true;
 				editTaskDefinitionKey = taskDefinitionKey;
 			}
@@ -133,24 +142,10 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
 			$('#businessiframe').attr("src",src);
 		}else{
-			layer.alert("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。",{icon:2,title:"流程状态错误"},function(index){
-				layer.close(index);
-				closeWindow();
-			});
+			errorInfoSolve("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。");
 		}
 	}
 }
-function closeWindow(){
-    if (navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1) {
-        window.location.href="about:blank";
-        window.close();
-    } else {
-        window.opener = null;
-        window.open("", "_self");
-        window.close();
-    }
-}
-
 function applyTaskToDo(taskInfo) {
 	var id=taskInfo.taskId;
 	var taskDefinitionKey=taskInfo.taskDefinitionKey;
@@ -170,7 +165,7 @@ function applyTaskToDo(taskInfo) {
 			// 打开抢到的待办方法调用
 			handleTaskToDo(taskInfo)
 		} else {
-			layer.msg(data.sign);
+			errorInfoSolve(data.sign);
 		};
 	});
 }

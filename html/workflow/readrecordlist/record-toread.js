@@ -53,7 +53,7 @@ function getTableToread(){
 		        	var buttontitle = null;
 		        	var readIds=row.readId;
 		        	if(curStaffOrgId == assignee){
-	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"',"+row.bussId+")";
+	        			fn = "findDetail('"+readIds+"','"+row.readTypeUrl+"','"+row.bussId+"')";
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";
@@ -80,6 +80,7 @@ function getTableToread(){
 	 	}]
 	});
 }
+<<<<<<< HEAD
 
 //跳转待阅页面
 function  findDetail(readId,url,bussId) {
@@ -87,11 +88,17 @@ function  findDetail(readId,url,bussId) {
 	App.changePresentUrl(url+"&bussid="+bussId+"&readid="+readId);
 	changeReadStatus(readId);
 }
+=======
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 /*
  * 待阅变已阅Fn
- * 参数：readId
+ * 跳转待阅页面
  */
+<<<<<<< HEAD
 function changeReadStatus(readId){
+=======
+function  findDetail(readId,url,bussId) {
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	var ajaxObj = {
 	    "url" :  serverPath + "recordToread/editRecordToreadToHis",
 	    "type" : "post",
@@ -99,7 +106,8 @@ function changeReadStatus(readId){
 	};
 	App.formAjaxJson(ajaxObj.url, ajaxObj.type, JSON.stringify(ajaxObj.data), successCallback);
 	function successCallback(result) {
-		console.log(result);
+		App.setCache("searchForm");
+		App.changePresentUrl(url+"&bussid="+bussId);
 	}
 }
 //查询岗位名称
@@ -146,7 +154,7 @@ function getSearchParm(){
 		readTitle : $("#readTitle").val().trim(),
 		sendDateBegin : $("#send_date_begin").val(),
 		sendDateEnd : $("#send_date_end").val(),
-		bussId : $("#bussId").val().trim()
+		contractNumber : $("#contractNumber").val().trim()
 	};
 	return searchData;
 }

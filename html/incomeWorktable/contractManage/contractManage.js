@@ -5,6 +5,10 @@ var serverPath = config.serverPath;
 var reloadFocusContractTable = false;
 //获取参数
 var parm = App.getPresentParm();
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
+}
 $(function(){
 	var roleArr = config.curRole;
 	if(isInArray(roleArr,91216)){
@@ -19,7 +23,7 @@ $(function(){
 	$("#contractType").on("change",function(){
 		$(this).data("exactSearch",false);
 	})
-	//我的合同管理合同类型选择
+	//我的合同查询合同类型选择
 	$("#contractTypeSearchModal").click(function(){
 		App.getCommonModal("contractType","#contractTypeSearch","typeFullname","typeCode");
 	})
@@ -83,7 +87,7 @@ function initPerformanceContractTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width": "15%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "13%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "13%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
@@ -110,14 +114,14 @@ function initPerformanceContractTable(){
  */
 function focusContract(contractId){
 	var url = serverPath + "performanceContract/saveFocusContract";
-	layer.confirm("确定添加该合同的重点关注?", {icon: 0}, function() {
+	layer.confirm("确定重点关注该合同？", {icon: 0}, function() {
     	var postData = {
         	contractId: contractId
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
 			if(result.data == 1) {
-				layer.msg("已添加重点关注");
+				layer.msg("重点关注成功！");
 				var isInitFocusContractTable = $.fn.dataTable.isDataTable("#focusContractTable");
 				if(isInitFocusContractTable){
 					if($("#focusContractList .form-fieldset-body").is(':hidden')){
@@ -127,7 +131,7 @@ function focusContract(contractId){
 					};
 				}
 			} else {
-				layer.msg("已关注，无需重新关注");				
+				layer.msg("已重点关注，无需重新关注！");				
 			}
 		}
    	});
@@ -164,7 +168,7 @@ function initFocusContractTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width": "15%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "13%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "13%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "13%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
@@ -190,7 +194,7 @@ function initFocusContractTable(){
  * 我重点关注的合同删除重点关注
  */
 function deleteFocusContract(contractId, focusId){
-	layer.confirm('确定取消该合同的重点关注?', {icon: 0}, function() {
+	layer.confirm('确定不再重点关注该合同？', {icon: 0}, function() {
     	var url = serverPath + "performanceContract/delFocusContractById";
 		var postData = {
 			contractId: contractId,
@@ -198,7 +202,7 @@ function deleteFocusContract(contractId, focusId){
 		};
 		App.formAjaxJson(url, "post", JSON.stringify(postData), successCallback);
 		function successCallback(result) {
-			layer.msg("已删除重点关注");
+			layer.msg("取消重点关注成功！");
 			reloadPageDataTable("#focusContractTable",true);
 		}
    	});
@@ -248,7 +252,7 @@ function initMyContractManagerTable(){
 			{"data": "contractName","className": "whiteSpaceNormal","width": "25%"},
 			{"data": "contractNumber","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "customerName","className": "whiteSpaceNormal","width": "10%"},
-			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "customerCode","className": "whiteSpaceNormal","width": "10%","bVisible":cusCodeProvFlag},
 			{"data": "partnerCode","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractValue","className": "whiteSpaceNormal","width": "10%",
 				"render": function(data, type, full, meta){
@@ -258,7 +262,7 @@ function initMyContractManagerTable(){
 			{"data": "customerManagerName","className": "whiteSpaceNormal","width": "10%"},
 			{"data": "contractId","className": "whiteSpaceNormal","width": "10%",
 				"render" : function(data, type, full, meta){
-					return "<a onclick='jumpWorkOrderEdit(\""+data+"\")'>添加/删除客户经理</a>";
+					return "<a onclick='jumpGetWcardIdByContractId(\""+data+"\")'>添加/删除客户经理</a>";
 				}
 			}
 		]
@@ -322,6 +326,9 @@ function myContractTableColumns(){
 		}
 	];
 	$.each(contractTheadList, function(k,v) {
+		if(v.isShow == false){
+			return true;
+		};
 		if(v.checked == true){
 			if(v.id == "contractValue"){
 				var item = {
@@ -411,15 +418,52 @@ function reloadPageDataTable(tableId,retainPaging) {
  * 跳转线路信息（已关联合同）
  */
 function jumpLineManageByContract(contractId){
-	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&id="+contractId;
+	var url = "/html/incomeWorktable/lineManage/lineView.html?relationType=1&contractId="+contractId;
 	top.showSubpageTab(url,"线路信息");
+}
+
+
+function jumpGetWcardIdByContractId(contractId){
+	var postData = JSON.stringify({contractId:contractId});
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardIdByContractId","post",postData, successCallback,null,null,false);
+	function successCallback(result){
+		var wcardId = result.data.wcardId;
+		jumpWorkOrderEdit(wcardId);
+	}
 }
 /*
  * 增加或删除客户经理  >>>>> 跳转工单编辑页面
  */
 function jumpWorkOrderEdit(wcardId){
+<<<<<<< HEAD
 //	var url = "/workOrderEdit/workOrderEdit.html?pageType=5&taskFlag=yb&taskDefinitionKey=GDQR&wcardId="+ wcardId;
 //	top.showSubpageTab(url,"工单处理");
+=======
+		App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId","get",{wcardId:wcardId}, successCallback,null,null,false);
+		function successCallback(result) {
+			var contractStatus = result.data.contractStatus;
+			var wcardStatus = result.data.wcardStatus;
+			var contractStatusObj = {
+				1: "已审批",
+				2: "作废",
+				3: "作废申请中",
+				4: "变更补充",
+				5: "终止解除",
+				6: "终止履行",
+				7: "办结",
+				8: "履行中"   
+			};
+			if((wcardStatus == 904030 && contractStatus == 8) || (wcardStatus == 904040 && contractStatus == 4) || (wcardStatus == 904050 && contractStatus == 5) || (wcardStatus == 904060 && contractStatus == 6)){
+				var href="/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=TJKH&wcardId="+wcardId;
+				top.showSubpageTab(href,"工单编辑");
+			}else{
+				layer.alert("该合同状态为"+contractStatusObj[contractStatus]+"，不能添加/删除客户经理。",{icon:2,title:"流程状态错误"},function(index){
+					layer.close(index);
+				});
+			}
+		}
+	
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 }
 
 //我的合同查询选择查看更多
@@ -443,7 +487,7 @@ var contractTheadList = [
 	{data:"合同名称",id:"contractName",checked:true},
 	{data:"合同编号",id:"contractNumber",checked:true},
 	{data:"客户名称",id:"customerName",checked:true},
-	{data:"集客客户编号",id:"customerCode",checked:true},
+	{data:"集客客户编号",id:"customerCode",checked:true,isShow:cusCodeProvFlag},
 	{data:"合作方编号",id:"partnerCode",checked:true},
 	{data:"含增值税合同金额",id:"contractValue",checked:true},
 	{data:"客户经理名称",id:"customerManagerName",checked:true},

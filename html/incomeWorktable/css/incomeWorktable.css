@@ -9,7 +9,7 @@
 #performanceContractList .right-toolbars{
 	position: absolute;
 	right: 15px;
-	top: -50px;
+	top: -47px;
 }
 .legendItem .legendPic{
 	width: 16px;
@@ -36,7 +36,7 @@ td.milestoneLegend{
 	padding: 0 !important;
 	border-left: none !important;
 	border-right: none !important;
-	/*min-height: 38px !important;*/
+	min-height: 38px !important;
 }
 .wired{
 	width: 100%;
@@ -73,6 +73,7 @@ td.milestoneLegend{
 	height: 450px;
 	display: inline-block;
 	margin-top: 26px;
+	margin-bottom: 16px;
 }
 .incomeAnalysisTitle p{
 	display: inline-block;
@@ -84,6 +85,15 @@ td.milestoneLegend{
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
+	margin-top: 8px;
+}
+.minWidth60{
+	min-width: 40px;
+	margin-right: 20px;
+	display: inline-block;
+}
+.remark-list{
+	width: 95%;
 }
 /*客户服务*/
 #businessEmptyDom{
@@ -96,6 +106,7 @@ td.milestoneLegend{
 	padding-left: 4px;
 	font-size: 14px;
 	padding-bottom: 4px;
+	margin-top: 6px;
 }
 .businessTitle{
 	display: inline-block;
@@ -121,6 +132,18 @@ td.milestoneLegend{
 }
 #warningOverviewCharts{
 	width: 60%;
+	min-width: 800px;
 	height: 340px;
 	display: inline-block;
 }
+
+.parmTitle{
+	margin-top: 5px;
+	margin-bottom: 4px;
+	font-weight: bold;
+}
+#assessedTbody .form-group{
+	margin: 0;
+}
+
+.setRightBorder{border-right-width:1px !important;}

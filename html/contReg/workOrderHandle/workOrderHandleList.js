@@ -88,13 +88,38 @@ function manualCreation(){
 	});
 }
 
-//跳转到工单编辑页面
-function jumpSanCpyQueryDetail(id){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+//跳转到工单编辑页面--查看当前流程
+function jumpSanCpyQueryDetail(wcardId){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getOrderProcessingFlowInfo", "post", JSON.stringify({wcardId:wcardId}), successCallback);
+	function successCallback(result) {
+		var taskDefinitionKey = result.data;
+		if(taskDefinitionKey){
+			checkWcardProcess(wcardId,taskDefinitionKey)
+		}else{
+			layer.alert("当前工单的流程状态失败，请联系管理员。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
+}
+//跳转到工单编辑页面--查看当前工单状态并跳转
+function checkWcardProcess(wcardId,taskDefinitionKey){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
-		if(wcardProcess == 0 || wcardProcess == 2){
-			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDCL&wcardId="+id;
+		var isPass = false;
+		if(taskDefinitionKey == "GDCL"){
+			if(wcardProcess == 0 || wcardProcess == 2){
+				isPass = true;
+			}
+		};
+		if(taskDefinitionKey == "SEALAPPLY" || taskDefinitionKey == "SEALED"){
+			if(wcardProcess == 0){
+				isPass = true;
+			}
+		};
+		if(isPass){
+			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+taskDefinitionKey+"&wcardId="+wcardId;
 			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{

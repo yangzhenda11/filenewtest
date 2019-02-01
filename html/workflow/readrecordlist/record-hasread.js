@@ -52,7 +52,7 @@ function getTableToreadHisList(){
 		        	var style = "";
 		        	var buttontitle = null;
 		        	if(curStaffOrgId == assignee){
-		        		fn = "findDetail('"+row.readTypeUrl+"',"+row.bussId+")";
+		        		fn = "findDetail('"+row.readTypeUrl+"','"+row.bussId+"')";
 		        	}else{
 		        		style = "cursor:not-allowed";
 		        		buttontitle = "当前任务属于您的另一个岗位,请点击查看";
@@ -128,7 +128,7 @@ function getSearchParm(){
 		readTitle : $("#readTitle").val().trim(),
 		sendDateBegin : $("#send_date_begin").val(),
 		sendDateEnd : $("#send_date_end").val(),
-		bussId : $("#bussId").val().trim()
+		contractNumber : $("#contractNumber").val().trim()
 	};
 	return searchData;
 }

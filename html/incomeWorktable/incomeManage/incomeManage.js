@@ -2,11 +2,53 @@
 var config = top.globalConfig;
 var serverPath = config.serverPath;
 //页面变量
-var pageConfig = {
-	isInitForecastCharts: false
+var cusCodeProvFlag = App.checkIsNotProvCode(["zj"]);
+if(cusCodeProvFlag){
+	$(".cusCodeHh").removeClass("hidden");
 }
+var pageConfig = {
+	isInitForecastCharts: false,		//页面是否已经生产收入预测表格
+	accountPeriod: null,				//收入预测点击选择的账期
+	incomePeriod: null,					// 收入分析点击选择的账期
+	incomeAnalysisInterval: null,		// 收入类图表定时器
+	incomeForecastInterval: null		// 支出类图表定时器
+}
+var incomeAnalysis;
+var incomeForecast;
 $(function(){
-	initIncomeAnalysisCharts();
+	initIncomeCharts();
+	
+	/*
+	 * 跨省分摊收入按钮: 只有省分权限的稽核能够导入
+	 * 跨省分摊收入: 只有具有省分权限的稽核和商务能够查看，其他权限都看不到
+	 * roleType
+	 * 91216：客户经理
+	 * 91217：业务管理
+	 * 91218：稽核管理
+	 * 91219：商务经理
+	 * dataPermission
+	 * 0个人，1部门，2公司，3省分
+	 */
+	var roleArr = config.curRole;
+	var dataPermission = config.dataPermission;
+	if(isInArray(roleArr,91218) || isInArray(roleArr,91219)){
+		if(dataPermission == 3) {
+			$("#incomeShareDiv").show();
+			// 加载跨省分摊收入数据
+			initIncomeShareTableTable();
+			// 只有省分权限的稽核能够导入
+			if(isInArray(roleArr,91218)){
+				$("#incomeShareButton").show();
+			}else{
+				$("#incomeShareButton").remove();				
+			}
+		} else {
+			$("#incomeShareDiv").remove();	
+			$("#incomeShareButton").remove();				
+		}
+	}else{
+		$("#incomeShareDiv").remove();
+	};
 })
 /*
  * 标题切换
@@ -21,26 +63,93 @@ $('button[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		}
 	};
 })
+//=======================================收入分析 start=============================================//
 /*
- * 合同收入明细查看类型切换
+ * 获取收入分析图表数据
  */
-$("#incomeAnalysisRadio input[name='incomeType']").on("change",function(){
-//	$(this).val()
-})
+function initIncomeCharts(){
+	var url = serverPath + "incomeManage/listIncomePosition";
+	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data){
+			initIncomeAnalysisCharts(data);
+		}else{
+			improperCallback();
+		}
+	}
+	function improperCallback(result){
+		if(result){
+			layer.msg(result.message);
+		};
+		$("#incomeAnalysisCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
+	}
+}
 /*
  * 生成收入分析图表
  */
-function initIncomeAnalysisCharts(){
-	var incomeAnalysis = echarts.init(document.getElementById('incomeAnalysisCharts'));
+function initIncomeAnalysisCharts(incomeChartData){
+	// 定义账期集合
+	var acountPeriod = [];
+	// 定义风险收入-实收金额集合
+	var riskIncomeCollectedAmountList = [];
+	// 定义风险收入-欠费金额集合
+	var riskIncomeArrearsAmountList = [];
+	// 定义合同收入-实收金额集合
+	var incomeCollectedAmountList = [];
+	// 定义合同收入-欠费金额集合
+	var incomeArrearsAmountList = [];
+	var domWidth = $("#incomeAnalysisCharts").width();
+	// 遍历账期集合，处理账期数据
+	if(domWidth/(incomeChartData.accountPeriodX.length) < 140){
+		var acountPeriodItemTit = '风险  合同\n收入  收入\n\n';
+	}else{
+		var acountPeriodItemTit = '风险收入 合同收入\n\n';
+	};
+	$.each(incomeChartData.accountPeriodX,function(k,v){
+		var acountPeriodItem = acountPeriodItemTit + parseInt(v.substring(4,6)) + '月';
+		acountPeriod.push(acountPeriodItem);
+		// 定义风险收入-实收Item
+		var riskIncomeCollectedAmountItem = {
+				value:incomeChartData.riskIncomeCollectedAmountList[k],
+				other:incomeChartData.riskIncomeArrearsAmountList[k],
+				account:v
+		};
+		riskIncomeCollectedAmountList.push(riskIncomeCollectedAmountItem);
+		// 定义风险收入-欠费Item
+		var riskIncomeArrearsAmountItem = {
+				value:incomeChartData.riskIncomeArrearsAmountList[k],
+				other:incomeChartData.riskIncomeCollectedAmountList[k],
+				account:v
+		};
+		riskIncomeArrearsAmountList.push(riskIncomeArrearsAmountItem);
+		// 定义合同收入-实收Item
+		var incomeCollectedAmountItem = {
+				value:incomeChartData.incomeCollectedAmountList[k],
+				other:incomeChartData.incomeArrearsAmountList[k],
+				account:v
+		};
+		incomeCollectedAmountList.push(incomeCollectedAmountItem);
+		// 定义合同收入-欠费Item
+		var incomeArrearsAmountItem = {
+				value:incomeChartData.incomeArrearsAmountList[k],
+				other:incomeChartData.incomeCollectedAmountList[k],
+				account:v
+		};
+		incomeArrearsAmountList.push(incomeArrearsAmountItem);
+	})
+	incomeAnalysis = echarts.init(document.getElementById('incomeAnalysisCharts'));
 	var incomeAnalysisOption = {
 		title : {
-	        text: '2018年收入情况分析',
+	        text: incomeChartData.currentYear+'年收入情况分析',
 	        x:'center',
 	        itemGap: 12,
 	        textStyle: {
 	        	fontSize:20
 	        },
-	        subtext: '合同收入：750,000元，风险收入：550,000元，收入总计：1,300,000元',
+	        subtext: '合同收入：'+App.unctionToThousands(incomeChartData.incomeReceivableTotal)+'元，'
+	                 +'风险收入：'+App.unctionToThousands(incomeChartData.riskIncomeReceivableTotal)+'元，'
+	                 +'收入总计：'+App.unctionToThousands(incomeChartData.incomeSum)+'元',
 	        subtextStyle: {
 	        	color: "#333",
 	        	fontSize: 14,
@@ -51,12 +160,12 @@ function initIncomeAnalysisCharts(){
 	   	},
 	    legend: {
 	    	orient: 'vertical',
-	    	top: '40%',
-	        right: '5',
+	    	top: '10',
+	        right: '30',
 	        itemWidth: 10,
 	        itemHeight: 10,
 	        selectedMode: false,
-	        itemGap: 15
+	        itemGap: 10
 	    },
 	    tooltip : {
 	        trigger: 'axis',
@@ -68,16 +177,16 @@ function initIncomeAnalysisCharts(){
                	align:'left'
             },
             formatter:function (params, ticket, callback) {
-            	var tooltipCon = params[0].name.split("\n\n")[1] + "</br>"
+            	var tooltipCon = params[0].data.account + "</br>"
             	$.each(params, function(k,v) {
-            		tooltipCon += v.stack + v.seriesName + "：" + v.value + "元</br>";
+            		tooltipCon += v.marker + v.stack + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
             	});
 			    return tooltipCon;
 			}
 	    },
 	    grid: {
 	    	left: '10',
-            right: '100',
+            right: '10',
             bottom: '5',
             top: '80',
             containLabel: true
@@ -89,7 +198,15 @@ function initIncomeAnalysisCharts(){
 	    	axisTick:{
 	    		show:false
 	    	},
-	        data: ['风险收入 合同收入\n\n6月', '风险收入 合同收入\n\n7月', '风险收入 合同收入\n\n8月', '风险收入 合同收入\n\n9月', '风险收入 合同收入\n\n10月', '风险收入 合同收入\n\n11月', '风险收入 合同收入\n\n12月']
+            axisLabel: {
+//          	lineHeight:18
+//          	textStyle:{
+//          		fontSize: 10
+//          	},
+//             interval:0,
+//             rotate:40
+            },
+	    	data: acountPeriod
 	    },
 	    yAxis: {
 	    	axisLine:{
@@ -100,59 +217,465 @@ function initIncomeAnalysisCharts(){
 	    	}
 	    },
 	    series : [
+			{
+			    name:'实收金额',
+			    type:'bar',
+			    stack: '风险收入',
+			    barGap: 0.05,
+	            barMaxWidth: 50,
+			    data: riskIncomeCollectedAmountList
+			},
+			{
+			    name:'欠费金额',
+			    type:'bar',
+			    stack: '风险收入',
+			    barGap: 0.05,
+			    barMaxWidth: 50,
+			    data: riskIncomeArrearsAmountList
+			},
 	        {
 	            name:'实收金额',
 	            type:'bar',
 	            stack: '合同收入',
-	            data:[120, 132, 101, 134, 90, 230, 210]
+	            barGap: 0.05,
+	            barMaxWidth: 50,
+	            data: incomeCollectedAmountList
 	        },
 	        {
 	            name:'欠费金额',
 	            type:'bar',
 	            stack: '合同收入',
-	            barGap: 0,
+	            barGap: 0.05,
 	            barMaxWidth: 50,
-	            data:[220, 182, 191, 234, 290, 330, 310]
-	        },
-	        {
-	            name:'实收金额',
-	            type:'bar',
-	            stack: '风险收入',
-	            data:[620, 732, 701, 734, 1090, 1130, 1120]
-	        },
-	        {
-	            name:'欠费金额',
-	            type:'bar',
-	            stack: '风险收入',
-	            barGap: 0,
-	            barMaxWidth: 50,
-	            data:[62, 82, 91, 84, 109, 110, 120]
+	            data: incomeArrearsAmountList
 	        }
 	    ],
-	    color:['#4472c4', '#ff0000','#4472c4','#ff0000']
+	    color:['#73D2FD','#FD6D64','#73D2FD','#FD6D64']
 	};
 	incomeAnalysis.setOption(incomeAnalysisOption);
+	if(!App.IEVersionVA(9)) {
+		pageConfig.incomeAnalysisInterval = setInterval(incomeAnalysisIntervalFn, 1000);
+	};
 	incomeAnalysis.on('click', function (params) {
-    	console.log(params);
-    	if($("#incomeAnalysisValue").css("display") == "none"){
-    		$("#incomeAnalysisValue").show();
-    	};
+		// 将账期放入到全局变量中
+		pageConfig.incomePeriod = params.data.account;
+    	if(params.stack == "合同收入"){
+    		// 风险收入明细div隐藏
+    		$("#riskIncomeAnalysisValue").hide();
+    		// 合同收入明细div显示
+    		$("#contractIncomeAnalysisValue").show();
+    		// 给账期赋值
+    		$(".accuontPeriod").text(params.data.account);
+    		// 给合同收入-应收赋值
+    		var incomeReceivable = (params.data.value)+(params.data.other);
+    		$("#incomeReceivable").text(App.unctionToThousands(parseFloat(incomeReceivable.toFixed(2))));
+    		if(params.seriesName == "欠费金额"){
+    			// 给合同收入-欠费赋值
+        		$("#incomeArrears").text(App.unctionToThousands(params.data.value));
+        		// 给合同收入-实收赋值
+        		$("#incomeCollected").text(App.unctionToThousands(params.data.other));
+    		}else if(params.seriesName == "实收金额"){
+    			// 给合同收入-欠费赋值
+        		$("#incomeArrears").text(App.unctionToThousands(params.data.other));
+        		// 给合同收入-实收赋值
+        		$("#incomeCollected").text(App.unctionToThousands(params.data.value));
+    		}
+    		// 获取radio选中val，然后根据选中值查询
+    		var radioVal = $("input[name='incomeType']:checked").val();
+    		checkIncomeRadio(radioVal);
+    	}
+    	else if(params.stack == "风险收入"){
+    		// 合同收入明细div隐藏
+    		$("#contractIncomeAnalysisValue").hide();
+    		// 风险收入明细div显示
+    		$("#riskIncomeAnalysisValue").show();
+    		// 给账期赋值
+    		$(".accuontPeriod").text(params.data.account);
+    		// 给风险收入-应收赋值
+    		var riskIncomeReceivable = (params.data.value)+(params.data.other);
+    		$("#riskIncomeReceivable").text(App.unctionToThousands(parseFloat(riskIncomeReceivable.toFixed(2))));
+    		if(params.seriesName == "欠费金额"){
+    			// 给风险收入-欠费赋值
+        		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.value));
+        		// 给风险收入-实收赋值
+        		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.other));
+    		}else if(params.seriesName == "实收金额"){
+    			// 给风险收入-欠费赋值
+        		$("#riskIncomeArrears").text(App.unctionToThousands(params.data.other));
+        		// 给风险收入-实收赋值
+        		$("#riskIncomeCollected").text(App.unctionToThousands(params.data.value));
+    		}
+    		// 获取radio选中val，然后根据选中值查询
+    		var radioVal = $("input[name='riskIncomeType']:checked").val();
+    		checkRiskIncomeRadio(radioVal);
+    	}
 	});
+}
+function incomeAnalysisIntervalFn(){
+	if($("#incomeAnalysisCharts canvas").width() < 300){
+		incomeAnalysis.resize();
+	}else{
+		clearInterval(pageConfig.incomeAnalysisInterval);
+	};
+}
+ /*
+  * 收入分析-合同收入明细查看类型切换
+  */
+ $("#incomeAnalysisRadio input[name='incomeType']").on("change",function(){
+	 checkIncomeRadio($(this).val());
+ })
+ //收入分析-合同收入明细-点击单选按钮，获取radio选中项，根据选中类型查询
+ function checkIncomeRadio(radioVal){
+	if(pageConfig.incomePeriod == null){
+		if(radioVal == 1){ 		// 按客户查看
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>履行中合同</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>客户名称</th>><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>履行中合同</th>";
+			}
+		}else{				// 按线路查看
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>集客客户编号</th><th>含增值税合同金额</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>含增值税合同金额</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
+			}
+		}
+		$("#incomeThead").html(theadHtml);
+	}else{
+		if(radioVal == 1){ 		
+			// 按客户查看
+			initIncomeTableByCustomer();
+		}else{					
+			// 按合同查看
+			initIncomeTableByContract();
+		}
+	}
+ }
+ // 收入分析-合同收入明细-按客户查看
+ function initIncomeTableByCustomer(){
+	var isInitTable = $.fn.dataTable.isDataTable("#incomeTable");
+	if(!isInitTable){
+		$("#incomeTable").html("");
+	};
+	App.initDataTables('#incomeTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeManage/listIncomeByCustomer',
+			"data": function(d) {
+	        	d.accountPeriodName = pageConfig.incomePeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#incomeTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "15%","bVisible":cusCodeProvFlag},
+			{"data": "receivableAmount","title":"累计应收(元)","className": "whiteSpaceNormal","width": "13%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "arrearsAmount","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "13%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "collectedAmount","title":"累计实收(元)","className": "whiteSpaceNormal","width": "13%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": null,"title":"履行中合同","className": "whiteSpaceNormal","width": "11%",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpIncomeContractManage(\""+data.customerCode+"\",\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
+				}
+			
+			}
+		]
+	});
+ }
+ // 收入分析-合同收入明细-按合同查看
+ function initIncomeTableByContract(){
+	 var isInitTable = $.fn.dataTable.isDataTable("#incomeTable");
+     if(!isInitTable){
+		$("#incomeTable").html("");
+	 };
+	 App.initDataTables('#incomeTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeManage/listIncomeByContract',
+			"data": function(d) {
+	        	d.accountPeriodName = pageConfig.incomePeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#incomeTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "contractName","title":"合同名称","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "contractNumber","title":"合同编号","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "11%","bVisible":cusCodeProvFlag},
+			{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "receivableAmount","title":"累计应收(元)","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "arrearsAmount","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "collectedAmount","title":"累计实收(元)","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "contractNumber","title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpIncomeLineByContract(\""+data+"\")'>查看</a>";
+				}
+			}
+		]
+	});
+ }
+ 
+ /*
+  * 收入分析-风险收入明细查看类型切换
+  */
+ $("#riskIncomeAnalysisRadio input[name='riskIncomeType']").on("change",function(){
+	 checkRiskIncomeRadio($(this).val());
+ })
+ // 收入分析-风险收入明细-点击单选按钮，获取radio选中项，根据选中类型查询
+ function checkRiskIncomeRadio(radioVal){
+	 if(pageConfig.incomePeriod == null){
+			if(radioVal == 1){ 		// 按客户查看
+				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>累计应收(元)</th><th>累计欠费(元)</th><th>累计实收(元)</th><th>线路明细</th>";
+			}else{			
+									// 按线路查看
+				var theadHtml = "<th>序号</th><th>服务号码</th><th>业务信息ID</th><th>电路代号</th><th>产品名称</th><th>发起分公司</th><th>租用范围</th><th>月租费</th><th>应收(元)</th><th>欠费(元)</th><th>实收(元)</th>";
+			}
+			$("#riskIncomeThead").html(theadHtml);
+		}else{
+			if(radioVal == 1){ 		// 按客户查看
+				initRiskIncomeTableByCustomer();
+			}else{		
+									// 按合同查看
+				initRiskIncomeTableByContract();
+			}
+		}
+ }
+ // 收入分析-风险收入明细-按客户查看
+ function initRiskIncomeTableByCustomer(){
+	var isInitTable = $.fn.dataTable.isDataTable("#riskIncomeTable");
+	if(!isInitTable){
+		$("#riskIncomeTable").html("");
+	};
+	App.initDataTables('#riskIncomeTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeManage/listRiskIncomeByCustomer',
+			"data": function(d) {
+	        	d.accountPeriodName = pageConfig.incomePeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : "","title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#riskIncomeTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "15%",},
+			{"data": "receivableAmount","title":"累计应收(元)","className": "whiteSpaceNormal","width": "13%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "arrearsAmount","title":"累计欠费(元)","className": "whiteSpaceNormal","width": "13%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "collectedAmount","title":"累计实收(元)","className": "whiteSpaceNormal","width": "13%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "11%",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpIncomeLineByCustomer(\""+data.customerCode+"\",\""+data.customerName+"\")'>查看</a>";
+				}
+			
+			}
+		]
+	});
+ }
+// 收入分析-风险收入明细-按线路查看
+ function initRiskIncomeTableByContract(){
+	var isInitTable = $.fn.dataTable.isDataTable("#riskIncomeTable");
+	if(!isInitTable){
+		$("#riskIncomeTable").html("");
+	};
+	App.initDataTables('#riskIncomeTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeManage/listRiskIncomeByLine',
+			"data": function(d) {
+	        	d.accountPeriodName = pageConfig.incomePeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#riskIncomeTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "serviceNumber","title":"服务号码","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "11%",},
+			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "7%",},
+			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "12%",},
+			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "7%",},
+			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "7%",},
+			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "receivableAmount","title":"应收(元)","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "arrearsAmount","title":"欠费(元)","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "collectedAmount","title":"实收(元)","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			}
+		]
+	});
+ }
+ /*
+  * 合同收入-按客户查看-跳转合同信息
+  */
+ function jumpIncomeContractManage(customerCode,customerName,partnerCode){
+	var accountPeriodName = pageConfig.incomePeriod;
+	var url = "/html/incomeWorktable/incomeManage/contractIncomeManage.html?customerCode="+customerCode
+	+"&customerName="+encodeURI(customerName)+"&accountPeriodName="+accountPeriodName+"&partnerCode="+partnerCode;
+ 	top.showSubpageTab(url,"合同收入");
+ }
+ /*
+  *  合同收入-按合同查询-跳转线路明细方法jumpIncomeLineByContract  
+  *  参数:账期 合同编码
+  */
+ function jumpIncomeLineByContract(contractNumber){
+	 var accountPeriodName = pageConfig.incomePeriod;
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?contractNumber="+contractNumber+"&accountPeriodName="+accountPeriodName;
+	 top.showSubpageTab(url,"线路收入");
+ }
+ /*
+  *  风险收入-按客户查询-跳转线路明细方法jumpIncomeLineByCustomer
+  *  参数:账期 客户编码
+  */
+ function jumpIncomeLineByCustomer(customerCode,customerName){
+	 var accountPeriodName = pageConfig.incomePeriod;
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeManage.html?customerCode="+customerCode
+	 +"&customerName="+encodeURI(customerName)+"&accountPeriodName="+accountPeriodName; 
+	 top.showSubpageTab(url,"线路收入");
+ }
+//=======================================收入分析 end=============================================//
+/*
+ * 生成收入预测图表数据
+ */
+function initIncomeForecastCharts(){
+	var url = serverPath + "incomeForecast/getIncomeForecastChartData";
+	App.formAjaxJson(url, "post", null, successCallback, improperCallback);
+	function successCallback(result) {
+		var data = result.data;
+		if(data){
+			initForecastCharts(data);
+		}else{
+			improperCallback();
+		}
+	}
+	function improperCallback(result){
+		if(result){
+			layer.msg(result.message);
+		};
+		var nowData = new Date();
+		var nowMonth = nowData.getMonth() + 1;
+		var nowDate = nowData.getDate();
+		if(nowMonth == 1 || (nowMonth == 2 && nowDate < 7)){
+			$("#incomeForecastCharts").html("<span style='margin:30px 0 0 20px'>*当前为本年度首月，本年度收入预测信息请于2月6日以后登录系统查看</span>")
+		}else{
+			$("#incomeForecastCharts").html("<span style='margin:30px 0 0 20px'>*该图表暂未汇总到数据</span>")
+		};
+	}
 }
 /*
  * 生成收入预测图表
  */
-function initIncomeForecastCharts(){
-	var incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
+function initForecastCharts(forecastChartsData){
+	var acountPeriodX = [];
+	var contractIncomeForecastZxArray = [];
+	var lineIncomeForecastArray = [];
+	// 遍历账期集合，处理账期数据
+	$.each(forecastChartsData.accountPeriodX,function(k,v){
+		var acountPeriodItem = parseInt(v.substring(4,6))+'月';
+		acountPeriodX.push(acountPeriodItem);
+		// 收入预测-合同收入Item
+		var contractIncomeForecastZxItem = {
+				value:forecastChartsData.contractIncomeForecastZxArray[k],
+				account:v
+		};
+		contractIncomeForecastZxArray.push(contractIncomeForecastZxItem);
+		// 收入预测-风险收入Item
+		var lineIncomeForecastItem = {
+				value:forecastChartsData.lineIncomeForecastArray[k],
+				account:v
+		};
+		lineIncomeForecastArray.push(lineIncomeForecastItem);
+	})
+	incomeForecast = echarts.init(document.getElementById('incomeForecastCharts'));
 	var incomeForecastOption = {
 		title : {
-	        text: '2018年收入预测分析',
+	        text: forecastChartsData.currentYear+'年收入预测情况',
 	        x:'center',
 	        itemGap: 12,
 	        textStyle: {
 	        	fontSize:20
 	        },
-	        subtext: '收入预测周期：201806至201812，合同收入：750,000元，风险收入：550,000元，收入总计：1,300,000元',
+	        subtext: '收入预测周期：'+forecastChartsData.firstAccountPeriod+' 至 '+forecastChartsData.lastAccountPeriod
+	        		+'，合同收入：'+App.unctionToThousands(forecastChartsData.contractIncomeTotal)+'元，'
+	        		+'风险收入：'+App.unctionToThousands(forecastChartsData.lineIncomeTotal)+'元，'
+	        		+'收入总计：'+App.unctionToThousands(forecastChartsData.incomeTotal)+'元',
 	        subtextStyle: {
 	        	color: "#333",
 	        	fontSize: 14,
@@ -178,7 +701,14 @@ function initIncomeForecastCharts(){
 	        },
 	        textStyle:{
                	align:'left'
-            }
+            },
+            formatter:function (params, ticket, callback) {
+            	var tooltipCon = params[0].data.account + "</br>"
+            	$.each(params, function(k,v) {
+            		tooltipCon += v.marker + v.seriesName + "：" + App.unctionToThousands(v.value) + "元</br>";
+            	});
+			    return tooltipCon;
+			}
 	    },
 	    grid: {
 	    	left: '10',
@@ -194,7 +724,7 @@ function initIncomeForecastCharts(){
 	    	axisTick:{
 	    		show:false
 	    	},
-	        data: ['6月', '7月', '8月', '9月', '10月', '11月', '12月']
+	        data: acountPeriodX
 	    },
 	    yAxis: {
 	    	axisLine:{
@@ -209,14 +739,14 @@ function initIncomeForecastCharts(){
 	        	name: '合同收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        data: [22000, 18200, 19100, 23400, 29000, 13000, 31000]
+		        data: contractIncomeForecastZxArray
 		    },
 		    {
 		    	name: '风险收入',
 		        type: 'bar',
 		        stack:'收入预测',
-		        barMaxWidth: 55,
-		        data: [220000, 182000, 191000, 234000, 290000, 130000, 310000]
+		        barMaxWidth: 50,
+		        data: lineIncomeForecastArray
 		    },
 		    {
 		    	name: '收入总计',
@@ -224,14 +754,368 @@ function initIncomeForecastCharts(){
 		        label: {
 	                normal: {
 	                    show: true,
-	                    position: 'top'
+	                    position: 'top',
+	                    color:'#333',
+	                    formatter:function(params){
+		                	return App.unctionToThousands(params.data);
+		                }
 	                }
 	            },
-		        data: [242000, 200200, 210100, 257400, 319000, 143000, 341000]
+		        data: forecastChartsData.totalArray
 		    }
 	    ],
-	    color:['#0070c0', '#ed8b00','#a0a0a0']
+	    color:['#73D2FD', '#FD6D64','#DBDBDB']
 	};
 	incomeForecast.setOption(incomeForecastOption);
+	if(!App.IEVersionVA(9)) {
+		pageConfig.incomeForecastInterval = setInterval(incomeForecastIntervalFn, 1000);
+	};
 	pageConfig.isInitForecastCharts = true;
+	incomeForecast.on('click', function (params) {
+    	// 将账期放入到全局变量中
+    	pageConfig.accountPeriod = params.data.account;
+    	if(params.seriesName == "合同收入"){
+    		// 风险收入明细div隐藏
+    		$("#lineIncomeForecastValue").hide();
+    		// 合同收入明细div显示
+    		$("#contractIncomeForecastValue").show();
+    		// 给预测账期赋值
+    		$("#contractIncomeForecastAccountPeriod").text(params.data.account);
+    		// 给收入预测赋值
+    		$("#contractIncomeForecastReceivable").text(App.unctionToThousands(params.data.value)+" 元");
+    		// 获取radio选中val，然后根据选中值查询
+    		var radioVal = $("input[name='contractIncomeForecastType']:checked").val();
+    		checkContractIncomeForecastRadio(radioVal);
+    	}else if(params.seriesName == "风险收入"){
+    		// 合同收入明细div隐藏
+    		$("#contractIncomeForecastValue").hide();
+    		// 风险收入明细div显示
+    		$("#lineIncomeForecastValue").show();
+    		// 给预测账期赋值
+    		$("#lineIncomeForecastAccountPeriod").text(params.data.account);
+    		// 给收入预测赋值
+    		$("#lineIncomeForecastReceivable").text(App.unctionToThousands(params.data.value)+" 元");
+    		// 获取radio选中val，然后根据选中值查询
+    		var radioVal = $("input[name='lineIncomeForecastType']:checked").val();
+    		checkLineIncomeForecastRadio(radioVal);
+    	}
+	});
+}
+function incomeForecastIntervalFn(){
+	if($("#incomeForecastCharts canvas").width() < 300){
+		incomeForecast.resize();
+	}else{
+		clearInterval(pageConfig.incomeForecastInterval);
+	};
+}
+/*
+ * 收入预测-合同收入明细查看类型切换
+ */
+$("#contractIncomeForecastRadio input[name='contractIncomeForecastType']").on("change",function(){
+	checkContractIncomeForecastRadio($(this).val());
+})
+
+/*
+ * 收入预测-合同收入明细判断radio选中数据，根据选中类型查询
+ */
+function checkContractIncomeForecastRadio(valRadio){
+	if(pageConfig.accountPeriod == null){
+		if(valRadio == 1){ 		// 按客户查看
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>合同收入预测</th><th>履行中合同</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>客户名称</th><th>合同收入预测</th><th>履行中合同</th>";
+			}
+		}else{					// 按合同查看
+			if(cusCodeProvFlag){
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>集客客户编号</th><th>签订盖章日期</th><th>合同终止日期</th><th>含增值税合同金额</th><th>合同收入预测</th><th>线路明细</th>";
+			}else{
+				var theadHtml = "<th>序号</th><th>合同名称</th><th>合同编号</th><th>客户名称</th><th>签订盖章日期</th><th>合同终止日期</th><th>含增值税合同金额</th><th>合同收入预测</th><th>线路明细</th>";
+			}
+		}
+		$("#contractIncomeForecastThead").html(theadHtml);
+	}else{
+		if(valRadio == 1){ 		// 按客户查看
+			initContractIncomeForecastTableByCustom();
+		}else{					// 按线路查看
+			initContractIncomeForecastTableByContract();
+		}
+	}
+}
+
+/*
+ * 合同收入预测明细 - 按客户跟踪查询
+ */
+function initContractIncomeForecastTableByCustom(){
+	var isInitTable = $.fn.dataTable.isDataTable("#contractIncomeForecastTable");
+	if(!isInitTable){
+		$("#contractIncomeForecastTable").html("");
+	};
+	App.initDataTables('#contractIncomeForecastTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeForecast/listCustomIncomeForecastByContractIncome',
+			"data": function(d) {
+	        	d.forecastAccountPeriod = pageConfig.accountPeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#contractIncomeForecastTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "30%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "30%","bVisible":cusCodeProvFlag},
+			{"data": "forecastReceivable","title":"合同收入预测","className": "whiteSpaceNormal","width": "27%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": null,"title":"履行中合同","className": "whiteSpaceNormal","width": "8%",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpContractManage(\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\"," +
+							"\""+data.customerName+"\",\""+data.partnerCode+"\")'>查看</a>";
+				}
+			}
+		]
+	});
+}
+/*
+ * 合同收入预测明细 - 按合同跟踪查询
+ */
+function initContractIncomeForecastTableByContract(){
+	var isInitTable = $.fn.dataTable.isDataTable("#contractIncomeForecastTable");
+	if(!isInitTable){
+		$("#contractIncomeForecastTable").html("");
+	};
+	App.initDataTables('#contractIncomeForecastTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeForecast/listContractIncomeForecastZx',
+			"data": function(d) {
+	        	d.forecastAccountPeriod = pageConfig.accountPeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#contractIncomeForecastTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "contractName","title":"合同名称","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "contractNumber","title":"合同编号","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "11%"},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "11%","bVisible":cusCodeProvFlag},
+			{"data": "signDate","title":"签订盖章日期","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.formatDateTime(data,'yyyy-MM-dd');
+				}
+			},
+			{"data": "expiryDate","title":"合同终止日期","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.formatDateTime(data,'yyyy-MM-dd');
+				}
+			},
+			{"data": "contractValue","title":"含增值税合同金额","className": "whiteSpaceNormal","width": "11%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "forecastReceivable","title":"合同收入预测","className": "whiteSpaceNormal","width": "10%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpIncomeLineForecastByContract(\""+data.contractNumber+"\",\""+data.forecastAccountPeriod+"\")'>查看</a>";
+				}
+			}
+		]
+	});
+}
+/*
+ * 收入预测-风险收入明细查看类型切换
+ */
+$("#lineIncomeForecastRadio input[name='lineIncomeForecastType']").on("change",function(){
+	checkLineIncomeForecastRadio($(this).val());
+})
+/*
+ * 收入预测-风险收入明细判断radio选中数据，根据选中类型查询
+ */
+function checkLineIncomeForecastRadio(valRadio){
+	if(pageConfig.accountPeriod == null){
+		if(valRadio == 1){ 		// 按客户查看
+			var theadHtml = "<th>序号</th><th>客户名称</th><th>集客客户编号</th><th>风险收入预测</th><th>线路明细</th>";
+		}else{					// 按线路查看
+			var theadHtml = "<th>序号</th><th>服务号码</th><th>业务信息ID</th><th>电路代号</th><th>产品名称</th><th>发起分公司</th><th>租用范围</th><th>月租费</th><th>风险收入预测</th>";
+		}
+		$("#lineIncomeForecastThead").html(theadHtml);
+	}else{
+		if(valRadio == 1){ 		// 按客户查看
+			initLineIncomeForecastTableByCustom();
+		}else{					// 按线路查看
+			initLineIncomeForecastTableByLine();
+		}
+	}
+}
+/*
+ * 风险收入预测明细 - 按客户跟踪查询
+ */
+function initLineIncomeForecastTableByCustom(){
+	var isInitTable = $.fn.dataTable.isDataTable("#lineIncomeForecastTable");
+	if(!isInitTable){
+		$("#lineIncomeForecastTable").html("");
+	};
+	App.initDataTables('#lineIncomeForecastTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeForecast/listCustomIncomeForecastByLineIncome',
+			"data": function(d) {
+	        	d.forecastAccountPeriod = pageConfig.accountPeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#lineIncomeForecastTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "customerName","title":"客户名称","className": "whiteSpaceNormal","width": "30%",},
+			{"data": "customerCode","title":"集客客户编号","className": "whiteSpaceNormal","width": "30%",},
+			{"data": "forecastReceivable","title":"风险收入预测","className": "whiteSpaceNormal","width": "27%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": null,"title":"线路明细","className": "whiteSpaceNormal","width": "8%",
+				"render" : function(data, type, full, meta){
+					return "<a onclick='jumpIncomeLineForecastByCustomer(\""+data.customerCode+"\",\""+data.forecastAccountPeriod+"\",\""+data.customerName+"\")'>查看</a>";
+				}
+			}
+		]
+	});
+}
+/*
+ * 风险收入预测明细 - 按线路跟踪查询
+ */
+function initLineIncomeForecastTableByLine(){
+	var isInitTable = $.fn.dataTable.isDataTable("#lineIncomeForecastTable");
+	if(!isInitTable){
+		$("#lineIncomeForecastTable").html("");
+	};
+	App.initDataTables('#lineIncomeForecastTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeForecast/listLineIncomeForecast',
+			"data": function(d) {
+	        	d.forecastAccountPeriod = pageConfig.accountPeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#lineIncomeForecastTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "serviceNumber","title":"服务号码","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "businessId","title":"业务信息ID","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "circuitCode","title":"电路代号","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "productName","title":"产品名称","className": "whiteSpaceNormal","width": "15%"},
+			{"data": "startCityName","title":"发起分公司","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "rentingScope","title":"租用范围","className": "whiteSpaceNormal","width": "10%"},
+			{"data": "monthRentCost","title":"月租费","className": "whiteSpaceNormal","width": "10%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			},
+			{"data": "forecastReceivable","title":"风险收入预测","className": "whiteSpaceNormal","width": "10%",
+				"render": function(data, type, full, meta){
+					return App.unctionToThousands(data);
+				}
+			}
+		]
+	});
+}
+/*
+ * 跳转合同信息
+ */
+function jumpContractManage(customerCode,forecastAccountPeriod,customerName,partnerCode){
+	var url = "/html/incomeWorktable/incomeManage/contractIncomeForecastManage.html?customerCode="+customerCode
+			+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+encodeURI(customerName)+"&partnerCode="+partnerCode;
+	top.showSubpageTab(url,"合同收入预测");
+}
+
+/*
+ *  合同收入预测明细 - 按合同跟踪查询-跳转线路预测明细
+ *  参数:账期 合同编码
+ */
+function jumpIncomeLineForecastByContract(contractNumber,forecastAccountPeriod){
+
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?contractNumber="+contractNumber
+	 			+"&forecastAccountPeriod="+forecastAccountPeriod;
+	 top.showSubpageTab(url,"线路收入预测");
+}
+/*
+ * 风险收入预测明细 - 按客户跟踪查询-跳转线路预测明细
+ *  参数:账期 客户编码
+ */
+function jumpIncomeLineForecastByCustomer(customerCode,forecastAccountPeriod,customerName){
+ 
+	 var url = "/html/incomeWorktable/incomeManage/lineIncomeForecastManage.html?customerCode="
+		       +customerCode+"&forecastAccountPeriod="+forecastAccountPeriod+"&customerName="+encodeURI(customerName);
+	 top.showSubpageTab(url,"线路收入预测");
+}
+
+/*
+ * 收入管理 - 收入分析 - 跨省分摊收入
+ */
+function initIncomeShareTableTable(){
+	App.initDataTables('#incomeShareTable', {
+		ajax: {
+			"type": "POST",
+	        "contentType":"application/json;charset=utf-8",
+			"url": serverPath + 'incomeShare/listIncomeShare',
+			"data": function(d) {
+	        	//d.forecastAccountPeriod = pageConfig.accountPeriod;
+				return JSON.stringify(d);
+			}
+		},
+		"columns": [
+			{"data" : null,"title":"序号","className": "whiteSpaceNormal","width": "5%",
+				"render" : function(data, type, full, meta){
+					var start = App.getDatatablePaging("#incomeShareTable").pageStart;
+					return start + meta.row + 1;
+				}
+			},
+			{"data": "companyName","title":"组织机构名称","className": "whiteSpaceNormal","width": "30%"},
+			{"data": "accountPeriodName","title":"账期","className": "whiteSpaceNormal","width": "30%"},
+			{"data": "shareValue","title":"分摊收入","className": "whiteSpaceNormal","width": "35%",
+				"render": function(data, type, full, meta){
+				return App.unctionToThousands(data);
+				}
+			},
+		]
+	});
+}
+
+/*
+ * 跳转到跨省分摊收入编辑页面
+ */
+function toIncomeSharePage(){
+	var url = "/html/incomeWorktable/incomeManage/importIncomeAssessed.html";
+	top.showSubpageTab(url,"导入跨省分摊收入");
 }

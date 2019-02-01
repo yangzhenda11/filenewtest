@@ -42,7 +42,7 @@
  * 工单编辑
  */
 #toolbarBtn{
-    height: 120px;
+    height: 135px;
     .wcardTypeTitle,.wcardTypeContent{
         text-align: center;
     }
@@ -60,8 +60,24 @@
     button{
         padding-top: 4px;
         padding-bottom: 4px;
+        i{
+            display: inline-block;
+        }
     }
 }
+#toolbarButton{
+    margin-top: 3px;
+}
+//.blue{
+//  background: #f3f3f3;
+//  border: 1px solid #ddd;
+//}
+//.blue:hover{
+//  background: #eee;
+//}
+//.blue:active{
+//  background: #eee;
+//}
 #wcardTypeMenuContent{
     button{
         margin: 0 4px 0 3px;
@@ -120,26 +136,20 @@
 .appointTypeOtherContent{
     height: 30px;
 }
-#feasorChecked,#customerManagerChecked{
-    border: 1px solid #EFEFEF;
-    overflow: auto;
-    width: 45%;
-    float: left;
-}
-#feasorTreeLeftCotent,#customerLeftContent{
+.modalLeftContent{
     width: 45%;
     float: left;
     border: 1px solid #EFEFEF;
 }
-#feasorTreeCotent,#customerManagerCotent{
+.modalLeftTreeCotent{
     width: 100%;
     overflow: auto;
 }
-#feasorTreeInputGroup,#customerManagerInputGroup{
+.modalInputGroup{
     margin: 10px 0 10px 10px;
     width: 95%;
 }
-#feasorCheckTool,#customerManagerCheckTool{
+.modalCheckTool{
     width: 10%;
     float: left;
     button{
@@ -155,18 +165,23 @@
         }
     }
 }
-#feasorChecked,#customerManagerChecked{
+.modalRightCotent{
+    border: 1px solid #EFEFEF;
+    overflow: auto;
+    width: 45%;
+    float: left;
+}
+.modalRightCotent{
     padding: 20px;
-    .feasorItem,.customerManagerItem{
+    .checkedStaffItem{
         height: 24px;
         line-height: 24px;
         span{
             cursor: pointer;
             padding: 0 5px;
         };
-        span.feasorCheck,span.customerManagerCheck{
-            color: #fff;
-            background: #af1822;
+        span.staffItemChecked{
+            font-weight: bold;
         }
     }
 }

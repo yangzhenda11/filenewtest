@@ -60,6 +60,7 @@
 	}
 	.filePickerBtnList{
 		display: inline-block;
+<<<<<<< HEAD
 	}
 	.fileUploadChoose:hover {
 		color: #fff;
@@ -70,6 +71,18 @@
 	#fileUploadName{
 		color: #337ab7;
 	}
+=======
+	}
+	.fileUploadChoose:hover {
+		color: #fff;
+		background: #2b79bd;
+		border-color: #2b79bd;
+		text-decoration: none;
+	}
+	#fileUploadName{
+		color: #337ab7;
+	}
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	.fileImportBtn{
 		margin: 0 10px;
 	}
@@ -91,7 +104,11 @@
 					<label for="partnerCode" class="control-label">文件</label>
 					<div class="valiParent">
 						<a class="fileUploadChoose" id="fileUploadChoose">
+<<<<<<< HEAD
 							<i class="glyphicon glyphicon-folder-open"></i><input type="file" name="fileName" id="uploadFileInput" accept="" />选择文件
+=======
+							<i class="glyphicon glyphicon-folder-open"></i><span id="fileUploadChooseDom"></span>选择文件
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 						</a>
 						<div id="fileUploadResult" class="hidden">
 							<a id="fileUploadName"></a>
@@ -101,6 +118,7 @@
 				        	</div>
 						</div>
 					</div>
+<<<<<<< HEAD
 				</div>
 				<!--<div class="form-group col-sm-12" id="fileUploadProgress" style="display: none;">
 					<label for="partnerCode" class="control-label">导入进度</label>
@@ -112,6 +130,9 @@
 					</div>
 					</div>
 				</div>-->
+=======
+				</div>				
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 				<div class="form-group col-sm-12">
 					<label for="partnerCode" class="control-label">上传说明</label>
 					<div class="valiParent" id="fileUpliadExplain" style="color: red;">
@@ -137,11 +158,17 @@
 		extraData: null,
 		changeName: false,
 		fileName: "",
+<<<<<<< HEAD
 		resultObj: []
+=======
+		resultObj: [],
+		accept: null
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}; 
 	/*
 	 * 检测选择文件按钮点击
 	 */
+<<<<<<< HEAD
 	$("#uploadFileInput").on("change",function(){
 	    var filePath = $(this).val();
 	    var fileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
@@ -199,11 +226,76 @@
 			}
 	   	}
 	})
+=======
+	function addFileUploadEventListener(){
+		$("#uploadFileInput").on("change",function(){
+		    var filePath = $(this).val();
+		    var fileName = filePath.substr(filePath.lastIndexOf("\\")+1,filePath.length);
+		    if(fileName){
+		    	var fileExtensions = _fileUploadObj.fileExtensions;
+				_fileUploadObj.fileName = fileName;
+				var fileNameList = fileName.split(".");
+				var reg = fileNameList[fileNameList.length-1];
+				var flag = false;
+				try{
+				    //判断文件大小是否超出100M限制
+					var fileSize = $('#uploadFileInput')[0].files[0].size;
+					var MaxSize = (100 * 1024 * 1024).toString();
+					if(fileSize> MaxSize){
+						layer.msg("文件超过100M的限制，请重新选择");
+						resetFileUpload();
+					    return false;
+					}
+				}catch(e){}
+	//			判断是否含有特殊字符
+	//			var regEn = /[`~!@#$%^&*+<>?:"{},.\/;'[\]]/im,
+	//		    regCn = /[·！#￥（）：；“”‘、，|《。》？[\]]/im;
+				if(fileName.indexOf(" ") != -1 || fileName.indexOf("%") != -1){
+					layer.msg("文件名中不能包括“ ”和“%”，请重新选择");
+					resetFileUpload();
+				    return false;
+				};
+				//循环遍历附件类型
+				if(fileExtensions.length > 0){
+					for(var i = 0;i < fileExtensions.length;i++){
+						if(fileExtensions[i].toLowerCase() == reg.toLowerCase()){
+							flag = true;
+							break;
+						}
+					}
+				}else{
+					flag = true;
+				};
+				if(!flag){
+					var typeText = "";
+		    		$.each(fileExtensions,function(k,v){
+		    			typeText += "."+v +"，"; 
+		    		})
+		    		typeText = typeText.substring(0,typeText.length-1);
+		    		resetFileUpload();
+		    		layer.alert("请选择"+typeText+"格式的文件",{title:"格式错误",icon:2});
+					return false;
+				}else{
+					if(_fileUploadObj.changeName){
+		    			var changefileName = _fileUploadObj.extraData.displayName + "." + reg;
+		    			_fileUploadObj.extraData.displayName = changefileName;
+		        	};
+					$("#fileUploadChoose").addClass("hidden");
+			        $("#fileUploadResult").removeClass("hidden");
+			        $("#fileUploadName").html(fileName);
+				}
+		   	}
+		})
+	}
+	
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	//设置参数
 	function setParm(setting, queryCallback) {
 		var fileUploadModalLabel = setting.title == undefined ? "文件上传" : setting.title;
 		$("#fileUploadModalLabel").text(fileUploadModalLabel);
 		$("#fileUpliadExplain").append(setting.explain);
+		$("#fileUploadChooseDom").html('<input type="file" name="fileName" id="uploadFileInput" accept="" />');
+		addFileUploadEventListener();
 		$("#commomModal").modal("show");
 		var emptyFn = function(){};
 		fileUploadSuccessCallback = queryCallback == null || queryCallback == "" ? emptyFn : queryCallback;
@@ -212,6 +304,10 @@
 			_fileUploadObj.fileExtensions = setting.fileExtensions;
 		}
 		if(setting.accept) {
+<<<<<<< HEAD
+=======
+			_fileUploadObj.accept = setting.accept;
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 			$("#uploadFileInput").attr("accept", setting.accept);
 		};
 		if(setting.extraData) {
@@ -242,7 +338,10 @@
 				'dataType': 'JSON',
 	            'processData': true,
 				'success': function(result) {
+<<<<<<< HEAD
 					console.log(result);
+=======
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 					$("#fileuploadLoading").hide();
 					$("#fileUploadModalForm").show();
 					if((result.indexOf(">")!= -1) && (result.lastIndexOf("<")!= -1)){
@@ -250,7 +349,10 @@
 					};
 					try{
 						var result = JSON.parse(result);
+<<<<<<< HEAD
 						resetFileUpload();
+=======
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 						if(result.status == 1){
 				    		layer.msg("上传成功");
 				    		var displayName = _fileUploadObj.extraData.displayName;
@@ -275,7 +377,10 @@
 					}
 				},
 				'error': function(result){
+<<<<<<< HEAD
 					console.log(result);
+=======
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 					$("#fileuploadLoading").hide();
 					$("#fileUploadModalForm").show();
 					layer.alert("上传失败",{icon:2,title:"错误"});
@@ -284,6 +389,7 @@
 		}else{
 			layer.msg("请选择文件");	
 		}
+<<<<<<< HEAD
 //		var $fileUploadProgressBar = $("#fileUploadProgressBar");
 //		var $fileUploadProgressVal = $("#fileUploadProgressVal");
 //		if($("#uploadFileInput").val()){
@@ -339,6 +445,8 @@
 //		}else{
 //			layer.msg("请选择文件");	
 //		}
+=======
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}
 	/*
 	 * 文件重置
@@ -346,8 +454,17 @@
 	function resetFileUpload(){
 		$("#fileUploadResult").addClass("hidden");
 		$("#fileUploadChoose").removeClass("hidden");
+<<<<<<< HEAD
 		$("#uploadFileInput").val("");
 		$("#fileUploadName").html("");
+=======
+		$("#fileUploadChooseDom").html('<input type="file" name="fileName" id="uploadFileInput" accept="" />');
+		if(_fileUploadObj.accept) {
+			$("#uploadFileInput").attr("accept", _fileUploadObj.accept);
+		};
+		$("#fileUploadName").html("");
+		addFileUploadEventListener();
+>>>>>>> 8849b6a74eee5d557a8a4fd9b7c07aff7918007e
 	}
 	 /*
      * 获取上传结果

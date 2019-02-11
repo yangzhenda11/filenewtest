@@ -1673,7 +1673,7 @@ function customerManagerFinish(){
 function openOnlineView(filekey,filename){
 	layer.confirm(filename, {btn: ['打开','保存','取消'],icon:7},function(index){
 	  	var fileType = filename.split(".")[1];
-	  	var supImgType = ["BMP","JPEG","GIF","PNG","bmp","jpeg","gif","png","jpg"];
+	  	var supImgType = ["BMP","JPEG","GIF","PNG","JPG","bmp","jpeg","gif","png","jpg"];
 	  	if(fileType == "pdf" || fileType == "PDF"){
 	  		if(App.IEVersionVA(9)) {
 				layer.alert("您的浏览器版本过低不支持 pdf 在线查看，请使用IE9以上版本或者谷歌、火狐、360极速模式等现代浏览器查看，或点击保存按钮下载文件到本地查看。",{icon:2,area:'450px'});

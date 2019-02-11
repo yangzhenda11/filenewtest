@@ -413,7 +413,7 @@ function returnSelectLRData(data) {
 //我的客户查询表格头,
 var customerTheadList = [
 	{data:"客户名称",id:"customerName",checked:true},
-	{data:"集客客户编号",id:"customerCode",checked:true,isShow:cusCodeProvFlag},
+	{data:"集客客户编号",id:"customerCode",checked:cusCodeProvFlag},
 	{data:"合作方编号",id:"partnerCode",checked:true},
 	{data:"客户经理名称",id:"customerManagerName",checked:true},
 	{data:"履行中合同",id:"jumpContract",checked:true},

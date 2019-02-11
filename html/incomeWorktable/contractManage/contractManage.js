@@ -482,7 +482,7 @@ var contractTheadList = [
 	{data:"合同名称",id:"contractName",checked:true},
 	{data:"合同编号",id:"contractNumber",checked:true},
 	{data:"客户名称",id:"customerName",checked:true},
-	{data:"集客客户编号",id:"customerCode",checked:true,isShow:cusCodeProvFlag},
+	{data:"集客客户编号",id:"customerCode",checked:cusCodeProvFlag},
 	{data:"合作方编号",id:"partnerCode",checked:true},
 	{data:"含增值税合同金额",id:"contractValue",checked:true},
 	{data:"客户经理名称",id:"customerManagerName",checked:true},

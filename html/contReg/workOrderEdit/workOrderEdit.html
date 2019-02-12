@@ -195,7 +195,6 @@
 	                <div class="modal-body" style="min-height: 200px;">
                 		<div class="form-body">
 							<div class="form-group" style="margin: 14px 0;">
-								<input type="hidden" name="flowProcessDefinitionKey" id="flowProcessDefinitionKey" value="" />
 								<input type="hidden" name="isBackFlow" id="isBackFlow" value="" />
 								<input type="hidden" name="isCommon" id="isCommon" value="" />
 								<input type="hidden" name="workFlowLinkCallback" id="workFlowLinkCallback" value="" />
@@ -219,7 +218,7 @@
 						</div>
 	                </div>
 	                <div class="modal-footer">
-	                    <button type="button" onclick="chooseAssigneeConfirm()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
+	                    <button type="button" id="flowPushBtn" onclick="chooseAssigneeConfirm()" class="btn btn-danger btn-circle"><i class="iconfont icon-baocun"></i>确定</button>
 	                    <button type="button" class="btn btn-default btn-circle" data-dismiss="modal"><i class="iconfont icon-close"></i>取消</button>
 	                </div>
 	            </div>

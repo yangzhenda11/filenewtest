@@ -11,41 +11,43 @@ $(function(){
 
 //“处理”按钮触发事件
 function handleTaskToDo(taskInfo) {
-	var id=taskInfo.taskId;
-	var taskDefinitionKey=taskInfo.taskDefinitionKey;
-	var name=taskInfo.linkName;
-	var processInstanceId=taskInfo.processInstanceId;
-	var title=taskInfo.title;
-	var processDefinitionId=taskInfo.processDefinitionId;
-	var processDefinitionKey=taskInfo.processDefinitionKey;
-	var executionId=taskInfo.executionId;
-	var assignee=taskInfo.assignee;
-	if(assignee.indexOf("candidate-") != -1){
-		//是抢单模式抢到后的待办，处理人需要去掉前缀。
-		assignee=assignee.substring(10);
-	}
-	
-	$('#taskId').val(id);
-	$('#taskDefinitionKey').val(taskDefinitionKey);
-	// 环节名称
-	$('#name').val(name);
-	$('#processInstanceId').val(processInstanceId);
-	// 流程实例名称
-	$('#title').val(title);
-	$('#processDefinitionId').val(processDefinitionId);
-	$('#processDefinitionKey').val(processDefinitionKey);
-	$('#executionId').val(executionId);
-	$('#assigneeId').val(assignee);
-	var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","SEALAPPLY","SEALED"];
-	if(specialList.indexOf(taskDefinitionKey) != -1){
-		$("#goTaskToDoDetailForToDo").remove();
-		$("#searchContentForToDo").hide();
-		$("#businessiframe").show();
-		redirectUrl(id,taskDefinitionKey,processInstanceId);
-	}else{
-		$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
-		$("#goTaskToDoDetailForToDo").show();
-		$("#searchContentForToDo").hide();
+	if(!App.checkTaskIdIsDone(serverPath,taskInfo.taskId)){
+		var id=taskInfo.taskId;
+		var taskDefinitionKey=taskInfo.taskDefinitionKey;
+		var name=taskInfo.linkName;
+		var processInstanceId=taskInfo.processInstanceId;
+		var title=taskInfo.title;
+		var processDefinitionId=taskInfo.processDefinitionId;
+		var processDefinitionKey=taskInfo.processDefinitionKey;
+		var executionId=taskInfo.executionId;
+		var assignee=taskInfo.assignee;
+		if(assignee.indexOf("candidate-") != -1){
+			//是抢单模式抢到后的待办，处理人需要去掉前缀。
+			assignee=assignee.substring(10);
+		}
+		
+		$('#taskId').val(id);
+		$('#taskDefinitionKey').val(taskDefinitionKey);
+		// 环节名称
+		$('#name').val(name);
+		$('#processInstanceId').val(processInstanceId);
+		// 流程实例名称
+		$('#title').val(title);
+		$('#processDefinitionId').val(processDefinitionId);
+		$('#processDefinitionKey').val(processDefinitionKey);
+		$('#executionId').val(executionId);
+		$('#assigneeId').val(assignee);
+		var specialList = ["GDCL","GDQR","BMQR","GSQR","GZGZ","HTGD","KHQR","GXZZ","SEALAPPLY","SEALED"];
+		if(specialList.indexOf(taskDefinitionKey) != -1){
+			$("#goTaskToDoDetailForToDo").remove();
+			$("#searchContentForToDo").hide();
+			$("#businessiframe").show();
+			redirectUrl(id,taskDefinitionKey,processInstanceId);
+		}else{
+			$("#goTaskToDoDetailForToDo").load("/html/workflow/taskdetail/task-todo.html");
+			$("#goTaskToDoDetailForToDo").show();
+			$("#searchContentForToDo").hide();
+		}
 	}
 }
 
@@ -91,7 +93,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+		   		jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId,taskId);
 		   	}else{
 		   		errorInfoSolve("获取不到工单主键");
 		   	}
@@ -100,7 +102,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		}
 	});
 }
-function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
+function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId,taskId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessId}, successCallback,improperCallback,null,false);
 	function successCallback(result) {
 		var data = result.data;
@@ -132,7 +134,7 @@ function jumpSanCpyQueryDetail(businessId,taskDefinitionKey,processInstanceId){
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&isucloud=true";
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessId+"&processInstanceId="+processInstanceId+"&taskId="+taskId+"&isucloud=true";
 			$('#businessiframe').attr("src",src);
 		}else{
 			errorInfoSolve("当前工单的状态已经发生变化，请您关闭页面更新数据后处理。");

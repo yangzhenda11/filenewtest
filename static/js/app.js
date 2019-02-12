@@ -1964,6 +1964,33 @@ var App = function() {
         	}
         	return flowparam;
         },
+        //工作流相关，业务主键taskId  判断是否已经结束流程,true标识已经办理，false标识尚未办理
+        checkTaskIdIsDone:function(serverPath,taskId){
+        	var result = true;
+        	if(taskId == "" || taskId == undefined){
+        		layer.msg("流程主键不可为空！");
+        	}else{
+        		$.ajax({
+					'type': "POST",
+					'url':serverPath+"workflowrest/checktask?taskId="+taskId,
+					'dataType': 'json',
+					'async': false,
+					'success': function(data) {
+						var success = data.success;
+						if(success == 1){
+							result = false;
+						}else{
+							result = true;
+							layer.msg(data.info);
+						}
+					},
+					error: function(result) {
+						App.ajaxErrorCallback(result);
+					}
+				});
+        	}
+        	return result;;
+        },
         checkFlow:function(serverPath,businessId,businessType){
         	var checkDate=null;
         	if(businessType.length==0){

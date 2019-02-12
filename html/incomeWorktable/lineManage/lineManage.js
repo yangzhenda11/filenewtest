@@ -286,8 +286,12 @@ function lineImport() {
 
 // 导出生成文本
 function downloadErrorText() {
-    var blob = new Blob([importErrorText], { type: "text/plain;charset=utf-8" });
-    saveAs(blob, "线路导入错误信息.txt");
+	if(App.IEVersionVA(10)) {
+		layer.alert(importErrorText,{icon:2,area:'500px'});
+	}else{
+		var blob = new Blob([importErrorText], { type: "text/plain;charset=utf-8" });
+    	saveAs(blob, "线路导入错误信息.txt");
+	}
 }
 /*
  * 下载线路模板

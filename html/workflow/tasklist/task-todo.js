@@ -62,10 +62,8 @@ function dataChangeEvent(dom){
 }
 
 // “处理”按钮触发事件
-function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
-		processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
-	
-		//if(!checkifdone(id)){	
+function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
+	if(!App.checkTaskIdIsDone(serverPath,id)){	
 		$('#taskId').val(id);
 		$('#taskDefinitionKey').val(taskDefinitionKey);
 		// 环节名称
@@ -85,7 +83,7 @@ function handleTaskToDo(id, taskDefinitionKey, name, processInstanceId, title,
 			$("#goTaskToDoDetailForToDo").show();
 			$("#searchContentForToDo").hide();
 		}
-		//}
+	}
 }
 function applyTaskToDo(id, taskDefinitionKey, name, processInstanceId, title, processDefinitionId, processDefinitionKey, executionId, assignee,staffOrgName) {
 		
@@ -252,7 +250,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 		   	};
 		   	var businessKey = resultParam.businessKey;
 		   	if(businessKey){
-	   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId);
+	   			jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId,taskId);
 		   	}else{
 		   		layer.msg("获取不到工单主键");
 		   	}
@@ -264,7 +262,7 @@ function redirectUrl(taskId,taskDefinitionKey,processInstanceId){
 /*
  * 跳转到工单页面
  */
-function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
+function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId,taskId){
 	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:businessKey}, successCallback,null,null,false);
 	function successCallback(result) {
 		var data = result.data;
@@ -296,7 +294,7 @@ function jumpSanCpyQueryDetail(businessKey,taskDefinitionKey,processInstanceId){
 			}
 		};
 		if(isPass == true){
-			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId;
+			var src = "/html/contReg/workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey="+editTaskDefinitionKey+"&wcardId="+businessKey+"&processInstanceId="+processInstanceId+"&taskId="+taskId;
 			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{

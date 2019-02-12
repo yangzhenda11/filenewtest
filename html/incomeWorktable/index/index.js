@@ -497,9 +497,14 @@ function initIncomeAnalysis(incomedata) {
 		accountPeriodX.push(acountPeriodXItem);
 	});
 	incomeAnalysis = echarts.init(document.getElementById('incomeAnalysis'));
+	var isHide = false;
+	var totalArr = incomedata.totalArray.sort();
+	if(totalArr[totalArr.length-1] > 1000000 && totalArr.length > 8){
+		isHide = true;
+	}
 	var incomeAnalysisOption = {
 		title : {
-	        text: '2018年收入预测分析',
+	        text: incomedata.currentYear+'年收入预测分析',
 	        x:'center',
 	        textStyle: {
 	        	fontSize:14
@@ -578,7 +583,15 @@ function initIncomeAnalysis(incomedata) {
 	                    position: 'top',
 	                    color:'#333',
 	                    formatter:function(params){
-		                	return App.unctionToThousands(params.data);
+	                    	if(isHide){
+	                    		if(params.dataIndex%2 == 0){
+	                    			return App.unctionToThousands(params.data);
+	                    		}else{
+	                    			return "";
+	                    		}
+	                    	}else{
+	                    		return App.unctionToThousands(params.data);
+	                    	}
 		                }
 	                }
 	            },
@@ -749,5 +762,4 @@ function setScope() {
 		}
 	}
 }
-
 /***************选择稽核范围结束***********************/

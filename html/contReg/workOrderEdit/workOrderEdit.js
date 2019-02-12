@@ -123,6 +123,7 @@ function saveBtnClick(){
  * 推动工作流打开填写意见选择环人员页面
  */
 function chooseFlowLink(handleType,pathSelect,isBackFlow,isCommon,callback){
+	$("#flowPushBtn").attr("disabled",false);
 	if(isCommon){
 		$("#commentLable").html('<i class="iconfont icon-mi required"></i>');
 	};
@@ -131,13 +132,10 @@ function chooseFlowLink(handleType,pathSelect,isBackFlow,isCommon,callback){
 	}else{
 		$("#assigneeNameForStartDom").show();
 	};
-	var flowParam = App.getFlowParam(serverPath,wcardId,handleType,pathSelect,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
-	var processDefinitionKey = flowParam.processDefinitionKey;
-	$("#flowProcessDefinitionKey").val(processDefinitionKey);
 	$("#isBackFlow").val(isBackFlow);
 	$("#isCommon").val(isCommon);
 	$("#workFlowLinkCallback").val(callback);
-	var taskId = flowParam.taskId;
+	var taskId = parm.taskId;
 	var isHistoryBack = false; //该环节在进行回退的时候是否进行历史记录进行匹配
 	var isUsePushExpression = false;//在流程推进的时候是否使用表达式进行匹配
 	var isUseBackExpression = false;//在流程回退的时候是否使用表达式进行匹配
@@ -213,7 +211,7 @@ function chooseAssignee(){
 		}else if(isBackFlow == "true"){
 			layer.msg("退回时不需要选人",{offset: '170px'});
 		}else{
-			var flowKey = $("#flowProcessDefinitionKey").val();
+			var flowKey = parm.processDefinitionKey;
 			var prov = contractAttr.provinceCode;
 			var city = contractAttr.city
 			var callbackFun = "setAssigneeIdForStart";
@@ -250,6 +248,10 @@ function chooseAssigneeConfirm(){
 			var workFlowLinkCallback = $("#workFlowLinkCallback").val();
 			var staffOrgId = $("#assigneeIdForStart").val();
 			if(linkcode == "endevent1" || isBackFlow == "true"){
+				$("#flowPushBtn").attr("disabled",true);
+				if(App.checkTaskIdIsDone(serverPath,parm.taskId)){
+					return false;
+				};
 				if(checkWcardIschange()){
 					return false;
 				};
@@ -259,8 +261,13 @@ function chooseAssigneeConfirm(){
 					linkcode: linkcode
 				};
 				workFlowLinkCallbackFn(obj);
+				$("#flowPushBtn").attr("disabled",false);
 			}else{
 				if(staffOrgId){
+					$("#flowPushBtn").attr("disabled",true);
+					if(App.checkTaskIdIsDone(serverPath,parm.taskId)){
+						return false;
+					};
 					if(checkWcardIschange()){
 						return false;
 					};
@@ -271,6 +278,7 @@ function chooseAssigneeConfirm(){
 						linkcode: linkcode
 					};
 					workFlowLinkCallbackFn(obj);
+					$("#flowPushBtn").attr("disabled",false);
 				}else{
 					layer.msg("请选择下一步环节办理人员",{offset: '170px'});
 				}
@@ -988,10 +996,15 @@ function getContractOrderBaseInfor(domObj,wcardTypeCode){
 				specialDomEdit = false;
 			};
 			if(parm.taskFlag == "db"){
+				var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+				parm.processDefinitionKey = flowParam.processDefinitionKey;
+				if(!parm.taskId){
+					parm.taskId = flowParam.taskId;
+				};
 				if(parm.taskDefinitionKey == "GDQR"){
 					if(contractAttr.executeDeptCode == "00450080365" || contractAttr.provinceCode == "hi" || contractAttr.provinceCode == "sc"){
 						//特殊省份GDQR设置自定义规则
-						setCustomRule();
+						setCustomRule(flowParam);
 					}else{
 						$("#activateBtn").click(activateContract);		//走原激活方法
 						$("#sendBackBtn").click(sendBack);				//走原退回承办人方法
@@ -1042,8 +1055,7 @@ function setDomContent(domObj) {
  * contractAttr.provinceCode == "hi" 海南省
  * contractAttr.provinceCode == "sc" 四川省
  */
-function setCustomRule(){
-	var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
+function setCustomRule(flowParam){
 	if(contractAttr.executeDeptCode == "00450080365"){
 		if(flowParam.nowtaskDefinitionKey == "BMQR"){		//部门合同管理员盖章确认
 			customRuleForDepart(1);
@@ -1673,7 +1685,7 @@ function customerManagerFinish(){
 function openOnlineView(filekey,filename){
 	layer.confirm(filename, {btn: ['打开','保存','取消'],icon:7},function(index){
 	  	var fileType = filename.split(".")[1];
-	  	var supImgType = ["BMP","JPEG","GIF","PNG","bmp","jpeg","gif","png","jpg"];
+	  	var supImgType = ["BMP","JPEG","GIF","PNG","JPG","bmp","jpeg","gif","png","jpg"];
 	  	if(fileType == "pdf" || fileType == "PDF"){
 	  		if(App.IEVersionVA(9)) {
 				layer.alert("您的浏览器版本过低不支持 pdf 在线查看，请使用IE9以上版本或者谷歌、火狐、360极速模式等现代浏览器查看，或点击保存按钮下载文件到本地查看。",{icon:2,area:'450px'});

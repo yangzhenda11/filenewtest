@@ -96,13 +96,28 @@ function dataChangeEvent(dom){
 		layer.msg("创建日期开始日期不能早于截止日期");
 	}
 }
-//跳转到工单激活页面
-function jumpSanCpyQueryDetail(id){
-	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:id}, successCallback,null,null,false);
+
+//跳转到工单激活页面--查看当前流程
+function jumpSanCpyQueryDetail(wcardId){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getOrderProcessingFlowInfo", "post", JSON.stringify({wcardId:wcardId}), successCallback);
+	function successCallback(result) {
+		var taskDefinitionKey = result.data;
+		if(taskDefinitionKey){
+			checkWcardProcess(wcardId)
+		}else{
+			layer.alert("当前工单的流程状态失败，请联系管理员。",{icon:2,title:"流程状态错误"},function(index){
+				layer.close(index);
+			});
+		}
+	}
+}
+//跳转到工单激活页面--查看当前工单状态并跳转
+function checkWcardProcess(wcardId){
+	App.formAjaxJson(serverPath+"contractOrderEditorController/getWcardProcessId", "get", {wcardId:wcardId}, successCallback);
 	function successCallback(result) {
 		var wcardProcess = result.data.wcardProcess;
 		if(wcardProcess == 1){
-			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+id;
+			var src = "../workOrderEdit/workOrderEdit.html?pageType=2&taskFlag=db&taskDefinitionKey=GDQR&wcardId="+wcardId;
 			App.setCache("searchForm");
 			App.changePresentUrl(src);
 		}else{

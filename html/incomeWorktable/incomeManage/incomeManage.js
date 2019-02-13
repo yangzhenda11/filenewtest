@@ -619,7 +619,7 @@ function initIncomeForecastCharts(){
 	App.formAjaxJson(url, "post", null, successCallback, improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		if(data && data != {}){
+		if(data && !$.isEmptyObject(data)){
 			initForecastCharts(data);
 		}else{
 			improperCallback();

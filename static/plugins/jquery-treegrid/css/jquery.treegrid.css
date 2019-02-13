@@ -2,5 +2,5 @@
 
 .treegrid-expander {width:16px; height: 16px; display: inline-block; position: relative; cursor: pointer;}
 
-.treegrid-expander-expanded{background-image: url(/static/plugins/jquery-treegrid/img/collapse.png?t=1549951187302); }
-.treegrid-expander-collapsed{background-image: url(/static/plugins/jquery-treegrid/img/expand.png?t=1549951187302);}
+.treegrid-expander-expanded{background-image: url(/static/plugins/jquery-treegrid/img/collapse.png?t=1550044180179); }
+.treegrid-expander-collapsed{background-image: url(/static/plugins/jquery-treegrid/img/expand.png?t=1550044180179);}

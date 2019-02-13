@@ -328,7 +328,7 @@ function getIncomeAnalysisData(){
 	App.formAjaxJson(url, "post", null, successCallback,improperCallback);
 	function successCallback(result) {
 		var data = result.data;
-		if(data){
+		if(data && data != {}){
 			initIncomeAnalysis(data);
 		}else{
 			improperCallback();

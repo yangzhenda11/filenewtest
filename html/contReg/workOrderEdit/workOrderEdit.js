@@ -995,7 +995,7 @@ function getContractOrderBaseInfor(domObj,wcardTypeCode){
 				isEdit = false;
 				specialDomEdit = false;
 			};
-			if(parm.taskFlag == "db"){
+			if(parm.taskFlag == "db" && !editIdentify.isCanUpdateCustomerManager){		//增加客户经理不在流程中，不获取流程参数
 				var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 				parm.processDefinitionKey = flowParam.processDefinitionKey;
 				if(!parm.taskId){
@@ -1695,14 +1695,14 @@ function openOnlineView(filekey,filename){
 				openFullWindow('/html/contReg/onlineView/pdf/web/viewer.html?file='+viewerUrl);
 				layer.close(index);
 			}
-//	  	}else if(fileType == "doc" || fileType == "docx" || fileType == "DOC" || fileType == "DOCX"){
-//	  		if(App.IEVersionVA(9)) {
-//				layer.alert("您的浏览器版本过低不支持 word 在线查看，请使用IE9以上版本或者谷歌、火狐、360极速模式等现代浏览器查看，或点击保存按钮下载文件到本地查看。",{icon:2,area:'450px'});
-//			}else{
-//				var viewerUrl = encodeURIComponent(serverPath + "fileload/downloadS3PreviewWord?key=" + filekey);
-//				openFullWindow('/html/contReg/onlineView/pdf/web/viewer.html?file='+viewerUrl);
-//				layer.close(index);
-//			}
+	  	}else if(fileType == "doc" || fileType == "docx" || fileType == "DOC" || fileType == "DOCX"){
+	  		if(App.IEVersionVA(9)) {
+				layer.alert("您的浏览器版本过低不支持 word 在线查看，请使用IE9以上版本或者谷歌、火狐、360极速模式等现代浏览器查看，或点击保存按钮下载文件到本地查看。",{icon:2,area:'450px'});
+			}else{
+				var viewerUrl = encodeURIComponent(serverPath + "fileload/downloadS3PreviewWord?key=" + filekey);
+				openFullWindow('/html/contReg/onlineView/pdf/web/viewer.html?file='+viewerUrl);
+				layer.close(index);
+			}
 	  	}else if(supImgType.indexOf(fileType) != -1){
 	  		var viewerUrl = encodeURI('filename='+filename+'&filekey='+filekey+'&serverPath='+serverPath);
 	  		openFullWindow('/html/contReg/onlineView/img/image.html?'+viewerUrl);

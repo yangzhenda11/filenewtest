@@ -33,7 +33,8 @@
 			if (data) {
 				$("#contractDraftInfoBtn").data("key",data.stored_id);
 				$("#contractDraftInfoBtn").data("docname",data.doc_name);
-				html =  '<a onclick="contractDraftInfoDownload();">'+data.doc_name+'</a>';
+				html = '<a onclick="openOnlineView(\''+data.stored_id+'\',\''+data.doc_name+'\')">'+ data.doc_name+'</a>';
+//				html =  '<a onclick="contractDraftInfoDownload();">'+data.doc_name+'</a>';
 				$("#contractDraftInfoDiv").html(html);
 			} else{
 				$("#contractDraftInfoBtn").remove();
@@ -47,18 +48,19 @@
 	function contractDraftInfoDownload(){
 		var downloadKey = $("#contractDraftInfoBtn").data("key");
 		var docName = $("#contractDraftInfoBtn").data("docname");
-		var xhr = new XMLHttpRequest();
-	    var str = "";
-        xhr.open('get', serverPath + 'fileload/downloadS3?key='+downloadKey, true);
-        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-        xhr.responseType = "blob";
-        xhr.onload = function () {
-        	console.log(this);
-            if (this.status === 200) {
-                var blob = this.response;
-                saveAs(blob, docName);
-            }
-        };
-        xhr.send(str);
+		location.href = serverPath + 'fileload/downloadS3?key=' + downloadKey;
+//		var xhr = new XMLHttpRequest();
+//	    var str = "";
+//      xhr.open('get', serverPath + 'fileload/downloadS3?key='+downloadKey, true);
+//      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+//      xhr.responseType = "blob";
+//      xhr.onload = function () {
+//      	console.log(this);
+//          if (this.status === 200) {
+//              var blob = this.response;
+//              saveAs(blob, docName);
+//          }
+//      };
+//      xhr.send(str);
 	}
 </script>

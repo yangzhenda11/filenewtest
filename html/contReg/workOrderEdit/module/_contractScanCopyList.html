@@ -103,7 +103,8 @@
 		if(bodyDocData){
 			var html = "<tr><td>1</td>";
 			if(bodyDocData.bodyDocStoreId){
-				html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+bodyDocData.bodyDocStoreId+"'>"+ bodyDocData.displayName+"</td>";
+				html += '<td><a onclick="openOnlineView(\''+bodyDocData.bodyDocStoreId+'\',\''+bodyDocData.displayName+'\')">'+ bodyDocData.displayName+'</a></td>';
+//				html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+bodyDocData.bodyDocStoreId+"'>"+ bodyDocData.displayName+"</td>";
 			}else{
 				html += "<td>"+ bodyDocData.displayName+"</td>";
 			};
@@ -125,7 +126,8 @@
 			for(var i = 0; i < data.length; i++){
 				html += "<tr>"+"<td>"+ (i+1) +"</td>";
 				if(data[i].bodyDocStoreId){
-					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].bodyDocStoreId+"'>"+ data[i].displayName+"</td>";
+					html += '<td><a onclick="openOnlineView(\''+data[i].bodyDocStoreId+'\',\''+data[i].displayName+'\')">'+ data[i].displayName+'</a></td>';
+//					html += "<td><a href='"+serverPath+"fileload/downloadS3?key="+data[i].bodyDocStoreId+"'>"+ data[i].displayName+"</td>";
 				}else{
 					html += "<td>"+ data[i].displayName+"</td>";
 				};

@@ -998,9 +998,7 @@ function getContractOrderBaseInfor(domObj,wcardTypeCode){
 			if(parm.taskFlag == "db" && !editIdentify.isCanUpdateCustomerManager){		//增加客户经理不在流程中，不获取流程参数
 				var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 				parm.processDefinitionKey = flowParam.processDefinitionKey;
-				if(!parm.taskId){
-					parm.taskId = flowParam.taskId;
-				};
+				parm.taskId = flowParam.taskId;
 				if(parm.taskDefinitionKey == "GDQR"){
 					if(contractAttr.executeDeptCode == "00450080365" || contractAttr.provinceCode == "hi" || contractAttr.provinceCode == "sc"){
 						//特殊省份GDQR设置自定义规则

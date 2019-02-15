@@ -995,7 +995,7 @@ function getContractOrderBaseInfor(domObj,wcardTypeCode){
 				isEdit = false;
 				specialDomEdit = false;
 			};
-			if(parm.taskFlag == "db"){
+			if(parm.taskFlag == "db" && !editIdentify.isCanUpdateCustomerManager){		//增加客户经理不在流程中，不获取流程参数
 				var flowParam = App.getFlowParam(serverPath,wcardId,1,0,"contract_project2",contractAttr.provinceCode,contractAttr.city,"","","");
 				parm.processDefinitionKey = flowParam.processDefinitionKey;
 				if(!parm.taskId){
